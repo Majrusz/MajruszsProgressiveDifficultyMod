@@ -1,0 +1,15 @@
+{
+	"type": "majruszs_difficulty:increase_loot",
+	"conditions": [
+		{
+			"condition": "minecraft:killed_by_player"
+		}
+	],
+	"forbidden_items": [
+		{
+			"name": "minecraft:nether_star"
+		}
+	],
+	"expert_chance": 0.25,
+	"master_chance": 0.75
+}

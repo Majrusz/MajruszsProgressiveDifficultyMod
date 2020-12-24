@@ -1,0 +1,14 @@
+{
+  "entity.majruszs_difficulty.giant": "Giant",
+  "entity.majruszs_difficulty.pillager_wolf": "Pillager's Wolf",
+  "item.majruszs_difficulty.giant_spawn_egg": "Giant Spawn Egg",
+  "item.majruszs_difficulty.illusioner_spawn_egg": "Illusioner Spawn Egg",
+  "item.majruszs_difficulty.pillager_wolf_spawn_egg": "Pillager's Wolf Spawn Egg",
+  "commands.game_state.change": "Game state changed to",
+  "commands.game_state.current": "Current game state is",
+  "majruszs_difficulty.states.normal": "Normal Mode",
+  "majruszs_difficulty.states.expert": "Expert Mode",
+  "majruszs_difficulty.states.master": "Master Mode",
+  "majruszs_difficulty.on_expert_mode_start": "The ancient spirits of light and dark have been released.",
+  "majruszs_difficulty.on_master_mode_start": "Impending doom approaches..."
+}
