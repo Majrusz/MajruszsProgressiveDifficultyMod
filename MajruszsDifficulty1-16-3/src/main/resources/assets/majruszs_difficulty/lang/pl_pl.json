@@ -1,0 +1,14 @@
+{
+  "entity.majruszs_difficulty.giant": "Gigant",
+  "entity.majruszs_difficulty.pillager_wolf": "Wilk rozbójnika",
+  "item.majruszs_difficulty.giant_spawn_egg": "Jajo przywołujące giganta",
+  "item.majruszs_difficulty.illusioner_spawn_egg": "Jajo przywołujące iluzjoniera",
+  "item.majruszs_difficulty.pillager_wolf_spawn_egg": "Jajo przywołujące wilka rozbójnika",
+  "commands.game_state.change": "Zmieniono postęp gry na",
+  "commands.game_state.current": "Aktualnie stan gry to",
+  "majruszs_difficulty.states.normal": "tryb normalny",
+  "majruszs_difficulty.states.expert": "tryb eksperta",
+  "majruszs_difficulty.states.master": "tryb mistrza",
+  "majruszs_difficulty.on_expert_mode_start": "Uwolniono starożytne duchy światłości i mroku.",
+  "majruszs_difficulty.on_master_mode_start": "Nadciąga nieuchronny koniec..."
+}
