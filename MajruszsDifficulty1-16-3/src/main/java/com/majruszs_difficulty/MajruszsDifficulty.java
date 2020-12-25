@@ -18,7 +18,7 @@ public class MajruszsDifficulty {
 	public static final String
 		MOD_ID      = "majruszs_difficulty",
 		NAME        = "Majrusz's Progressive Difficulty",
-		VERSION     = "0.1.0";
+		VERSION     = "0.1.2";
 
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final Random RANDOM = new Random();

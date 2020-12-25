@@ -1,0 +1,14 @@
+{
+  "entity.majruszs_difficulty.giant": "Гигант",
+  "entity.majruszs_difficulty.pillager_wolf": "Волк разбойника",
+  "item.majruszs_difficulty.giant_spawn_egg": "Яйцо призыва гиганта",
+  "item.majruszs_difficulty.illusioner_spawn_egg": "Яйцо призыва иллюзионера",
+  "item.majruszs_difficulty.pillager_wolf_spawn_egg": "Яйцо призыва волка разбойника",
+  "commands.game_state.change": "Стадия игры изменилось на",
+  "commands.game_state.current": "Текущая стадия игры -",
+  "majruszs_difficulty.states.normal": "Нормальный этап",
+  "majruszs_difficulty.states.expert": "Экспертный этап",
+  "majruszs_difficulty.states.master": "Мастерский этап",
+  "majruszs_difficulty.on_expert_mode_start": "Древние духи света и тьмы были выпущены в этот мир.",
+  "majruszs_difficulty.on_master_mode_start": "Грядет злой рок..."
+}
