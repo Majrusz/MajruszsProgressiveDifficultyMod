@@ -51,7 +51,7 @@ public abstract class EnemyGroup {
 	}
 
 	protected void giveArmorToLeader( MonsterEntity leader, ServerWorld world, Item[] armor ) {
-		if( !this.spawningGroupFailed )
+		if( this.spawningGroupFailed )
 			return;
 
 		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( leader, world );
