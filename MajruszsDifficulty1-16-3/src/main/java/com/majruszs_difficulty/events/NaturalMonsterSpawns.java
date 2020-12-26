@@ -16,14 +16,22 @@ import net.minecraftforge.fml.common.Mod;
 public class NaturalMonsterSpawns {
 	@SubscribeEvent( priority = EventPriority.HIGH )
 	public static void addEntitiesToBiomes( BiomeLoadingEvent event ) {
-		Biome.Category category = event.getCategory();
+		if( !isBiomeCategoryValid( event.getCategory() ) )
+			return;
 
-		if( category != Biome.Category.NETHER && category != Biome.Category.THEEND && category != Biome.Category.NONE && category != Biome.Category.OCEAN ) {
-			MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
+		MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
 
-			spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EntityType.ILLUSIONER, 25, 1, 2 ) );
-			spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( GiantEntity.type, 3, 1, 1 ) );
-			spawnInfoBuilder.func_242575_a( EntityClassification.CREATURE, new MobSpawnInfo.Spawners( PillagerWolfEntity.type, 5, 2, 5 ) );
-		}
+		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EntityType.ILLUSIONER, 25, 1, 2 ) );
+		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( GiantEntity.type, 3, 1, 1 ) );
+		spawnInfoBuilder.func_242575_a( EntityClassification.CREATURE, new MobSpawnInfo.Spawners( PillagerWolfEntity.type, 5, 2, 5 ) );
+	}
+
+	protected static boolean isBiomeCategoryValid( Biome.Category category ) {
+		boolean isNotNone = category != Biome.Category.NONE;
+		boolean isNotNether = category != Biome.Category.NETHER;
+		boolean isNotEnd = category != Biome.Category.THEEND;
+		boolean isNotOcean = category != Biome.Category.OCEAN;
+
+		return isNotNone && isNotNether && isNotEnd && isNotOcean;
 	}
 }
