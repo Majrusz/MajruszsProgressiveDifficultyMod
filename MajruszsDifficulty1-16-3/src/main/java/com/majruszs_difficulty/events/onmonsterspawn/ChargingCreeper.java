@@ -11,12 +11,13 @@ public class ChargingCreeper {
 	protected static final double creeperChargingChance = 0.125D;
 
 	public static void tryToChargeCreeper( CreeperEntity creeper, ServerWorld world ) {
-		if( MajruszsDifficulty.RANDOM.nextDouble() < creeperChargingChance * MajruszsHelper.getClampedRegionalDifficulty( creeper, world ) ) {
-			LightningBoltEntity lightningBolt = EntityType.LIGHTNING_BOLT.create( world );
-			if( lightningBolt != null )
-				creeper.func_241841_a( world, lightningBolt );
+		if( MajruszsDifficulty.RANDOM.nextDouble() >= creeperChargingChance * MajruszsHelper.getClampedRegionalDifficulty( creeper, world ) )
+			return;
 
-			creeper.extinguish();
-		}
+		LightningBoltEntity lightningBolt = EntityType.LIGHTNING_BOLT.create( world );
+		if( lightningBolt != null )
+			creeper.func_241841_a( world, lightningBolt );
+
+		creeper.extinguish();
 	}
 }
