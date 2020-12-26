@@ -12,7 +12,6 @@ import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -20,6 +19,7 @@ import net.minecraft.world.World;
 public class GiantEntity extends ZombieEntity {
 	public static final float scale = 5.0f;
 	public static final EntityType< GiantEntity > type;
+
 	static {
 		type = EntityType.Builder.create( GiantEntity::new, EntityClassification.MONSTER )
 			.size( 0.6f * scale, 2.0f * scale )
@@ -31,32 +31,12 @@ public class GiantEntity extends ZombieEntity {
 		this.experienceValue = 15;
 	}
 
-	public static AttributeModifierMap.MutableAttribute setAttributes() {
-		return MobEntity.func_233666_p_()
-			.func_233815_a_( AttributeHelper.Attributes.MAX_HEALTH, 120.0D )
-			.func_233815_a_( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.25D )
-			.func_233815_a_( AttributeHelper.Attributes.ATTACK_DAMAGE, 10.0D )
-			.func_233815_a_( AttributeHelper.Attributes.FOLLOW_RANGE, 40.0D )
-			.func_233815_a_( AttributeHelper.Attributes.ATTACK_KNOCKBACK, 2.0D )
-			.func_233815_a_( AttributeHelper.Attributes.KNOCKBACK_RESISTANCE, 0.5D )
-			.func_233815_a_( AttributeHelper.Attributes.ZOMBIE_REINFORCEMENT_CHANCE, 0.0D );
-	}
-
 	@Override
 	protected void applyAttributeBonuses( float difficulty ) {}
 
 	@Override
-	public boolean attackEntityFrom( DamageSource source, float amount ) {
-		return super.attackEntityFrom( source, amount );
-	}
-
-	@Override
 	protected float getStandingEyeHeight( Pose poseIn, EntitySize sizeIn ) {
 		return 10.440001F;
-	}
-
-	public static EntityType< GiantEntity > buildEntity() {
-		return type;
 	}
 
 	@Override
@@ -89,6 +69,20 @@ public class GiantEntity extends ZombieEntity {
 	@Override
 	public void playSound( SoundEvent sound, float volume, float pitch ) {
 		if( !this.isSilent() )
-			this.world.playSound( null, this.getPosX(), this.getPosY(), this.getPosZ(), sound, this.getSoundCategory(), volume * 1.25f, pitch * 0.75f );
+			this.world.playSound( null, this.getPosX(), this.getPosY(), this.getPosZ(), sound, this.getSoundCategory(), volume * 1.25f,
+				pitch * 0.75f
+			);
+	}
+
+	public static AttributeModifierMap getAttributeMap() {
+		return MobEntity.func_233666_p_()
+			.func_233815_a_( AttributeHelper.Attributes.MAX_HEALTH, 120.0D )
+			.func_233815_a_( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.25D )
+			.func_233815_a_( AttributeHelper.Attributes.ATTACK_DAMAGE, 10.0D )
+			.func_233815_a_( AttributeHelper.Attributes.FOLLOW_RANGE, 40.0D )
+			.func_233815_a_( AttributeHelper.Attributes.ATTACK_KNOCKBACK, 2.0D )
+			.func_233815_a_( AttributeHelper.Attributes.KNOCKBACK_RESISTANCE, 0.5D )
+			.func_233815_a_( AttributeHelper.Attributes.ZOMBIE_REINFORCEMENT_CHANCE, 0.0D )
+			.func_233813_a_();
 	}
 }

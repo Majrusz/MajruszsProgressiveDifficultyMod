@@ -45,14 +45,11 @@ public class PillagerWolfEntity extends WolfEntity {
 		return true; // wolf will not be tamed
 	}
 
-	public static EntityType< PillagerWolfEntity > buildEntity() {
-		return type;
-	}
-
-	public static AttributeModifierMap.MutableAttribute setAttributes() {
+	public static AttributeModifierMap getAttributeMap() {
 		return MobEntity.func_233666_p_()
 			.func_233815_a_( AttributeHelper.Attributes.MAX_HEALTH, 12.0D )
 			.func_233815_a_( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.3125D )
-			.func_233815_a_( AttributeHelper.Attributes.ATTACK_DAMAGE, 4.0D );
+			.func_233815_a_( AttributeHelper.Attributes.ATTACK_DAMAGE, 4.0D )
+			.func_233813_a_();
 	}
 }
