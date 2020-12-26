@@ -8,6 +8,9 @@
 	"forbidden_items": [
 		{
 			"name": "minecraft:nether_star"
+		},
+		{
+			"name": "minecraft:totem_of_undying"
 		}
 	],
 	"expert_chance": 0.25,
