@@ -16,16 +16,14 @@ import net.minecraftforge.fml.common.Mod;
 public class OnMonsterSpawn {
 	@SubscribeEvent
 	public static void onMonsterSpawn( LivingSpawnEvent.SpecialSpawn event ) {
-		if( !MajruszsHelper.isHostile( event.getEntityLiving() ) )
+		if( !MajruszsHelper.isHostile( event.getEntityLiving() ) || !( event.getWorld() instanceof ServerWorld ) )
 			return;
 
-		if( !( event.getWorld() instanceof ServerWorld ) )
-			return;
+		boostLivingEntity( event.getEntityLiving(), ( ServerWorld )event.getWorld() );
+	}
 
-		LivingEntity livingEntity = event.getEntityLiving();
-		ServerWorld world = ( ServerWorld )event.getWorld();
-
-		boostEveryone( livingEntity, world );
+	protected static void boostLivingEntity( LivingEntity livingEntity, ServerWorld world ) {
+		StrengthenedAttributes.strengthenLivingEntity( livingEntity, world );
 
 		if( livingEntity instanceof CreeperEntity )
 			boostCreeper( ( CreeperEntity )livingEntity, world );
@@ -41,10 +39,6 @@ public class OnMonsterSpawn {
 
 		else if( livingEntity instanceof PillagerEntity )
 			boostPillager( ( PillagerEntity )livingEntity, world );
-	}
-
-	protected static void boostEveryone( LivingEntity livingEntity, ServerWorld world ) {
-		StrengthenedAttributes.strengthenLivingEntity( livingEntity, world );
 	}
 
 	protected static void boostCreeper( CreeperEntity creeper, ServerWorld world ) {
