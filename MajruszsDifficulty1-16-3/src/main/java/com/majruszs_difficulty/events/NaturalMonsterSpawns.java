@@ -17,23 +17,36 @@ import net.minecraftforge.fml.common.Mod;
 public class NaturalMonsterSpawns {
 	@SubscribeEvent( priority = EventPriority.HIGH )
 	public static void addEntitiesToBiomes( BiomeLoadingEvent event ) {
-		if( !isBiomeCategoryValid( event.getCategory() ) )
-			return;
-
+		Biome.Category category = event.getCategory();
 		MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
 
+		if( doBiomeBelongsToOverworld( category ) )
+			addOverworldEntities( spawnInfoBuilder );
+		else if( doBiomeBelongsToNether( category ) )
+			addNetherEntities( spawnInfoBuilder );
+	}
+
+	protected static void addOverworldEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
 		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EntityType.ILLUSIONER, 20, 1, 2 ) );
 		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( GiantEntity.type, 3, 1, 1 ) );
 		spawnInfoBuilder.func_242575_a( EntityClassification.CREATURE, new MobSpawnInfo.Spawners( PillagerWolfEntity.type, 5, 2, 5 ) );
 		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EliteSkeletonEntity.type, 20, 1, 1 ) );
 	}
 
-	protected static boolean isBiomeCategoryValid( Biome.Category category ) {
+	protected static boolean doBiomeBelongsToOverworld( Biome.Category category ) {
 		boolean isNotNone = category != Biome.Category.NONE;
 		boolean isNotNether = category != Biome.Category.NETHER;
 		boolean isNotEnd = category != Biome.Category.THEEND;
 		boolean isNotOcean = category != Biome.Category.OCEAN;
 
 		return isNotNone && isNotNether && isNotEnd && isNotOcean;
+	}
+
+	protected static void addNetherEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
+		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EliteSkeletonEntity.type, 5, 1, 1 ) );
+	}
+
+	protected static boolean doBiomeBelongsToNether( Biome.Category category ) {
+		return category == Biome.Category.NETHER;
 	}
 }
