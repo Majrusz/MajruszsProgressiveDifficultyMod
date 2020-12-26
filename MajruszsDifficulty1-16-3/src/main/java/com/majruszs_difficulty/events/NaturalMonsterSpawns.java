@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.events;
 
+import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
 import net.minecraft.entity.EntityClassification;
@@ -21,9 +22,10 @@ public class NaturalMonsterSpawns {
 
 		MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
 
-		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EntityType.ILLUSIONER, 25, 1, 2 ) );
+		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EntityType.ILLUSIONER, 20, 1, 2 ) );
 		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( GiantEntity.type, 3, 1, 1 ) );
 		spawnInfoBuilder.func_242575_a( EntityClassification.CREATURE, new MobSpawnInfo.Spawners( PillagerWolfEntity.type, 5, 2, 5 ) );
+		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EliteSkeletonEntity.type, 20, 1, 1 ) );
 	}
 
 	protected static boolean isBiomeCategoryValid( Biome.Category category ) {
