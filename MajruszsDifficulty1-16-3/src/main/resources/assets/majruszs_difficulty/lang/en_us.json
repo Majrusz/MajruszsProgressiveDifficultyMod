@@ -1,9 +1,11 @@
 {
   "entity.majruszs_difficulty.giant": "Giant",
   "entity.majruszs_difficulty.pillager_wolf": "Pillager's Wolf",
+  "entity.majruszs_difficulty.elite_skeleton": "Elite Skeleton",
   "item.majruszs_difficulty.giant_spawn_egg": "Giant Spawn Egg",
   "item.majruszs_difficulty.illusioner_spawn_egg": "Illusioner Spawn Egg",
   "item.majruszs_difficulty.pillager_wolf_spawn_egg": "Pillager's Wolf Spawn Egg",
+  "item.majruszs_difficulty.elite_skeleton_spawn_egg": "Elite Skeleton Spawn Egg",
   "commands.game_state.change": "Game state changed to",
   "commands.game_state.current": "Current game state is",
   "majruszs_difficulty.states.normal": "Normal Mode",
