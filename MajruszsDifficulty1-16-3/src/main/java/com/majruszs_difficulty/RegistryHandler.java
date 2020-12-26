@@ -4,12 +4,14 @@ import com.majruszs_difficulty.commands.ChangeGameStateCommand;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
+import com.majruszs_difficulty.items.WitherSwordItem;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
+import net.minecraft.item.SwordItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -33,6 +35,9 @@ public class RegistryHandler {
 	public static final RegistryObject< EntityType< EliteSkeletonEntity > > ELITE_SKELETON = ENTITIES.register( "elite_skeleton",
 		()->EliteSkeletonEntity.type
 	);
+
+	// Items
+	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 
 	public static void init() {
 		final IEventBus modEventBus = FMLJavaModLoadingContext.get()
