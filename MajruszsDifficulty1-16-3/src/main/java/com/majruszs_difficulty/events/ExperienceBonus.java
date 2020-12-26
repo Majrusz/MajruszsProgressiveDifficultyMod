@@ -14,12 +14,18 @@ public class ExperienceBonus {
 	@SubscribeEvent
 	public static void onXPPickUp( PlayerXpEvent.PickupXp event ) {
 		ExperienceOrbEntity orb = event.getOrb();
-		int bonusExp = ( int )( Math.round( experienceMultiplier * ( double )orb.getXpValue() ) );
+		int bonusExperience = ( int )( Math.round( experienceMultiplier * ( double )orb.getXpValue() ) );
 
-		if( !( bonusExp > 0 ) )
+		if( !( bonusExperience > 0 ) )
 			return;
 
-		PlayerEntity player = event.getPlayer();
-		player.giveExperiencePoints( ( GameState.atLeast( GameState.Mode.MASTER ) ? 2 : 1 ) * bonusExp );
+		giveExtraExperienceToPlayer( bonusExperience, event.getPlayer() );
+	}
+
+	protected static void giveExtraExperienceToPlayer( int bonusExperience, PlayerEntity player ) {
+		if( GameState.atLeast( GameState.Mode.MASTER ) )
+			bonusExperience *= 2;
+
+		player.giveExperiencePoints( bonusExperience );
 	}
 }
