@@ -7,6 +7,9 @@ import com.majruszs_difficulty.events.onmonsterspawn.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.monster.piglin.PiglinEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,6 +42,9 @@ public class OnMonsterSpawn {
 
 		else if( livingEntity instanceof PillagerEntity )
 			boostPillager( ( PillagerEntity )livingEntity, world );
+
+		else if( livingEntity instanceof EvokerEntity )
+			boostEvoker( ( EvokerEntity )livingEntity, world );
 	}
 
 	protected static void boostCreeper( CreeperEntity creeper, ServerWorld world ) {
@@ -66,5 +72,9 @@ public class OnMonsterSpawn {
 			return;
 
 		new PillagerGroup( pillager, world );
+	}
+
+	protected static void boostEvoker( EvokerEntity evoker, ServerWorld world ) {
+		evoker.setHeldItem( Hand.MAIN_HAND, new ItemStack( Items.TOTEM_OF_UNDYING ) );
 	}
 }
