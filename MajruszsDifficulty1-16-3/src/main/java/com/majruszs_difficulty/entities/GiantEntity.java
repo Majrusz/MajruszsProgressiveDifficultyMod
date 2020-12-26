@@ -20,14 +20,13 @@ import net.minecraft.world.World;
 public class GiantEntity extends ZombieEntity {
 	public static final float scale = 5.0f;
 	public static final EntityType< GiantEntity > type;
-
 	static {
 		type = EntityType.Builder.create( GiantEntity::new, EntityClassification.MONSTER )
-			.size( 1.0f * scale, 2.0f * scale )
+			.size( 0.6f * scale, 2.0f * scale )
 			.build( new ResourceLocation( MajruszsDifficulty.MOD_ID, "giant" ).toString() );
 	}
 
-	public GiantEntity( EntityType< ? extends net.minecraft.entity.monster.ZombieEntity > type, World world ) {
+	public GiantEntity( EntityType< ? extends ZombieEntity > type, World world ) {
 		super( type, world );
 		this.experienceValue = 15;
 	}
