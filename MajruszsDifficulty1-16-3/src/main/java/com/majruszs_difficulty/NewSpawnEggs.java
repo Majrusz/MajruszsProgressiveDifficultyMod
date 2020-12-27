@@ -33,7 +33,7 @@ public class NewSpawnEggs {
 
 	public static void registerSpawnEgg( String name, EntityType< ? > entityType, int primaryColor, int secondaryColor ) {
 		RegistryHandler.ITEMS.register( name,
-			()->new SpawnEggItem( entityType, primaryColor, secondaryColor, new Item.Properties().group( ItemGroup.MISC ) )
+			()->new SpawnEggItem( entityType, primaryColor, secondaryColor, new Item.Properties().group( RegistryHandler.ITEM_GROUP ) )
 		);
 	}
 }

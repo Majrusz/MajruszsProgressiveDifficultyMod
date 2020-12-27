@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -18,7 +19,7 @@ public class WitherSwordItem extends SwordItem {
 	public static final int witherDuration = MajruszsHelper.secondsToTicks( 10.0 );
 
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 1, -2.4f, ( new Item.Properties() ).group( ItemGroup.COMBAT ) );
+		super( CustomItemTier.WITHER, 1, -2.4f, ( new Item.Properties() ).group( RegistryHandler.ITEM_GROUP ) );
 	}
 
 	@SubscribeEvent
