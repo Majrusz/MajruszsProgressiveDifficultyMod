@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events.onmonsterspawn;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -18,23 +19,15 @@ public class SkeletonGroup extends EnemyGroup {
 	public SkeletonGroup( MonsterEntity leader, ServerWorld world ) {
 		super( leader, world, 1, 3 );
 
-		this.leaderArmor = leatherArmor;
-		giveArmorToLeader( leader, world, this.leaderArmor );
+		giveArmorToLeader( world, Armors.leather );
 	}
 
 	@Override
-	protected LivingEntity spawnChild( ServerWorld world ) {
+	protected CreatureEntity spawnChild( ServerWorld world ) {
 		SkeletonEntity skeleton = new SkeletonEntity( EntityType.SKELETON, world );
 
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( skeleton, world );
-
-		ItemStack itemStack = generateWeapon();
-		if( itemStack != null )
-			skeleton.setItemStackToSlot( EquipmentSlotType.MAINHAND,
-				MajruszsHelper.tryEnchantWeapon( MajruszsHelper.damageItem( itemStack ), clampedRegionalDifficulty )
-			);
-
-		setupGoals( skeleton, this.leader, 4, 0 );
+		giveWeaponTo( skeleton, world );
+		setupGoals( skeleton, 4, 0 );
 
 		return skeleton;
 	}

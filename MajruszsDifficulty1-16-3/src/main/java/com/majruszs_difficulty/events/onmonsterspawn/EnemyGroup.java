@@ -4,9 +4,8 @@ import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.goals.FollowGroupLeaderGoal;
 import com.majruszs_difficulty.goals.TargetAsLeaderGoal;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,56 +17,73 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class EnemyGroup {
-	protected static final double spawnChance = 0.2D;
-	private boolean spawningGroupFailed = false;
-	protected MonsterEntity leader;
-	protected Item[] leaderArmor;
-	protected static final Item[] leatherArmor = new Item[]{ Items.LEATHER_BOOTS, Items.LEATHER_LEGGINGS, Items.LEATHER_CHESTPLATE, Items.LEATHER_HELMET };
-	protected static final Item[] ironArmor = new Item[]{ Items.IRON_BOOTS, Items.IRON_LEGGINGS, Items.IRON_CHESTPLATE, Items.IRON_HELMET };
-	protected static final Item[] goldenArmor = new Item[]{ Items.GOLDEN_BOOTS, Items.GOLDEN_LEGGINGS, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_HELMET };
+	protected static double spawnChance = 0.2D;
+	protected final boolean spawningGroupFailed;
+	protected CreatureEntity leader;
 
-	abstract protected LivingEntity spawnChild( ServerWorld world );
+	abstract protected CreatureEntity spawnChild( ServerWorld world );
 
-	public EnemyGroup( MonsterEntity leader, ServerWorld world, int minimumAmountOfChildren, int maximumAmountOfChildren ) {
+	public EnemyGroup( CreatureEntity leader, ServerWorld world, int minimumAmountOfChildren, int maximumAmountOfChildren ) {
 		this.leader = leader;
-		this.leader.setChild( false );
 
 		if( MajruszsDifficulty.RANDOM.nextDouble() >= spawnChance ) {
 			this.spawningGroupFailed = true;
 			return;
 		}
-
-		Vector3d spawnPosition = this.leader.getPositionVec();
+		this.spawningGroupFailed = false;
 
 		int childrenAmount = minimumAmountOfChildren + MajruszsDifficulty.RANDOM.nextInt( maximumAmountOfChildren - minimumAmountOfChildren + 1 );
-		for( int childID = 0; childID < childrenAmount; childID++ ) {
+		spawnChildren( childrenAmount, world, this.leader.getPositionVec() );
+	}
+
+	protected void giveArmorToLeader( ServerWorld world, Item[] leaderArmor ) {
+		if( this.spawningGroupFailed || this.leader == null )
+			return;
+
+		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( this.leader, world );
+
+		List< ItemStack > itemStacks = new ArrayList<>();
+		for( Item item : leaderArmor )
+			itemStacks.add( MajruszsHelper.damageAndEnchantItemStack( new ItemStack( item ), clampedRegionalDifficulty ) );
+
+		this.leader.setItemStackToSlot( EquipmentSlotType.FEET, itemStacks.get( 0 ) );
+		this.leader.setItemStackToSlot( EquipmentSlotType.LEGS, itemStacks.get( 1 ) );
+		this.leader.setItemStackToSlot( EquipmentSlotType.CHEST, itemStacks.get( 2 ) );
+		this.leader.setItemStackToSlot( EquipmentSlotType.HEAD, itemStacks.get( 3 ) );
+	}
+
+	protected void giveWeaponTo( LivingEntity entity, ServerWorld world ) {
+		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( entity, world );
+
+		ItemStack weapon = generateWeapon();
+		if( weapon != null )
+			entity.setItemStackToSlot( EquipmentSlotType.MAINHAND, MajruszsHelper.damageAndEnchantItemStack( weapon, clampedRegionalDifficulty ) );
+	}
+
+	protected void setupGoals( CreatureEntity follower, int goalPriority, int targetPriority ) {
+		follower.goalSelector.addGoal( goalPriority, new FollowGroupLeaderGoal( follower, this.leader, 1.0D, 6.0f, 5.0f ) );
+		follower.targetSelector.addGoal( targetPriority, new TargetAsLeaderGoal( follower, this.leader ) );
+	}
+
+	protected ItemStack generateWeapon() {
+		return null;
+	}
+
+	private void spawnChildren( int amount, ServerWorld world, Vector3d spawnPosition ) {
+		for( int childID = 0; childID < amount; childID++ ) {
 			LivingEntity child = spawnChild( world );
-			child.setPosition( spawnPosition.x - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 ), spawnPosition.y,
-				spawnPosition.z - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 )
-			);
+			double x = spawnPosition.x - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 );
+			double y = spawnPosition.y;
+			double z = spawnPosition.z - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 );
+			child.setPosition( x, y, z );
 
 			world.summonEntity( child );
 		}
 	}
 
-	protected void giveArmorToLeader( MonsterEntity leader, ServerWorld world, Item[] armor ) {
-		if( this.spawningGroupFailed )
-			return;
-
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( leader, world );
-
-		List< ItemStack > itemStacks = new ArrayList<>();
-		for( Item item : armor )
-			itemStacks.add( MajruszsHelper.tryEnchantArmor( MajruszsHelper.damageItem( new ItemStack( item ) ), clampedRegionalDifficulty ) );
-
-		leader.setItemStackToSlot( EquipmentSlotType.FEET, itemStacks.get( 0 ) );
-		leader.setItemStackToSlot( EquipmentSlotType.LEGS, itemStacks.get( 1 ) );
-		leader.setItemStackToSlot( EquipmentSlotType.CHEST, itemStacks.get( 2 ) );
-		leader.setItemStackToSlot( EquipmentSlotType.HEAD, itemStacks.get( 3 ) );
-	}
-
-	protected static void setupGoals( MonsterEntity follower, MonsterEntity leader, int goalPriority, int targetPriority ) {
-		follower.goalSelector.addGoal( goalPriority, new FollowGroupLeaderGoal( follower, leader, 1.0D, 6.0f, 5.0f ) );
-		follower.targetSelector.addGoal( targetPriority, new TargetAsLeaderGoal( follower, leader ) );
+	protected static class Armors {
+		public static Item[] leather = new Item[]{ Items.LEATHER_BOOTS, Items.LEATHER_LEGGINGS, Items.LEATHER_CHESTPLATE, Items.LEATHER_HELMET };
+		public static Item[] iron = new Item[]{ Items.IRON_BOOTS, Items.IRON_LEGGINGS, Items.IRON_CHESTPLATE, Items.IRON_HELMET };
+		public static Item[] golden = new Item[]{ Items.GOLDEN_BOOTS, Items.GOLDEN_LEGGINGS, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_HELMET };
 	}
 }

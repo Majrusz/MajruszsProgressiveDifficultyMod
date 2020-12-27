@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events.onmonsterspawn;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -18,22 +19,15 @@ public class ZombieGroup extends EnemyGroup {
 	public ZombieGroup( MonsterEntity leader, ServerWorld world ) {
 		super( leader, world, 1, 3 );
 
-		this.leaderArmor = leatherArmor;
-		giveArmorToLeader( leader, world, this.leaderArmor );
+		giveArmorToLeader( world, Armors.leather );
 	}
 
 	@Override
-	protected LivingEntity spawnChild( ServerWorld world ) {
+	protected CreatureEntity spawnChild( ServerWorld world ) {
 		ZombieEntity zombie = new ZombieEntity( EntityType.ZOMBIE, world );
 
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( zombie, world );
-
-		ItemStack itemStack = generateWeapon();
-		if( itemStack != null ) {
-			zombie.setItemStackToSlot( EquipmentSlotType.MAINHAND, MajruszsHelper.tryEnchantWeapon( MajruszsHelper.damageItem( itemStack ), clampedRegionalDifficulty ) );
-		}
-
-		setupGoals( zombie, this.leader, 4, 0 );
+		giveWeaponTo( zombie, world );
+		setupGoals( zombie, 4, 0 );
 
 		return zombie;
 	}
