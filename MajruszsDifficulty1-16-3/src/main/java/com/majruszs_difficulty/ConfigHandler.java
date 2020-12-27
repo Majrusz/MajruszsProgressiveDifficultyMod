@@ -52,6 +52,8 @@ public class ConfigHandler {
 		Config.Features.WITHER_SKELETON_SWORD = createConfigSpecForBoolean( "wither_skeleton_sword", "", true );
 		BUILDER.pop();
 
+		BUILDER.comment( "Remember these chances below are scaled by Clamped Regional Difficulty! (0.0 ~ 1.0)" );
+
 		BUILDER.push( "Chances" );
 		Config.Chances.CREEPER_CHARGED = createConfigSpecForDouble( "creeper_charged_chance", "", 0.125, 0.0, 1.0 );
 		Config.Chances.CREEPER_EFFECTS = createConfigSpecForDouble( "creeper_effects_chance", "", 0.375, 0.0, 1.0 );
@@ -63,14 +65,12 @@ public class ConfigHandler {
 	}
 
 	private static ForgeConfigSpec.BooleanValue createConfigSpecForBoolean( String name, String comment, boolean defaultValue ) {
-		return BUILDER
-			.worldRestart()
+		return BUILDER.worldRestart()
 			.define( name, defaultValue );
 	}
 
 	private static ForgeConfigSpec.DoubleValue createConfigSpecForDouble( String name, String comment, double defaultValue, double min, double max ) {
-		return BUILDER
-			.worldRestart()
+		return BUILDER.worldRestart()
 			.defineInRange( name, defaultValue, min, max );
 	}
 }
