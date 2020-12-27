@@ -29,9 +29,10 @@ public class SkeletonGroup extends EnemyGroup {
 		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( skeleton, world );
 
 		ItemStack itemStack = generateWeapon();
-		if( itemStack != null ) {
-			skeleton.setItemStackToSlot( EquipmentSlotType.MAINHAND, tryEnchantWeapon( damageItem( itemStack ), clampedRegionalDifficulty ) );
-		}
+		if( itemStack != null )
+			skeleton.setItemStackToSlot( EquipmentSlotType.MAINHAND,
+				MajruszsHelper.tryEnchantWeapon( MajruszsHelper.damageItem( itemStack ), clampedRegionalDifficulty )
+			);
 
 		setupGoals( skeleton, this.leader, 4, 0 );
 

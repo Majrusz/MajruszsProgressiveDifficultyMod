@@ -58,7 +58,7 @@ public abstract class EnemyGroup {
 
 		List< ItemStack > itemStacks = new ArrayList<>();
 		for( Item item : armor )
-			itemStacks.add( tryEnchantArmor( damageItem( new ItemStack( item ) ), clampedRegionalDifficulty ) );
+			itemStacks.add( MajruszsHelper.tryEnchantArmor( MajruszsHelper.damageItem( new ItemStack( item ) ), clampedRegionalDifficulty ) );
 
 		leader.setItemStackToSlot( EquipmentSlotType.FEET, itemStacks.get( 0 ) );
 		leader.setItemStackToSlot( EquipmentSlotType.LEGS, itemStacks.get( 1 ) );
@@ -69,29 +69,5 @@ public abstract class EnemyGroup {
 	protected static void setupGoals( MonsterEntity follower, MonsterEntity leader, int goalPriority, int targetPriority ) {
 		follower.goalSelector.addGoal( goalPriority, new FollowGroupLeaderGoal( follower, leader, 1.0D, 6.0f, 5.0f ) );
 		follower.targetSelector.addGoal( targetPriority, new TargetAsLeaderGoal( follower, leader ) );
-	}
-
-	protected static ItemStack damageItem( ItemStack itemStack ) {
-		itemStack.setDamage( MajruszsDifficulty.RANDOM.nextInt( itemStack.getMaxDamage()/2 ) );
-
-		return itemStack;
-	}
-
-	protected static ItemStack tryEnchantWeapon( ItemStack itemStack, double clampedRegionalDifficulty ) {
-		if( MajruszsDifficulty.RANDOM.nextDouble() >= 0.25D * clampedRegionalDifficulty )
-			return itemStack;
-
-		return enchantItem( itemStack, clampedRegionalDifficulty );
-	}
-
-	protected static ItemStack tryEnchantArmor( ItemStack itemStack, double clampedRegionalDifficulty ) {
-		if( MajruszsDifficulty.RANDOM.nextDouble() >= 0.5D * clampedRegionalDifficulty )
-			return itemStack;
-
-		return enchantItem( itemStack, clampedRegionalDifficulty );
-	}
-
-	protected static ItemStack enchantItem( ItemStack itemStack, double clampedRegionalDifficulty ) {
-		return EnchantmentHelper.addRandomEnchantment( MajruszsDifficulty.RANDOM, itemStack, ( int )( 5 + 18 * clampedRegionalDifficulty ), false );
 	}
 }

@@ -28,9 +28,10 @@ public class PiglinGroup extends EnemyGroup {
 		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( piglin, world );
 
 		ItemStack itemStack = generateWeapon();
-		if( itemStack != null ) {
-			piglin.setItemStackToSlot( EquipmentSlotType.MAINHAND, tryEnchantWeapon( damageItem( itemStack ), clampedRegionalDifficulty ) );
-		}
+		if( itemStack != null )
+			piglin.setItemStackToSlot( EquipmentSlotType.MAINHAND,
+				MajruszsHelper.tryEnchantWeapon( MajruszsHelper.damageItem( itemStack ), clampedRegionalDifficulty )
+			);
 
 		setupGoals( piglin, this.leader, 4, 0 );
 

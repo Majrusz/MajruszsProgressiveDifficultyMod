@@ -30,7 +30,7 @@ public class ZombieGroup extends EnemyGroup {
 
 		ItemStack itemStack = generateWeapon();
 		if( itemStack != null ) {
-			zombie.setItemStackToSlot( EquipmentSlotType.MAINHAND, tryEnchantWeapon( damageItem( itemStack ), clampedRegionalDifficulty ) );
+			zombie.setItemStackToSlot( EquipmentSlotType.MAINHAND, MajruszsHelper.tryEnchantWeapon( MajruszsHelper.damageItem( itemStack ), clampedRegionalDifficulty ) );
 		}
 
 		setupGoals( zombie, this.leader, 4, 0 );
