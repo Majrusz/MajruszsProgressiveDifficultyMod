@@ -74,7 +74,7 @@ public abstract class EnemyGroup {
 		for( int childID = 0; childID < amount; childID++ ) {
 			LivingEntity child = spawnChild( world );
 			double x = spawnPosition.x - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 );
-			double y = spawnPosition.y;
+			double y = spawnPosition.y + 0.5;
 			double z = spawnPosition.z - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 );
 			child.setPosition( x, y, z );
 
