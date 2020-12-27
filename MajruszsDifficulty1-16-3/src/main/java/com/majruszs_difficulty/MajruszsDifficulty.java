@@ -1,6 +1,7 @@
 package com.majruszs_difficulty;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +12,8 @@ import java.util.Random;
 public class MajruszsDifficulty {
 	public MajruszsDifficulty() {
 		RegistryHandler.init();
+
+		ConfigHandler.register( ModLoadingContext.get() );
 
 		MinecraftForge.EVENT_BUS.register( this );
 	}

@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.events.onmonsterspawn;
 
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityType;
@@ -8,10 +9,9 @@ import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.world.server.ServerWorld;
 
 public class ChargingCreeper {
-	protected static final double creeperChargingChance = 0.125D;
-
 	public static void tryToChargeCreeper( CreeperEntity creeper, ServerWorld world ) {
-		if( MajruszsDifficulty.RANDOM.nextDouble() >= creeperChargingChance * MajruszsHelper.getClampedRegionalDifficulty( creeper, world ) )
+		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( creeper, world );
+		if( MajruszsDifficulty.RANDOM.nextDouble() >= Config.getChance( Config.Chances.CREEPER_CHARGED ) * clampedRegionalDifficulty )
 			return;
 
 		LightningBoltEntity lightningBolt = EntityType.LIGHTNING_BOLT.create( world );

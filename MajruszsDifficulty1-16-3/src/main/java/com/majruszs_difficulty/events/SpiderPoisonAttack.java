@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.Entity;
@@ -40,6 +41,9 @@ public class SpiderPoisonAttack {
 		if( !( attacker instanceof SpiderEntity ) )
 			return false;
 
+		if( Config.isDisabled( Config.Features.SPIDER_POISON ) )
+			return false;
+
 		return target.getEntityWorld() instanceof ServerWorld;
 	}
 
@@ -55,6 +59,6 @@ public class SpiderPoisonAttack {
 	}
 
 	protected static double getPoisonChance( LivingEntity target, ServerWorld world ) {
-		return MajruszsHelper.getClampedRegionalDifficulty( target, world ) * 0.25D;
+		return MajruszsHelper.getClampedRegionalDifficulty( target, world ) * Config.getChance( Config.Chances.SPIDER_POISON );
 	}
 }

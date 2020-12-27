@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.events.onmonsterspawn;
 
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.goals.FollowGroupLeaderGoal;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class EnemyGroup {
-	protected static double spawnChance = 0.2D;
 	protected final boolean spawningGroupFailed;
 	protected CreatureEntity leader;
 
@@ -26,7 +26,8 @@ public abstract class EnemyGroup {
 	public EnemyGroup( CreatureEntity leader, ServerWorld world, int minimumAmountOfChildren, int maximumAmountOfChildren ) {
 		this.leader = leader;
 
-		if( MajruszsDifficulty.RANDOM.nextDouble() >= spawnChance ) {
+		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( leader, world );
+		if( MajruszsDifficulty.RANDOM.nextDouble() >= Config.getChance( Config.Chances.ENEMY_GROUPS ) * clampedRegionalDifficulty ) {
 			this.spawningGroupFailed = true;
 			return;
 		}
