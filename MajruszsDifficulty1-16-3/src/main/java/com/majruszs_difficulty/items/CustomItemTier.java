@@ -7,7 +7,7 @@ import net.minecraft.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum CustomItemTier implements IItemTier {
-	WITHER( 150, 5.0f, 3.0f, 3, 15, () -> Ingredient.fromItems( Items.BONE ) );
+	WITHER( 250, 5.0f, 3.0f, 3, 15, () -> Ingredient.fromItems( Items.BONE ) );
 
 	protected final int maxUses;
 	protected final float efficiency;
