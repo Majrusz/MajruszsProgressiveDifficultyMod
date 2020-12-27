@@ -15,10 +15,10 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class WitherSwordItem extends SwordItem {
-	public static final int witherDuration = MajruszsHelper.secondsToTicks( 5.0 );
+	public static final int witherDuration = MajruszsHelper.secondsToTicks( 10.0 );
 
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 2, -2.4f, ( new Item.Properties() ).group( ItemGroup.COMBAT ) );
+		super( CustomItemTier.WITHER, 1, -2.4f, ( new Item.Properties() ).group( ItemGroup.COMBAT ) );
 	}
 
 	@SubscribeEvent
