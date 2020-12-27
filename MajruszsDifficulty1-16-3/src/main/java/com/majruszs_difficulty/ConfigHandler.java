@@ -11,7 +11,7 @@ public class ConfigHandler {
 
 	public static class Config {
 		public static class Features {
-			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD;
+			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE_EFFECTS, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD;
 		}
 
 		public static class Chances {
@@ -37,7 +37,7 @@ public class ConfigHandler {
 		BUILDER.comment( "Remember to restart your client/server after changing config!" );
 
 		BUILDER.push( "Features" );
-		Config.Features.FALL_DAMAGE = createConfigSpecForBoolean( "fall_damage", "", true );
+		Config.Features.FALL_DAMAGE_EFFECTS = createConfigSpecForBoolean( "fall_damage_effects", "", true );
 		Config.Features.CREEPER_CHARGED = createConfigSpecForBoolean( "creeper_charged", "", true );
 		Config.Features.CREEPER_EFFECTS = createConfigSpecForBoolean( "creeper_effects", "", true );
 		Config.Features.SKELETON_GROUPS = createConfigSpecForBoolean( "skeleton_groups", "", true );
@@ -58,16 +58,18 @@ public class ConfigHandler {
 		Config.Chances.ENEMY_GROUPS = createConfigSpecForDouble( "enemy_groups_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.SPIDER_POISON = createConfigSpecForDouble( "spider_poison_chance", "", 0.25, 0.0, 1.0 );
 		BUILDER.pop();
+
+		CONFIG_SPEC = BUILDER.build();
 	}
 
 	private static ForgeConfigSpec.BooleanValue createConfigSpecForBoolean( String name, String comment, boolean defaultValue ) {
-		return BUILDER.comment( comment )
+		return BUILDER
 			.worldRestart()
 			.define( name, defaultValue );
 	}
 
 	private static ForgeConfigSpec.DoubleValue createConfigSpecForDouble( String name, String comment, double defaultValue, double min, double max ) {
-		return BUILDER.comment( comment )
+		return BUILDER
 			.worldRestart()
 			.defineInRange( name, defaultValue, min, max );
 	}

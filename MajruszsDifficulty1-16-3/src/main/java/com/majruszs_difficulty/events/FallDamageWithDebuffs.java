@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 public class FallDamageWithDebuffs {
 	@SubscribeEvent
 	public static void onFall( LivingFallEvent event ) {
-		if( Config.isDisabled( Config.Features.FALL_DAMAGE ) )
+		if( Config.isDisabled( Config.Features.FALL_DAMAGE_EFFECTS ) )
 			return;
 
 		double distance = event.getDistance();
