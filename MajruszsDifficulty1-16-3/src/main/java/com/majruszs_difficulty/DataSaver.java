@@ -34,36 +34,4 @@ public class DataSaver extends WorldSavedData implements Supplier {
 	public Object get() {
 		return this;
 	}
-
-	public static void onLoadingWorld( WorldEvent.Load event ) {
-		if( !( event.getWorld() instanceof ServerWorld ) )
-			return;
-
-		ServerWorld world = ( ServerWorld )event.getWorld();
-
-		if( world.isRemote )
-			return;
-
-		DataSaver saver = DataSaver.getDataFor( world );
-
-		if( saver.data.contains( "DifficultyState" ) ) {
-			GameState.changeMode( GameState.convertIntegerToMode( saver.data.getInt( "DifficultyState" ) ) );
-		}
-	}
-
-	public static void onSavingWorld( WorldEvent.Save event ) {
-		if( !( event.getWorld() instanceof ServerWorld ) )
-			return;
-
-		ServerWorld world = ( ServerWorld )event.getWorld();
-
-		if( world.isRemote )
-			return;
-
-		DataSaver saver = DataSaver.getDataFor( world );
-		CompoundNBT data = new CompoundNBT();
-		data.putInt( "DifficultyState", GameState.convertModeToInteger( GameState.getCurrentMode() ) );
-		saver.data = data;
-		saver.markDirty();
-	}
 }

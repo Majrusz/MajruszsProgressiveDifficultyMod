@@ -15,5 +15,13 @@
   "majruszs_difficulty.states.expert": "Expert Mode",
   "majruszs_difficulty.states.master": "Master Mode",
   "majruszs_difficulty.on_expert_mode_start": "The ancient spirits of light and dark have been released.",
-  "majruszs_difficulty.on_master_mode_start": "Impending doom approaches..."
+  "majruszs_difficulty.on_master_mode_start": "Impending doom approaches...",
+  "majruszs_difficulty.undead_army.title": "Undead Army",
+  "majruszs_difficulty.undead_army.approaching": "A Undead Army is approaching from the",
+  "majruszs_difficulty.undead_army.west": "west",
+  "majruszs_difficulty.undead_army.east": "east",
+  "majruszs_difficulty.undead_army.north": "north",
+  "majruszs_difficulty.undead_army.south": "south",
+  "majruszs_difficulty.undead_army.failed": "Undead Army may be summoned only in Overworld and in night time!",
+  "majruszs_difficulty.subtitle.undead_army_approaching": "Undead Army Approaching"
 }

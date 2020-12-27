@@ -19,7 +19,7 @@ public class WitherSwordItem extends SwordItem {
 	public static final int witherDuration = MajruszsHelper.secondsToTicks( 10.0 );
 
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 1, -2.4f, ( new Item.Properties() ).group( RegistryHandler.ITEM_GROUP ) );
+		super( CustomItemTier.WITHER, 2, -2.4f, ( new Item.Properties() ).group( RegistryHandler.ITEM_GROUP ) );
 	}
 
 	@SubscribeEvent

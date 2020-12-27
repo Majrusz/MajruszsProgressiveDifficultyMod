@@ -1,0 +1,9 @@
+{
+  "undead_army_approaching": {
+    "category": "ambient",
+    "subtitle": "majruszs_difficulty.subtitle.undead_army_approaching",
+    "sounds": [
+      "majruszs_difficulty:undead_army_approaching"
+    ]
+  }
+}
