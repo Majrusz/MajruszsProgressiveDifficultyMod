@@ -8,6 +8,7 @@
   "item.majruszs_difficulty.pillager_wolf_spawn_egg": "Pillager's Wolf Spawn Egg",
   "item.majruszs_difficulty.elite_skeleton_spawn_egg": "Elite Skeleton Spawn Egg",
   "item.majruszs_difficulty.wither_sword": "Wither Sword",
+  "item.majruszs_difficulty.wither_sword.tooltip": "Inflicts Wither II for few seconds on hit.",
   "item.majruszs_difficulty.undead_battle_standard": "Undead Battle Standard",
   "item.majruszs_difficulty.undead_army_treasure_bag": "Undead Army Treasure Bag",
   "commands.game_state.change": "Game state changed to",
@@ -17,7 +18,7 @@
   "majruszs_difficulty.states.master": "Master Mode",
   "majruszs_difficulty.on_expert_mode_start": "The ancient spirits of light and dark have been released.",
   "majruszs_difficulty.on_master_mode_start": "Impending doom approaches...",
-  "majruszs_difficulty.treasure_bag.item_tooltip": "Right click while holding it to open.",
+  "majruszs_difficulty.treasure_bag.item_tooltip": "Right click while holding it to open the bag.",
   "majruszs_difficulty.undead_army.title": "Undead Army",
   "majruszs_difficulty.undead_army.wave": "Wave",
   "majruszs_difficulty.undead_army.victory": "Victory",
@@ -28,8 +29,9 @@
   "majruszs_difficulty.undead_army.east": "east",
   "majruszs_difficulty.undead_army.north": "north",
   "majruszs_difficulty.undead_army.south": "south",
-  "majruszs_difficulty.undead_army.item_tooltip1": "Undead Army may be summoned only",
-  "majruszs_difficulty.undead_army.item_tooltip2": "in Overworld and in night time!",
+  "majruszs_difficulty.undead_army.item_tooltip1": "Summons the Undead Army.",
+  "majruszs_difficulty.undead_army.item_tooltip2": "Undead Army may be summoned only",
+  "majruszs_difficulty.undead_army.item_tooltip3": "in Overworld and in night time!",
   "majruszs_difficulty.subtitle.undead_army.approaching": "Undead Army Approaching",
   "majruszs_difficulty.subtitle.undead_army.wave_started": "Wave Started"
 }
