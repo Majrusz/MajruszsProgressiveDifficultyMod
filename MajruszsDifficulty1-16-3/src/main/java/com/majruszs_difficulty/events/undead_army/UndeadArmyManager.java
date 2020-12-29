@@ -4,10 +4,6 @@ import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.UndeadArmy;
-import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
-import jdk.nashorn.internal.ir.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -18,6 +14,8 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.event.TickEvent;
@@ -78,12 +76,14 @@ public class UndeadArmyManager extends WorldSavedData {
 	public boolean spawn( PlayerEntity player, ServerWorld world ) {
 		BlockPos attackPosition = getAttackPosition( player );
 
-		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) || this.world.isDaytime() )
+		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) )
+			return false;
+
+		if( this.world.isDaytime() || !isPlayerInOverworld( player ) )
 			return false;
 
 		this.undeadArmiesToBeSpawned.add(
-			new UndeadArmyToBeSpawned( MajruszsHelper.secondsToTicks( 6.5 ), attackPosition, UndeadArmy.Direction.getRandom() )
-		);
+			new UndeadArmyToBeSpawned( MajruszsHelper.secondsToTicks( 6.5 ), attackPosition, UndeadArmy.Direction.getRandom() ) );
 
 		this.world.playSound( null, attackPosition, RegistryHandler.UNDEAD_ARMY_APPROACHING.get(), SoundCategory.AMBIENT, 0.25f, 1.0f );
 		MajruszsDifficulty.LOGGER.info( "Spawned undead army! " + attackPosition );
@@ -99,34 +99,6 @@ public class UndeadArmyManager extends WorldSavedData {
 
 		if( this.ticksActive % 200L == 0L )
 			this.markDirty();
-	}
-
-	private void tickArmiesToBeSpawned() {
-		for( UndeadArmyToBeSpawned undeadArmyToBeSpawned : this.undeadArmiesToBeSpawned ) {
-			undeadArmyToBeSpawned.ticksToSpawn--;
-
-			if( undeadArmyToBeSpawned.ticksToSpawn == 0 ) {
-				this.undeadArmies.add( new UndeadArmy( this.world, undeadArmyToBeSpawned.position, undeadArmyToBeSpawned.direction ) );
-				notifyAllPlayers( undeadArmyToBeSpawned.direction, undeadArmyToBeSpawned.position );
-			}
-		}
-
-		this.undeadArmiesToBeSpawned.removeIf( undeadArmyToBeSpawned->undeadArmyToBeSpawned.ticksToSpawn == 0 );
-	}
-
-	private void tickArmies() {
-		for( UndeadArmy undeadArmy : this.undeadArmies )
-			undeadArmy.tick();
-
-		if( this.ticksActive % 20L == 0L )
-			this.undeadArmies.removeIf( undeadArmy->!undeadArmy.isActive() );
-	}
-
-	public IFormattableTextComponent getFailedMessage() {
-		IFormattableTextComponent message = new TranslationTextComponent( "majruszs_difficulty.undead_army.failed" );
-		message.func_240699_a_( TextFormatting.RED );
-
-		return message;
 	}
 
 	@Nullable
@@ -161,6 +133,27 @@ public class UndeadArmyManager extends WorldSavedData {
 			return;
 
 		RegistryHandler.undeadArmyManager.tick();
+	}
+
+	private void tickArmiesToBeSpawned() {
+		for( UndeadArmyToBeSpawned undeadArmyToBeSpawned : this.undeadArmiesToBeSpawned ) {
+			undeadArmyToBeSpawned.ticksToSpawn--;
+
+			if( undeadArmyToBeSpawned.ticksToSpawn == 0 ) {
+				this.undeadArmies.add( new UndeadArmy( this.world, undeadArmyToBeSpawned.position, undeadArmyToBeSpawned.direction ) );
+				notifyAllPlayers( undeadArmyToBeSpawned.direction, undeadArmyToBeSpawned.position );
+			}
+		}
+
+		this.undeadArmiesToBeSpawned.removeIf( undeadArmyToBeSpawned->undeadArmyToBeSpawned.ticksToSpawn == 0 );
+	}
+
+	private void tickArmies() {
+		for( UndeadArmy undeadArmy : this.undeadArmies )
+			undeadArmy.tick();
+
+		if( this.ticksActive % 20L == 0L )
+			this.undeadArmies.removeIf( undeadArmy->!undeadArmy.isActive() );
 	}
 
 	/*public void updateArmyGoal() {
@@ -216,13 +209,20 @@ public class UndeadArmyManager extends WorldSavedData {
 		Optional< BlockPos > bedPosition = player.getBedPosition();
 		BlockPos playerPosition = new BlockPos( player.getPositionVec() );
 
+		BlockPos attackPosition;
+
 		if( !bedPosition.isPresent() )
-			return playerPosition;
+			attackPosition = playerPosition;
+		else if( playerPosition.distanceSq( bedPosition.get() ) >= maximumDistanceToArmy )
+			attackPosition = playerPosition;
+		else
+			attackPosition = bedPosition.get();
 
-		if( playerPosition.distanceSq( bedPosition.get() ) >= maximumDistanceToArmy )
-			return playerPosition;
+		int x = attackPosition.getX();
+		int z = attackPosition.getZ();
+		int y = this.world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z );
 
-		return bedPosition.get();
+		return new BlockPos( x, y, z );
 	}
 
 	private void notifyAllPlayers( UndeadArmy.Direction direction, BlockPos position ) {
@@ -242,6 +242,12 @@ public class UndeadArmyManager extends WorldSavedData {
 		message.func_240699_a_( TextFormatting.DARK_PURPLE );
 
 		return message;
+	}
+
+	private boolean isPlayerInOverworld( PlayerEntity player ) {
+		return player.world.func_230315_m_()
+			.func_242725_p()
+			.equals( DimensionType.field_235999_c_.func_240901_a_() );
 	}
 
 	public static class UndeadArmyToBeSpawned {
