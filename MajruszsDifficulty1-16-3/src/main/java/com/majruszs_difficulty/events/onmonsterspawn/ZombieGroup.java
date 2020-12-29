@@ -27,7 +27,7 @@ public class ZombieGroup extends EnemyGroup {
 		ZombieEntity zombie = new ZombieEntity( EntityType.ZOMBIE, world );
 
 		giveWeaponTo( zombie, world );
-		setupGoals( zombie, 4, 0 );
+		setupGoals( zombie, 9, 9 );
 
 		return zombie;
 	}

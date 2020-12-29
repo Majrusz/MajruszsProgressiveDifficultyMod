@@ -18,7 +18,7 @@ public class PillagerGroup extends EnemyGroup {
 	protected CreatureEntity spawnChild( ServerWorld world ) {
 		PillagerWolfEntity wolf = new PillagerWolfEntity( PillagerWolfEntity.type, world );
 
-		setupGoals( wolf,3, 1 );
+		setupGoals( wolf,9, 9 );
 
 		return wolf;
 	}

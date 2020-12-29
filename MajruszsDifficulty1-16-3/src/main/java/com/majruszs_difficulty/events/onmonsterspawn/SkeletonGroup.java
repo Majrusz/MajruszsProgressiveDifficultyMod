@@ -27,7 +27,7 @@ public class SkeletonGroup extends EnemyGroup {
 		SkeletonEntity skeleton = new SkeletonEntity( EntityType.SKELETON, world );
 
 		giveWeaponTo( skeleton, world );
-		setupGoals( skeleton, 4, 0 );
+		setupGoals( skeleton, 9, 9 );
 
 		return skeleton;
 	}

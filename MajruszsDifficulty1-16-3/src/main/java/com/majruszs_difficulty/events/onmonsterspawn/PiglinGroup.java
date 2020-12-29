@@ -27,7 +27,7 @@ public class PiglinGroup extends EnemyGroup {
 		PiglinEntity piglin = new PiglinEntity( EntityType.field_233591_ai_, world );
 
 		giveWeaponTo( piglin, world );
-		setupGoals( piglin, 4, 0 );
+		setupGoals( piglin, 9, 9 );
 
 		return piglin;
 	}
