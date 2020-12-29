@@ -27,16 +27,17 @@ public class CountKilledUndead {
 		MonsterEntity monster = ( MonsterEntity )event.getEntityLiving();
 		if( monster.getCreatureAttribute() != CreatureAttribute.UNDEAD )
 			return;
-		if( monster.isServerWorld() )
-			updateUndeadArmy( monster.getPositionVec() );
 
 		DamageSource damageSource = event.getSource();
 		if( !( damageSource.getTrueSource() instanceof PlayerEntity ) )
 			return;
 
-		PlayerEntity player = ( PlayerEntity )damageSource.getTrueSource();
-		increaseKill( player );
-		spawnArmyIfPossible( player );
+		if( monster.isServerWorld() )
+			if( !updateUndeadArmy( monster.getPositionVec() ) ) {
+				PlayerEntity player = ( PlayerEntity )damageSource.getTrueSource();
+				increaseKill( player );
+				spawnArmyIfPossible( player );
+			}
 	}
 
 	public static int getKills( PlayerEntity player ) {
@@ -63,9 +64,13 @@ public class CountKilledUndead {
 				nbt.putInt( NBT_TAG, 0 );
 	}
 
-	private static void updateUndeadArmy( Vector3d position ) {
+	private static boolean updateUndeadArmy( Vector3d position ) {
 		UndeadArmy undeadArmy = RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( position ) );
-		if( undeadArmy != null )
+		if( undeadArmy != null ) {
 			undeadArmy.onUndeadKill();
+			return true;
+		}
+
+		return false;
 	}
 }
