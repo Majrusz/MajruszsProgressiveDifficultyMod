@@ -5,8 +5,8 @@ import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
+import com.majruszs_difficulty.items.TreasureBagItem;
 import com.majruszs_difficulty.items.UndeadBattleStandard;
-import com.majruszs_difficulty.items.UndeadTreasureBag;
 import com.majruszs_difficulty.items.WitherSwordItem;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.CommandSource;
@@ -51,7 +51,7 @@ public class RegistryHandler {
 	// Items
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< Item > UNDEAD_BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandard::new );
-	public static final RegistryObject< Item > UNDEAD_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", UndeadTreasureBag::new );
+	public static final RegistryObject< Item > UNDEAD_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", ()->new TreasureBagItem( "undead_army_treasure_loot" ) );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = SOUNDS.register( "undead_army.approaching",
