@@ -28,16 +28,17 @@ public class CountKilledUndead {
 		if( monster.getCreatureAttribute() != CreatureAttribute.UNDEAD )
 			return;
 
+		if( monster.isServerWorld() )
+			if( updateUndeadArmy( monster.getPositionVec() ) )
+				return;
+
 		DamageSource damageSource = event.getSource();
 		if( !( damageSource.getTrueSource() instanceof PlayerEntity ) )
 			return;
 
-		if( monster.isServerWorld() )
-			if( !updateUndeadArmy( monster.getPositionVec() ) ) {
-				PlayerEntity player = ( PlayerEntity )damageSource.getTrueSource();
-				increaseKill( player );
-				spawnArmyIfPossible( player );
-			}
+		PlayerEntity player = ( PlayerEntity )damageSource.getTrueSource();
+		increaseKill( player );
+		spawnArmyIfPossible( player );
 	}
 
 	public static int getKills( PlayerEntity player ) {
