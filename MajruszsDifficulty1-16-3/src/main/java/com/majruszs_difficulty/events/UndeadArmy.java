@@ -249,7 +249,7 @@ public class UndeadArmy {
 				BlockPos position = getRandomSpawnPosition();
 				monster.setPosition( position.getX(), position.getY(), position.getZ() );
 				monster.enablePersistence();
-				monster.goalSelector.addGoal( 0, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.375f, 25.0f, 10.0f ) );
+				monster.goalSelector.addGoal( 0, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 25.0f, 5.0f ) );
 				tryToGiveWeaponTo( monster, waveMember.weaponChance );
 
 				CompoundNBT nbt = monster.getPersistentData();
