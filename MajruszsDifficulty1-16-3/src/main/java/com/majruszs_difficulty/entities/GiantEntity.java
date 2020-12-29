@@ -29,6 +29,7 @@ public class GiantEntity extends ZombieEntity {
 	public GiantEntity( EntityType< ? extends ZombieEntity > type, World world ) {
 		super( type, world );
 		this.experienceValue = 15;
+		this.setChild( false );
 	}
 
 	@Override
