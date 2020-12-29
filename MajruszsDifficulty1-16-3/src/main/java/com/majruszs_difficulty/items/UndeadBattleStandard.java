@@ -1,8 +1,7 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.RegistryHandler;
-import com.majruszs_difficulty.events.UndeadArmy;
-import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,8 +9,15 @@ import net.minecraft.item.Rarity;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class UndeadBattleStandard extends Item {
 	public UndeadBattleStandard() {
@@ -34,5 +40,12 @@ public class UndeadBattleStandard extends Item {
 		}
 
 		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
+	}
+
+	@Override
+	@OnlyIn( Dist.CLIENT )
+	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip1" ) );
+		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip2" ) );
 	}
 }
