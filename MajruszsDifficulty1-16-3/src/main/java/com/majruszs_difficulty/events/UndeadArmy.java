@@ -9,20 +9,18 @@ import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.monster.StrayEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -32,7 +30,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.raid.Raid;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IExtensibleEnum;
@@ -53,9 +50,9 @@ public class UndeadArmy {
 		public ITextComponent failed = new TranslationTextComponent( "majruszs_difficulty.undead_army.failed" );
 	}
 
-	private final static int betweenRaidTicksMaximum = MajruszsHelper.secondsToTicks( 6.0 );
-	private final static int ticksInactiveMaximum = MajruszsHelper.minutesToTicks( 5.0 );
-	private final static int spawnRadius = 50;
+	private final static int betweenRaidTicksMaximum = MajruszsHelper.secondsToTicks( 15.0 );
+	private final static int ticksInactiveMaximum = MajruszsHelper.minutesToTicks( 15.0 );
+	private final static int spawnRadius = 70;
 	private final static int standardDeviation = 10;
 	private final static Texts texts = new Texts();
 	private final ServerBossInfo bossInfo = new ServerBossInfo( texts.title, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
@@ -75,6 +72,9 @@ public class UndeadArmy {
 		this.world = world;
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
+
+		/*if( this.world.isAirBlock( positionToAttack ) )
+			this.world.setBlockState( positionToAttack, Blocks.LAVA.getDefaultState() );*/
 
 		this.bossInfo.setPercent( 0.0f );
 	}
@@ -186,6 +186,9 @@ public class UndeadArmy {
 	private void tickOngoing() {
 		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.undeadKilled ) / this.undeadToKill, 0.0f, 1.0f ) );
 
+		if( getPlayersInRange() == 0 )
+			this.status = Status.STOPPED;
+
 		if( this.undeadKilled == this.undeadToKill )
 			endWave();
 	}
@@ -207,6 +210,9 @@ public class UndeadArmy {
 	private void tickStopped() {
 		this.ticksInactive++;
 
+		if( getPlayersInRange() > 0 )
+			this.status = Status.ONGOING;
+
 		if( this.ticksInactive >= ticksInactiveMaximum )
 			endWave();
 	}
@@ -222,10 +228,12 @@ public class UndeadArmy {
 		if( this.ticksInactive >= ticksInactiveMaximum ) {
 			this.status = Status.FAILED;
 			this.betweenRaidTicks = betweenRaidTicksMaximum * 2;
+			this.bossInfo.setPercent( 1.0f );
 		} else if( this.currentWave >= getWaves() ) {
 			this.status = Status.VICTORY;
 			this.betweenRaidTicks = betweenRaidTicksMaximum * 2;
 			rewardPlayers();
+			this.bossInfo.setPercent( 1.0f );
 		} else {
 			this.status = Status.BETWEEN_WAVES;
 			this.betweenRaidTicks = betweenRaidTicksMaximum;
@@ -242,15 +250,15 @@ public class UndeadArmy {
 
 		for( WaveMember waveMember : WaveMember.values() ) {
 			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
-				MonsterEntity monster = ( MonsterEntity )waveMember.type.create( this.world );
+				MonsterEntity monster = ( MonsterEntity )waveMember.type.spawn( this.world, null, null, getRandomSpawnPosition(), SpawnReason.EVENT,
+					true, true
+				);
 				if( monster == null )
 					continue;
 
-				BlockPos position = getRandomSpawnPosition();
-				monster.setPosition( position.getX(), position.getY(), position.getZ() );
 				monster.enablePersistence();
-				monster.goalSelector.addGoal( 0, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 25.0f, 5.0f ) );
-				tryToGiveWeaponTo( monster, waveMember.weaponChance );
+				monster.goalSelector.addGoal( 9, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 25.0f, 5.0f ) );
+				tryToEnchantEquipment( monster );
 
 				CompoundNBT nbt = monster.getPersistentData();
 				nbt.putBoolean( "UndeadArmyFrostWalker", true );
@@ -258,7 +266,6 @@ public class UndeadArmy {
 				nbt.putInt( "UndeadArmyPositionY", this.positionToAttack.getY() );
 				nbt.putInt( "UndeadArmyPositionZ", this.positionToAttack.getZ() );
 
-				this.world.summonEntity( monster );
 				this.undeadToKill++;
 			}
 		}
@@ -267,26 +274,29 @@ public class UndeadArmy {
 		int z = this.positionToAttack.getZ() + this.direction.z * spawnRadius;
 
 		for( ServerPlayerEntity player : players )
-			player.connection.sendPacket( new SPlaySoundEffectPacket( RegistryHandler.UNDEAD_ARMY_WAVE_STARTED.get(), SoundCategory.NEUTRAL,
-				x, player.getPosY(), z, 64.0f, 1.0f ) );
+			player.connection.sendPacket(
+				new SPlaySoundEffectPacket( RegistryHandler.UNDEAD_ARMY_WAVE_STARTED.get(), SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f,
+					1.0f
+				) );
 
 		this.undeadToKill = Math.max( 1, this.undeadToKill );
 	}
 
-	private void tryToGiveWeaponTo( MonsterEntity monster, double weaponChance ) {
-		ItemStack weapon;
-
+	private void tryToEnchantEquipment( MonsterEntity monster ) {
 		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( monster, this.world );
 
-		if( MajruszsDifficulty.RANDOM.nextDouble() >= weaponChance )
-			return;
+		if( monster.hasItemInSlot( EquipmentSlotType.MAINHAND ) && MajruszsDifficulty.RANDOM.nextDouble() < getEnchantmentOdds() ) {
+			ItemStack weapon = monster.getHeldItemMainhand();
 
-		boolean isSkeleton = monster instanceof SkeletonEntity || monster instanceof StrayEntity;
-		weapon = MajruszsHelper.damageItem( new ItemStack( isSkeleton ? Items.BOW : Items.WOODEN_AXE ) );
-		if( MajruszsDifficulty.RANDOM.nextDouble() < getEnchantmentOdds() * clampedRegionalDifficulty )
-			weapon = MajruszsHelper.enchantItem( weapon, clampedRegionalDifficulty );
+			monster.setHeldItem( Hand.MAIN_HAND, MajruszsHelper.enchantItem( weapon, clampedRegionalDifficulty ) );
+		}
 
-		monster.setHeldItem( Hand.MAIN_HAND, weapon );
+		for( ItemStack armor : monster.getArmorInventoryList() )
+			if( MajruszsDifficulty.RANDOM.nextDouble() < ( getEnchantmentOdds() / 2.0 ) ) {
+				armor = MajruszsHelper.enchantItem( armor, clampedRegionalDifficulty );
+				if( armor.getEquipmentSlot() != null )
+					monster.setItemStackToSlot( armor.getEquipmentSlot(), armor );
+			}
 	}
 
 	private BlockPos getRandomSpawnPosition() {
@@ -304,14 +314,14 @@ public class UndeadArmy {
 	private void rewardPlayers() {
 		for( PlayerEntity player : this.world.getPlayers( getParticipantsPredicate() ) ) {
 			Vector3d position = player.getPositionVec();
-			for( int i = 0; i < getExperienceVictory(); i++ )
-				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY()+1, position.getZ(), 1 ) );
+			for( int i = 0; i < getExperienceVictory() / 4; i++ )
+				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), 4 ) );
 
 			ItemStack treasureBag = new ItemStack( RegistryHandler.UNDEAD_TREASURE_BAG.get() );
 			if( player.canPickUpItem( treasureBag ) )
 				player.inventory.addItemStackToInventory( treasureBag );
 			else
-				this.world.addEntity( new ItemEntity( this.world, position.getX(), position.getY()+1, position.getZ(), treasureBag ) );
+				this.world.addEntity( new ItemEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), treasureBag ) );
 		}
 	}
 
@@ -337,14 +347,19 @@ public class UndeadArmy {
 				this.bossInfo.removePlayer( player );
 	}
 
+	private int getPlayersInRange() {
+		return this.world.getPlayers( getParticipantsPredicate() )
+			.size();
+	}
+
 	private int getExperienceVictory() {
 		switch( GameState.getCurrentMode() ) {
 			default:
-				return 30;
-			case EXPERT:
 				return 40;
+			case EXPERT:
+				return 80;
 			case MASTER:
-				return 50;
+				return 120;
 		}
 	}
 
@@ -393,25 +408,21 @@ public class UndeadArmy {
 	}
 
 	public enum WaveMember implements IExtensibleEnum {
-		ZOMBIE( EntityType.ZOMBIE, new int[]{ 5, 4, 3, 2, 1 }, 0.125 ),
-		HUSK( EntityType.HUSK, new int[]{ 1, 1, 2, 3, 4 }, 0.125 ),
-		GIANT( GiantEntity.type, new int[]{ 0, 0, 0, 1, 1 }, 0.0 ),
-		SKELETON( EntityType.SKELETON, new int[]{ 3, 3, 2, 2, 2 }, 1.0 ),
-		STRAY( EntityType.STRAY, new int[]{ 1, 1, 2, 3, 4 }, 1.0 ),
-		ELITE_SKELETON( EliteSkeletonEntity.type, new int[]{ 1, 2, 3, 4, 5 }, 1.0 );
+		ZOMBIE( EntityType.ZOMBIE, new int[]{ 5, 4, 3, 2, 2 } ), HUSK( EntityType.HUSK, new int[]{ 1, 1, 2, 3, 4 } ), GIANT( GiantEntity.type,
+			new int[]{ 0, 0, 0, 1, 2 }
+		), SKELETON( EntityType.SKELETON, new int[]{ 3, 3, 2, 2, 2 } ), STRAY( EntityType.STRAY, new int[]{ 1, 1, 1, 2, 3 } ), ELITE_SKELETON(
+			EliteSkeletonEntity.type, new int[]{ 1, 2, 3, 4, 5 } );
 
 		public final EntityType< ? > type;
 		private final int[] waveCounts;
-		private final double weaponChance;
 
-		WaveMember( EntityType< ? > type, int[] waveCounts, double weaponChance ) {
+		WaveMember( EntityType< ? > type, int[] waveCounts ) {
 			this.type = type;
 			this.waveCounts = waveCounts;
-			this.weaponChance = weaponChance;
 		}
 
-		public static WaveMember create( String name, EntityType< ? > type, int[] waveCounts, double weaponChance ) {
-			throw new IllegalStateException( "Enum not extended" + name + type + Arrays.toString( waveCounts ) + weaponChance ); // weird but required
+		public static WaveMember create( String name, EntityType< ? > type, int[] waveCounts ) {
+			throw new IllegalStateException( "Enum not extended" + name + type + Arrays.toString( waveCounts ) ); // weird but required
 		}
 	}
 
