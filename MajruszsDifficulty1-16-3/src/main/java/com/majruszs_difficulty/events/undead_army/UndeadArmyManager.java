@@ -78,15 +78,15 @@ public class UndeadArmyManager extends WorldSavedData {
 	public boolean spawn( PlayerEntity player, ServerWorld world ) {
 		BlockPos attackPosition = getAttackPosition( player );
 
-		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) )
+		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) || this.world.isDaytime() )
 			return false;
 
 		this.undeadArmiesToBeSpawned.add(
-			new UndeadArmyToBeSpawned( MajruszsHelper.secondsToTicks( 1.5 ), attackPosition, UndeadArmy.Direction.getRandom() )
+			new UndeadArmyToBeSpawned( MajruszsHelper.secondsToTicks( 6.5 ), attackPosition, UndeadArmy.Direction.getRandom() )
 		);
 
 		this.world.playSound( null, attackPosition, RegistryHandler.UNDEAD_ARMY_APPROACHING.get(), SoundCategory.AMBIENT, 0.25f, 1.0f );
-		MajruszsDifficulty.LOGGER.info( "Spawned undead army!" + attackPosition );
+		MajruszsDifficulty.LOGGER.info( "Spawned undead army! " + attackPosition );
 
 		return true;
 	}
@@ -256,108 +256,3 @@ public class UndeadArmyManager extends WorldSavedData {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-@Mod.EventBusSubscriber
-public class UndeadArmyManager extends WorldSavedData {
-	protected static boolean isActive = false;
-	protected static int ticksToStart = 0;
-	protected static Direction fromDirection;
-	protected static ServerWorld world;
-	protected static BlockPos attackPosition;
-
-	public UndeadArmyManager( String name ) {
-		super( name );
-	}
-
-	public static boolean spawn( PlayerEntity player, ServerWorld world, Direction direction ) {
-		boolean isPlayerInOverworld = player.world.func_230315_m_()
-			.func_242725_p()
-			.equals( DimensionType.field_235999_c_.func_240901_a_() );
-
-		if( isActive || world.isDaytime() || !isPlayerInOverworld )
-			return false;
-
-		UndeadArmyManager.fromDirection = direction;
-		UndeadArmyManager.ticksToStart = MajruszsHelper.secondsToTicks( 6.5 );
-		UndeadArmyManager.isActive = true;
-		UndeadArmyManager.world = world;
-		UndeadArmyManager.attackPosition = player.getBedPosition()
-			.orElse( new BlockPos( player.getPositionVec() ) );
-
-		world.playSound( null, attackPosition, RegistryHandler.UNDEAD_ARMY_APPROACHING.get(), SoundCategory.AMBIENT, 0.25f, 1.0f );
-		MajruszsDifficulty.LOGGER.info( "Spawned undead army!" );
-
-		return true;
-	}
-
-	public static boolean spawn( PlayerEntity player, ServerWorld world ) {
-		return spawn( player, world, Direction.values()[ MajruszsDifficulty.RANDOM.nextInt( Direction.values().length ) ] );
-	}
-
-	@SubscribeEvent
-	public static void onUpdate( TickEvent.ServerTickEvent event ) {
-		if( event.side.isClient() || event.phase == TickEvent.Phase.START )
-			return;
-
-		if( ticksToStart > 0 ) {
-			if( ticksToStart == 1 )
-				notifyAllPlayers();
-
-			ticksToStart--;
-		} else
-			isActive = false;
-	}
-
-	public static IFormattableTextComponent getFailedMessage() {
-		IFormattableTextComponent message = new TranslationTextComponent( "majruszs_difficulty.undead_army.failed" );
-		message.func_240699_a_( TextFormatting.RED );
-
-		return message;
-	}
-
-	private static void notifyAllPlayers() {
-		IFormattableTextComponent message = getMessage( fromDirection );
-		for( PlayerEntity player : world.getPlayers( player->player.getDistanceSq( Vector3d.func_237489_a_( attackPosition ) ) < ( 100 * 100 ) ) )
-			player.sendStatusMessage( message, false );
-	}
-
-	private static IFormattableTextComponent getMessage( Direction direction ) {
-		IFormattableTextComponent message = new TranslationTextComponent( "majruszs_difficulty.undead_army.approaching" );
-		message.func_230529_a_( new StringTextComponent( " " ) );
-		message.func_230529_a_( new TranslationTextComponent( "majruszs_difficulty.undead_army." + direction.toString()
-			.toLowerCase() ) );
-		message.func_230529_a_( new StringTextComponent( "!" ) );
-		message.func_240699_a_( TextFormatting.BOLD );
-		message.func_240699_a_( TextFormatting.DARK_PURPLE );
-
-		return message;
-	}
-
-	@Override
-	public void read( CompoundNBT nbt ) {
-
-	}
-
-	@Override
-	public CompoundNBT write( CompoundNBT compound ) {
-		return null;
-	}
-
-	public enum Direction {
-		WEST, EAST, NORTH, SOUTH
-	}
-}
-*/

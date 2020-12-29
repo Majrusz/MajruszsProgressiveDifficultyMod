@@ -19,7 +19,10 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -29,6 +32,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.raid.Raid;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IExtensibleEnum;
@@ -49,9 +53,9 @@ public class UndeadArmy {
 		public ITextComponent failed = new TranslationTextComponent( "majruszs_difficulty.undead_army.failed" );
 	}
 
-	private final static int betweenRaidTicksMaximum = MajruszsHelper.secondsToTicks( 15.0 );
+	private final static int betweenRaidTicksMaximum = MajruszsHelper.secondsToTicks( 6.0 );
 	private final static int ticksInactiveMaximum = MajruszsHelper.minutesToTicks( 5.0 );
-	private final static int spawnRadius = 60;
+	private final static int spawnRadius = 50;
 	private final static int standardDeviation = 10;
 	private final static Texts texts = new Texts();
 	private final ServerBossInfo bossInfo = new ServerBossInfo( texts.title, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
@@ -231,11 +235,13 @@ public class UndeadArmy {
 	}
 
 	private void spawnWaveEnemies() {
+		List< ServerPlayerEntity > players = this.world.getPlayers( getParticipantsPredicate() );
+		double playersFactor = 1.0 + ( Math.max( 1, players.size() ) - 1 ) * 0.5;
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
 
 		for( WaveMember waveMember : WaveMember.values() ) {
-			for( int i = 0; i < waveMember.waveCounts[ this.currentWave - 1 ]; i++ ) {
+			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
 				MonsterEntity monster = ( MonsterEntity )waveMember.type.create( this.world );
 				if( monster == null )
 					continue;
@@ -243,7 +249,7 @@ public class UndeadArmy {
 				BlockPos position = getRandomSpawnPosition();
 				monster.setPosition( position.getX(), position.getY(), position.getZ() );
 				monster.enablePersistence();
-				monster.goalSelector.addGoal( 0, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.0f, 25.0f, 10.0f ) );
+				monster.goalSelector.addGoal( 0, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.375f, 25.0f, 10.0f ) );
 				tryToGiveWeaponTo( monster, waveMember.weaponChance );
 
 				CompoundNBT nbt = monster.getPersistentData();
@@ -256,6 +262,13 @@ public class UndeadArmy {
 				this.undeadToKill++;
 			}
 		}
+
+		int x = this.positionToAttack.getX() + this.direction.x * spawnRadius;
+		int z = this.positionToAttack.getZ() + this.direction.z * spawnRadius;
+
+		for( ServerPlayerEntity player : players )
+			player.connection.sendPacket( new SPlaySoundEffectPacket( RegistryHandler.UNDEAD_ARMY_WAVE_STARTED.get(), SoundCategory.NEUTRAL,
+				x, player.getPosY(), z, 64.0f, 1.0f ) );
 
 		this.undeadToKill = Math.max( 1, this.undeadToKill );
 	}
@@ -338,7 +351,7 @@ public class UndeadArmy {
 	private int getWaves() {
 		switch( GameState.getCurrentMode() ) {
 			default:
-				return 1;
+				return 3;
 			case EXPERT:
 				return 4;
 			case MASTER:
