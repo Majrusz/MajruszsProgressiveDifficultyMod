@@ -10,6 +10,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -30,13 +31,10 @@ public class UndeadBattleStandard extends Item {
 	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
 		ItemStack itemStack = player.getHeldItem( hand );
 
-		if( !world.isRemote ) {
-			if( RegistryHandler.undeadArmyManager.spawn( player, ( ServerWorld )world ) ) {
-				if( !player.abilities.isCreativeMode )
-					itemStack.shrink( 1 );
-				player.addStat( Stats.ITEM_USED.get( this ) );
-			} else
-				player.sendStatusMessage( RegistryHandler.undeadArmyManager.getFailedMessage(), true );
+		if( !world.isRemote && RegistryHandler.undeadArmyManager.spawn( player, ( ServerWorld )world ) ) {
+			if( !player.abilities.isCreativeMode )
+				itemStack.shrink( 1 );
+			player.addStat( Stats.ITEM_USED.get( this ) );
 		}
 
 		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
@@ -46,6 +44,7 @@ public class UndeadBattleStandard extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip1" ) );
-		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip2" ) );
+		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip2" ).func_240699_a_( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip3" ).func_240699_a_( TextFormatting.GRAY ) );
 	}
 }
