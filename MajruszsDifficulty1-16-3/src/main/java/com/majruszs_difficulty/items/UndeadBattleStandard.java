@@ -43,8 +43,8 @@ public class UndeadBattleStandard extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip1" ) );
-		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip2" ).func_240699_a_( TextFormatting.GRAY ) );
-		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.undead_army.item_tooltip3" ).func_240699_a_( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip1" ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip2" ).func_240699_a_( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip3" ).func_240699_a_( TextFormatting.GRAY ) );
 	}
 }
