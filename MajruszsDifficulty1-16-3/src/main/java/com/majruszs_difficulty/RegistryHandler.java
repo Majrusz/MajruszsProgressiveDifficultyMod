@@ -4,24 +4,22 @@ import com.majruszs_difficulty.commands.ChangeGameStateCommand;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
-import com.majruszs_difficulty.events.UndeadArmy;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.items.UndeadBattleStandard;
+import com.majruszs_difficulty.items.UndeadTreasureBag;
 import com.majruszs_difficulty.items.WitherSwordItem;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.raid.RaidManager;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -53,13 +51,18 @@ public class RegistryHandler {
 	// Items
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< Item > UNDEAD_BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandard::new );
+	public static final RegistryObject< Item > UNDEAD_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", UndeadTreasureBag::new );
 
 	// Sounds
-	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = SOUNDS.register( "undead_army_approaching", ()->new SoundEvent(
-		new ResourceLocation( MajruszsDifficulty.MOD_ID, "undead_army_approaching" ) )
+	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = SOUNDS.register( "undead_army.approaching",
+		()->new SoundEvent( new ResourceLocation( MajruszsDifficulty.MOD_ID, "undead_army.approaching" ) )
+	);
+	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_WAVE_STARTED = SOUNDS.register( "undead_army.wave_started",
+		()->new SoundEvent( new ResourceLocation( MajruszsDifficulty.MOD_ID, "undead_army.wave_started" ) )
 	);
 
 	public static UndeadArmyManager undeadArmyManager;
+	public static GameDataSaver gameDataSaver = new GameDataSaver();
 
 	public static void init() {
 		final IEventBus modEventBus = FMLJavaModLoadingContext.get()
@@ -106,7 +109,7 @@ public class RegistryHandler {
 
 	private static void onServerStart( FMLServerStartingEvent event ) {
 		MinecraftServer server = event.getServer();
-		RegistryHandler.undeadArmyManager.updateWorld( server.func_241755_D_() );
+		undeadArmyManager.updateWorld( server.func_241755_D_() );
 	}
 
 	public static void onLoadingWorld( WorldEvent.Load event ) {
@@ -114,30 +117,19 @@ public class RegistryHandler {
 			return;
 
 		ServerWorld world = ( ServerWorld )event.getWorld();
+		DimensionSavedDataManager manager = world.getSavedData();
 
-		undeadArmyManager = world.getSavedData().getOrCreate( ()->new UndeadArmyManager( world ), UndeadArmyManager.DATA_NAME );
-		DataSaver saver = DataSaver.getDataFor( world );
+		undeadArmyManager = manager.getOrCreate( ()->new UndeadArmyManager( world ), UndeadArmyManager.DATA_NAME );
+		undeadArmyManager.updateWorld( world );
 
-		if( saver.data.contains( "DifficultyState" ) ) {
-			GameState.changeMode( GameState.convertIntegerToMode( saver.data.getInt( "DifficultyState" ) ) );
-		}
+		gameDataSaver = manager.getOrCreate( GameDataSaver::new, GameDataSaver.DATA_NAME );
 	}
 
 	public static void onSavingWorld( WorldEvent.Save event ) {
 		if( !( event.getWorld() instanceof ServerWorld ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )event.getWorld();
-
-		if( world.isRemote )
-			return;
-
-		DataSaver saver = DataSaver.getDataFor( world );
-		CompoundNBT data = new CompoundNBT();
-		data.putInt( "DifficultyState", GameState.convertModeToInteger( GameState.getCurrentMode() ) );
-		saver.data = data;
-		saver.markDirty();
-
+		gameDataSaver.markDirty();
 		undeadArmyManager.markDirty();
 	}
 }

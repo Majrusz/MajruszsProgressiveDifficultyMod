@@ -1,9 +1,16 @@
 {
-  "undead_army_approaching": {
+  "undead_army.approaching": {
     "category": "ambient",
-    "subtitle": "majruszs_difficulty.subtitle.undead_army_approaching",
+    "subtitle": "majruszs_difficulty.subtitle.undead_army.approaching",
     "sounds": [
-      "majruszs_difficulty:undead_army_approaching"
+      "majruszs_difficulty:undead_army/approaching"
+    ]
+  },
+  "undead_army.wave_started": {
+    "category": "ambient",
+    "subtitle": "majruszs_difficulty.subtitle.undead_army.wave_started",
+    "sounds": [
+      "majruszs_difficulty:undead_army/wave_started"
     ]
   }
 }
