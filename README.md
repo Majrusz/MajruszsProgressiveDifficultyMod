@@ -1,7 +1,7 @@
 ![Mod logo](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/main/logo.png?raw=true)
 
 ## What is Majrusz's Progressive Difficulty?
-**Wonderful Enchantments** is a Minecraft Forge modification which focuses
+**Majrusz's Progressive Difficulty** is a Minecraft Forge modification which focuses
 mainly on making the game more difficult after reaching certain milestones.
 
 ## Where is Majrusz's Progressive Difficulty available?
@@ -9,7 +9,7 @@ mainly on making the game more difficult after reaching certain milestones.
 - [Planet Minecraft](https://www.planetminecraft.com/mod/majrusz-s-progressive-difficulty/)
 
 ## Current Mod Releases (Source Code)
-- [v0.1.2 for Minecraft 1.16.3/1.16.4](MajruszsDifficulty1-16-3)
+- [v0.2.0 for Minecraft 1.16.3/1.16.4](MajruszsDifficulty1-16-3)
 
 ## Technologies
 - Java 8
