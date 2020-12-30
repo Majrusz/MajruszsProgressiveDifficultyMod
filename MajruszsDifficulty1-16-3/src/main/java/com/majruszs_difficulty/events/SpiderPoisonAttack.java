@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.Entity;
@@ -8,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -18,36 +20,45 @@ import net.minecraftforge.fml.common.Mod;
 public class SpiderPoisonAttack {
 	@SubscribeEvent
 	public static void onAttack( LivingHurtEvent event ) {
-		if( !GameState.atLeast( GameState.Mode.EXPERT ) )
-			return;
-
-		Entity attacker = event.getSource()
-			.getTrueSource();
 		LivingEntity target = event.getEntityLiving();
-
-		if( attacker == null )
-			return;
-
-		if( !( attacker instanceof SpiderEntity ) )
-			return;
-
-		if( !( target.getEntityWorld() instanceof ServerWorld ) )
+		if( !shouldExecute( event.getSource(), target ) )
 			return;
 
 		ServerWorld world = ( ServerWorld )target.getEntityWorld();
-		Difficulty current = world.getDifficulty();
 
-		int poisonDurationInTicks;
-		if( current == Difficulty.NORMAL )
-			poisonDurationInTicks = MajruszsHelper.secondsToTicks( 7.0D );
-		else if( current == Difficulty.HARD )
-			poisonDurationInTicks = MajruszsHelper.secondsToTicks( 15.0D );
-		else
-			return;
+		int poisonDurationInTicks = getPoisonDuration( world.getDifficulty() );
 
-		double chance = MajruszsHelper.getClampedRegionalDifficulty( target, world ) * 0.25D;
-
-		if( chance > MajruszsDifficulty.RANDOM.nextDouble() )
+		if( getPoisonChance( target, world ) > MajruszsDifficulty.RANDOM.nextDouble() )
 			target.addPotionEffect( new EffectInstance( Effects.POISON, poisonDurationInTicks, 0 ) );
+	}
+
+	protected static boolean shouldExecute( DamageSource source, LivingEntity target ) {
+		Entity attacker = source.getTrueSource();
+
+		if( !GameState.atLeast( GameState.Mode.EXPERT ) )
+			return false;
+
+		if( !( attacker instanceof SpiderEntity ) )
+			return false;
+
+		if( Config.isDisabled( Config.Features.SPIDER_POISON ) )
+			return false;
+
+		return target.getEntityWorld() instanceof ServerWorld;
+	}
+
+	protected static int getPoisonDuration( Difficulty difficulty ) {
+		switch( difficulty ) {
+			default:
+				return 0;
+			case NORMAL:
+				return MajruszsHelper.secondsToTicks( 7.0D );
+			case HARD:
+				return MajruszsHelper.secondsToTicks( 15.0D );
+		}
+	}
+
+	protected static double getPoisonChance( LivingEntity target, ServerWorld world ) {
+		return MajruszsHelper.getClampedRegionalDifficulty( target, world ) * Config.getChance( Config.Chances.SPIDER_POISON );
 	}
 }

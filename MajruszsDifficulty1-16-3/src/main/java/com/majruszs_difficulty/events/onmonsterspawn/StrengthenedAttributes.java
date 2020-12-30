@@ -22,13 +22,7 @@ public class StrengthenedAttributes {
 		if( !GameState.atLeast( GameState.Mode.EXPERT ) )
 			return;
 
-		double bonusMultiplier = 1.0D;
-
-		if( GameState.atLeast( GameState.Mode.MASTER ) )
-			bonusMultiplier *= 2.0D;
-
-		if( world.isNightTime() )
-			bonusMultiplier *= 2.0D;
+		double bonusMultiplier = getAttributeMultiplier( world );
 
 		maxHealthAttribute.setValue( BonusMultipliers.health * bonusMultiplier )
 			.apply( livingEntity );
@@ -36,5 +30,17 @@ public class StrengthenedAttributes {
 			.apply( livingEntity );
 
 		livingEntity.setHealth( livingEntity.getMaxHealth() );
+	}
+
+	protected static double getAttributeMultiplier( ServerWorld world ) {
+		double multiplier = 1.0D;
+
+		if( GameState.atLeast( GameState.Mode.MASTER ) )
+			multiplier *= 2.0D;
+
+		if( world.isNightTime() )
+			multiplier *= 2.0D;
+
+		return multiplier;
 	}
 }

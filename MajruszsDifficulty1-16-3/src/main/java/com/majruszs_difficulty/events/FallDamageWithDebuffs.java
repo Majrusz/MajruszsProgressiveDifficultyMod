@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.ConfigHandler.Config;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -12,9 +13,12 @@ import net.minecraftforge.fml.common.Mod;
 public class FallDamageWithDebuffs {
 	@SubscribeEvent
 	public static void onFall( LivingFallEvent event ) {
+		if( Config.isDisabled( Config.Features.FALL_DAMAGE_EFFECTS ) )
+			return;
+
 		double distance = event.getDistance();
 
-		if( distance < 5.0 )
+		if( distance < 7.0 )
 			return;
 
 		LivingEntity livingEntity = event.getEntityLiving();

@@ -32,12 +32,8 @@ public final class ChangeGameStateCommand {
 	}
 
 	public static int changeState( CommandSource source, GameState.Mode mode ) {
-		if( mode == GameState.getCurrentMode() )
-			return GameState.convertModeToInteger( mode );
-
-		source.sendFeedback( getFeedbackMessage( mode, "change" ), true );
-
-		GameState.changeMode( mode );
+		if( GameState.changeMode( mode ) )
+			source.sendFeedback( getFeedbackMessage( mode, "change" ), true );
 
 		return GameState.convertModeToInteger( mode );
 	}
