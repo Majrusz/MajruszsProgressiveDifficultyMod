@@ -15,7 +15,7 @@ public class ConfigHandler {
 		}
 
 		public static class Chances {
-			public static ForgeConfigSpec.DoubleValue CREEPER_CHARGED, CREEPER_EFFECTS, ENEMY_GROUPS, SPIDER_POISON;
+			public static ForgeConfigSpec.DoubleValue CREEPER_CHARGED, CREEPER_EFFECTS, ENEMY_GROUPS, SPIDER_POISON, ELITE_TIPPED_ARROW;
 		}
 
 		public static boolean isDisabled( ForgeConfigSpec.BooleanValue config ) {
@@ -59,6 +59,7 @@ public class ConfigHandler {
 		Config.Chances.CREEPER_EFFECTS = createConfigSpecForDouble( "creeper_effects_chance", "", 0.375, 0.0, 1.0 );
 		Config.Chances.ENEMY_GROUPS = createConfigSpecForDouble( "enemy_groups_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.SPIDER_POISON = createConfigSpecForDouble( "spider_poison_chance", "", 0.25, 0.0, 1.0 );
+		Config.Chances.ELITE_TIPPED_ARROW = createConfigSpecForDouble( "elite_skeleton_tipped_arrow_chance", "", 0.75, 0.0, 1.0 );
 		BUILDER.pop();
 
 		CONFIG_SPEC = BUILDER.build();
