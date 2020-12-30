@@ -43,7 +43,7 @@ public class NaturalMonsterSpawns {
 	}
 
 	protected static void addNetherEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
-		spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EliteSkeletonEntity.type, 5, 1, 1 ) );
+		// spawnInfoBuilder.func_242575_a( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EliteSkeletonEntity.type, 100, 1, 1 ) );
 	}
 
 	protected static boolean doBiomeBelongsToNether( Biome.Category category ) {
