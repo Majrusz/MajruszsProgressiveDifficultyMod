@@ -36,7 +36,7 @@ public class TreasureBagItem extends Item {
 			.group( RegistryHandler.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
-		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id );
+		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
 	}
 
 	@Override
