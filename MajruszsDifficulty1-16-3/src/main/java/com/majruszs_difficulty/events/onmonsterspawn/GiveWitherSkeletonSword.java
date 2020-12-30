@@ -15,6 +15,6 @@ public class GiveWitherSkeletonSword {
 		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( witherSkeleton, ( ServerWorld )witherSkeleton.world );
 		ItemStack sword = new ItemStack( RegistryHandler.WITHER_SWORD.get() );
 
-		witherSkeleton.setHeldItem( Hand.MAIN_HAND, MajruszsHelper.damageAndEnchantItemStack( sword, clampedRegionalDifficulty ) );
+		witherSkeleton.setHeldItem( Hand.MAIN_HAND, MajruszsHelper.damageAndEnchantItem( sword, clampedRegionalDifficulty ) );
 	}
 }

@@ -45,7 +45,7 @@ public abstract class EnemyGroup {
 
 		List< ItemStack > itemStacks = new ArrayList<>();
 		for( Item item : leaderArmor )
-			itemStacks.add( MajruszsHelper.damageAndEnchantItemStack( new ItemStack( item ), clampedRegionalDifficulty ) );
+			itemStacks.add( MajruszsHelper.damageAndEnchantItem( new ItemStack( item ), clampedRegionalDifficulty ) );
 
 		this.leader.setItemStackToSlot( EquipmentSlotType.FEET, itemStacks.get( 0 ) );
 		this.leader.setItemStackToSlot( EquipmentSlotType.LEGS, itemStacks.get( 1 ) );
@@ -58,7 +58,7 @@ public abstract class EnemyGroup {
 
 		ItemStack weapon = generateWeapon();
 		if( weapon != null )
-			entity.setItemStackToSlot( EquipmentSlotType.MAINHAND, MajruszsHelper.damageAndEnchantItemStack( weapon, clampedRegionalDifficulty ) );
+			entity.setItemStackToSlot( EquipmentSlotType.MAINHAND, MajruszsHelper.damageAndEnchantItem( weapon, clampedRegionalDifficulty ) );
 	}
 
 	protected void setupGoals( CreatureEntity follower, int goalPriority, int targetPriority ) {
