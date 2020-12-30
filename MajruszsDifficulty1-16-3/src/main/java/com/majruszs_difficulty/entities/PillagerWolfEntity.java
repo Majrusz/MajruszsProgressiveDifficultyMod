@@ -19,7 +19,7 @@ public class PillagerWolfEntity extends WolfEntity {
 
 	static {
 		type = EntityType.Builder.create( PillagerWolfEntity::new, EntityClassification.MONSTER )
-			.size( 0.5f, 0.5f )
+			.size( 0.625f, 0.85f )
 			.build( new ResourceLocation( MajruszsDifficulty.MOD_ID, "pillager_wolf" ).toString() );
 	}
 
