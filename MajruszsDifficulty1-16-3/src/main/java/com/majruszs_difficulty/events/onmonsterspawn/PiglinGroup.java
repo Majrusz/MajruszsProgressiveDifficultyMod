@@ -1,14 +1,10 @@
 package com.majruszs_difficulty.events.onmonsterspawn;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.monster.piglin.PiglinEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.server.ServerWorld;
@@ -24,7 +20,7 @@ public class PiglinGroup extends EnemyGroup {
 
 	@Override
 	protected CreatureEntity spawnChild( ServerWorld world ) {
-		PiglinEntity piglin = new PiglinEntity( EntityType.field_233591_ai_, world );
+		PiglinEntity piglin = EntityType.field_233591_ai_.create( world );
 
 		giveWeaponTo( piglin, world );
 		setupGoals( piglin, 9, 9 );

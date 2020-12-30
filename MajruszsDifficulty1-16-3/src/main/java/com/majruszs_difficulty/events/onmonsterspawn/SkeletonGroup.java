@@ -24,7 +24,7 @@ public class SkeletonGroup extends EnemyGroup {
 
 	@Override
 	protected CreatureEntity spawnChild( ServerWorld world ) {
-		SkeletonEntity skeleton = new SkeletonEntity( EntityType.SKELETON, world );
+		SkeletonEntity skeleton = EntityType.SKELETON.create( world );
 
 		giveWeaponTo( skeleton, world );
 		setupGoals( skeleton, 9, 9 );

@@ -62,6 +62,9 @@ public abstract class EnemyGroup {
 	}
 
 	protected void setupGoals( CreatureEntity follower, int goalPriority, int targetPriority ) {
+		if( follower == null )
+			return;
+
 		follower.goalSelector.addGoal( goalPriority, new FollowGroupLeaderGoal( follower, this.leader, 1.0D, 6.0f, 5.0f ) );
 		follower.targetSelector.addGoal( targetPriority, new TargetAsLeaderGoal( follower, this.leader ) );
 	}

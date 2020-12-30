@@ -32,7 +32,7 @@ public class OnMonsterSpawn {
 		else if( livingEntity instanceof SkeletonEntity )
 			boostSkeleton( ( SkeletonEntity )livingEntity, world );
 
-		else if( livingEntity instanceof ZombieEntity && !( livingEntity instanceof GiantEntity ) )
+		else if( livingEntity instanceof ZombieEntity && !( livingEntity instanceof GiantEntity ) && !( livingEntity instanceof ZombifiedPiglinEntity ) )
 			boostZombie( ( ZombieEntity )livingEntity, world );
 
 		else if( livingEntity instanceof PiglinEntity )

@@ -24,7 +24,7 @@ public class ZombieGroup extends EnemyGroup {
 
 	@Override
 	protected CreatureEntity spawnChild( ServerWorld world ) {
-		ZombieEntity zombie = new ZombieEntity( EntityType.ZOMBIE, world );
+		ZombieEntity zombie = EntityType.ZOMBIE.create( world );
 
 		giveWeaponTo( zombie, world );
 		setupGoals( zombie, 9, 9 );

@@ -1,12 +1,7 @@
 package com.majruszs_difficulty.events.onmonsterspawn;
 
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
-import com.majruszs_difficulty.goals.FollowGroupLeaderGoal;
-import com.majruszs_difficulty.goals.TargetAsLeaderGoal;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.server.ServerWorld;
 
 public class PillagerGroup extends EnemyGroup {
@@ -16,9 +11,9 @@ public class PillagerGroup extends EnemyGroup {
 
 	@Override
 	protected CreatureEntity spawnChild( ServerWorld world ) {
-		PillagerWolfEntity wolf = new PillagerWolfEntity( PillagerWolfEntity.type, world );
+		PillagerWolfEntity wolf = PillagerWolfEntity.type.create( world );
 
-		setupGoals( wolf,9, 9 );
+		setupGoals( wolf, 9, 9 );
 
 		return wolf;
 	}
