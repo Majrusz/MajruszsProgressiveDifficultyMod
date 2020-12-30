@@ -19,15 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IncreaseLoot extends LootModifier {
-	private final double expertModeChance;
-	private final double masterModeChance;
+	private final double normalModeChance, expertModeChance, masterModeChance;
 	private final List< Item > forbiddenItemsToDuplicate;
 
-	public IncreaseLoot( ILootCondition[] conditions, double expertModeChance, double masterModeChance, List< Item > forbiddenItems ) {
+	public IncreaseLoot( ILootCondition[] conditions, double normalChance, double expertChance, double masterChance, List< Item > forbiddenItems ) {
 		super( conditions );
 
-		this.expertModeChance = expertModeChance;
-		this.masterModeChance = masterModeChance;
+		this.normalModeChance = normalChance;
+		this.expertModeChance = expertChance;
+		this.masterModeChance = masterChance;
 		this.forbiddenItemsToDuplicate = forbiddenItems;
 	}
 
@@ -44,7 +44,7 @@ public class IncreaseLoot extends LootModifier {
 	protected double getDuplicateBonusChance() {
 		switch( GameState.getCurrentMode() ) {
 			default:
-				return 0.0;
+				return this.normalModeChance;
 			case EXPERT:
 				return this.expertModeChance;
 			case MASTER:
@@ -74,6 +74,7 @@ public class IncreaseLoot extends LootModifier {
 	public static class Serializer extends GlobalLootModifierSerializer< IncreaseLoot > {
 		@Override
 		public IncreaseLoot read( ResourceLocation name, JsonObject object, ILootCondition[] conditions ) {
+			double normalModeChance = JSONUtils.getFloat( object, "normal_chance" );
 			double expertModeChance = JSONUtils.getFloat( object, "expert_chance" );
 			double masterModeChance = JSONUtils.getFloat( object, "master_chance" );
 			JsonArray items = JSONUtils.getJsonArray( object, "forbidden_items" );
@@ -87,7 +88,7 @@ public class IncreaseLoot extends LootModifier {
 					.getAsString() ) ) );
 			}
 
-			return new IncreaseLoot( conditions, expertModeChance, masterModeChance, forbiddenItemsToDuplicate );
+			return new IncreaseLoot( conditions, normalModeChance, expertModeChance, masterModeChance, forbiddenItemsToDuplicate );
 		}
 
 		@Override
