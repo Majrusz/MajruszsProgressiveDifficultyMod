@@ -4,7 +4,7 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.entities.GiantEntity;
-import com.majruszs_difficulty.events.onmonsterspawn.*;
+import com.majruszs_difficulty.events.monster_spawn.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.monster.piglin.PiglinEntity;

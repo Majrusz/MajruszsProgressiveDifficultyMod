@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.onmonsterspawn;
+package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;

@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.onmonsterspawn;
+package com.majruszs_difficulty.events.monster_spawn;
 
 import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.item.ItemStack;

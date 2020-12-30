@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.onmonsterspawn;
+package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
 import net.minecraft.entity.CreatureEntity;

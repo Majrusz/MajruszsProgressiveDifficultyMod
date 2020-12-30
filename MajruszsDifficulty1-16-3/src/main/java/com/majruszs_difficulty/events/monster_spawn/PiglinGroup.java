@@ -1,9 +1,8 @@
-package com.majruszs_difficulty.events.onmonsterspawn;
+package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.monster.piglin.PiglinEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
