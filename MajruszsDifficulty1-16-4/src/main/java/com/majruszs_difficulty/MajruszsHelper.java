@@ -1,16 +1,21 @@
 package com.majruszs_difficulty;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.server.ServerWorld;
+
+import javax.annotation.Nullable;
 
 public class MajruszsHelper {
 	public static boolean isHostile( LivingEntity livingEntity ) {
@@ -77,5 +82,28 @@ public class MajruszsHelper {
 		return player.world.getDimensionType()
 			.getEffects()
 			.equals( dimensionType.getLocation() );
+	}
+
+	@Nullable
+	public static PlayerEntity getPlayerFromDamageSource( DamageSource damageSource ) {
+		if( !( damageSource.getTrueSource() instanceof PlayerEntity ) )
+			return null;
+
+		return ( PlayerEntity )damageSource.getTrueSource();
+	}
+
+	@Nullable
+	public static ServerWorld getServerWorldFromEntity( Entity entity ) {
+		if( !( entity.world instanceof ServerWorld ) )
+			return null;
+
+		return ( ServerWorld )entity.world;
+	}
+
+	public static void giveItemStackToPlayer( ItemStack itemStack, PlayerEntity player, ServerWorld world ) {
+		if( !player.inventory.addItemStackToInventory( itemStack ) ) {
+			double x = player.getPosX(), y = player.getPosY() + 1.0, z = player.getPosZ();
+			world.addEntity( new ItemEntity( world, x, y, z, itemStack ) );
+		}
 	}
 }
