@@ -52,9 +52,9 @@ public class SpiderPoisonAttack {
 			default:
 				return 0;
 			case NORMAL:
-				return MajruszsHelper.secondsToTicks( 7.0D );
+				return MajruszsHelper.secondsToTicks( 7.0 );
 			case HARD:
-				return MajruszsHelper.secondsToTicks( 15.0D );
+				return MajruszsHelper.secondsToTicks( 15.0 );
 		}
 	}
 
