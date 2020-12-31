@@ -1,8 +1,10 @@
 package com.majruszs_difficulty.loot_modifiers;
 
 import com.google.gson.JsonObject;
-import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
@@ -15,8 +17,8 @@ import net.minecraftforge.common.loot.LootModifier;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class DisableLootForTreasureBag extends LootModifier {
-	public DisableLootForTreasureBag( ILootCondition[] conditions ) {
+public class AddTreasureBagsToLoot extends LootModifier {
+	public AddTreasureBagsToLoot( ILootCondition[] conditions ) {
 		super( conditions );
 	}
 
@@ -29,17 +31,25 @@ public class DisableLootForTreasureBag extends LootModifier {
 		if( entity == null || damageSource == null )
 			return generatedLoot;
 
+		Item treasureBag = TreasureBagManager.getTreasureBag( entity.getType() );
+		if( treasureBag == null || !( entity instanceof LivingEntity ) )
+			return generatedLoot;
+
+		if( TreasureBagManager.rewardAllPlayers( ( LivingEntity )entity ) )
+			if( TreasureBagManager.shouldReplaceLoot( entity.getType() ) )
+				generatedLoot.clear();
+
 		return generatedLoot;
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer< DisableLootForTreasureBag > {
+	public static class Serializer extends GlobalLootModifierSerializer< AddTreasureBagsToLoot > {
 		@Override
-		public DisableLootForTreasureBag read( ResourceLocation name, JsonObject object, ILootCondition[] conditions ) {
-			return new DisableLootForTreasureBag( conditions );
+		public AddTreasureBagsToLoot read( ResourceLocation name, JsonObject object, ILootCondition[] conditions ) {
+			return new AddTreasureBagsToLoot( conditions );
 		}
 
 		@Override
-		public JsonObject write( DisableLootForTreasureBag instance ) {
+		public JsonObject write( AddTreasureBagsToLoot instance ) {
 			return null;
 		}
 	}

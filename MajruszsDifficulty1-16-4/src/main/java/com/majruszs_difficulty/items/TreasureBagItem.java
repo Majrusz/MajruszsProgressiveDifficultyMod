@@ -23,7 +23,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.registries.DeferredRegister;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -31,12 +33,16 @@ import java.util.List;
 public class TreasureBagItem extends Item {
 	private final ResourceLocation lootTableLocation;
 
+	public static RegistryObject< TreasureBagItem > getRegistry( String name ) {
+		return RegistryHandler.ITEMS.register( name + "_treasure_bag", () -> new TreasureBagItem( name + "_treasure_loot" ) );
+	}
+
 	public TreasureBagItem( String id ) {
 		super( ( new Item.Properties() ).maxStackSize( 16 )
 			.group( RegistryHandler.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
-		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
+		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id );
 	}
 
 	@Override

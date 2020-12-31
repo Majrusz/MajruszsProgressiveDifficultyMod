@@ -1,15 +1,10 @@
 package com.majruszs_difficulty.events.treasure_bag;
 
-import com.majruszs_difficulty.events.TreasureBagManager;
-import com.majruszs_difficulty.items.TreasureBagItem;
+import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,44 +13,48 @@ import net.minecraftforge.fml.common.Mod;
 public class UpdatePlayerList {
 	@SubscribeEvent
 	public static void onHit( LivingHurtEvent event ) {
-		DamageSource source = event.getSource();
+		PlayerEntity player = MajruszsHelper.getPlayerFromDamageSource( event.getSource() );
 		LivingEntity target = event.getEntityLiving();
 
-		if( source.getTrueSource() instanceof PlayerEntity )
+		if( player == null || !TreasureBagManager.hasTreasureBag( target.getType() ) )
 			return;
 
-		PlayerEntity player = ( PlayerEntity )source.getTrueSource();
+		ListNBT listNBT = getOrCreateList( target );
+		CompoundNBT playerNBT = getPlayerCompound( player );
 
-		if( player == null )
-			return;
+		if( !isPlayerInList( player, listNBT ) )
+			listNBT.add( playerNBT );
 
-		ListNBT listNBT;
-		if( target.getPersistentData().contains( "PlayersToReward" ) )
-			listNBT = target.getPersistentData().getList( "PlayersToReward", 10 );
-		else
-			listNBT = new ListNBT();
-
-		String uuid = String.valueOf( player.getUniqueID() );
-		CompoundNBT nbt = new CompoundNBT();
-		nbt.putString( "UUID", uuid );
-
-		boolean hasValue = false;
-		for( int i = 0; i < listNBT.size(); i++ )
-			if( listNBT.getCompound( i ).getString( "UUID" ).equals( uuid ) )
-				hasValue = true;
-
-		if( !hasValue )
-			listNBT.add( nbt );
-
-		target.getPersistentData().put( "PlayersToReward", listNBT );
+		CompoundNBT data = target.getPersistentData();
+		data.put( TreasureBagManager.treasureBagTag, listNBT );
 	}
 
-	@SubscribeEvent
-	public static void onDie( LivingDeathEvent event ) {
-		LivingEntity target = event.getEntityLiving();
-		Item treasureBag = TreasureBagManager.getTreasureBag( target.getType() );
+	protected static ListNBT getOrCreateList( LivingEntity entity ) {
+		CompoundNBT data = entity.getPersistentData();
 
-		if( treasureBag == null )
-			return;
+		return ( data.contains( TreasureBagManager.treasureBagTag ) ? data.getList( TreasureBagManager.treasureBagTag, 10 ) : new ListNBT() );
+	}
+
+	protected static String getPlayerUUID( PlayerEntity player ) {
+		return String.valueOf( player.getUniqueID() );
+	}
+
+	protected static CompoundNBT getPlayerCompound( PlayerEntity player ) {
+		CompoundNBT nbt = new CompoundNBT();
+		nbt.putString( TreasureBagManager.playerTag, getPlayerUUID( player ) );
+
+		return nbt;
+	}
+
+	protected static boolean isPlayerInList( PlayerEntity player, ListNBT listNBT ) {
+		String uuid = getPlayerUUID( player );
+
+		for( int i = 0; i < listNBT.size(); i++ )
+			if( listNBT.getCompound( i )
+				.getString( TreasureBagManager.playerTag )
+				.equals( uuid ) )
+				return true;
+
+		return false;
 	}
 }

@@ -4,6 +4,7 @@ import com.majruszs_difficulty.commands.ChangeGameStateCommand;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
+import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.majruszs_difficulty.items.UndeadBattleStandard;
@@ -51,9 +52,10 @@ public class RegistryHandler {
 	// Items
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< Item > UNDEAD_BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandard::new );
-	public static final RegistryObject< Item > UNDEAD_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag",
-		()->new TreasureBagItem( "undead_army" )
-	);
+	public static final RegistryObject< TreasureBagItem > UNDEAD_TREASURE_BAG = TreasureBagItem.getRegistry( "undead_army" );
+	public static final RegistryObject< TreasureBagItem > ELDER_GUARDIAN_TREASURE_BAG = TreasureBagItem.getRegistry( "elder_guardian" );
+	public static final RegistryObject< TreasureBagItem > WITHER_TREASURE_BAG = TreasureBagItem.getRegistry( "wither" );
+	public static final RegistryObject< TreasureBagItem > ENDER_DRAGON_TREASURE_BAG = TreasureBagItem.getRegistry( "ender_dragon" );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = SOUNDS.register( "undead_army.approaching",
@@ -112,6 +114,10 @@ public class RegistryHandler {
 	private static void onServerStart( FMLServerStartingEvent event ) {
 		MinecraftServer server = event.getServer();
 		undeadArmyManager.updateWorld( server.func_241755_D_() );
+
+		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get(), true );
+		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get(), false );
+		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get(), true );
 	}
 
 	public static void onLoadingWorld( WorldEvent.Load event ) {

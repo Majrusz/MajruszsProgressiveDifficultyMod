@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.loot_modifiers.DisableLootForTreasureBag;
+import com.majruszs_difficulty.loot_modifiers.AddTreasureBagsToLoot;
 import com.majruszs_difficulty.loot_modifiers.IncreaseLoot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
@@ -17,7 +17,7 @@ public class LootModifiers {
 		IForgeRegistry< GlobalLootModifierSerializer< ? > > registry = event.getRegistry();
 
 		registry.register( new IncreaseLoot.Serializer().setRegistryName( getResource( "increase_loot" ) ) );
-		registry.register( new DisableLootForTreasureBag.Serializer().setRegistryName( getResource( "disable_loot_for_treasure_bag" ) ) );
+		registry.register( new AddTreasureBagsToLoot.Serializer().setRegistryName( getResource( "add_treasure_bag_to_loot" ) ) );
 	}
 
 	protected static ResourceLocation getResource( String id ) {
