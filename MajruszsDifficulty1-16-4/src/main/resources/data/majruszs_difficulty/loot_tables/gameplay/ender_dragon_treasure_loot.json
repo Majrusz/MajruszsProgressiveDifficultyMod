@@ -10,13 +10,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 30,
-          "name": "minecraft:dragon_breath"
+          "weight": 35,
+          "name": "minecraft:experience_bottle"
         },
         {
           "type": "minecraft:item",
           "weight": 30,
-          "name": "minecraft:experience_bottle"
+          "name": "minecraft:dragon_breath"
         },
         {
           "type": "minecraft:item",
@@ -25,7 +25,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 10,
+          "weight": 5,
           "name": "minecraft:end_crystal"
         }
       ]
