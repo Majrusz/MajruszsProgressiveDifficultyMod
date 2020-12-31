@@ -22,6 +22,10 @@ public class ConfigHandler {
 			public static ForgeConfigSpec.DoubleValue WITHER_SWORD_EFFECT;
 		}
 
+		public static class Values {
+			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT;
+		}
+
 		public static boolean isDisabled( ForgeConfigSpec.BooleanValue config ) {
 			return !config.get();
 		}
@@ -32,6 +36,10 @@ public class ConfigHandler {
 
 		public static int getDurationInSeconds( ForgeConfigSpec.DoubleValue duration ) {
 			return MajruszsHelper.secondsToTicks( duration.get() );
+		}
+
+		public static int getInteger( ForgeConfigSpec.IntValue value ) {
+			return value.get();
 		}
 	}
 
@@ -76,6 +84,10 @@ public class ConfigHandler {
 		Config.Durations.WITHER_SWORD_EFFECT = createConfigSpecForDouble( "wither_sword_effect_duration", "", 6.0, 2.0, 30.0 );
 		BUILDER.pop();
 
+		BUILDER.push( "Values" );
+		Config.Values.UNDEAD_ARMY_KILL_REQUIREMENT = createConfigSpecForInteger( "undead_army_kill_requirement", "", 50, 20, 500 );
+		BUILDER.pop();
+
 		CONFIG_SPEC = BUILDER.build();
 	}
 
@@ -85,6 +97,11 @@ public class ConfigHandler {
 	}
 
 	private static ForgeConfigSpec.DoubleValue createConfigSpecForDouble( String name, String comment, double defaultValue, double min, double max ) {
+		return BUILDER.worldRestart()
+			.defineInRange( name, defaultValue, min, max );
+	}
+
+	private static ForgeConfigSpec.IntValue createConfigSpecForInteger( String name, String comment, int defaultValue, int min, int max ) {
 		return BUILDER.worldRestart()
 			.defineInRange( name, defaultValue, min, max );
 	}

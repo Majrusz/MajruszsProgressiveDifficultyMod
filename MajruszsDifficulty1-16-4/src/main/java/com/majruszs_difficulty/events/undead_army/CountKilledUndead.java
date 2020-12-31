@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.events.undead_army;
 
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.UndeadArmy;
 import net.minecraft.entity.CreatureAttribute;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class CountKilledUndead {
 	public static final String NBT_TAG = "UndeadKills";
-	public static int killsToActiveArmy = 100;
 
 	@SubscribeEvent
 	public static void onUndeadKill( LivingDeathEvent event ) {
@@ -57,7 +57,7 @@ public class CountKilledUndead {
 	private static void spawnArmyIfPossible( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
 
-		if( nbt.getInt( NBT_TAG ) < killsToActiveArmy )
+		if( nbt.getInt( NBT_TAG ) < Config.getInteger( Config.Values.UNDEAD_ARMY_KILL_REQUIREMENT ) )
 			return;
 
 		if( player.world instanceof ServerWorld )
