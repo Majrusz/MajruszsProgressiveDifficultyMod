@@ -1,0 +1,19 @@
+{
+	"type": "majruszs_difficulty:increase_loot",
+	"conditions": [
+		{
+			"condition": "minecraft:killed_by_player"
+		}
+	],
+	"forbidden_items": [
+		{
+			"name": "minecraft:nether_star"
+		},
+		{
+			"name": "minecraft:totem_of_undying"
+		}
+	],
+	"normal_chance": 0.0,
+	"expert_chance": 0.25,
+	"master_chance": 0.75
+}
