@@ -27,8 +27,8 @@ public class FreezeWater {
 		BlockState blockState = Blocks.FROSTED_ICE.getDefaultState();
 		double factor = 2.0;
 		BlockPos.Mutable mutablePosition = new BlockPos.Mutable();
-		Iterable< BlockPos > blockPositions = BlockPos.getAllInBoxMutable( position.add( -factor, -1.0D, -factor ),
-			position.add( factor, -1.0D, factor )
+		Iterable< BlockPos > blockPositions = BlockPos.getAllInBoxMutable( position.add( -factor, -1.0, -factor ),
+			position.add( factor, -1.0, factor )
 		);
 
 		for( BlockPos blockPosition : blockPositions ) {
