@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.google.common.collect.Sets;
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
@@ -244,7 +245,7 @@ public class UndeadArmy {
 
 	private void spawnWaveEnemies() {
 		List< ServerPlayerEntity > players = this.world.getPlayers( getParticipantsPredicate() );
-		double playersFactor = 1.0 + ( Math.max( 1, players.size() ) - 1 ) * 0.5;
+		double playersFactor = 1.0 + ( Math.max( 1, players.size() ) - 1 ) * Config.getDouble( Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS );
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
 

@@ -24,6 +24,7 @@ public class ConfigHandler {
 
 		public static class Values {
 			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT;
+			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS;
 		}
 
 		public static boolean isDisabled( ForgeConfigSpec.BooleanValue config ) {
@@ -39,6 +40,10 @@ public class ConfigHandler {
 		}
 
 		public static int getInteger( ForgeConfigSpec.IntValue value ) {
+			return value.get();
+		}
+
+		public static double getDouble( ForgeConfigSpec.DoubleValue value ) {
 			return value.get();
 		}
 	}
@@ -86,6 +91,7 @@ public class ConfigHandler {
 
 		BUILDER.push( "Values" );
 		Config.Values.UNDEAD_ARMY_KILL_REQUIREMENT = createConfigSpecForInteger( "undead_army_kill_requirement", "", 50, 20, 500 );
+		Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS = createConfigSpecForDouble( "undead_army_scale_with_players", "", 0.5, 0.1, 1.0 );
 		BUILDER.pop();
 
 		CONFIG_SPEC = BUILDER.build();
