@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.AttributeHelper;
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityClassification;
@@ -28,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class EliteSkeletonEntity extends SkeletonEntity {
-	public static double tippedArrowChance = 0.5;
 	public static final Potion[] arrowPotions = new Potion[]{ Potions.HARMING, Potions.POISON, Potions.SLOWNESS, Potions.WEAKNESS };
 	public static final EntityType< EliteSkeletonEntity > type;
 	public final RangedBowAttackGoal< AbstractSkeletonEntity > rangedAttackGoal;
@@ -58,15 +58,15 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 		double d2 = target.getPosZ() - this.getPosZ();
 		double d3 = MathHelper.sqrt( d0 * d0 + d2 * d2 );
 
-		arrowEntity.shoot( d0, d1 + d3 * ( double )0.2f, d2, 2.0f, 0 );
-		playSound( SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / ( MajruszsDifficulty.RANDOM.nextFloat() * 0.4F + 0.8F ) );
+		arrowEntity.shoot( d0, d1 + d3 * 0.2, d2, 2.0f, 0 );
+		playSound( SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / ( MajruszsDifficulty.RANDOM.nextFloat() * 0.4f + 0.8f ) );
 		this.world.addEntity( arrowEntity );
 	}
 
 	protected AbstractArrowEntity getArrowEntity( float distanceFactor ) {
 		ItemStack ammunition = findAmmo( getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) ) );
 
-		double finalChance = tippedArrowChance;
+		double finalChance = Config.getChance( Config.Chances.ELITE_TIPPED_ARROW );
 		if( isServerWorld() )
 			finalChance *= MajruszsHelper.getClampedRegionalDifficulty( this, ( ServerWorld )this.world );
 
@@ -81,11 +81,11 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	protected void overwriteRangedAttackGoal() {
 		ItemStack itemstack = getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) );
 
-		if( itemstack.getItem() instanceof net.minecraft.item.BowItem ) {
+		if( itemstack.getItem() instanceof BowItem ) {
 			int attackCooldown = ( this.world.getDifficulty() != Difficulty.HARD ) ? 30 : 15;
 
 			this.rangedAttackGoal.setAttackCooldown( attackCooldown );
-			this.goalSelector.addGoal( 3, this.rangedAttackGoal );
+			this.goalSelector.addGoal( 4, this.rangedAttackGoal );
 		}
 	}
 

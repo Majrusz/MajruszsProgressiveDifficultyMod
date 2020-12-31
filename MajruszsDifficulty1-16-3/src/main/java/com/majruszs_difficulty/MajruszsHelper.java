@@ -42,25 +42,26 @@ public class MajruszsHelper {
 		return itemStack;
 	}
 
-	public static ItemStack tryEnchantWeapon( ItemStack itemStack, double clampedRegionalDifficulty ) {
-		if( MajruszsDifficulty.RANDOM.nextDouble() >= 0.25D * clampedRegionalDifficulty )
-			return itemStack;
-
-		return enchantItem( itemStack, clampedRegionalDifficulty );
-	}
-
-	public static ItemStack tryEnchantArmor( ItemStack itemStack, double clampedRegionalDifficulty ) {
-		if( MajruszsDifficulty.RANDOM.nextDouble() >= 0.5D * clampedRegionalDifficulty )
-			return itemStack;
-
-		return enchantItem( itemStack, clampedRegionalDifficulty );
-	}
-
 	public static ItemStack enchantItem( ItemStack itemStack, double clampedRegionalDifficulty ) {
 		return EnchantmentHelper.addRandomEnchantment( MajruszsDifficulty.RANDOM, itemStack, ( int )( 5 + 18 * clampedRegionalDifficulty ), false );
 	}
 
-	public static ItemStack damageAndEnchantItemStack( ItemStack itemStack, double clampedRegionalDifficulty ) {
+	public static ItemStack tryEnchantItem( ItemStack itemStack, double clampedRegionalDiffculty, double chance ) {
+		if( MajruszsDifficulty.RANDOM.nextDouble() >= chance * clampedRegionalDiffculty )
+			return itemStack;
+
+		return enchantItem( itemStack, clampedRegionalDiffculty );
+	}
+
+	public static ItemStack tryEnchantWeapon( ItemStack itemStack, double clampedRegionalDifficulty ) {
+		return tryEnchantItem( itemStack, clampedRegionalDifficulty, 0.25 );
+	}
+
+	public static ItemStack tryEnchantArmor( ItemStack itemStack, double clampedRegionalDifficulty ) {
+		return tryEnchantItem( itemStack, clampedRegionalDifficulty, 0.5 );
+	}
+
+	public static ItemStack damageAndEnchantItem( ItemStack itemStack, double clampedRegionalDifficulty ) {
 		if( itemStack.getItem() instanceof ArmorItem )
 			itemStack = tryEnchantArmor( itemStack, clampedRegionalDifficulty );
 		else

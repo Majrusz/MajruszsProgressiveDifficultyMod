@@ -1,6 +1,7 @@
 {
 	"replace": false,
 	"entries":	[
-		"majruszs_difficulty:increase_loot"
+		"majruszs_difficulty:increase_loot",
+		"majruszs_difficulty:disable_loot_for_treasure_bag"
 	]
 }

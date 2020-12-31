@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.items;
 
-import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -25,8 +25,6 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public class WitherSwordItem extends SwordItem {
-	public static final int witherDuration = MajruszsHelper.secondsToTicks( 6.0 );
-
 	public WitherSwordItem() {
 		super( CustomItemTier.WITHER, 2, -2.4f, ( new Item.Properties() ).group( RegistryHandler.ITEM_GROUP ) );
 	}
@@ -40,8 +38,8 @@ public class WitherSwordItem extends SwordItem {
 		ItemStack attackerItemStack = ( ( LivingEntity )source.getTrueSource() ).getHeldItemMainhand();
 		if( attackerItemStack.getItem() instanceof WitherSwordItem ) {
 			LivingEntity target = event.getEntityLiving();
-
-			target.addPotionEffect( new EffectInstance( Effects.WITHER, witherDuration, 1 ) );
+			int effectDuration = Config.getDurationInSeconds( Config.Durations.WITHER_SWORD_EFFECT );
+			target.addPotionEffect( new EffectInstance( Effects.WITHER, effectDuration, 1 ) );
 		}
 	}
 
