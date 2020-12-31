@@ -14,3 +14,6 @@ mainly on making the game more difficult after reaching certain milestones.
 ## Technologies
 - Java 8
 - [Minecraft Forge API](https://github.com/MinecraftForge/MinecraftForge)
+
+## Special thanks goes to
+- [Julia](https://www.instagram.com/musiqeorn/) for music & sounds
