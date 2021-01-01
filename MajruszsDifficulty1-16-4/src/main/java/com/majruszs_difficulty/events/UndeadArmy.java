@@ -9,6 +9,7 @@ import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
+import javafx.scene.chart.Axis;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -180,10 +181,7 @@ public class UndeadArmy {
 	}
 
 	public void updateNearbyUndeadGoals() {
-		Vector3i radius = new Vector3i( spawnRadius, spawnRadius, spawnRadius );
-		AxisAlignedBB axisAlignedBB = new AxisAlignedBB( this.positionToAttack.subtract( radius ), this.positionToAttack.add( radius ) );
-
-		List< MonsterEntity > monsters = this.world.getEntitiesWithinAABB( MonsterEntity.class, axisAlignedBB, getUndeadParticipantsPredicate() );
+		List< MonsterEntity > monsters = getNearbyUndeadArmy( spawnRadius );
 
 		for( MonsterEntity monster : monsters )
 			updateUndeadGoal( monster );
@@ -344,6 +342,12 @@ public class UndeadArmy {
 		this.bossInfo.removeAllPlayers();
 	}
 
+	private AxisAlignedBB getAxisAligned( double radius ) {
+		Vector3i vector = new Vector3i( radius, radius, radius );
+
+		return new AxisAlignedBB( this.positionToAttack.subtract( vector ), this.positionToAttack.add( vector ) );
+	}
+
 	private void updateUndeadGoal( MonsterEntity monster ) {
 		monster.goalSelector.addGoal( 9, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 25.0f, 5.0f ) );
 	}
@@ -354,6 +358,10 @@ public class UndeadArmy {
 
 	private Predicate< ServerPlayerEntity > getParticipantsPredicate() {
 		return player->player.isAlive() && ( RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( player.getPositionVec() ) ) == this );
+	}
+
+	private List< MonsterEntity > getNearbyUndeadArmy( double radius ) {
+		return this.world.getEntitiesWithinAABB( MonsterEntity.class, getAxisAligned( radius ), getUndeadParticipantsPredicate() );
 	}
 
 	private void updateUndeadArmyBarVisibility() {
