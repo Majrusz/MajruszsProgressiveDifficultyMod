@@ -9,6 +9,7 @@ import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -22,9 +23,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -176,6 +179,19 @@ public class UndeadArmy {
 		this.undeadKilled = Math.min( this.undeadKilled + 1, this.undeadToKill );
 	}
 
+	public void updateNearbyUndeadGoals() {
+		Vector3i radius = new Vector3i( spawnRadius, spawnRadius, spawnRadius );
+		AxisAlignedBB axisAlignedBB = new AxisAlignedBB( this.positionToAttack.subtract( radius ), this.positionToAttack.add( radius ) );
+
+		List< MonsterEntity > monsters = this.world.getEntitiesWithinAABB( MonsterEntity.class, axisAlignedBB, getUndeadParticipantsPredicate() );
+
+		for( MonsterEntity monster : monsters )
+			updateUndeadGoal( monster );
+
+		MajruszsDifficulty.LOGGER.info( "Updated " + monsters.size() + "!" );
+		// MajruszsDifficulty.LOGGER.info( "UNDEAD ARMY: " + this.world.getEntitiesWithinAABB( Entity.class, axisAlignedBB, entity -> entity.getPersistentData().contains( "UndeadArmyFrostWalker" ) ).size() + "/" + this.world.getEntities().count() );
+	}
+
 	private void tickBetweenWaves() {
 		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
 		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.betweenRaidTicks ) / betweenRaidTicksMaximum, 0.0f, 1.0f ) );
@@ -258,7 +274,7 @@ public class UndeadArmy {
 					continue;
 
 				monster.enablePersistence();
-				monster.goalSelector.addGoal( 9, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 25.0f, 5.0f ) );
+				updateUndeadGoal( monster );
 				tryToEnchantEquipment( monster );
 
 				CompoundNBT nbt = monster.getPersistentData();
@@ -329,6 +345,14 @@ public class UndeadArmy {
 	private void finish() {
 		this.isActive = false;
 		this.bossInfo.removeAllPlayers();
+	}
+
+	private void updateUndeadGoal( MonsterEntity monster ) {
+		monster.goalSelector.addGoal( 9, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 25.0f, 5.0f ) );
+	}
+
+	private Predicate< MonsterEntity > getUndeadParticipantsPredicate() {
+		return monster -> monster.getPersistentData().contains( "UndeadArmyFrostWalker" );
 	}
 
 	private Predicate< ServerPlayerEntity > getParticipantsPredicate() {

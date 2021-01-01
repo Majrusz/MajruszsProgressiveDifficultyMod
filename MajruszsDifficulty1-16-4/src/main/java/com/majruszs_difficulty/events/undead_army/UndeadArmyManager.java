@@ -135,6 +135,11 @@ public class UndeadArmyManager extends WorldSavedData {
 		RegistryHandler.undeadArmyManager.tick();
 	}
 
+	public void updateUndeadGoals() {
+		for( UndeadArmy undeadArmy : this.undeadArmies )
+			undeadArmy.updateNearbyUndeadGoals();
+	}
+
 	private void tickArmiesToBeSpawned() {
 		for( UndeadArmyToBeSpawned undeadArmyToBeSpawned : this.undeadArmiesToBeSpawned ) {
 			undeadArmyToBeSpawned.ticksToSpawn--;
