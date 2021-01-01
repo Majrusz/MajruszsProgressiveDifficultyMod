@@ -21,11 +21,21 @@
         {
           "type": "minecraft:item",
           "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ],
+          "name": "majruszs_difficulty:wither_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
           "name": "minecraft:netherite_scrap"
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
+          "weight": 1,
           "name": "minecraft:nether_star"
         }
       ]
