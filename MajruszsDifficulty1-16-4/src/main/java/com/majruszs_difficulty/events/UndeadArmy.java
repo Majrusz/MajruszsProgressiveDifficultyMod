@@ -187,9 +187,6 @@ public class UndeadArmy {
 
 		for( MonsterEntity monster : monsters )
 			updateUndeadGoal( monster );
-
-		MajruszsDifficulty.LOGGER.info( "Updated " + monsters.size() + "!" );
-		// MajruszsDifficulty.LOGGER.info( "UNDEAD ARMY: " + this.world.getEntitiesWithinAABB( Entity.class, axisAlignedBB, entity -> entity.getPersistentData().contains( "UndeadArmyFrostWalker" ) ).size() + "/" + this.world.getEntities().count() );
 	}
 
 	private void tickBetweenWaves() {
