@@ -11,7 +11,9 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 
@@ -78,10 +80,10 @@ public class MajruszsHelper {
 		return damageItem( itemStack );
 	}
 
-	public static boolean isPlayerIn( PlayerEntity player, RegistryKey< DimensionType > dimensionType ) {
-		return player.world.getDimensionType()
-			.getEffects()
-			.equals( dimensionType.getLocation() );
+	public static boolean isPlayerIn( PlayerEntity player, RegistryKey< DimensionType > dimensionTypeRegistryKey ) {
+		Registry< DimensionType > registry = player.world.func_241828_r().func_230520_a_();
+
+		return dimensionTypeRegistryKey.getLocation().equals( registry.getKey( player.world.getDimensionType() ) );
 	}
 
 	@Nullable
