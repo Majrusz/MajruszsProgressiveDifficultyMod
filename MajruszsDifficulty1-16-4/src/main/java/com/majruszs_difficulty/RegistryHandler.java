@@ -1,6 +1,7 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.commands.ChangeGameStateCommand;
+import com.majruszs_difficulty.commands.StopUndeadArmyCommand;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
@@ -110,6 +111,7 @@ public class RegistryHandler {
 		CommandDispatcher< CommandSource > dispatcher = event.getDispatcher();
 
 		ChangeGameStateCommand.register( dispatcher );
+		StopUndeadArmyCommand.register( dispatcher );
 	}
 
 	private static void onServerStart( FMLServerStartingEvent event ) {

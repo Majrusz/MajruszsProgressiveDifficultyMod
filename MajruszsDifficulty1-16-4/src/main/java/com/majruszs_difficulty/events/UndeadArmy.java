@@ -178,6 +178,11 @@ public class UndeadArmy {
 			updateUndeadGoal( monster );
 	}
 
+	public void finish() {
+		this.isActive = false;
+		this.bossInfo.removeAllPlayers();
+	}
+
 	private void tickBetweenWaves() {
 		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
 		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.betweenRaidTicks ) / betweenRaidTicksMaximum, 0.0f, 1.0f ) );
@@ -248,11 +253,6 @@ public class UndeadArmy {
 		}
 
 		updateBarText();
-	}
-
-	private void finish() {
-		this.isActive = false;
-		this.bossInfo.removeAllPlayers();
 	}
 
 	private void createSpawner() {
