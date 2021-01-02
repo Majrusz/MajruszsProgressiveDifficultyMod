@@ -7,12 +7,16 @@ import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
-import com.majruszs_difficulty.entities.GiantEntity;
+import com.majruszs_difficulty.events.undead_army.Direction;
+import com.majruszs_difficulty.events.undead_army.Status;
+import com.majruszs_difficulty.events.undead_army.TextManager;
+import com.majruszs_difficulty.events.undead_army.WaveMember;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -20,43 +24,31 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.IExtensibleEnum;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber
 public class UndeadArmy {
-	public static class Texts {
-		public ITextComponent title = new TranslationTextComponent( "majruszs_difficulty.undead_army.title" );
-		public ITextComponent wave = new TranslationTextComponent( "majruszs_difficulty.undead_army.wave" );
-		public ITextComponent between_waves = new TranslationTextComponent( "majruszs_difficulty.undead_army.between_waves" );
-		public ITextComponent victory = new TranslationTextComponent( "majruszs_difficulty.undead_army.victory" );
-		public ITextComponent failed = new TranslationTextComponent( "majruszs_difficulty.undead_army.failed" );
-	}
-
 	private final static int betweenRaidTicksMaximum = MajruszsHelper.secondsToTicks( 15.0 );
 	private final static int ticksInactiveMaximum = MajruszsHelper.minutesToTicks( 15.0 );
 	private final static int spawnRadius = 70;
-	private final static int standardDeviation = 10;
-	private final static Texts texts = new Texts();
-	private final ServerBossInfo bossInfo = new ServerBossInfo( texts.title, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
+	private final static TextManager textManager = new TextManager();
+	private final ServerBossInfo bossInfo = new ServerBossInfo( textManager.title, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
 	private final BlockPos positionToAttack;
 	private final Direction direction;
 	private ServerWorld world;
@@ -68,14 +60,12 @@ public class UndeadArmy {
 	private int undeadToKill = 1;
 	private int undeadKilled = 0;
 	private Status status = Status.BETWEEN_WAVES;
+	private boolean spawnerWasCreated = false;
 
 	public UndeadArmy( ServerWorld world, BlockPos positionToAttack, Direction direction ) {
 		this.world = world;
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
-
-		/*if( this.world.isAirBlock( positionToAttack ) )
-			this.world.setBlockState( positionToAttack, Blocks.LAVA.getDefaultState() );*/
 
 		this.bossInfo.setPercent( 0.0f );
 	}
@@ -92,6 +82,7 @@ public class UndeadArmy {
 		this.undeadToKill = nbt.getInt( "UndeadToKill" );
 		this.undeadKilled = nbt.getInt( "UndeadKilled" );
 		this.status = Status.getByName( nbt.getString( "Status" ) );
+		this.spawnerWasCreated = nbt.getBoolean( "SpawnerWasCreated" );
 
 		updateBarText();
 	}
@@ -109,6 +100,7 @@ public class UndeadArmy {
 		nbt.putInt( "UndeadToKill", this.undeadToKill );
 		nbt.putInt( "UndeadKilled", this.undeadKilled );
 		nbt.putString( "Status", this.status.toString() );
+		nbt.putBoolean( "SpawnerWasCreated", this.spawnerWasCreated );
 
 		return nbt;
 	}
@@ -128,16 +120,16 @@ public class UndeadArmy {
 	public void updateBarText() {
 		switch( this.status ) {
 			case ONGOING:
-				this.bossInfo.setName( this.currentWave == 0 ? texts.title : getWaveMessage() );
+				this.bossInfo.setName( this.currentWave == 0 ? textManager.title : textManager.getWaveMessage( this.currentWave ) );
 				break;
 			case BETWEEN_WAVES:
-				this.bossInfo.setName( texts.between_waves );
+				this.bossInfo.setName( textManager.between_waves );
 				break;
 			case VICTORY:
-				this.bossInfo.setName( texts.victory );
+				this.bossInfo.setName( textManager.victory );
 				break;
 			case FAILED:
-				this.bossInfo.setName( texts.failed );
+				this.bossInfo.setName( textManager.failed );
 				break;
 			default:
 				break;
@@ -147,6 +139,9 @@ public class UndeadArmy {
 	public void tick() {
 		if( !this.isActive )
 			return;
+
+		if( this.ticksActive == 0L )
+			textManager.notifyAboutStart( getNearbyPlayers(), this.direction );
 
 		this.ticksActive++;
 
@@ -176,6 +171,18 @@ public class UndeadArmy {
 		this.undeadKilled = Math.min( this.undeadKilled + 1, this.undeadToKill );
 	}
 
+	public void updateNearbyUndeadGoals() {
+		List< MonsterEntity > monsters = getNearbyUndeadArmy( spawnRadius );
+
+		for( MonsterEntity monster : monsters )
+			updateUndeadGoal( monster );
+	}
+
+	public void finish() {
+		this.isActive = false;
+		this.bossInfo.removeAllPlayers();
+	}
+
 	private void tickBetweenWaves() {
 		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
 		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.betweenRaidTicks ) / betweenRaidTicksMaximum, 0.0f, 1.0f ) );
@@ -187,8 +194,11 @@ public class UndeadArmy {
 	private void tickOngoing() {
 		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.undeadKilled ) / this.undeadToKill, 0.0f, 1.0f ) );
 
-		if( getPlayersInRange() == 0 )
+		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
+
+		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( spawnRadius/7 ) >= this.undeadToKill/2 ) )
+			createSpawner();
 
 		if( this.undeadKilled == this.undeadToKill )
 			endWave();
@@ -211,7 +221,7 @@ public class UndeadArmy {
 	private void tickStopped() {
 		this.ticksInactive++;
 
-		if( getPlayersInRange() > 0 )
+		if( countNearbyPlayers() > 0 )
 			this.status = Status.ONGOING;
 
 		if( this.ticksInactive >= ticksInactiveMaximum )
@@ -230,6 +240,8 @@ public class UndeadArmy {
 			this.status = Status.FAILED;
 			this.betweenRaidTicks = betweenRaidTicksMaximum * 2;
 			this.bossInfo.setPercent( 1.0f );
+			this.spawnerWasCreated = false;
+			createSpawner();
 		} else if( this.currentWave >= getWaves() ) {
 			this.status = Status.VICTORY;
 			this.betweenRaidTicks = betweenRaidTicksMaximum * 2;
@@ -243,29 +255,46 @@ public class UndeadArmy {
 		updateBarText();
 	}
 
+	private void createSpawner() {
+		for( int y = 0; y <= 5 && !this.spawnerWasCreated; y++ )
+			for( int i = 0; i < 10 && !this.spawnerWasCreated; i++ ) {
+				int x = MajruszsDifficulty.RANDOM.nextInt( 7 ) - 3;
+				int z = MajruszsDifficulty.RANDOM.nextInt( 7 ) - 3;
+				BlockPos position = positionToAttack.add( x, y, z );
+
+				if( this.world.isAirBlock( position ) ) {
+					this.world.setBlockState( position, Blocks.SPAWNER.getDefaultState() );
+					this.spawnerWasCreated = true;
+
+					TileEntity tileEntity = this.world.getTileEntity( position );
+					if( !( tileEntity instanceof MobSpawnerTileEntity ) )
+						continue;
+
+					( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic().setEntityType( getRandomEntityForSpawner() );
+				}
+			}
+
+		this.spawnerWasCreated = true;
+	}
+
 	private void spawnWaveEnemies() {
-		List< ServerPlayerEntity > players = this.world.getPlayers( getParticipantsPredicate() );
-		double playersFactor = 1.0 + ( Math.max( 1, players.size() ) - 1 ) * Config.getDouble( Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS );
+		double playersFactor = 1.0 + ( Math.max( 1, countNearbyPlayers() ) - 1 ) * Config.getDouble( Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS );
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
 
 		for( WaveMember waveMember : WaveMember.values() ) {
 			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
-				MonsterEntity monster = ( MonsterEntity )waveMember.type.spawn( this.world, null, null, getRandomSpawnPosition(), SpawnReason.EVENT,
-					true, true
+				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.world, this.positionToAttack, spawnRadius );
+				MonsterEntity monster = ( MonsterEntity )waveMember.type.spawn( this.world, null, null, randomPosition, SpawnReason.EVENT, true,
+					true
 				);
 				if( monster == null )
 					continue;
 
 				monster.enablePersistence();
-				monster.goalSelector.addGoal( 9, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 25.0f, 5.0f ) );
+				updateUndeadGoal( monster );
 				tryToEnchantEquipment( monster );
-
-				CompoundNBT nbt = monster.getPersistentData();
-				nbt.putBoolean( "UndeadArmyFrostWalker", true );
-				nbt.putInt( "UndeadArmyPositionX", this.positionToAttack.getX() );
-				nbt.putInt( "UndeadArmyPositionY", this.positionToAttack.getY() );
-				nbt.putInt( "UndeadArmyPositionZ", this.positionToAttack.getZ() );
+				updateUndeadData( monster );
 
 				this.undeadToKill++;
 			}
@@ -274,7 +303,7 @@ public class UndeadArmy {
 		int x = this.positionToAttack.getX() + this.direction.x * spawnRadius;
 		int z = this.positionToAttack.getZ() + this.direction.z * spawnRadius;
 
-		for( ServerPlayerEntity player : players )
+		for( ServerPlayerEntity player : getNearbyPlayers() )
 			player.connection.sendPacket(
 				new SPlaySoundEffectPacket( RegistryHandler.UNDEAD_ARMY_WAVE_STARTED.get(), SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f,
 					1.0f
@@ -300,44 +329,31 @@ public class UndeadArmy {
 			}
 	}
 
-	private BlockPos getRandomSpawnPosition() {
-		int xFactor = ( this.direction.z != 0 ? 5 : 1 ) * standardDeviation;
-		int zFactor = ( this.direction.x != 0 ? 5 : 1 ) * standardDeviation;
-		int xx = MajruszsDifficulty.RANDOM.nextInt( xFactor * 2 ) - xFactor;
-		int zz = MajruszsDifficulty.RANDOM.nextInt( zFactor * 2 ) - zFactor;
-		int x = this.positionToAttack.getX() + this.direction.x * spawnRadius + xx;
-		int z = this.positionToAttack.getZ() + this.direction.z * spawnRadius + zz;
-		int y = this.world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z );
-
-		return new BlockPos( x, y, z );
-	}
-
 	private void rewardPlayers() {
 		for( PlayerEntity player : this.world.getPlayers( getParticipantsPredicate() ) ) {
 			Vector3d position = player.getPositionVec();
 			for( int i = 0; i < getExperienceVictory() / 4; i++ )
 				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), 4 ) );
 
-			ItemStack treasureBag = new ItemStack( RegistryHandler.UNDEAD_TREASURE_BAG.get() );
-			if( player.canPickUpItem( treasureBag ) )
-				player.inventory.addItemStackToInventory( treasureBag );
-			else
-				this.world.addEntity( new ItemEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), treasureBag ) );
+			MajruszsHelper.giveItemStackToPlayer( new ItemStack( RegistryHandler.UNDEAD_TREASURE_BAG.get() ), player, this.world );
 		}
 	}
 
-	private void finish() {
-		this.isActive = false;
-		this.bossInfo.removeAllPlayers();
+	private void updateUndeadData( MonsterEntity monster ) {
+		CompoundNBT nbt = monster.getPersistentData();
+		nbt.putBoolean( "UndeadArmyFrostWalker", true );
+		nbt.putInt( "UndeadArmyPositionX", this.positionToAttack.getX() );
+		nbt.putInt( "UndeadArmyPositionY", this.positionToAttack.getY() );
+		nbt.putInt( "UndeadArmyPositionZ", this.positionToAttack.getZ() );
 	}
 
-	private Predicate< ServerPlayerEntity > getParticipantsPredicate() {
-		return player->player.isAlive() && ( RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( player.getPositionVec() ) ) == this );
+	private void updateUndeadGoal( MonsterEntity monster ) {
+		monster.goalSelector.addGoal( 9, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 20.0f, 3.0f ) );
 	}
 
 	private void updateUndeadArmyBarVisibility() {
 		Set< ServerPlayerEntity > currentPlayers = Sets.newHashSet( this.bossInfo.getPlayers() );
-		List< ServerPlayerEntity > validPlayers = this.world.getPlayers( getParticipantsPredicate() );
+		List< ServerPlayerEntity > validPlayers = getNearbyPlayers();
 
 		for( ServerPlayerEntity player : validPlayers )
 			if( !currentPlayers.contains( player ) )
@@ -348,9 +364,45 @@ public class UndeadArmy {
 				this.bossInfo.removePlayer( player );
 	}
 
-	private int getPlayersInRange() {
-		return this.world.getPlayers( getParticipantsPredicate() )
-			.size();
+	private AxisAlignedBB getAxisAligned( double range ) {
+		Vector3i vector = new Vector3i( range, range, range );
+
+		return new AxisAlignedBB( this.positionToAttack.subtract( vector ), this.positionToAttack.add( vector ) );
+	}
+
+	private Predicate< MonsterEntity > getUndeadParticipantsPredicate() {
+		return monster->( monster.isAlive() && monster.getPersistentData().contains( "UndeadArmyFrostWalker" ) );
+	}
+
+	private List< MonsterEntity > getNearbyUndeadArmy( double range ) {
+		return this.world.getEntitiesWithinAABB( MonsterEntity.class, getAxisAligned( range ), getUndeadParticipantsPredicate() );
+	}
+
+	private int countNearbyUndeadArmy( double range ) {
+		return getNearbyUndeadArmy( range ).size();
+	}
+
+	private Predicate< ServerPlayerEntity > getParticipantsPredicate() {
+		return player->player.isAlive() && ( RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( player.getPositionVec() ) ) == this );
+	}
+
+	private List< ServerPlayerEntity > getNearbyPlayers() {
+		return this.world.getPlayers( getParticipantsPredicate() );
+	}
+
+	private int countNearbyPlayers() {
+		return getNearbyPlayers().size();
+	}
+
+	private EntityType< ? > getRandomEntityForSpawner() {
+		switch( GameState.getCurrentMode() ) {
+			default:
+				return EntityType.ZOMBIE;
+			case EXPERT:
+				return EntityType.SKELETON;
+			case MASTER:
+				return EliteSkeletonEntity.type;
+		}
 	}
 
 	private int getExperienceVictory() {
@@ -383,70 +435,6 @@ public class UndeadArmy {
 				return 0.25;
 			case MASTER:
 				return 0.5;
-		}
-	}
-
-	private ITextComponent getWaveMessage() {
-		IFormattableTextComponent message = new StringTextComponent( "" );
-		message.append( texts.title );
-		message.appendString( " (" );
-		message.append( texts.wave );
-		message.appendString( " " + this.currentWave + ")" );
-
-		return message;
-	}
-
-	private enum Status {
-		BETWEEN_WAVES, ONGOING, VICTORY, FAILED, STOPPED;
-
-		private static Status getByName( String name ) {
-			for( Status status : Status.values() )
-				if( name.equalsIgnoreCase( status.name() ) )
-					return status;
-
-			return ONGOING;
-		}
-	}
-
-	public enum WaveMember implements IExtensibleEnum {
-		ZOMBIE( EntityType.ZOMBIE, new int[]{ 5, 4, 3, 2, 2 } ), HUSK( EntityType.HUSK, new int[]{ 1, 1, 2, 3, 4 } ), GIANT( GiantEntity.type,
-			new int[]{ 0, 0, 0, 1, 2 }
-		), SKELETON( EntityType.SKELETON, new int[]{ 3, 3, 2, 2, 2 } ), STRAY( EntityType.STRAY, new int[]{ 1, 1, 1, 2, 3 } ), ELITE_SKELETON(
-			EliteSkeletonEntity.type, new int[]{ 1, 2, 3, 4, 5 } );
-
-		public final EntityType< ? > type;
-		private final int[] waveCounts;
-
-		WaveMember( EntityType< ? > type, int[] waveCounts ) {
-			this.type = type;
-			this.waveCounts = waveCounts;
-		}
-
-		public static WaveMember create( String name, EntityType< ? > type, int[] waveCounts ) {
-			throw new IllegalStateException( "Enum not extended" + name + type + Arrays.toString( waveCounts ) ); // weird but required
-		}
-	}
-
-	public enum Direction {
-		WEST( -1, 0 ), EAST( 1, 0 ), NORTH( 0, -1 ), SOUTH( 0, 1 );
-
-		public final int x, z;
-
-		Direction( int x, int z ) {
-			this.x = x;
-			this.z = z;
-		}
-
-		public static Direction getRandom() {
-			return Direction.values()[ MajruszsDifficulty.RANDOM.nextInt( Direction.values().length ) ];
-		}
-
-		private static Direction getByName( String name ) {
-			for( Direction direction : Direction.values() )
-				if( name.equalsIgnoreCase( direction.name() ) )
-					return direction;
-
-			return WEST;
 		}
 	}
 }

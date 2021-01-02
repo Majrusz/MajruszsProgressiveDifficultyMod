@@ -1,10 +1,12 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.commands.ChangeGameStateCommand;
+import com.majruszs_difficulty.commands.StopUndeadArmyCommand;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
 import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
+import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.majruszs_difficulty.items.UndeadBattleStandard;
@@ -109,6 +111,7 @@ public class RegistryHandler {
 		CommandDispatcher< CommandSource > dispatcher = event.getDispatcher();
 
 		ChangeGameStateCommand.register( dispatcher );
+		StopUndeadArmyCommand.register( dispatcher );
 	}
 
 	private static void onServerStart( FMLServerStartingEvent event ) {
@@ -131,6 +134,8 @@ public class RegistryHandler {
 		undeadArmyManager.updateWorld( world );
 
 		gameDataSaver = manager.getOrCreate( GameDataSaver::new, GameDataSaver.DATA_NAME );
+
+		ReloadUndeadArmyGoals.resetTimer();
 	}
 
 	public static void onSavingWorld( WorldEvent.Save event ) {
