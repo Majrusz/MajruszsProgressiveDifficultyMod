@@ -5,6 +5,7 @@ import com.majruszs_difficulty.commands.StopUndeadArmyCommand;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
+import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
@@ -21,6 +22,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,7 +41,7 @@ public class RegistryHandler {
 	public static final DeferredRegister< EntityType< ? > > ENTITIES = DeferredRegister.create( ForgeRegistries.ENTITIES, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Item > ITEMS = DeferredRegister.create( ForgeRegistries.ITEMS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< SoundEvent > SOUNDS = DeferredRegister.create( ForgeRegistries.SOUND_EVENTS, MajruszsDifficulty.MOD_ID );
-
+	public static final DeferredRegister< Structure< ? > > STRUCTURES = DeferredRegister.create( ForgeRegistries.STRUCTURE_FEATURES, MajruszsDifficulty.MOD_ID );
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
 	// Entities
@@ -50,6 +52,7 @@ public class RegistryHandler {
 	public static final RegistryObject< EntityType< EliteSkeletonEntity > > ELITE_SKELETON = ENTITIES.register( "elite_skeleton",
 		()->EliteSkeletonEntity.type
 	);
+	public static final RegistryObject< EntityType< SkyKeeperEntity > > SKY_KEEPER = ENTITIES.register( "sky_keeper", ()->SkyKeeperEntity.type );
 
 	// Items
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
@@ -89,6 +92,7 @@ public class RegistryHandler {
 		NewSpawnEggs.registerSpawnEgg( "pillager_wolf_spawn_egg", PillagerWolfEntity.type, 9804699, 5451574 );
 		NewSpawnEggs.registerSpawnEgg( "illusioner_spawn_egg", EntityType.ILLUSIONER, 0x135a97, 9804699 );
 		NewSpawnEggs.registerSpawnEgg( "elite_skeleton_spawn_egg", EliteSkeletonEntity.type, 12698049, 0xFE484D );
+		NewSpawnEggs.registerSpawnEgg( "sky_keeper_spawn_egg", SkyKeeperEntity.type, 0x7B45AD, 0xF0F0F0 );
 
 		ENTITIES.register( modEventBus );
 		ITEMS.register( modEventBus );
@@ -99,6 +103,7 @@ public class RegistryHandler {
 		GlobalEntityTypeAttributes.put( GiantEntity.type, GiantEntity.getAttributeMap() );
 		GlobalEntityTypeAttributes.put( PillagerWolfEntity.type, PillagerWolfEntity.getAttributeMap() );
 		GlobalEntityTypeAttributes.put( EliteSkeletonEntity.type, EliteSkeletonEntity.getAttributeMap() );
+		GlobalEntityTypeAttributes.put( SkyKeeperEntity.type, SkyKeeperEntity.getAttributeMap() );
 
 		NewSpawnEggs.addDispenseBehaviorToAllRegisteredEggs();
 	}
