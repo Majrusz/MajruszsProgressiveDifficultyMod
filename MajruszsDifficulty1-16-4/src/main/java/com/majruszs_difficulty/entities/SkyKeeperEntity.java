@@ -33,8 +33,8 @@ public class SkyKeeperEntity extends PhantomEntity {
 
 	public static AttributeModifierMap getAttributeMap() {
 		return MobEntity.func_233666_p_()
-			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 26.0D )
-			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 8.0D )
+			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 26.0 )
+			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 8.0 )
 			.create();
 	}
 }

@@ -33,9 +33,9 @@ public class PillagerWolfEntity extends WolfEntity {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal( 1, new SwimGoal( this ) );
-		this.goalSelector.addGoal( 2, new MeleeAttackGoal( this, 1.0D, true ) );
-		this.goalSelector.addGoal( 4, new WaterAvoidingRandomWalkingGoal( this, 1.0D ) );
-		this.goalSelector.addGoal( 5, new LookAtGoal( this, PlayerEntity.class, 8.0F ) );
+		this.goalSelector.addGoal( 2, new MeleeAttackGoal( this, 1.0, true ) );
+		this.goalSelector.addGoal( 4, new WaterAvoidingRandomWalkingGoal( this, 1.0 ) );
+		this.goalSelector.addGoal( 5, new LookAtGoal( this, PlayerEntity.class, 8.0f ) );
 		this.goalSelector.addGoal( 5, new LookRandomlyGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, PlayerEntity.class, true ) );
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, VillagerEntity.class, true ) );
@@ -50,9 +50,9 @@ public class PillagerWolfEntity extends WolfEntity {
 
 	public static AttributeModifierMap getAttributeMap() {
 		return MobEntity.func_233666_p_()
-			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 12.0D )
-			.createMutableAttribute( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.3125D )
-			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 4.0D )
+			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 12.0 )
+			.createMutableAttribute( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.3125 )
+			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 4.0 )
 			.create();
 	}
 }
