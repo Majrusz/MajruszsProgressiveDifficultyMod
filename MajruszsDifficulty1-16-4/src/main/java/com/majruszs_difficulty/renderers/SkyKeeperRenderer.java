@@ -15,11 +15,16 @@ public class SkyKeeperRenderer extends PhantomRenderer {
 
 	public SkyKeeperRenderer( EntityRendererManager renderManagerIn ) {
 		super( renderManagerIn );
-		this.layerRenderers.clear();
-		this.layerRenderers.add( new SkyKeeperEyesLayer<>( this ) );
+		overwriteLayers();
 	}
 
 	public ResourceLocation getEntityTexture( PhantomEntity entity ) {
 		return SKY_KEEPER_TEXTURE;
+	}
+
+	/** Overwrites standard Phantom layers with Sky Keeper's one. */
+	protected void overwriteLayers() {
+		this.layerRenderers.clear();
+		this.layerRenderers.add( new SkyKeeperEyesLayer<>( this ) );
 	}
 }
