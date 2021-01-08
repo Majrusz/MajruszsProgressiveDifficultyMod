@@ -2,6 +2,7 @@ package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.AttributeHelper;
 import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -14,13 +15,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+/** Entity that is more powerful version of Wolf and always hostile. */
 public class PillagerWolfEntity extends WolfEntity {
 	public static final EntityType< PillagerWolfEntity > type;
 
 	static {
 		type = EntityType.Builder.create( PillagerWolfEntity::new, EntityClassification.MONSTER )
 			.size( 0.625f, 0.85f )
-			.build( new ResourceLocation( MajruszsDifficulty.MOD_ID, "pillager_wolf" ).toString() );
+			.build( MajruszsHelper.getResource( "pillager_wolf" ).toString() );
 	}
 
 	public PillagerWolfEntity( EntityType< ? extends WolfEntity > type, World world ) {
@@ -40,9 +42,10 @@ public class PillagerWolfEntity extends WolfEntity {
 		this.targetSelector.addGoal( 4, new NearestAttackableTargetGoal<>( this, IronGolemEntity.class, true ) );
 	}
 
+	/** Makes wolf unable to be tamed. */
 	@Override
 	public boolean func_233678_J__() {
-		return true; // wolf will not be tamed
+		return true;
 	}
 
 	public static AttributeModifierMap getAttributeMap() {
