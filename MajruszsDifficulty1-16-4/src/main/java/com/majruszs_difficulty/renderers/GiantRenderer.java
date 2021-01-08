@@ -8,6 +8,7 @@ import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/** Renderer for Giant entity. */
 @OnlyIn( Dist.CLIENT )
 public class GiantRenderer extends ZombieRenderer {
 	public GiantRenderer( EntityRendererManager renderManagerIn ) {

@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.renderers;
 
-import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.entity.passive.WolfEntity;
@@ -8,9 +8,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/** Renderer for Pillager's Wolf entity. */
 @OnlyIn( Dist.CLIENT )
 public class PillagerWolfRenderer extends WolfRenderer {
-	private static final ResourceLocation ANGRY_WOLF_TEXTURES = new ResourceLocation( MajruszsDifficulty.MOD_ID, "textures/entity/pillager_wolf.png" );
+	private static final ResourceLocation ANGRY_WOLF_TEXTURES = MajruszsHelper.getResource( "textures/entity/pillager_wolf.png" );
 
 	public PillagerWolfRenderer( EntityRendererManager rendererManager ) {
 		super( rendererManager );
