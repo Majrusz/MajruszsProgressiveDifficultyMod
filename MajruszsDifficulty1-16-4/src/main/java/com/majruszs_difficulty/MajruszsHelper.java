@@ -108,4 +108,13 @@ public class MajruszsHelper {
 			world.addEntity( new ItemEntity( world, x, y, z, itemStack ) );
 		}
 	}
+
+	/** Returns resource location relative to mod id.
+
+	 @param location Path to desired file.
+	 @return Returns new instance of resource location.
+	 */
+	public static ResourceLocation getResource( String location ) {
+		return new ResourceLocation( MajruszsDifficulty.MOD_ID, location );
+	}
 }
