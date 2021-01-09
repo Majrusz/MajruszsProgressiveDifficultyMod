@@ -21,30 +21,33 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+/** Entity that is more powerful version of Skeleton. */
 public class EliteSkeletonEntity extends SkeletonEntity {
 	public static final Potion[] arrowPotions = new Potion[]{ Potions.HARMING, Potions.POISON, Potions.SLOWNESS, Potions.WEAKNESS };
 	public static final EntityType< EliteSkeletonEntity > type;
-	public final RangedBowAttackGoal< AbstractSkeletonEntity > rangedAttackGoal;
 
 	static {
 		type = EntityType.Builder.create( EliteSkeletonEntity::new, EntityClassification.MONSTER )
 			.size( 0.6f, 2.0f )
-			.build( new ResourceLocation( MajruszsDifficulty.MOD_ID, "elite_skeleton" ).toString() );
+			.build( MajruszsHelper.getResource( "elite_skeleton" )
+				.toString() );
 	}
+
+	public final RangedBowAttackGoal< AbstractSkeletonEntity > rangedAttackGoal;
 
 	public EliteSkeletonEntity( EntityType< ? extends SkeletonEntity > type, World world ) {
 		super( type, world );
-		this.rangedAttackGoal = new RangedBowAttackGoal<>( this, 5.0/6.0, 15, 20.0f );
+		this.rangedAttackGoal = new RangedBowAttackGoal<>( this, 5.0 / 6.0, 15, 20.0f );
 		overwriteRangedAttackGoal();
 	}
 
+	/** Overriding basic Skeleton attack method with changes to inaccuracy, velocity and ammo this entity uses. */
 	@Override
 	public void attackEntityWithRangedAttack( LivingEntity target, float distanceFactor ) {
 		ItemStack heldItemStack = getHeldItemMainhand();
@@ -58,11 +61,24 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 		double d2 = target.getPosZ() - this.getPosZ();
 		double d3 = MathHelper.sqrt( d0 * d0 + d2 * d2 );
 
-		arrowEntity.shoot( d0, d1 + d3 * 0.2, d2, 2.0f, 0 );
+		arrowEntity.shoot( d0, d1 + d3 * 0.2, d2, 2.0f, 0 ); // here is the change to velocity and inaccuracy
 		playSound( SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / ( MajruszsDifficulty.RANDOM.nextFloat() * 0.4f + 0.8f ) );
 		this.world.addEntity( arrowEntity );
 	}
 
+	public static AttributeModifierMap getAttributeMap() {
+		return MobEntity.func_233666_p_()
+			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 20.0 )
+			.createMutableAttribute( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.3 )
+			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 2.5 )
+			.create();
+	}
+
+	/**
+	 Generating ammunition the skeleton will use. Skeleton have a chance to use tipped arrow instead of standard one.
+
+	 @param distanceFactor Distance between Skeleton and its target.
+	 */
 	protected AbstractArrowEntity getArrowEntity( float distanceFactor ) {
 		ItemStack ammunition = findAmmo( getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) ) );
 
@@ -78,6 +94,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 		return fireArrow( ammunition, distanceFactor );
 	}
 
+	/** Overwrites basic ranged attack goal with new one which gives all the bonuses to Skeleton. */
 	protected void overwriteRangedAttackGoal() {
 		ItemStack itemstack = getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) );
 
@@ -87,13 +104,5 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 			this.rangedAttackGoal.setAttackCooldown( attackCooldown );
 			this.goalSelector.addGoal( 4, this.rangedAttackGoal );
 		}
-	}
-
-	public static AttributeModifierMap getAttributeMap() {
-		return MobEntity.func_233666_p_()
-			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 20.0 )
-			.createMutableAttribute( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.3 )
-			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 2.5 )
-			.create();
 	}
 }
