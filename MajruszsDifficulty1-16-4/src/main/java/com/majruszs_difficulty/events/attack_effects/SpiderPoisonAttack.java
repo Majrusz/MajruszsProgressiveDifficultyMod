@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events;
+package com.majruszs_difficulty.events.attack_effects;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.ConfigHandler.Config;
