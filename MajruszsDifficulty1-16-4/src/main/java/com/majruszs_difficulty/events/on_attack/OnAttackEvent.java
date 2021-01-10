@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.attack_effects;
+package com.majruszs_difficulty.events.on_attack;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
