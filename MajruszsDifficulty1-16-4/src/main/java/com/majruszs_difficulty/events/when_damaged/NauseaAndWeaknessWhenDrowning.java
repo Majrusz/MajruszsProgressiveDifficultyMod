@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.events.when_damaged;
 
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +25,7 @@ public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffe
 
 	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
-		return MajruszsHelper.secondsToTicks( 10.0 );
+		return Config.getDurationInSeconds( Config.Durations.DROWNING_EFFECTS );
 	}
 
 	@Override
@@ -34,11 +35,11 @@ public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffe
 
 	@Override
 	protected boolean isEnabled() {
-		return true;
+		return !Config.isDisabled( Config.Features.DROWNING_EFFECTS );
 	}
 
 	@Override
 	protected double getChance() {
-		return 1.0;
+		return Config.getChance( Config.Chances.DROWNING_EFFECTS );
 	}
 }
