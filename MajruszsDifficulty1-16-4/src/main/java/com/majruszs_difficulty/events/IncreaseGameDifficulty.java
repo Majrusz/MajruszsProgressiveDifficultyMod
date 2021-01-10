@@ -4,10 +4,13 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.raid.Raid;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -27,20 +30,14 @@ public class IncreaseGameDifficulty {
 		if( GameState.getCurrentMode() != GameState.Mode.NORMAL )
 			return;
 
-		if( !( playerEnteringDimension.getEntityWorld() instanceof ServerWorld ) )
-			return;
+		MinecraftServer minecraftServer = playerEnteringDimension.getServer();
 
-		ServerWorld world = ( ServerWorld )playerEnteringDimension.getEntityWorld();
+		if( minecraftServer == null )
+			return;
 
 		GameState.changeMode( GameState.Mode.EXPERT );
 
-		for( PlayerEntity player : world.getPlayers() ) {
-			IFormattableTextComponent message = new TranslationTextComponent( "majruszs_difficulty.on_expert_mode_start" );
-			message.mergeStyle( GameState.expertModeColor );
-			message.mergeStyle( TextFormatting.BOLD );
-
-			player.sendStatusMessage( message, false );
-		}
+		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.expertModeColor );
 	}
 
 	@SubscribeEvent
@@ -53,16 +50,23 @@ public class IncreaseGameDifficulty {
 		if( !( dragon.getEntityWorld() instanceof ServerWorld ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )dragon.getEntityWorld();
-
 		if( GameState.getCurrentMode() == GameState.Mode.MASTER )
+			return;
+
+		MinecraftServer minecraftServer = dragon.getServer();
+
+		if( minecraftServer == null )
 			return;
 
 		GameState.changeMode( GameState.Mode.MASTER );
 
-		for( PlayerEntity player : world.getPlayers() ) {
-			IFormattableTextComponent message = new TranslationTextComponent( "majruszs_difficulty.on_master_mode_start" );
-			message.mergeStyle( GameState.masterModeColor );
+		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.masterModeColor );
+	}
+
+	protected static void sendMessage( PlayerList playerList, String translationKey, TextFormatting textColor ) {
+		for( PlayerEntity player : playerList.getPlayers() ) {
+			IFormattableTextComponent message = new TranslationTextComponent( translationKey );
+			message.mergeStyle( textColor );
 			message.mergeStyle( TextFormatting.BOLD );
 
 			player.sendStatusMessage( message, false );
