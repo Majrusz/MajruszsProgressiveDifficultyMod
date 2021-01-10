@@ -38,11 +38,11 @@ public class DrownedLightningOnAttack extends OnAttackBase {
 
 	@Override
 	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.SPIDER_POISON );
+		return !Config.isDisabled( Config.Features.DROWNED_LIGHTNING );
 	}
 
 	@Override
 	protected double getChance() {
-		return Config.getChance( Config.Chances.SPIDER_POISON ) * 1000.0;
+		return Config.getChance( Config.Chances.DROWNED_LIGHTNING );
 	}
 }
