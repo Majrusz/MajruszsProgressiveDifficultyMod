@@ -18,7 +18,8 @@ public abstract class WhenDamagedBase {
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;
 	}
 
-	/** Function called when entity was damaged.
+	/**
+	 Function called when entity was damaged.
 
 	 @param target Entity target that was attacked.
 	 */

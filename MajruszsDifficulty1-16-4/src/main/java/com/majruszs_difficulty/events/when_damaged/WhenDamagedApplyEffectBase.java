@@ -20,7 +20,8 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 		this( minimumMode, shouldBeMultipliedByCRD, new Effect[]{ effect } );
 	}
 
-	/** Function called when entity was damaged.
+	/**
+	 Function called when entity was damaged.
 
 	 @param target Entity target that was attacked.
 	 */

@@ -23,7 +23,8 @@ public class DrownedLightningOnAttack extends WhenDamagedBase {
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		boolean isDrowned = attacker instanceof DrownedEntity;
-		boolean isDrownedHoldingTrident = isDrowned && attacker.getHeldItemMainhand().getItem() instanceof TridentItem;
+		boolean isDrownedHoldingTrident = isDrowned && attacker.getHeldItemMainhand()
+			.getItem() instanceof TridentItem;
 
 		return isDrownedHoldingTrident && super.shouldBeExecuted( attacker, target, damageSource );
 	}
