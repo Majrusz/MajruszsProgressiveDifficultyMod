@@ -2,7 +2,11 @@
   "type": "minecraft:gift",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": {
+        "min": 3.0,
+        "max": 5.0,
+        "type": "minecraft:uniform"
+      },
       "entries": [
         {
           "type": "minecraft:item",
@@ -52,13 +56,13 @@
         {
           "type": "minecraft:item",
           "weight": 10,
-          "name": "minecraft:gold_ingot",
+          "name": "minecraft:gold_nugget",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 4.0,
-                "max": 8.0,
+                "min": 12.0,
+                "max": 36.0,
                 "type": "minecraft:uniform"
               }
             }
@@ -153,14 +157,19 @@
           "name": "minecraft:ender_pearl"
         },
         {
-          "type": "minecraft:item",
-          "weight": 5,
-          "name": "minecraft:scute"
-        },
-        {
           "type": "minecraft:loot_table",
           "weight": 5,
           "name": "minecraft:gameplay/fishing/treasure"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "minecraft:rabbit_foot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "minecraft:scute"
         }
       ]
     }
