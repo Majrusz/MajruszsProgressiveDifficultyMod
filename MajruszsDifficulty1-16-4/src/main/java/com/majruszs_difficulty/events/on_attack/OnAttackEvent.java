@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Handling all 'OnAttack' events. */
 @Mod.EventBusSubscriber
 public class OnAttackEvent {
 	private static final List< OnAttackBase > registryList = new ArrayList<>();
@@ -16,6 +17,7 @@ public class OnAttackEvent {
 	static {
 		registryList.add( new SpiderPoisonOnAttack() );
 		registryList.add( new SkyKeeperLevitationOnAttack() );
+		registryList.add( new DrownedLightningOnAttack() );
 	}
 
 	@SubscribeEvent

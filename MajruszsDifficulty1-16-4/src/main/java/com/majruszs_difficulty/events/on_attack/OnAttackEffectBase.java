@@ -34,7 +34,7 @@ public abstract class OnAttackEffectBase extends OnAttackBase {
 		Difficulty difficulty = world.getDifficulty();
 
 		for( Effect effect : this.effects ) {
-			if( MajruszsHelper.tryChance( calculateChance( target ) ) )
+			if( !MajruszsHelper.tryChance( calculateChance( target ) ) )
 				continue;
 
 			applyEffect( target, effect, difficulty );
