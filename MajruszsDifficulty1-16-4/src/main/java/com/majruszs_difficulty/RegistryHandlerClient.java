@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
+/** Class registering things only on the client side. */
 @OnlyIn( Dist.CLIENT )
 public class RegistryHandlerClient {
 	public static void setup() {
