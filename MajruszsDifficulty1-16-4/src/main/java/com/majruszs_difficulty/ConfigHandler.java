@@ -11,11 +11,11 @@ public class ConfigHandler {
 
 	public static class Config {
 		public static class Features {
-			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE_EFFECTS, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD;
+			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE_EFFECTS, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD, SKY_KEEPER_SPAWNING, SKY_KEEPER_LEVITATION;
 		}
 
 		public static class Chances {
-			public static ForgeConfigSpec.DoubleValue CREEPER_CHARGED, CREEPER_EFFECTS, ENEMY_GROUPS, SPIDER_POISON, ELITE_TIPPED_ARROW;
+			public static ForgeConfigSpec.DoubleValue CREEPER_CHARGED, CREEPER_EFFECTS, ENEMY_GROUPS, SPIDER_POISON, ELITE_TIPPED_ARROW, SKY_KEEPER_LEVITATION;
 		}
 
 		public static class Durations {
@@ -71,6 +71,8 @@ public class ConfigHandler {
 		Config.Features.SPIDER_POISON = createConfigSpecForBoolean( "spider_poison", "", true );
 		Config.Features.EVOKER_TOTEM = createConfigSpecForBoolean( "evoker_totem", "", true );
 		Config.Features.WITHER_SKELETON_SWORD = createConfigSpecForBoolean( "wither_skeleton_sword", "", true );
+		Config.Features.SKY_KEEPER_SPAWNING = createConfigSpecForBoolean( "sky_keeper_spawning", "", true );
+		Config.Features.SKY_KEEPER_LEVITATION = createConfigSpecForBoolean( "sky_keeper_levitation_attack", "", true );
 		BUILDER.pop();
 
 		BUILDER.comment( "Remember these chances below are scaled by Clamped Regional Difficulty! (0.0 ~ 1.0)" );
@@ -81,6 +83,7 @@ public class ConfigHandler {
 		Config.Chances.ENEMY_GROUPS = createConfigSpecForDouble( "enemy_groups_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.SPIDER_POISON = createConfigSpecForDouble( "spider_poison_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.ELITE_TIPPED_ARROW = createConfigSpecForDouble( "elite_skeleton_tipped_arrow_chance", "", 0.75, 0.0, 1.0 );
+		Config.Chances.SKY_KEEPER_LEVITATION = createConfigSpecForDouble( "sky_keeper_levitation_chance", "", 0.375, 0.0, 1.0 );
 		BUILDER.pop();
 
 		BUILDER.comment( "All durations below are given in seconds." );

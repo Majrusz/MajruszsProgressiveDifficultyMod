@@ -7,7 +7,7 @@ import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.Difficulty;
 
-/** Making spider attacks have a chance to poison enemies. */
+/** Making Spider attacks have a chance to poison enemies. */
 public class SpiderPoisonOnAttack extends OnAttackEffectBase {
 	public SpiderPoisonOnAttack() {
 		super( SpiderEntity.class, GameState.Mode.NORMAL, true, Effects.POISON );

@@ -15,6 +15,7 @@ public class OnAttackEvent {
 
 	static {
 		registryList.add( new SpiderPoisonOnAttack() );
+		registryList.add( new SkyKeeperLevitationOnAttack() );
 	}
 
 	@SubscribeEvent

@@ -48,8 +48,13 @@ public abstract class OnAttackStackableEffectBase extends OnAttackEffectBase {
 			return;
 		}
 
-		int durationInTicks = Math.min( getDurationInTicks( difficulty ) + previousEffectInstance.getDuration(), this.maximumDurationInTicks );
-		int amplifier = Math.min( getAmplifier( difficulty ) + previousEffectInstance.getAmplifier(), this.maximumAmplifier );
+		int durationInTicks = getDurationInTicks( difficulty );
+		if( this.isDurationStackable )
+			durationInTicks = Math.min( durationInTicks + previousEffectInstance.getDuration(), this.maximumDurationInTicks );
+
+		int amplifier = getAmplifier( difficulty );
+		if( this.isAmplifierStackable )
+			amplifier = Math.min( amplifier + previousEffectInstance.getAmplifier(), this.maximumAmplifier );
 
 		EffectInstance effectInstance = new EffectInstance( effect, durationInTicks, amplifier );
 		if( target.isPotionApplicable( effectInstance ) )
