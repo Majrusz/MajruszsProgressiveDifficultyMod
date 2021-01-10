@@ -14,7 +14,7 @@ public class OnAttackEvent {
 	private static final List< OnAttackBase > registryList = new ArrayList<>();
 
 	static {
-		registryList.add( new SpiderPoisonOnAttackEffect() );
+		registryList.add( new SpiderPoisonOnAttack() );
 	}
 
 	@SubscribeEvent
