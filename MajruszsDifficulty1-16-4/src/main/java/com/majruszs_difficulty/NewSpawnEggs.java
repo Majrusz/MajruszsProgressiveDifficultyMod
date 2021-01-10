@@ -11,6 +11,7 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fml.RegistryObject;
 
+/** Class adding easy way to add new spawn eggs to the game. */
 public class NewSpawnEggs {
 	public static void addDispenseBehaviorToAllRegisteredEggs() {
 		DefaultDispenseItemBehavior defaultBehavior = new DefaultDispenseItemBehavior() {
