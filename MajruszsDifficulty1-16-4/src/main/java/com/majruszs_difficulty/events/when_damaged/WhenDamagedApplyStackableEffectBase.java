@@ -54,7 +54,7 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 
 		int amplifier = getAmplifier( difficulty );
 		if( this.isAmplifierStackable )
-			amplifier = Math.min( amplifier + previousEffectInstance.getAmplifier(), this.maximumAmplifier );
+			amplifier = Math.min( amplifier + previousEffectInstance.getAmplifier() + 1, this.maximumAmplifier );
 
 		EffectInstance effectInstance = new EffectInstance( effect, durationInTicks, amplifier );
 		if( target.isPotionApplicable( effectInstance ) )

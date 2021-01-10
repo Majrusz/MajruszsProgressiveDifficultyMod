@@ -18,6 +18,7 @@ public class WhenDamagedEvent {
 		registryList.add( new SpiderPoisonOnAttack() );
 		registryList.add( new SkyKeeperLevitationOnAttack() );
 		registryList.add( new DrownedLightningOnAttack() );
+		registryList.add( new NauseaAndWeaknessWhenDrowning() );
 	}
 
 	@SubscribeEvent
