@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
+/** Main modification class. */
 @Mod( MajruszsDifficulty.MOD_ID )
 public class MajruszsDifficulty {
 	public MajruszsDifficulty() {
