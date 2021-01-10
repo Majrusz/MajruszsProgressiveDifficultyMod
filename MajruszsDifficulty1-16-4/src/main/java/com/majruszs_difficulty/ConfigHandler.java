@@ -23,7 +23,7 @@ public class ConfigHandler {
 		}
 
 		public static class Values {
-			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT;
+			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT, FISHED_ITEMS_BAG_REQUIREMENT_NORMAL, FISHED_ITEMS_BAG_REQUIREMENT_EXPERT, FISHED_ITEMS_BAG_REQUIREMENT_MASTER;
 			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS;
 		}
 
@@ -99,6 +99,9 @@ public class ConfigHandler {
 
 		BUILDER.push( "Values" );
 		Config.Values.UNDEAD_ARMY_KILL_REQUIREMENT = createConfigSpecForInteger( "undead_army_kill_requirement", "", 50, 20, 500 );
+		Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_NORMAL = createConfigSpecForInteger( "fished_items_bag_requirement_normal", "", 30, 5, 100 );
+		Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_EXPERT = createConfigSpecForInteger( "fished_items_bag_requirement_expert", "", 20, 5, 100 );
+		Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_MASTER = createConfigSpecForInteger( "fished_items_bag_requirement_master", "", 10, 5, 100 );
 		Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS = createConfigSpecForDouble( "undead_army_scale_with_players", "", 0.5, 0.1, 1.0 );
 		BUILDER.pop();
 
