@@ -7,6 +7,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.math.BlockPos;
 
+/** Command responsible for stopping undead army in the player position. */
 public final class StopUndeadArmyCommand {
 	private StopUndeadArmyCommand() {}
 

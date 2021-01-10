@@ -7,6 +7,7 @@ import net.minecraft.command.Commands;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+/** Command responsible for changing current game state. */
 public final class ChangeGameStateCommand {
 	private ChangeGameStateCommand() {}
 
