@@ -43,10 +43,10 @@ public abstract class OnAttackBase {
 	/** Checking if event is not disabled by the player. */
 	protected abstract boolean isEnabled();
 
-	/** Returns chance of applying negative effect on entity. */
+	/** Returns chance of applying event on entity. */
 	protected abstract double getChance();
 
-	/** Calculating final effect chance. (after applying clamped regional difficulty if needed) */
+	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
 	protected double calculateChance( LivingEntity attacker ) {
 		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? MajruszsHelper.getClampedRegionalDifficulty( attacker ) : 1.0 );
 	}
