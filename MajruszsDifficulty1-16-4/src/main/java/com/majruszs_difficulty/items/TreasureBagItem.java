@@ -13,9 +13,7 @@ import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTable;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -53,6 +51,7 @@ public class TreasureBagItem extends Item {
 			if( !player.abilities.isCreativeMode )
 				itemStack.shrink( 1 );
 			player.addStat( Stats.ITEM_USED.get( this ) );
+			world.playSound( null, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 0.9f );
 
 			List< ItemStack > loot = generateLoot( player );
 			for( ItemStack reward : loot ) {
