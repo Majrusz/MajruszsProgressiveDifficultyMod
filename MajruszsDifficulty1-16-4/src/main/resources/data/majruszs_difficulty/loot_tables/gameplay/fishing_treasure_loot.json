@@ -3,14 +3,14 @@
   "pools": [
     {
       "rolls": {
-        "min": 2.0,
-        "max": 4.0,
+        "min": 4.0,
+        "max": 6.0,
         "type": "minecraft:uniform"
       },
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 25,
+          "weight": 20,
           "name": "minecraft:iron_nugget",
           "functions": [
             {
@@ -160,6 +160,16 @@
           "type": "minecraft:loot_table",
           "weight": 5,
           "name": "minecraft:gameplay/fishing/treasure"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ],
+          "name": "minecraft:book"
         },
         {
           "type": "minecraft:item",
