@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.on_attack;
+package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
@@ -7,27 +7,33 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.DrownedEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.TridentItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.Nullable;
+
 /** Making Drowned trident attacks have a chance to spawn lightning. */
-public class DrownedLightningOnAttack extends OnAttackBase {
+public class DrownedLightningOnAttack extends WhenDamagedBase {
 	public DrownedLightningOnAttack() {
-		super( DrownedEntity.class, GameState.Mode.NORMAL, true );
+		super( GameState.Mode.NORMAL, true );
+	}
+
+	/** Checking if all conditions were met. */
+	@Override
+	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+		boolean isDrowned = attacker instanceof DrownedEntity;
+		boolean isDrownedHoldingTrident = isDrowned && attacker.getHeldItemMainhand().getItem() instanceof TridentItem;
+
+		return isDrownedHoldingTrident && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	@Override
-	public void onAttack( LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public void whenDamaged( LivingEntity target ) {
 		if( !MajruszsHelper.tryChance( calculateChance( target ) ) )
 			return;
 
-		ItemStack attackerItemStack = attacker.getHeldItemMainhand();
-		if( !( attackerItemStack.getItem() instanceof TridentItem ) )
-			return;
-
-		ServerWorld world = ( ServerWorld )attacker.getEntityWorld();
+		ServerWorld world = ( ServerWorld )target.getEntityWorld();
 		LightningBoltEntity lightningBolt = EntityType.LIGHTNING_BOLT.create( world );
 		if( lightningBolt == null )
 			return;

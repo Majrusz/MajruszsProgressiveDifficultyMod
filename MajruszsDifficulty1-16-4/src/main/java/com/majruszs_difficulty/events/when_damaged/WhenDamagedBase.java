@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.on_attack;
+package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
@@ -6,35 +6,30 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.server.ServerWorld;
 
-/** Base class representing event on which entity was attacked. */
-public abstract class OnAttackBase {
-	protected final Class< ? extends LivingEntity > entityCausingEffect;
+import javax.annotation.Nullable;
+
+/** Base class representing event on which entity was damaged. */
+public abstract class WhenDamagedBase {
 	protected final GameState.Mode minimumMode;
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
 
-	public OnAttackBase( Class< ? extends LivingEntity > entityCausingEffect, GameState.Mode minimumMode, boolean shouldChanceBeMultipliedByCRD ) {
-		this.entityCausingEffect = entityCausingEffect;
+	public WhenDamagedBase( GameState.Mode minimumMode, boolean shouldChanceBeMultipliedByCRD ) {
 		this.minimumMode = minimumMode;
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;
 	}
 
-	/** Function called when entity attacked second entity and all conditions are met.
+	/** Function called when entity was damaged.
 
-	 @param attacker Attacker.
-	 @param target Target.
-	 @param damageSource Source from which the target was attacked.
+	 @param target Entity target that was attacked.
 	 */
-	public abstract void onAttack( LivingEntity attacker, LivingEntity target, DamageSource damageSource );
+	public abstract void whenDamaged( LivingEntity target );
 
-	/** Checking if all conditions are not met. */
-	protected boolean shouldBeExecuted( LivingEntity attacker ) {
-		if( !( this.entityCausingEffect.isInstance( attacker ) ) )
-			return false;
-
+	/** Checking if all conditions were met. */
+	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		if( !GameState.atLeast( this.minimumMode ) )
 			return false;
 
-		if( !( attacker.world instanceof ServerWorld ) )
+		if( !( target.world instanceof ServerWorld ) )
 			return false;
 
 		return isEnabled();

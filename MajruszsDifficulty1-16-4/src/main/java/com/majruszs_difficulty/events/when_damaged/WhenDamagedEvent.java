@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.on_attack;
+package com.majruszs_difficulty.events.when_damaged;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
@@ -9,10 +9,10 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Handling all 'OnAttack' events. */
+/** Handling all 'WhenDamaged' events. */
 @Mod.EventBusSubscriber
-public class OnAttackEvent {
-	private static final List< OnAttackBase > registryList = new ArrayList<>();
+public class WhenDamagedEvent {
+	private static final List< WhenDamagedBase > registryList = new ArrayList<>();
 
 	static {
 		registryList.add( new SpiderPoisonOnAttack() );
@@ -23,14 +23,11 @@ public class OnAttackEvent {
 	@SubscribeEvent
 	public static void onAttack( LivingHurtEvent event ) {
 		DamageSource damageSource = event.getSource();
-		if( !( damageSource.getTrueSource() instanceof LivingEntity ) )
-			return;
-
-		LivingEntity target = event.getEntityLiving();
 		LivingEntity attacker = ( LivingEntity )damageSource.getTrueSource();
+		LivingEntity target = event.getEntityLiving();
 
-		for( OnAttackBase register : registryList )
-			if( register.shouldBeExecuted( attacker ) )
-				register.onAttack( attacker, target, damageSource );
+		for( WhenDamagedBase register : registryList )
+			if( register.shouldBeExecuted( attacker, target, damageSource ) )
+				register.whenDamaged( target );
 	}
 }

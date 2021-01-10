@@ -1,22 +1,22 @@
-package com.majruszs_difficulty.events.on_attack;
+package com.majruszs_difficulty.events.when_damaged;
 
-import com.majruszs_difficulty.GameState.Mode;
+import com.majruszs_difficulty.GameState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.Difficulty;
 
 /** Base class representing event on which enemies will receive some stackable effects after being attacked. */
-public abstract class OnAttackStackableEffectBase extends OnAttackEffectBase {
+public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApplyEffectBase {
 	protected final boolean isAmplifierStackable;
 	protected final boolean isDurationStackable;
 	protected final int maximumAmplifier;
 	protected final int maximumDurationInTicks;
 
-	public OnAttackStackableEffectBase( Class< ? extends LivingEntity > entityCausingEffect, Mode minimumMode, boolean shouldBeMultipliedByCRD,
-		Effect[] effects, boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
+	public WhenDamagedApplyStackableEffectBase( GameState.Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect[] effects,
+		boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
 	) {
-		super( entityCausingEffect, minimumMode, shouldBeMultipliedByCRD, effects );
+		super( minimumMode, shouldBeMultipliedByCRD, effects );
 
 		this.isAmplifierStackable = isAmplifierStackable;
 		this.isDurationStackable = isDurationStackable;
@@ -24,11 +24,11 @@ public abstract class OnAttackStackableEffectBase extends OnAttackEffectBase {
 		this.maximumDurationInTicks = maximumDurationInTicks;
 	}
 
-	public OnAttackStackableEffectBase( Class< ? extends LivingEntity > entityCausingEffect, Mode minimumMode, boolean shouldBeMultipliedByCRD,
-		Effect effect, boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
+	public WhenDamagedApplyStackableEffectBase( GameState.Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect effect,
+		boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
 	) {
-		this( entityCausingEffect, minimumMode, shouldBeMultipliedByCRD, new Effect[]{ effect }, isAmplifierStackable, isDurationStackable,
-			maximumAmplifier, maximumDurationInTicks
+		this( minimumMode, shouldBeMultipliedByCRD, new Effect[]{ effect }, isAmplifierStackable, isDurationStackable, maximumAmplifier,
+			maximumDurationInTicks
 		);
 	}
 
