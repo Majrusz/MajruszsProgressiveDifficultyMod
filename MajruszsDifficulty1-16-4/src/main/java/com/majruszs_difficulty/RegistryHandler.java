@@ -62,6 +62,7 @@ public class RegistryHandler {
 	public static final RegistryObject< TreasureBagItem > ELDER_GUARDIAN_TREASURE_BAG = TreasureBagItem.getRegistry( "elder_guardian" );
 	public static final RegistryObject< TreasureBagItem > WITHER_TREASURE_BAG = TreasureBagItem.getRegistry( "wither" );
 	public static final RegistryObject< TreasureBagItem > ENDER_DRAGON_TREASURE_BAG = TreasureBagItem.getRegistry( "ender_dragon" );
+	public static final RegistryObject< TreasureBagItem > FISHING_TREASURE_BAG = TreasureBagItem.getRegistry( "fishing" );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = SOUNDS.register( "undead_army.approaching",
