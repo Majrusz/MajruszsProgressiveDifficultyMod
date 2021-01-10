@@ -5,27 +5,27 @@ import com.majruszs_difficulty.GameState.Mode;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.server.ServerWorld;
 
 /** Base attack class representing event on which enemies will */
-public abstract class OnAttackBase< ClassType extends LivingEntity > {
-	protected final Class< ClassType > entityCausingEffect;
+public abstract class OnAttackBase {
+	protected final Class< ? extends LivingEntity > entityCausingEffect;
 	protected final Mode minimumMode;
 	protected final boolean shouldBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
 	protected final Effect[] effects;
 
-	public OnAttackBase( Class< ClassType > entityCausingEffect, Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect[] effects
-	) {
-		this.entityCausingEffect = entityCausingEffect;
+	public OnAttackBase( Class< ? extends LivingEntity > entityCausingEffect, Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect[] effects ) {
+		this.entityCausingEffect = SpiderEntity.class;
 		this.minimumMode = minimumMode;
 		this.shouldBeMultipliedByCRD = shouldBeMultipliedByCRD;
 		this.effects = effects;
 	}
 
-	public OnAttackBase( Class< ClassType > entityCausingEffect, Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect effect
-	) {
+	public OnAttackBase( Class< ? extends LivingEntity > entityCausingEffect, Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect effect ) {
 		this( entityCausingEffect, minimumMode, shouldBeMultipliedByCRD, new Effect[]{ effect } );
 	}
 
@@ -63,17 +63,29 @@ public abstract class OnAttackBase< ClassType extends LivingEntity > {
 	/** Checking if event is not disabled by the player. */
 	protected abstract boolean isEnabled();
 
-	/** Returns chance of applying negative effect on entity. */
-	protected abstract double getChance();
+	/**
+	 Returns chance of applying negative effect on entity.
 
-	/** Returns the duration in ticks of the effect. */
-	protected abstract int getDurationInTicks();
+	 @param difficulty Current game difficulty. (peaceful, easy, normal, hard)
+	 */
+	protected abstract double getChance( Difficulty difficulty );
 
-	/** Returns the level of the effect. */
-	protected abstract int getAmplifier();
+	/**
+	 Returns the duration in ticks of the effect.
+
+	 @param difficulty Current game difficulty. (peaceful, easy, normal, hard)
+	 */
+	protected abstract int getDurationInTicks( Difficulty difficulty );
+
+	/**
+	 Returns the level of the effect.
+
+	 @param difficulty Current game difficulty. (peaceful, easy, normal, hard)
+	 */
+	protected abstract int getAmplifier( Difficulty difficulty );
 
 	/** Calculating final effect chance. (after applying clamped regional difficulty if needed) */
 	private double calculateChance( LivingEntity attacker, ServerWorld world ) {
-		return getChance() * ( this.shouldBeMultipliedByCRD ? MajruszsHelper.getClampedRegionalDifficulty( attacker, world ) : 1.0 );
+		return getChance( world.getDifficulty() ) * ( this.shouldBeMultipliedByCRD ? MajruszsHelper.getClampedRegionalDifficulty( attacker, world ) : 1.0 );
 	}
 }
