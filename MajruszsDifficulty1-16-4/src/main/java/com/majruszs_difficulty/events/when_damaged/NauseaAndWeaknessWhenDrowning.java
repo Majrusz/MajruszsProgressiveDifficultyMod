@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 /** Applying blindness when player is drowning. */
 public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffectBase {
 	public NauseaAndWeaknessWhenDrowning() {
-		super( GameState.Mode.NORMAL, false, new Effect[]{ Effects.NAUSEA, Effects.WEAKNESS }, false, true, 0, MajruszsHelper.secondsToTicks( 60.0 ) );
+		super( GameState.Mode.NORMAL, false, new Effect[]{ Effects.NAUSEA, Effects.WEAKNESS }, false, true, 0, MajruszsHelper.secondsToTicks( 10.0 ) );
 	}
 
 	/** Checking if all conditions were met. */

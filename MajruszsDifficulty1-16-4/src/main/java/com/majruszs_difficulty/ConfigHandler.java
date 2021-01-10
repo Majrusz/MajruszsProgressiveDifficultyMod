@@ -94,7 +94,7 @@ public class ConfigHandler {
 
 		BUILDER.push( "Durations" );
 		Config.Durations.WITHER_SWORD_EFFECT = createConfigSpecForDouble( "wither_sword_effect_duration", "", 6.0, 2.0, 30.0 );
-		Config.Durations.DROWNING_EFFECTS = createConfigSpecForDouble( "drowning_negative_effects_duration", "", 10.0, 3.0, 60.0 );
+		Config.Durations.DROWNING_EFFECTS = createConfigSpecForDouble( "drowning_negative_effects_duration", "", 5.0, 3.0, 10.0 );
 		BUILDER.pop();
 
 		BUILDER.push( "Values" );
