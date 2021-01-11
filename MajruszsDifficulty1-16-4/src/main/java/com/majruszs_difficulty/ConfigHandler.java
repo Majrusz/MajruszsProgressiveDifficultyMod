@@ -11,19 +11,19 @@ public class ConfigHandler {
 
 	public static class Config {
 		public static class Features {
-			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE_EFFECTS, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD, SKY_KEEPER_SPAWNING, SKY_KEEPER_LEVITATION, DROWNED_LIGHTNING, DROWNING_EFFECTS, CACTUS_BLEEDING;
+			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE_EFFECTS, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD, SKY_KEEPER_SPAWNING, SKY_KEEPER_LEVITATION, DROWNED_LIGHTNING, DROWNING_EFFECTS, CACTUS_BLEEDING, TOOL_BLEEDING;
 		}
 
 		public static class Chances {
-			public static ForgeConfigSpec.DoubleValue CREEPER_CHARGED, CREEPER_EFFECTS, ENEMY_GROUPS, SPIDER_POISON, ELITE_TIPPED_ARROW, SKY_KEEPER_LEVITATION, DROWNED_LIGHTNING, DROWNING_EFFECTS, CACTUS_BLEEDING;
+			public static ForgeConfigSpec.DoubleValue CREEPER_CHARGED, CREEPER_EFFECTS, ENEMY_GROUPS, SPIDER_POISON, ELITE_TIPPED_ARROW, SKY_KEEPER_LEVITATION, DROWNED_LIGHTNING, DROWNING_EFFECTS, CACTUS_BLEEDING, TOOL_BLEEDING;
 		}
 
 		public static class Durations {
-			public static ForgeConfigSpec.DoubleValue WITHER_SWORD_EFFECT, DROWNING_EFFECTS, CACTUS_BLEEDING;
+			public static ForgeConfigSpec.DoubleValue WITHER_SWORD_EFFECT, DROWNING_EFFECTS, CACTUS_BLEEDING, TOOL_BLEEDING;
 		}
 
 		public static class Values {
-			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT, FISHED_ITEMS_BAG_REQUIREMENT_NORMAL, FISHED_ITEMS_BAG_REQUIREMENT_EXPERT, FISHED_ITEMS_BAG_REQUIREMENT_MASTER;
+			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT, FISHED_ITEMS_BAG_REQUIREMENT_NORMAL, FISHED_ITEMS_BAG_REQUIREMENT_EXPERT, FISHED_ITEMS_BAG_REQUIREMENT_MASTER, BLEEDING_AMPLIFIER_NORMAL, BLEEDING_AMPLIFIER_EXPERT, BLEEDING_AMPLIFIER_MASTER;
 			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS;
 		}
 
@@ -76,6 +76,7 @@ public class ConfigHandler {
 		Config.Features.DROWNED_LIGHTNING = createConfigSpecForBoolean( "drowned_trident_lightning_attack", "", true );
 		Config.Features.DROWNING_EFFECTS = createConfigSpecForBoolean( "drowning_negative_effects", "", true );
 		Config.Features.CACTUS_BLEEDING = createConfigSpecForBoolean( "cactus_bleeding", "", true );
+		Config.Features.TOOL_BLEEDING = createConfigSpecForBoolean( "tool_bleeding", "", true );
 		BUILDER.pop();
 
 		BUILDER.comment( "Remember these chances below are scaled by Clamped Regional Difficulty! (0.0 ~ 1.0)" );
@@ -90,6 +91,7 @@ public class ConfigHandler {
 		Config.Chances.DROWNED_LIGHTNING = createConfigSpecForDouble( "drowned_trident_lightning_attack_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.DROWNING_EFFECTS = createConfigSpecForDouble( "drowning_negative_effects_chance", "", 1.0, 0.0, 1.0 );
 		Config.Chances.CACTUS_BLEEDING = createConfigSpecForDouble( "cactus_bleeding_chance", "", 0.5, 0.0, 1.0 );
+		Config.Chances.TOOL_BLEEDING = createConfigSpecForDouble( "tool_bleeding_chance", "", 0.25, 0.0, 1.0 );
 		BUILDER.pop();
 
 		BUILDER.comment( "All durations below are given in seconds." );
@@ -98,6 +100,7 @@ public class ConfigHandler {
 		Config.Durations.WITHER_SWORD_EFFECT = createConfigSpecForDouble( "wither_sword_effect_duration", "", 6.0, 2.0, 30.0 );
 		Config.Durations.DROWNING_EFFECTS = createConfigSpecForDouble( "drowning_negative_effects_duration", "", 5.0, 3.0, 10.0 );
 		Config.Durations.CACTUS_BLEEDING = createConfigSpecForDouble( "cactus_bleeding_duration", "", 6.0, 1.0, 60.0 );
+		Config.Durations.TOOL_BLEEDING = createConfigSpecForDouble( "tool_bleeding_duration", "", 6.0, 1.0, 60.0 );
 		BUILDER.pop();
 
 		BUILDER.push( "Values" );
@@ -105,6 +108,9 @@ public class ConfigHandler {
 		Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_NORMAL = createConfigSpecForInteger( "fished_items_bag_requirement_normal", "", 30, 5, 100 );
 		Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_EXPERT = createConfigSpecForInteger( "fished_items_bag_requirement_expert", "", 20, 5, 100 );
 		Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_MASTER = createConfigSpecForInteger( "fished_items_bag_requirement_master", "", 10, 5, 100 );
+		Config.Values.BLEEDING_AMPLIFIER_NORMAL = createConfigSpecForInteger( "bleeding_amplifier_normal", "", 0, 0, 9 );
+		Config.Values.BLEEDING_AMPLIFIER_EXPERT = createConfigSpecForInteger( "bleeding_amplifier_expert", "", 0, 0, 9 );
+		Config.Values.BLEEDING_AMPLIFIER_MASTER = createConfigSpecForInteger( "bleeding_amplifier_master", "", 1, 0, 9 );
 		Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS = createConfigSpecForDouble( "undead_army_scale_with_players", "", 0.5, 0.1, 1.0 );
 		BUILDER.pop();
 
