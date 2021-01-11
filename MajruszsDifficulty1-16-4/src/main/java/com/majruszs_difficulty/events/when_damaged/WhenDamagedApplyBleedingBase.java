@@ -27,6 +27,6 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 
 	/** Calculating final chance. (after applying clamped regional difficulty and armor multipliers) */
 	protected double calculateChance( LivingEntity target ) {
-		return super.calculateChance( target ) * BleedingEffect.getChanceMultiplierDependingOnArmor( target );
+		return BleedingEffect.getChanceMultiplierDependingOnArmor( target ) * super.calculateChance( target );
 	}
 }
