@@ -25,16 +25,10 @@ public class SkyKeeperEntity extends PhantomEntity {
 		this.experienceValue = 7;
 	}
 
-	@Override
-	public void livingTick() {
-		super.livingTick();
-		super.extinguish(); // Makes entity immune to fire.
-	}
-
 	public static AttributeModifierMap getAttributeMap() {
 		return MobEntity.func_233666_p_()
-			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 26.0 )
-			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 8.0 )
+			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 30.0 )
+			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 6.0 )
 			.create();
 	}
 }
