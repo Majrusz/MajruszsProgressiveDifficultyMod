@@ -13,6 +13,8 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
@@ -171,5 +173,28 @@ public class MajruszsHelper {
 	 */
 	public static boolean isAnimal( @Nullable Entity entity ) {
 		return entity instanceof AnimalEntity;
+	}
+
+	/**
+	 Adds potion effect to entity only when effect is applicable.
+
+	 @param entity         Entity to add potion effect.
+	 @param effectInstance Instance of desired effect.
+	 */
+	public static void applyEffectIfPossible( LivingEntity entity, EffectInstance effectInstance ) {
+		if( entity.isPotionApplicable( effectInstance ) )
+			entity.addPotionEffect( effectInstance );
+	}
+
+	/**
+	 Adds potion effect to entity only when effect is applicable.
+
+	 @param entity         Entity to add potion effect.
+	 @param effect         Desired effect.
+	 @param effectDuration Effect duration in ticks.
+	 @param amplifier      Effect amplifier, level.
+	 */
+	public static void applyEffectIfPossible( LivingEntity entity, Effect effect, int effectDuration, int amplifier ) {
+		applyEffectIfPossible( entity, new EffectInstance( effect, effectDuration, amplifier ) );
 	}
 }
