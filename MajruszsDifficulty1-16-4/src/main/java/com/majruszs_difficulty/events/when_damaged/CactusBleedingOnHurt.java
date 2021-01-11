@@ -36,7 +36,7 @@ public class CactusBleedingOnHurt extends WhenDamagedApplyEffectBase {
 
 	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
-		return MajruszsHelper.secondsToTicks( Config.getDurationInSeconds( Config.Durations.CACTUS_BLEEDING ) );
+		return Config.getDurationInSeconds( Config.Durations.CACTUS_BLEEDING );
 	}
 
 	@Override
