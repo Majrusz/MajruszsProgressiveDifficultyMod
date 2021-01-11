@@ -24,7 +24,7 @@ public class ConfigHandler {
 
 		public static class Values {
 			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT, FISHED_ITEMS_BAG_REQUIREMENT_NORMAL, FISHED_ITEMS_BAG_REQUIREMENT_EXPERT, FISHED_ITEMS_BAG_REQUIREMENT_MASTER, BLEEDING_AMPLIFIER_NORMAL, BLEEDING_AMPLIFIER_EXPERT, BLEEDING_AMPLIFIER_MASTER;
-			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS;
+			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS, EXPERIENCE_BONUS_NORMAL, EXPERIENCE_BONUS_EXPERT, EXPERIENCE_BONUS_MASTER;
 		}
 
 		public static boolean isDisabled( ForgeConfigSpec.BooleanValue config ) {
@@ -121,6 +121,9 @@ public class ConfigHandler {
 		Config.Values.BLEEDING_AMPLIFIER_EXPERT = createConfigSpecForInteger( "bleeding_amplifier_expert", "", 1, 0, 9 );
 		Config.Values.BLEEDING_AMPLIFIER_MASTER = createConfigSpecForInteger( "bleeding_amplifier_master", "", 2, 0, 9 );
 		Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS = createConfigSpecForDouble( "undead_army_scale_with_players", "", 0.5, 0.1, 1.0 );
+		Config.Values.EXPERIENCE_BONUS_NORMAL = createConfigSpecForDouble( "experience_bonus_normal", "", 0.0, 0.0, 10.0 );
+		Config.Values.EXPERIENCE_BONUS_EXPERT = createConfigSpecForDouble( "experience_bonus_expert", "", 0.25, 0.0, 10.0 );
+		Config.Values.EXPERIENCE_BONUS_MASTER = createConfigSpecForDouble( "experience_bonus_master", "", 0.5, 0.0, 10.0 );
 		BUILDER.pop();
 
 		CONFIG_SPEC = BUILDER.build();
