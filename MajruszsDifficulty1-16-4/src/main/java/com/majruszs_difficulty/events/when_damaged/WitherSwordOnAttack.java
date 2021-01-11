@@ -10,6 +10,7 @@ import net.minecraft.world.Difficulty;
 
 import javax.annotation.Nullable;
 
+/** Making Wither Sword attacks inflict Wither II. */
 public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
 	public WitherSwordOnAttack() {
 		super( GameState.Mode.NORMAL, false, Effects.WITHER );
