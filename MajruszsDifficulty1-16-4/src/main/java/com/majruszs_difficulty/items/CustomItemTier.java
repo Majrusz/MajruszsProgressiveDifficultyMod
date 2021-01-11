@@ -6,7 +6,7 @@ import net.minecraft.item.crafting.Ingredient;
 
 import java.util.function.Supplier;
 
-/** Adding custome item tiers to the game. */
+/** Adding custom item tiers to the game. */
 public enum CustomItemTier implements IItemTier {
 	WITHER( 360, 3, 15, 5.0f, 3.0f, () -> Ingredient.fromItems( Items.BONE ) );
 
