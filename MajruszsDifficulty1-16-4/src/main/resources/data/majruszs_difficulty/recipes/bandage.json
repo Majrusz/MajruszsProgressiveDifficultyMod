@@ -1,0 +1,26 @@
+{ 
+	"type": "minecraft:crafting_shaped",
+	"group": "bandage",
+	"pattern":
+	[ 
+		"sp ",
+		"psp",
+		" ps"
+	],
+	"key":
+	{
+		"s":
+		{ 
+			"item": "minecraft:string"
+		},
+		"p":
+		{ 
+			"item": "minecraft:paper"
+		}
+	},
+	"result":
+	{ 
+		"item": "majruszs_difficulty:bandage",
+		"count": 4
+	}
+}
