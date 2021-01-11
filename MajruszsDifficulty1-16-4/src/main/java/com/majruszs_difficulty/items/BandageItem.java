@@ -2,7 +2,6 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -22,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.List;
 
+/** Simple bandage item that removes bleeding effect and gives regeneration for few seconds. */
 @Mod.EventBusSubscriber
 public class BandageItem extends Item {
 	public BandageItem() {
@@ -29,6 +29,7 @@ public class BandageItem extends Item {
 			.group( RegistryHandler.ITEM_GROUP ) );
 	}
 
+	/** Using bandage on right click. (self healing) */
 	@Override
 	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
 		ItemStack itemStack = player.getHeldItem( hand );
@@ -38,12 +39,14 @@ public class BandageItem extends Item {
 		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
 	}
 
+	/** Adding tooltip with information for what bandage is used. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.bandage.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
 	}
 
+	/** Using bandage on right click. (other entity healing) */
 	@SubscribeEvent
 	public static void onRightClick( PlayerInteractEvent.EntityInteract event ) {
 		if( !( event.getTarget() instanceof LivingEntity ) )
@@ -53,6 +56,15 @@ public class BandageItem extends Item {
 			event.setCancellationResult( ActionResultType.SUCCESS );
 	}
 
+	/**
+	 Removes bleeding from target if it is possible.
+
+	 @param bandage Bandage item.
+	 @param player  Player that is right clicking.
+	 @param target  Target that will be healed. (may be the same player)
+
+	 @return Returns information (boolean) if effect was removed.
+	 */
 	protected static boolean removeBleedingIfPossible( ItemStack bandage, PlayerEntity player, LivingEntity target ) {
 		if( !( target.isPotionActive( RegistryHandler.BLEEDING.get() ) && bandage.getItem() instanceof BandageItem ) )
 			return false;
