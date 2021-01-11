@@ -11,7 +11,7 @@ import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.items.TreasureBagItem;
-import com.majruszs_difficulty.items.UndeadBattleStandard;
+import com.majruszs_difficulty.items.UndeadBattleStandardItem;
 import com.majruszs_difficulty.items.WitherSwordItem;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.CommandSource;
@@ -61,7 +61,7 @@ public class RegistryHandler {
 
 	// Items
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
-	public static final RegistryObject< Item > UNDEAD_BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandard::new );
+	public static final RegistryObject< Item > UNDEAD_BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
 	public static final RegistryObject< TreasureBagItem > UNDEAD_TREASURE_BAG = TreasureBagItem.getRegistry( "undead_army" );
 	public static final RegistryObject< TreasureBagItem > ELDER_GUARDIAN_TREASURE_BAG = TreasureBagItem.getRegistry( "elder_guardian" );
 	public static final RegistryObject< TreasureBagItem > WITHER_TREASURE_BAG = TreasureBagItem.getRegistry( "wither" );
