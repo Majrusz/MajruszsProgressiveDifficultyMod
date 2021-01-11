@@ -20,8 +20,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class UndeadBattleStandard extends Item {
-	public UndeadBattleStandard() {
+public class UndeadBattleStandardItem extends Item {
+	public UndeadBattleStandardItem() {
 		super( ( new Item.Properties() ).maxStackSize( 1 )
 			.group( RegistryHandler.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
