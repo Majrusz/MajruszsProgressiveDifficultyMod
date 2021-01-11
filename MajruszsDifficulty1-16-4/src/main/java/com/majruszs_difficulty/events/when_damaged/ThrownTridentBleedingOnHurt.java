@@ -8,8 +8,8 @@ import net.minecraft.world.Difficulty;
 
 import javax.annotation.Nullable;
 
-/** Making trident inflict bleeding on enemies. */
-public class TridentBleedingOnHurt extends WhenDamagedApplyBleedingBase {
+/** Making thrown trident inflict bleeding on enemies. */
+public class ThrownTridentBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
@@ -18,16 +18,16 @@ public class TridentBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 
 	@Override
 	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.TRIDENT_BLEEDING );
+		return !Config.isDisabled( Config.Features.THROWN_TRIDENT_BLEEDING );
 	}
 
 	@Override
 	protected double getChance() {
-		return Config.getChance( Config.Chances.TRIDENT_BLEEDING );
+		return Config.getChance( Config.Chances.THROWN_TRIDENT_BLEEDING );
 	}
 
 	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
-		return Config.getDurationInSeconds( Config.Durations.TRIDENT_BLEEDING );
+		return Config.getDurationInSeconds( Config.Durations.THROWN_TRIDENT_BLEEDING );
 	}
 }
