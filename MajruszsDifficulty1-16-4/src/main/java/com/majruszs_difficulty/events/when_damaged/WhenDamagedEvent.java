@@ -21,6 +21,7 @@ public class WhenDamagedEvent {
 		registryList.add( new NauseaAndWeaknessWhenDrowning() );
 		registryList.add( new WitherSwordOnAttack() );
 		registryList.add( new CactusBleedingOnHurt() );
+		registryList.add( new ToolBleedingOnAttack() );
 	}
 
 	@SubscribeEvent
