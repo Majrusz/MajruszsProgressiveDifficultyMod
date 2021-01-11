@@ -13,10 +13,10 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	protected final int maximumAmplifier;
 	protected final int maximumDurationInTicks;
 
-	public WhenDamagedApplyStackableEffectBase( GameState.Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect[] effects,
+	public WhenDamagedApplyStackableEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects,
 		boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
 	) {
-		super( minimumMode, shouldBeMultipliedByCRD, effects );
+		super( minimumState, shouldBeMultipliedByCRD, effects );
 
 		this.isAmplifierStackable = isAmplifierStackable;
 		this.isDurationStackable = isDurationStackable;
@@ -24,10 +24,10 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 		this.maximumDurationInTicks = maximumDurationInTicks;
 	}
 
-	public WhenDamagedApplyStackableEffectBase( GameState.Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect effect,
+	public WhenDamagedApplyStackableEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect,
 		boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
 	) {
-		this( minimumMode, shouldBeMultipliedByCRD, new Effect[]{ effect }, isAmplifierStackable, isDurationStackable, maximumAmplifier,
+		this( minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect }, isAmplifierStackable, isDurationStackable, maximumAmplifier,
 			maximumDurationInTicks
 		);
 	}

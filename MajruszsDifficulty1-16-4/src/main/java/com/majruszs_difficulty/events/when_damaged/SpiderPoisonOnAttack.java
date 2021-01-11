@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 /** Making Spider attacks have a chance to poison enemies. */
 public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	public SpiderPoisonOnAttack() {
-		super( GameState.Mode.NORMAL, true, Effects.POISON );
+		super( GameState.State.NORMAL, true, Effects.POISON );
 	}
 
 	/** Checking if all conditions were met. */

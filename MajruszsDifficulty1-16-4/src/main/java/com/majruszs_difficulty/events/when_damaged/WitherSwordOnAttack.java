@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 /** Making Wither Sword attacks inflict Wither II. */
 public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
 	public WitherSwordOnAttack() {
-		super( GameState.Mode.NORMAL, false, Effects.WITHER );
+		super( GameState.State.NORMAL, false, Effects.WITHER );
 	}
 
 	/** Checking if all conditions were met. */
