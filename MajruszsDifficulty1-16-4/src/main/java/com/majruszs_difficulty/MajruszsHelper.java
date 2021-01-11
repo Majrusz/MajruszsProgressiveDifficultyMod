@@ -155,16 +155,20 @@ public class MajruszsHelper {
 		return difficultyInstance.getClampedAdditionalDifficulty();
 	}
 
-	/** Checking if given entity is human.
+	/**
+	 Checking if given entity is human.
 
-	 @param entity Entity to test. */
+	 @param entity Entity to test.
+	 */
 	public static boolean isHuman( @Nullable Entity entity ) {
 		return entity instanceof PlayerEntity || entity instanceof VillagerEntity || entity instanceof PillagerEntity || entity instanceof WitchEntity;
 	}
 
-	/** Checking if given entity is animal.
+	/**
+	 Checking if given entity is animal.
 
-	 @param entity Entity to test. */
+	 @param entity Entity to test.
+	 */
 	public static boolean isAnimal( @Nullable Entity entity ) {
 		return entity instanceof AnimalEntity;
 	}
