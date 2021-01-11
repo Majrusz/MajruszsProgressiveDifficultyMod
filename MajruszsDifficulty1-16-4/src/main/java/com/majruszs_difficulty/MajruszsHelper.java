@@ -6,6 +6,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.monster.PillagerEntity;
+import net.minecraft.entity.monster.WitchEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
@@ -149,5 +153,19 @@ public class MajruszsHelper {
 		DifficultyInstance difficultyInstance = getDifficultyInstance( entity );
 
 		return difficultyInstance.getClampedAdditionalDifficulty();
+	}
+
+	/** Checking if given entity is human.
+
+	 @param entity Entity to test. */
+	public static boolean isHuman( @Nullable Entity entity ) {
+		return entity instanceof PlayerEntity || entity instanceof VillagerEntity || entity instanceof PillagerEntity || entity instanceof WitchEntity;
+	}
+
+	/** Checking if given entity is animal.
+
+	 @param entity Entity to test. */
+	public static boolean isAnimal( @Nullable Entity entity ) {
+		return entity instanceof AnimalEntity;
 	}
 }
