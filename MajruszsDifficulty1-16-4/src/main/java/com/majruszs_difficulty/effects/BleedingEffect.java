@@ -1,5 +1,7 @@
 package com.majruszs_difficulty.effects;
 
+import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -33,5 +35,26 @@ public class BleedingEffect extends Effect {
 		int cooldown = Math.max( 5, MajruszsHelper.secondsToTicks( 3.0 ) >> amplifier );
 
 		return duration % cooldown == 0;
+	}
+
+	/** Returns bleeding amplifier depending on current game state. */
+	public static int getAmplifier() {
+		switch( GameState.getCurrentMode() ) {
+			default:
+				return Config.getInteger( Config.Values.BLEEDING_AMPLIFIER_NORMAL );
+			case EXPERT:
+				return Config.getInteger( Config.Values.BLEEDING_AMPLIFIER_EXPERT );
+			case MASTER:
+				return Config.getInteger( Config.Values.BLEEDING_AMPLIFIER_MASTER );
+		}
+	}
+
+	/**
+	 Returns whether entity may be bleeding.
+
+	 @param entity Entity to test.
+	 */
+	public static boolean mayBleed( @Nullable Entity entity ) {
+		return MajruszsHelper.isAnimal( entity ) || MajruszsHelper.isHuman( entity );
 	}
 }
