@@ -23,17 +23,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
-import net.minecraftforge.registries.DeferredRegister;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
+/** Class representing treasure bag. */
 public class TreasureBagItem extends Item {
 	private final ResourceLocation lootTableLocation;
-
-	public static RegistryObject< TreasureBagItem > getRegistry( String name ) {
-		return RegistryHandler.ITEMS.register( name + "_treasure_bag", () -> new TreasureBagItem( name + "_treasure_loot" ) );
-	}
 
 	public TreasureBagItem( String id ) {
 		super( ( new Item.Properties() ).maxStackSize( 16 )
@@ -43,6 +39,7 @@ public class TreasureBagItem extends Item {
 		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id );
 	}
 
+	/** Opening treasure bag on right click. */
 	@Override
 	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
 		ItemStack itemStack = player.getHeldItem( hand );
@@ -65,18 +62,23 @@ public class TreasureBagItem extends Item {
 		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
 	}
 
+	/** Adding simple tooltip to treasure bag. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.treasure_bag.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
 	}
 
-	protected List< ItemStack > generateLoot( PlayerEntity player ) {
-		LootTable lootTable = getLootTable();
+	/**
+	 Returning full object registry of treasure bag.
 
-		return lootTable.generate( generateLootContext( player ) );
+	 @param name Name of the treasure bag.
+	 */
+	public static RegistryObject< TreasureBagItem > getRegistry( String name ) {
+		return RegistryHandler.ITEMS.register( name + "_treasure_bag", ()->new TreasureBagItem( name + "_treasure_loot" ) );
 	}
 
+	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
 	protected static LootContext generateLootContext( PlayerEntity player ) {
 		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerWorld )player.getEntityWorld() );
 		lootContextBuilder.withParameter( LootParameters.field_237457_g_, player.getPositionVec() );
@@ -85,6 +87,18 @@ public class TreasureBagItem extends Item {
 		return lootContextBuilder.build( LootParameterSets.GIFT );
 	}
 
+	/**
+	 Generating random loot from loot table.
+
+	 @param player Player required to generate loot context.
+	 */
+	protected List< ItemStack > generateLoot( PlayerEntity player ) {
+		LootTable lootTable = getLootTable();
+
+		return lootTable.generate( generateLootContext( player ) );
+	}
+
+	/** Returning loot table for current treasure bag. (possible loot) */
 	protected LootTable getLootTable() {
 		return ServerLifecycleHooks.getCurrentServer()
 			.getLootTableManager()
