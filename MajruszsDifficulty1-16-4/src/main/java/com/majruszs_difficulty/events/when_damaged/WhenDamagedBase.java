@@ -10,11 +10,11 @@ import javax.annotation.Nullable;
 
 /** Base class representing event on which entity was damaged. */
 public abstract class WhenDamagedBase {
-	protected final GameState.Mode minimumMode;
+	protected final GameState.State minimumState;
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
 
-	public WhenDamagedBase( GameState.Mode minimumMode, boolean shouldChanceBeMultipliedByCRD ) {
-		this.minimumMode = minimumMode;
+	public WhenDamagedBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
+		this.minimumState = minimumState;
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;
 	}
 
@@ -27,7 +27,7 @@ public abstract class WhenDamagedBase {
 
 	/** Checking if all conditions were met. */
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		if( !GameState.atLeast( this.minimumMode ) )
+		if( !GameState.atLeast( this.minimumState ) )
 			return false;
 
 		if( !( target.world instanceof ServerWorld ) )

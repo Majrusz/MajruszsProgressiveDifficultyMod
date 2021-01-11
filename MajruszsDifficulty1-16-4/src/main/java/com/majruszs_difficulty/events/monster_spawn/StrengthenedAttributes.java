@@ -19,7 +19,7 @@ public class StrengthenedAttributes {
 	);
 
 	public static void strengthenLivingEntity( LivingEntity livingEntity, ServerWorld world ) {
-		if( !GameState.atLeast( GameState.Mode.EXPERT ) )
+		if( !GameState.atLeast( GameState.State.EXPERT ) )
 			return;
 
 		double bonusMultiplier = getAttributeMultiplier( world );
@@ -35,7 +35,7 @@ public class StrengthenedAttributes {
 	protected static double getAttributeMultiplier( ServerWorld world ) {
 		double multiplier = 1.0D;
 
-		if( GameState.atLeast( GameState.Mode.MASTER ) )
+		if( GameState.atLeast( GameState.State.MASTER ) )
 			multiplier *= 2.0D;
 
 		if( world.isNightTime() )

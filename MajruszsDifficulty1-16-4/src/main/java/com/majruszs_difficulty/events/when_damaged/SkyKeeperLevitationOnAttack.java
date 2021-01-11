@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 /** Making Sky Keeper attacks have a chance to set levitation on enemies. */
 public class SkyKeeperLevitationOnAttack extends WhenDamagedApplyStackableEffectBase {
 	public SkyKeeperLevitationOnAttack() {
-		super( GameState.Mode.EXPERT, true, Effects.LEVITATION, false, true, 1, MajruszsHelper.secondsToTicks( 60.0 ) );
+		super( GameState.State.EXPERT, true, Effects.LEVITATION, false, true, 1, MajruszsHelper.secondsToTicks( 60.0 ) );
 	}
 
 	/** Checking if all conditions were met. */

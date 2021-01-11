@@ -4,36 +4,39 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
+/** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
-	private static Mode current = Mode.NORMAL;
+	private static State current = State.NORMAL;
 
-	public enum Mode {
+	/** All possible game states. */
+	public enum State {
 		NORMAL, EXPERT, MASTER
 	}
 
-	public static boolean changeMode( Mode mode ) {
-		if( mode == current )
+	/** Changing current game state */
+	public static boolean changeMode( State state ) {
+		if( state == current )
 			return false;
 
-		current = mode;
+		current = state;
 		return true;
 	}
 
-	public static Mode getCurrentMode() {
+	public static State getCurrentMode() {
 		return current;
 	}
 
-	public static boolean atLeast( Mode mode ) {
-		if( mode == Mode.EXPERT ) {
-			return ( current == Mode.EXPERT || current == Mode.MASTER );
-		} else if( mode == Mode.MASTER ) {
-			return current == Mode.MASTER;
+	public static boolean atLeast( State state ) {
+		if( state == State.EXPERT ) {
+			return ( current == State.EXPERT || current == State.MASTER );
+		} else if( state == State.MASTER ) {
+			return current == State.MASTER;
 		} else
 			return true;
 	}
 
-	public static int convertModeToInteger( Mode mode ) {
-		switch( mode ) {
+	public static int convertModeToInteger( State state ) {
+		switch( state ) {
 			default:
 				return 0;
 			case EXPERT:
@@ -43,14 +46,14 @@ public class GameState {
 		}
 	}
 
-	public static Mode convertIntegerToMode( int mode ) {
+	public static State convertIntegerToMode( int mode ) {
 		switch( mode ) {
 			default:
-				return Mode.NORMAL;
+				return State.NORMAL;
 			case 1:
-				return Mode.EXPERT;
+				return State.EXPERT;
 			case 2:
-				return Mode.MASTER;
+				return State.MASTER;
 		}
 	}
 

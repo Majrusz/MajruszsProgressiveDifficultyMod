@@ -10,8 +10,6 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
-import net.minecraft.world.raid.Raid;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -27,7 +25,7 @@ public class IncreaseGameDifficulty {
 		if( !MajruszsHelper.isPlayerIn( playerEnteringDimension, DimensionType.THE_NETHER ) )
 			return;
 
-		if( GameState.getCurrentMode() != GameState.Mode.NORMAL )
+		if( GameState.getCurrentMode() != GameState.State.NORMAL )
 			return;
 
 		MinecraftServer minecraftServer = playerEnteringDimension.getServer();
@@ -35,7 +33,7 @@ public class IncreaseGameDifficulty {
 		if( minecraftServer == null )
 			return;
 
-		GameState.changeMode( GameState.Mode.EXPERT );
+		GameState.changeMode( GameState.State.EXPERT );
 
 		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.expertModeColor );
 	}
@@ -50,7 +48,7 @@ public class IncreaseGameDifficulty {
 		if( !( dragon.getEntityWorld() instanceof ServerWorld ) )
 			return;
 
-		if( GameState.getCurrentMode() == GameState.Mode.MASTER )
+		if( GameState.getCurrentMode() == GameState.State.MASTER )
 			return;
 
 		MinecraftServer minecraftServer = dragon.getServer();
@@ -58,7 +56,7 @@ public class IncreaseGameDifficulty {
 		if( minecraftServer == null )
 			return;
 
-		GameState.changeMode( GameState.Mode.MASTER );
+		GameState.changeMode( GameState.State.MASTER );
 
 		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.masterModeColor );
 	}

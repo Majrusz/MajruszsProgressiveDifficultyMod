@@ -4,7 +4,6 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.server.ServerWorld;
 
@@ -12,13 +11,13 @@ import net.minecraft.world.server.ServerWorld;
 public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	protected final Effect[] effects;
 
-	public WhenDamagedApplyEffectBase( GameState.Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect[] effects ) {
-		super( minimumMode, shouldBeMultipliedByCRD );
+	public WhenDamagedApplyEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects ) {
+		super( minimumState, shouldBeMultipliedByCRD );
 		this.effects = effects;
 	}
 
-	public WhenDamagedApplyEffectBase( GameState.Mode minimumMode, boolean shouldBeMultipliedByCRD, Effect effect ) {
-		this( minimumMode, shouldBeMultipliedByCRD, new Effect[]{ effect } );
+	public WhenDamagedApplyEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect ) {
+		this( minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect } );
 	}
 
 	/**

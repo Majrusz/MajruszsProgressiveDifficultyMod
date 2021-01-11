@@ -67,12 +67,12 @@ public class OnMonsterSpawn {
 	}
 
 	protected static void boostPiglin( PiglinEntity piglin, ServerWorld world ) {
-		if( GameState.atLeast( GameState.Mode.EXPERT ) && !Config.isDisabled( Config.Features.PIGLIN_GROUPS ) )
+		if( GameState.atLeast( GameState.State.EXPERT ) && !Config.isDisabled( Config.Features.PIGLIN_GROUPS ) )
 			new PiglinGroup( piglin, world );
 	}
 
 	protected static void boostPillager( PillagerEntity pillager, ServerWorld world ) {
-		if( GameState.atLeast( GameState.Mode.EXPERT ) && !Config.isDisabled( Config.Features.PILLAGER_GROUPS ) )
+		if( GameState.atLeast( GameState.State.EXPERT ) && !Config.isDisabled( Config.Features.PILLAGER_GROUPS ) )
 			new PillagerGroup( pillager, world );
 	}
 
