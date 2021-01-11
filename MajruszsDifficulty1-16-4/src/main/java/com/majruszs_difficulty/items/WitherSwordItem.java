@@ -26,7 +26,7 @@ import java.util.List;
 @Mod.EventBusSubscriber
 public class WitherSwordItem extends SwordItem {
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 2, -2.4f, ( new Item.Properties() ).group( RegistryHandler.ITEM_GROUP ) );
+		super( CustomItemTier.WITHER, 3, -2.4f, ( new Item.Properties() ).group( RegistryHandler.ITEM_GROUP ) );
 	}
 
 	@SubscribeEvent
