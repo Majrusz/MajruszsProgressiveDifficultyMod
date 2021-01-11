@@ -20,6 +20,7 @@ public class WhenDamagedEvent {
 		registryList.add( new DrownedLightningOnAttack() );
 		registryList.add( new NauseaAndWeaknessWhenDrowning() );
 		registryList.add( new WitherSwordOnAttack() );
+		registryList.add( new CactusBleedingOnHurt() );
 	}
 
 	@SubscribeEvent
