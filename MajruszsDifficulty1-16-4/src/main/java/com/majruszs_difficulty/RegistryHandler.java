@@ -2,6 +2,7 @@ package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.commands.ChangeGameStateCommand;
 import com.majruszs_difficulty.commands.StopUndeadArmyCommand;
+import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
@@ -19,6 +20,7 @@ import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
+import net.minecraft.potion.Effect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -42,6 +44,7 @@ public class RegistryHandler {
 	public static final DeferredRegister< EntityType< ? > > ENTITIES = DeferredRegister.create( ForgeRegistries.ENTITIES, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Item > ITEMS = DeferredRegister.create( ForgeRegistries.ITEMS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< SoundEvent > SOUNDS = DeferredRegister.create( ForgeRegistries.SOUND_EVENTS, MajruszsDifficulty.MOD_ID );
+	public static final DeferredRegister< Effect > EFFECTS = DeferredRegister.create( ForgeRegistries.POTIONS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Structure< ? > > STRUCTURES = DeferredRegister.create( ForgeRegistries.STRUCTURE_FEATURES, MajruszsDifficulty.MOD_ID );
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
@@ -72,6 +75,9 @@ public class RegistryHandler {
 		()->new SoundEvent( new ResourceLocation( MajruszsDifficulty.MOD_ID, "undead_army.wave_started" ) )
 	);
 
+	// Effects
+	public static final RegistryObject< Effect > BLEEDING = EFFECTS.register( "bleeding", ()->BleedingEffect.instance );
+
 	public static UndeadArmyManager undeadArmyManager;
 	public static GameDataSaver gameDataSaver = new GameDataSaver();
 
@@ -99,6 +105,7 @@ public class RegistryHandler {
 		ENTITIES.register( modEventBus );
 		ITEMS.register( modEventBus );
 		SOUNDS.register( modEventBus );
+		EFFECTS.register( modEventBus );
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
