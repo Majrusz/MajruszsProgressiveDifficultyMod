@@ -4,17 +4,17 @@ loaderVersion="[35,)"
 
 license="MIT License"
 
-issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod"
+issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
 [[mods]]
 
 modId="majruszs_difficulty"
 
-version="1.16.4-0.3.0"
+version="0.2.0"
 
 displayName="Majrusz's Progressive Difficulty"
 
-updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
+updateJSONURL="https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/main/update.json"
 
 displayURL="https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
 
