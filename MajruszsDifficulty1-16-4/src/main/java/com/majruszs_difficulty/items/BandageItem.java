@@ -61,6 +61,7 @@ public class BandageItem extends Item {
 
 		player.addStat( Stats.ITEM_USED.get( bandage.getItem() ) );
 
+		target.removePotionEffect( RegistryHandler.BLEEDING.get() );
 		target.removeActivePotionEffect( RegistryHandler.BLEEDING.get() );
 		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
 	}
