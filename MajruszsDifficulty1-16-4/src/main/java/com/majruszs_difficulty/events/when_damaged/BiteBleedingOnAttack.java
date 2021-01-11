@@ -2,6 +2,8 @@ package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.ConfigHandler.Config;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.CaveSpiderEntity;
+import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.util.DamageSource;
@@ -14,7 +16,7 @@ public class BiteBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean mayBite = attacker instanceof WolfEntity || attacker instanceof ZombieEntity;
+		boolean mayBite = attacker instanceof WolfEntity || attacker instanceof ZombieEntity || attacker instanceof SpiderEntity;
 
 		return mayBite && super.shouldBeExecuted( attacker, target, damageSource );
 	}
