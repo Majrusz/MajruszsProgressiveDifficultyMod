@@ -3,11 +3,11 @@ package com.majruszs_difficulty.effects;
 import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nullable;
 
@@ -22,7 +22,7 @@ public class BleedingEffect extends Effect {
 	/** Called every time when effect 'isReady'. */
 	@Override
 	public void performEffect( LivingEntity entity, int amplifier ) {
-		entity.attackEntityFrom( DamageSource.MAGIC, 1.0f );
+		entity.attackEntityFrom( RegistryHandler.BLEEDING_SOURCE, 1.0f );
 	}
 
 	/** When effect starts bleeding will not do anything. */
@@ -56,5 +56,14 @@ public class BleedingEffect extends Effect {
 	 */
 	public static boolean mayBleed( @Nullable Entity entity ) {
 		return MajruszsHelper.isAnimal( entity ) || MajruszsHelper.isHuman( entity );
+	}
+
+	/**
+	 Returns multiplier depending on that how many armor pieces entity is currently wearing.
+
+	 @param entity Entity to test.
+	 */
+	public static double getChanceMultiplierDependingOnArmor( LivingEntity entity ) {
+		return 1.0;
 	}
 }

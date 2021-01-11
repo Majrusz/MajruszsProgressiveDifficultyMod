@@ -43,7 +43,7 @@ public abstract class WhenDamagedBase {
 	protected abstract double getChance();
 
 	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
-	protected double calculateChance( LivingEntity attacker ) {
-		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? MajruszsHelper.getClampedRegionalDifficulty( attacker ) : 1.0 );
+	protected double calculateChance( LivingEntity target ) {
+		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? MajruszsHelper.getClampedRegionalDifficulty( target ) : 1.0 );
 	}
 }

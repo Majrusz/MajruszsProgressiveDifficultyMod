@@ -8,6 +8,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.server.ServerWorld;
 
+/** Base class representing event on which enemies will receive some effects after being attacked. */
 public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	protected final Effect[] effects;
 

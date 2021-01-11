@@ -22,6 +22,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
 import net.minecraft.potion.Effect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -77,6 +78,9 @@ public class RegistryHandler {
 
 	// Effects
 	public static final RegistryObject< Effect > BLEEDING = EFFECTS.register( "bleeding", ()->BleedingEffect.instance );
+
+	// Damage sources
+	public static final DamageSource BLEEDING_SOURCE = new DamageSource( "bleeding" ).setDamageBypassesArmor();
 
 	public static UndeadArmyManager undeadArmyManager;
 	public static GameDataSaver gameDataSaver = new GameDataSaver();

@@ -11,17 +11,13 @@ import net.minecraft.world.Difficulty;
 import javax.annotation.Nullable;
 
 /** Making attack with tools inflict bleeding on enemies. */
-public class ToolBleedingOnAttack extends WhenDamagedApplyEffectBase {
-	public ToolBleedingOnAttack() {
-		super( GameState.Mode.NORMAL, true, BleedingEffect.instance );
-	}
-
+public class ToolBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		boolean attackerHasTool = attacker != null && attacker.getHeldItemMainhand().getItem() instanceof ToolItem;
 
-		return attackerHasTool && BleedingEffect.mayBleed( target ) && super.shouldBeExecuted( attacker, target, damageSource );
+		return attackerHasTool && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	@Override
@@ -37,10 +33,5 @@ public class ToolBleedingOnAttack extends WhenDamagedApplyEffectBase {
 	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
 		return Config.getDurationInSeconds( Config.Durations.TOOL_BLEEDING );
-	}
-
-	@Override
-	protected int getAmplifier( Difficulty difficulty ) {
-		return BleedingEffect.getAmplifier();
 	}
 }
