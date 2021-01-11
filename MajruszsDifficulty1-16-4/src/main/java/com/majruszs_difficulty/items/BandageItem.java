@@ -1,11 +1,13 @@
 package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
@@ -74,10 +76,18 @@ public class BandageItem extends Item {
 
 		player.addStat( Stats.ITEM_USED.get( bandage.getItem() ) );
 
-		target.removePotionEffect( RegistryHandler.BLEEDING.get() );
-		target.removeActivePotionEffect( RegistryHandler.BLEEDING.get() );
 		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
 
 		return true;
+	}
+
+	/** Removing bleeding effect and giving regeneration for few seconds.
+
+	 @param target Entity to remove bleeding.
+	 */
+	private static void removeBleedingAndAddRegeneration( LivingEntity target ) {
+		target.removePotionEffect( RegistryHandler.BLEEDING.get() );
+		target.removeActivePotionEffect( RegistryHandler.BLEEDING.get() );
+		MajruszsHelper.applyEffectIfPossible( target, Effects.REGENERATION, MajruszsHelper.secondsToTicks( 6.0 ), 0 );
 	}
 }
