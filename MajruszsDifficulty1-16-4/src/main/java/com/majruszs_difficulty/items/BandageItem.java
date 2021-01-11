@@ -8,10 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -49,12 +46,16 @@ public class BandageItem extends Item {
 
 	@SubscribeEvent
 	public static void onRightClick( PlayerInteractEvent.EntityInteract event ) {
-		removeBleedingIfPossible( event.getItemStack(), event.getPlayer(), event.getEntityLiving() );
+		if( !( event.getTarget() instanceof LivingEntity ) )
+			return;
+
+		if( removeBleedingIfPossible( event.getItemStack(), event.getPlayer(), ( LivingEntity )event.getTarget() ) )
+			event.setCancellationResult( ActionResultType.SUCCESS );
 	}
 
-	protected static void removeBleedingIfPossible( ItemStack bandage, PlayerEntity player, LivingEntity target ) {
-		if( !( target.isPotionActive( RegistryHandler.BLEEDING.get() ) && bandage.getItem() instanceof BandageItem && bandage.getCount() > 0 ) )
-			return;
+	protected static boolean removeBleedingIfPossible( ItemStack bandage, PlayerEntity player, LivingEntity target ) {
+		if( !( target.isPotionActive( RegistryHandler.BLEEDING.get() ) && bandage.getItem() instanceof BandageItem ) )
+			return false;
 
 		if( !player.abilities.isCreativeMode )
 			bandage.shrink( 1 );
@@ -64,5 +65,7 @@ public class BandageItem extends Item {
 		target.removePotionEffect( RegistryHandler.BLEEDING.get() );
 		target.removeActivePotionEffect( RegistryHandler.BLEEDING.get() );
 		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
+
+		return true;
 	}
 }

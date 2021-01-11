@@ -105,11 +105,11 @@ public class ConfigHandler {
 		BUILDER.push( "Durations" );
 		Config.Durations.WITHER_SWORD_EFFECT = createConfigSpecForDouble( "wither_sword_effect_duration", "", 6.0, 2.0, 30.0 );
 		Config.Durations.DROWNING_EFFECTS = createConfigSpecForDouble( "drowning_negative_effects_duration", "", 5.0, 3.0, 10.0 );
-		Config.Durations.CACTUS_BLEEDING = createConfigSpecForDouble( "cactus_bleeding_duration", "", 12.0, 1.0, 60.0 );
-		Config.Durations.SHARP_ITEM_BLEEDING = createConfigSpecForDouble( "tool_bleeding_duration", "", 12.0, 1.0, 60.0 );
-		Config.Durations.ARROW_BLEEDING = createConfigSpecForDouble( "arrow_bleeding_duration", "", 12.0, 1.0, 60.0 );
-		Config.Durations.THROWN_TRIDENT_BLEEDING = createConfigSpecForDouble( "thrown_trident_bleeding_duration", "", 16.0, 1.0, 60.0 );
-		Config.Durations.BITE_BLEEDING = createConfigSpecForDouble( "bite_bleeding_duration", "", 12.0, 1.0, 60.0 );
+		Config.Durations.CACTUS_BLEEDING = createConfigSpecForDouble( "cactus_bleeding_duration", "", 24.0, 1.0, 600.0 );
+		Config.Durations.SHARP_ITEM_BLEEDING = createConfigSpecForDouble( "tool_bleeding_duration", "", 24.0, 1.0, 600.0 );
+		Config.Durations.ARROW_BLEEDING = createConfigSpecForDouble( "arrow_bleeding_duration", "", 24.0, 1.0, 600.0 );
+		Config.Durations.THROWN_TRIDENT_BLEEDING = createConfigSpecForDouble( "thrown_trident_bleeding_duration", "", 30.0, 1.0, 600.0 );
+		Config.Durations.BITE_BLEEDING = createConfigSpecForDouble( "bite_bleeding_duration", "", 24.0, 1.0, 600.0 );
 		BUILDER.pop();
 
 		BUILDER.push( "Values" );

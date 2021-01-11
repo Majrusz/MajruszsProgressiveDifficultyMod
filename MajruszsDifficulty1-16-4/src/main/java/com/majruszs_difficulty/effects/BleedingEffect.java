@@ -11,7 +11,6 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 /** Bleeding effect similar to poison effect. */
 public class BleedingEffect extends Effect {
@@ -34,7 +33,7 @@ public class BleedingEffect extends Effect {
 	/** Calculating whether effect is ready to deal damage. */
 	@Override
 	public boolean isReady( int duration, int amplifier ) {
-		int cooldown = Math.max( 5, MajruszsHelper.secondsToTicks( 3.0 ) >> amplifier );
+		int cooldown = Math.max( 5, MajruszsHelper.secondsToTicks( 5.0 ) >> amplifier );
 
 		return duration % cooldown == 0;
 	}
