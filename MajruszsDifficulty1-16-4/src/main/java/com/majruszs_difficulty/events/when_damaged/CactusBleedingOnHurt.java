@@ -19,9 +19,7 @@ public class CactusBleedingOnHurt extends WhenDamagedApplyEffectBase {
 	/** Checking if all conditions were met. */
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean canBeTargetedByBleeding = MajruszsHelper.isHuman( target ) || MajruszsHelper.isAnimal( target );
-
-		return canBeTargetedByBleeding && super.shouldBeExecuted( attacker, target, damageSource );
+		return BleedingEffect.mayBleed( target ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	@Override
@@ -41,6 +39,6 @@ public class CactusBleedingOnHurt extends WhenDamagedApplyEffectBase {
 
 	@Override
 	protected int getAmplifier( Difficulty difficulty ) {
-		return 0;
+		return BleedingEffect.getAmplifier();
 	}
 }
