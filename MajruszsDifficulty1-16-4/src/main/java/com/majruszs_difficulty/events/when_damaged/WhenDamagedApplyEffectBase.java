@@ -47,9 +47,7 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	 @param difficulty Current world difficulty.
 	 */
 	protected void applyEffect( LivingEntity target, Effect effect, Difficulty difficulty ) {
-		EffectInstance effectInstance = new EffectInstance( effect, getDurationInTicks( difficulty ), getAmplifier( difficulty ) );
-		if( target.isPotionApplicable( effectInstance ) )
-			target.addPotionEffect( effectInstance );
+		MajruszsHelper.applyEffectIfPossible( target, effect, getDurationInTicks( difficulty ), getAmplifier( difficulty ) );
 	}
 
 	/**
