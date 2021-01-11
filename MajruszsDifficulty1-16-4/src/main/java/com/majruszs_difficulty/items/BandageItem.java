@@ -76,6 +76,7 @@ public class BandageItem extends Item {
 
 		player.addStat( Stats.ITEM_USED.get( bandage.getItem() ) );
 
+		removeBleedingAndAddRegeneration( target );
 		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
 
 		return true;
