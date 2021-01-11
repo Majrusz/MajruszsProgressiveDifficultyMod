@@ -4,7 +4,9 @@ import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+import net.minecraft.item.TridentItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;
 
@@ -15,9 +17,14 @@ public class ToolBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean attackerHasTool = attacker != null && attacker.getHeldItemMainhand().getItem() instanceof ToolItem;
+		if( attacker != null ) {
+			ItemStack heldItemStack = attacker.getHeldItemMainhand();
+			boolean attackerHasTool = heldItemStack.getItem() instanceof ToolItem || heldItemStack.getItem() instanceof TridentItem;
 
-		return attackerHasTool && super.shouldBeExecuted( attacker, target, damageSource );
+			return attackerHasTool && super.shouldBeExecuted( attacker, target, damageSource );
+		}
+
+		return false;
 	}
 
 	@Override

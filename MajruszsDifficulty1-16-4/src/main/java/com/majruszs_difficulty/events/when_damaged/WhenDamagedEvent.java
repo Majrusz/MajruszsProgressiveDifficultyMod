@@ -1,5 +1,7 @@
 package com.majruszs_difficulty.events.when_damaged;
 
+import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -22,6 +24,8 @@ public class WhenDamagedEvent {
 		registryList.add( new WitherSwordOnAttack() );
 		registryList.add( new CactusBleedingOnHurt() );
 		registryList.add( new ToolBleedingOnAttack() );
+		registryList.add( new ArrowBleedingOnHurt() );
+		registryList.add( new TridentBleedingOnHurt() );
 	}
 
 	@SubscribeEvent
