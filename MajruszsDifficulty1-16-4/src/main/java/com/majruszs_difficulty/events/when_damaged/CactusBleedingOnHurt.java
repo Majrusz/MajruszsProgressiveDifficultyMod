@@ -1,8 +1,8 @@
 package com.majruszs_difficulty.events.when_damaged;
 
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
@@ -26,17 +26,17 @@ public class CactusBleedingOnHurt extends WhenDamagedApplyEffectBase {
 
 	@Override
 	protected boolean isEnabled() {
-		return true;
+		return !Config.isDisabled( Config.Features.CACTUS_BLEEDING );
 	}
 
 	@Override
 	protected double getChance() {
-		return 1.0;
+		return Config.getChance( Config.Chances.CACTUS_BLEEDING );
 	}
 
 	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
-		return 20 * 50;
+		return MajruszsHelper.secondsToTicks( Config.getDurationInSeconds( Config.Durations.CACTUS_BLEEDING ) );
 	}
 
 	@Override
