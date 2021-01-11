@@ -29,7 +29,7 @@ public class NaturalMonsterSpawns {
 	protected static void addOverworldEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
 		spawnInfoBuilder.withSpawner( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EntityType.ILLUSIONER, 20, 1, 2 ) );
 		spawnInfoBuilder.withSpawner( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( GiantEntity.type, 3, 1, 1 ) );
-		spawnInfoBuilder.withSpawner( EntityClassification.CREATURE, new MobSpawnInfo.Spawners( PillagerWolfEntity.type, 5, 2, 5 ) );
+		spawnInfoBuilder.withSpawner( EntityClassification.CREATURE, new MobSpawnInfo.Spawners( PillagerWolfEntity.type, 1, 1, 4 ) );
 		spawnInfoBuilder.withSpawner( EntityClassification.MONSTER, new MobSpawnInfo.Spawners( EliteSkeletonEntity.type, 20, 1, 1 ) );
 	}
 
