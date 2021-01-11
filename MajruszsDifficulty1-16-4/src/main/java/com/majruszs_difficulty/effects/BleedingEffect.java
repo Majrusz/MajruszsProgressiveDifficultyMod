@@ -6,10 +6,12 @@ import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /** Bleeding effect similar to poison effect. */
 public class BleedingEffect extends Effect {
@@ -64,6 +66,12 @@ public class BleedingEffect extends Effect {
 	 @param entity Entity to test.
 	 */
 	public static double getChanceMultiplierDependingOnArmor( LivingEntity entity ) {
-		return 1.0;
+		double chance = 1.0;
+
+		for( ItemStack armorPiece : entity.getArmorInventoryList() )
+			if( !armorPiece.isEmpty() )
+				chance -= 0.2;
+
+		return chance;
 	}
 }
