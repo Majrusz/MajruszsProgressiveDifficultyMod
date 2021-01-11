@@ -10,6 +10,7 @@ import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
+import com.majruszs_difficulty.items.BandageItem;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.majruszs_difficulty.items.UndeadBattleStandardItem;
 import com.majruszs_difficulty.items.WitherSwordItem;
@@ -67,6 +68,7 @@ public class RegistryHandler {
 	public static final RegistryObject< TreasureBagItem > WITHER_TREASURE_BAG = TreasureBagItem.getRegistry( "wither" );
 	public static final RegistryObject< TreasureBagItem > ENDER_DRAGON_TREASURE_BAG = TreasureBagItem.getRegistry( "ender_dragon" );
 	public static final RegistryObject< TreasureBagItem > FISHING_TREASURE_BAG = TreasureBagItem.getRegistry( "fishing" );
+	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = SOUNDS.register( "undead_army.approaching",

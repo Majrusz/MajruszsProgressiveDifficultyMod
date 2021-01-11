@@ -21,6 +21,8 @@
   "item.majruszs_difficulty.wither_treasure_bag": "Wither Treasure Bag",
   "item.majruszs_difficulty.ender_dragon_treasure_bag": "Ender Dragon Treasure Bag",
   "item.majruszs_difficulty.fishing_treasure_bag": "Fisherman Treasure Bag",
+  "item.majruszs_difficulty.bandage": "Bandage",
+  "item.majruszs_difficulty.bandage.item_tooltip": "Removes bleeding from the target.",
   "commands.game_state.change": "Game state changed to",
   "commands.game_state.current": "Current game state is",
   "majruszs_difficulty.states.normal": "Normal Mode",
