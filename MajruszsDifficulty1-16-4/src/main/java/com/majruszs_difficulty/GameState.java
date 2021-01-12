@@ -114,6 +114,24 @@ public class GameState {
 		return Config.getChance( value );
 	}
 
+	/**
+	 Returns configuration value depending on current game state.
+
+	 @param normal Configuration value for Normal game state.
+	 @param expert Configuration value for Expert game state.
+	 @param master Configuration value for Master game state.
+	 */
+	public static < ConfigType > ConfigType getValueDependingOnGameState( ConfigType normal, ConfigType expert, ConfigType master ) {
+		switch( current ) {
+			default:
+				return normal;
+			case EXPERT:
+				return expert;
+			case MASTER:
+				return master;
+		}
+	}
+
 	public static IFormattableTextComponent getNormalModeText() {
 		return generateModeText( "normal", normalModeColor );
 	}
@@ -132,24 +150,6 @@ public class GameState {
 		text.mergeStyle( TextFormatting.BOLD );
 
 		return text;
-	}
-
-	/**
-	 Returns configuration value depending on current game state.
-
-	 @param normal Configuration value for Normal game state.
-	 @param expert Configuration value for Expert game state.
-	 @param master Configuration value for Master game state.
-	 */
-	private static < ConfigType > ConfigType getValueDependingOnGameState( ConfigType normal, ConfigType expert, ConfigType master ) {
-		switch( current ) {
-			default:
-				return normal;
-			case EXPERT:
-				return expert;
-			case MASTER:
-				return master;
-		}
 	}
 
 	/** All possible game states. */
