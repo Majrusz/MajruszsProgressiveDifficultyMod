@@ -7,7 +7,7 @@ import net.minecraftforge.fml.config.ModConfig;
 public class ConfigHandler {
 	private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 	public static ForgeConfigSpec CONFIG_SPEC;
-	public static final String FILENAME = "majruszs-difficulty.toml";
+	public static final String FILENAME = "majruszs-difficulty-common.toml";
 
 	public static class Config {
 		public static class Features {
@@ -24,7 +24,7 @@ public class ConfigHandler {
 
 		public static class Values {
 			public static ForgeConfigSpec.IntValue UNDEAD_ARMY_KILL_REQUIREMENT, FISHED_ITEMS_BAG_REQUIREMENT_NORMAL, FISHED_ITEMS_BAG_REQUIREMENT_EXPERT, FISHED_ITEMS_BAG_REQUIREMENT_MASTER, BLEEDING_AMPLIFIER_NORMAL, BLEEDING_AMPLIFIER_EXPERT, BLEEDING_AMPLIFIER_MASTER;
-			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS, EXPERIENCE_BONUS_NORMAL, EXPERIENCE_BONUS_EXPERT, EXPERIENCE_BONUS_MASTER;
+			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS, EXPERIENCE_BONUS_NORMAL, EXPERIENCE_BONUS_EXPERT, EXPERIENCE_BONUS_MASTER, HEALTH_BONUS_NORMAL, HEALTH_BONUS_EXPERT, HEALTH_BONUS_MASTER, DAMAGE_BONUS_NORMAL, DAMAGE_BONUS_EXPERT, DAMAGE_BONUS_MASTER, DAMAGE_AND_HEALTH_MULTIPLIER_AT_NIGHT;
 		}
 
 		public static boolean isDisabled( ForgeConfigSpec.BooleanValue config ) {
@@ -125,6 +125,13 @@ public class ConfigHandler {
 		Config.Values.EXPERIENCE_BONUS_NORMAL = createConfigSpecForDouble( "experience_bonus_normal", "", 0.0, 0.0, 10.0 );
 		Config.Values.EXPERIENCE_BONUS_EXPERT = createConfigSpecForDouble( "experience_bonus_expert", "", 0.25, 0.0, 10.0 );
 		Config.Values.EXPERIENCE_BONUS_MASTER = createConfigSpecForDouble( "experience_bonus_master", "", 0.5, 0.0, 10.0 );
+		Config.Values.HEALTH_BONUS_NORMAL = createConfigSpecForDouble( "health_bonus_normal", "", 0.0, 0.0, 10.0 );
+		Config.Values.HEALTH_BONUS_EXPERT = createConfigSpecForDouble( "health_bonus_expert", "", 0.2, 0.0, 10.0 );
+		Config.Values.HEALTH_BONUS_MASTER = createConfigSpecForDouble( "health_bonus_master", "", 0.4, 0.0, 10.0 );
+		Config.Values.DAMAGE_BONUS_NORMAL = createConfigSpecForDouble( "damage_bonus_normal", "", 0.0, 0.0, 10.0 );
+		Config.Values.DAMAGE_BONUS_EXPERT = createConfigSpecForDouble( "damage_bonus_expert", "", 0.2, 0.0, 10.0 );
+		Config.Values.DAMAGE_BONUS_MASTER = createConfigSpecForDouble( "damage_bonus_master", "", 0.4, 0.0, 10.0 );
+		Config.Values.DAMAGE_AND_HEALTH_MULTIPLIER_AT_NIGHT = createConfigSpecForDouble( "damage_and_health_multiplier_at_night", "", 2.0, 1.0, 10.0 );
 		BUILDER.pop();
 
 		CONFIG_SPEC = BUILDER.build();
