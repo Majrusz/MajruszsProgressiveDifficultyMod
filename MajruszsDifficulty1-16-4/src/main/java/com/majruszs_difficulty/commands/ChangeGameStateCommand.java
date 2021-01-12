@@ -29,14 +29,14 @@ public final class ChangeGameStateCommand {
 	public static int getCurrentState( CommandSource source ) {
 		source.sendFeedback( getFeedbackMessage( GameState.getCurrentMode(), "current" ), true );
 
-		return GameState.convertModeToInteger( GameState.getCurrentMode() );
+		return GameState.convertStateToInteger( GameState.getCurrentMode() );
 	}
 
 	public static int changeState( CommandSource source, GameState.State state ) {
 		if( GameState.changeMode( state ) )
 			source.sendFeedback( getFeedbackMessage( state, "change" ), true );
 
-		return GameState.convertModeToInteger( state );
+		return GameState.convertStateToInteger( state );
 	}
 
 	private static IFormattableTextComponent getFeedbackMessage( GameState.State state, String translationPart ) {
