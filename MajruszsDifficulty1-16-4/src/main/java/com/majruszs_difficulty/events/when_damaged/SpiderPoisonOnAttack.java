@@ -37,7 +37,7 @@ public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	protected int getDurationInTicks( Difficulty difficulty ) {
 		switch( difficulty ) {
 			default:
-				return 0;
+				return MajruszsHelper.secondsToTicks( 0.0 );
 			case NORMAL:
 				return MajruszsHelper.secondsToTicks( 7.0 );
 			case HARD:
