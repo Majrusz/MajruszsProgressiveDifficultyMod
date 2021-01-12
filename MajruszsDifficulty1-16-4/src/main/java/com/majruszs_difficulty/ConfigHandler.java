@@ -19,7 +19,7 @@ public class ConfigHandler {
 		}
 
 		public static class Durations {
-			public static ForgeConfigSpec.DoubleValue WITHER_SWORD_EFFECT, DROWNING_EFFECTS, CACTUS_BLEEDING, SHARP_ITEM_BLEEDING, ARROW_BLEEDING, THROWN_TRIDENT_BLEEDING, BITE_BLEEDING;
+			public static ForgeConfigSpec.DoubleValue WITHER_SWORD_EFFECT, DROWNING_EFFECTS, CACTUS_BLEEDING, SHARP_ITEM_BLEEDING, ARROW_BLEEDING, THROWN_TRIDENT_BLEEDING, BITE_BLEEDING, SKY_KEEPER_LEVITATION;
 		}
 
 		public static class Values {
@@ -110,6 +110,7 @@ public class ConfigHandler {
 		Config.Durations.ARROW_BLEEDING = createConfigSpecForDouble( "arrow_bleeding_duration", "", 24.0, 1.0, 600.0 );
 		Config.Durations.THROWN_TRIDENT_BLEEDING = createConfigSpecForDouble( "thrown_trident_bleeding_duration", "", 30.0, 1.0, 600.0 );
 		Config.Durations.BITE_BLEEDING = createConfigSpecForDouble( "bite_bleeding_duration", "", 24.0, 1.0, 600.0 );
+		Config.Durations.SKY_KEEPER_LEVITATION = createConfigSpecForDouble( "sky_keeper_levitation_duration", "", 5.0, 1.0, 600.0 );
 		BUILDER.pop();
 
 		BUILDER.push( "Values" );

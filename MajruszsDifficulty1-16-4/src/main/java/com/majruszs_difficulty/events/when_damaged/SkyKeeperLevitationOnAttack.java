@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 /** Making Sky Keeper attacks have a chance to set levitation on enemies. */
 public class SkyKeeperLevitationOnAttack extends WhenDamagedApplyStackableEffectBase {
 	public SkyKeeperLevitationOnAttack() {
-		super( GameState.State.EXPERT, true, Effects.LEVITATION, false, true, 1, MajruszsHelper.secondsToTicks( 60.0 ) );
+		super( GameState.State.NORMAL, true, Effects.LEVITATION, false, true, 1, MajruszsHelper.secondsToTicks( 60.0 ) );
 	}
 
 	/** Checking if all conditions were met. */
@@ -35,14 +35,7 @@ public class SkyKeeperLevitationOnAttack extends WhenDamagedApplyStackableEffect
 
 	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
-		switch( difficulty ) {
-			default:
-				return MajruszsHelper.secondsToTicks( 3.0 );
-			case NORMAL:
-				return MajruszsHelper.secondsToTicks( 4.0 );
-			case HARD:
-				return MajruszsHelper.secondsToTicks( 5.0 );
-		}
+		return Config.getDurationInSeconds( Config.Durations.SKY_KEEPER_LEVITATION );
 	}
 
 	@Override
