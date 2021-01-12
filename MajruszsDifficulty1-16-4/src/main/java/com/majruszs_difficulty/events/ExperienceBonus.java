@@ -25,13 +25,8 @@ public class ExperienceBonus {
 
 	/** Returns extra experience depending on current game state. */
 	private static double getExperienceMultiplier() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return Config.getDouble( Config.Values.EXPERIENCE_BONUS_NORMAL );
-			case EXPERT:
-				return Config.getDouble( Config.Values.EXPERIENCE_BONUS_MASTER );
-			case MASTER:
-				return Config.getDouble( Config.Values.EXPERIENCE_BONUS_EXPERT );
-		}
+		return GameState.getDoubleDependingOnGameState( Config.Values.EXPERIENCE_BONUS_NORMAL, Config.Values.EXPERIENCE_BONUS_EXPERT,
+			Config.Values.EXPERIENCE_BONUS_MASTER
+		);
 	}
 }

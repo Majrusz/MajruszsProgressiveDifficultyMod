@@ -42,13 +42,8 @@ public class AwardTreasureBagForFishing {
 
 	/** Returns how many fish player must fished to get treasure bag. */
 	protected static int getRequiredItems() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return Config.getInteger( Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_NORMAL );
-			case EXPERT:
-				return Config.getInteger( Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_EXPERT );
-			case MASTER:
-				return Config.getInteger( Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_MASTER );
-		}
+		return GameState.getIntegerDependingOnGameState( Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_NORMAL,
+			Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_EXPERT, Config.Values.FISHED_ITEMS_BAG_REQUIREMENT_MASTER
+		);
 	}
 }
