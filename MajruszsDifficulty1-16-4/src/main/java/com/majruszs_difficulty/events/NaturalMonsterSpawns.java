@@ -3,6 +3,7 @@ package com.majruszs_difficulty.events;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
+import com.majruszs_difficulty.structures.FlyingPhantomStructure;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.Biome;
@@ -20,9 +21,11 @@ public class NaturalMonsterSpawns {
 		Biome.Category category = event.getCategory();
 		MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
 
-		if( doBiomeBelongsToOverworld( category ) )
+		if( doBiomeBelongsToOverworld( category ) ) {
 			addOverworldEntities( spawnInfoBuilder );
-		else if( doBiomeBelongsToNether( category ) )
+			event.getGeneration()
+				.withStructure( FlyingPhantomStructure.FEATURE );
+		} else if( doBiomeBelongsToNether( category ) )
 			addNetherEntities( spawnInfoBuilder );
 	}
 
