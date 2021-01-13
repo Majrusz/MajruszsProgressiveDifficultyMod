@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class FlyingPhantomPiece extends TemplateStructurePiece {
 	public static final ResourceLocation resourceLocation = MajruszsHelper.getResource( "flying_phantom" );
-	public static final ResourceLocation chestResourceLocation = MajruszsHelper.getResource( "gameplay/fishing_treasure_loot" );
+	public static final ResourceLocation chestResourceLocation = MajruszsHelper.getResource( "chests/flying_phantom" );
 	private final Rotation rotation;
 
 	public FlyingPhantomPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
