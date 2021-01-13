@@ -9,8 +9,8 @@ mainly on making the game more difficult after reaching certain milestones.
 - [Planet Minecraft](https://www.planetminecraft.com/mod/majrusz-s-progressive-difficulty/)
 
 ## Current Mod Releases (Source Code)
-- [v0.2.2 for Minecraft 1.16.4](MajruszsDifficulty1-16-4)
-- [v0.2.0 for Minecraft 1.16.3](MajruszsDifficulty1-16-3)
+- [v0.3.0 for Minecraft 1.16.4](MajruszsDifficulty1-16-4)
+- [v0.2.0 for Minecraft 1.16.3](MajruszsDifficulty1-16-3) **(not supported anymore)**
 
 ## Technologies
 - Java 8
