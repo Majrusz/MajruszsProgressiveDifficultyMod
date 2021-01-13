@@ -3,6 +3,7 @@ package com.majruszs_difficulty.structure_pieces;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
@@ -37,7 +38,7 @@ public class FlyingPhantomPiece extends TemplateStructurePiece {
 
 	public FlyingPhantomPiece( TemplateManager templateManager, CompoundNBT compoundNBT ) {
 		super( RegistryHandler.FLYING_PHANTOM_PIECE, compoundNBT );
-		this.rotation = Rotation.valueOf( compoundNBT.getString( "Rotation" ) );
+		this.rotation = Rotation.valueOf( compoundNBT.getString( "Rot" ) );
 		this.setupPiece( templateManager );
 	}
 
@@ -45,18 +46,20 @@ public class FlyingPhantomPiece extends TemplateStructurePiece {
 	protected void readAdditional( CompoundNBT compoundNBT ) {
 		super.readAdditional( compoundNBT );
 
-		compoundNBT.putString( "Rotation", this.rotation.name() );
+		compoundNBT.putString( "Rot", this.rotation.name() );
 	}
 
 	@Override
 	protected void handleDataMarker( String function, BlockPos position, IServerWorld world, Random random, MutableBoundingBox boundingBox ) {
 		if( function.startsWith( "chest" ) ) {
+			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 			TileEntity tileEntity = world.getTileEntity( position.down() );
 
 			if( tileEntity instanceof ChestTileEntity )
 				( ( ChestTileEntity )tileEntity ).setLootTable( chestResourceLocation, random.nextLong() );
 
 		} else if( function.startsWith( "spawner" ) ) {
+			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 			TileEntity tileEntity = world.getTileEntity( position.down() );
 
 			if( tileEntity instanceof MobSpawnerTileEntity ) {

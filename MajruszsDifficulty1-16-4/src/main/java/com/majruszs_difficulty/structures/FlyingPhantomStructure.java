@@ -5,6 +5,7 @@ import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -33,7 +34,9 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 	public static final StructureSeparationSettings SEPARATION_SETTINGS = new StructureSeparationSettings( 37, 27, 1717171717 );
 
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
-		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 1, 1, 1 ) );
+		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 10, 1, 3 ),
+		new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 3 )
+	);
 
 	public FlyingPhantomStructure() {
 		super( NoFeatureConfig.field_236558_a_ );
