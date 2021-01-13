@@ -69,6 +69,7 @@ public class RegistryHandler {
 	public static final DeferredRegister< SoundEvent > SOUNDS = DeferredRegister.create( ForgeRegistries.SOUND_EVENTS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Effect > EFFECTS = DeferredRegister.create( ForgeRegistries.POTIONS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Structure< ? > > STRUCTURES = DeferredRegister.create( ForgeRegistries.STRUCTURE_FEATURES, MajruszsDifficulty.MOD_ID );
+
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
 	// Entities
