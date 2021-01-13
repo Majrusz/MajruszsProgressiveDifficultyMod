@@ -34,8 +34,8 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 	public static final StructureSeparationSettings SEPARATION_SETTINGS = new StructureSeparationSettings( 37, 27, 1717171717 );
 
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
-		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 10, 1, 3 ),
-		new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 3 )
+		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 60, 1, 1 ),
+		new MobSpawnInfo.Spawners( EntityType.PHANTOM, 60, 1, 1 )
 	);
 
 	public FlyingPhantomStructure() {
