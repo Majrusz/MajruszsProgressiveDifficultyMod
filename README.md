@@ -10,7 +10,7 @@ mainly on making the game more difficult after reaching certain milestones.
 
 ## Current Mod Releases (Source Code)
 - [v0.3.0 for Minecraft 1.16.4](MajruszsDifficulty1-16-4)
-- [v0.2.0 for Minecraft 1.16.3](MajruszsDifficulty1-16-3) **(not supported anymore)**
+- [v0.2.0 for Minecraft 1.16.3](MajruszsDifficulty1-16-3) *(not supported anymore)*
 
 ## Technologies
 - Java 8
