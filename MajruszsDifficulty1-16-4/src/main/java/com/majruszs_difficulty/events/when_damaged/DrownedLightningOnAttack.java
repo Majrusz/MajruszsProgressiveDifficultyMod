@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 /** Making Drowned trident attacks have a chance to spawn lightning. */
 public class DrownedLightningOnAttack extends WhenDamagedBase {
 	public DrownedLightningOnAttack() {
-		super( GameState.State.NORMAL, true );
+		super( GameState.State.EXPERT, true );
 	}
 
 	/** Checking if all conditions were met. */
