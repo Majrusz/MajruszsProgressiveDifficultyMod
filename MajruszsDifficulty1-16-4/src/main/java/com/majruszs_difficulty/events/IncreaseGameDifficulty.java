@@ -4,11 +4,12 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.raid.Raid;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -24,23 +25,17 @@ public class IncreaseGameDifficulty {
 		if( !MajruszsHelper.isPlayerIn( playerEnteringDimension, DimensionType.THE_NETHER ) )
 			return;
 
-		if( GameState.getCurrentMode() != GameState.Mode.NORMAL )
+		if( GameState.getCurrentMode() != GameState.State.NORMAL )
 			return;
 
-		if( !( playerEnteringDimension.getEntityWorld() instanceof ServerWorld ) )
+		MinecraftServer minecraftServer = playerEnteringDimension.getServer();
+
+		if( minecraftServer == null )
 			return;
 
-		ServerWorld world = ( ServerWorld )playerEnteringDimension.getEntityWorld();
+		GameState.changeMode( GameState.State.EXPERT );
 
-		GameState.changeMode( GameState.Mode.EXPERT );
-
-		for( PlayerEntity player : world.getPlayers() ) {
-			IFormattableTextComponent message = new TranslationTextComponent( "majruszs_difficulty.on_expert_mode_start" );
-			message.mergeStyle( GameState.expertModeColor );
-			message.mergeStyle( TextFormatting.BOLD );
-
-			player.sendStatusMessage( message, false );
-		}
+		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.expertModeColor );
 	}
 
 	@SubscribeEvent
@@ -53,16 +48,23 @@ public class IncreaseGameDifficulty {
 		if( !( dragon.getEntityWorld() instanceof ServerWorld ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )dragon.getEntityWorld();
-
-		if( GameState.getCurrentMode() == GameState.Mode.MASTER )
+		if( GameState.getCurrentMode() == GameState.State.MASTER )
 			return;
 
-		GameState.changeMode( GameState.Mode.MASTER );
+		MinecraftServer minecraftServer = dragon.getServer();
 
-		for( PlayerEntity player : world.getPlayers() ) {
-			IFormattableTextComponent message = new TranslationTextComponent( "majruszs_difficulty.on_master_mode_start" );
-			message.mergeStyle( GameState.masterModeColor );
+		if( minecraftServer == null )
+			return;
+
+		GameState.changeMode( GameState.State.MASTER );
+
+		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.masterModeColor );
+	}
+
+	protected static void sendMessage( PlayerList playerList, String translationKey, TextFormatting textColor ) {
+		for( PlayerEntity player : playerList.getPlayers() ) {
+			IFormattableTextComponent message = new TranslationTextComponent( translationKey );
+			message.mergeStyle( textColor );
 			message.mergeStyle( TextFormatting.BOLD );
 
 			player.sendStatusMessage( message, false );

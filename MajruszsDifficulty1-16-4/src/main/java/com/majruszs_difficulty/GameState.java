@@ -1,39 +1,46 @@
 package com.majruszs_difficulty;
 
+import com.majruszs_difficulty.ConfigHandler.Config;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
+/** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
-	private static Mode current = Mode.NORMAL;
+	public static final TextFormatting normalModeColor = TextFormatting.WHITE;
+	public static final TextFormatting expertModeColor = TextFormatting.RED;
+	public static final TextFormatting masterModeColor = TextFormatting.DARK_PURPLE;
+	private static State current = State.NORMAL;
 
-	public enum Mode {
-		NORMAL, EXPERT, MASTER
-	}
-
-	public static boolean changeMode( Mode mode ) {
-		if( mode == current )
+	/** Changing current game state globally. */
+	public static boolean changeMode( State state ) {
+		if( state == current )
 			return false;
 
-		current = mode;
+		current = state;
 		return true;
 	}
 
-	public static Mode getCurrentMode() {
+	/** Returning current server game state. */
+	public static State getCurrentMode() {
 		return current;
 	}
 
-	public static boolean atLeast( Mode mode ) {
-		if( mode == Mode.EXPERT ) {
-			return ( current == Mode.EXPERT || current == Mode.MASTER );
-		} else if( mode == Mode.MASTER ) {
-			return current == Mode.MASTER;
+	/** Checking if current state is equal or higher than given state. */
+	public static boolean atLeast( State state ) {
+		if( state == State.EXPERT ) {
+			return ( current == State.EXPERT || current == State.MASTER );
+		} else if( state == State.MASTER ) {
+			return current == State.MASTER;
 		} else
 			return true;
 	}
 
-	public static int convertModeToInteger( Mode mode ) {
-		switch( mode ) {
+	/** Converting game state to integer. */
+	public static int convertStateToInteger( State state ) {
+		switch( state ) {
 			default:
 				return 0;
 			case EXPERT:
@@ -43,28 +50,96 @@ public class GameState {
 		}
 	}
 
-	public static Mode convertIntegerToMode( int mode ) {
+	/** Converting integer to game state. */
+	public static State convertIntegerToState( int mode ) {
 		switch( mode ) {
 			default:
-				return Mode.NORMAL;
+				return State.NORMAL;
 			case 1:
-				return Mode.EXPERT;
+				return State.EXPERT;
 			case 2:
-				return Mode.MASTER;
+				return State.MASTER;
 		}
 	}
 
-	public static final TextFormatting normalModeColor = TextFormatting.WHITE;
+	/**
+	 Returns integer depending on current game state.
+
+	 @param normal Configuration for Normal game state.
+	 @param expert Configuration for Expert game state.
+	 @param master Configuration for Master game state.
+	 */
+	public static int getIntegerDependingOnGameState( IntValue normal, IntValue expert, IntValue master ) {
+		IntValue value = getValueDependingOnGameState( normal, expert, master );
+
+		return Config.getInteger( value );
+	}
+
+	/**
+	 Returns double depending on current game state.
+
+	 @param normal Configuration for Normal game state.
+	 @param expert Configuration for Expert game state.
+	 @param master Configuration for Master game state.
+	 */
+	public static double getDoubleDependingOnGameState( DoubleValue normal, DoubleValue expert, DoubleValue master ) {
+		DoubleValue value = getValueDependingOnGameState( normal, expert, master );
+
+		return Config.getDouble( value );
+	}
+
+	/**
+	 Returns duration in seconds depending on current game state.
+
+	 @param normal Configuration for Normal game state.
+	 @param expert Configuration for Expert game state.
+	 @param master Configuration for Master game state.
+	 */
+	public static int getDurationDependingOnGameState( DoubleValue normal, DoubleValue expert, DoubleValue master ) {
+		DoubleValue value = getValueDependingOnGameState( normal, expert, master );
+
+		return Config.getDurationInSeconds( value );
+	}
+
+	/**
+	 Returns chance depending on current game state.
+
+	 @param normal Configuration for Normal game state.
+	 @param expert Configuration for Expert game state.
+	 @param master Configuration for Master game state.
+	 */
+	public static double getChanceDependingOnGameState( DoubleValue normal, DoubleValue expert, DoubleValue master ) {
+		DoubleValue value = getValueDependingOnGameState( normal, expert, master );
+
+		return Config.getChance( value );
+	}
+
+	/**
+	 Returns configuration value depending on current game state.
+
+	 @param normal Configuration value for Normal game state.
+	 @param expert Configuration value for Expert game state.
+	 @param master Configuration value for Master game state.
+	 */
+	public static < ConfigType > ConfigType getValueDependingOnGameState( ConfigType normal, ConfigType expert, ConfigType master ) {
+		switch( current ) {
+			default:
+				return normal;
+			case EXPERT:
+				return expert;
+			case MASTER:
+				return master;
+		}
+	}
+
 	public static IFormattableTextComponent getNormalModeText() {
 		return generateModeText( "normal", normalModeColor );
 	}
 
-	public static final TextFormatting expertModeColor = TextFormatting.RED;
 	public static IFormattableTextComponent getExpertModeText() {
 		return generateModeText( "expert", expertModeColor );
 	}
 
-	public static final TextFormatting masterModeColor = TextFormatting.DARK_PURPLE;
 	public static IFormattableTextComponent getMasterModeText() {
 		return generateModeText( "master", masterModeColor );
 	}
@@ -75,5 +150,10 @@ public class GameState {
 		text.mergeStyle( TextFormatting.BOLD );
 
 		return text;
+	}
+
+	/** All possible game states. */
+	public enum State {
+		NORMAL, EXPERT, MASTER
 	}
 }

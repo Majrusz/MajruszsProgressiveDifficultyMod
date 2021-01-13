@@ -7,6 +7,7 @@ import net.minecraft.command.Commands;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+/** Command responsible for changing current game state. */
 public final class ChangeGameStateCommand {
 	private ChangeGameStateCommand() {}
 
@@ -14,11 +15,11 @@ public final class ChangeGameStateCommand {
 		dispatcher.register( Commands.literal( "gamestate" )
 			.requires( source->source.hasPermissionLevel( 4 ) )
 			.then( Commands.literal( "normal" )
-				.executes( entity->changeState( entity.getSource(), GameState.Mode.NORMAL ) ) )
+				.executes( entity->changeState( entity.getSource(), GameState.State.NORMAL ) ) )
 			.then( Commands.literal( "expert" )
-				.executes( entity->changeState( entity.getSource(), GameState.Mode.EXPERT ) ) )
+				.executes( entity->changeState( entity.getSource(), GameState.State.EXPERT ) ) )
 			.then( Commands.literal( "master" )
-				.executes( entity->changeState( entity.getSource(), GameState.Mode.MASTER ) ) ) );
+				.executes( entity->changeState( entity.getSource(), GameState.State.MASTER ) ) ) );
 
 		dispatcher.register( Commands.literal( "gamestate" )
 			.requires( source->source.hasPermissionLevel( 0 ) )
@@ -28,21 +29,21 @@ public final class ChangeGameStateCommand {
 	public static int getCurrentState( CommandSource source ) {
 		source.sendFeedback( getFeedbackMessage( GameState.getCurrentMode(), "current" ), true );
 
-		return GameState.convertModeToInteger( GameState.getCurrentMode() );
+		return GameState.convertStateToInteger( GameState.getCurrentMode() );
 	}
 
-	public static int changeState( CommandSource source, GameState.Mode mode ) {
-		if( GameState.changeMode( mode ) )
-			source.sendFeedback( getFeedbackMessage( mode, "change" ), true );
+	public static int changeState( CommandSource source, GameState.State state ) {
+		if( GameState.changeMode( state ) )
+			source.sendFeedback( getFeedbackMessage( state, "change" ), true );
 
-		return GameState.convertModeToInteger( mode );
+		return GameState.convertStateToInteger( state );
 	}
 
-	private static IFormattableTextComponent getFeedbackMessage( GameState.Mode mode, String translationPart ) {
+	private static IFormattableTextComponent getFeedbackMessage( GameState.State state, String translationPart ) {
 		IFormattableTextComponent feedback = new TranslationTextComponent( "commands.game_state." + translationPart );
 
 		IFormattableTextComponent feedback_mode;
-		switch( mode ) {
+		switch( state ) {
 			default:
 				feedback_mode = GameState.getNormalModeText();
 				break;

@@ -2,11 +2,14 @@
   "entity.majruszs_difficulty.giant": "Giant",
   "entity.majruszs_difficulty.pillager_wolf": "Pillager's Wolf",
   "entity.majruszs_difficulty.elite_skeleton": "Elite Skeleton",
+  "entity.majruszs_difficulty.sky_keeper": "Sky Keeper",
+  "effect.majruszs_difficulty.bleeding": "Bleeding",
   "itemGroup.majruszs_tab": "Majrusz's Progressive Difficulty",
   "item.majruszs_difficulty.giant_spawn_egg": "Giant Spawn Egg",
   "item.majruszs_difficulty.illusioner_spawn_egg": "Illusioner Spawn Egg",
   "item.majruszs_difficulty.pillager_wolf_spawn_egg": "Pillager's Wolf Spawn Egg",
   "item.majruszs_difficulty.elite_skeleton_spawn_egg": "Elite Skeleton Spawn Egg",
+  "item.majruszs_difficulty.sky_keeper_spawn_egg": "Sky Keeper Spawn Egg",
   "item.majruszs_difficulty.wither_sword": "Wither Sword",
   "item.majruszs_difficulty.wither_sword.tooltip": "Inflicts Wither II for few seconds on hit.",
   "item.majruszs_difficulty.undead_battle_standard": "Undead Battle Standard",
@@ -17,6 +20,9 @@
   "item.majruszs_difficulty.elder_guardian_treasure_bag": "Elder Guardian Treasure Bag",
   "item.majruszs_difficulty.wither_treasure_bag": "Wither Treasure Bag",
   "item.majruszs_difficulty.ender_dragon_treasure_bag": "Ender Dragon Treasure Bag",
+  "item.majruszs_difficulty.fishing_treasure_bag": "Fisherman Treasure Bag",
+  "item.majruszs_difficulty.bandage": "Bandage",
+  "item.majruszs_difficulty.bandage.item_tooltip": "Removes bleeding from the target.",
   "commands.game_state.change": "Game state changed to",
   "commands.game_state.current": "Current game state is",
   "majruszs_difficulty.states.normal": "Normal Mode",
@@ -36,5 +42,7 @@
   "majruszs_difficulty.undead_army.north": "north",
   "majruszs_difficulty.undead_army.south": "south",
   "majruszs_difficulty.subtitle.undead_army.approaching": "Undead Army Approaching",
-  "majruszs_difficulty.subtitle.undead_army.wave_started": "Wave Started"
+  "majruszs_difficulty.subtitle.undead_army.wave_started": "Wave Started",
+  "death.attack.bleeding": "%1$s bled to death",
+  "death.attack.bleeding.player": "%1$s bled to death from injuries caused by %2$s"
 }

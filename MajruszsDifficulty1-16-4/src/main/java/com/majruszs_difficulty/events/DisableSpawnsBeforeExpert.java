@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.GameState.Mode;
+import com.majruszs_difficulty.GameState.State;
 import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
@@ -29,18 +29,18 @@ public class DisableSpawnsBeforeExpert {
 		boolean isEliteSkeleton = entity instanceof EliteSkeletonEntity;
 
 		if( isGiant )
-			return shouldBeDisabled( Mode.EXPERT, Config.Features.GIANT_SPAWNING );
+			return shouldBeDisabled( GameState.State.EXPERT, Config.Features.GIANT_SPAWNING );
 		else if( isIllusioner )
-			return shouldBeDisabled( Mode.EXPERT, Config.Features.ILLUSIONER_SPAWNING );
+			return shouldBeDisabled( GameState.State.EXPERT, Config.Features.ILLUSIONER_SPAWNING );
 		else if( isPillagerWolf )
-			return shouldBeDisabled( Mode.EXPERT, Config.Features.PILLAGER_WOLF_SPAWNING );
+			return shouldBeDisabled( State.EXPERT, Config.Features.PILLAGER_WOLF_SPAWNING );
 		else if( isEliteSkeleton )
-			return shouldBeDisabled( Mode.EXPERT, Config.Features.PILLAGER_WOLF_SPAWNING );
+			return shouldBeDisabled( GameState.State.EXPERT, Config.Features.PILLAGER_WOLF_SPAWNING );
 		else
 			return false;
 	}
 
-	private static boolean shouldBeDisabled( GameState.Mode minimumMode, ForgeConfigSpec.BooleanValue config ) {
-		return !GameState.atLeast( minimumMode ) || Config.isDisabled( config );
+	private static boolean shouldBeDisabled( GameState.State minimumState, ForgeConfigSpec.BooleanValue config ) {
+		return !GameState.atLeast( minimumState ) || Config.isDisabled( config );
 	}
 }
