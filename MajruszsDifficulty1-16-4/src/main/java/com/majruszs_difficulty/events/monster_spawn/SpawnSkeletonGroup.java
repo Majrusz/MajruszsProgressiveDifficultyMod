@@ -1,35 +1,36 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
+import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.server.ServerWorld;
 
-public class SkeletonGroup extends EnemyGroup {
-	protected static final double woodenSwordChance = 0.5D;
-	protected static final double stoneSwordChance = 0.25D;
+/** Spawns skeletons in group. */
+public class SpawnSkeletonGroup extends SpawnEnemyGroupBase {
+	protected static final double woodenSwordChance = 0.5;
+	protected static final double stoneSwordChance = 0.25;
 
-	public SkeletonGroup( MonsterEntity leader, ServerWorld world ) {
-		super( leader, world, 1, 3 );
+	public SpawnSkeletonGroup() {
+		super( GameState.State.EXPERT, true, 1, 3, Armors.leather );
+	}
 
-		giveArmorToLeader( world, Armors.leather );
+	@Override
+	protected boolean shouldBeExecuted( LivingEntity entity ) {
+		return entity instanceof SkeletonEntity && super.shouldBeExecuted( entity );
 	}
 
 	@Override
 	protected CreatureEntity spawnChild( ServerWorld world ) {
-		SkeletonEntity skeleton = EntityType.SKELETON.create( world );
-
-		giveWeaponTo( skeleton, world );
-		setupGoals( skeleton, 9, 9 );
-
-		return skeleton;
+		return EntityType.SKELETON.create( world );
 	}
 
-	protected ItemStack generateWeapon() {
+	@Override
+	protected ItemStack generateWeaponForChild() {
 		double itemChance = MajruszsDifficulty.RANDOM.nextDouble();
 
 		if( itemChance <= woodenSwordChance )
