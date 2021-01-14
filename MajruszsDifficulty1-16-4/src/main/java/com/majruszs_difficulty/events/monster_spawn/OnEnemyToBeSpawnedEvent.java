@@ -18,6 +18,7 @@ public class OnEnemyToBeSpawnedEvent {
 		registryList.add( new GiveWitherSkeletonSwordOnSpawn() );
 		registryList.add( new GiveEvokerTotemOnSpawn() );
 		registryList.add( new ChargeCreeperOnSpawn() );
+		registryList.add( new ApplyingNegativeEffectOnCreeperOnSpawn() );
 	}
 
 	@SubscribeEvent
