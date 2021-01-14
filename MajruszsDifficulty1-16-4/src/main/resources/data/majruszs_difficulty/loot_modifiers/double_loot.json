@@ -1,5 +1,5 @@
 {
-	"type": "majruszs_difficulty:increase_loot",
+	"type": "majruszs_difficulty:double_loot",
 	"conditions": [
 		{
 			"condition": "minecraft:killed_by_player"

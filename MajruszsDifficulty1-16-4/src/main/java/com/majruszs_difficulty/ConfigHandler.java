@@ -11,7 +11,7 @@ public class ConfigHandler {
 
 	public static class Config {
 		public static class Features {
-			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE_EFFECTS, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD, SKY_KEEPER_SPAWNING, SKY_KEEPER_LEVITATION, DROWNED_LIGHTNING, DROWNING_EFFECTS, CACTUS_BLEEDING, SHARP_ITEM_BLEEDING, ARROW_BLEEDING, THROWN_TRIDENT_BLEEDING, BITE_BLEEDING;
+			public static ForgeConfigSpec.BooleanValue FALL_DAMAGE_EFFECTS, CREEPER_CHARGED, CREEPER_EFFECTS, SKELETON_GROUPS, ZOMBIE_GROUPS, ILLUSIONER_SPAWNING, GIANT_SPAWNING, PILLAGER_WOLF_SPAWNING, PIGLIN_GROUPS, PILLAGER_GROUPS, SPIDER_POISON, EVOKER_TOTEM, WITHER_SKELETON_SWORD, SKY_KEEPER_SPAWNING, SKY_KEEPER_LEVITATION, DROWNED_LIGHTNING, DROWNING_EFFECTS, CACTUS_BLEEDING, SHARP_ITEM_BLEEDING, ARROW_BLEEDING, THROWN_TRIDENT_BLEEDING, BITE_BLEEDING, DOUBLE_LOOT_PARTICLES;
 		}
 
 		public static class Chances {
@@ -84,6 +84,7 @@ public class ConfigHandler {
 		Config.Features.ARROW_BLEEDING = createConfigSpecForBoolean( "arrow_bleeding", "", true );
 		Config.Features.THROWN_TRIDENT_BLEEDING = createConfigSpecForBoolean( "thrown_trident_bleeding", "", true );
 		Config.Features.BITE_BLEEDING = createConfigSpecForBoolean( "bite_bleeding", "", true );
+		Config.Features.DOUBLE_LOOT_PARTICLES = createConfigSpecForBoolean( "double_loot_particles", "", true );
 		BUILDER.pop();
 
 		BUILDER.comment( "Remember these chances below are scaled by Clamped Regional Difficulty! (0.0 ~ 1.0)" );
