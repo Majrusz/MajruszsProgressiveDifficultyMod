@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.structures;
 
 import com.google.common.collect.ImmutableList;
+import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
@@ -31,11 +32,11 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 		.toString();
 	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FEATURE = WorldGenRegistries.register(
 		WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, NAME, INSTANCE.withConfiguration( NoFeatureConfig.field_236559_b_ ) );
-	public static final StructureSeparationSettings SEPARATION_SETTINGS = new StructureSeparationSettings( 37, 27, 1717171717 );
+	public static StructureSeparationSettings SEPARATION_SETTINGS;
 
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
-		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 60, 1, 1 ),
-		new MobSpawnInfo.Spawners( EntityType.PHANTOM, 60, 1, 1 )
+		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 40, 1, 1 ),
+		new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 1 )
 	);
 
 	public FlyingPhantomStructure() {
@@ -81,8 +82,13 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 			FlyingPhantomPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
 
 			this.recalculateStructureSize();
-
-			MajruszsDifficulty.LOGGER.info( "Phantom at " + blockpos.getX() + " " + blockpos.getY() + " " + blockpos.getZ() );
 		}
+	}
+
+	public static void setupSeparationSettings() {
+		int minimum = Config.getInteger( Config.Structures.FLYING_PHANTOM_MIN_DISTANCE );
+		int maximum = Math.max(Config.getInteger( Config.Structures.FLYING_PHANTOM_MAX_DISTANCE ), minimum+1);
+		MajruszsDifficulty.LOGGER.info( minimum + ":" + maximum );
+		SEPARATION_SETTINGS = new StructureSeparationSettings( maximum, minimum, 1717171717 );
 	}
 }

@@ -34,7 +34,7 @@ public class WhenDamagedEvent {
 		LivingEntity target = event.getEntityLiving();
 
 		for( WhenDamagedBase register : registryList )
-			if( register.shouldBeExecuted( attacker, target, damageSource ) )
+			if( register.shouldBeExecuted( attacker, target, damageSource ) && event.getAmount() > 0 )
 				register.whenDamaged( target );
 	}
 }

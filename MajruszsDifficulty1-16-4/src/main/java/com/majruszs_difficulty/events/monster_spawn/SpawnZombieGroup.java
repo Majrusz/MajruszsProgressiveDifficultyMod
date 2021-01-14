@@ -1,35 +1,36 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
+import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.server.ServerWorld;
 
-public class ZombieGroup extends EnemyGroup {
-	protected static final double stoneSwordChance = 0.25D;
-	protected static final double woodenAxeChance = 0.25D;
+/** Spawns zombies in group. */
+public class SpawnZombieGroup extends SpawnEnemyGroupBase {
+	protected static final double stoneSwordChance = 0.25;
+	protected static final double woodenAxeChance = 0.25;
 
-	public ZombieGroup( MonsterEntity leader, ServerWorld world ) {
-		super( leader, world, 1, 3 );
+	public SpawnZombieGroup() {
+		super( GameState.State.EXPERT, true, 1, 3, Armors.leather );
+	}
 
-		giveArmorToLeader( world, Armors.leather );
+	@Override
+	protected boolean shouldBeExecuted( LivingEntity entity ) {
+		return entity instanceof ZombieEntity && super.shouldBeExecuted( entity );
 	}
 
 	@Override
 	protected CreatureEntity spawnChild( ServerWorld world ) {
-		ZombieEntity zombie = EntityType.ZOMBIE.create( world );
-
-		giveWeaponTo( zombie, world );
-		setupGoals( zombie, 9, 9 );
-
-		return zombie;
+		return EntityType.ZOMBIE.create( world );
 	}
 
-	protected ItemStack generateWeapon() {
+	@Override
+	protected ItemStack generateWeaponForChild() {
 		double itemChance = MajruszsDifficulty.RANDOM.nextDouble();
 
 		if( itemChance <= woodenAxeChance )
