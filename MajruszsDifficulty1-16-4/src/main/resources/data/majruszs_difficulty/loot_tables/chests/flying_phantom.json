@@ -10,7 +10,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 50,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -22,6 +22,21 @@
             }
           ],
           "name": "minecraft:phantom_membrane"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 5.0,
+                "max": 10.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:lapis_lazuli"
         },
         {
           "type": "minecraft:item",
