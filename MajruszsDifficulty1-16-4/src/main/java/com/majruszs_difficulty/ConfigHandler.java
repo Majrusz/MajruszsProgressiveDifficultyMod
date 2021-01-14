@@ -141,7 +141,7 @@ public class ConfigHandler {
 		BUILDER.comment( "All distances below are given in chunks." );
 
 		BUILDER.push( "Structures" );
-		BUILDER.push( "Flying Phantom" );
+		BUILDER.push( "FlyingPhantom" );
 		Config.Structures.FLYING_PHANTOM_MIN_DISTANCE = createConfigSpecForInteger( "flying_phantom_min_distance", "", 37, 20, 500 );
 		Config.Structures.FLYING_PHANTOM_MAX_DISTANCE = createConfigSpecForInteger( "flying_phantom_max_distance", "", 47, 20, 500 );
 		BUILDER.pop();

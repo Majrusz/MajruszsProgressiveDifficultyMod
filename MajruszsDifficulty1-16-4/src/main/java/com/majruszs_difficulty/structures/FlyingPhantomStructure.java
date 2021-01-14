@@ -89,7 +89,8 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 
 	public static void setupSeparationSettings() {
 		int minimum = Config.getInteger( Config.Structures.FLYING_PHANTOM_MIN_DISTANCE );
-		int maximum = Math.min(Config.getInteger( Config.Structures.FLYING_PHANTOM_MAX_DISTANCE ), minimum);
+		int maximum = Math.max(Config.getInteger( Config.Structures.FLYING_PHANTOM_MAX_DISTANCE ), minimum+1);
+		MajruszsDifficulty.LOGGER.info( minimum + ":" + maximum );
 		SEPARATION_SETTINGS = new StructureSeparationSettings( maximum, minimum, 1717171717 );
 	}
 }
