@@ -82,7 +82,6 @@ public class OnMonsterSpawn {
 	}
 
 	protected static void boostWitherSkeleton( WitherSkeletonEntity wither, ServerWorld world ) {
-		if( !Config.isDisabled( Config.Features.WITHER_SKELETON_SWORD ) )
-			GiveWitherSkeletonSword.giveTo( wither );
+
 	}
 }
