@@ -15,6 +15,7 @@ public class OnEnemyToBeSpawnedEvent {
 	private static final List< OnEnemyToBeSpawnedBase > registryList = new ArrayList<>();
 
 	static {
+		registryList.add( new StrengthenedEntityAttributesOnSpawn() );
 		registryList.add( new GiveWitherSkeletonSwordOnSpawn() );
 		registryList.add( new GiveEvokerTotemOnSpawn() );
 		registryList.add( new ChargeCreeperOnSpawn() );

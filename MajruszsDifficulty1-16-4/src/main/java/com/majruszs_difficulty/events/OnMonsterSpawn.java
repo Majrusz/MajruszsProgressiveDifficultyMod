@@ -24,8 +24,6 @@ public class OnMonsterSpawn {
 	}
 
 	protected static void boostLivingEntity( LivingEntity livingEntity, ServerWorld world ) {
-		StrengthenedAttributes.strengthenLivingEntity( livingEntity, world );
-
 		if( livingEntity instanceof SkeletonEntity )
 			boostSkeleton( ( SkeletonEntity )livingEntity, world );
 

@@ -8,7 +8,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.server.ServerWorld;
 
 /** Increases damage and health of spawning hostile entities. */
-public class StrengthenedAttributes {
+public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase {
 	protected static final AttributeHelper maxHealthAttribute = new AttributeHelper( "ba9de909-4a9e-43da-9d14-fbcbc2403316",
 		"MonsterSpawnHealthBonus", AttributeHelper.Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE
 	);
@@ -16,15 +16,30 @@ public class StrengthenedAttributes {
 		AttributeHelper.Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE
 	);
 
-	public static void strengthenLivingEntity( LivingEntity livingEntity, ServerWorld world ) {
+	public StrengthenedEntityAttributesOnSpawn() {
+		super( GameState.State.NORMAL, false );
+	}
+
+	@Override
+	protected boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	protected double getChance() {
+		return 1.0;
+	}
+
+	@Override
+	public void onExecute( LivingEntity entity, ServerWorld world ) {
 		double bonusMultiplier = getAttributeMultiplier( world );
 
 		maxHealthAttribute.setValue( getHealthBonusMultiplier() * bonusMultiplier )
-			.apply( livingEntity );
+			.apply( entity );
 		damageAttribute.setValue( getDamageBonusMultiplier() * bonusMultiplier )
-			.apply( livingEntity );
+			.apply( entity );
 
-		livingEntity.setHealth( livingEntity.getMaxHealth() );
+		entity.setHealth( entity.getMaxHealth() );
 	}
 
 	/**
