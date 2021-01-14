@@ -82,8 +82,6 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 			FlyingPhantomPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
 
 			this.recalculateStructureSize();
-
-			MajruszsDifficulty.LOGGER.info( "Phantom at " + blockpos.getX() + " " + blockpos.getY() + " " + blockpos.getZ() );
 		}
 	}
 
