@@ -15,7 +15,8 @@ public class OnEnemyToBeSpawnedEvent {
 	private static final List< OnEnemyToBeSpawnedBase > registryList = new ArrayList<>();
 
 	static {
-		registryList.add( new GiveSwordForWitherSkeletonOnSpawn() );
+		registryList.add( new GiveWitherSkeletonSwordOnSpawn() );
+		registryList.add( new GiveEvokerTotemOnSpawn() );
 	}
 
 	@SubscribeEvent

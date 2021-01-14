@@ -75,13 +75,4 @@ public class OnMonsterSpawn {
 		if( GameState.atLeast( GameState.State.EXPERT ) && !Config.isDisabled( Config.Features.PILLAGER_GROUPS ) )
 			new PillagerGroup( pillager, world );
 	}
-
-	protected static void boostEvoker( EvokerEntity evoker, ServerWorld world ) {
-		if( !Config.isDisabled( Config.Features.EVOKER_TOTEM ) )
-			GiveEvokerTotem.giveTo( evoker );
-	}
-
-	protected static void boostWitherSkeleton( WitherSkeletonEntity wither, ServerWorld world ) {
-
-	}
 }
