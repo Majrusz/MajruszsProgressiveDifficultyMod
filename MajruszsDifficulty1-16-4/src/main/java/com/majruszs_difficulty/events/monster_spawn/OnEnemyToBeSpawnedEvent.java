@@ -20,6 +20,10 @@ public class OnEnemyToBeSpawnedEvent {
 		registryList.add( new GiveEvokerTotemOnSpawn() );
 		registryList.add( new ChargeCreeperOnSpawn() );
 		registryList.add( new ApplyingNegativeEffectOnCreeperOnSpawn() );
+		registryList.add( new SpawnPiglinGroup() );
+		registryList.add( new SpawnPillagerGroup() );
+		registryList.add( new SpawnSkeletonGroup() );
+		registryList.add( new SpawnZombieGroup() );
 	}
 
 	@SubscribeEvent

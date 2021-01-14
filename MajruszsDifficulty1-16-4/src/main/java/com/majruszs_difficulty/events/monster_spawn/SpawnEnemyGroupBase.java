@@ -107,7 +107,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 			double y = spawnPosition.y + 0.5;
 			double z = spawnPosition.z - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 );
 			child.setPosition( x, y, z );
-			setupGoals( ( CreatureEntity )leader, child, 1, 1 );
+			setupGoals( ( CreatureEntity )leader, child, 9, 9 );
 			giveWeaponTo( child, world );
 
 			world.summonEntity( child );
