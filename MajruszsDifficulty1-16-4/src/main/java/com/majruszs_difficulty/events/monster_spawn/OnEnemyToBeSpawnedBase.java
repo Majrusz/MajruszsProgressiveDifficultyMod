@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.events.FeatureBase;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.server.ServerWorld;
@@ -23,6 +24,15 @@ public abstract class OnEnemyToBeSpawnedBase extends FeatureBase {
 
 	/** Checking if all conditions were met. */
 	protected boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity.world instanceof ServerWorld;
+		if( !GameState.atLeast( this.minimumState ) )
+			return false;
+
+		if( !( entity.world instanceof ServerWorld ) )
+			return false;
+
+		if( !isEnabled() )
+			return false;
+
+		return MajruszsHelper.tryChance( calculateChance( entity ) );
 	}
 }

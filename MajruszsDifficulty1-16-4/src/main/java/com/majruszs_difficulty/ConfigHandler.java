@@ -102,7 +102,7 @@ public class ConfigHandler {
 		Config.Chances.ARROW_BLEEDING = createConfigSpecForDouble( "arrow_bleeding_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.THROWN_TRIDENT_BLEEDING = createConfigSpecForDouble( "thrown_trident_bleeding_chance", "", 0.5, 0.0, 1.0 );
 		Config.Chances.BITE_BLEEDING = createConfigSpecForDouble( "bite_bleeding_chance", "", 0.5, 0.0, 1.0 );
-		Config.Chances.WITHER_SKELETON_SWORD = createConfigSpecForDouble( "wither_skeleton_sword_chance", "", 0.5, 0.0, 1.0 );
+		Config.Chances.WITHER_SKELETON_SWORD = createConfigSpecForDouble( "wither_skeleton_sword_chance", "", 0.75, 0.0, 1.0 );
 		BUILDER.pop();
 
 		BUILDER.comment( "All durations below are given in seconds." );

@@ -4,31 +4,22 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.server.ServerWorld;
 
 /** Class for giving an item for entity on spawn. */
 public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
-	private final ItemStack itemStackToGive;
-	private final EquipmentSlotType equipmentSlotType;
-	private final boolean shouldBeEnchanted;
-	private final boolean shouldBeDamaged;
+	protected final EquipmentSlotType equipmentSlotType;
+	protected final boolean shouldBeEnchanted;
+	protected final boolean shouldBeDamaged;
 
-	public GiveItemOnSpawnBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, ItemStack itemStackToGive,
-		EquipmentSlotType equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
+	public GiveItemOnSpawnBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, EquipmentSlotType equipmentSlotType,
+		boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
 		super( minimumState, shouldChanceBeMultipliedByCRD );
-		this.itemStackToGive = itemStackToGive;
 		this.equipmentSlotType = equipmentSlotType;
 		this.shouldBeEnchanted = shouldBeEnchanted;
 		this.shouldBeDamaged = shouldBeDamaged;
-	}
-
-	public GiveItemOnSpawnBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, Item item, EquipmentSlotType equipmentSlotType,
-		boolean shouldBeEnchanted, boolean shouldBeDamaged
-	) {
-		this( minimumState, shouldChanceBeMultipliedByCRD, new ItemStack( item ), equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );
 	}
 
 	/** Called when all requirements were met. */
@@ -39,15 +30,18 @@ public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
 		entity.setItemStackToSlot( this.equipmentSlotType, getFinalItemStack( clampedRegionalDifficulty ) );
 	}
 
+	/** Returns item stack to give to the entity. */
+	public abstract ItemStack getItemStack();
+
 	/** Returns final item stack with optional enchantments and damaged. */
-	private ItemStack getFinalItemStack( double clampedRegionalDifficulty ) {
+	protected ItemStack getFinalItemStack( double clampedRegionalDifficulty ) {
 		if( this.shouldBeEnchanted ) {
 			if( this.shouldBeDamaged )
-				return MajruszsHelper.damageAndEnchantItem( this.itemStackToGive, clampedRegionalDifficulty );
+				return MajruszsHelper.damageAndEnchantItem( getItemStack(), clampedRegionalDifficulty );
 			else
-				return MajruszsHelper.enchantItem( this.itemStackToGive, clampedRegionalDifficulty );
+				return MajruszsHelper.enchantItem( getItemStack(), clampedRegionalDifficulty );
 		}
 
-		return this.shouldBeDamaged ? MajruszsHelper.damageItem( this.itemStackToGive ) : this.itemStackToGive;
+		return this.shouldBeDamaged ? MajruszsHelper.damageItem( getItemStack() ) : getItemStack();
 	}
 }
