@@ -27,6 +27,10 @@ public class ConfigHandler {
 			public static ForgeConfigSpec.DoubleValue UNDEAD_ARMY_SCALE_WITH_PLAYERS, EXPERIENCE_BONUS_NORMAL, EXPERIENCE_BONUS_EXPERT, EXPERIENCE_BONUS_MASTER, HEALTH_BONUS_NORMAL, HEALTH_BONUS_EXPERT, HEALTH_BONUS_MASTER, DAMAGE_BONUS_NORMAL, DAMAGE_BONUS_EXPERT, DAMAGE_BONUS_MASTER, DAMAGE_AND_HEALTH_MULTIPLIER_AT_NIGHT;
 		}
 
+		public static class Structures {
+			public static ForgeConfigSpec.IntValue FLYING_PHANTOM_MIN_DISTANCE, FLYING_PHANTOM_MAX_DISTANCE;
+		}
+
 		public static boolean isDisabled( ForgeConfigSpec.BooleanValue config ) {
 			return !config.get();
 		}
@@ -132,6 +136,15 @@ public class ConfigHandler {
 		Config.Values.DAMAGE_BONUS_EXPERT = createConfigSpecForDouble( "damage_bonus_expert", "", 0.2, 0.0, 10.0 );
 		Config.Values.DAMAGE_BONUS_MASTER = createConfigSpecForDouble( "damage_bonus_master", "", 0.4, 0.0, 10.0 );
 		Config.Values.DAMAGE_AND_HEALTH_MULTIPLIER_AT_NIGHT = createConfigSpecForDouble( "damage_and_health_multiplier_at_night", "", 2.0, 1.0, 10.0 );
+		BUILDER.pop();
+
+		BUILDER.comment( "All distances below are given in chunks." );
+
+		BUILDER.push( "Structures" );
+		BUILDER.push( "Flying Phantom" );
+		Config.Structures.FLYING_PHANTOM_MIN_DISTANCE = createConfigSpecForInteger( "flying_phantom_min_distance", "", 37, 20, 500 );
+		Config.Structures.FLYING_PHANTOM_MAX_DISTANCE = createConfigSpecForInteger( "flying_phantom_max_distance", "", 47, 20, 500 );
+		BUILDER.pop();
 		BUILDER.pop();
 
 		CONFIG_SPEC = BUILDER.build();

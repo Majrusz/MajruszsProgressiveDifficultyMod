@@ -162,7 +162,8 @@ public class RegistryHandler {
 			EliteSkeletonEntity::canMonsterSpawn );
 		EntitySpawnPlacementRegistry.register( SkyKeeperEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
 			SkyKeeperEntity::canSpawnOn );
-		// DungeonHooks.addDungeonMob( EliteSkeletonEntity.type, 20 );
+
+		FlyingPhantomStructure.setupSeparationSettings();
 		DimensionStructuresSettings.field_236191_b_ = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
 			.putAll(DimensionStructuresSettings.field_236191_b_)
 			.put( FlyingPhantomStructure.INSTANCE, FlyingPhantomStructure.SEPARATION_SETTINGS )
