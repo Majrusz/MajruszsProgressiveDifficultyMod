@@ -90,7 +90,7 @@ public class ConfigHandler {
 		Config.Chances.ENEMY_GROUPS = createConfigSpecForDouble( "enemy_groups_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.SPIDER_POISON = createConfigSpecForDouble( "spider_poison_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.ELITE_TIPPED_ARROW = createConfigSpecForDouble( "elite_skeleton_tipped_arrow_chance", "", 0.75, 0.0, 1.0 );
-		Config.Chances.SKY_KEEPER_LEVITATION = createConfigSpecForDouble( "sky_keeper_levitation_chance", "", 0.375, 0.0, 1.0 );
+		Config.Chances.SKY_KEEPER_LEVITATION = createConfigSpecForDouble( "sky_keeper_levitation_chance", "", 0.5, 0.0, 1.0 );
 		Config.Chances.DROWNED_LIGHTNING = createConfigSpecForDouble( "drowned_trident_lightning_attack_chance", "", 0.25, 0.0, 1.0 );
 		Config.Chances.DROWNING_EFFECTS = createConfigSpecForDouble( "drowning_negative_effects_chance", "", 1.0, 0.0, 1.0 );
 		Config.Chances.CACTUS_BLEEDING = createConfigSpecForDouble( "cactus_bleeding_chance", "", 0.5, 0.0, 1.0 );
