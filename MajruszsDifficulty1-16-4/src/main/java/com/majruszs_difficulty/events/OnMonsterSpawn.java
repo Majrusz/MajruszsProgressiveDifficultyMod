@@ -26,10 +26,7 @@ public class OnMonsterSpawn {
 	protected static void boostLivingEntity( LivingEntity livingEntity, ServerWorld world ) {
 		StrengthenedAttributes.strengthenLivingEntity( livingEntity, world );
 
-		if( livingEntity instanceof CreeperEntity )
-			boostCreeper( ( CreeperEntity )livingEntity, world );
-
-		else if( livingEntity instanceof SkeletonEntity )
+		if( livingEntity instanceof SkeletonEntity )
 			boostSkeleton( ( SkeletonEntity )livingEntity, world );
 
 		else if( livingEntity instanceof ZombieEntity && !( livingEntity instanceof GiantEntity ) && !( livingEntity instanceof ZombifiedPiglinEntity ) )
@@ -40,20 +37,6 @@ public class OnMonsterSpawn {
 
 		else if( livingEntity instanceof PillagerEntity )
 			boostPillager( ( PillagerEntity )livingEntity, world );
-
-		else if( livingEntity instanceof EvokerEntity )
-			boostEvoker( ( EvokerEntity )livingEntity, world );
-
-		else if( livingEntity instanceof WitherSkeletonEntity )
-			boostWitherSkeleton( ( WitherSkeletonEntity )livingEntity, world );
-	}
-
-	protected static void boostCreeper( CreeperEntity creeper, ServerWorld world ) {
-		if( !Config.isDisabled( Config.Features.CREEPER_CHARGED ) )
-			ChargingCreeper.tryToChargeCreeper( creeper, world );
-
-		if( !Config.isDisabled( Config.Features.CREEPER_EFFECTS ) )
-			ApplyingNegativePotionEffectsOnCreeper.tryToApply( creeper, world );
 	}
 
 	protected static void boostSkeleton( SkeletonEntity skeleton, ServerWorld world ) {

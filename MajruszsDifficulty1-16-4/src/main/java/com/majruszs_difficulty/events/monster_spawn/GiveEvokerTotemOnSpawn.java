@@ -2,10 +2,8 @@ package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EvokerEntity;
-import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
