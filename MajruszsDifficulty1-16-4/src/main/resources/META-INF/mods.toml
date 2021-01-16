@@ -1,32 +1,18 @@
 modLoader="javafml"
-
 loaderVersion="[35,)"
-
 license="MIT License"
-
 issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
 [[mods]]
-
-modId="majruszs_difficulty"
-
-version="0.3.1"
-
-displayName="Majrusz's Progressive Difficulty"
-
-updateJSONURL="https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/main/update.json"
-
-displayURL="https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
-
-logoFile="logo.png"
-
-credits="Thanks for all your support!"
-
-authors="Majrusz"
-
-description='''
-Mod which increases the game difficulty of Minecraft after certain events.
-'''
+    modId="majruszs_difficulty"
+    version="0.3.2"
+    displayName="Majrusz's Progressive Difficulty"
+    updateJSONURL="https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/main/update.json"
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
+    logoFile="logo.png"
+    credits="Thanks for all your support!"
+    authors="Majrusz"
+    description='''Mod which increases the game difficulty of Minecraft after certain events.'''
 
 [[dependencies.examplemod]] #optional
     modId="forge"
