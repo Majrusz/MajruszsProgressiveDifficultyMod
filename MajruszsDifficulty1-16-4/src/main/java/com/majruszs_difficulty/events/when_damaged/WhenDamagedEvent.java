@@ -30,7 +30,7 @@ public class WhenDamagedEvent {
 	@SubscribeEvent
 	public static void onAttack( LivingHurtEvent event ) {
 		DamageSource damageSource = event.getSource();
-		LivingEntity attacker = ( LivingEntity )damageSource.getTrueSource();
+		LivingEntity attacker = damageSource.getTrueSource() instanceof LivingEntity ? ( LivingEntity )damageSource.getTrueSource() : null;
 		LivingEntity target = event.getEntityLiving();
 
 		for( WhenDamagedBase register : registryList )
