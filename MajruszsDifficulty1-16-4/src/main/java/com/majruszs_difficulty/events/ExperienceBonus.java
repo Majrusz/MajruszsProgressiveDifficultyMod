@@ -11,6 +11,10 @@ import net.minecraftforge.fml.common.Mod;
 /** Increasing experience from any source. */
 @Mod.EventBusSubscriber
 public class ExperienceBonus {
+	public ExperienceBonus() {
+
+	}
+	
 	@SubscribeEvent
 	public static void onXPPickUp( PlayerXpEvent.PickupXp event ) {
 		ExperienceOrbEntity orb = event.getOrb();

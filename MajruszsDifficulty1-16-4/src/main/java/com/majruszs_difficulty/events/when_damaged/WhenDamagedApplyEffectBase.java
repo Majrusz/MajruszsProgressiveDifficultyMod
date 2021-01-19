@@ -23,7 +23,7 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 		this.effectDuration = new DurationConfig( "duration", comment, false, defaultDurationInSeconds, 1.0, 600.0 );
 
 		if( defaultDurationInSeconds != -1.0 )
-			this.whenDamagedGroup.addConfig( this.effectDuration );
+			this.featureGroup.addConfig( this.effectDuration );
 	}
 
 	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,

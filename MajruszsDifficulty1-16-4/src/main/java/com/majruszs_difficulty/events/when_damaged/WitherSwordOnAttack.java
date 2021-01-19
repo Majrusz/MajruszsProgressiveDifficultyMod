@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 /** Making Wither Sword attacks inflict Wither II. */
 public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_NAME = "WitherSword";
-	private static final String CONFIG_COMMENT = "Making Wither Sword attacks inflict Wither.";
+	private static final String CONFIG_COMMENT = "Wither Sword inflicts Wither II.";
 
 	public WitherSwordOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.75, 6.0, GameState.State.NORMAL, false, Effects.WITHER );

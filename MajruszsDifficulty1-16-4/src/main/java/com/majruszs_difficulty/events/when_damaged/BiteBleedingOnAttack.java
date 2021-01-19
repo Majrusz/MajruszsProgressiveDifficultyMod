@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 /** Making entities who are able to 'bite' inflict bleeding on enemies. */
 public class BiteBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	private static final String CONFIG_NAME = "BiteBleeding";
-	private static final String CONFIG_COMMENT = "Animals, zombies and spiders may inflict bleeding.";
+	private static final String CONFIG_COMMENT = "Animals, zombies and spiders inflict bleeding.";
 
 	public BiteBleedingOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 24.0 );

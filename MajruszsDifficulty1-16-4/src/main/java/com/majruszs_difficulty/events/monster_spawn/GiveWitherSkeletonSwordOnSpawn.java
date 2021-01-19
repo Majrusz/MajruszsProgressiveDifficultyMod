@@ -11,23 +11,16 @@ import net.minecraft.item.ItemStack;
 
 /** Gives Wither Sword for Wither Skeleton on spawn. */
 public class GiveWitherSkeletonSwordOnSpawn extends GiveItemAfterSpawningBase {
+	private static final String CONFIG_NAME = "WitherSkeletonSword";
+	private static final String CONFIG_COMMENT = "Wither Skeleton spawns with Wither Sword.";
+
 	public GiveWitherSkeletonSwordOnSpawn() {
-		super( GameState.State.EXPERT, true, EquipmentSlotType.MAINHAND, true, true );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.75, GameState.State.EXPERT, true, EquipmentSlotType.MAINHAND, true, true );
 	}
 
 	@Override
 	protected boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof WitherSkeletonEntity && super.shouldBeExecuted( entity );
-	}
-
-	@Override
-	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.WITHER_SKELETON_SWORD );
-	}
-
-	@Override
-	protected double getChance() {
-		return Config.getChance( Config.Chances.WITHER_SKELETON_SWORD );
 	}
 
 	@Override

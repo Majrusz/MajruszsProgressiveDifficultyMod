@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 /** Making Cactus inflict bleeding on enemies. */
 public class CactusBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 	private static final String CONFIG_NAME = "CactusBleeding";
-	private static final String CONFIG_COMMENT = "Touching cactus may inflict bleeding.";
+	private static final String CONFIG_COMMENT = "Touching cactus inflict bleeding.";
 
 	public CactusBleedingOnHurt() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 24.0 );

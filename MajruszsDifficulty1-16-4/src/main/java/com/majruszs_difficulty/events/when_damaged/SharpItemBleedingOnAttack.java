@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 /** Making attack with tools inflict bleeding on enemies. */
 public class SharpItemBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	private static final String CONFIG_NAME = "SharpItemBleeding";
-	private static final String CONFIG_COMMENT = "All sharp items may inflict bleeding. (tools, weapons, shears etc.)";
+	private static final String CONFIG_COMMENT = "All sharp items inflict bleeding. (tools, weapons, shears etc.)";
 
 	public SharpItemBleedingOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, 24.0 );

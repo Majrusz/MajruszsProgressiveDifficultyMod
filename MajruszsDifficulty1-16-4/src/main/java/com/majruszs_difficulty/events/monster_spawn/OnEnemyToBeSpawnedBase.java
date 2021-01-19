@@ -10,8 +10,8 @@ import net.minecraft.world.server.ServerWorld;
 public abstract class OnEnemyToBeSpawnedBase extends FeatureBase {
 	protected boolean shouldBeCancelled = false;
 
-	public OnEnemyToBeSpawnedBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
-		super( "Em", ",", 1.0, minimumState, shouldChanceBeMultipliedByCRD );
+	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
+		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 	}
 
 	/** Called when all requirements were met. */

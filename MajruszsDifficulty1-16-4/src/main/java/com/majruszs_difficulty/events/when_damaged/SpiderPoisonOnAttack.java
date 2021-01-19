@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 /** Making Spider attacks have a chance to poison enemies. */
 public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_NAME = "SpiderPoison";
-	private static final String CONFIG_COMMENT = "Spider attacks may inflict poison.";
+	private static final String CONFIG_COMMENT = "Spider inflicts poison.";
 
 	public SpiderPoisonOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, -1.0, GameState.State.NORMAL, true, Effects.POISON );

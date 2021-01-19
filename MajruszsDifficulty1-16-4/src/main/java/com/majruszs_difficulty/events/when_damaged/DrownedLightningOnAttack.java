@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 /** Making Drowned trident attacks have a chance to spawn lightning. */
 public class DrownedLightningOnAttack extends WhenDamagedBase {
 	private static final String CONFIG_NAME = "DrownedLightning";
-	private static final String CONFIG_COMMENT = "Drowned attacks with trident may spawn lightning bolt. Requires Expert Mode.";
+	private static final String CONFIG_COMMENT = "Drowned attacks with trident spawn lightning bolt.";
 
 	public DrownedLightningOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, GameState.State.EXPERT, true );

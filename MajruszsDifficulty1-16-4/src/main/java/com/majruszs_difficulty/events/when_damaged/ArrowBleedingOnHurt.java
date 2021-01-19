@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 /** Making arrows inflict bleeding on enemies. */
 public class ArrowBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 	private static final String CONFIG_NAME = "ArrowBleeding";
-	private static final String CONFIG_COMMENT = "Arrows may inflict bleeding.";
+	private static final String CONFIG_COMMENT = "Arrow inflicts bleeding.";
 
 	public ArrowBleedingOnHurt() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, 24.0 );

@@ -12,25 +12,13 @@ import java.util.List;
 /** Handling all 'OnEnemySpawn' events. */
 @Mod.EventBusSubscriber
 public class OnEnemyToBeSpawnedEvent {
-	private static final List< OnEnemyToBeSpawnedBase > registryList = new ArrayList<>();
-
-	static {
-		registryList.add( new StrengthenedEntityAttributesOnSpawn() );
-		registryList.add( new GiveWitherSkeletonSwordOnSpawn() );
-		registryList.add( new GiveEvokerTotemOnSpawn() );
-		registryList.add( new ChargeCreeperOnSpawn() );
-		registryList.add( new ApplyingNegativeEffectOnCreeperOnSpawn() );
-		registryList.add( new SpawnPiglinGroup() );
-		registryList.add( new SpawnPillagerGroup() );
-		registryList.add( new SpawnSkeletonGroup() );
-		registryList.add( new SpawnZombieGroup() );
-	}
+	public static final List< OnEnemyToBeSpawnedBase > REGISTRY_LIST = new ArrayList<>();
 
 	@SubscribeEvent
 	public static void onSpawn( LivingSpawnEvent.SpecialSpawn event ) {
 		LivingEntity entity = event.getEntityLiving();
 
-		for( OnEnemyToBeSpawnedBase register : registryList )
+		for( OnEnemyToBeSpawnedBase register : REGISTRY_LIST )
 			if( register.shouldBeExecuted( entity ) ) {
 				register.onExecute( entity, ( ServerWorld )entity.world );
 

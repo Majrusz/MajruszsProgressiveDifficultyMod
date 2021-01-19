@@ -1,6 +1,7 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.effects.BleedingEffect;
+import com.majruszs_difficulty.events.monster_spawn.*;
 import com.majruszs_difficulty.events.when_damaged.*;
 import com.majruszs_difficulty.items.BandageItem;
 import com.majruszs_difficulty.items.TreasureBagItem;
@@ -18,23 +19,38 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.fml.ModLoadingContext;
 
-import static com.majruszs_difficulty.events.when_damaged.WhenDamagedEvent.REGISTRY_LIST;
-
 public class Instances {
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
+	// Effects
+	public static final BleedingEffect BLEEDING;
+
 	static {
+		// Effects
+		BLEEDING = new BleedingEffect();
+
 		// When damaged events
-		REGISTRY_LIST.add( new SpiderPoisonOnAttack() );
-		REGISTRY_LIST.add( new SkyKeeperLevitationOnAttack() );
-		REGISTRY_LIST.add( new DrownedLightningOnAttack() );
-		REGISTRY_LIST.add( new NauseaAndWeaknessWhenDrowning() );
-		REGISTRY_LIST.add( new WitherSwordOnAttack() );
-		REGISTRY_LIST.add( new CactusBleedingOnHurt() );
-		REGISTRY_LIST.add( new SharpItemBleedingOnAttack() );
-		REGISTRY_LIST.add( new ArrowBleedingOnHurt() );
-		REGISTRY_LIST.add( new ThrownTridentBleedingOnHurt() );
-		REGISTRY_LIST.add( new BiteBleedingOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new SpiderPoisonOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new SkyKeeperLevitationOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new DrownedLightningOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new NauseaAndWeaknessWhenDrowning() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new WitherSwordOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new CactusBleedingOnHurt() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new SharpItemBleedingOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new ArrowBleedingOnHurt() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new ThrownTridentBleedingOnHurt() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new BiteBleedingOnAttack() );
+
+		// On enemy to be spawned
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new GiveWitherSkeletonSwordOnSpawn() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new GiveEvokerTotemOnSpawn() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new ChargeCreeperOnSpawn() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new ApplyingNegativeEffectOnCreeperOnSpawn() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnPiglinGroup() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnPillagerGroup() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnSkeletonGroup() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnZombieGroup() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

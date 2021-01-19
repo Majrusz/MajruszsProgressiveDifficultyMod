@@ -26,21 +26,11 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 	protected abstract CreatureEntity spawnChild( ServerWorld world );
 
-	public SpawnEnemyGroupBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor ) {
-		super( minimumState, shouldChanceBeMultipliedByCRD );
+	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor ) {
+		super( configName, configComment, 0.25, minimumState, shouldChanceBeMultipliedByCRD );
 		this.minimumAmountOfChildren = minimumAmountOfChildren;
 		this.maximumAmountOfChildren = maximumAmountOfChildren;
 		this.leaderArmor = leaderArmor;
-	}
-
-	@Override
-	protected double getChance() {
-		return Config.getChance( Config.Chances.ENEMY_GROUPS );
-	}
-
-	@Override
-	protected boolean isEnabled() {
-		return true;
 	}
 
 	/** Called when all requirements were met. */

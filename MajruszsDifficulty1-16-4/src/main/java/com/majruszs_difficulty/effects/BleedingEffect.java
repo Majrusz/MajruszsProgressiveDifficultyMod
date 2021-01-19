@@ -5,6 +5,11 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
+import com.majruszs_difficulty.config.GameStateDoubleConfig;
+import com.majruszs_difficulty.config.GameStateIntegerConfig;
+import com.mlib.config.ConfigGroup;
+import com.mlib.config.DoubleConfig;
+import com.mlib.config.DurationConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -13,18 +18,37 @@ import net.minecraft.potion.EffectType;
 
 import javax.annotation.Nullable;
 
+import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
+
 /** Bleeding effect similar to poison effect. */
 public class BleedingEffect extends Effect {
-	public static final BleedingEffect instance = new BleedingEffect();
+	protected final ConfigGroup bleedingGroup;
+	protected final DoubleConfig damage;
+	protected final DurationConfig baseCooldown;
+	protected final DoubleConfig armorChanceReduction;
+	protected final GameStateIntegerConfig amplifier;
 
 	public BleedingEffect() {
 		super( EffectType.HARMFUL, 0xffdd5555 );
+
+		String damage_comment = "";
+		String cooldown_comment = "";
+		String armor_comment = "";
+		String amplifier_comment = "";
+		String group_comment = "";
+		this.damage = new DoubleConfig( "damage", damage_comment, false, 1.0, 0.0, 20.0 );
+		this.baseCooldown = new DurationConfig( "cooldown", cooldown_comment, false, 5.0, 0.0, 20.0 );
+		this.armorChanceReduction = new DoubleConfig( "armor_reduction", armor_comment, false, 0.2, 0.0, 0.25 );
+		this.amplifier = new GameStateIntegerConfig( "amplifier", amplifier_comment, 0, 1, 2, 0, 10 );
+
+		this.bleedingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Bleeding", group_comment ) );
+		this.bleedingGroup.addConfigs( this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier );
 	}
 
 	/** Called every time when effect 'isReady'. */
 	@Override
 	public void performEffect( LivingEntity entity, int amplifier ) {
-		entity.attackEntityFrom( Instances.DamageSources.BLEEDING, 1.0f );
+		entity.attackEntityFrom( Instances.DamageSources.BLEEDING, ( float )this.damage.get() );
 	}
 
 	/** When effect starts bleeding will not do anything. */
@@ -34,21 +58,14 @@ public class BleedingEffect extends Effect {
 	/** Calculating whether effect is ready to deal damage. */
 	@Override
 	public boolean isReady( int duration, int amplifier ) {
-		int cooldown = Math.max( 5, MajruszsHelper.secondsToTicks( 5.0 ) >> amplifier );
+		int cooldown = Math.max( 4, this.baseCooldown.getDuration() >> amplifier );
 
 		return duration % cooldown == 0;
 	}
 
 	/** Returns bleeding amplifier depending on current game state. */
-	public static int getAmplifier() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return Config.getInteger( Config.Values.BLEEDING_AMPLIFIER_NORMAL );
-			case EXPERT:
-				return Config.getInteger( Config.Values.BLEEDING_AMPLIFIER_EXPERT );
-			case MASTER:
-				return Config.getInteger( Config.Values.BLEEDING_AMPLIFIER_MASTER );
-		}
+	public int getAmplifier() {
+		return this.amplifier.getCurrentGameStateValue();
 	}
 
 	/**
@@ -56,7 +73,7 @@ public class BleedingEffect extends Effect {
 
 	 @param entity Entity to test.
 	 */
-	public static boolean mayBleed( @Nullable Entity entity ) {
+	public boolean mayBleed( @Nullable Entity entity ) {
 		return MajruszsHelper.isAnimal( entity ) || MajruszsHelper.isHuman( entity );
 	}
 
@@ -65,12 +82,12 @@ public class BleedingEffect extends Effect {
 
 	 @param entity Entity to test.
 	 */
-	public static double getChanceMultiplierDependingOnArmor( LivingEntity entity ) {
+	public double getChanceMultiplierDependingOnArmor( LivingEntity entity ) {
 		double chance = 1.0;
 
 		for( ItemStack armorPiece : entity.getArmorInventoryList() )
 			if( !armorPiece.isEmpty() )
-				chance -= 0.2;
+				chance -= this.armorChanceReduction.get();
 
 		return chance;
 	}

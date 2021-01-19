@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 /** Making Sky Keeper attacks have a chance to set levitation on enemies. */
 public class SkyKeeperLevitationOnAttack extends WhenDamagedApplyStackableEffectBase {
 	private static final String CONFIG_NAME = "SkyKeeperLevitation";
-	private static final String CONFIG_COMMENT = "Sky Keeper attacks may inflict levitation.";
+	private static final String CONFIG_COMMENT = "Sky Keeper inflicts levitation.";
 
 	public SkyKeeperLevitationOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 6.0, GameState.State.NORMAL, true, Effects.LEVITATION, false, true, 1,

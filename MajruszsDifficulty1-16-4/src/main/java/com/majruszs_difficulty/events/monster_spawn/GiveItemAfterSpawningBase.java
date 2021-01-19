@@ -21,10 +21,10 @@ import java.util.UUID;
 public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	private static final List< Data > dataList = new ArrayList<>();
 
-	public GiveItemAfterSpawningBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, EquipmentSlotType equipmentSlotType,
+	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, EquipmentSlotType equipmentSlotType,
 		boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
-		super( minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );
+		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );
 	}
 
 	/** Called when all requirements were met. */

@@ -13,7 +13,7 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 public abstract class FeatureBase {
 	protected final GameState.State minimumState;
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
-	protected final ConfigGroup whenDamagedGroup;
+	protected final ConfigGroup featureGroup;
 	protected final AvailabilityConfig availability;
 	protected final DoubleConfig chance;
 
@@ -24,10 +24,10 @@ public abstract class FeatureBase {
 		String enabled_comment = "Is this feature enabled?";
 		String chance_comment = "Chance of this feature to happen. " + ( shouldChanceBeMultipliedByCRD ? "(this value is scaled by CRD)" : "" );
 		this.availability = new AvailabilityConfig( "is_enabled", enabled_comment, false, true );
-		this.chance = new DoubleConfig( "chance", chance_comment, false, 1.0, 0.0, 1.0 );
+		this.chance = new DoubleConfig( "chance", chance_comment, false, defaultChance, 0.0, 1.0 );
 
-		this.whenDamagedGroup = FEATURES_GROUP.addGroup( new ConfigGroup( configName, configComment ) );
-		this.whenDamagedGroup.addConfigs( this.availability, this.chance );
+		this.featureGroup = FEATURES_GROUP.addGroup( new ConfigGroup( configName, configComment ) );
+		this.featureGroup.addConfigs( this.availability, this.chance );
 	}
 
 	/** Checking if event is not disabled by the player. */

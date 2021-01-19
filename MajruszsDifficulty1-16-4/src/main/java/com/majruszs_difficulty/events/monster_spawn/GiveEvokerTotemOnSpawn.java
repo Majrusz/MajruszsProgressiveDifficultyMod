@@ -10,23 +10,16 @@ import net.minecraft.item.Items;
 
 /** Gives Totem for Evoker on spawn. */
 public class GiveEvokerTotemOnSpawn extends GiveItemAfterSpawningBase {
+	private static final String CONFIG_NAME = "EvokerTotem";
+	private static final String CONFIG_COMMENT = "Evoker spawns with Totem of Undying.";
+
 	public GiveEvokerTotemOnSpawn() {
-		super( GameState.State.NORMAL, false, EquipmentSlotType.MAINHAND, false, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.NORMAL, false, EquipmentSlotType.MAINHAND, false, false );
 	}
 
 	@Override
 	protected boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof EvokerEntity && super.shouldBeExecuted( entity );
-	}
-
-	@Override
-	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.EVOKER_TOTEM );
-	}
-
-	@Override
-	protected double getChance() {
-		return 1.0;
 	}
 
 	@Override
