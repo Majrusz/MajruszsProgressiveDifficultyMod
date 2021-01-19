@@ -1,6 +1,5 @@
 package com.majruszs_difficulty.events.when_damaged;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.items.WitherSwordItem;
 import net.minecraft.entity.LivingEntity;
@@ -12,8 +11,11 @@ import javax.annotation.Nullable;
 
 /** Making Wither Sword attacks inflict Wither II. */
 public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
+	private static final String CONFIG_NAME = "WitherSword";
+	private static final String CONFIG_COMMENT = "Making Wither Sword attacks inflict Wither.";
+
 	public WitherSwordOnAttack() {
-		super( GameState.State.NORMAL, false, Effects.WITHER );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.75, 6.0, GameState.State.NORMAL, false, Effects.WITHER );
 	}
 
 	/** Checking if all conditions were met. */
@@ -23,21 +25,6 @@ public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
 			.getItem() instanceof WitherSwordItem;
 
 		return isHoldingWitherSword && super.shouldBeExecuted( attacker, target, damageSource );
-	}
-
-	@Override
-	protected boolean isEnabled() {
-		return true;
-	}
-
-	@Override
-	protected double getChance() {
-		return 1.0;
-	}
-
-	@Override
-	protected int getDurationInTicks( Difficulty difficulty ) {
-		return Config.getDurationInSeconds( Config.Durations.WITHER_SWORD_EFFECT );
 	}
 
 	@Override

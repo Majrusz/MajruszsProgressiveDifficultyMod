@@ -11,7 +11,7 @@ public abstract class OnEnemyToBeSpawnedBase extends FeatureBase {
 	protected boolean shouldBeCancelled = false;
 
 	public OnEnemyToBeSpawnedBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
-		super( minimumState, shouldChanceBeMultipliedByCRD );
+		super( "Em", ",", 1.0, minimumState, shouldChanceBeMultipliedByCRD );
 	}
 
 	/** Called when all requirements were met. */

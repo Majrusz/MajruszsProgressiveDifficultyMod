@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.config.DurationConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.world.Difficulty;
@@ -10,14 +11,25 @@ import net.minecraft.world.server.ServerWorld;
 /** Base class representing event on which enemies will receive some effects after being attacked. */
 public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	protected final Effect[] effects;
+	protected final DurationConfig effectDuration;
 
-	public WhenDamagedApplyEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects ) {
-		super( minimumState, shouldBeMultipliedByCRD );
+	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects
+	) {
+		super( configName, configComment, defaultChance, minimumState, shouldBeMultipliedByCRD );
 		this.effects = effects;
+
+		String comment = "Effect" + ( effects.length > 1 ? "s" : "" ) + " duration in seconds.";
+		this.effectDuration = new DurationConfig( "duration", comment, false, defaultDurationInSeconds, 1.0, 600.0 );
+
+		if( defaultDurationInSeconds != -1.0 )
+			this.whenDamagedGroup.addConfig( this.effectDuration );
 	}
 
-	public WhenDamagedApplyEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect ) {
-		this( minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect } );
+	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect
+	) {
+		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect } );
 	}
 
 	/**
@@ -54,7 +66,9 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 
 	 @param difficulty Current game difficulty. (peaceful, easy, normal, hard)
 	 */
-	protected abstract int getDurationInTicks( Difficulty difficulty );
+	protected int getDurationInTicks( Difficulty difficulty ) {
+		return this.effectDuration.getDuration();
+	}
 
 	/**
 	 Returns the level of the effect.

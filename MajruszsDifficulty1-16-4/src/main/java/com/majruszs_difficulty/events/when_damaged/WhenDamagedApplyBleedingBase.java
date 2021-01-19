@@ -10,8 +10,8 @@ import javax.annotation.Nullable;
 
 /** Base class representing event on which enemies will receive bleeding after being attacked. */
 public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffectBase {
-	public WhenDamagedApplyBleedingBase() {
-		super( GameState.State.NORMAL, false, BleedingEffect.instance );
+	public WhenDamagedApplyBleedingBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds ) {
+		super( configName, configComment, defaultChance, defaultDurationInSeconds, GameState.State.NORMAL, false, BleedingEffect.instance );
 	}
 
 	/** Checking if all conditions were met. */

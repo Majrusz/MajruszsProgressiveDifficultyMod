@@ -1,6 +1,7 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.effects.BleedingEffect;
+import com.majruszs_difficulty.events.when_damaged.*;
 import com.majruszs_difficulty.items.BandageItem;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.majruszs_difficulty.items.UndeadBattleStandardItem;
@@ -17,13 +18,26 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.fml.ModLoadingContext;
 
+import static com.majruszs_difficulty.events.when_damaged.WhenDamagedEvent.REGISTRY_LIST;
+
 public class Instances {
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
 	static {
+		// When damaged events
+		REGISTRY_LIST.add( new SpiderPoisonOnAttack() );
+		REGISTRY_LIST.add( new SkyKeeperLevitationOnAttack() );
+		REGISTRY_LIST.add( new DrownedLightningOnAttack() );
+		REGISTRY_LIST.add( new NauseaAndWeaknessWhenDrowning() );
+		REGISTRY_LIST.add( new WitherSwordOnAttack() );
+		REGISTRY_LIST.add( new CactusBleedingOnHurt() );
+		REGISTRY_LIST.add( new SharpItemBleedingOnAttack() );
+		REGISTRY_LIST.add( new ArrowBleedingOnHurt() );
+		REGISTRY_LIST.add( new ThrownTridentBleedingOnHurt() );
+		REGISTRY_LIST.add( new BiteBleedingOnAttack() );
+
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
-
 	public static class TreasureBags {
 		public static final TreasureBagItem UNDEAD_ARMY;
 		public static final TreasureBagItem ELDER_GUARDIAN;

@@ -1,6 +1,5 @@
 package com.majruszs_difficulty.events.when_damaged;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityType;
@@ -15,18 +14,11 @@ import javax.annotation.Nullable;
 
 /** Making Drowned trident attacks have a chance to spawn lightning. */
 public class DrownedLightningOnAttack extends WhenDamagedBase {
+	private static final String CONFIG_NAME = "DrownedLightning";
+	private static final String CONFIG_COMMENT = "Drowned attacks with trident may spawn lightning bolt. Requires Expert Mode.";
+
 	public DrownedLightningOnAttack() {
-		super( GameState.State.EXPERT, true );
-	}
-
-	/** Checking if all conditions were met. */
-	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean isDrowned = attacker instanceof DrownedEntity;
-		boolean isDrownedHoldingTrident = isDrowned && attacker.getHeldItemMainhand()
-			.getItem() instanceof TridentItem;
-
-		return isDrownedHoldingTrident && super.shouldBeExecuted( attacker, target, damageSource );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, GameState.State.EXPERT, true );
 	}
 
 	@Override
@@ -43,13 +35,13 @@ public class DrownedLightningOnAttack extends WhenDamagedBase {
 		world.addEntity( lightningBolt );
 	}
 
+	/** Checking if all conditions were met. */
 	@Override
-	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.DROWNED_LIGHTNING );
-	}
+	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+		boolean isDrowned = attacker instanceof DrownedEntity;
+		boolean isDrownedHoldingTrident = isDrowned && attacker.getHeldItemMainhand()
+			.getItem() instanceof TridentItem;
 
-	@Override
-	protected double getChance() {
-		return Config.getChance( Config.Chances.DROWNED_LIGHTNING );
+		return isDrownedHoldingTrident && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

@@ -8,10 +8,13 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
+
 /** Base class representing event on which entity was damaged. */
 public abstract class WhenDamagedBase extends FeatureBase {
-	public WhenDamagedBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
-		super( minimumState, shouldChanceBeMultipliedByCRD );
+	public WhenDamagedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+		boolean shouldChanceBeMultipliedByCRD
+	) {
+		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 	}
 
 	/**

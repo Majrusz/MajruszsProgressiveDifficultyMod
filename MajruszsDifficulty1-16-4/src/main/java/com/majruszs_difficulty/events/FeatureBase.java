@@ -2,23 +2,43 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.config.AvailabilityConfig;
+import com.mlib.config.ConfigGroup;
+import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
+
+import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
 /** Class representing base feature that depends on chance and can be disabled. */
 public abstract class FeatureBase {
 	protected final GameState.State minimumState;
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
+	protected final ConfigGroup whenDamagedGroup;
+	protected final AvailabilityConfig availability;
+	protected final DoubleConfig chance;
 
-	public FeatureBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
+	public FeatureBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
 		this.minimumState = minimumState;
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;
+
+		String enabled_comment = "Is this feature enabled?";
+		String chance_comment = "Chance of this feature to happen. " + ( shouldChanceBeMultipliedByCRD ? "(this value is scaled by CRD)" : "" );
+		this.availability = new AvailabilityConfig( "is_enabled", enabled_comment, false, true );
+		this.chance = new DoubleConfig( "chance", chance_comment, false, 1.0, 0.0, 1.0 );
+
+		this.whenDamagedGroup = FEATURES_GROUP.addGroup( new ConfigGroup( configName, configComment ) );
+		this.whenDamagedGroup.addConfigs( this.availability, this.chance );
 	}
 
 	/** Checking if event is not disabled by the player. */
-	protected abstract boolean isEnabled();
+	protected boolean isEnabled() {
+		return this.availability.isEnabled();
+	}
 
 	/** Returns chance of applying event on entity. */
-	protected abstract double getChance();
+	protected double getChance() {
+		return this.chance.get();
+	}
 
 	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
 	protected double calculateChance( LivingEntity target ) {
