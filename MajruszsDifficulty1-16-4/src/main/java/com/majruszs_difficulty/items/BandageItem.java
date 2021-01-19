@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
@@ -28,7 +29,7 @@ import java.util.List;
 public class BandageItem extends Item {
 	public BandageItem() {
 		super( ( new Properties() ).maxStackSize( 16 )
-			.group( RegistryHandler.ITEM_GROUP ) );
+			.group( Instances.ITEM_GROUP ) );
 	}
 
 	/** Using bandage on right click. (self healing) */
@@ -68,7 +69,7 @@ public class BandageItem extends Item {
 	 @return Returns information (boolean) if effect was removed.
 	 */
 	protected static boolean removeBleedingIfPossible( ItemStack bandage, PlayerEntity player, LivingEntity target ) {
-		if( !( target.isPotionActive( RegistryHandler.BLEEDING.get() ) && bandage.getItem() instanceof BandageItem ) )
+		if( !( target.isPotionActive( Instances.Effects.BLEEDING ) && bandage.getItem() instanceof BandageItem ) )
 			return false;
 
 		if( !player.abilities.isCreativeMode )
@@ -86,8 +87,8 @@ public class BandageItem extends Item {
 	 @param target Entity to remove bleeding.
 	 */
 	private static void removeBleedingAndAddRegeneration( LivingEntity target ) {
-		target.removePotionEffect( RegistryHandler.BLEEDING.get() );
-		target.removeActivePotionEffect( RegistryHandler.BLEEDING.get() );
+		target.removePotionEffect( Instances.Effects.BLEEDING );
+		target.removeActivePotionEffect( Instances.Effects.BLEEDING );
 		MajruszsHelper.applyEffectIfPossible( target, Effects.REGENERATION, MajruszsHelper.secondsToTicks( 6.0 ), 0 );
 	}
 }

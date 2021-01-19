@@ -2,7 +2,7 @@ package com.majruszs_difficulty.loot_modifiers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.Entity;

@@ -1,0 +1,78 @@
+package com.majruszs_difficulty;
+
+import com.majruszs_difficulty.effects.BleedingEffect;
+import com.majruszs_difficulty.items.BandageItem;
+import com.majruszs_difficulty.items.TreasureBagItem;
+import com.majruszs_difficulty.items.UndeadBattleStandardItem;
+import com.majruszs_difficulty.items.WitherSwordItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SwordItem;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.RegistryObject;
+
+public class Instances {
+	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
+
+	public static class TreasureBags {
+		public static final TreasureBagItem UNDEAD_ARMY;
+		public static final TreasureBagItem ELDER_GUARDIAN;
+		public static final TreasureBagItem WITHER;
+		public static final TreasureBagItem ENDER_DRAGON;
+		public static final TreasureBagItem FISHING;
+
+		static {
+			UNDEAD_ARMY = new TreasureBagItem( "undead_army" );
+			ELDER_GUARDIAN = new TreasureBagItem( "elder_guardian" );
+			WITHER = new TreasureBagItem( "wither" );
+			ENDER_DRAGON = new TreasureBagItem( "ender_dragon" );
+			FISHING = new TreasureBagItem( "fishing" );
+		}
+	}
+
+	public static class Tools {
+		public static final SwordItem WITHER_SWORD;
+
+		static {
+			WITHER_SWORD = new WitherSwordItem();
+		}
+	}
+
+	public static class Miscellaneous {
+		public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
+		public static final BandageItem BANDAGE;
+
+		static {
+			BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
+			BANDAGE = new BandageItem();
+		}
+	}
+
+	public static class Sounds {
+		public static final SoundEvent UNDEAD_ARMY_APPROACHING;
+		public static final SoundEvent UNDEAD_ARMY_WAVE_STARTED;
+
+		static {
+			UNDEAD_ARMY_APPROACHING = new SoundEvent( MajruszsDifficulty.getLocation( "undead_army.approaching" ) );
+			UNDEAD_ARMY_WAVE_STARTED = new SoundEvent( MajruszsDifficulty.getLocation( "undead_army.wave_started" ) );
+		}
+	}
+
+	public static class Effects {
+		public static final BleedingEffect BLEEDING;
+
+		static {
+			BLEEDING = new BleedingEffect();
+		}
+	}
+
+	public static class DamageSources {
+		public static final DamageSource BLEEDING;
+
+		static {
+			BLEEDING = new DamageSource( "bleeding" ).setDamageBypassesArmor();
+		}
+	}
+}

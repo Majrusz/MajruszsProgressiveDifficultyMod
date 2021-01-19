@@ -11,6 +11,6 @@ public class CustomItemGroup extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack( RegistryHandler.UNDEAD_BATTLE_STANDARD.get() );
+		return new ItemStack( Instances.Miscellaneous.BATTLE_STANDARD_ITEM );
 	}
 }

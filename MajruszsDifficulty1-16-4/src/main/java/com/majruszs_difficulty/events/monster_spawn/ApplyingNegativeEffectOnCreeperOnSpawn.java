@@ -3,7 +3,7 @@ package com.majruszs_difficulty.events.monster_spawn;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.potion.Effect;

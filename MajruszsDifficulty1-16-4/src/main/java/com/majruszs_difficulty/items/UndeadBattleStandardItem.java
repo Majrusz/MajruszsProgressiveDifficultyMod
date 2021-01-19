@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +24,7 @@ import java.util.List;
 public class UndeadBattleStandardItem extends Item {
 	public UndeadBattleStandardItem() {
 		super( ( new Item.Properties() ).maxStackSize( 1 )
-			.group( RegistryHandler.ITEM_GROUP )
+			.group( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 	}
 
@@ -31,7 +32,7 @@ public class UndeadBattleStandardItem extends Item {
 	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
 		ItemStack itemStack = player.getHeldItem( hand );
 
-		if( !world.isRemote && RegistryHandler.undeadArmyManager.spawn( player, ( ServerWorld )world ) ) {
+		if( !world.isRemote && RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player, ( ServerWorld )world ) ) {
 			if( !player.abilities.isCreativeMode )
 				itemStack.shrink( 1 );
 			player.addStat( Stats.ITEM_USED.get( this ) );

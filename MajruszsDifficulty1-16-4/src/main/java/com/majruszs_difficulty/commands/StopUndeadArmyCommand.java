@@ -19,7 +19,7 @@ public final class StopUndeadArmyCommand {
 	}
 
 	public static int stopUndeadArmy( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( source.getPos() ) );
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
 
 		if( undeadArmy == null )
 			return -1;

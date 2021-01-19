@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.events.undead_army;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.UndeadArmy;
 import net.minecraft.entity.CreatureAttribute;
@@ -61,12 +61,12 @@ public class CountKilledUndead {
 			return;
 
 		if( player.world instanceof ServerWorld )
-			if( RegistryHandler.undeadArmyManager.spawn( player, ( ServerWorld )player.world ) )
+			if( RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player, ( ServerWorld )player.world ) )
 				nbt.putInt( NBT_TAG, 0 );
 	}
 
 	private static boolean updateUndeadArmy( Vector3d position ) {
-		UndeadArmy undeadArmy = RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( position ) );
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			undeadArmy.onUndeadKill();
 			return true;

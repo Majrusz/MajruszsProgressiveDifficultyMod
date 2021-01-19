@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.events.when_damaged;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;

@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.AttributeHelper;
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityClassification;

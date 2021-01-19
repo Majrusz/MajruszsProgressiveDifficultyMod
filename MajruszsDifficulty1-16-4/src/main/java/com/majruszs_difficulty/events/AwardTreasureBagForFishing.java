@@ -1,7 +1,8 @@
 package com.majruszs_difficulty.events;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,7 +37,7 @@ public class AwardTreasureBagForFishing {
 
 	/** Gives a treasure bag to specified player. */
 	protected static void giveTreasureBagTo( PlayerEntity player ) {
-		ItemStack treasureBag = new ItemStack( RegistryHandler.FISHING_TREASURE_BAG.get() );
+		ItemStack treasureBag = new ItemStack( Instances.TreasureBags.FISHING );
 		MajruszsHelper.giveItemStackToPlayer( treasureBag, player, ( ServerWorld )player.world );
 	}
 

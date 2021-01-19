@@ -1,18 +1,14 @@
 package com.majruszs_difficulty.events;
 
 import com.google.common.collect.Sets;
-import com.majruszs_difficulty.ConfigHandler.Config;
-import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.RegistryHandler;
+import com.majruszs_difficulty.*;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.events.undead_army.Direction;
 import com.majruszs_difficulty.events.undead_army.Status;
 import com.majruszs_difficulty.events.undead_army.TextManager;
 import com.majruszs_difficulty.events.undead_army.WaveMember;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -305,7 +301,7 @@ public class UndeadArmy {
 
 		for( ServerPlayerEntity player : getNearbyPlayers() )
 			player.connection.sendPacket(
-				new SPlaySoundEffectPacket( RegistryHandler.UNDEAD_ARMY_WAVE_STARTED.get(), SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f,
+				new SPlaySoundEffectPacket( Instances.Sounds.UNDEAD_ARMY_WAVE_STARTED, SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f,
 					1.0f
 				) );
 
@@ -335,7 +331,7 @@ public class UndeadArmy {
 			for( int i = 0; i < getExperienceVictory() / 4; i++ )
 				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), 4 ) );
 
-			MajruszsHelper.giveItemStackToPlayer( new ItemStack( RegistryHandler.UNDEAD_TREASURE_BAG.get() ), player, this.world );
+			MajruszsHelper.giveItemStackToPlayer( new ItemStack( Instances.TreasureBags.UNDEAD_ARMY ), player, this.world );
 		}
 	}
 
@@ -383,7 +379,7 @@ public class UndeadArmy {
 	}
 
 	private Predicate< ServerPlayerEntity > getParticipantsPredicate() {
-		return player->player.isAlive() && ( RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( player.getPositionVec() ) ) == this );
+		return player->player.isAlive() && ( RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( player.getPositionVec() ) ) == this );
 	}
 
 	private List< ServerPlayerEntity > getNearbyPlayers() {

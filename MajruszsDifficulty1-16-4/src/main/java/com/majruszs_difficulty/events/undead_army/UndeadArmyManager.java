@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.events.undead_army;
 
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
@@ -79,7 +80,7 @@ public class UndeadArmyManager extends WorldSavedData {
 
 		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( MajruszsHelper.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
 
-		this.world.playSound( null, attackPosition, RegistryHandler.UNDEAD_ARMY_APPROACHING.get(), SoundCategory.AMBIENT, 0.25f, 1.0f );
+		this.world.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundCategory.AMBIENT, 0.25f, 1.0f );
 		MajruszsDifficulty.LOGGER.info( "Spawned undead army! " + attackPosition );
 
 		return true;
@@ -126,7 +127,7 @@ public class UndeadArmyManager extends WorldSavedData {
 		if( event.side.isClient() || event.phase == TickEvent.Phase.END )
 			return;
 
-		RegistryHandler.undeadArmyManager.tick();
+		RegistryHandler.UNDEAD_ARMY_MANAGER.tick();
 	}
 
 	public void updateUndeadGoals() {

@@ -4,7 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
-public class ConfigHandler {
+public class ConfigHandlerOld {
 	private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 	public static ForgeConfigSpec CONFIG_SPEC;
 	public static final String FILENAME = "majruszs-difficulty-common.toml";
@@ -53,7 +53,7 @@ public class ConfigHandler {
 	}
 
 	public static void register( final ModLoadingContext context ) {
-		ConfigHandler.load();
+		ConfigHandlerOld.load();
 
 		context.registerConfig( ModConfig.Type.COMMON, CONFIG_SPEC, FILENAME );
 	}

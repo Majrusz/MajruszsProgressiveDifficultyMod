@@ -18,7 +18,7 @@ public class ReloadUndeadArmyGoals {
 		counter++;
 
 		if( counter % MajruszsHelper.secondsToTicks( 25.0 ) == 0L ) {
-			RegistryHandler.undeadArmyManager.updateUndeadGoals();
+			RegistryHandler.UNDEAD_ARMY_MANAGER.updateUndeadGoals();
 			counter = -1L;
 		}
 	}

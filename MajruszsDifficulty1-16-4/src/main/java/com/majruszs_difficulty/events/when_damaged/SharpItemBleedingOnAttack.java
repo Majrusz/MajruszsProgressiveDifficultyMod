@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.events.when_damaged;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.DamageSource;

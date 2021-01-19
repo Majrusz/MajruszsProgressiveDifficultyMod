@@ -2,7 +2,7 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.GameState.State;
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;

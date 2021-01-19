@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -18,7 +19,7 @@ import java.util.List;
 /** Wither sword. */
 public class WitherSwordItem extends SwordItem {
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 3, -2.4f, ( new Item.Properties() ).group( RegistryHandler.ITEM_GROUP ) );
+		super( CustomItemTier.WITHER, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP ) );
 	}
 
 	@Override

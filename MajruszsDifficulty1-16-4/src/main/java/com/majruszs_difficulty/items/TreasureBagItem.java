@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
@@ -30,13 +31,15 @@ import java.util.List;
 /** Class representing treasure bag. */
 public class TreasureBagItem extends Item {
 	private final ResourceLocation lootTableLocation;
+	private final String id;
 
 	public TreasureBagItem( String id ) {
 		super( ( new Item.Properties() ).maxStackSize( 16 )
-			.group( RegistryHandler.ITEM_GROUP )
+			.group( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
-		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id );
+		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
+		this.id = id;
 	}
 
 	/** Opening treasure bag on right click. */
@@ -76,6 +79,11 @@ public class TreasureBagItem extends Item {
 	 */
 	public static RegistryObject< TreasureBagItem > getRegistry( String name ) {
 		return RegistryHandler.ITEMS.register( name + "_treasure_bag", ()->new TreasureBagItem( name + "_treasure_loot" ) );
+	}
+
+	/** Registers given treasure bag. */
+	public RegistryObject< TreasureBagItem > register() {
+		return RegistryHandler.ITEMS.register( this.id + "_treasure_bag", ()->this );
 	}
 
 	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */

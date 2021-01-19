@@ -1,7 +1,8 @@
 package com.majruszs_difficulty.effects;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.entity.Entity;
@@ -23,7 +24,7 @@ public class BleedingEffect extends Effect {
 	/** Called every time when effect 'isReady'. */
 	@Override
 	public void performEffect( LivingEntity entity, int amplifier ) {
-		entity.attackEntityFrom( RegistryHandler.BLEEDING_SOURCE, 1.0f );
+		entity.attackEntityFrom( Instances.DamageSources.BLEEDING, 1.0f );
 	}
 
 	/** When effect starts bleeding will not do anything. */
