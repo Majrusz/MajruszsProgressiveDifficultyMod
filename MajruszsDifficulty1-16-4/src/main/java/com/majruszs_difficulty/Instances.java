@@ -5,16 +5,24 @@ import com.majruszs_difficulty.items.BandageItem;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.majruszs_difficulty.items.UndeadBattleStandardItem;
 import com.majruszs_difficulty.items.WitherSwordItem;
-import net.minecraft.item.Item;
+import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
+import com.majruszs_difficulty.structures.FlyingPhantomStructure;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraftforge.fml.ModLoadingContext;
 
 public class Instances {
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
+
+	static {
+		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
+	}
 
 	public static class TreasureBags {
 		public static final TreasureBagItem UNDEAD_ARMY;
@@ -73,6 +81,17 @@ public class Instances {
 
 		static {
 			BLEEDING = new DamageSource( "bleeding" ).setDamageBypassesArmor();
+		}
+	}
+
+	public static class Structures {
+		public static final Structure< NoFeatureConfig > FLYING_PHANTOM;
+		public static final IStructurePieceType FLYING_PHANTOM_PIECE;
+
+		static {
+			ResourceLocation flyingPhantomResource = MajruszsHelper.getResource( "flying_phantom" );
+			FLYING_PHANTOM = new FlyingPhantomStructure();
+			FLYING_PHANTOM_PIECE = IStructurePieceType.register( FlyingPhantomPiece::new, flyingPhantomResource.toString() );
 		}
 	}
 }

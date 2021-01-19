@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.structure_pieces;
 
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
@@ -30,14 +31,14 @@ public class FlyingPhantomPiece extends TemplateStructurePiece {
 	private final Rotation rotation;
 
 	public FlyingPhantomPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
-		super( RegistryHandler.FLYING_PHANTOM_PIECE, 0 );
+		super( Instances.Structures.FLYING_PHANTOM_PIECE, 0 );
 		this.templatePosition = position;
 		this.rotation = rotation;
 		this.setupPiece( templateManager );
 	}
 
 	public FlyingPhantomPiece( TemplateManager templateManager, CompoundNBT compoundNBT ) {
-		super( RegistryHandler.FLYING_PHANTOM_PIECE, compoundNBT );
+		super( Instances.Structures.FLYING_PHANTOM_PIECE, compoundNBT );
 		this.rotation = Rotation.valueOf( compoundNBT.getString( "Rot" ) );
 		this.setupPiece( templateManager );
 	}

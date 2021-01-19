@@ -21,8 +21,8 @@ public class MajruszsDifficulty {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final Random RANDOM = new Random();
 	public static final ConfigHandler CONFIG_HANDLER = new ConfigHandler( ModConfig.Type.COMMON, "majruszs-difficulty-new.toml" );
-	public static final ConfigGroup ENCHANTMENT_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Enchantments", "" ) );
-	public static final ConfigGroup CURSE_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Curses", "" ) );
+	public static final ConfigGroup FEATURES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Features", "" ) );
+	public static final ConfigGroup STRUCTURES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Structures", "" ) );
 
 	public MajruszsDifficulty() {
 		RegistryHandler.init();
