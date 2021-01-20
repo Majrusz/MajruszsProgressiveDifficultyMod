@@ -5,6 +5,7 @@ import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
@@ -20,6 +21,7 @@ import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.List;
 import java.util.Random;
@@ -52,12 +54,18 @@ public class FlyingPhantomPiece extends TemplateStructurePiece {
 	@Override
 	protected void handleDataMarker( String function, BlockPos position, IServerWorld world, Random random, MutableBoundingBox boundingBox ) {
 		if( function.startsWith( "chest" ) ) {
-			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 			TileEntity tileEntity = world.getTileEntity( position.down() );
 
 			if( tileEntity instanceof ChestTileEntity )
 				( ( ChestTileEntity )tileEntity ).setLootTable( CHEST_RESOURCE_LOCATION, random.nextLong() );
-		}
+		} else if( function.startsWith( "sky_keeper" ) ) {
+			SkyKeeperEntity.type.create( world.getWorld(), null, null, null, position.up(), SpawnReason.STRUCTURE, true, true );
+		} else if( function.startsWith( "phantom" ) ) {
+			EntityType.PHANTOM.create( world.getWorld(), null, null, null, position.up(), SpawnReason.STRUCTURE, true, true );
+		} else
+			return;
+
+		world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 	}
 
 	/** Begins assembling your structure and where the pieces needs to go. */

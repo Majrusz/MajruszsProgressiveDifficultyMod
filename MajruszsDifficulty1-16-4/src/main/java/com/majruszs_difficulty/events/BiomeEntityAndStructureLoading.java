@@ -47,7 +47,7 @@ public class BiomeEntityAndStructureLoading {
 
 	/** Adding natural generating for overworld structures. */
 	protected static void addOverworldStructures( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
-		generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
+		// generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
 	}
 
 	/** Adding natural spawning for nether entities. */

@@ -21,7 +21,9 @@ import net.minecraft.item.Item;
 import net.minecraft.potion.Effect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.gen.FlatChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
@@ -37,6 +39,9 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /** Main class registering most registers like entities, items and sounds. */
 public class RegistryHandler {
@@ -155,7 +160,7 @@ public class RegistryHandler {
 			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SkyKeeperEntity::canSpawnOn
 		);
 
-		Instances.FLYING_PHANTOM.setup();
+		event.enqueueWork( Instances.FLYING_PHANTOM::setup );
 	}
 
 	/** Registration of commands. */
@@ -194,6 +199,20 @@ public class RegistryHandler {
 		GAME_DATA_SAVER = manager.getOrCreate( GameDataSaver::new, GameDataSaver.DATA_NAME );
 
 		ReloadUndeadArmyGoals.resetTimer();
+
+		if( event.getWorld() instanceof ServerWorld ){
+			ServerWorld serverWorld = ( ServerWorld )event.getWorld();
+
+			if( serverWorld.getChunkProvider().getChunkGenerator() instanceof FlatChunkGenerator &&
+				serverWorld.getDimensionKey().equals( World.OVERWORLD )){
+				return;
+			}
+
+			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_());
+			// putIfAbsent so people can override the spacing with dimension datapacks themselves if they wish to customize spacing more precisely per dimension.
+			tempMap.putIfAbsent( Instances.FLYING_PHANTOM, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_PHANTOM ) );
+			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
+		}
 	}
 
 	/**

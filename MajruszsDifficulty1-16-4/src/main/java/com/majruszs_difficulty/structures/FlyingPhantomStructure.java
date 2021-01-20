@@ -54,20 +54,18 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 		this.group.addConfigs( this.availability, this.minimumDistance, this.maximumDistance );
 	}
 
-	@Override
-	protected boolean func_230363_a_(ChunkGenerator p_230363_1_, BiomeProvider p_230363_2_, long p_230363_3_, SharedSeedRandom p_230363_5_, int p_230363_6_, int p_230363_7_, Biome p_230363_8_, ChunkPos p_230363_9_, NoFeatureConfig p_230363_10_) {
-		MajruszLibrary.LOGGER.debug( "!!!!!!!!!!!!!!!!!!!!!!!!!" );
-		return true;
-	}
-
 	/** Generation stage for where to generate the structure. */
 	@Override
 	public GenerationStage.Decoration getDecorationStage() {
-		return GenerationStage.Decoration.SURFACE_STRUCTURES;
+		return GenerationStage.Decoration.RAW_GENERATION;
 	}
 
 	public Structure.IStartFactory< NoFeatureConfig > getStartFactory() {
 		return FlyingPhantomStructure.Start::new;
+	}
+
+	protected boolean func_230363_a_( ChunkGenerator p_230363_1_, BiomeProvider p_230363_2_, long p_230363_3_, SharedSeedRandom p_230363_5_, int p_230363_6_, int p_230363_7_, Biome p_230363_8_, ChunkPos p_230363_9_, NoFeatureConfig p_230363_10_ ) {
+		return this.availability.isEnabled();
 	}
 
 	/** Enemies spawning naturally near the structure. */
@@ -91,15 +89,13 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 			// Turns the chunk coordinates into actual coordinates we can use. (Gets center of that chunk)
 			int x = ( chunkX << 4 ) + 7;
 			int z = ( chunkZ << 4 ) + 7;
-			int y = chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
+			int y = Math.min( 60, chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
 
 			BlockPos blockpos = new BlockPos( x, y, z );
 
 			FlyingPhantomPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
 
 			this.recalculateStructureSize();
-
-			MajruszLibrary.LOGGER.debug( "MAJRUSZ_LIBRARY: " + blockpos );
 		}
 	}
 
@@ -107,7 +103,6 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 		int minimum = this.minimumDistance.get();
 		int maximum = Math.max( this.maximumDistance.get(), minimum + 1 );
 
-		MajruszLibrary.LOGGER.debug( "MAJRUSZ_LIBRARY: " + minimum + ":" + maximum );
 		separationSettings = new StructureSeparationSettings( maximum, minimum, 1717171717 );
 		DimensionStructuresSettings.field_236191_b_ = ImmutableMap.< Structure< ? >, StructureSeparationSettings > builder().putAll(
 			DimensionStructuresSettings.field_236191_b_ )
