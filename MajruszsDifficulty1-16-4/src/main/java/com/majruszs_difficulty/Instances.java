@@ -16,7 +16,9 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -30,6 +32,11 @@ public class Instances {
 	// Effects
 	public static final BleedingEffect BLEEDING;
 
+	// Structures
+	public static final FlyingPhantomStructure FLYING_PHANTOM;
+	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_PHANTOM_FEATURE;
+	public static final IStructurePieceType FLYING_PHANTOM_PIECE;
+
 	// Misc
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG;
 	public static final ExperienceBonus EXPERIENCE_BONUS;
@@ -42,6 +49,12 @@ public class Instances {
 
 		// Effects
 		BLEEDING = new BleedingEffect();
+
+		// Structures
+		ResourceLocation flyingPhantomResource = MajruszsDifficulty.getLocation( "flying_phantom_structure" );
+		FLYING_PHANTOM = new FlyingPhantomStructure();
+		FLYING_PHANTOM_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingPhantomResource.toString(), FLYING_PHANTOM.withConfiguration( NoFeatureConfig.field_236559_b_ ) );
+		FLYING_PHANTOM_PIECE = IStructurePieceType.register( FlyingPhantomPiece::new, flyingPhantomResource.toString() );
 
 		// When damaged events
 		WhenDamagedEvent.REGISTRY_LIST.add( new SpiderPoisonOnAttack() );
@@ -135,14 +148,4 @@ public class Instances {
 		}
 	}
 
-	public static class Structures {
-		public static final Structure< NoFeatureConfig > FLYING_PHANTOM;
-		public static final IStructurePieceType FLYING_PHANTOM_PIECE;
-
-		static {
-			ResourceLocation flyingPhantomResource = MajruszsDifficulty.getLocation( "flying_phantom" );
-			FLYING_PHANTOM = new FlyingPhantomStructure();
-			FLYING_PHANTOM_PIECE = IStructurePieceType.register( FlyingPhantomPiece::new, flyingPhantomResource.toString() );
-		}
-	}
 }

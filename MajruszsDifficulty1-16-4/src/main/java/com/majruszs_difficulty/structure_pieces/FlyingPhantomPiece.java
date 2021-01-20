@@ -25,19 +25,19 @@ import java.util.List;
 import java.util.Random;
 
 public class FlyingPhantomPiece extends TemplateStructurePiece {
-	public static final ResourceLocation resourceLocation = MajruszsDifficulty.getLocation( "flying_phantom" );
-	public static final ResourceLocation chestResourceLocation = MajruszsDifficulty.getLocation( "chests/flying_phantom" );
+	public static final ResourceLocation RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "flying_phantom" );
+	public static final ResourceLocation CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/flying_phantom" );
 	private final Rotation rotation;
 
 	public FlyingPhantomPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
-		super( Instances.Structures.FLYING_PHANTOM_PIECE, 0 );
+		super( Instances.FLYING_PHANTOM_PIECE, 0 );
 		this.templatePosition = position;
 		this.rotation = rotation;
 		this.setupPiece( templateManager );
 	}
 
 	public FlyingPhantomPiece( TemplateManager templateManager, CompoundNBT compoundNBT ) {
-		super( Instances.Structures.FLYING_PHANTOM_PIECE, compoundNBT );
+		super( Instances.FLYING_PHANTOM_PIECE, compoundNBT );
 		this.rotation = Rotation.valueOf( compoundNBT.getString( "Rot" ) );
 		this.setupPiece( templateManager );
 	}
@@ -56,18 +56,7 @@ public class FlyingPhantomPiece extends TemplateStructurePiece {
 			TileEntity tileEntity = world.getTileEntity( position.down() );
 
 			if( tileEntity instanceof ChestTileEntity )
-				( ( ChestTileEntity )tileEntity ).setLootTable( chestResourceLocation, random.nextLong() );
-
-		} else if( function.startsWith( "spawner" ) ) {
-			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
-			TileEntity tileEntity = world.getTileEntity( position.down() );
-
-			if( tileEntity instanceof MobSpawnerTileEntity ) {
-				EntityType< ? > entityType = function.equals( "spawner_keeper" ) ? SkyKeeperEntity.type : EntityType.PHANTOM;
-
-				( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic()
-					.setEntityType( entityType );
-			}
+				( ( ChestTileEntity )tileEntity ).setLootTable( CHEST_RESOURCE_LOCATION, random.nextLong() );
 		}
 	}
 
@@ -80,7 +69,7 @@ public class FlyingPhantomPiece extends TemplateStructurePiece {
 	}
 
 	private void setupPiece( TemplateManager templateManager ) {
-		Template template = templateManager.getTemplateDefaulted( resourceLocation );
+		Template template = templateManager.getTemplateDefaulted( RESOURCE_LOCATION );
 		PlacementSettings placementsettings = ( new PlacementSettings() ).setRotation( this.rotation )
 			.setMirror( Mirror.NONE );
 

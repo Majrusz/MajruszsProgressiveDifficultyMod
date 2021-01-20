@@ -120,9 +120,10 @@ public class RegistryHandler {
 
 	/** Registration of structures. */
 	private static void registerStructures( final IEventBus modEventBus ) {
+		STRUCTURES.register( "flying_phantom_structure", ()->Instances.FLYING_PHANTOM );
 		STRUCTURES.register( modEventBus );
 
-		Structure.NAME_STRUCTURE_BIMAP.put( "flying_phantom_structure", FlyingPhantomStructure.INSTANCE );
+		Structure.NAME_STRUCTURE_BIMAP.put( "flying_phantom_structure", Instances.FLYING_PHANTOM );
 	}
 
 	/** Registration of everything. */
@@ -154,14 +155,7 @@ public class RegistryHandler {
 			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SkyKeeperEntity::canSpawnOn
 		);
 
-		FlyingPhantomStructure.setupSeparationSettings();
-		DimensionStructuresSettings.field_236191_b_ = ImmutableMap.< Structure< ? >, StructureSeparationSettings > builder().putAll(
-			DimensionStructuresSettings.field_236191_b_ )
-			.put( FlyingPhantomStructure.INSTANCE, FlyingPhantomStructure.SEPARATION_SETTINGS )
-			.build();
-		DimensionSettings.field_242740_q.getStructures().field_236193_d_.put( FlyingPhantomStructure.INSTANCE,
-			FlyingPhantomStructure.SEPARATION_SETTINGS
-		);
+		Instances.FLYING_PHANTOM.setup();
 	}
 
 	/** Registration of commands. */

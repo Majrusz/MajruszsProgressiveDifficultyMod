@@ -1,9 +1,11 @@
 package com.majruszs_difficulty.events;
 
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
 import com.majruszs_difficulty.structures.FlyingPhantomStructure;
+import com.mlib.MajruszLibrary;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.Biome;
@@ -27,8 +29,12 @@ public class BiomeEntityAndStructureLoading {
 		if( doBiomeCategoryBelongsToOverworld( category ) ) {
 			addOverworldEntities( spawnInfoBuilder );
 			addOverworldStructures( generationSettingsBuilder );
-		} else if( doBiomeCategoryBelongsToNether( category ) )
+		} else if( doBiomeCategoryBelongsToNether( category ) ) {
 			addNetherEntities( spawnInfoBuilder );
+		} else if( doBiomeCategoryBelongsToTheEnd( category ) ) {
+			addEndStructures( generationSettingsBuilder );
+			MajruszLibrary.LOGGER.debug( generationSettingsBuilder.toString() );
+		}
 	}
 
 	/** Adding natural spawning for overworld entities. */
@@ -41,12 +47,17 @@ public class BiomeEntityAndStructureLoading {
 
 	/** Adding natural generating for overworld structures. */
 	protected static void addOverworldStructures( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
-		generationSettingsBuilder.withStructure( FlyingPhantomStructure.FEATURE );
+		generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
 	}
 
 	/** Adding natural spawning for nether entities. */
 	protected static void addNetherEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
 		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EliteSkeletonEntity.type, 10, 1, 1 );
+	}
+
+	/** Adding natural generating for end structures. */
+	protected static void addEndStructures( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
+		generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
 	}
 
 	/** Checking whether given biome category belongs to overworld. */
@@ -72,6 +83,11 @@ public class BiomeEntityAndStructureLoading {
 	/** Checking whether given biome category belongs to the nether. */
 	protected static boolean doBiomeCategoryBelongsToNether( Biome.Category category ) {
 		return category == Biome.Category.NETHER;
+	}
+
+	/** Checking whether given biome category belongs to the end. */
+	protected static boolean doBiomeCategoryBelongsToTheEnd( Biome.Category category ) {
+		return category == Biome.Category.THEEND;
 	}
 
 	/**
