@@ -1,14 +1,15 @@
 package com.majruszs_difficulty.entities;
 
-import com.majruszs_difficulty.AttributeHelper;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.MajruszLibrary;
+import com.mlib.WorldHelper;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
@@ -25,7 +26,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
 /** Entity that is more powerful version of Skeleton. */
 public class EliteSkeletonEntity extends SkeletonEntity {
@@ -35,7 +35,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	static {
 		type = EntityType.Builder.create( EliteSkeletonEntity::new, EntityClassification.MONSTER )
 			.size( 0.6f, 2.0f )
-			.build( MajruszsHelper.getResource( "elite_skeleton" )
+			.build( MajruszsDifficulty.getLocation( "elite_skeleton" )
 				.toString() );
 	}
 
@@ -62,15 +62,15 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 		double d3 = MathHelper.sqrt( d0 * d0 + d2 * d2 );
 
 		arrowEntity.shoot( d0, d1 + d3 * 0.2, d2, 2.0f, 0 ); // here is the change to velocity and inaccuracy
-		playSound( SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / ( MajruszsDifficulty.RANDOM.nextFloat() * 0.4f + 0.8f ) );
+		playSound( SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / ( MajruszLibrary.RANDOM.nextFloat() * 0.4f + 0.8f ) );
 		this.world.addEntity( arrowEntity );
 	}
 
 	public static AttributeModifierMap getAttributeMap() {
 		return MobEntity.func_233666_p_()
-			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 20.0 )
-			.createMutableAttribute( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.3 )
-			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 2.5 )
+			.createMutableAttribute( Attributes.MAX_HEALTH, 20.0 )
+			.createMutableAttribute( Attributes.MOVEMENT_SPEED, 0.3 )
+			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 2.5 )
 			.create();
 	}
 
@@ -84,11 +84,11 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 
 		double finalChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get();
 		if( isServerWorld() )
-			finalChance *= MajruszsHelper.getClampedRegionalDifficulty( this, ( ServerWorld )this.world );
+			finalChance *= WorldHelper.getClampedRegionalDifficulty( this );
 
-		if( finalChance >= MajruszsDifficulty.RANDOM.nextDouble() && ammunition.getItem() instanceof ArrowItem ) {
+		if( finalChance >= MajruszLibrary.RANDOM.nextDouble() && ammunition.getItem() instanceof ArrowItem ) {
 			ammunition = new ItemStack( Items.TIPPED_ARROW );
-			PotionUtils.addPotionToItemStack( ammunition, arrowPotions[ MajruszsDifficulty.RANDOM.nextInt( arrowPotions.length ) ] );
+			PotionUtils.addPotionToItemStack( ammunition, arrowPotions[ MajruszLibrary.RANDOM.nextInt( arrowPotions.length ) ] );
 		}
 
 		return fireArrow( ammunition, distanceFactor );

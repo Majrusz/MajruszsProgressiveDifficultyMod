@@ -1,7 +1,8 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.TimeConverter;
+import com.mlib.effects.EffectHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -89,6 +90,6 @@ public class BandageItem extends Item {
 	private static void removeBleedingAndAddRegeneration( LivingEntity target ) {
 		target.removePotionEffect( Instances.Effects.BLEEDING );
 		target.removeActivePotionEffect( Instances.Effects.BLEEDING );
-		MajruszsHelper.applyEffectIfPossible( target, Effects.REGENERATION, MajruszsHelper.secondsToTicks( 5.0 ), 0 );
+		EffectHelper.applyEffectIfPossible( target, Effects.REGENERATION, TimeConverter.secondsToTicks( 5.0 ), 0 );
 	}
 }

@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.events.undead_army;
 
+/** Possible Undead Army wave statuses. */
 public enum Status {
 	BETWEEN_WAVES, ONGOING, VICTORY, FAILED, STOPPED;
 

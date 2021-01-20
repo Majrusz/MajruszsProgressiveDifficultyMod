@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.WorldHelper;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
@@ -45,6 +45,6 @@ public abstract class FeatureBase {
 
 	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
 	protected double calculateChance( LivingEntity target ) {
-		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? MajruszsHelper.getClampedRegionalDifficulty( target ) : 1.0 );
+		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? WorldHelper.getClampedRegionalDifficulty( target ) : 1.0 );
 	}
 }

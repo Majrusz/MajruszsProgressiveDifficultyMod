@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.TimeConverter;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
@@ -42,10 +42,10 @@ public class FallDamageWithNegativeEffects {
 
 		LivingEntity livingEntity = event.getEntityLiving();
 		if( Instances.FALL_DAMAGE_EFFECTS.isSlownessEnabled.isEnabled() )
-			EffectHelper.applyEffectIfPossible( livingEntity, Effects.SLOWNESS, MajruszsHelper.secondsToTicks( 10.0 + distance * 0.5 ),
+			EffectHelper.applyEffectIfPossible( livingEntity, Effects.SLOWNESS, TimeConverter.secondsToTicks( 10.0 + distance * 0.5 ),
 				( int )( distance / 15.0 )
 			);
 		if( Instances.FALL_DAMAGE_EFFECTS.isNauseaEnabled.isEnabled() )
-			EffectHelper.applyEffectIfPossible( livingEntity, Effects.NAUSEA, MajruszsHelper.secondsToTicks( 6.0 ), ( int )( distance / 5.0 ) );
+			EffectHelper.applyEffectIfPossible( livingEntity, Effects.NAUSEA, TimeConverter.secondsToTicks( 6.0 ), ( int )( distance / 5.0 ) );
 	}
 }

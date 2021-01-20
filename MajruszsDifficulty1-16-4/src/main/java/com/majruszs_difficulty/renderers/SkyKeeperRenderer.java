@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.renderers;
 
-import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.MajruszsDifficulty;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.PhantomRenderer;
 import net.minecraft.entity.monster.PhantomEntity;
@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 /** Renderer for Sky Keeper entity. */
 @OnlyIn( Dist.CLIENT )
 public class SkyKeeperRenderer extends PhantomRenderer {
-	private static final ResourceLocation SKY_KEEPER_TEXTURE = MajruszsHelper.getResource( "textures/entity/sky_keeper.png" );
+	private static final ResourceLocation SKY_KEEPER_TEXTURE = MajruszsDifficulty.getLocation( "textures/entity/sky_keeper.png" );
 
 	public SkyKeeperRenderer( EntityRendererManager renderManagerIn ) {
 		super( renderManagerIn );

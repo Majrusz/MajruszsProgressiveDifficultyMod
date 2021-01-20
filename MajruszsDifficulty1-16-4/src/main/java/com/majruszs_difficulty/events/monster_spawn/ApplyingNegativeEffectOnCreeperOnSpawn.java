@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsDifficulty;
+import com.mlib.MajruszLibrary;
 import com.mlib.config.DurationConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -29,7 +29,7 @@ public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBa
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
 		CreeperEntity creeper = ( CreeperEntity )entity;
 
-		Effect randomEffect = EFFECTS[ MajruszsDifficulty.RANDOM.nextInt( EFFECTS.length ) ];
+		Effect randomEffect = EFFECTS[ MajruszLibrary.RANDOM.nextInt( EFFECTS.length ) ];
 		creeper.addPotionEffect( new EffectInstance( randomEffect, this.duration.getDuration(), 0 ) );
 	}
 

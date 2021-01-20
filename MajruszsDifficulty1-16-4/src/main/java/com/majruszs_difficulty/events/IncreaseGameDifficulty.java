@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.WorldHelper;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -9,7 +9,7 @@ import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -22,7 +22,7 @@ public class IncreaseGameDifficulty {
 	public static void enableExpertMode( PlayerEvent.PlayerChangedDimensionEvent event ) {
 		PlayerEntity playerEnteringDimension = event.getPlayer();
 
-		if( !MajruszsHelper.isPlayerIn( playerEnteringDimension, DimensionType.THE_NETHER ) )
+		if( !WorldHelper.isEntityIn( playerEnteringDimension, World.THE_NETHER ) )
 			return;
 
 		if( GameState.getCurrentMode() != GameState.State.NORMAL )

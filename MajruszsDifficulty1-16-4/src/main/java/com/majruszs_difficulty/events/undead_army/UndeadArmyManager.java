@@ -1,16 +1,16 @@
 package com.majruszs_difficulty.events.undead_army;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.UndeadArmy;
+import com.mlib.TimeConverter;
+import com.mlib.WorldHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/** Handling all Undead Armies in the world. */
 @Mod.EventBusSubscriber
 public class UndeadArmyManager extends WorldSavedData {
 	public static final String DATA_NAME = "undead_army";
@@ -72,16 +73,16 @@ public class UndeadArmyManager extends WorldSavedData {
 	public boolean spawn( PlayerEntity player, ServerWorld world ) {
 		BlockPos attackPosition = getAttackPosition( player );
 
-		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) || Instances.UNDEAD_ARMY_CONFIG.availability.isDisabled() )
+		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere(
+			attackPosition ) || Instances.UNDEAD_ARMY_CONFIG.availability.isDisabled() )
 			return false;
 
-		if( this.world.isDaytime() || !MajruszsHelper.isPlayerIn( player, DimensionType.OVERWORLD ) )
+		if( this.world.isDaytime() || !WorldHelper.isEntityIn( player, World.OVERWORLD ) )
 			return false;
 
-		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( MajruszsHelper.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
+		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
 
 		this.world.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundCategory.AMBIENT, 0.25f, 1.0f );
-		MajruszsDifficulty.LOGGER.info( "Spawned undead army! " + attackPosition );
 
 		return true;
 	}

@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.WorldHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -32,7 +32,7 @@ public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( entity, world );
+		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( entity );
 
 		Data data = new Data();
 		data.uuid = entity.getUniqueID();

@@ -1,20 +1,21 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
-import com.majruszs_difficulty.AttributeHelper;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
+import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.world.server.ServerWorld;
 
 /** Increases damage and health of spawning hostile entities. */
 public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase {
-	protected static final AttributeHelper MAX_HEALTH_ATTRIBUTE = new AttributeHelper( "ba9de909-4a9e-43da-9d14-fbcbc2403316",
-		"MonsterSpawnHealthBonus", AttributeHelper.Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE
+	protected static final AttributeHandler MAX_HEALTH_ATTRIBUTE = new AttributeHandler( "ba9de909-4a9e-43da-9d14-fbcbc2403316",
+		"MonsterSpawnHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE
 	);
-	protected static final AttributeHelper DAMAGE_ATTRIBUTE = new AttributeHelper( "053d92c8-ccb5-4b95-9add-c31aca144177", "MonsterSpawnDamageBonus",
-		AttributeHelper.Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE
+	protected static final AttributeHandler DAMAGE_ATTRIBUTE = new AttributeHandler( "053d92c8-ccb5-4b95-9add-c31aca144177",
+		"MonsterSpawnDamageBonus", Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE
 	);
 	private static final String CONFIG_NAME = "SpawnBonuses";
 	private static final String CONFIG_COMMENT = "Damage and health bonuses of hostile creatures.";

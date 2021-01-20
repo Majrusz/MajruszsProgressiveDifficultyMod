@@ -1,8 +1,8 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.events.FeatureBase;
+import com.mlib.Random;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.server.ServerWorld;
 
@@ -35,6 +35,6 @@ public abstract class OnEnemyToBeSpawnedBase extends FeatureBase {
 		if( !isEnabled() )
 			return false;
 
-		return MajruszsHelper.tryChance( calculateChance( entity ) );
+		return Random.tryChance( calculateChance( entity ) );
 	}
 }

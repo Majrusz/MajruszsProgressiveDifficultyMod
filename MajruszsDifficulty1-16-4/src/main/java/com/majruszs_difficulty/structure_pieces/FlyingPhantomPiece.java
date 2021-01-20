@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.structure_pieces;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Random;
 
 public class FlyingPhantomPiece extends TemplateStructurePiece {
-	public static final ResourceLocation resourceLocation = MajruszsHelper.getResource( "flying_phantom" );
-	public static final ResourceLocation chestResourceLocation = MajruszsHelper.getResource( "chests/flying_phantom" );
+	public static final ResourceLocation resourceLocation = MajruszsDifficulty.getLocation( "flying_phantom" );
+	public static final ResourceLocation chestResourceLocation = MajruszsDifficulty.getLocation( "chests/flying_phantom" );
 	private final Rotation rotation;
 
 	public FlyingPhantomPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {

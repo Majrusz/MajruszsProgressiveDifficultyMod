@@ -1,13 +1,20 @@
 package com.majruszs_difficulty.events;
 
 import com.google.common.collect.Sets;
-import com.majruszs_difficulty.*;
+import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.events.undead_army.Direction;
 import com.majruszs_difficulty.events.undead_army.Status;
 import com.majruszs_difficulty.events.undead_army.TextManager;
 import com.majruszs_difficulty.events.undead_army.WaveMember;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
+import com.mlib.MajruszLibrary;
+import com.mlib.TimeConverter;
+import com.mlib.WorldHelper;
+import com.mlib.items.ItemHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -29,6 +36,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.BossInfo;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.common.Mod;
@@ -39,18 +47,18 @@ import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber
 public class UndeadArmy {
-	private final static int betweenRaidTicksMaximum = MajruszsHelper.secondsToTicks( 15.0 );
-	private final static int ticksInactiveMaximum = MajruszsHelper.minutesToTicks( 15.0 );
-	private final static int spawnRadius = 70;
-	private final static TextManager textManager = new TextManager();
-	private final ServerBossInfo bossInfo = new ServerBossInfo( textManager.title, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
+	private final static int BETWEEN_RAID_TICKS_MAXIMUM = TimeConverter.secondsToTicks( 15.0 );
+	private final static int TICKS_INACTIVE_MAXIMUM = TimeConverter.minutesToTicks( 15.0 );
+	private final static int SPAWN_RADIUS = 70;
+	private final static TextManager TEXT_MANAGER = new TextManager();
+	private final ServerBossInfo bossInfo = new ServerBossInfo( TEXT_MANAGER.title, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
 	private final BlockPos positionToAttack;
 	private final Direction direction;
 	private ServerWorld world;
 	private boolean isActive = true;
 	private long ticksActive = 0;
 	private int ticksInactive = 0;
-	private int betweenRaidTicks = betweenRaidTicksMaximum;
+	private int betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM;
 	private int currentWave = 0;
 	private int undeadToKill = 1;
 	private int undeadKilled = 0;
@@ -115,16 +123,16 @@ public class UndeadArmy {
 	public void updateBarText() {
 		switch( this.status ) {
 			case ONGOING:
-				this.bossInfo.setName( this.currentWave == 0 ? textManager.title : textManager.getWaveMessage( this.currentWave ) );
+				this.bossInfo.setName( this.currentWave == 0 ? TEXT_MANAGER.title : TEXT_MANAGER.getWaveMessage( this.currentWave ) );
 				break;
 			case BETWEEN_WAVES:
-				this.bossInfo.setName( textManager.between_waves );
+				this.bossInfo.setName( TEXT_MANAGER.between_waves );
 				break;
 			case VICTORY:
-				this.bossInfo.setName( textManager.victory );
+				this.bossInfo.setName( TEXT_MANAGER.victory );
 				break;
 			case FAILED:
-				this.bossInfo.setName( textManager.failed );
+				this.bossInfo.setName( TEXT_MANAGER.failed );
 				break;
 			default:
 				break;
@@ -136,7 +144,7 @@ public class UndeadArmy {
 			return;
 
 		if( this.ticksActive == 0L )
-			textManager.notifyAboutStart( getNearbyPlayers(), this.direction );
+			TEXT_MANAGER.notifyAboutStart( getNearbyPlayers(), this.direction );
 
 		this.ticksActive++;
 
@@ -167,7 +175,7 @@ public class UndeadArmy {
 	}
 
 	public void updateNearbyUndeadGoals() {
-		List< MonsterEntity > monsters = getNearbyUndeadArmy( spawnRadius );
+		List< MonsterEntity > monsters = getNearbyUndeadArmy( SPAWN_RADIUS );
 
 		for( MonsterEntity monster : monsters )
 			updateUndeadGoal( monster );
@@ -180,7 +188,7 @@ public class UndeadArmy {
 
 	private void tickBetweenWaves() {
 		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
-		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.betweenRaidTicks ) / betweenRaidTicksMaximum, 0.0f, 1.0f ) );
+		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.betweenRaidTicks ) / BETWEEN_RAID_TICKS_MAXIMUM, 0.0f, 1.0f ) );
 
 		if( this.betweenRaidTicks == 0 )
 			nextWave();
@@ -192,7 +200,7 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( spawnRadius / 7 ) >= this.undeadToKill / 2 ) )
+		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( SPAWN_RADIUS / 7 ) >= this.undeadToKill / 2 ) )
 			createSpawner();
 
 		if( this.undeadKilled == this.undeadToKill )
@@ -219,7 +227,7 @@ public class UndeadArmy {
 		if( countNearbyPlayers() > 0 )
 			this.status = Status.ONGOING;
 
-		if( this.ticksInactive >= ticksInactiveMaximum )
+		if( this.ticksInactive >= TICKS_INACTIVE_MAXIMUM )
 			endWave();
 	}
 
@@ -231,44 +239,44 @@ public class UndeadArmy {
 	}
 
 	private void endWave() {
-		if( this.ticksInactive >= ticksInactiveMaximum ) {
+		if( this.ticksInactive >= TICKS_INACTIVE_MAXIMUM ) {
 			this.status = Status.FAILED;
-			this.betweenRaidTicks = betweenRaidTicksMaximum * 2;
+			this.betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM * 2;
 			this.bossInfo.setPercent( 1.0f );
 			this.spawnerWasCreated = false;
 			createSpawner();
 		} else if( this.currentWave >= getWaves() ) {
 			this.status = Status.VICTORY;
-			this.betweenRaidTicks = betweenRaidTicksMaximum * 2;
+			this.betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM * 2;
 			rewardPlayers();
 			this.bossInfo.setPercent( 1.0f );
 		} else {
 			this.status = Status.BETWEEN_WAVES;
-			this.betweenRaidTicks = betweenRaidTicksMaximum;
+			this.betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM;
 		}
 
 		updateBarText();
 	}
 
 	private void createSpawner() {
-		for( int y = 0; y <= 5 && !this.spawnerWasCreated; y++ )
-			for( int i = 0; i < 10 && !this.spawnerWasCreated; i++ ) {
-				int x = MajruszsDifficulty.RANDOM.nextInt( 7 ) - 3;
-				int z = MajruszsDifficulty.RANDOM.nextInt( 7 ) - 3;
-				BlockPos position = positionToAttack.add( x, y, z );
+		for( int i = 0; i < 50 && !this.spawnerWasCreated; i++ ) {
+			int x = MajruszLibrary.RANDOM.nextInt( 7 ) - 3;
+			int z = MajruszLibrary.RANDOM.nextInt( 7 ) - 3;
+			int y = world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z ) + 1;
+			BlockPos position = positionToAttack.add( x, y, z );
 
-				if( this.world.isAirBlock( position ) ) {
-					this.world.setBlockState( position, Blocks.SPAWNER.getDefaultState() );
-					this.spawnerWasCreated = true;
+			if( this.world.isAirBlock( position ) ) {
+				this.world.setBlockState( position, Blocks.SPAWNER.getDefaultState() );
+				this.spawnerWasCreated = true;
 
-					TileEntity tileEntity = this.world.getTileEntity( position );
-					if( !( tileEntity instanceof MobSpawnerTileEntity ) )
-						continue;
+				TileEntity tileEntity = this.world.getTileEntity( position );
+				if( !( tileEntity instanceof MobSpawnerTileEntity ) )
+					continue;
 
-					( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic()
-						.setEntityType( getRandomEntityForSpawner() );
-				}
+				( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic()
+					.setEntityType( getRandomEntityForSpawner() );
 			}
+		}
 
 		this.spawnerWasCreated = true;
 	}
@@ -280,7 +288,7 @@ public class UndeadArmy {
 
 		for( WaveMember waveMember : WaveMember.values() ) {
 			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
-				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.world, this.positionToAttack, spawnRadius );
+				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.world, this.positionToAttack, SPAWN_RADIUS );
 				MonsterEntity monster = ( MonsterEntity )waveMember.type.spawn( this.world, null, null, randomPosition, SpawnReason.EVENT, true,
 					true
 				);
@@ -296,8 +304,8 @@ public class UndeadArmy {
 			}
 		}
 
-		int x = this.positionToAttack.getX() + this.direction.x * spawnRadius;
-		int z = this.positionToAttack.getZ() + this.direction.z * spawnRadius;
+		int x = this.positionToAttack.getX() + this.direction.x * SPAWN_RADIUS;
+		int z = this.positionToAttack.getZ() + this.direction.z * SPAWN_RADIUS;
 
 		for( ServerPlayerEntity player : getNearbyPlayers() )
 			player.connection.sendPacket(
@@ -307,17 +315,17 @@ public class UndeadArmy {
 	}
 
 	private void tryToEnchantEquipment( MonsterEntity monster ) {
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( monster, this.world );
+		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( monster );
 
-		if( monster.hasItemInSlot( EquipmentSlotType.MAINHAND ) && MajruszsDifficulty.RANDOM.nextDouble() < getEnchantmentOdds() ) {
+		if( monster.hasItemInSlot( EquipmentSlotType.MAINHAND ) && MajruszLibrary.RANDOM.nextDouble() < getEnchantmentOdds() ) {
 			ItemStack weapon = monster.getHeldItemMainhand();
 
-			monster.setHeldItem( Hand.MAIN_HAND, MajruszsHelper.enchantItem( weapon, clampedRegionalDifficulty ) );
+			monster.setHeldItem( Hand.MAIN_HAND, ItemHelper.enchantItem( weapon, clampedRegionalDifficulty, false ) );
 		}
 
 		for( ItemStack armor : monster.getArmorInventoryList() )
-			if( MajruszsDifficulty.RANDOM.nextDouble() < ( getEnchantmentOdds() / 2.0 ) ) {
-				armor = MajruszsHelper.enchantItem( armor, clampedRegionalDifficulty );
+			if( MajruszLibrary.RANDOM.nextDouble() < ( getEnchantmentOdds() / 2.0 ) ) {
+				armor = ItemHelper.enchantItem( armor, clampedRegionalDifficulty, false );
 				if( armor.getEquipmentSlot() != null )
 					monster.setItemStackToSlot( armor.getEquipmentSlot(), armor );
 			}
@@ -326,10 +334,11 @@ public class UndeadArmy {
 	private void rewardPlayers() {
 		for( PlayerEntity player : this.world.getPlayers( getParticipantsPredicate() ) ) {
 			Vector3d position = player.getPositionVec();
-			for( int i = 0; i < getExperienceVictory() / 4; i++ )
+			for( int i = 0; i < getExperienceAmount() / 4; i++ )
 				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), 4 ) );
 
-			MajruszsHelper.giveItemStackToPlayer( new ItemStack( Instances.TreasureBags.UNDEAD_ARMY ), player, this.world );
+			for( int i = 0; i < getTreasureBagsAmount(); i++ )
+				MajruszsHelper.giveItemStackToPlayer( new ItemStack( Instances.TreasureBags.UNDEAD_ARMY ), player, this.world );
 		}
 	}
 
@@ -401,36 +410,19 @@ public class UndeadArmy {
 		}
 	}
 
-	private int getExperienceVictory() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return 40;
-			case EXPERT:
-				return 80;
-			case MASTER:
-				return 120;
-		}
+	private int getTreasureBagsAmount() {
+		return Instances.UNDEAD_ARMY_CONFIG.treasureBagReward.getCurrentGameStateValue();
+	}
+
+	private int getExperienceAmount() {
+		return Instances.UNDEAD_ARMY_CONFIG.experienceReward.getCurrentGameStateValue();
 	}
 
 	private int getWaves() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return 3;
-			case EXPERT:
-				return 4;
-			case MASTER:
-				return 5;
-		}
+		return GameState.getValueDependingOnGameState( 3, 4, 5 );
 	}
 
 	private double getEnchantmentOdds() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return 0.125;
-			case EXPERT:
-				return 0.25;
-			case MASTER:
-				return 0.5;
-		}
+		return Instances.UNDEAD_ARMY_CONFIG.enchantedItems.getCurrentGameStateValue();
 	}
 }

@@ -3,8 +3,6 @@ package com.majruszs_difficulty;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 /** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
@@ -39,14 +37,7 @@ public class GameState {
 
 	/** Converting game state to integer. */
 	public static int convertStateToInteger( State state ) {
-		switch( state ) {
-			default:
-				return 0;
-			case EXPERT:
-				return 1;
-			case MASTER:
-				return 2;
-		}
+		return getValueDependingOnGameState( 0, 1, 2 );
 	}
 
 	/** Converting integer to game state. */

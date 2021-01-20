@@ -1,7 +1,8 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.WorldHelper;
+import com.mlib.items.ItemHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( entity, world );
+		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( entity );
 
 		entity.setItemStackToSlot( this.equipmentSlotType, getFinalItemStack( clampedRegionalDifficulty ) );
 	}
@@ -37,11 +38,11 @@ public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
 	protected ItemStack getFinalItemStack( double clampedRegionalDifficulty ) {
 		if( this.shouldBeEnchanted ) {
 			if( this.shouldBeDamaged )
-				return MajruszsHelper.damageAndEnchantItem( getItemStack(), clampedRegionalDifficulty );
+				return ItemHelper.damageAndEnchantItem( getItemStack(), clampedRegionalDifficulty, true, 0.5 );
 			else
-				return MajruszsHelper.enchantItem( getItemStack(), clampedRegionalDifficulty );
+				return ItemHelper.enchantItem( getItemStack(), clampedRegionalDifficulty, true );
 		}
 
-		return this.shouldBeDamaged ? MajruszsHelper.damageItem( getItemStack() ) : getItemStack();
+		return this.shouldBeDamaged ? ItemHelper.damageItem( getItemStack(), 0.5 ) : getItemStack();
 	}
 }

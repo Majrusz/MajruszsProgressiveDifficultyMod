@@ -1,29 +1,30 @@
 package com.majruszs_difficulty.events.undead_army;
 
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
+import com.mlib.TimeConverter;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/** Reloading goals for Undead Army after reloading world. */
 @Mod.EventBusSubscriber
 public class ReloadUndeadArmyGoals {
-	private static long counter = -1L;
+	private static long COUNTER = -1L;
 
 	@SubscribeEvent
 	public static void onUpdate( TickEvent.WorldTickEvent event ) {
-		if( counter == -1L )
+		if( COUNTER == -1L )
 			return;
 
-		counter++;
+		COUNTER++;
 
-		if( counter % MajruszsHelper.secondsToTicks( 25.0 ) == 0L ) {
+		if( COUNTER % TimeConverter.secondsToTicks( 25.0 ) == 0L ) {
 			RegistryHandler.UNDEAD_ARMY_MANAGER.updateUndeadGoals();
-			counter = -1L;
+			COUNTER = -1L;
 		}
 	}
 
 	public static void resetTimer() {
-		counter = 0L;
+		COUNTER = 0L;
 	}
 }

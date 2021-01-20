@@ -15,6 +15,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/** Counting killed undead and starting Undead Army if all conditions were met. */
 @Mod.EventBusSubscriber
 public class CountKilledUndead {
 	public static final String NBT_TAG = "UndeadKills";

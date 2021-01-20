@@ -1,8 +1,8 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
+import com.mlib.TimeConverter;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -17,7 +17,7 @@ public class SkyKeeperLevitationOnAttack extends WhenDamagedApplyStackableEffect
 
 	public SkyKeeperLevitationOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 6.0, GameState.State.NORMAL, true, Effects.LEVITATION, false, true, 1,
-			MajruszsHelper.secondsToTicks( 60.0 )
+			TimeConverter.secondsToTicks( 60.0 )
 		);
 	}
 

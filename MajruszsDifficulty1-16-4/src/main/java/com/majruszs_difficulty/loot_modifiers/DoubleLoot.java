@@ -3,7 +3,7 @@ package com.majruszs_difficulty.loot_modifiers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,7 +41,7 @@ public class DoubleLoot extends LootModifier {
 	public List< ItemStack > doApply( List< ItemStack > generatedLoot, LootContext context ) {
 		double chance = GameState.getValueDependingOnGameState( this.normalModeChance, this.expertModeChance, this.masterModeChance );
 
-		if( MajruszsHelper.tryChance( chance ) ) {
+		if( Random.tryChance( chance ) ) {
 			Entity entity = context.get( LootParameters.THIS_ENTITY );
 			if( generatedLoot.size() > 0 && entity != null )
 				spawnParticles( entity );

@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.TimeConverter;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Effects;
@@ -17,7 +17,7 @@ public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffe
 
 	public NauseaAndWeaknessWhenDrowning() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 5.0, GameState.State.NORMAL, false, new Effect[]{ Effects.NAUSEA, Effects.WEAKNESS }, false, true, 0,
-			MajruszsHelper.secondsToTicks( 10.0 )
+			TimeConverter.secondsToTicks( 10.0 )
 		);
 	}
 

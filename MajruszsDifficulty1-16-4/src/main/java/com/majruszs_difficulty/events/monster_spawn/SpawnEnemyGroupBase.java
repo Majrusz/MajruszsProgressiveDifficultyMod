@@ -1,10 +1,11 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.goals.FollowGroupLeaderGoal;
 import com.majruszs_difficulty.goals.TargetAsLeaderGoal;
+import com.mlib.MajruszLibrary;
+import com.mlib.WorldHelper;
+import com.mlib.items.ItemHelper;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -37,7 +38,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		int childrenAmount = this.minimumAmountOfChildren + MajruszsDifficulty.RANDOM.nextInt(
+		int childrenAmount = this.minimumAmountOfChildren + MajruszLibrary.RANDOM.nextInt(
 			this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1 );
 
 		if( this.leaderArmor != null )
@@ -53,11 +54,11 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	 @param world  Entity world.
 	 */
 	private void giveArmorToLeader( LivingEntity leader, ServerWorld world ) {
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( leader, world );
+		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( leader );
 
 		List< ItemStack > itemStacks = new ArrayList<>();
 		for( Item item : this.leaderArmor )
-			itemStacks.add( MajruszsHelper.damageAndEnchantItem( new ItemStack( item ), clampedRegionalDifficulty ) );
+			itemStacks.add( ItemHelper.damageAndEnchantItem( new ItemStack( item ), clampedRegionalDifficulty, true, 0.5 ) );
 
 		leader.setItemStackToSlot( EquipmentSlotType.FEET, itemStacks.get( 0 ) );
 		leader.setItemStackToSlot( EquipmentSlotType.LEGS, itemStacks.get( 1 ) );
@@ -67,11 +68,11 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 	/** Gives weapon from generateWeapon method to given entity. */
 	private void giveWeaponTo( LivingEntity child, ServerWorld world ) {
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( child, world );
+		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( child );
 
 		ItemStack weapon = generateWeaponForChild();
 		if( weapon != null )
-			child.setItemStackToSlot( EquipmentSlotType.MAINHAND, MajruszsHelper.damageAndEnchantItem( weapon, clampedRegionalDifficulty ) );
+			child.setItemStackToSlot( EquipmentSlotType.MAINHAND, ItemHelper.damageAndEnchantItem( weapon, clampedRegionalDifficulty, true, 0.5 ) );
 	}
 
 	/** Setting up AI goals like following leader. */
@@ -94,9 +95,9 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 		for( int childID = 0; childID < amount; childID++ ) {
 			CreatureEntity child = spawnChild( world );
-			double x = spawnPosition.x - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 );
+			double x = spawnPosition.x - 3 + MajruszLibrary.RANDOM.nextInt( 7 );
 			double y = spawnPosition.y + 0.5;
-			double z = spawnPosition.z - 3 + MajruszsDifficulty.RANDOM.nextInt( 7 );
+			double z = spawnPosition.z - 3 + MajruszLibrary.RANDOM.nextInt( 7 );
 			child.setPosition( x, y, z );
 			setupGoals( ( CreatureEntity )leader, child, 9, 9 );
 			giveWeaponTo( child, world );

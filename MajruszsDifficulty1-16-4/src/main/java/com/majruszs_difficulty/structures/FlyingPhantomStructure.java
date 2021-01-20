@@ -2,9 +2,9 @@ package com.majruszs_difficulty.structures;
 
 import com.google.common.collect.ImmutableList;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
+import com.mlib.MajruszLibrary;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +27,7 @@ import java.util.List;
 
 public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 	public static final FlyingPhantomStructure INSTANCE = new FlyingPhantomStructure();
-	public static final String NAME = MajruszsHelper.getResource( "flying_phantom_structure" )
+	public static final String NAME = MajruszsDifficulty.getLocation( "flying_phantom_structure" )
 		.toString();
 	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FEATURE = WorldGenRegistries.register(
 		WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, NAME, INSTANCE.withConfiguration( NoFeatureConfig.field_236559_b_ ) );
@@ -71,7 +71,7 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 			// Turns the chunk coordinates into actual coordinates we can use. (Gets center of that chunk)
 			int x = ( chunkX << 4 ) + 7;
 			int z = ( chunkZ << 4 ) + 7;
-			int y = chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) + 60 + MajruszsDifficulty.RANDOM.nextInt( 60 );
+			int y = chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
 
 			BlockPos blockpos = new BlockPos( x, y, z );
 
@@ -84,7 +84,7 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 	public static void setupSeparationSettings() {
 		int minimum = 47; // TODO
 		int maximum = Math.max( 67, minimum + 1 );
-		MajruszsDifficulty.LOGGER.info( minimum + ":" + maximum );
+		// MajruszsDifficulty.LOGGER.info( minimum + ":" + maximum );
 		SEPARATION_SETTINGS = new StructureSeparationSettings( maximum, minimum, 1717171717 );
 	}
 }

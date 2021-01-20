@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsDifficulty;
+import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
@@ -40,7 +40,7 @@ public class SpawnZombieGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	protected ItemStack generateWeaponForChild() {
-		double itemChance = MajruszsDifficulty.RANDOM.nextDouble();
+		double itemChance = MajruszLibrary.RANDOM.nextDouble();
 
 		if( itemChance <= this.woodenAxeChance.get() )
 			return new ItemStack( Items.WOODEN_AXE );

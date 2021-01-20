@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.Random;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -23,7 +23,7 @@ public class DrownedLightningOnAttack extends WhenDamagedBase {
 
 	@Override
 	public void whenDamaged( LivingEntity target ) {
-		if( !MajruszsHelper.tryChance( calculateChance( target ) ) )
+		if( !Random.tryChance( calculateChance( target ) ) )
 			return;
 
 		ServerWorld world = ( ServerWorld )target.getEntityWorld();

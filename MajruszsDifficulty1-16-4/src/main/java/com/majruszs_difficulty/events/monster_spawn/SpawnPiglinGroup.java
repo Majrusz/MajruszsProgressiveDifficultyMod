@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
@@ -37,6 +37,6 @@ public class SpawnPiglinGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	protected ItemStack generateWeaponForChild() {
-		return MajruszsHelper.tryChance( goldenSwordChance.get() ) ? new ItemStack( Items.GOLDEN_SWORD ) : null;
+		return Random.tryChance( goldenSwordChance.get() ) ? new ItemStack( Items.GOLDEN_SWORD ) : null;
 	}
 }

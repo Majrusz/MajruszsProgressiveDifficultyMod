@@ -140,7 +140,7 @@ public class Instances {
 		public static final IStructurePieceType FLYING_PHANTOM_PIECE;
 
 		static {
-			ResourceLocation flyingPhantomResource = MajruszsHelper.getResource( "flying_phantom" );
+			ResourceLocation flyingPhantomResource = MajruszsDifficulty.getLocation( "flying_phantom" );
 			FLYING_PHANTOM = new FlyingPhantomStructure();
 			FLYING_PHANTOM_PIECE = IStructurePieceType.register( FlyingPhantomPiece::new, flyingPhantomResource.toString() );
 		}

@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.TimeConverter;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.potion.Effects;
@@ -29,11 +29,11 @@ public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	protected int getDurationInTicks( Difficulty difficulty ) {
 		switch( difficulty ) {
 			default:
-				return MajruszsHelper.secondsToTicks( 0.0 );
+				return TimeConverter.secondsToTicks( 0.0 );
 			case NORMAL:
-				return MajruszsHelper.secondsToTicks( 7.0 );
+				return TimeConverter.secondsToTicks( 7.0 );
 			case HARD:
-				return MajruszsHelper.secondsToTicks( 15.0 );
+				return TimeConverter.secondsToTicks( 15.0 );
 		}
 	}
 
