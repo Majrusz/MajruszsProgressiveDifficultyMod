@@ -9,9 +9,9 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 /** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
-	public static final TextFormatting normalModeColor = TextFormatting.WHITE;
-	public static final TextFormatting expertModeColor = TextFormatting.RED;
-	public static final TextFormatting masterModeColor = TextFormatting.DARK_PURPLE;
+	public static final TextFormatting NORMAL_MODE_COLOR = TextFormatting.WHITE;
+	public static final TextFormatting EXPERT_MODE_COLOR = TextFormatting.RED;
+	public static final TextFormatting MASTER_MODE_COLOR = TextFormatting.DARK_PURPLE;
 	private static State current = State.NORMAL;
 
 	/** Changing current game state globally. */
@@ -133,15 +133,15 @@ public class GameState {
 	}
 
 	public static IFormattableTextComponent getNormalModeText() {
-		return generateModeText( "normal", normalModeColor );
+		return generateModeText( "normal", NORMAL_MODE_COLOR );
 	}
 
 	public static IFormattableTextComponent getExpertModeText() {
-		return generateModeText( "expert", expertModeColor );
+		return generateModeText( "expert", EXPERT_MODE_COLOR );
 	}
 
 	public static IFormattableTextComponent getMasterModeText() {
-		return generateModeText( "master", masterModeColor );
+		return generateModeText( "master", MASTER_MODE_COLOR );
 	}
 
 	private static IFormattableTextComponent generateModeText( String modeName, TextFormatting color ) {

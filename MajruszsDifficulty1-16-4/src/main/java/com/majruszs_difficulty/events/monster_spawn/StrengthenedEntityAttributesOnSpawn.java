@@ -28,8 +28,8 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 		String health_comment = "Extra health multiplier.";
 		String damage_comment = "Extra damage multiplier.";
 		String night_comment = "Extra damage and health multiplier at night.";
-		this.healthBonuses = new GameStateDoubleConfig( "health_bonus", health_comment, 0.0, 0.2, 0.4, 0.0, 10.0 );
-		this.damageBonuses = new GameStateDoubleConfig( "damage_bonus", damage_comment, 0.0, 0.2, 0.4, 0.0, 10.0 );
+		this.healthBonuses = new GameStateDoubleConfig( "HealthMultiplier", health_comment, 0.0, 0.2, 0.4, 0.0, 10.0 );
+		this.damageBonuses = new GameStateDoubleConfig( "DamageMultiplier", damage_comment, 0.0, 0.2, 0.4, 0.0, 10.0 );
 		this.multiplierAtNight = new DoubleConfig( "night_multiplier", night_comment, false, 2.0, 1.0, 10.0 );
 		this.featureGroup.addConfigs( this.healthBonuses, this.damageBonuses, this.multiplierAtNight );
 	}

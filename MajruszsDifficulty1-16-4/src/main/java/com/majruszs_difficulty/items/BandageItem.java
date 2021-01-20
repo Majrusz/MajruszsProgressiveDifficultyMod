@@ -89,6 +89,6 @@ public class BandageItem extends Item {
 	private static void removeBleedingAndAddRegeneration( LivingEntity target ) {
 		target.removePotionEffect( Instances.Effects.BLEEDING );
 		target.removeActivePotionEffect( Instances.Effects.BLEEDING );
-		MajruszsHelper.applyEffectIfPossible( target, Effects.REGENERATION, MajruszsHelper.secondsToTicks( 6.0 ), 0 );
+		MajruszsHelper.applyEffectIfPossible( target, Effects.REGENERATION, MajruszsHelper.secondsToTicks( 5.0 ), 0 );
 	}
 }

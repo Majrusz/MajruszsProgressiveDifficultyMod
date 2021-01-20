@@ -31,15 +31,15 @@ public class BleedingEffect extends Effect {
 	public BleedingEffect() {
 		super( EffectType.HARMFUL, 0xffdd5555 );
 
-		String damage_comment = "";
-		String cooldown_comment = "";
-		String armor_comment = "";
-		String amplifier_comment = "";
-		String group_comment = "";
+		String damage_comment = "Damage dealt by bleeding.";
+		String cooldown_comment = "Cooldown between attacking entity.";
+		String armor_comment = "Bleeding chance reduction per armor piece.";
+		String amplifier_comment = "Bleeding amplifier.";
+		String group_comment = "Bleeding effect.";
 		this.damage = new DoubleConfig( "damage", damage_comment, false, 1.0, 0.0, 20.0 );
 		this.baseCooldown = new DurationConfig( "cooldown", cooldown_comment, false, 5.0, 0.0, 20.0 );
 		this.armorChanceReduction = new DoubleConfig( "armor_reduction", armor_comment, false, 0.2, 0.0, 0.25 );
-		this.amplifier = new GameStateIntegerConfig( "amplifier", amplifier_comment, 0, 1, 2, 0, 10 );
+		this.amplifier = new GameStateIntegerConfig( "Amplifier", amplifier_comment, 0, 1, 2, 0, 10 );
 
 		this.bleedingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Bleeding", group_comment ) );
 		this.bleedingGroup.addConfigs( this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier );

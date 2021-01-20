@@ -35,7 +35,7 @@ public class IncreaseGameDifficulty {
 
 		GameState.changeMode( GameState.State.EXPERT );
 
-		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.expertModeColor );
+		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.EXPERT_MODE_COLOR );
 	}
 
 	@SubscribeEvent
@@ -58,7 +58,7 @@ public class IncreaseGameDifficulty {
 
 		GameState.changeMode( GameState.State.MASTER );
 
-		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.masterModeColor );
+		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.MASTER_MODE_COLOR );
 	}
 
 	protected static void sendMessage( PlayerList playerList, String translationKey, TextFormatting textColor ) {

@@ -1,5 +1,6 @@
-package com.majruszs_difficulty;
+package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.Instances;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 

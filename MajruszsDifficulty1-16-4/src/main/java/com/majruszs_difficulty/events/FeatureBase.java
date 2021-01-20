@@ -21,8 +21,9 @@ public abstract class FeatureBase {
 		this.minimumState = minimumState;
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;
 
+		String crd = "(this value is scaled by Clamped Regional Difficulty)";
 		String enabled_comment = "Is this feature enabled?";
-		String chance_comment = "Chance of this feature to happen. " + ( shouldChanceBeMultipliedByCRD ? "(this value is scaled by CRD)" : "" );
+		String chance_comment = "Chance of this feature to happen. " + ( shouldChanceBeMultipliedByCRD ? crd : "" );
 		this.availability = new AvailabilityConfig( "is_enabled", enabled_comment, false, true );
 		this.chance = new DoubleConfig( "chance", chance_comment, false, defaultChance, 0.0, 1.0 );
 

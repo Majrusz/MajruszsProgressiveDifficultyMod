@@ -1,12 +1,12 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.effects.BleedingEffect;
+import com.majruszs_difficulty.entities.EntitiesConfig;
+import com.majruszs_difficulty.events.ExperienceBonus;
+import com.majruszs_difficulty.events.FallDamageWithNegativeEffects;
 import com.majruszs_difficulty.events.monster_spawn.*;
 import com.majruszs_difficulty.events.when_damaged.*;
-import com.majruszs_difficulty.items.BandageItem;
-import com.majruszs_difficulty.items.TreasureBagItem;
-import com.majruszs_difficulty.items.UndeadBattleStandardItem;
-import com.majruszs_difficulty.items.WitherSwordItem;
+import com.majruszs_difficulty.items.*;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.structures.FlyingPhantomStructure;
 import net.minecraft.item.ItemGroup;
@@ -22,10 +22,20 @@ import net.minecraftforge.fml.ModLoadingContext;
 public class Instances {
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
+	// Entities
+	public static final EntitiesConfig ENTITIES_CONFIG;
+
 	// Effects
 	public static final BleedingEffect BLEEDING;
 
+	// Misc
+	public static final ExperienceBonus EXPERIENCE_BONUS;
+	public static final FallDamageWithNegativeEffects FALL_DAMAGE_EFFECTS;
+
 	static {
+		// Entities
+		ENTITIES_CONFIG = new EntitiesConfig();
+
 		// Effects
 		BLEEDING = new BleedingEffect();
 
@@ -52,8 +62,13 @@ public class Instances {
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnSkeletonGroup() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnZombieGroup() );
 
+		// Misc
+		EXPERIENCE_BONUS = new ExperienceBonus();
+		FALL_DAMAGE_EFFECTS = new FallDamageWithNegativeEffects();
+
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
+
 	public static class TreasureBags {
 		public static final TreasureBagItem UNDEAD_ARMY;
 		public static final TreasureBagItem ELDER_GUARDIAN;

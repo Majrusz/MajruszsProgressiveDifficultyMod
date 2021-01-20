@@ -15,7 +15,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
-public class DisableSpawnsBeforeExpert {
+public class SpawnDisabler {
 	@SubscribeEvent
 	public static void disableSpawns( LivingSpawnEvent.CheckSpawn event ) {
 		if( isEntityToBeDisabled( event.getEntityLiving() ) )
