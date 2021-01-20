@@ -79,6 +79,7 @@ public class RegistryHandler {
 
 	/** Registration of entity spawn eggs. */
 	private static void registerSpawnEggs() {
+		SpawnEggFactory.setDefaultItemGroup( Instances.ITEM_GROUP );
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "giant_spawn_egg", GiantEntity.type, 44975, 7969893 );
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "pillager_wolf_spawn_egg", PillagerWolfEntity.type, 9804699, 5451574 );
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "illusioner_spawn_egg", EntityType.ILLUSIONER, 0x135a97, 9804699 );
