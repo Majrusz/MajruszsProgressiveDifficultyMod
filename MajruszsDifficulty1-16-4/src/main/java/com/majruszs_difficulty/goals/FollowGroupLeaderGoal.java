@@ -26,7 +26,9 @@ public class FollowGroupLeaderGoal extends Goal {
 
 	@Override
 	public boolean shouldExecute() {
-		return ( this.leader != null && this.leader.isAlive() && ( this.leader.getDistance( this.follower ) >= this.maxDistanceFromLeader ) && this.follower.getAttackTarget() == null );
+		return ( this.leader != null && this.leader.isAlive() && ( this.leader.getDistance( this.follower ) >= this.maxDistanceFromLeader
+		) && this.follower.getAttackTarget() == null
+		);
 	}
 
 	public boolean shouldContinueExecuting() {
@@ -61,9 +63,7 @@ public class FollowGroupLeaderGoal extends Goal {
 		if( distance <= ( double )this.maxDistanceFromLeader || lookcontroller.getLookPosX() == this.follower.getPosX() && lookcontroller.getLookPosY() == this.follower.getPosY() && lookcontroller.getLookPosZ() == this.follower.getPosZ() ) {
 			double d4 = this.follower.getPosX() - this.leader.getPosX();
 			double d5 = this.follower.getPosZ() - this.leader.getPosZ();
-			this.navigation.tryMoveToXYZ( this.follower.getPosX() - d4, this.follower.getPosY(), this.follower.getPosZ() - d5,
-				this.speedModifier
-			);
+			this.navigation.tryMoveToXYZ( this.follower.getPosX() - d4, this.follower.getPosY(), this.follower.getPosZ() - d5, this.speedModifier );
 		}
 	}
 }

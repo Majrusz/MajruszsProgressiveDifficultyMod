@@ -2,17 +2,11 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
-import com.majruszs_difficulty.config.GameStateDoubleConfig;
-import com.majruszs_difficulty.config.GameStateIntegerConfig;
-import com.mlib.MajruszLibrary;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.config.DurationConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,8 +42,10 @@ public class FallDamageWithNegativeEffects {
 
 		LivingEntity livingEntity = event.getEntityLiving();
 		if( Instances.FALL_DAMAGE_EFFECTS.isSlownessEnabled.isEnabled() )
-			EffectHelper.applyEffectIfPossible( livingEntity, Effects.SLOWNESS, MajruszsHelper.secondsToTicks( 10.0 + distance * 0.5 ), (int)( distance / 15.0 ) );
+			EffectHelper.applyEffectIfPossible( livingEntity, Effects.SLOWNESS, MajruszsHelper.secondsToTicks( 10.0 + distance * 0.5 ),
+				( int )( distance / 15.0 )
+			);
 		if( Instances.FALL_DAMAGE_EFFECTS.isNauseaEnabled.isEnabled() )
-			EffectHelper.applyEffectIfPossible( livingEntity, Effects.NAUSEA, MajruszsHelper.secondsToTicks( 6.0 ), (int)( distance / 5.0 ) );
+			EffectHelper.applyEffectIfPossible( livingEntity, Effects.NAUSEA, MajruszsHelper.secondsToTicks( 6.0 ), ( int )( distance / 5.0 ) );
 	}
 }

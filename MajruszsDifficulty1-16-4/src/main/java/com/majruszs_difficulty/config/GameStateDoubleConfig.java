@@ -6,15 +6,15 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.config.IConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.security.acl.Group;
-
 public class GameStateDoubleConfig implements IConfig {
 	protected final ConfigGroup group;
 	protected final DoubleConfig normal;
 	protected final DoubleConfig expert;
 	protected final DoubleConfig master;
 
-	public GameStateDoubleConfig( String name, String comment, double defaultValueNormal, double defaultValueExpert, double defaultValueMaster, double minimumValue, double maximumValue ) {
+	public GameStateDoubleConfig( String name, String comment, double defaultValueNormal, double defaultValueExpert, double defaultValueMaster,
+		double minimumValue, double maximumValue
+	) {
 		this.group = new ConfigGroup( name, comment );
 		this.normal = new DoubleConfig( "normal", "Normal Mode", false, defaultValueNormal, minimumValue, maximumValue );
 		this.expert = new DoubleConfig( "expert", "Expert Mode", false, defaultValueExpert, minimumValue, maximumValue );

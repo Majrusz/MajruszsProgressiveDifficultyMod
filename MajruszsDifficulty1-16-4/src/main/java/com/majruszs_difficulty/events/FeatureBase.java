@@ -17,7 +17,9 @@ public abstract class FeatureBase {
 	protected final AvailabilityConfig availability;
 	protected final DoubleConfig chance;
 
-	public FeatureBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
+	public FeatureBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+		boolean shouldChanceBeMultipliedByCRD
+	) {
 		this.minimumState = minimumState;
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;
 

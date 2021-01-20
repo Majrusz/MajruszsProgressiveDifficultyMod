@@ -53,8 +53,7 @@ public class UndeadAttackPositionGoal extends Goal {
 
 	protected double getDistanceToAttackPosition() {
 		return Math.sqrt(
-			Math.pow( this.undead.getPosX() - attackPosition.getX(), 2 ) + Math.pow( this.undead.getPosZ() - attackPosition.getZ(), 2 )
-		);
+			Math.pow( this.undead.getPosX() - attackPosition.getX(), 2 ) + Math.pow( this.undead.getPosZ() - attackPosition.getZ(), 2 ) );
 	}
 }
 

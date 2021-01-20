@@ -1,6 +1,5 @@
 package com.majruszs_difficulty.events.treasure_bag;
 
-import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

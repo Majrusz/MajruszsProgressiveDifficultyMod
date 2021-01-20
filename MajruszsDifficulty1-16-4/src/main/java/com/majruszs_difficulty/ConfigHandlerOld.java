@@ -137,7 +137,9 @@ public class ConfigHandlerOld {
 		Config.Values.DAMAGE_BONUS_NORMAL = createConfigSpecForDouble( "damage_bonus_normal", "", 0.0, 0.0, 10.0 );
 		Config.Values.DAMAGE_BONUS_EXPERT = createConfigSpecForDouble( "damage_bonus_expert", "", 0.2, 0.0, 10.0 );
 		Config.Values.DAMAGE_BONUS_MASTER = createConfigSpecForDouble( "damage_bonus_master", "", 0.4, 0.0, 10.0 );
-		Config.Values.DAMAGE_AND_HEALTH_MULTIPLIER_AT_NIGHT = createConfigSpecForDouble( "damage_and_health_multiplier_at_night", "", 2.0, 1.0, 10.0 );
+		Config.Values.DAMAGE_AND_HEALTH_MULTIPLIER_AT_NIGHT = createConfigSpecForDouble( "damage_and_health_multiplier_at_night", "", 2.0, 1.0,
+			10.0
+		);
 		BUILDER.pop();
 
 		BUILDER.comment( "All distances below are given in chunks." );

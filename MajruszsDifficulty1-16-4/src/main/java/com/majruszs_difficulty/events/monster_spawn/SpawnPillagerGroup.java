@@ -2,7 +2,6 @@ package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
-import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.PillagerEntity;

@@ -60,7 +60,9 @@ public class DoubleLoot extends LootModifier {
 
 		ServerWorld world = ( ServerWorld )entity.world;
 		for( int i = 0; i < 8; i++ )
-			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, entity.getPosX(), entity.getPosYHeight( 0.5 ), entity.getPosZ(), 1, 0.5, 0.5, 0.5, 0.5 );
+			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, entity.getPosX(), entity.getPosYHeight( 0.5 ), entity.getPosZ(), 1, 0.5, 0.5, 0.5,
+				0.5
+			);
 	}
 
 	/** Doubles given generated loot. Does not duplicate items from forbidden items list. */
