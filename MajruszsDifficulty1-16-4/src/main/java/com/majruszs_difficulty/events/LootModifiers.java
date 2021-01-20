@@ -19,8 +19,4 @@ public class LootModifiers {
 		registry.register( new DoubleLoot.Serializer().setRegistryName( MajruszsDifficulty.getLocation( "double_loot" ) ) );
 		registry.register( new AddTreasureBagsToLoot.Serializer().setRegistryName( MajruszsDifficulty.getLocation( "add_treasure_bag_to_loot" ) ) );
 	}
-
-	protected static ResourceLocation getResource( String id ) {
-		return new ResourceLocation( MajruszsDifficulty.MOD_ID, id );
-	}
 }

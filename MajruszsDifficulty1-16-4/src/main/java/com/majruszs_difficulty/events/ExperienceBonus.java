@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.config.ConfigGroup;
@@ -34,7 +35,7 @@ public class ExperienceBonus {
 	@SubscribeEvent
 	public static void onXPPickUp( PlayerXpEvent.PickupXp event ) {
 		ExperienceOrbEntity orb = event.getOrb();
-		int bonusExperience = ( int )( Math.round( getExperienceMultiplier() * ( double )orb.getXpValue() ) );
+		int bonusExperience = ( int )( Math.round( Instances.EXPERIENCE_BONUS.getExperienceMultiplier() * ( double )orb.getXpValue() ) );
 
 		if( bonusExperience <= 0 )
 			return;
@@ -44,9 +45,7 @@ public class ExperienceBonus {
 	}
 
 	/** Returns extra experience depending on current game state. */
-	private static double getExperienceMultiplier() {
-		return GameState.getDoubleDependingOnGameState( Config.Values.EXPERIENCE_BONUS_NORMAL, Config.Values.EXPERIENCE_BONUS_EXPERT,
-			Config.Values.EXPERIENCE_BONUS_MASTER
-		);
+	private double getExperienceMultiplier() {
+		return this.bonusMultiplier.getCurrentGameStateValue();
 	}
 }

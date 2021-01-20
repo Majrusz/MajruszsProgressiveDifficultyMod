@@ -4,6 +4,7 @@ import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
 import com.majruszs_difficulty.events.FallDamageWithNegativeEffects;
+import com.majruszs_difficulty.events.FishingRewarder;
 import com.majruszs_difficulty.events.monster_spawn.*;
 import com.majruszs_difficulty.events.when_damaged.*;
 import com.majruszs_difficulty.items.*;
@@ -31,6 +32,7 @@ public class Instances {
 	// Misc
 	public static final ExperienceBonus EXPERIENCE_BONUS;
 	public static final FallDamageWithNegativeEffects FALL_DAMAGE_EFFECTS;
+	public static final FishingRewarder FISHING_REWARDER;
 
 	static {
 		// Entities
@@ -65,6 +67,7 @@ public class Instances {
 		// Misc
 		EXPERIENCE_BONUS = new ExperienceBonus();
 		FALL_DAMAGE_EFFECTS = new FallDamageWithNegativeEffects();
+		FISHING_REWARDER = new FishingRewarder();
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
