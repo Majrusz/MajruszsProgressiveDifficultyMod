@@ -1,9 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.inventory.EquipmentSlotType;

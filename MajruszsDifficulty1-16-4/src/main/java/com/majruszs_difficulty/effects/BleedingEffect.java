@@ -1,11 +1,7 @@
 package com.majruszs_difficulty.effects;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
-import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.RegistryHandler;
-import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;

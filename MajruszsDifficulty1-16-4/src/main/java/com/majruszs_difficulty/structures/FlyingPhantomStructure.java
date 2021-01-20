@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.structures;
 
 import com.google.common.collect.ImmutableList;
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
@@ -35,9 +34,7 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 	public static StructureSeparationSettings SEPARATION_SETTINGS;
 
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
-		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 40, 1, 1 ),
-		new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 1 )
-	);
+		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 40, 1, 1 ), new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 1 ) );
 
 	public FlyingPhantomStructure() {
 		super( NoFeatureConfig.field_236558_a_ );
@@ -60,8 +57,7 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 	}
 
 	public static class Start extends StructureStart< NoFeatureConfig > {
-		public Start( Structure< NoFeatureConfig > structure, int chunkX, int chunkZ, MutableBoundingBox mutableBoundingBox, int reference,
-			long seed
+		public Start( Structure< NoFeatureConfig > structure, int chunkX, int chunkZ, MutableBoundingBox mutableBoundingBox, int reference, long seed
 		) {
 			super( structure, chunkX, chunkZ, mutableBoundingBox, reference, seed );
 		}
@@ -86,8 +82,8 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 	}
 
 	public static void setupSeparationSettings() {
-		int minimum = Config.getInteger( Config.Structures.FLYING_PHANTOM_MIN_DISTANCE );
-		int maximum = Math.max(Config.getInteger( Config.Structures.FLYING_PHANTOM_MAX_DISTANCE ), minimum+1);
+		int minimum = 47; // TODO
+		int maximum = Math.max( 67, minimum + 1 );
 		MajruszsDifficulty.LOGGER.info( minimum + ":" + maximum );
 		SEPARATION_SETTINGS = new StructureSeparationSettings( maximum, minimum, 1717171717 );
 	}

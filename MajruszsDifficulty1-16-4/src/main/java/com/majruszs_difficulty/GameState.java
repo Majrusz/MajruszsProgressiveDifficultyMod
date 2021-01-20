@@ -1,6 +1,5 @@
 package com.majruszs_difficulty;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -60,58 +59,6 @@ public class GameState {
 			case 2:
 				return State.MASTER;
 		}
-	}
-
-	/**
-	 Returns integer depending on current game state.
-
-	 @param normal Configuration for Normal game state.
-	 @param expert Configuration for Expert game state.
-	 @param master Configuration for Master game state.
-	 */
-	public static int getIntegerDependingOnGameState( IntValue normal, IntValue expert, IntValue master ) {
-		IntValue value = getValueDependingOnGameState( normal, expert, master );
-
-		return Config.getInteger( value );
-	}
-
-	/**
-	 Returns double depending on current game state.
-
-	 @param normal Configuration for Normal game state.
-	 @param expert Configuration for Expert game state.
-	 @param master Configuration for Master game state.
-	 */
-	public static double getDoubleDependingOnGameState( DoubleValue normal, DoubleValue expert, DoubleValue master ) {
-		DoubleValue value = getValueDependingOnGameState( normal, expert, master );
-
-		return Config.getDouble( value );
-	}
-
-	/**
-	 Returns duration in seconds depending on current game state.
-
-	 @param normal Configuration for Normal game state.
-	 @param expert Configuration for Expert game state.
-	 @param master Configuration for Master game state.
-	 */
-	public static int getDurationDependingOnGameState( DoubleValue normal, DoubleValue expert, DoubleValue master ) {
-		DoubleValue value = getValueDependingOnGameState( normal, expert, master );
-
-		return Config.getDurationInSeconds( value );
-	}
-
-	/**
-	 Returns chance depending on current game state.
-
-	 @param normal Configuration for Normal game state.
-	 @param expert Configuration for Expert game state.
-	 @param master Configuration for Master game state.
-	 */
-	public static double getChanceDependingOnGameState( DoubleValue normal, DoubleValue expert, DoubleValue master ) {
-		DoubleValue value = getValueDependingOnGameState( normal, expert, master );
-
-		return Config.getChance( value );
 	}
 
 	/**

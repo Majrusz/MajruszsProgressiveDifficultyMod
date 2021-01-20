@@ -2,7 +2,6 @@ package com.majruszs_difficulty.loot_modifiers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.Entity;
@@ -44,7 +43,7 @@ public class DoubleLoot extends LootModifier {
 
 		if( MajruszsHelper.tryChance( chance ) ) {
 			Entity entity = context.get( LootParameters.THIS_ENTITY );
-			if( generatedLoot.size() > 0 && entity != null && !Config.isDisabled( Config.Features.DOUBLE_LOOT_PARTICLES ) )
+			if( generatedLoot.size() > 0 && entity != null )
 				spawnParticles( entity );
 
 			return doubleLoot( generatedLoot );

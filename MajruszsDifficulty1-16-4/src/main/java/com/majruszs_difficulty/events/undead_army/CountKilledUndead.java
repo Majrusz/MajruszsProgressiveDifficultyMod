@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.events.undead_army;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.UndeadArmy;
 import net.minecraft.entity.CreatureAttribute;
@@ -57,7 +57,7 @@ public class CountKilledUndead {
 	private static void spawnArmyIfPossible( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
 
-		if( nbt.getInt( NBT_TAG ) < Config.getInteger( Config.Values.UNDEAD_ARMY_KILL_REQUIREMENT ) )
+		if( nbt.getInt( NBT_TAG ) < Instances.UNDEAD_ARMY_CONFIG.killRequirement.get() )
 			return;
 
 		if( player.world instanceof ServerWorld )

@@ -2,7 +2,6 @@ package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.effects.BleedingEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;

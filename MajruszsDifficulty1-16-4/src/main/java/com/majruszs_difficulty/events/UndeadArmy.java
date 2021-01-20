@@ -2,7 +2,6 @@ package com.majruszs_difficulty.events;
 
 import com.google.common.collect.Sets;
 import com.majruszs_difficulty.*;
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.events.undead_army.Direction;
 import com.majruszs_difficulty.events.undead_army.Status;
@@ -193,7 +192,7 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( spawnRadius/7 ) >= this.undeadToKill/2 ) )
+		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( spawnRadius / 7 ) >= this.undeadToKill / 2 ) )
 			createSpawner();
 
 		if( this.undeadKilled == this.undeadToKill )
@@ -266,7 +265,8 @@ public class UndeadArmy {
 					if( !( tileEntity instanceof MobSpawnerTileEntity ) )
 						continue;
 
-					( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic().setEntityType( getRandomEntityForSpawner() );
+					( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic()
+						.setEntityType( getRandomEntityForSpawner() );
 				}
 			}
 
@@ -274,7 +274,7 @@ public class UndeadArmy {
 	}
 
 	private void spawnWaveEnemies() {
-		double playersFactor = 1.0 + ( Math.max( 1, countNearbyPlayers() ) - 1 ) * Config.getDouble( Config.Values.UNDEAD_ARMY_SCALE_WITH_PLAYERS );
+		double playersFactor = 1.0 + ( Math.max( 1, countNearbyPlayers() ) - 1 ) * Instances.UNDEAD_ARMY_CONFIG.scaleWithPlayers.get();
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
 
@@ -301,9 +301,7 @@ public class UndeadArmy {
 
 		for( ServerPlayerEntity player : getNearbyPlayers() )
 			player.connection.sendPacket(
-				new SPlaySoundEffectPacket( Instances.Sounds.UNDEAD_ARMY_WAVE_STARTED, SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f,
-					1.0f
-				) );
+				new SPlaySoundEffectPacket( Instances.Sounds.UNDEAD_ARMY_WAVE_STARTED, SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f, 1.0f ) );
 
 		this.undeadToKill = Math.max( 1, this.undeadToKill );
 	}
@@ -367,7 +365,9 @@ public class UndeadArmy {
 	}
 
 	private Predicate< MonsterEntity > getUndeadParticipantsPredicate() {
-		return monster->( monster.isAlive() && monster.getPersistentData().contains( "UndeadArmyFrostWalker" ) );
+		return monster->( monster.isAlive() && monster.getPersistentData()
+			.contains( "UndeadArmyFrostWalker" )
+		);
 	}
 
 	private List< MonsterEntity > getNearbyUndeadArmy( double range ) {

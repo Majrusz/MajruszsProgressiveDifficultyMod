@@ -1,14 +1,9 @@
 package com.majruszs_difficulty.events;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
-import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.config.ConfigGroup;
-import com.mlib.config.DoubleConfig;
-import com.mlib.config.DurationConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

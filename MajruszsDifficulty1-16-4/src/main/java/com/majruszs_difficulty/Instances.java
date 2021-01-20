@@ -6,6 +6,7 @@ import com.majruszs_difficulty.events.ExperienceBonus;
 import com.majruszs_difficulty.events.FallDamageWithNegativeEffects;
 import com.majruszs_difficulty.events.FishingRewarder;
 import com.majruszs_difficulty.events.monster_spawn.*;
+import com.majruszs_difficulty.events.undead_army.UndeadArmyConfig;
 import com.majruszs_difficulty.events.when_damaged.*;
 import com.majruszs_difficulty.items.*;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
@@ -30,6 +31,7 @@ public class Instances {
 	public static final BleedingEffect BLEEDING;
 
 	// Misc
+	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG;
 	public static final ExperienceBonus EXPERIENCE_BONUS;
 	public static final FallDamageWithNegativeEffects FALL_DAMAGE_EFFECTS;
 	public static final FishingRewarder FISHING_REWARDER;
@@ -65,6 +67,7 @@ public class Instances {
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnZombieGroup() );
 
 		// Misc
+		UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
 		EXPERIENCE_BONUS = new ExperienceBonus();
 		FALL_DAMAGE_EFFECTS = new FallDamageWithNegativeEffects();
 		FISHING_REWARDER = new FishingRewarder();

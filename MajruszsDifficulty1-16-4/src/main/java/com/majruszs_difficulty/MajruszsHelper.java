@@ -33,10 +33,7 @@ public class MajruszsHelper {
 	public static boolean isHostile( LivingEntity livingEntity ) {
 		ModifiableAttributeInstance damageAttribute = livingEntity.getAttribute( Attributes.ATTACK_DAMAGE );
 
-		if( damageAttribute != null && damageAttribute.getValue() > 0.0D )
-			return true;
-
-		return false;
+		return damageAttribute != null && damageAttribute.getValue() > 0.0D;
 	}
 
 	public static double getClampedRegionalDifficulty( LivingEntity livingEntity, ServerWorld world ) {

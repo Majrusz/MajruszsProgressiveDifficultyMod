@@ -13,7 +13,6 @@ import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
@@ -25,7 +24,8 @@ public class GiantEntity extends ZombieEntity {
 	static {
 		type = EntityType.Builder.create( GiantEntity::new, EntityClassification.MONSTER )
 			.size( 0.6f * scale, 2.0f * scale )
-			.build( MajruszsHelper.getResource( "giant" ).toString() );
+			.build( MajruszsHelper.getResource( "giant" )
+				.toString() );
 	}
 
 	public GiantEntity( EntityType< ? extends ZombieEntity > type, World world ) {

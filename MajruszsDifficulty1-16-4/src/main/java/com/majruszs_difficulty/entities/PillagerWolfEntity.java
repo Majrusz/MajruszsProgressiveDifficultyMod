@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.AttributeHelper;
-import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -12,7 +11,6 @@ import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 /** Entity that is more powerful version of Wolf and always hostile. */
@@ -22,7 +20,8 @@ public class PillagerWolfEntity extends WolfEntity {
 	static {
 		type = EntityType.Builder.create( PillagerWolfEntity::new, EntityClassification.MONSTER )
 			.size( 0.625f, 0.85f )
-			.build( MajruszsHelper.getResource( "pillager_wolf" ).toString() );
+			.build( MajruszsHelper.getResource( "pillager_wolf" )
+				.toString() );
 	}
 
 	public PillagerWolfEntity( EntityType< ? extends WolfEntity > type, World world ) {

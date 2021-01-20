@@ -72,7 +72,7 @@ public class UndeadArmyManager extends WorldSavedData {
 	public boolean spawn( PlayerEntity player, ServerWorld world ) {
 		BlockPos attackPosition = getAttackPosition( player );
 
-		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) )
+		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) || Instances.UNDEAD_ARMY_CONFIG.availability.isDisabled() )
 			return false;
 
 		if( this.world.isDaytime() || !MajruszsHelper.isPlayerIn( player, DimensionType.OVERWORLD ) )

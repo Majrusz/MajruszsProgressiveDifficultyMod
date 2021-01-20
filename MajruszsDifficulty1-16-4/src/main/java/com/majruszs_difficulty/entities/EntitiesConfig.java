@@ -19,7 +19,7 @@ public class EntitiesConfig {
 		this.skyKeeper = new EntityConfig( "SkyKeeper" );
 	}
 
-	private static class EliteSkeletonConfig extends EntityConfig {
+	public static class EliteSkeletonConfig extends EntityConfig {
 		public final DoubleConfig tippedArrowChance;
 
 		public EliteSkeletonConfig() {

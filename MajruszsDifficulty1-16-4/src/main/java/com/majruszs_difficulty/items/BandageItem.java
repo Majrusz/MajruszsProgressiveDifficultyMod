@@ -2,7 +2,6 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -82,7 +81,8 @@ public class BandageItem extends Item {
 		return true;
 	}
 
-	/** Removing bleeding effect and giving regeneration for few seconds.
+	/**
+	 Removing bleeding effect and giving regeneration for few seconds.
 
 	 @param target Entity to remove bleeding.
 	 */

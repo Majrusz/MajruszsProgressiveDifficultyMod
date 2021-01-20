@@ -28,8 +28,6 @@ public class MajruszsDifficulty {
 	public MajruszsDifficulty() {
 		RegistryHandler.init();
 
-		ConfigHandlerOld.register( ModLoadingContext.get() );
-
 		MinecraftForge.EVENT_BUS.register( this );
 	}
 

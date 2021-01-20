@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.AttributeHelper;
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.entity.EntityClassification;
@@ -82,7 +82,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	protected AbstractArrowEntity getArrowEntity( float distanceFactor ) {
 		ItemStack ammunition = findAmmo( getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) ) );
 
-		double finalChance = Config.getChance( Config.Chances.ELITE_TIPPED_ARROW );
+		double finalChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get();
 		if( isServerWorld() )
 			finalChance *= MajruszsHelper.getClampedRegionalDifficulty( this, ( ServerWorld )this.world );
 

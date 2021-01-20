@@ -3,7 +3,6 @@ package com.majruszs_difficulty.events;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.loot_modifiers.AddTreasureBagsToLoot;
 import com.majruszs_difficulty.loot_modifiers.DoubleLoot;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

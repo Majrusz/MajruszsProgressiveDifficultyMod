@@ -1,6 +1,5 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
@@ -22,11 +21,13 @@ import java.util.List;
 public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	protected final int minimumAmountOfChildren;
 	protected final int maximumAmountOfChildren;
-	protected final Item []leaderArmor;
+	protected final Item[] leaderArmor;
 
 	protected abstract CreatureEntity spawnChild( ServerWorld world );
 
-	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor ) {
+	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD,
+		int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor
+	) {
 		super( configName, configComment, 0.25, minimumState, shouldChanceBeMultipliedByCRD );
 		this.minimumAmountOfChildren = minimumAmountOfChildren;
 		this.maximumAmountOfChildren = maximumAmountOfChildren;
@@ -37,8 +38,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
 		int childrenAmount = this.minimumAmountOfChildren + MajruszsDifficulty.RANDOM.nextInt(
-			this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1
-		);
+			this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1 );
 
 		if( this.leaderArmor != null )
 			giveArmorToLeader( entity, world );
@@ -46,10 +46,11 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 		spawnChildren( childrenAmount, entity, world );
 	}
 
-	/** Gives full armor to leader.
+	/**
+	 Gives full armor to leader.
 
 	 @param leader Entity to give an armor.
-	 @param world Entity world.
+	 @param world  Entity world.
 	 */
 	private void giveArmorToLeader( LivingEntity leader, ServerWorld world ) {
 		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( leader, world );

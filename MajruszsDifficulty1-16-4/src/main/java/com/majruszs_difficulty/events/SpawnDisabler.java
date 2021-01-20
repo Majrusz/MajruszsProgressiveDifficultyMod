@@ -2,7 +2,6 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.GameState.State;
-import com.majruszs_difficulty.ConfigHandlerOld.Config;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
@@ -11,7 +10,6 @@ import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.mlib.config.AvailabilityConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IllusionerEntity;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -2,7 +2,6 @@ package com.majruszs_difficulty.structure_pieces;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
