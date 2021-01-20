@@ -28,7 +28,7 @@ issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/iss
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.wonderful_enchantments]]
+[[dependencies.majruszs_difficulty]]
     modId="majrusz_library"
     mandatory=true
     versionRange="[1.0.0,2.0.0)"
