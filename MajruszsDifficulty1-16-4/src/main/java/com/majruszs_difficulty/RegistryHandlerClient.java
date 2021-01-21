@@ -16,7 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 /** Class registering things only on the client side. */
 @OnlyIn( Dist.CLIENT )
 public class RegistryHandlerClient {
-	public static void setup( final FMLClientSetupEvent event ) {
+	public static void setup() {
 		RenderingRegistry.registerEntityRenderingHandler( GiantEntity.type, GiantRenderer::new );
 		RenderingRegistry.registerEntityRenderingHandler( PillagerWolfEntity.type, PillagerWolfRenderer::new );
 		RenderingRegistry.registerEntityRenderingHandler( EliteSkeletonEntity.type, EliteSkeletonRenderer::new );

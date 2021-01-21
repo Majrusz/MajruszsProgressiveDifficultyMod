@@ -26,6 +26,12 @@ import net.minecraftforge.fml.ModLoadingContext;
 public class Instances {
 	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
+	// Items
+	public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
+	public static final BandageItem BANDAGE_ITEM;
+	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
+	public static final HermesBootsItem HERMES_BOOTS_ITEM;
+
 	// Entities
 	public static final EntitiesConfig ENTITIES_CONFIG;
 
@@ -42,11 +48,14 @@ public class Instances {
 	public static final ExperienceBonus EXPERIENCE_BONUS;
 	public static final FallDamageWithNegativeEffects FALL_DAMAGE_EFFECTS;
 	public static final FishingRewarder FISHING_REWARDER;
-	public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
-	public static final BandageItem BANDAGE_ITEM;
-	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 
 	static {
+		// Items
+		BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
+		BANDAGE_ITEM = new BandageItem();
+		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
+		HERMES_BOOTS_ITEM = new HermesBootsItem();
+
 		// Entities
 		ENTITIES_CONFIG = new EntitiesConfig();
 
@@ -87,9 +96,6 @@ public class Instances {
 		EXPERIENCE_BONUS = new ExperienceBonus();
 		FALL_DAMAGE_EFFECTS = new FallDamageWithNegativeEffects();
 		FISHING_REWARDER = new FishingRewarder();
-		BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
-		BANDAGE_ITEM = new BandageItem();
-		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

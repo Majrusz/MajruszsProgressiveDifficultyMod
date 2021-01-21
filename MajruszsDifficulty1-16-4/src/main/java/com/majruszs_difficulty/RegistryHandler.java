@@ -31,6 +31,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -60,7 +61,7 @@ public class RegistryHandler {
 
 		registerEverything( modEventBus );
 		modEventBus.addListener( RegistryHandler::setup );
-		modEventBus.addListener( RegistryHandlerClient::setup );
+		modEventBus.addListener( RegistryHandler::setupClient );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( RegistryHandler::onLoadingWorld );
@@ -105,6 +106,7 @@ public class RegistryHandler {
 		ITEMS.register( "undead_battle_standard", ()->Instances.BATTLE_STANDARD_ITEM );
 		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
 		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
+		ITEMS.register( "hermes_boots", ()->Instances.HERMES_BOOTS_ITEM );
 		ITEMS.register( modEventBus );
 	}
 
@@ -136,6 +138,11 @@ public class RegistryHandler {
 		registerSounds( modEventBus );
 		registerEffects( modEventBus );
 		registerStructures( modEventBus );
+	}
+
+	/** Setting up client models etc. */
+	private static void setupClient( final FMLClientSetupEvent event ) {
+		RegistryHandlerClient.setup();
 	}
 
 	/** Setting up entities and structures. */
