@@ -6,6 +6,21 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "minecraft:trident",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "functions": [
             {
               "function": "minecraft:set_count",
