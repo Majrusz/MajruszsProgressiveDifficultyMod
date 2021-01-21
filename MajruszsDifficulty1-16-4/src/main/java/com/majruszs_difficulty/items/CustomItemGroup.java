@@ -12,6 +12,6 @@ public class CustomItemGroup extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack( Instances.Miscellaneous.BATTLE_STANDARD_ITEM );
+		return new ItemStack( Instances.BATTLE_STANDARD_ITEM );
 	}
 }

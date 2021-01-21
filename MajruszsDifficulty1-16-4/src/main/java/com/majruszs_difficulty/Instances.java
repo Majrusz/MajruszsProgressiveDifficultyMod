@@ -42,6 +42,9 @@ public class Instances {
 	public static final ExperienceBonus EXPERIENCE_BONUS;
 	public static final FallDamageWithNegativeEffects FALL_DAMAGE_EFFECTS;
 	public static final FishingRewarder FISHING_REWARDER;
+	public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
+	public static final BandageItem BANDAGE_ITEM;
+	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 
 	static {
 		// Entities
@@ -84,6 +87,9 @@ public class Instances {
 		EXPERIENCE_BONUS = new ExperienceBonus();
 		FALL_DAMAGE_EFFECTS = new FallDamageWithNegativeEffects();
 		FISHING_REWARDER = new FishingRewarder();
+		BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
+		BANDAGE_ITEM = new BandageItem();
+		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
@@ -109,18 +115,6 @@ public class Instances {
 
 		static {
 			WITHER_SWORD = new WitherSwordItem();
-		}
-	}
-
-	public static class Miscellaneous {
-		public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
-		public static final BandageItem BANDAGE_ITEM;
-		public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
-
-		static {
-			BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
-			BANDAGE_ITEM = new BandageItem();
-			FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		}
 	}
 

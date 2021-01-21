@@ -102,9 +102,9 @@ public class RegistryHandler {
 		registerSpawnEggs();
 		registerTreasureBags();
 		ITEMS.register( "wither_sword", ()->Instances.Tools.WITHER_SWORD );
-		ITEMS.register( "undead_battle_standard", ()->Instances.Miscellaneous.BATTLE_STANDARD_ITEM );
-		ITEMS.register( "bandage", ()->Instances.Miscellaneous.BANDAGE_ITEM );
-		ITEMS.register( "fisherman_emblem", ()->Instances.Miscellaneous.FISHERMAN_EMBLEM_ITEM );
+		ITEMS.register( "undead_battle_standard", ()->Instances.BATTLE_STANDARD_ITEM );
+		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
+		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( modEventBus );
 	}
 
