@@ -128,14 +128,6 @@ public class Instances {
 		}
 	}
 
-	public static class Effects {
-		public static final BleedingEffect BLEEDING;
-
-		static {
-			BLEEDING = new BleedingEffect();
-		}
-	}
-
 	public static class DamageSources {
 		public static final DamageSource BLEEDING;
 

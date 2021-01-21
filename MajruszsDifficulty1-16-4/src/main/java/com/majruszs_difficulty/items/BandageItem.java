@@ -69,7 +69,7 @@ public class BandageItem extends Item {
 	 @return Returns information (boolean) if effect was removed.
 	 */
 	protected static boolean removeBleedingIfPossible( ItemStack bandage, PlayerEntity player, LivingEntity target ) {
-		if( !( target.isPotionActive( Instances.Effects.BLEEDING ) && bandage.getItem() instanceof BandageItem ) )
+		if( !( target.isPotionActive( Instances.BLEEDING ) && bandage.getItem() instanceof BandageItem ) )
 			return false;
 
 		if( !player.abilities.isCreativeMode )
@@ -88,8 +88,8 @@ public class BandageItem extends Item {
 	 @param target Entity to remove bleeding.
 	 */
 	private static void removeBleedingAndAddRegeneration( LivingEntity target ) {
-		target.removePotionEffect( Instances.Effects.BLEEDING );
-		target.removeActivePotionEffect( Instances.Effects.BLEEDING );
+		target.removePotionEffect( Instances.BLEEDING );
+		target.removeActivePotionEffect( Instances.BLEEDING );
 		EffectHelper.applyEffectIfPossible( target, Effects.REGENERATION, TimeConverter.secondsToTicks( 5.0 ), 0 );
 	}
 }

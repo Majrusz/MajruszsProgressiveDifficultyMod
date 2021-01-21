@@ -117,7 +117,7 @@ public class RegistryHandler {
 
 	/** Registration of effects. */
 	private static void registerEffects( final IEventBus modEventBus ) {
-		EFFECTS.register( "bleeding", ()->Instances.Effects.BLEEDING );
+		EFFECTS.register( "bleeding", ()->Instances.BLEEDING );
 		EFFECTS.register( modEventBus );
 	}
 
