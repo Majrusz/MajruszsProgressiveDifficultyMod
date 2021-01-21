@@ -114,11 +114,13 @@ public class Instances {
 
 	public static class Miscellaneous {
 		public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
-		public static final BandageItem BANDAGE;
+		public static final BandageItem BANDAGE_ITEM;
+		public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 
 		static {
 			BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
-			BANDAGE = new BandageItem();
+			BANDAGE_ITEM = new BandageItem();
+			FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		}
 	}
 

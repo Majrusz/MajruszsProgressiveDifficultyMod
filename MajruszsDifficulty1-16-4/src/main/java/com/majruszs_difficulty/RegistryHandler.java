@@ -1,6 +1,5 @@
 package com.majruszs_difficulty;
 
-import com.google.common.collect.ImmutableMap;
 import com.majruszs_difficulty.commands.ChangeGameStateCommand;
 import com.majruszs_difficulty.commands.StopUndeadArmyCommand;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
@@ -10,7 +9,6 @@ import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
-import com.majruszs_difficulty.structures.FlyingPhantomStructure;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.CommandSource;
@@ -22,7 +20,6 @@ import net.minecraft.potion.Effect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.FlatChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -106,7 +103,8 @@ public class RegistryHandler {
 		registerTreasureBags();
 		ITEMS.register( "wither_sword", ()->Instances.Tools.WITHER_SWORD );
 		ITEMS.register( "undead_battle_standard", ()->Instances.Miscellaneous.BATTLE_STANDARD_ITEM );
-		ITEMS.register( "bandage", ()->Instances.Miscellaneous.BANDAGE );
+		ITEMS.register( "bandage", ()->Instances.Miscellaneous.BANDAGE_ITEM );
+		ITEMS.register( "fisherman_emblem", ()->Instances.Miscellaneous.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( modEventBus );
 	}
 
