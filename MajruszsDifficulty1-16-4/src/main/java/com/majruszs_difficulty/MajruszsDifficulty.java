@@ -13,7 +13,7 @@ public class MajruszsDifficulty {
 	public static final String MOD_ID = "majruszs_difficulty";
 	public static final String NAME = "Majrusz's Progressive Difficulty";
 	public static final String VERSION = "0.4.0";
-	public static final ConfigHandler CONFIG_HANDLER = new ConfigHandler( ModConfig.Type.COMMON, "majruszs-difficulty-new.toml" );
+	public static final ConfigHandler CONFIG_HANDLER = new ConfigHandler( ModConfig.Type.COMMON, "majruszs-difficulty-common.toml" );
 	public static final ConfigGroup FEATURES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Features", "" ) );
 	public static final ConfigGroup ENTITIES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Entities", "" ) );
 	public static final ConfigGroup STRUCTURES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Structures", "" ) );
@@ -24,6 +24,7 @@ public class MajruszsDifficulty {
 		MinecraftForge.EVENT_BUS.register( this );
 	}
 
+	/** Returns resource location for register in current modification files. */
 	public static ResourceLocation getLocation( String register ) {
 		return new ResourceLocation( MOD_ID, register );
 	}
