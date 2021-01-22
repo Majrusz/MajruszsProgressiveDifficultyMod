@@ -4,6 +4,7 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.mlib.MajruszLibrary;
+import com.mlib.config.DoubleConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.PhantomEntity;
@@ -29,8 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/** All possible Flying End Island pieces. */
 public class FlyingEndIslandPiece extends TemplateStructurePiece {
-	public static final List< ResourceLocation > RESOURCE_LOCATIONS = new ArrayList<>();
+	public static final List< ResourceLocation > BUILDING_ISLAND_RESOURCE_LOCATIONS = new ArrayList<>();
+	public static final List< ResourceLocation > EMPTY_ISLAND_RESOURCE_LOCATIONS = new ArrayList<>();
 	public static final ResourceLocation DUNGEON_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_dungeon" );
 	public static final ResourceLocation TOWER_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_tower" );
 	public static final ResourceLocation ARCHER_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_archer_tower" );
@@ -38,16 +41,17 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 	private final Rotation rotation;
 
 	static {
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_1" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_2" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_1" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_2" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_3" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_4" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_dungeon" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_alchemist" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_archer_tower" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_forge" ) );
+		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_1" ) );
+		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_2" ) );
+		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_dungeon" ) );
+		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_alchemist" ) );
+		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_archer_tower" ) );
+		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_forge" ) );
+
+		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_1" ) );
+		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_2" ) );
+		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_3" ) );
+		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_4" ) );
 	}
 
 	public FlyingEndIslandPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
@@ -123,11 +127,17 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 	}
 
 	private void setupPiece( TemplateManager templateManager ) {
-		ResourceLocation randomResourceLocation = RESOURCE_LOCATIONS.get( MajruszLibrary.RANDOM.nextInt( RESOURCE_LOCATIONS.size() ) );
-		Template template = templateManager.getTemplateDefaulted( randomResourceLocation );
+		Template template = templateManager.getTemplateDefaulted( getRandomResourceLocation() );
 		PlacementSettings placementsettings = ( new PlacementSettings() ).setRotation( this.rotation )
 			.setMirror( Mirror.NONE );
 
 		this.setup( template, this.templatePosition, placementsettings );
+	}
+
+	private ResourceLocation getRandomResourceLocation() {
+		if( com.mlib.Random.tryChance( Instances.FLYING_END_ISLAND.buildingIslandChance.get() ) )
+			return BUILDING_ISLAND_RESOURCE_LOCATIONS.get( MajruszLibrary.RANDOM.nextInt( BUILDING_ISLAND_RESOURCE_LOCATIONS.size() ) );
+		else
+			return EMPTY_ISLAND_RESOURCE_LOCATIONS.get( MajruszLibrary.RANDOM.nextInt( EMPTY_ISLAND_RESOURCE_LOCATIONS.size() ) );
 	}
 }

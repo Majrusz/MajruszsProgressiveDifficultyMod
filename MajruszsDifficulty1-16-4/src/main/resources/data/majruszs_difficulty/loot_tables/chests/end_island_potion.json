@@ -13,16 +13,6 @@
           "functions": [
             {
               "function": "minecraft:set_nbt",
-              "tag": "{Potion:\"minecraft:speed\"}"
-            }
-          ],
-          "name": "minecraft:lingering_potion"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
               "tag": "{Potion:\"minecraft:slowness\"}"
             }
           ],
@@ -72,14 +62,14 @@
     },
     {
       "rolls": {
-        "min": 2.0,
-        "max": 4.0,
+        "min": 4.0,
+        "max": 8.0,
         "type": "minecraft:uniform"
       },
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:potion"
+          "name": "minecraft:glass_bottle"
         }
       ]
     }

@@ -29,6 +29,7 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.List;
 import java.util.Random;
 
+/** Flying phantom piece. */
 public class FlyingPhantomPiece extends TemplateStructurePiece {
 	public static final ResourceLocation RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "flying_phantom" );
 	public static final ResourceLocation CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/flying_phantom" );

@@ -30,6 +30,7 @@ import java.util.List;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.STRUCTURES_GROUP;
 
+/** Flying Phantom structure in The End. */
 public class FlyingPhantomStructure extends NoFeatureBaseStructure {
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
 		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 40, 1, 1 ), new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 1 ) );
