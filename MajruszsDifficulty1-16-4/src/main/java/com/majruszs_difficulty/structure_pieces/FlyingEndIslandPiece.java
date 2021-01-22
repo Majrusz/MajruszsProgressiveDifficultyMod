@@ -10,6 +10,7 @@ import net.minecraft.entity.monster.PhantomEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.spawner.AbstractSpawner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +31,23 @@ import java.util.Random;
 
 public class FlyingEndIslandPiece extends TemplateStructurePiece {
 	public static final List< ResourceLocation > RESOURCE_LOCATIONS = new ArrayList<>();
-	public static final ResourceLocation CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/flying_phantom" );
+	public static final ResourceLocation DUNGEON_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_dungeon" );
+	public static final ResourceLocation TOWER_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_tower" );
+	public static final ResourceLocation ARCHER_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_archer_tower" );
+	public static final ResourceLocation POTION_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_potion" );
 	private final Rotation rotation;
 
 	static {
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "flying_end_island_tower" ) );
-		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "flying_end_island_tower" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_1" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_2" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_1" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_2" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_3" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_4" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_dungeon" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_alchemist" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_archer_tower" ) );
+		RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_forge" ) );
 	}
 
 	public FlyingEndIslandPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
@@ -62,8 +75,22 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 		if( function.startsWith( "chest" ) ) {
 			TileEntity tileEntity = world.getTileEntity( position.down() );
 
-			if( tileEntity instanceof ChestTileEntity )
-				( ( ChestTileEntity )tileEntity ).setLootTable( CHEST_RESOURCE_LOCATION, random.nextLong() );
+			if( tileEntity instanceof ChestTileEntity ) {
+				ChestTileEntity chest = ( ChestTileEntity )tileEntity;
+				if( function.startsWith( "chest_dung" ) ) {
+					if( com.mlib.Random.tryChance( 0.3 ) )
+						chest.setLootTable( DUNGEON_CHEST_RESOURCE_LOCATION, random.nextLong() );
+					else
+						world.setBlockState( position.down(), Blocks.AIR.getDefaultState(), 2 );
+
+				} else if( function.startsWith( "chest_tower" ) ) {
+					chest.setLootTable( TOWER_CHEST_RESOURCE_LOCATION, random.nextLong() );
+				} else if( function.startsWith( "chest_archer" ) ) {
+					chest.setLootTable( ARCHER_CHEST_RESOURCE_LOCATION, random.nextLong() );
+				} else if( function.startsWith( "chest_potion" ) ) {
+					chest.setLootTable( POTION_CHEST_RESOURCE_LOCATION, random.nextLong() );
+				}
+			}
 			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 
 		} else if( function.startsWith( "shulker" ) ) {
@@ -73,6 +100,16 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 				monster.enablePersistence();
 				monster.setPosition( position.getX(), position.getY(), position.getZ() );
 				world.addEntity( monster );
+			}
+		} else if( function.startsWith( "spawner" ) ) {
+			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
+			world.setBlockState( position.down(), Blocks.SPAWNER.getDefaultState(), 2 );
+			TileEntity tileEntity = world.getTileEntity( position.down() );
+
+			if( tileEntity instanceof MobSpawnerTileEntity ) {
+				MobSpawnerTileEntity mobSpawnerTileEntity = ( MobSpawnerTileEntity )tileEntity;
+				AbstractSpawner abstractSpawner = mobSpawnerTileEntity.getSpawnerBaseLogic();
+				abstractSpawner.setEntityType( EntityType.ENDERMITE );
 			}
 		}
 	}

@@ -7,11 +7,14 @@ import com.majruszs_difficulty.structure_pieces.FlyingEndIslandPiece;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.mlib.MajruszLibrary;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -24,7 +27,7 @@ public class FlyingEndIslandStructure extends NoFeatureBaseStructure {
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of( new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 10, 1, 1 ) );
 
 	public FlyingEndIslandStructure() {
-		super( "FlyingEndIsland", "Flying End Island", 1717171718, 20, 60, Instances.FLYING_END_ISLAND_FEATURE );
+		super( "FlyingEndIsland", "Flying End Island", 1717171718, 12, 24, Instances.FLYING_END_ISLAND_FEATURE );
 	}
 
 	/** Generation stage for where to generate the structure. */
@@ -44,6 +47,14 @@ public class FlyingEndIslandStructure extends NoFeatureBaseStructure {
 		return STRUCTURE_MONSTERS;
 	}
 
+	@Override
+	protected boolean func_230363_a_( ChunkGenerator chunkGenerator, BiomeProvider biomeProvider, long p_230363_3_, SharedSeedRandom sharedSeedRandom, int chunkX, int chunkZ, Biome biome, ChunkPos chunkPosition, NoFeatureConfig noFeatureConfig ) {
+		int x = ( chunkX << 4 ) + 7, z = ( chunkZ << 4 ) + 7;
+		int y = chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG );
+
+		return y < 20 && super.func_230363_a_( chunkGenerator, biomeProvider, p_230363_3_, sharedSeedRandom, chunkX, chunkZ, biome, chunkPosition, noFeatureConfig );
+	}
+
 	public static class Start extends StructureStart< NoFeatureConfig > {
 		public Start( Structure< NoFeatureConfig > structure, int chunkX, int chunkZ, MutableBoundingBox mutableBoundingBox, int reference, long seed
 		) {
@@ -57,7 +68,7 @@ public class FlyingEndIslandStructure extends NoFeatureBaseStructure {
 			Rotation rotation = Rotation.values()[ this.rand.nextInt( Rotation.values().length ) ];
 
 			int x = ( chunkX << 4 ) + 7, z = ( chunkZ << 4 ) + 7; // Turns the chunk coordinates into actual coordinates we can use. (Gets center of that chunk)
-			int y = Math.min( 60, chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
+			int y = 50 + MajruszLibrary.RANDOM.nextInt( 20 );
 
 			BlockPos blockpos = new BlockPos( x, y, z );
 			FlyingEndIslandPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
