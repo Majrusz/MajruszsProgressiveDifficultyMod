@@ -42,7 +42,6 @@ public class BiomeEntityAndStructureLoading {
 	protected static void addOverworldEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
 		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EntityType.ILLUSIONER, 20, 1, 2 );
 		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, GiantEntity.type, 3, 1, 1 );
-		addEntity( spawnInfoBuilder, EntityClassification.CREATURE, PillagerWolfEntity.type, 1, 1, 4 );
 		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EliteSkeletonEntity.type, 20, 1, 1 );
 	}
 
