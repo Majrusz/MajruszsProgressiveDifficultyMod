@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 /** Mod custom armor materials. */
 public enum CustomArmorMaterial implements IArmorMaterial {
 	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
-		return Ingredient.fromItems( Items.LEATHER );
+		return Ingredient.fromItems( Items.FEATHER );
 	} );
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };
