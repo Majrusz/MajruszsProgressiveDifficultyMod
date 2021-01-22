@@ -17,6 +17,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Set;
+
 /** Adding natural spawn for entities and natural generation for structures. */
 @Mod.EventBusSubscriber
 public class BiomeEntityAndStructureLoading {
@@ -51,7 +53,9 @@ public class BiomeEntityAndStructureLoading {
 
 	/** Adding natural spawning for nether entities. */
 	protected static void addNetherEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
-		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EliteSkeletonEntity.type, 10, 1, 1 );
+		Set< EntityType< ? > > entityTypes = spawnInfoBuilder.getEntityTypes();
+		if( entityTypes.contains( EntityType.SKELETON ) || entityTypes.contains( EntityType.WITHER_SKELETON ) )
+			addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EliteSkeletonEntity.type, 5, 1, 1 );
 	}
 
 	/** Adding natural generating for end structures. */
