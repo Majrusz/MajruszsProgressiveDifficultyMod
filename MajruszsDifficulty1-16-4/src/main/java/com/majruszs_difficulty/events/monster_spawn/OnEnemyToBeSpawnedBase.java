@@ -1,8 +1,8 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.events.FeatureBase;
+import com.mlib.Random;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.server.ServerWorld;
 
@@ -10,8 +10,10 @@ import net.minecraft.world.server.ServerWorld;
 public abstract class OnEnemyToBeSpawnedBase extends FeatureBase {
 	protected boolean shouldBeCancelled = false;
 
-	public OnEnemyToBeSpawnedBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD ) {
-		super( minimumState, shouldChanceBeMultipliedByCRD );
+	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+		boolean shouldChanceBeMultipliedByCRD
+	) {
+		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 	}
 
 	/** Called when all requirements were met. */
@@ -33,6 +35,6 @@ public abstract class OnEnemyToBeSpawnedBase extends FeatureBase {
 		if( !isEnabled() )
 			return false;
 
-		return MajruszsHelper.tryChance( calculateChance( entity ) );
+		return Random.tryChance( calculateChance( entity ) );
 	}
 }

@@ -1,20 +1,35 @@
 package com.majruszs_difficulty.events;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
-import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.config.GameStateDoubleConfig;
+import com.mlib.config.ConfigGroup;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
+
 /** Increasing experience from any source. */
 @Mod.EventBusSubscriber
 public class ExperienceBonus {
+	protected final ConfigGroup experienceGroup;
+	protected final GameStateDoubleConfig bonusMultiplier;
+
+	public ExperienceBonus() {
+		String exp_comment = "Extra experience multiplier.";
+		String group_comment = "Experience bonuses.";
+		this.bonusMultiplier = new GameStateDoubleConfig( "BonusMultiplier", exp_comment, 0.0, 0.25, 0.5, 0.0, 10.0 );
+
+		this.experienceGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Experience", group_comment ) );
+		this.experienceGroup.addConfig( this.bonusMultiplier );
+	}
+
 	@SubscribeEvent
 	public static void onXPPickUp( PlayerXpEvent.PickupXp event ) {
 		ExperienceOrbEntity orb = event.getOrb();
-		int bonusExperience = ( int )( Math.round( getExperienceMultiplier() * ( double )orb.getXpValue() ) );
+		int bonusExperience = ( int )( Math.round( Instances.EXPERIENCE_BONUS.getExperienceMultiplier() * ( double )orb.getXpValue() ) );
 
 		if( bonusExperience <= 0 )
 			return;
@@ -24,9 +39,7 @@ public class ExperienceBonus {
 	}
 
 	/** Returns extra experience depending on current game state. */
-	private static double getExperienceMultiplier() {
-		return GameState.getDoubleDependingOnGameState( Config.Values.EXPERIENCE_BONUS_NORMAL, Config.Values.EXPERIENCE_BONUS_EXPERT,
-			Config.Values.EXPERIENCE_BONUS_MASTER
-		);
+	private double getExperienceMultiplier() {
+		return this.bonusMultiplier.getCurrentGameStateValue();
 	}
 }

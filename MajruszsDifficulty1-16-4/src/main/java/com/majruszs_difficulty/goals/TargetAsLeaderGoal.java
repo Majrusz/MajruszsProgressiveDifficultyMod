@@ -5,7 +5,8 @@ import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.ai.goal.TargetGoal;
 
 public class TargetAsLeaderGoal extends TargetGoal {
-	private static final EntityPredicate predicate = ( new EntityPredicate() ).setLineOfSiteRequired().setUseInvisibilityCheck();
+	private static final EntityPredicate predicate = ( new EntityPredicate() ).setLineOfSiteRequired()
+		.setUseInvisibilityCheck();
 	protected final CreatureEntity leader;
 
 	public TargetAsLeaderGoal( CreatureEntity follower, CreatureEntity leader ) {
@@ -15,7 +16,9 @@ public class TargetAsLeaderGoal extends TargetGoal {
 
 	@Override
 	public boolean shouldExecute() {
-		return this.leader != null && this.leader.isAlive() && this.isSuitableTarget( this.leader.getAttackTarget(), predicate ) && ( this.leader.getAttackTarget() != this.goalOwner.getAttackTarget() );
+		return this.leader != null && this.leader.isAlive() && this.isSuitableTarget( this.leader.getAttackTarget(),
+			predicate
+		) && ( this.leader.getAttackTarget() != this.goalOwner.getAttackTarget() );
 	}
 
 	@Override

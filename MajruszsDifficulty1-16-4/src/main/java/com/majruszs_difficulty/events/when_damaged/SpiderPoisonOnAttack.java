@@ -1,8 +1,7 @@
 package com.majruszs_difficulty.events.when_damaged;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.TimeConverter;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.potion.Effects;
@@ -13,8 +12,11 @@ import javax.annotation.Nullable;
 
 /** Making Spider attacks have a chance to poison enemies. */
 public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
+	private static final String CONFIG_NAME = "SpiderPoison";
+	private static final String CONFIG_COMMENT = "Spider inflicts poison.";
+
 	public SpiderPoisonOnAttack() {
-		super( GameState.State.NORMAL, true, Effects.POISON );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, -1.0, GameState.State.NORMAL, true, Effects.POISON );
 	}
 
 	/** Checking if all conditions were met. */
@@ -24,24 +26,14 @@ public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	}
 
 	@Override
-	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.SPIDER_POISON );
-	}
-
-	@Override
-	protected double getChance() {
-		return Config.getChance( Config.Chances.SPIDER_POISON );
-	}
-
-	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
 		switch( difficulty ) {
 			default:
-				return MajruszsHelper.secondsToTicks( 0.0 );
+				return TimeConverter.secondsToTicks( 0.0 );
 			case NORMAL:
-				return MajruszsHelper.secondsToTicks( 7.0 );
+				return TimeConverter.secondsToTicks( 7.0 );
 			case HARD:
-				return MajruszsHelper.secondsToTicks( 15.0 );
+				return TimeConverter.secondsToTicks( 15.0 );
 		}
 	}
 

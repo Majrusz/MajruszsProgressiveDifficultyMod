@@ -1,7 +1,8 @@
 package com.majruszs_difficulty.items;
 
-import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.RegistryHandler;
+import com.majruszs_difficulty.Instances;
+import com.mlib.TimeConverter;
+import com.mlib.effects.EffectHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +29,7 @@ import java.util.List;
 public class BandageItem extends Item {
 	public BandageItem() {
 		super( ( new Properties() ).maxStackSize( 16 )
-			.group( RegistryHandler.ITEM_GROUP ) );
+			.group( Instances.ITEM_GROUP ) );
 	}
 
 	/** Using bandage on right click. (self healing) */
@@ -68,7 +69,7 @@ public class BandageItem extends Item {
 	 @return Returns information (boolean) if effect was removed.
 	 */
 	protected static boolean removeBleedingIfPossible( ItemStack bandage, PlayerEntity player, LivingEntity target ) {
-		if( !( target.isPotionActive( RegistryHandler.BLEEDING.get() ) && bandage.getItem() instanceof BandageItem ) )
+		if( !( target.isPotionActive( Instances.BLEEDING ) && bandage.getItem() instanceof BandageItem ) )
 			return false;
 
 		if( !player.abilities.isCreativeMode )
@@ -81,13 +82,14 @@ public class BandageItem extends Item {
 		return true;
 	}
 
-	/** Removing bleeding effect and giving regeneration for few seconds.
+	/**
+	 Removing bleeding effect and giving regeneration for few seconds.
 
 	 @param target Entity to remove bleeding.
 	 */
 	private static void removeBleedingAndAddRegeneration( LivingEntity target ) {
-		target.removePotionEffect( RegistryHandler.BLEEDING.get() );
-		target.removeActivePotionEffect( RegistryHandler.BLEEDING.get() );
-		MajruszsHelper.applyEffectIfPossible( target, Effects.REGENERATION, MajruszsHelper.secondsToTicks( 6.0 ), 0 );
+		target.removePotionEffect( Instances.BLEEDING );
+		target.removeActivePotionEffect( Instances.BLEEDING );
+		EffectHelper.applyEffectIfPossible( target, Effects.REGENERATION, TimeConverter.secondsToTicks( 5.0 ), 0 );
 	}
 }

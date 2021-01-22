@@ -1,5 +1,6 @@
-package com.majruszs_difficulty;
+package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.Instances;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -11,6 +12,6 @@ public class CustomItemGroup extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack( RegistryHandler.UNDEAD_BATTLE_STANDARD.get() );
+		return new ItemStack( Instances.BATTLE_STANDARD_ITEM );
 	}
 }

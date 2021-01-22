@@ -1,9 +1,8 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.mlib.MajruszLibrary;
+import com.mlib.config.DurationConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.potion.Effect;
@@ -13,30 +12,25 @@ import net.minecraft.world.server.ServerWorld;
 
 /** Applying some negative effects on creeper. */
 public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
-	protected static final int effectDurationInTicks = MajruszsHelper.minutesToTicks( 5.0D );
-	protected static final Effect[] effects = new Effect[]{ Effects.WEAKNESS, Effects.SLOWNESS, Effects.MINING_FATIGUE, Effects.SATURATION };
+	protected static final Effect[] EFFECTS = new Effect[]{ Effects.WEAKNESS, Effects.SLOWNESS, Effects.MINING_FATIGUE, Effects.SATURATION };
+	private static final String CONFIG_NAME = "CreeperEffects";
+	private static final String CONFIG_COMMENT = "Creeper spawns with negative effects applied.";
+	protected final DurationConfig duration;
 
 	public ApplyingNegativeEffectOnCreeperOnSpawn() {
-		super( GameState.State.NORMAL, true );
-	}
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.375, GameState.State.NORMAL, true );
 
-
-	@Override
-	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.CREEPER_EFFECTS );
-	}
-
-	@Override
-	protected double getChance() {
-		return Config.getChance( Config.Chances.CREEPER_EFFECTS );
+		String comment = "Duration of effects applied to creeper.";
+		this.duration = new DurationConfig( "duration", comment, false, 6.0, 1.0, 60.0 );
+		this.featureGroup.addConfig( this.duration );
 	}
 
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
 		CreeperEntity creeper = ( CreeperEntity )entity;
 
-		Effect randomEffect = effects[ MajruszsDifficulty.RANDOM.nextInt( effects.length ) ];
-		creeper.addPotionEffect( new EffectInstance( randomEffect, effectDurationInTicks, 0 ) );
+		Effect randomEffect = EFFECTS[ MajruszLibrary.RANDOM.nextInt( EFFECTS.length ) ];
+		creeper.addPotionEffect( new EffectInstance( randomEffect, this.duration.getDuration(), 0 ) );
 	}
 
 	@Override

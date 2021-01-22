@@ -12,20 +12,7 @@ import java.util.List;
 /** Handling all 'WhenDamaged' events. */
 @Mod.EventBusSubscriber
 public class WhenDamagedEvent {
-	private static final List< WhenDamagedBase > registryList = new ArrayList<>();
-
-	static {
-		registryList.add( new SpiderPoisonOnAttack() );
-		registryList.add( new SkyKeeperLevitationOnAttack() );
-		registryList.add( new DrownedLightningOnAttack() );
-		registryList.add( new NauseaAndWeaknessWhenDrowning() );
-		registryList.add( new WitherSwordOnAttack() );
-		registryList.add( new CactusBleedingOnHurt() );
-		registryList.add( new SharpItemBleedingOnAttack() );
-		registryList.add( new ArrowBleedingOnHurt() );
-		registryList.add( new ThrownTridentBleedingOnHurt() );
-		registryList.add( new BiteBleedingOnAttack() );
-	}
+	public static final List< WhenDamagedBase > REGISTRY_LIST = new ArrayList<>();
 
 	@SubscribeEvent
 	public static void onAttack( LivingHurtEvent event ) {
@@ -33,7 +20,7 @@ public class WhenDamagedEvent {
 		LivingEntity attacker = damageSource.getTrueSource() instanceof LivingEntity ? ( LivingEntity )damageSource.getTrueSource() : null;
 		LivingEntity target = event.getEntityLiving();
 
-		for( WhenDamagedBase register : registryList )
+		for( WhenDamagedBase register : REGISTRY_LIST )
 			if( register.shouldBeExecuted( attacker, target, damageSource ) && event.getAmount() > 0 )
 				register.whenDamaged( target );
 	}

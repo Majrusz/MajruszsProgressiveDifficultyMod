@@ -13,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/** Freezing water for undead entities. It is required because when Army spawn in water then entities just begin to drown. */
 @Mod.EventBusSubscriber
 public class FreezeWater {
 	@SubscribeEvent

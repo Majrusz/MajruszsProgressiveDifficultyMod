@@ -1,6 +1,5 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,18 +9,11 @@ import net.minecraft.world.server.ServerWorld;
 
 /** Charges creeper on spawn. (emulates attacking creeper with lightning bolt) */
 public class ChargeCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
+	private static final String CONFIG_NAME = "CreeperCharged";
+	private static final String CONFIG_COMMENT = "Creepers spawning charged.";
+
 	public ChargeCreeperOnSpawn() {
-		super( GameState.State.NORMAL, true );
-	}
-
-	@Override
-	protected boolean isEnabled() {
-		return !Config.isDisabled( Config.Features.CREEPER_CHARGED );
-	}
-
-	@Override
-	protected double getChance() {
-		return Config.getChance( Config.Chances.CREEPER_CHARGED );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.125, GameState.State.NORMAL, true );
 	}
 
 	@Override

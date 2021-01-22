@@ -5,6 +5,7 @@ import net.minecraft.util.text.*;
 
 import java.util.List;
 
+/** Easier handling formatted text for Undead Army. */
 public class TextManager {
 	public final ITextComponent title = new TranslationTextComponent( "majruszs_difficulty.undead_army.title" );
 	public final ITextComponent wave = new TranslationTextComponent( "majruszs_difficulty.undead_army.wave" );

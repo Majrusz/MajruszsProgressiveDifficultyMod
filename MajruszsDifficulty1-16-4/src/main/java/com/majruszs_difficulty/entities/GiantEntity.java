@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.entities;
 
-import com.majruszs_difficulty.AttributeHelper;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.goals.GiantAttackGoal;
+import com.mlib.MajruszLibrary;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -13,7 +13,6 @@ import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
@@ -25,7 +24,8 @@ public class GiantEntity extends ZombieEntity {
 	static {
 		type = EntityType.Builder.create( GiantEntity::new, EntityClassification.MONSTER )
 			.size( 0.6f * scale, 2.0f * scale )
-			.build( MajruszsHelper.getResource( "giant" ).toString() );
+			.build( MajruszsDifficulty.getLocation( "giant" )
+				.toString() );
 	}
 
 	public GiantEntity( EntityType< ? extends ZombieEntity > type, World world ) {
@@ -68,7 +68,7 @@ public class GiantEntity extends ZombieEntity {
 	/** Calculating experience points after killing this entity. */
 	@Override
 	protected int getExperiencePoints( PlayerEntity player ) {
-		this.experienceValue += MajruszsDifficulty.RANDOM.nextInt( 15 );
+		this.experienceValue += MajruszLibrary.RANDOM.nextInt( 15 );
 
 		return super.getExperiencePoints( player );
 	}
@@ -84,13 +84,13 @@ public class GiantEntity extends ZombieEntity {
 
 	public static AttributeModifierMap getAttributeMap() {
 		return MobEntity.func_233666_p_()
-			.createMutableAttribute( AttributeHelper.Attributes.MAX_HEALTH, 120.0D )
-			.createMutableAttribute( AttributeHelper.Attributes.MOVEMENT_SPEED, 0.25D )
-			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_DAMAGE, 10.0D )
-			.createMutableAttribute( AttributeHelper.Attributes.FOLLOW_RANGE, 40.0D )
-			.createMutableAttribute( AttributeHelper.Attributes.ATTACK_KNOCKBACK, 2.0D )
-			.createMutableAttribute( AttributeHelper.Attributes.KNOCKBACK_RESISTANCE, 0.5D )
-			.createMutableAttribute( AttributeHelper.Attributes.ZOMBIE_REINFORCEMENT_CHANCE, 0.0D )
+			.createMutableAttribute( Attributes.MAX_HEALTH, 120.0D )
+			.createMutableAttribute( Attributes.MOVEMENT_SPEED, 0.25D )
+			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 10.0D )
+			.createMutableAttribute( Attributes.FOLLOW_RANGE, 40.0D )
+			.createMutableAttribute( Attributes.ATTACK_KNOCKBACK, 2.0D )
+			.createMutableAttribute( Attributes.KNOCKBACK_RESISTANCE, 0.5D )
+			.createMutableAttribute( Attributes.ZOMBIE_SPAWN_REINFORCEMENTS, 0.0D )
 			.create();
 	}
 }

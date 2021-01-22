@@ -2,6 +2,21 @@
   "type": "minecraft:gift",
   "pools": [
     {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszs_difficulty:fisherman_emblem",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.05
+            }
+          ]
+        }
+      ]
+    },
+    {
       "rolls": {
         "min": 4.0,
         "max": 6.0,

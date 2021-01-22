@@ -2,9 +2,8 @@ package com.majruszs_difficulty.loot_modifiers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.majruszs_difficulty.ConfigHandler.Config;
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,9 +41,9 @@ public class DoubleLoot extends LootModifier {
 	public List< ItemStack > doApply( List< ItemStack > generatedLoot, LootContext context ) {
 		double chance = GameState.getValueDependingOnGameState( this.normalModeChance, this.expertModeChance, this.masterModeChance );
 
-		if( MajruszsHelper.tryChance( chance ) ) {
+		if( Random.tryChance( chance ) ) {
 			Entity entity = context.get( LootParameters.THIS_ENTITY );
-			if( generatedLoot.size() > 0 && entity != null && !Config.isDisabled( Config.Features.DOUBLE_LOOT_PARTICLES ) )
+			if( generatedLoot.size() > 0 && entity != null )
 				spawnParticles( entity );
 
 			return doubleLoot( generatedLoot );
@@ -60,7 +59,9 @@ public class DoubleLoot extends LootModifier {
 
 		ServerWorld world = ( ServerWorld )entity.world;
 		for( int i = 0; i < 8; i++ )
-			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, entity.getPosX(), entity.getPosYHeight( 0.5 ), entity.getPosZ(), 1, 0.5, 0.5, 0.5, 0.5 );
+			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, entity.getPosX(), entity.getPosYHeight( 0.5 ), entity.getPosZ(), 1, 0.5, 0.5, 0.5,
+				0.5
+			);
 	}
 
 	/** Doubles given generated loot. Does not duplicate items from forbidden items list. */

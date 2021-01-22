@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.events.undead_army;
 
-import com.majruszs_difficulty.ConfigHandler.Config;
+import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.UndeadArmy;
 import net.minecraft.entity.CreatureAttribute;
@@ -15,6 +15,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/** Counting killed undead and starting Undead Army if all conditions were met. */
 @Mod.EventBusSubscriber
 public class CountKilledUndead {
 	public static final String NBT_TAG = "UndeadKills";
@@ -57,16 +58,16 @@ public class CountKilledUndead {
 	private static void spawnArmyIfPossible( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
 
-		if( nbt.getInt( NBT_TAG ) < Config.getInteger( Config.Values.UNDEAD_ARMY_KILL_REQUIREMENT ) )
+		if( nbt.getInt( NBT_TAG ) < Instances.UNDEAD_ARMY_CONFIG.killRequirement.get() )
 			return;
 
 		if( player.world instanceof ServerWorld )
-			if( RegistryHandler.undeadArmyManager.spawn( player, ( ServerWorld )player.world ) )
+			if( RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player, ( ServerWorld )player.world ) )
 				nbt.putInt( NBT_TAG, 0 );
 	}
 
 	private static boolean updateUndeadArmy( Vector3d position ) {
-		UndeadArmy undeadArmy = RegistryHandler.undeadArmyManager.findUndeadArmy( new BlockPos( position ) );
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			undeadArmy.onUndeadKill();
 			return true;

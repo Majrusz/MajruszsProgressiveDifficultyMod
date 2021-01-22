@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.WorldHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -21,16 +21,18 @@ import java.util.UUID;
 public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	private static final List< Data > dataList = new ArrayList<>();
 
-	public GiveItemAfterSpawningBase( GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, EquipmentSlotType equipmentSlotType,
-		boolean shouldBeEnchanted, boolean shouldBeDamaged
+	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+		boolean shouldChanceBeMultipliedByCRD, EquipmentSlotType equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
-		super( minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );
+		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted,
+			shouldBeDamaged
+		);
 	}
 
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		double clampedRegionalDifficulty = MajruszsHelper.getClampedRegionalDifficulty( entity, world );
+		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( entity );
 
 		Data data = new Data();
 		data.uuid = entity.getUniqueID();

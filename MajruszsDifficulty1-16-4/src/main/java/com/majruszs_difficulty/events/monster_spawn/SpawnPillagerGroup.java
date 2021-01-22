@@ -9,8 +9,11 @@ import net.minecraft.world.server.ServerWorld;
 
 /** Spawns Pillager in group with Pillager Wolves. */
 public class SpawnPillagerGroup extends SpawnEnemyGroupBase {
+	private static final String CONFIG_NAME = "PillagerGroup";
+	private static final String CONFIG_COMMENT = "Pillager spawns in groups with Pillager's Wolves.";
+
 	public SpawnPillagerGroup() {
-		super( GameState.State.EXPERT, true, 2, 4, null );
+		super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.EXPERT, true, 2, 4, null );
 	}
 
 	@Override

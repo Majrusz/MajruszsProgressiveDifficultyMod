@@ -13,10 +13,11 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	protected final int maximumAmplifier;
 	protected final int maximumDurationInTicks;
 
-	public WhenDamagedApplyStackableEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects,
-		boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
+	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects, boolean isAmplifierStackable, boolean isDurationStackable,
+		int maximumAmplifier, int maximumDurationInTicks
 	) {
-		super( minimumState, shouldBeMultipliedByCRD, effects );
+		super( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, effects );
 
 		this.isAmplifierStackable = isAmplifierStackable;
 		this.isDurationStackable = isDurationStackable;
@@ -24,11 +25,12 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 		this.maximumDurationInTicks = maximumDurationInTicks;
 	}
 
-	public WhenDamagedApplyStackableEffectBase( GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect,
-		boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
+	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect, boolean isAmplifierStackable, boolean isDurationStackable,
+		int maximumAmplifier, int maximumDurationInTicks
 	) {
-		this( minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect }, isAmplifierStackable, isDurationStackable, maximumAmplifier,
-			maximumDurationInTicks
+		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect },
+			isAmplifierStackable, isDurationStackable, maximumAmplifier, maximumDurationInTicks
 		);
 	}
 
