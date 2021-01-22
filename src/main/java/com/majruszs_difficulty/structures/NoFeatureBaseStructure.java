@@ -54,7 +54,7 @@ public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig 
 	) {
 		BlockPos currentPosition = new BlockPos( ( chunkX << 4 ) + 7, 0, ( chunkZ << 4 ) + 7 );
 
-		return this.availability.isEnabled() && currentPosition.distanceSq( BlockPos.ZERO ) > 1000.0;
+		return this.availability.isEnabled() && currentPosition.distanceSq( BlockPos.ZERO ) > 100000.0;
 	}
 
 	/** Setting up structure by adding it to world generation settings. */
