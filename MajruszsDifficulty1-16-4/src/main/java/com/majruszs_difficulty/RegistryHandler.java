@@ -16,6 +16,7 @@ import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
+import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.Effect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.SoundEvent;
@@ -48,6 +49,9 @@ public class RegistryHandler {
 	public static final DeferredRegister< SoundEvent > SOUNDS = DeferredRegister.create( ForgeRegistries.SOUND_EVENTS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Effect > EFFECTS = DeferredRegister.create( ForgeRegistries.POTIONS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Structure< ? > > STRUCTURES = DeferredRegister.create( ForgeRegistries.STRUCTURE_FEATURES,
+		MajruszsDifficulty.MOD_ID
+	);
+	public static final DeferredRegister< ParticleType< ? > > PARTICLES = DeferredRegister.create( ForgeRegistries.PARTICLE_TYPES,
 		MajruszsDifficulty.MOD_ID
 	);
 
@@ -123,6 +127,12 @@ public class RegistryHandler {
 		EFFECTS.register( modEventBus );
 	}
 
+	/** Registration of particles. */
+	private static void registerParticles( final IEventBus modEventBus ) {
+		PARTICLES.register( "blood_particle", ()->Instances.BLOOD_PARTICLE );
+		PARTICLES.register( modEventBus );
+	}
+
 	/** Registration of structures. */
 	private static void registerStructures( final IEventBus modEventBus ) {
 		STRUCTURES.register( "flying_phantom_structure", ()->Instances.FLYING_PHANTOM );
@@ -137,6 +147,7 @@ public class RegistryHandler {
 		registerItems( modEventBus );
 		registerSounds( modEventBus );
 		registerEffects( modEventBus );
+		registerParticles( modEventBus );
 		registerStructures( modEventBus );
 	}
 

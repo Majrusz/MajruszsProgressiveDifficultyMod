@@ -9,10 +9,12 @@ import com.majruszs_difficulty.events.monster_spawn.*;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyConfig;
 import com.majruszs_difficulty.events.when_damaged.*;
 import com.majruszs_difficulty.items.*;
+import com.majruszs_difficulty.particles.BloodParticle;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.structures.FlyingPhantomStructure;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -38,6 +40,9 @@ public class Instances {
 	// Effects
 	public static final BleedingEffect BLEEDING;
 
+	// Particles
+	public static final BasicParticleType BLOOD_PARTICLE;
+
 	// Structures
 	public static final FlyingPhantomStructure FLYING_PHANTOM;
 	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_PHANTOM_FEATURE;
@@ -61,6 +66,9 @@ public class Instances {
 
 		// Effects
 		BLEEDING = new BleedingEffect();
+
+		// Particles
+		BLOOD_PARTICLE = new BasicParticleType( true );
 
 		// Structures
 		ResourceLocation flyingPhantomResource = MajruszsDifficulty.getLocation( "flying_phantom_structure" );

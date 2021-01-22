@@ -8,15 +8,24 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.config.DurationConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
 /** Bleeding effect similar to poison effect. */
+@Mod.EventBusSubscriber
 public class BleedingEffect extends Effect {
 	protected final ConfigGroup bleedingGroup;
 	protected final DoubleConfig damage;
@@ -25,7 +34,7 @@ public class BleedingEffect extends Effect {
 	protected final GameStateIntegerConfig amplifier;
 
 	public BleedingEffect() {
-		super( EffectType.HARMFUL, 0xffdd5555 );
+		super( EffectType.HARMFUL, 0x00dd5555 );
 
 		String damage_comment = "Damage dealt by bleeding.";
 		String cooldown_comment = "Cooldown between attacking entity.";
@@ -86,5 +95,19 @@ public class BleedingEffect extends Effect {
 				chance -= this.armorChanceReduction.get();
 
 		return chance;
+	}
+
+	private static int particleCounter = 0;
+	/** Spawning bleeding particles. */
+	@SubscribeEvent
+	public static void spawnParticles( TickEvent.PlayerTickEvent event ) {
+		PlayerEntity player = event.player;
+
+		if( !( player.world instanceof ServerWorld ) || !( player instanceof ServerPlayerEntity ) )
+			return;
+
+		particleCounter++;
+		if( player.isPotionActive( Instances.BLEEDING ) && particleCounter % 4 == 0 )
+			( ( ServerWorld )player.world ).spawnParticle( ( ServerPlayerEntity )player, Instances.BLOOD_PARTICLE, true, player.getPosX(), player.getPosYHeight( 0.5 ), player.getPosZ(), 1, 0.125, 0.5, 0.125, 0.1 );
 	}
 }
