@@ -30,28 +30,12 @@ import java.util.List;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.STRUCTURES_GROUP;
 
-public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
-	protected StructureSeparationSettings separationSettings;
-	protected final ConfigGroup group;
-	protected final AvailabilityConfig availability;
-	protected final IntegerConfig minimumDistance;
-	protected final IntegerConfig maximumDistance;
-
+public class FlyingPhantomStructure extends NoFeatureBaseStructure {
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
 		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 40, 1, 1 ), new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 1 ) );
 
 	public FlyingPhantomStructure() {
-		super( NoFeatureConfig.field_236558_a_ );
-
-		String availability_comment = "Is this structure enabled?";
-		String min_comment = "Minimum distance in chunks between this structures.";
-		String max_comment = "Maximum distance in chunks between this structures.";
-		String group_comment = "Configuration for Flying Phantom structure.";
-		this.availability = new AvailabilityConfig( "is_enabled", availability_comment, true, true );
-		this.minimumDistance = new IntegerConfig( "minimum_distance", min_comment, true, 47, 10, 200 );
-		this.maximumDistance = new IntegerConfig( "maximum_distance", max_comment, true, 67, 10, 200 );
-		this.group = STRUCTURES_GROUP.addGroup( new ConfigGroup( "FlyingPhantom", group_comment ) );
-		this.group.addConfigs( this.availability, this.minimumDistance, this.maximumDistance );
+		super( "FlyingPhantom", "Flying Phantom", 1717171717, Instances.FLYING_PHANTOM_FEATURE );
 	}
 
 	/** Generation stage for where to generate the structure. */
@@ -60,12 +44,9 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 		return GenerationStage.Decoration.RAW_GENERATION;
 	}
 
+	/** Factory for generating new structures. */
 	public Structure.IStartFactory< NoFeatureConfig > getStartFactory() {
 		return FlyingPhantomStructure.Start::new;
-	}
-
-	protected boolean func_230363_a_( ChunkGenerator p_230363_1_, BiomeProvider p_230363_2_, long p_230363_3_, SharedSeedRandom p_230363_5_, int p_230363_6_, int p_230363_7_, Biome p_230363_8_, ChunkPos p_230363_9_, NoFeatureConfig p_230363_10_ ) {
-		return this.availability.isEnabled();
 	}
 
 	/** Enemies spawning naturally near the structure. */
@@ -86,29 +67,13 @@ public class FlyingPhantomStructure extends Structure< NoFeatureConfig > {
 		) {
 			Rotation rotation = Rotation.values()[ this.rand.nextInt( Rotation.values().length ) ];
 
-			// Turns the chunk coordinates into actual coordinates we can use. (Gets center of that chunk)
-			int x = ( chunkX << 4 ) + 7;
-			int z = ( chunkZ << 4 ) + 7;
-			int y = Math.min( 60, chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
+			int x = ( chunkX << 4 ) + 7, z = ( chunkZ << 4 ) + 7; // Turns the chunk coordinates into actual coordinates we can use. (Gets center of that chunk)
+			int y = Math.min( 80, chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
 
 			BlockPos blockpos = new BlockPos( x, y, z );
-
 			FlyingPhantomPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
 
 			this.recalculateStructureSize();
 		}
-	}
-
-	public void setup() {
-		int minimum = this.minimumDistance.get();
-		int maximum = Math.max( this.maximumDistance.get(), minimum + 1 );
-
-		separationSettings = new StructureSeparationSettings( maximum, minimum, 1717171717 );
-		DimensionStructuresSettings.field_236191_b_ = ImmutableMap.< Structure< ? >, StructureSeparationSettings > builder().putAll(
-			DimensionStructuresSettings.field_236191_b_ )
-			.put( this, this.separationSettings )
-			.build();
-		DimensionSettings.field_242740_q.getStructures().field_236193_d_.put( this, this.separationSettings );
-		FlatGenerationSettings.STRUCTURES.put( this, Instances.FLYING_PHANTOM_FEATURE );
 	}
 }
