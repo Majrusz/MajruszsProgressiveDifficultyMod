@@ -10,7 +10,9 @@ import com.majruszs_difficulty.events.undead_army.UndeadArmyConfig;
 import com.majruszs_difficulty.events.when_damaged.*;
 import com.majruszs_difficulty.items.*;
 import com.majruszs_difficulty.particles.BloodParticle;
+import com.majruszs_difficulty.structure_pieces.FlyingEndIslandPiece;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
+import com.majruszs_difficulty.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.structures.FlyingPhantomStructure;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
@@ -45,8 +47,11 @@ public class Instances {
 
 	// Structures
 	public static final FlyingPhantomStructure FLYING_PHANTOM;
+	public static final FlyingEndIslandStructure FLYING_END_ISLAND;
 	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_PHANTOM_FEATURE;
+	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_END_ISLAND_FEATURE;
 	public static final IStructurePieceType FLYING_PHANTOM_PIECE;
+	public static final IStructurePieceType FLYING_END_ISLAND_PIECE;
 
 	// Misc
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG;
@@ -75,6 +80,10 @@ public class Instances {
 		FLYING_PHANTOM = new FlyingPhantomStructure();
 		FLYING_PHANTOM_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingPhantomResource.toString(), FLYING_PHANTOM.withConfiguration( NoFeatureConfig.field_236559_b_ ) );
 		FLYING_PHANTOM_PIECE = IStructurePieceType.register( FlyingPhantomPiece::new, flyingPhantomResource.toString() );
+		ResourceLocation flyingEndIslandResource = MajruszsDifficulty.getLocation( "flying_end_island_structure" );
+		FLYING_END_ISLAND = new FlyingEndIslandStructure();
+		FLYING_END_ISLAND_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingEndIslandResource.toString(), FLYING_END_ISLAND.withConfiguration( NoFeatureConfig.field_236559_b_ ) );
+		FLYING_END_ISLAND_PIECE = IStructurePieceType.register( FlyingEndIslandPiece::new, flyingEndIslandResource.toString() );
 
 		// When damaged events
 		WhenDamagedEvent.REGISTRY_LIST.add( new SpiderPoisonOnAttack() );

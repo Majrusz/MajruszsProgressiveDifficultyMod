@@ -136,9 +136,11 @@ public class RegistryHandler {
 	/** Registration of structures. */
 	private static void registerStructures( final IEventBus modEventBus ) {
 		STRUCTURES.register( "flying_phantom_structure", ()->Instances.FLYING_PHANTOM );
+		STRUCTURES.register( "flying_end_island", ()->Instances.FLYING_END_ISLAND );
 		STRUCTURES.register( modEventBus );
 
 		Structure.NAME_STRUCTURE_BIMAP.put( "flying_phantom_structure", Instances.FLYING_PHANTOM );
+		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_island", Instances.FLYING_END_ISLAND );
 	}
 
 	/** Registration of everything. */
@@ -177,6 +179,7 @@ public class RegistryHandler {
 		);
 
 		event.enqueueWork( Instances.FLYING_PHANTOM::setup );
+		event.enqueueWork( Instances.FLYING_END_ISLAND::setup );
 	}
 
 	/** Registration of commands. */
@@ -224,9 +227,9 @@ public class RegistryHandler {
 				return;
 			}
 
-			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_());
-			// putIfAbsent so people can override the spacing with dimension datapacks themselves if they wish to customize spacing more precisely per dimension.
+			Map< Structure<?>, StructureSeparationSettings > tempMap = new HashMap<>( serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_() );
 			tempMap.putIfAbsent( Instances.FLYING_PHANTOM, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_PHANTOM ) );
+			tempMap.putIfAbsent( Instances.FLYING_END_ISLAND, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_ISLAND ) );
 			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
 		}
 	}

@@ -30,7 +30,7 @@ public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig 
 	protected final int structureID;
 	protected final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > structureFeature;
 
-	public NoFeatureBaseStructure( String configName, String commentStructureName, int structureID, StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > structureFeature ) {
+	public NoFeatureBaseStructure( String configName, String commentStructureName, int structureID, int minimumDistance, int maximumDistance, StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > structureFeature ) {
 		super( NoFeatureConfig.field_236558_a_ );
 
 		String availability_comment = "Is this structure enabled?";
@@ -38,8 +38,8 @@ public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig 
 		String max_comment = "Maximum distance in chunks between this structures.";
 		String group_comment = "Configuration for " + commentStructureName + " structure.";
 		this.availability = new AvailabilityConfig( "is_enabled", availability_comment, true, true );
-		this.minimumDistance = new IntegerConfig( "minimum_distance", min_comment, true, 47, 10, 200 );
-		this.maximumDistance = new IntegerConfig( "maximum_distance", max_comment, true, 67, 10, 200 );
+		this.minimumDistance = new IntegerConfig( "minimum_distance", min_comment, true, minimumDistance, 10, 200 );
+		this.maximumDistance = new IntegerConfig( "maximum_distance", max_comment, true, maximumDistance, 10, 200 );
 		this.group = STRUCTURES_GROUP.addGroup( new ConfigGroup( configName, group_comment ) );
 		this.group.addConfigs( this.availability, this.minimumDistance, this.maximumDistance );
 		this.structureID = structureID;

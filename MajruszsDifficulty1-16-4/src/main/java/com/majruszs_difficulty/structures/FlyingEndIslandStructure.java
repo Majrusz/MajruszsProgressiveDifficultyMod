@@ -1,41 +1,30 @@
 package com.majruszs_difficulty.structures;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
+import com.majruszs_difficulty.structure_pieces.FlyingEndIslandPiece;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.mlib.MajruszLibrary;
-import com.mlib.config.*;
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.FlatGenerationSettings;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.StructureSeparationSettings;
 
 import java.util.List;
 
-import static com.majruszs_difficulty.MajruszsDifficulty.STRUCTURES_GROUP;
+public class FlyingEndIslandStructure extends NoFeatureBaseStructure {
+	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of( new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 10, 1, 1 ) );
 
-public class FlyingPhantomStructure extends NoFeatureBaseStructure {
-	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
-		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 40, 1, 1 ), new MobSpawnInfo.Spawners( EntityType.PHANTOM, 10, 1, 1 ) );
-
-	public FlyingPhantomStructure() {
-		super( "FlyingPhantom", "Flying Phantom", 1717171717, 47, 67, Instances.FLYING_PHANTOM_FEATURE );
+	public FlyingEndIslandStructure() {
+		super( "FlyingEndIsland", "Flying End Island", 1717171718, 20, 60, Instances.FLYING_END_ISLAND_FEATURE );
 	}
 
 	/** Generation stage for where to generate the structure. */
@@ -45,8 +34,8 @@ public class FlyingPhantomStructure extends NoFeatureBaseStructure {
 	}
 
 	/** Factory for generating new structures. */
-	public Structure.IStartFactory< NoFeatureConfig > getStartFactory() {
-		return FlyingPhantomStructure.Start::new;
+	public IStartFactory< NoFeatureConfig > getStartFactory() {
+		return FlyingEndIslandStructure.Start::new;
 	}
 
 	/** Enemies spawning naturally near the structure. */
@@ -68,10 +57,10 @@ public class FlyingPhantomStructure extends NoFeatureBaseStructure {
 			Rotation rotation = Rotation.values()[ this.rand.nextInt( Rotation.values().length ) ];
 
 			int x = ( chunkX << 4 ) + 7, z = ( chunkZ << 4 ) + 7; // Turns the chunk coordinates into actual coordinates we can use. (Gets center of that chunk)
-			int y = Math.min( 80, chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
+			int y = Math.min( 60, chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) ) + 60 + MajruszLibrary.RANDOM.nextInt( 60 );
 
 			BlockPos blockpos = new BlockPos( x, y, z );
-			FlyingPhantomPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
+			FlyingEndIslandPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
 
 			this.recalculateStructureSize();
 		}

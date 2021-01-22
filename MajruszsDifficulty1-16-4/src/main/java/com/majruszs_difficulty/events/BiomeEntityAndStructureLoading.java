@@ -33,7 +33,6 @@ public class BiomeEntityAndStructureLoading {
 			addNetherEntities( spawnInfoBuilder );
 		} else if( doBiomeCategoryBelongsToTheEnd( category ) ) {
 			addEndStructures( generationSettingsBuilder );
-			MajruszLibrary.LOGGER.debug( generationSettingsBuilder.toString() );
 		}
 	}
 
@@ -58,6 +57,7 @@ public class BiomeEntityAndStructureLoading {
 	/** Adding natural generating for end structures. */
 	protected static void addEndStructures( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
 		generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
+		generationSettingsBuilder.withStructure( Instances.FLYING_END_ISLAND_FEATURE );
 	}
 
 	/** Checking whether given biome category belongs to overworld. */
