@@ -11,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraft.world.server.ServerWorld;
@@ -27,6 +28,7 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 /** Bleeding effect similar to poison effect. */
 @Mod.EventBusSubscriber
 public class BleedingEffect extends Effect {
+	private static final String BLEEDING_TAG_COUNTER = "BleedingCounter";
 	protected final ConfigGroup bleedingGroup;
 	protected final DoubleConfig damage;
 	protected final DurationConfig baseCooldown;
@@ -103,8 +105,6 @@ public class BleedingEffect extends Effect {
 		return chance;
 	}
 
-	private static int particleCounter = 0;
-
 	/** Spawning bleeding particles. */
 	@SubscribeEvent
 	public static void spawnParticles( TickEvent.PlayerTickEvent event ) {
@@ -113,9 +113,11 @@ public class BleedingEffect extends Effect {
 		if( !( player.world instanceof ServerWorld ) || !( player instanceof ServerPlayerEntity ) )
 			return;
 
-		particleCounter++;
-		if( player.isPotionActive( Instances.BLEEDING ) && particleCounter % 4 == 0 )
-			( ( ServerWorld )player.world ).spawnParticle( ( ServerPlayerEntity )player, Instances.BLOOD_PARTICLE, true, player.getPosX(),
+		CompoundNBT data = player.getPersistentData();
+		data.putInt( BLEEDING_TAG_COUNTER, ( data.getInt( BLEEDING_TAG_COUNTER )+1 )%5 );
+		ServerWorld world = ( ServerWorld )player.world;
+		if( player.isPotionActive( Instances.BLEEDING ) && data.getInt( BLEEDING_TAG_COUNTER ) == 0 )
+			world.spawnParticle( Instances.BLOOD_PARTICLE, player.getPosX(),
 				player.getPosYHeight( 0.5 ), player.getPosZ(), 1, 0.125, 0.5, 0.125, 0.1
 			);
 	}
