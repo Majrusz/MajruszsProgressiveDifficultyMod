@@ -11,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
@@ -21,6 +22,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
@@ -66,6 +70,12 @@ public class BleedingEffect extends Effect {
 		int cooldown = Math.max( 4, this.baseCooldown.getDuration() >> amplifier );
 
 		return duration % cooldown == 0;
+	}
+
+	/** Removes default milk bucket from curative items. */
+	@Override
+	public List< ItemStack > getCurativeItems() {
+		return new ArrayList<>();
 	}
 
 	/** Returns bleeding amplifier depending on current game state. */
