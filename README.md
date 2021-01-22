@@ -1,4 +1,4 @@
-![Mod logo](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/main/logo.png?raw=true)
+![Mod logo](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/1.16.4/logo.png?raw=true)
 
 ## What is Majrusz's Progressive Difficulty? [![](http://cf.way2muchnoise.eu/full_majruszs-progressive-difficulty_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty)
 **Majrusz's Progressive Difficulty** is a Minecraft Forge modification which focuses
@@ -9,8 +9,8 @@ mainly on making the game more difficult after reaching certain milestones.
 - [Planet Minecraft](https://www.planetminecraft.com/mod/majrusz-s-progressive-difficulty/)
 
 ## Current Mod Releases (Source Code)
-- [v0.2.2 for Minecraft 1.16.4](MajruszsDifficulty1-16-4)
-- [v0.2.0 for Minecraft 1.16.3](MajruszsDifficulty1-16-3)
+- [v0.4.0 for Minecraft 1.16.4](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.16.4/)
+- [v0.2.0 for Minecraft 1.16.3](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/main/MajruszsDifficulty1-16-3) *(not supported anymore)*
 
 ## Technologies
 - Java 8
