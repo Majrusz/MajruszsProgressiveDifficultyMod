@@ -10,7 +10,7 @@ mainly on making the game more difficult after reaching certain milestones.
 
 ## Current Mod Releases (Source Code)
 - [v0.4.0 for Minecraft 1.16.4](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.16.4/)
-- [v0.2.0 for Minecraft 1.16.3](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/main/MajruszsDifficulty1-16-3) *not supported anymore*
+- [v0.2.0 for Minecraft 1.16.3](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/main/MajruszsDifficulty1-16-3) *(not supported anymore)*
 
 ## Technologies
 - Java 8
