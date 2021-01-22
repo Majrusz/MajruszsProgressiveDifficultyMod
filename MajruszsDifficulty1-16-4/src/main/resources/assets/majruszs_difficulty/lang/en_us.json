@@ -26,6 +26,8 @@
   "item.majruszs_difficulty.fisherman_emblem": "Fisherman Emblem",
   "item.majruszs_difficulty.fisherman_emblem.item_tooltip1": "Increases luck when fishing.",
   "item.majruszs_difficulty.fisherman_emblem.item_tooltip2": "It works whenever the player has it anywhere in the inventory.",
+  "item.majruszs_difficulty.hermes_boots": "Hermes Boots",
+  "item.majruszs_difficulty.hermes_boots.item_tooltip": "Increases moving speed when worn.",
   "commands.game_state.change": "Game state changed to",
   "commands.game_state.current": "Current game state is",
   "majruszs_difficulty.states.normal": "Normal Mode",
