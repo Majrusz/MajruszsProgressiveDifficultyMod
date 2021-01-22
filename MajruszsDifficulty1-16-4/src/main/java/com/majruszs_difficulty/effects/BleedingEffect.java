@@ -11,18 +11,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +104,7 @@ public class BleedingEffect extends Effect {
 	}
 
 	private static int particleCounter = 0;
+
 	/** Spawning bleeding particles. */
 	@SubscribeEvent
 	public static void spawnParticles( TickEvent.PlayerTickEvent event ) {
@@ -118,6 +115,8 @@ public class BleedingEffect extends Effect {
 
 		particleCounter++;
 		if( player.isPotionActive( Instances.BLEEDING ) && particleCounter % 4 == 0 )
-			( ( ServerWorld )player.world ).spawnParticle( ( ServerPlayerEntity )player, Instances.BLOOD_PARTICLE, true, player.getPosX(), player.getPosYHeight( 0.5 ), player.getPosZ(), 1, 0.125, 0.5, 0.125, 0.1 );
+			( ( ServerWorld )player.world ).spawnParticle( ( ServerPlayerEntity )player, Instances.BLOOD_PARTICLE, true, player.getPosX(),
+				player.getPosYHeight( 0.5 ), player.getPosZ(), 1, 0.125, 0.5, 0.125, 0.1
+			);
 	}
 }

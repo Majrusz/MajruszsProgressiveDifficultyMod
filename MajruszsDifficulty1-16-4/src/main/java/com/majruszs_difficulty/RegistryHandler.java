@@ -219,15 +219,17 @@ public class RegistryHandler {
 
 		ReloadUndeadArmyGoals.resetTimer();
 
-		if( event.getWorld() instanceof ServerWorld ){
+		if( event.getWorld() instanceof ServerWorld ) {
 			ServerWorld serverWorld = ( ServerWorld )event.getWorld();
 
-			if( serverWorld.getChunkProvider().getChunkGenerator() instanceof FlatChunkGenerator &&
-				serverWorld.getDimensionKey().equals( World.OVERWORLD )){
+			if( serverWorld.getChunkProvider()
+				.getChunkGenerator() instanceof FlatChunkGenerator && serverWorld.getDimensionKey()
+				.equals( World.OVERWORLD ) ) {
 				return;
 			}
 
-			Map< Structure<?>, StructureSeparationSettings > tempMap = new HashMap<>( serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_() );
+			Map< Structure< ? >, StructureSeparationSettings > tempMap = new HashMap<>( serverWorld.getChunkProvider().generator.func_235957_b_()
+				.func_236195_a_() );
 			tempMap.putIfAbsent( Instances.FLYING_PHANTOM, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_PHANTOM ) );
 			tempMap.putIfAbsent( Instances.FLYING_END_ISLAND, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_ISLAND ) );
 			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;

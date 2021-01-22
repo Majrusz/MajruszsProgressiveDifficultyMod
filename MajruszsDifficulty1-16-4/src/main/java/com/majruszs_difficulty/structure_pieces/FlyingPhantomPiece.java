@@ -3,15 +3,11 @@ package com.majruszs_difficulty.structure_pieces;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
-import com.mlib.MajruszLibrary;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.PhantomEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -24,7 +20,6 @@ import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 
 import java.util.List;
 import java.util.Random;
@@ -66,14 +61,14 @@ public class FlyingPhantomPiece extends TemplateStructurePiece {
 			SkyKeeperEntity monster = SkyKeeperEntity.type.create( world.getWorld() );
 			if( monster != null ) {
 				monster.enablePersistence();
-				monster.setPosition( position.getX(), position.getY()+3, position.getZ() );
+				monster.setPosition( position.getX(), position.getY() + 3, position.getZ() );
 				world.addEntity( monster );
 			}
 		} else if( function.startsWith( "phantom" ) ) {
 			PhantomEntity monster = EntityType.PHANTOM.create( world.getWorld() );
 			if( monster != null ) {
 				monster.enablePersistence();
-				monster.setPosition( position.getX(), position.getY()+3, position.getZ() );
+				monster.setPosition( position.getX(), position.getY() + 3, position.getZ() );
 				world.addEntity( monster );
 			}
 		} else

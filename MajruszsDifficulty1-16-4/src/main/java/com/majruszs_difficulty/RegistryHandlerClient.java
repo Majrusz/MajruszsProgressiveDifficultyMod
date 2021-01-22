@@ -11,7 +11,6 @@ import com.majruszs_difficulty.renderers.SkyKeeperRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 /** Class registering things only on the client side. */
 @OnlyIn( Dist.CLIENT )

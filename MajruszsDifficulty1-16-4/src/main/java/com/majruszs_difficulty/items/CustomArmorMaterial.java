@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 /** Mod custom armor materials. */
 public enum CustomArmorMaterial implements IArmorMaterial {
-	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, () -> {
+	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
 		return Ingredient.fromItems( Items.LEATHER );
 	} );
 
@@ -28,7 +28,9 @@ public enum CustomArmorMaterial implements IArmorMaterial {
 	private final float knockbackResistance;
 	private final LazyValue< Ingredient > repairMaterial;
 
-	CustomArmorMaterial( String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent, float toughness, float knockbackResistance, Supplier< Ingredient > repairMaterial ) {
+	CustomArmorMaterial( String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent,
+		float toughness, float knockbackResistance, Supplier< Ingredient > repairMaterial
+	) {
 		this.name = name;
 		this.maxDamageFactor = maxDamageFactor;
 		this.damageReductionAmountArray = damageReductionAmountArray;
@@ -36,7 +38,7 @@ public enum CustomArmorMaterial implements IArmorMaterial {
 		this.soundEvent = soundEvent;
 		this.toughness = toughness;
 		this.knockbackResistance = knockbackResistance;
-		this.repairMaterial = new LazyValue<>(repairMaterial);
+		this.repairMaterial = new LazyValue<>( repairMaterial );
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public enum CustomArmorMaterial implements IArmorMaterial {
 	}
 
 	@Override
-	@OnlyIn( Dist.CLIENT)
+	@OnlyIn( Dist.CLIENT )
 	public String getName() {
 		return this.name;
 	}

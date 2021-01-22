@@ -1,34 +1,26 @@
 package com.majruszs_difficulty.structures;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.mlib.MajruszLibrary;
-import com.mlib.config.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.FlatGenerationSettings;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.StructureSeparationSettings;
 
 import java.util.List;
-
-import static com.majruszs_difficulty.MajruszsDifficulty.STRUCTURES_GROUP;
 
 /** Flying Phantom structure in The End. */
 public class FlyingPhantomStructure extends NoFeatureBaseStructure {

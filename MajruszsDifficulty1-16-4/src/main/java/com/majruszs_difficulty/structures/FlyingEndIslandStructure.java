@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.structure_pieces.FlyingEndIslandPiece;
-import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.util.Rotation;
@@ -16,7 +15,9 @@ import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
@@ -26,7 +27,8 @@ import java.util.List;
 
 /** Flying Island structures in The End. */
 public class FlyingEndIslandStructure extends NoFeatureBaseStructure {
-	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of( new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 10, 1, 1 ) );
+	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
+		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 10, 1, 1 ) );
 	public final DoubleConfig buildingIslandChance;
 
 	public FlyingEndIslandStructure() {
@@ -56,11 +58,15 @@ public class FlyingEndIslandStructure extends NoFeatureBaseStructure {
 
 	/** Checking whether structure can spawn at given position. */
 	@Override
-	protected boolean func_230363_a_( ChunkGenerator chunkGenerator, BiomeProvider biomeProvider, long p_230363_3_, SharedSeedRandom sharedSeedRandom, int chunkX, int chunkZ, Biome biome, ChunkPos chunkPosition, NoFeatureConfig noFeatureConfig ) {
+	protected boolean func_230363_a_( ChunkGenerator chunkGenerator, BiomeProvider biomeProvider, long p_230363_3_, SharedSeedRandom sharedSeedRandom,
+		int chunkX, int chunkZ, Biome biome, ChunkPos chunkPosition, NoFeatureConfig noFeatureConfig
+	) {
 		int x = ( chunkX << 4 ) + 7, z = ( chunkZ << 4 ) + 7;
 		int y = chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG );
 
-		return y < 20 && super.func_230363_a_( chunkGenerator, biomeProvider, p_230363_3_, sharedSeedRandom, chunkX, chunkZ, biome, chunkPosition, noFeatureConfig );
+		return y < 20 && super.func_230363_a_( chunkGenerator, biomeProvider, p_230363_3_, sharedSeedRandom, chunkX, chunkZ, biome, chunkPosition,
+			noFeatureConfig
+		);
 	}
 
 	public static class Start extends StructureStart< NoFeatureConfig > {

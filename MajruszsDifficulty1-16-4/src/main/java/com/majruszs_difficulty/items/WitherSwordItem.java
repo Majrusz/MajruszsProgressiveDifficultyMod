@@ -19,7 +19,8 @@ import java.util.List;
 /** Wither sword. */
 public class WitherSwordItem extends SwordItem {
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( CustomItemTier.WITHER, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP )
+			.rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override

@@ -29,8 +29,8 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 /** Emblem that increases luck for player that has it anywhere in the inventory. */
 @Mod.EventBusSubscriber
 public class FishermanEmblemItem extends Item {
-	protected static final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "4010270c-9d57-4273-8a41-00985f1e4781",
-		"FishermanEmblemLuckBonus", Attributes.LUCK, AttributeModifier.Operation.ADDITION
+	protected static final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "4010270c-9d57-4273-8a41-00985f1e4781", "FishermanEmblemLuckBonus",
+		Attributes.LUCK, AttributeModifier.Operation.ADDITION
 	);
 	protected final ConfigGroup group;
 	protected final GameStateIntegerConfig luck;
@@ -65,6 +65,7 @@ public class FishermanEmblemItem extends Item {
 	public static void increaseLuck( TickEvent.PlayerTickEvent event ) {
 		PlayerEntity player = event.player;
 
-		LUCK_ATTRIBUTE.setValue( Instances.FISHERMAN_EMBLEM_ITEM.getEmblemLuckBonus( player ) ).apply( player );
+		LUCK_ATTRIBUTE.setValue( Instances.FISHERMAN_EMBLEM_ITEM.getEmblemLuckBonus( player ) )
+			.apply( player );
 	}
 }
