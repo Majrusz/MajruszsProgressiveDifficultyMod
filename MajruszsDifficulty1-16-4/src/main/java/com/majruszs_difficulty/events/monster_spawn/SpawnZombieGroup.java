@@ -7,6 +7,7 @@ import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.server.ServerWorld;
@@ -30,7 +31,7 @@ public class SpawnZombieGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	protected boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof ZombieEntity && super.shouldBeExecuted( entity );
+		return !( entity instanceof ZombifiedPiglinEntity ) && entity instanceof ZombieEntity && super.shouldBeExecuted( entity );
 	}
 
 	@Override
