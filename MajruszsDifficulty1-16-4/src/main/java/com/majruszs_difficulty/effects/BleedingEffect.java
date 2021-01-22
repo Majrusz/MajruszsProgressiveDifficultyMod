@@ -38,7 +38,7 @@ public class BleedingEffect extends Effect {
 	protected final GameStateIntegerConfig amplifier;
 
 	public BleedingEffect() {
-		super( EffectType.HARMFUL, 0x00dd5555 );
+		super( EffectType.HARMFUL, 0xffdd5555 );
 
 		String damage_comment = "Damage dealt by bleeding.";
 		String cooldown_comment = "Cooldown between attacking entity.";
