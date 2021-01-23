@@ -16,7 +16,7 @@ public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_COMMENT = "Spider inflicts poison.";
 
 	public SpiderPoisonOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, -1.0, GameState.State.NORMAL, true, Effects.POISON );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, -1.0, GameState.State.EXPERT, true, Effects.POISON );
 	}
 
 	/** Checking if all conditions were met. */
