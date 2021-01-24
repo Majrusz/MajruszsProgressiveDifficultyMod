@@ -35,9 +35,9 @@ public class SpawnDisabler {
 		else if( isIllusioner )
 			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.illusioner.availability );
 		else if( isPillagerWolf )
-			return shouldBeDisabled( State.EXPERT, Instances.ENTITIES_CONFIG.pillagerWolf.availability );
-		else if( isEliteSkeleton )
 			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.pillagerWolf.availability );
+		else if( isEliteSkeleton )
+			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.eliteSkeleton.availability );
 		else if( isSkyKeeper )
 			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.skyKeeper.availability );
 		else
