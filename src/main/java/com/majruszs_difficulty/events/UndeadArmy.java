@@ -45,9 +45,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+/** Class representing Undead Army which is new raid activated after killing certain undead at night. */
 @Mod.EventBusSubscriber
 public class UndeadArmy {
-	private final static int BETWEEN_RAID_TICKS_MAXIMUM = TimeConverter.secondsToTicks( 15.0 );
+	private final static int BETWEEN_RAID_TICKS_MAXIMUM = TimeConverter.secondsToTicks( 10.0 );
 	private final static int TICKS_INACTIVE_MAXIMUM = TimeConverter.minutesToTicks( 15.0 );
 	private final static int SPAWN_RADIUS = 70;
 	private final static TextManager TEXT_MANAGER = new TextManager();
