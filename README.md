@@ -12,6 +12,9 @@ mainly on making the game more difficult after reaching certain milestones.
 - [v0.4.0 for Minecraft 1.16.4](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.16.4/)
 - [v0.2.0 for Minecraft 1.16.3](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/main/MajruszsDifficulty1-16-3) *(not supported anymore)*
 
+## Dependencies
+- [Majrusz Library](https://github.com/Majrusz/MajruszLibrary/tree/1.16.4) *(Majrusz's Progressive Difficulty version 0.4.0 and above)*
+
 ## Technologies
 - Java 8
 - [Minecraft Forge API](https://github.com/MinecraftForge/MinecraftForge)
