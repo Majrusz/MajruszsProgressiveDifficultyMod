@@ -24,7 +24,7 @@ public enum Direction {
 
 		int x = positionToAttack.getX() + this.x * spawnRadius + MajruszLibrary.RANDOM.nextInt( xFactor * 2 ) - xFactor;
 		int z = positionToAttack.getZ() + this.z * spawnRadius + MajruszLibrary.RANDOM.nextInt( zFactor * 2 ) - zFactor;
-		int y = world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z ) + 1;
+		int y = world.getHeight( Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x, z ) + 1;
 
 		return new BlockPos( x, y, z );
 	}
