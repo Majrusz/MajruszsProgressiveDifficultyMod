@@ -26,6 +26,9 @@ public class WitherSwordItem extends SwordItem {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		if( !flag.isAdvanced() )
+			return;
+
 		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.wither_sword.tooltip" ).mergeStyle( TextFormatting.GRAY ) );
 	}
 }

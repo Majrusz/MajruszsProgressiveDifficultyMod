@@ -52,6 +52,9 @@ public class FishermanEmblemItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		if( !flag.isAdvanced() )
+			return;
+
 		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip1" ).mergeStyle( TextFormatting.GOLD ) );
 		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip2" ).mergeStyle( TextFormatting.GRAY ) );
 	}
