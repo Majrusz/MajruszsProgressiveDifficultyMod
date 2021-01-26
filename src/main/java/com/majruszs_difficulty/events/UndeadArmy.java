@@ -260,9 +260,10 @@ public class UndeadArmy {
 	}
 
 	private void createSpawner() {
+		int spawnerRange = 5;
 		for( int i = 0; i < 50 && !this.spawnerWasCreated; i++ ) {
-			int x = positionToAttack.getX() + MajruszLibrary.RANDOM.nextInt( 7 ) - 3;
-			int z = positionToAttack.getZ() + MajruszLibrary.RANDOM.nextInt( 7 ) - 3;
+			int x = positionToAttack.getX() + MajruszLibrary.RANDOM.nextInt( spawnerRange * 2 + 1 ) - spawnerRange;
+			int z = positionToAttack.getZ() + MajruszLibrary.RANDOM.nextInt( spawnerRange * 2 + 1 ) - spawnerRange;
 			int y = world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z );
 			BlockPos position = new BlockPos( x, y, z );
 
