@@ -26,7 +26,7 @@ public class FreezeWater {
 		BlockPos position = new BlockPos( monster.getPositionVec() );
 
 		BlockState blockState = Blocks.FROSTED_ICE.getDefaultState();
-		double factor = 2.0;
+		double factor = 3.0;
 		BlockPos.Mutable mutablePosition = new BlockPos.Mutable();
 		Iterable< BlockPos > blockPositions = BlockPos.getAllInBoxMutable( position.add( -factor, -1.0, -factor ),
 			position.add( factor, -1.0, factor )
@@ -66,7 +66,7 @@ public class FreezeWater {
 
 			world.setBlockState( blockPosition, blockState );
 			world.getPendingBlockTicks()
-				.scheduleTick( blockPosition, Blocks.FROSTED_ICE, MathHelper.nextInt( monster.getRNG(), 40, 80 ) );
+				.scheduleTick( blockPosition, Blocks.FROSTED_ICE, MathHelper.nextInt( monster.getRNG(), 10, 20 ) );
 		}
 	}
 
