@@ -29,11 +29,11 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	}
 
 	/** Applying invisible bleeding effect instead of standard one. */
-	@Override
+	/*@Override
 	protected void applyEffect( LivingEntity target, Effect effect, Difficulty difficulty ) {
-		EffectInstance invisibleEffect = new EffectInstance( effect, getDurationInTicks( difficulty ), getAmplifier( difficulty ), false, false );
+		EffectInstance invisibleEffect = new EffectInstance( effect, getDurationInTicks( difficulty ), getAmplifier( difficulty ), true, false );
 		EffectHelper.applyEffectIfPossible( target, invisibleEffect );
-	}
+	}*/
 
 	/** Calculating final chance. (after applying clamped regional difficulty and armor multipliers) */
 	protected double calculateChance( LivingEntity target ) {
