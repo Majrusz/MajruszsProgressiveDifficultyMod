@@ -14,6 +14,7 @@ import com.majruszs_difficulty.structure_pieces.FlyingEndIslandPiece;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.structures.FlyingPhantomStructure;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
 import net.minecraft.particles.BasicParticleType;
@@ -35,6 +36,7 @@ public class Instances {
 	public static final BandageItem BANDAGE_ITEM;
 	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
+	public static final Item END_CRYSTAL;
 
 	// Blocks
 	public static final EndCrystalOre END_CRYSTAL_ORE;
@@ -69,6 +71,7 @@ public class Instances {
 		BANDAGE_ITEM = new BandageItem();
 		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
+		END_CRYSTAL = new Item( new Item.Properties().group( ITEM_GROUP ) );
 
 		// Blocks
 		END_CRYSTAL_ORE = new EndCrystalOre();

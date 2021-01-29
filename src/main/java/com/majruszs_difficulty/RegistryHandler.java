@@ -113,13 +113,14 @@ public class RegistryHandler {
 		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
 		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( "hermes_boots", ()->Instances.HERMES_BOOTS_ITEM );
+		ITEMS.register( "end_crystal", ()->Instances.END_CRYSTAL );
 		ITEMS.register( modEventBus );
 	}
 
 	/** Registration of blocks. */
 	private static void registerBlocks( final IEventBus modEventBus ) {
 		BLOCKS.register( "end_crystal_ore", ()->Instances.END_CRYSTAL_ORE );
-		ITEMS.register( "end_crystal", ()->Instances.END_CRYSTAL_ORE_ITEM );
+		ITEMS.register( "end_crystal_ore", ()->Instances.END_CRYSTAL_ORE_ITEM );
 		BLOCKS.register( modEventBus );
 	}
 
