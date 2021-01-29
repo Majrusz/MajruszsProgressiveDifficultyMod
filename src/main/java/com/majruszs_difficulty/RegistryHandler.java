@@ -11,6 +11,7 @@ import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
@@ -45,6 +46,7 @@ import java.util.Map;
 /** Main class registering most registers like entities, items and sounds. */
 public class RegistryHandler {
 	public static final DeferredRegister< EntityType< ? > > ENTITIES = DeferredRegister.create( ForgeRegistries.ENTITIES, MajruszsDifficulty.MOD_ID );
+	public static final DeferredRegister< Block > BLOCKS = DeferredRegister.create( ForgeRegistries.BLOCKS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Item > ITEMS = DeferredRegister.create( ForgeRegistries.ITEMS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< SoundEvent > SOUNDS = DeferredRegister.create( ForgeRegistries.SOUND_EVENTS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Effect > EFFECTS = DeferredRegister.create( ForgeRegistries.POTIONS, MajruszsDifficulty.MOD_ID );
@@ -114,6 +116,13 @@ public class RegistryHandler {
 		ITEMS.register( modEventBus );
 	}
 
+	/** Registration of blocks. */
+	private static void registerBlocks( final IEventBus modEventBus ) {
+		BLOCKS.register( "end_crystal_ore", ()->Instances.END_CRYSTAL_ORE );
+		ITEMS.register( "end_crystal_ore", ()->Instances.END_CRYSTAL_ORE_ITEM );
+		BLOCKS.register( modEventBus );
+	}
+
 	/** Registration of sounds. */
 	private static void registerSounds( final IEventBus modEventBus ) {
 		SOUNDS.register( "undead_army.approaching", ()->Instances.Sounds.UNDEAD_ARMY_APPROACHING );
@@ -146,6 +155,7 @@ public class RegistryHandler {
 	/** Registration of everything. */
 	private static void registerEverything( final IEventBus modEventBus ) {
 		registerEntities( modEventBus );
+		registerBlocks( modEventBus );
 		registerItems( modEventBus );
 		registerSounds( modEventBus );
 		registerEffects( modEventBus );

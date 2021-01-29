@@ -1,5 +1,6 @@
 package com.majruszs_difficulty;
 
+import com.majruszs_difficulty.blocks.EndCrystalOre;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
@@ -35,6 +36,10 @@ public class Instances {
 	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
 
+	// Blocks
+	public static final EndCrystalOre END_CRYSTAL_ORE;
+	public static final EndCrystalOre.EndCrystalOreItem END_CRYSTAL_ORE_ITEM;
+
 	// Entities
 	public static final EntitiesConfig ENTITIES_CONFIG;
 
@@ -64,6 +69,10 @@ public class Instances {
 		BANDAGE_ITEM = new BandageItem();
 		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
+
+		// Blocks
+		END_CRYSTAL_ORE = new EndCrystalOre();
+		END_CRYSTAL_ORE_ITEM = new EndCrystalOre.EndCrystalOreItem();
 
 		// Entities
 		ENTITIES_CONFIG = new EntitiesConfig();
