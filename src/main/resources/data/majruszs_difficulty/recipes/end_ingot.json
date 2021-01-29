@@ -4,7 +4,7 @@
 	"pattern":
 	[ 
 		"ccc",
-		"eie",
+		"cic",
 		"ccc"
 	],
 	"key":
@@ -12,10 +12,6 @@
 		"c":
 		{ 
 			"item": "majruszs_difficulty:end_crystal"
-		},
-		"e":
-		{
-			"item": "minecraft:eye_of_ender"
 		},
 		"i":
 		{
