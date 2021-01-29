@@ -36,7 +36,8 @@ public class Instances {
 	public static final BandageItem BANDAGE_ITEM;
 	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
-	public static final Item END_CRYSTAL;
+	public static final EndCrystalItem END_CRYSTAL;
+	public static final EndIngotItem END_INGOT;
 
 	// Blocks
 	public static final EndCrystalOre END_CRYSTAL_ORE;
@@ -71,7 +72,8 @@ public class Instances {
 		BANDAGE_ITEM = new BandageItem();
 		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
-		END_CRYSTAL = new Item( new Item.Properties().group( ITEM_GROUP ) );
+		END_CRYSTAL = new EndCrystalItem();
+		END_INGOT = new EndIngotItem();
 
 		// Blocks
 		END_CRYSTAL_ORE = new EndCrystalOre();
