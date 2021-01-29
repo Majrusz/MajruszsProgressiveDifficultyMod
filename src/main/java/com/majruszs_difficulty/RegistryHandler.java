@@ -114,6 +114,7 @@ public class RegistryHandler {
 		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( "hermes_boots", ()->Instances.HERMES_BOOTS_ITEM );
 		ITEMS.register( "end_crystal", ()->Instances.END_CRYSTAL );
+		ITEMS.register( "end_ingot", ()->Instances.END_INGOT );
 		ITEMS.register( modEventBus );
 	}
 
