@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "end_ingot",
+  "ingredients": [
+    {
+      "item": "majruszs_difficulty:end_block"
+    }
+  ],
+  "result": {
+    "item": "majruszs_difficulty:end_ingot",
+    "count": 9
+  }
+}
