@@ -1,5 +1,6 @@
 package com.majruszs_difficulty;
 
+import com.majruszs_difficulty.blocks.EndBlock;
 import com.majruszs_difficulty.blocks.EndCrystalOre;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
@@ -42,6 +43,8 @@ public class Instances {
 	// Blocks
 	public static final EndCrystalOre END_CRYSTAL_ORE;
 	public static final EndCrystalOre.EndCrystalOreItem END_CRYSTAL_ORE_ITEM;
+	public static final EndBlock END_BLOCK;
+	public static final EndBlock.EndBlockItem END_BLOCK_ITEM;
 
 	// Entities
 	public static final EntitiesConfig ENTITIES_CONFIG;
@@ -78,6 +81,8 @@ public class Instances {
 		// Blocks
 		END_CRYSTAL_ORE = new EndCrystalOre();
 		END_CRYSTAL_ORE_ITEM = new EndCrystalOre.EndCrystalOreItem();
+		END_BLOCK = new EndBlock();
+		END_BLOCK_ITEM = new EndBlock.EndBlockItem();
 
 		// Entities
 		ENTITIES_CONFIG = new EntitiesConfig();

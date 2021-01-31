@@ -122,6 +122,8 @@ public class RegistryHandler {
 	private static void registerBlocks( final IEventBus modEventBus ) {
 		BLOCKS.register( "end_crystal_ore", ()->Instances.END_CRYSTAL_ORE );
 		ITEMS.register( "end_crystal_ore", ()->Instances.END_CRYSTAL_ORE_ITEM );
+		BLOCKS.register( "end_block", ()->Instances.END_BLOCK );
+		ITEMS.register( "end_block", ()->Instances.END_BLOCK_ITEM );
 		BLOCKS.register( modEventBus );
 	}
 
