@@ -6,6 +6,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Rarity;
 
 /** New late game end block. */
 public class EndBlock extends Block {
@@ -19,7 +20,7 @@ public class EndBlock extends Block {
 
 	public static class EndBlockItem extends BlockItem {
 		public EndBlockItem() {
-			super( Instances.END_BLOCK, ( new Properties() ).maxStackSize( 64 )
+			super( Instances.END_BLOCK, ( new Properties() ).maxStackSize( 64 ).rarity( Rarity.UNCOMMON )
 				.group( Instances.ITEM_GROUP ) );
 		}
 	}
