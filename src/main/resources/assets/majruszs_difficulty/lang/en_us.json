@@ -31,6 +31,7 @@
   "item.majruszs_difficulty.end_crystal": "End Crystal",
   "item.majruszs_difficulty.end_ingot": "End Ingot",
   "block.majruszs_difficulty.end_crystal_ore": "End Crystal Ore",
+  "block.majruszs_difficulty.end_block": "End Block",
   "commands.game_state.change": "Game state changed to",
   "commands.game_state.current": "Current game state is",
   "majruszs_difficulty.states.normal": "Normal Mode",
