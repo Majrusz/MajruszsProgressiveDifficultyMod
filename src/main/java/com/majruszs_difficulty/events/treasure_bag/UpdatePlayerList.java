@@ -26,13 +26,13 @@ public class UpdatePlayerList {
 			listNBT.add( playerNBT );
 
 		CompoundNBT data = target.getPersistentData();
-		data.put( TreasureBagManager.treasureBagTag, listNBT );
+		data.put( TreasureBagManager.TREASURE_BAG_TAG, listNBT );
 	}
 
 	protected static ListNBT getOrCreateList( LivingEntity entity ) {
 		CompoundNBT data = entity.getPersistentData();
 
-		return ( data.contains( TreasureBagManager.treasureBagTag ) ? data.getList( TreasureBagManager.treasureBagTag, 10 ) : new ListNBT() );
+		return ( data.contains( TreasureBagManager.TREASURE_BAG_TAG ) ? data.getList( TreasureBagManager.TREASURE_BAG_TAG, 10 ) : new ListNBT() );
 	}
 
 	protected static String getPlayerUUID( PlayerEntity player ) {
@@ -41,7 +41,7 @@ public class UpdatePlayerList {
 
 	protected static CompoundNBT getPlayerCompound( PlayerEntity player ) {
 		CompoundNBT nbt = new CompoundNBT();
-		nbt.putString( TreasureBagManager.playerTag, getPlayerUUID( player ) );
+		nbt.putString( TreasureBagManager.PLAYER_TAG, getPlayerUUID( player ) );
 
 		return nbt;
 	}
@@ -51,7 +51,7 @@ public class UpdatePlayerList {
 
 		for( int i = 0; i < listNBT.size(); i++ )
 			if( listNBT.getCompound( i )
-				.getString( TreasureBagManager.playerTag )
+				.getString( TreasureBagManager.PLAYER_TAG )
 				.equals( uuid ) )
 				return true;
 
