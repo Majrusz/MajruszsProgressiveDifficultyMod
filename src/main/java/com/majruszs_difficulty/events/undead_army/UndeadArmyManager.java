@@ -2,7 +2,6 @@ package com.majruszs_difficulty.events.undead_army;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
-import com.majruszs_difficulty.events.UndeadArmy;
 import com.mlib.TimeConverter;
 import com.mlib.WorldHelper;
 import net.minecraft.entity.player.PlayerEntity;
