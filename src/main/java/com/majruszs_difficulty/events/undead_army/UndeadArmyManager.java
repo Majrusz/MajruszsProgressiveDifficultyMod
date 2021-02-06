@@ -4,6 +4,7 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
 import com.mlib.TimeConverter;
 import com.mlib.WorldHelper;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -169,6 +170,11 @@ public class UndeadArmyManager extends WorldSavedData {
 		int y = this.world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z );
 
 		return new BlockPos( x, y, z );
+	}
+
+	/** Checks whether entity was spawned on Undead Army. */
+	public boolean doesEntityBelongToUndeadArmy( LivingEntity entity ) {
+		return UndeadArmy.doesEntityBelongToUndeadArmy( entity );
 	}
 
 	public static class UndeadArmyToBeSpawned {

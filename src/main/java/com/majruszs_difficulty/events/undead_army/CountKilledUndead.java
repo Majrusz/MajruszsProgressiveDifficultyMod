@@ -41,12 +41,13 @@ public class CountKilledUndead {
 		spawnArmyIfPossible( player );
 	}
 
+	/** Returns current undead kill counter for given player. */
 	public static int getKills( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
-
-		return ( nbt.contains( NBT_TAG ) ? nbt.getInt( NBT_TAG ) : 0 );
+		return nbt.getInt( NBT_TAG );
 	}
 
+	/** Updates player's kill counter. */
 	protected static void increaseKill( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
 		nbt.putInt( NBT_TAG, getKills( player ) + 1 );
@@ -54,13 +55,11 @@ public class CountKilledUndead {
 		player.writeAdditional( nbt );
 	}
 
+	/** Spawns Undead Army at player's position if player met all requirements. */
 	private static void spawnArmyIfPossible( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
 
-		if( nbt.getInt( NBT_TAG ) < Instances.UNDEAD_ARMY_CONFIG.killRequirement.get() )
-			return;
-
-		if( player.world instanceof ServerWorld )
+		if( nbt.getInt( NBT_TAG ) >= Instances.UNDEAD_ARMY_CONFIG.killRequirement.get() && player.world instanceof ServerWorld )
 			if( RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player, ( ServerWorld )player.world ) )
 				nbt.putInt( NBT_TAG, 0 );
 	}
