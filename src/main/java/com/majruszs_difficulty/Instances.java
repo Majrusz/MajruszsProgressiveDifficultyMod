@@ -1,7 +1,7 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.blocks.EndBlock;
-import com.majruszs_difficulty.blocks.EndCrystalOre;
+import com.majruszs_difficulty.blocks.EndShardOre;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
@@ -15,7 +15,6 @@ import com.majruszs_difficulty.structure_pieces.FlyingEndIslandPiece;
 import com.majruszs_difficulty.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.structures.FlyingPhantomStructure;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
 import net.minecraft.particles.BasicParticleType;
@@ -37,12 +36,12 @@ public class Instances {
 	public static final BandageItem BANDAGE_ITEM;
 	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
-	public static final EndCrystalItem END_CRYSTAL;
+	public static final EndShardItem END_SHARD;
 	public static final EndIngotItem END_INGOT;
 
 	// Blocks
-	public static final EndCrystalOre END_CRYSTAL_ORE;
-	public static final EndCrystalOre.EndCrystalOreItem END_CRYSTAL_ORE_ITEM;
+	public static final EndShardOre END_SHARD_ORE;
+	public static final EndShardOre.EndShardOreItem END_SHARD_ORE_ITEM;
 	public static final EndBlock END_BLOCK;
 	public static final EndBlock.EndBlockItem END_BLOCK_ITEM;
 
@@ -75,12 +74,12 @@ public class Instances {
 		BANDAGE_ITEM = new BandageItem();
 		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
-		END_CRYSTAL = new EndCrystalItem();
+		END_SHARD = new EndShardItem();
 		END_INGOT = new EndIngotItem();
 
 		// Blocks
-		END_CRYSTAL_ORE = new EndCrystalOre();
-		END_CRYSTAL_ORE_ITEM = new EndCrystalOre.EndCrystalOreItem();
+		END_SHARD_ORE = new EndShardOre();
+		END_SHARD_ORE_ITEM = new EndShardOre.EndShardOreItem();
 		END_BLOCK = new EndBlock();
 		END_BLOCK_ITEM = new EndBlock.EndBlockItem();
 

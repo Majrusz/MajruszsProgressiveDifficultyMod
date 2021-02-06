@@ -16,12 +16,10 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Random;
-
 /** New late game crystal ore located in The End. */
 @Mod.EventBusSubscriber
-public class EndCrystalOre extends Block {
-	public EndCrystalOre() {
+public class EndShardOre extends Block {
+	public EndShardOre() {
 		super( AbstractBlock.Properties.create( Material.IRON, MaterialColor.YELLOW )
 			.harvestLevel( 3 )
 			.setRequiresTool()
@@ -38,7 +36,7 @@ public class EndCrystalOre extends Block {
 	public static void onBlockDestroy( BlockEvent.BreakEvent event ) {
 		BlockState blockState = event.getState();
 
-		if( blockState.getBlock() instanceof EndCrystalOre )
+		if( blockState.getBlock() instanceof EndShardOre )
 			targetEndermansOnEntity( event.getPlayer(), 3000.0 );
 	}
 
@@ -60,9 +58,9 @@ public class EndCrystalOre extends Block {
 			}
 	}
 
-	public static class EndCrystalOreItem extends BlockItem {
-		public EndCrystalOreItem() {
-			super( Instances.END_CRYSTAL_ORE, ( new Properties() ).maxStackSize( 64 )
+	public static class EndShardOreItem extends BlockItem {
+		public EndShardOreItem() {
+			super( Instances.END_SHARD_ORE, ( new Properties() ).maxStackSize( 64 )
 				.group( Instances.ITEM_GROUP ) );
 		}
 	}
