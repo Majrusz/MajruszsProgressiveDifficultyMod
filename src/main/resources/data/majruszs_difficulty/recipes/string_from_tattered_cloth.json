@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "tattered_cloth",
+  "ingredients": [
+    {
+      "item": "majruszs_difficulty:tattered_cloth"
+    }
+  ],
+  "result": {
+    "item": "minecraft:string",
+    "count": 2
+  }
+}

@@ -1,0 +1,26 @@
+{ 
+	"type": "minecraft:crafting_shaped",
+	"group": "tattered_cloth",
+	"pattern":
+	[ 
+		"ccc",
+		" c ",
+		"sss"
+	],
+	"key":
+	{
+		"c":
+		{ 
+			"item": "majruszs_difficulty:tattered_cloth"
+		},
+		"s":
+		{
+			"item": "minecraft:stick"
+		}
+	},
+	"result":
+	{ 
+		"item": "majruszs_difficulty:undead_battle_standard",
+		"count": 1
+	}
+}
