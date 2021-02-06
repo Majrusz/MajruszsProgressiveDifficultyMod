@@ -24,11 +24,11 @@
                   }
                 }
               ],
-              "name": "majruszs_difficulty:end_crystal_ore"
+              "name": "majruszs_difficulty:end_shard_ore"
             },
             {
               "type": "minecraft:item",
-              "name": "majruszs_difficulty:end_crystal"
+              "name": "majruszs_difficulty:end_shard"
             }
           ]
         }
