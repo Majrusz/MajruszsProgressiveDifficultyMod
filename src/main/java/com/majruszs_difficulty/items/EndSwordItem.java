@@ -7,6 +7,7 @@ import net.minecraft.item.SwordItem;
 /** New late game sword. */
 public class EndSwordItem extends SwordItem {
 	public EndSwordItem() {
-		super( CustomItemTier.END, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP ).isImmuneToFire() );
+		super( CustomItemTier.END, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP )
+			.isImmuneToFire() );
 	}
 }

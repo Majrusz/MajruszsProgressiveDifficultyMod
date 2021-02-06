@@ -7,6 +7,7 @@ import net.minecraft.item.Rarity;
 /** New strong end-game ingot. */
 public class EndIngotItem extends Item {
 	public EndIngotItem() {
-		super( new Properties().group( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().group( Instances.ITEM_GROUP )
+			.rarity( Rarity.UNCOMMON ) );
 	}
 }
