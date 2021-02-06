@@ -21,9 +21,9 @@ import net.minecraftforge.fml.common.Mod;
 public class EndShardOre extends Block {
 	public EndShardOre() {
 		super( AbstractBlock.Properties.create( Material.IRON, MaterialColor.YELLOW )
-			.harvestLevel( 3 )
+			.harvestLevel( 4 )
 			.setRequiresTool()
-			.hardnessAndResistance( 30.0F, 1200.0F )
+			.hardnessAndResistance( 30.0f, 1200.0f )
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 	}
 
@@ -37,7 +37,7 @@ public class EndShardOre extends Block {
 		BlockState blockState = event.getState();
 
 		if( blockState.getBlock() instanceof EndShardOre )
-			targetEndermansOnEntity( event.getPlayer(), 3000.0 );
+			targetEndermansOnEntity( event.getPlayer(), 2000.0 );
 	}
 
 	/**
