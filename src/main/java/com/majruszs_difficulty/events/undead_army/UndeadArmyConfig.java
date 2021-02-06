@@ -29,7 +29,7 @@ public class UndeadArmyConfig {
 		String bag_comment = "Treasure Bags for each player after defeating Undead Army.";
 		String enchant_comment = "Chance for entities to have enchanted items.";
 		this.availability = new AvailabilityConfig( "is_enabled", availability_comment, false, true );
-		this.killRequirement = new IntegerConfig( "kill_requirement", kill_comment, false, 50, 10, 1000 );
+		this.killRequirement = new IntegerConfig( "kill_requirement", kill_comment, false, 100, 10, 1000 );
 		this.scaleWithPlayers = new DoubleConfig( "player_scale", scale_comment, false, 0.5, 0.1, 1.0 );
 		this.experienceReward = new GameStateIntegerConfig( "experience", exp_comment, 40, 80, 120, 4, 1000 );
 		this.treasureBagReward = new GameStateIntegerConfig( "treasure_bags", bag_comment, 1, 1, 2, 1, 5 );
