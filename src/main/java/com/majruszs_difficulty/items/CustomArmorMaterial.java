@@ -18,7 +18,7 @@ public enum CustomArmorMaterial implements IArmorMaterial {
 	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
 		return Ingredient.fromItems( Items.FEATHER );
 	} ), END( "end", 39, new int[]{ 4, 6, 8, 4 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, () -> {
-		return Ingredient.fromItems( Instances.END_INGOT );
+		return Ingredient.fromItems( Instances.END_INGOT_ITEM );
 	} );
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };

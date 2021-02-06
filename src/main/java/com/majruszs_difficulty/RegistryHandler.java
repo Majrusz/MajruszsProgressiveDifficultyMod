@@ -113,8 +113,9 @@ public class RegistryHandler {
 		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
 		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( "hermes_boots", ()->Instances.HERMES_BOOTS_ITEM );
-		ITEMS.register( "end_shard", ()->Instances.END_SHARD );
-		ITEMS.register( "end_ingot", ()->Instances.END_INGOT );
+		ITEMS.register( "end_shard", ()->Instances.END_SHARD_ITEM );
+		ITEMS.register( "end_ingot", ()->Instances.END_INGOT_ITEM );
+		ITEMS.register( "tattered_cloth", ()->Instances.TATTERED_CLOTH_ITEM );
 		ITEMS.register( modEventBus );
 	}
 

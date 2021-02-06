@@ -11,7 +11,7 @@ import net.minecraft.item.Rarity;
 /** New late game end block. */
 public class EndBlock extends Block {
 	public EndBlock() {
-		super( Properties.create( Material.IRON, MaterialColor.YELLOW )
+		super( Properties.create( Material.IRON, MaterialColor.PURPLE )
 			.harvestLevel( 1 )
 			.setRequiresTool()
 			.hardnessAndResistance( 5.0f, 6.0f )

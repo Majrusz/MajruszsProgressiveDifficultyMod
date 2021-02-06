@@ -36,8 +36,9 @@ public class Instances {
 	public static final BandageItem BANDAGE_ITEM;
 	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
-	public static final EndShardItem END_SHARD;
-	public static final EndIngotItem END_INGOT;
+	public static final EndShardItem END_SHARD_ITEM;
+	public static final EndIngotItem END_INGOT_ITEM;
+	public static final TatteredClothItem TATTERED_CLOTH_ITEM;
 
 	// Blocks
 	public static final EndShardOre END_SHARD_ORE;
@@ -74,8 +75,9 @@ public class Instances {
 		BANDAGE_ITEM = new BandageItem();
 		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
-		END_SHARD = new EndShardItem();
-		END_INGOT = new EndIngotItem();
+		END_SHARD_ITEM = new EndShardItem();
+		END_INGOT_ITEM = new EndIngotItem();
+		TATTERED_CLOTH_ITEM = new TatteredClothItem();
 
 		// Blocks
 		END_SHARD_ORE = new EndShardOre();
