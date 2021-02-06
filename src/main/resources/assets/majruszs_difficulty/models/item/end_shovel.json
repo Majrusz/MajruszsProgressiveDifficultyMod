@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "majruszs_difficulty:item/end_shovel"
+  }
+}

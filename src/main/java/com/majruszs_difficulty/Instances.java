@@ -38,6 +38,11 @@ public class Instances {
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
 	public static final EndShardItem END_SHARD_ITEM;
 	public static final EndIngotItem END_INGOT_ITEM;
+	public static final EndSwordItem END_SWORD_ITEM;
+	public static final EndShovelItem END_SHOVEL_ITEM;
+	public static final EndPickaxeItem END_PICKAXE_ITEM;
+	public static final EndAxeItem END_AXE_ITEM;
+	public static final EndHoeItem END_HOE_ITEM;
 	public static final TatteredClothItem TATTERED_CLOTH_ITEM;
 
 	// Blocks
@@ -77,6 +82,11 @@ public class Instances {
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
 		END_SHARD_ITEM = new EndShardItem();
 		END_INGOT_ITEM = new EndIngotItem();
+		END_SWORD_ITEM = new EndSwordItem();
+		END_SHOVEL_ITEM = new EndShovelItem();
+		END_PICKAXE_ITEM = new EndPickaxeItem();
+		END_AXE_ITEM = new EndAxeItem();
+		END_HOE_ITEM = new EndHoeItem();
 		TATTERED_CLOTH_ITEM = new TatteredClothItem();
 
 		// Blocks

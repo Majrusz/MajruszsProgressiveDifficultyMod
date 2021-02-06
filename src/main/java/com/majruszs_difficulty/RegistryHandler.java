@@ -115,6 +115,11 @@ public class RegistryHandler {
 		ITEMS.register( "hermes_boots", ()->Instances.HERMES_BOOTS_ITEM );
 		ITEMS.register( "end_shard", ()->Instances.END_SHARD_ITEM );
 		ITEMS.register( "end_ingot", ()->Instances.END_INGOT_ITEM );
+		ITEMS.register( "end_sword", ()->Instances.END_SWORD_ITEM );
+		ITEMS.register( "end_shovel", ()->Instances.END_SHOVEL_ITEM );
+		ITEMS.register( "end_pickaxe", ()->Instances.END_PICKAXE_ITEM );
+		ITEMS.register( "end_axe", ()->Instances.END_AXE_ITEM );
+		ITEMS.register( "end_hoe", ()->Instances.END_HOE_ITEM );
 		ITEMS.register( "tattered_cloth", ()->Instances.TATTERED_CLOTH_ITEM );
 		ITEMS.register( modEventBus );
 	}
