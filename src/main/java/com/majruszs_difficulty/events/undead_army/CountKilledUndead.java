@@ -28,7 +28,7 @@ public class CountKilledUndead {
 		if( monster.getCreatureAttribute() != CreatureAttribute.UNDEAD )
 			return;
 
-		if( monster.isServerWorld() )
+		if( monster.isServerWorld() && RegistryHandler.UNDEAD_ARMY_MANAGER.doesEntityBelongToUndeadArmy( monster ) )
 			if( updateUndeadArmy( monster.getPositionVec() ) )
 				return;
 

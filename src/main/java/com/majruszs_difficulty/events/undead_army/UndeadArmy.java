@@ -11,6 +11,7 @@ import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.TimeConverter;
 import com.mlib.WorldHelper;
+import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -24,6 +25,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
+import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
@@ -93,7 +95,7 @@ public class UndeadArmy {
 	public static boolean doesEntityBelongToUndeadArmy( LivingEntity entity ) {
 		CompoundNBT data = entity.getPersistentData();
 
-		return data.contains( "UndeadArmyFrostWalker" );
+		return data.contains( UndeadArmyTags.UNIT );
 	}
 
 	/** Saves information about the raid when saving world. */
@@ -188,6 +190,17 @@ public class UndeadArmy {
 
 	public void onUndeadKill() {
 		this.undeadKilled = Math.min( this.undeadKilled + 1, this.undeadToKill );
+	}
+
+	/** Makes all units from Undead Army highlighted. */
+	public void highlightUndeadArmy() {
+		for( MonsterEntity monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+			EffectHelper.applyEffectIfPossible( monster, Effects.GLOWING, TimeConverter.secondsToTicks( 15.0 ), 5 );
+	}
+
+	/** Counts how many entities are left. */
+	public int countUndeadEntitiesLeft() {
+		return countNearbyUndeadArmy( SPAWN_RADIUS );
 	}
 
 	public void updateNearbyUndeadGoals() {

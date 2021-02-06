@@ -1,9 +1,11 @@
 package com.majruszs_difficulty.events.undead_army;
 
+import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -18,7 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 public class FreezeWater {
 	@SubscribeEvent
 	public static void freezeNearby( LivingEvent.LivingUpdateEvent event ) {
-		if( !isValid( event ) )
+		if( !isEntityValid( event.getEntityLiving() ) )
 			return;
 
 		MonsterEntity monster = ( MonsterEntity )event.getEntityLiving();
@@ -70,16 +72,11 @@ public class FreezeWater {
 		}
 	}
 
-	protected static boolean isValid( LivingEvent.LivingUpdateEvent event ) {
-		if( !( event.getEntityLiving() instanceof MonsterEntity ) )
+	/** Checks whether entity belongs to Undead Army. */
+	protected static boolean isEntityValid( LivingEntity entity ) {
+		if( !( RegistryHandler.UNDEAD_ARMY_MANAGER.doesEntityBelongToUndeadArmy( entity ) && entity instanceof MonsterEntity ) )
 			return false;
 
-		MonsterEntity monster = ( MonsterEntity )event.getEntityLiving();
-
-		if( !monster.getPersistentData()
-			.contains( "UndeadArmyFrostWalker" ) )
-			return false;
-
-		return monster.isServerWorld();
+		return entity.isServerWorld();
 	}
 }
