@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
+import com.mlib.Random;
 import com.mlib.config.ConfigGroup;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,14 +29,17 @@ public class ExperienceBonus {
 
 	@SubscribeEvent
 	public static void onXPPickUp( PlayerXpEvent.PickupXp event ) {
-		ExperienceOrbEntity orb = event.getOrb();
-		int bonusExperience = ( int )( Math.round( Instances.EXPERIENCE_BONUS.getExperienceMultiplier() * ( double )orb.getXpValue() ) );
-
+		int bonusExperience = Instances.EXPERIENCE_BONUS.getExtraExperience( event.getOrb() );
 		if( bonusExperience <= 0 )
 			return;
 
 		PlayerEntity player = event.getPlayer();
 		player.giveExperiencePoints( bonusExperience );
+	}
+
+	/** Returns final experience amount after applying game state bonus. */
+	private int getExtraExperience( ExperienceOrbEntity experienceOrb ) {
+		return Random.randomizeExperience( getExperienceMultiplier() * experienceOrb.getXpValue() );
 	}
 
 	/** Returns extra experience depending on current game state. */
