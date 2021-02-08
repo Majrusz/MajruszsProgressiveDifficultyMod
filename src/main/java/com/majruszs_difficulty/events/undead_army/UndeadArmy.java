@@ -14,6 +14,7 @@ import com.mlib.WorldHelper;
 import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -340,12 +341,11 @@ public class UndeadArmy {
 		for( WaveMember waveMember : WaveMember.values() ) {
 			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
 				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.world, this.positionToAttack, SPAWN_RADIUS );
-				MonsterEntity monster = ( MonsterEntity )waveMember.type.spawn( this.world, null, null, randomPosition, SpawnReason.EVENT, true,
-					true
-				);
-				if( monster == null )
+				Entity entity = waveMember.type.spawn( this.world, null, null, null, randomPosition, SpawnReason.EVENT, true, true );
+				if( !( entity instanceof MonsterEntity ) )
 					continue;
 
+				MonsterEntity monster = ( MonsterEntity )entity;
 				monster.enablePersistence();
 				updateUndeadGoal( monster );
 				tryToEnchantEquipment( monster );
@@ -367,7 +367,7 @@ public class UndeadArmy {
 
 	/** Checks whether Undead Army should be highlighted. */
 	private boolean shouldEntitiesBeHighlighted() {
-		return this.ticksWaveActive >= TimeConverter.minutesToTicks( 1.5 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill/2;
+		return this.ticksWaveActive >= TimeConverter.minutesToTicks( 1.0 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill/2;
 	}
 
 	/** Checks whether wave should be ended earlier. */
