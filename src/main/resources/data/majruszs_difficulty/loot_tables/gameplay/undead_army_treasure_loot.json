@@ -47,7 +47,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 23,
+          "weight": 20,
           "name": "minecraft:arrow"
         },
         {
@@ -67,13 +67,13 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
-          "name": "minecraft:enchanted_golden_apple"
+          "weight": 4,
+          "name": "majruszs_difficulty:tattered_cloth"
         },
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "majruszs_difficulty:undead_battle_standard"
+          "name": "minecraft:enchanted_golden_apple"
         }
       ]
     }
