@@ -237,10 +237,10 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( SPAWN_RADIUS / 7 ) >= this.undeadToKill / 2 ) )
+		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( SPAWN_RADIUS / 7.0 ) >= this.undeadToKill / 2 ) )
 			createSpawner();
 
-		if( this.undeadKilled == this.undeadToKill )
+		if( this.undeadKilled == this.undeadToKill || shouldWaveEndPrematurely() )
 			endWave();
 
 		if( shouldEntitiesBeHighlighted() )
@@ -367,7 +367,12 @@ public class UndeadArmy {
 
 	/** Checks whether Undead Army should be highlighted. */
 	private boolean shouldEntitiesBeHighlighted() {
-		return this.ticksWaveActive >= TimeConverter.minutesToTicks( 1.0 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill/2;
+		return this.ticksWaveActive >= TimeConverter.minutesToTicks( 1.5 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill/2;
+	}
+
+	/** Checks whether wave should be ended earlier. */
+	private boolean shouldWaveEndPrematurely() {
+		return this.undeadKilled >= (this.undeadToKill * 0.8) && this.ticksWaveActive >= TimeConverter.minutesToTicks( 3.0 ) && countUndeadEntitiesLeft() < 2;
 	}
 
 	/** Tries to enchant weapons and armor for given monster. */
