@@ -59,6 +59,7 @@ public class UndeadArmy {
 	private boolean isActive = true;
 	private long ticksActive = 0;
 	private int ticksInactive = 0;
+	private int ticksWaveActive = 0;
 	private int betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM;
 	private int currentWave = 0;
 	private int undeadToKill = 1;
@@ -81,6 +82,7 @@ public class UndeadArmy {
 		this.isActive = nbt.getBoolean( "IsActive" );
 		this.ticksActive = nbt.getLong( "TicksActive" );
 		this.ticksInactive = nbt.getInt( "TicksInactive" );
+		this.ticksWaveActive = nbt.getInt( "TicksWaveActive" );
 		this.betweenRaidTicks = nbt.getInt( "BetweenRaidTick" );
 		this.currentWave = nbt.getInt( "CurrentWave" );
 		this.undeadToKill = nbt.getInt( "UndeadToKill" );
@@ -107,6 +109,7 @@ public class UndeadArmy {
 		nbt.putBoolean( "IsActive", this.isActive );
 		nbt.putLong( "TicksActive", this.ticksActive );
 		nbt.putInt( "TicksInactive", this.ticksInactive );
+		nbt.putInt( "TicksWaveActive", this.ticksWaveActive );
 		nbt.putInt( "BetweenRaidTicks", this.betweenRaidTicks );
 		nbt.putInt( "CurrentWave", this.currentWave );
 		nbt.putInt( "UndeadToKill", this.undeadToKill );
@@ -167,7 +170,7 @@ public class UndeadArmy {
 		this.ticksActive++;
 	}
 
-	/** Function called each ...? */
+	/** Function called each tick for handling current status. */
 	public void tickCurrentStatus() {
 		switch( this.status ) {
 			case BETWEEN_WAVES:
@@ -188,6 +191,7 @@ public class UndeadArmy {
 		}
 	}
 
+	/** Function called when undead was killed. */
 	public void onUndeadKill() {
 		this.undeadKilled = Math.min( this.undeadKilled + 1, this.undeadToKill );
 	}
@@ -203,6 +207,7 @@ public class UndeadArmy {
 		return countNearbyUndeadArmy( SPAWN_RADIUS );
 	}
 
+	/** Updates all nearby undead entities AI goals. Required after world restart. */
 	public void updateNearbyUndeadGoals() {
 		List< MonsterEntity > monsters = getNearbyUndeadArmy( SPAWN_RADIUS );
 
@@ -237,6 +242,11 @@ public class UndeadArmy {
 
 		if( this.undeadKilled == this.undeadToKill )
 			endWave();
+
+		if( shouldEntitiesBeHighlighted() )
+			highlightUndeadArmy();
+
+		this.ticksWaveActive++;
 	}
 
 	/** Calculates single frame when Undead Army was defeated. */
@@ -270,6 +280,7 @@ public class UndeadArmy {
 	private void nextWave() {
 		++this.currentWave;
 		this.status = Status.ONGOING;
+		this.ticksWaveActive = 0;
 		spawnWaveEnemies();
 		updateBarText();
 	}
@@ -352,6 +363,11 @@ public class UndeadArmy {
 				new SPlaySoundEffectPacket( Instances.Sounds.UNDEAD_ARMY_WAVE_STARTED, SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f, 1.0f ) );
 
 		this.undeadToKill = Math.max( 1, this.undeadToKill );
+	}
+
+	/** Checks whether Undead Army should be highlighted. */
+	private boolean shouldEntitiesBeHighlighted() {
+		return this.ticksWaveActive >= TimeConverter.minutesToTicks( 1.0 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill/2;
 	}
 
 	/** Tries to enchant weapons and armor for given monster. */
