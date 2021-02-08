@@ -3,6 +3,8 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.RegistryHandler;
+import com.mlib.config.AvailabilityConfig;
+import com.mlib.config.ConfigGroup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,18 +30,29 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
+
 /** Class representing treasure bag. */
 public class TreasureBagItem extends Item {
+	protected final static ConfigGroup CONFIG_GROUP;
+	static {
+		CONFIG_GROUP = new ConfigGroup( "TreasureBag", "Configuration for treasure bags." );
+		FEATURES_GROUP.addGroup( CONFIG_GROUP );
+	}
+
 	private final ResourceLocation lootTableLocation;
 	private final String id;
+	private final AvailabilityConfig availability;
 
-	public TreasureBagItem( String id ) {
+	public TreasureBagItem( String id, String entityNameForConfiguration ) {
 		super( ( new Item.Properties() ).maxStackSize( 16 )
 			.group( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
 		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
 		this.id = id;
+		this.availability = new AvailabilityConfig( id, getComment( entityNameForConfiguration ), false, true );
+		CONFIG_GROUP.addConfig( this.availability );
 	}
 
 	/** Opening treasure bag on right click. */
@@ -75,18 +88,14 @@ public class TreasureBagItem extends Item {
 		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.treasure_bag.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
 	}
 
-	/**
-	 Returning full object registry of treasure bag.
-
-	 @param name Name of the treasure bag.
-	 */
-	public static RegistryObject< TreasureBagItem > getRegistry( String name ) {
-		return RegistryHandler.ITEMS.register( name + "_treasure_bag", ()->new TreasureBagItem( name + "_treasure_loot" ) );
-	}
-
 	/** Registers given treasure bag. */
 	public RegistryObject< TreasureBagItem > register() {
 		return RegistryHandler.ITEMS.register( this.id + "_treasure_bag", ()->this );
+	}
+
+	/** Checks whether treasure bag is not disabled in configuration file? */
+	public boolean isAvailable() {
+		return this.availability.isEnabled();
 	}
 
 	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
@@ -114,5 +123,10 @@ public class TreasureBagItem extends Item {
 		return ServerLifecycleHooks.getCurrentServer()
 			.getLootTableManager()
 			.getLootTableFromLocation( this.lootTableLocation );
+	}
+
+	/** Creates comment for configuration. */
+	private static String getComment( String treasureBagSourceName ) {
+		return "Is treasure bag from " + treasureBagSourceName + " available in survival mode?";
 	}
 }

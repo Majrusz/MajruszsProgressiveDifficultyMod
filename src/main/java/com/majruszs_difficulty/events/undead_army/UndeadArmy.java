@@ -397,8 +397,9 @@ public class UndeadArmy {
 			for( int i = 0; i < getExperienceAmount() / 4; i++ )
 				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), 4 ) );
 
-			for( int i = 0; i < getTreasureBagsAmount(); i++ )
-				MajruszsHelper.giveItemStackToPlayer( new ItemStack( Instances.TreasureBags.UNDEAD_ARMY ), player, this.world );
+			if( Instances.UNDEAD_ARMY_TREASURE_BAG.isAvailable() )
+				for( int i = 0; i < getTreasureBagsAmount(); i++ )
+					MajruszsHelper.giveItemStackToPlayer( new ItemStack( Instances.UNDEAD_ARMY_TREASURE_BAG ), player, this.world );
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.majruszs_difficulty.loot_modifiers;
 
 import com.google.gson.JsonObject;
 import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
+import com.majruszs_difficulty.items.TreasureBagItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -31,8 +32,8 @@ public class AddTreasureBagsToLoot extends LootModifier {
 		if( entity == null || damageSource == null )
 			return generatedLoot;
 
-		Item treasureBag = TreasureBagManager.getTreasureBag( entity.getType() );
-		if( treasureBag == null || !( entity instanceof LivingEntity ) )
+		TreasureBagItem treasureBag = TreasureBagManager.getTreasureBag( entity.getType() );
+		if( treasureBag == null || !( entity instanceof LivingEntity ) || !treasureBag.isAvailable() )
 			return generatedLoot;
 
 		if( TreasureBagManager.rewardAllPlayers( ( LivingEntity )entity ) )

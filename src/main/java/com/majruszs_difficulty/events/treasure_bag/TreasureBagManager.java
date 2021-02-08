@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events.treasure_bag;
 
 import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.items.TreasureBagItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +27,7 @@ public class TreasureBagManager {
 	 @param treasureBag Treasure Bag for each player.
 	 @param replaceLoot Should treasure bag replace default loot? When it is true entity will only drop treasure bag.
 	 */
-	public static void addTreasureBagTo( EntityType< ? > entityType, Item treasureBag, boolean replaceLoot ) {
+	public static void addTreasureBagTo( EntityType< ? > entityType, TreasureBagItem treasureBag, boolean replaceLoot ) {
 		registers.add( new Register( entityType, treasureBag, replaceLoot ) );
 	}
 
@@ -50,7 +51,7 @@ public class TreasureBagManager {
 
 	/** Returns treasure bag for given entity type. */
 	@Nullable
-	public static Item getTreasureBag( EntityType< ? > entityType ) {
+	public static TreasureBagItem getTreasureBag( EntityType< ? > entityType ) {
 		for( Register register : registers )
 			if( register.entityType.equals( entityType ) )
 				return register.treasureBag;
@@ -85,10 +86,10 @@ public class TreasureBagManager {
 
 	static class Register {
 		public final EntityType< ? > entityType;
-		public final Item treasureBag;
+		public final TreasureBagItem treasureBag;
 		public final boolean shouldReplaceLoot;
 
-		public Register( EntityType< ? > entityType, Item treasureBag, boolean replaceLoot ) {
+		public Register( EntityType< ? > entityType, TreasureBagItem treasureBag, boolean replaceLoot ) {
 			this.entityType = entityType;
 			this.treasureBag = treasureBag;
 			this.shouldReplaceLoot = replaceLoot;

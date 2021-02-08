@@ -43,13 +43,14 @@ public class FishingRewarder {
 
 		if( fishedItemsCounter >= Instances.FISHING_REWARDER.getRequiredItems() ) {
 			data.putInt( FISHING_TAG, fishedItemsCounter - Instances.FISHING_REWARDER.getRequiredItems() );
-			giveTreasureBagTo( player );
+			if( Instances.FISHING_TREASURE_BAG.isAvailable() )
+				giveTreasureBagTo( player );
 		}
 	}
 
 	/** Gives a treasure bag to specified player. */
 	protected static void giveTreasureBagTo( PlayerEntity player ) {
-		ItemStack treasureBag = new ItemStack( Instances.TreasureBags.FISHING );
+		ItemStack treasureBag = new ItemStack( Instances.FISHING_TREASURE_BAG );
 		MajruszsHelper.giveItemStackToPlayer( treasureBag, player, ( ServerWorld )player.world );
 	}
 

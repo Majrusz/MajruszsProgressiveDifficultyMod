@@ -97,11 +97,11 @@ public class RegistryHandler {
 
 	/** Registration of treasure bags. */
 	private static void registerTreasureBags() {
-		Instances.TreasureBags.UNDEAD_ARMY.register();
-		Instances.TreasureBags.ELDER_GUARDIAN.register();
-		Instances.TreasureBags.WITHER.register();
-		Instances.TreasureBags.ENDER_DRAGON.register();
-		Instances.TreasureBags.FISHING.register();
+		Instances.UNDEAD_ARMY_TREASURE_BAG.register();
+		Instances.ELDER_GUARDIAN_TREASURE_BAG.register();
+		Instances.WITHER_TREASURE_BAG.register();
+		Instances.ENDER_DRAGON_TREASURE_BAG.register();
+		Instances.FISHING_TREASURE_BAG.register();
 	}
 
 	/** Registration of items. */
@@ -217,9 +217,9 @@ public class RegistryHandler {
 		MinecraftServer server = event.getServer();
 		UNDEAD_ARMY_MANAGER.updateWorld( server.func_241755_D_() );
 
-		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, Instances.TreasureBags.ELDER_GUARDIAN, true );
-		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, Instances.TreasureBags.WITHER, false );
-		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, Instances.TreasureBags.ENDER_DRAGON, true );
+		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, Instances.ELDER_GUARDIAN_TREASURE_BAG, true );
+		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, Instances.WITHER_TREASURE_BAG, false );
+		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, Instances.ENDER_DRAGON_TREASURE_BAG, true );
 	}
 
 	/**

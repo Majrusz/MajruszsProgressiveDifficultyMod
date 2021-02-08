@@ -45,6 +45,13 @@ public class Instances {
 	public static final EndHoeItem END_HOE_ITEM;
 	public static final TatteredClothItem TATTERED_CLOTH_ITEM;
 
+	// Treasure Bags
+	public static final TreasureBagItem UNDEAD_ARMY_TREASURE_BAG;
+	public static final TreasureBagItem ELDER_GUARDIAN_TREASURE_BAG;
+	public static final TreasureBagItem WITHER_TREASURE_BAG;
+	public static final TreasureBagItem ENDER_DRAGON_TREASURE_BAG;
+	public static final TreasureBagItem FISHING_TREASURE_BAG;
+
 	// Blocks
 	public static final EndShardOre END_SHARD_ORE;
 	public static final EndShardOre.EndShardOreItem END_SHARD_ORE_ITEM;
@@ -88,6 +95,13 @@ public class Instances {
 		END_AXE_ITEM = new EndAxeItem();
 		END_HOE_ITEM = new EndHoeItem();
 		TATTERED_CLOTH_ITEM = new TatteredClothItem();
+
+		// Treasure Bags
+		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );
+		ELDER_GUARDIAN_TREASURE_BAG = new TreasureBagItem( "elder_guardian", "Elder Guardian" );
+		WITHER_TREASURE_BAG = new TreasureBagItem( "wither", "Wither" );
+		ENDER_DRAGON_TREASURE_BAG = new TreasureBagItem( "ender_dragon", "Ender Dragon" );
+		FISHING_TREASURE_BAG = new TreasureBagItem( "fishing", "Fishing" );
 
 		// Blocks
 		END_SHARD_ORE = new EndShardOre();
@@ -148,22 +162,6 @@ public class Instances {
 		FISHING_REWARDER = new FishingRewarder();
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
-	}
-
-	public static class TreasureBags {
-		public static final TreasureBagItem UNDEAD_ARMY;
-		public static final TreasureBagItem ELDER_GUARDIAN;
-		public static final TreasureBagItem WITHER;
-		public static final TreasureBagItem ENDER_DRAGON;
-		public static final TreasureBagItem FISHING;
-
-		static {
-			UNDEAD_ARMY = new TreasureBagItem( "undead_army" );
-			ELDER_GUARDIAN = new TreasureBagItem( "elder_guardian" );
-			WITHER = new TreasureBagItem( "wither" );
-			ENDER_DRAGON = new TreasureBagItem( "ender_dragon" );
-			FISHING = new TreasureBagItem( "fishing" );
-		}
 	}
 
 	public static class Tools {
