@@ -1,11 +1,10 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
+import com.mlib.WorldHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -29,9 +28,12 @@ public class EndermanTeleportOnAttack extends WhenDamagedBase {
 	public void whenDamaged( LivingEntity target ) {
 		ServerWorld world = ( ServerWorld )target.world;
 
-		Vector3d newPosition = Random.getRandomVector3d( -10.0, 10.0, 0.0, 0.0, -10.0, 10.0 )
-			.add( target.getPositionVec() );
+		double distanceFactor = 5.0;
+		if( target.prevPosY + 8 > world.getHeight( Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ( int )target.prevPosX, ( int )target.prevPosZ ) )
+			distanceFactor *= 2.0;
 
+		Vector3d newPosition = Random.getRandomVector3d( -distanceFactor, distanceFactor, -1.0, 1.0, -distanceFactor, distanceFactor )
+			.add( target.getPositionVec() );
 		double y = world.getHeight( Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ( int )newPosition.x, ( int )newPosition.z ) + 1;
 
 		if( y < 5 )
@@ -39,7 +41,7 @@ public class EndermanTeleportOnAttack extends WhenDamagedBase {
 
 		world.playSound( null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f );
 		world.spawnParticle( ParticleTypes.PORTAL, target.prevPosX, target.getPosYHeight( 0.5 ), target.prevPosZ, 10, 0.25, 0.25, 0.25, 0.1 );
-		target.attemptTeleport( newPosition.x, y, newPosition.z, true );
+		target.attemptTeleport( newPosition.x, target.prevPosY + 8 > y ? y : newPosition.y, newPosition.z, true );
 	}
 
 	/** Checking if all conditions were met. */
