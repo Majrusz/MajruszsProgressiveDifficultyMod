@@ -26,6 +26,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -326,6 +327,8 @@ public class UndeadArmy {
 
 				( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic()
 					.setEntityType( getEntityTypeForMonsterSpawner() );
+
+				this.world.spawnParticle( ParticleTypes.SMOKE, x, y, z, 40, 0.5, 0.5, 0.5, 0.01 );
 			}
 		}
 
