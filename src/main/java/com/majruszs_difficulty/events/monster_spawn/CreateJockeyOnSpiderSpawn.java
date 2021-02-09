@@ -4,6 +4,7 @@ import com.majruszs_difficulty.GameState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.monster.CaveSpiderEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.world.server.ServerWorld;
@@ -30,6 +31,6 @@ public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
 
 	@Override
 	protected boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof SpiderEntity && super.shouldBeExecuted( entity );
+		return entity instanceof SpiderEntity && !( entity instanceof CaveSpiderEntity ) && super.shouldBeExecuted( entity );
 	}
 }
