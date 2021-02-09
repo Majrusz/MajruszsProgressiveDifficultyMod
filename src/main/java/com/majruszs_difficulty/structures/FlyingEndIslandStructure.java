@@ -30,13 +30,16 @@ public class FlyingEndIslandStructure extends NoFeatureBaseStructure {
 	private static final List< MobSpawnInfo.Spawners > STRUCTURE_MONSTERS = ImmutableList.of(
 		new MobSpawnInfo.Spawners( SkyKeeperEntity.type, 10, 1, 1 ) );
 	public final DoubleConfig buildingIslandChance;
+	public final DoubleConfig shipIslandChance;
 
 	public FlyingEndIslandStructure() {
 		super( "FlyingEndIsland", "Flying End Island", 1717171718, 6, 12, Instances.FLYING_END_ISLAND_FEATURE );
 
-		String comment = "Chance for spawning build on island.";
-		this.buildingIslandChance = new DoubleConfig( "building_chance", comment, false, 0.2, 0.0, 1.0 );
-		this.group.addConfig( this.buildingIslandChance );
+		String buildingComment = "Chance for spawning building on island.";
+		String shipComment = "Chance for spawning ship instead of building.";
+		this.buildingIslandChance = new DoubleConfig( "building_chance", buildingComment, false, 0.2, 0.0, 1.0 );
+		this.shipIslandChance = new DoubleConfig( "ship_chance", shipComment, false, 0.25, 0.0, 1.0 );
+		this.group.addConfigs( this.buildingIslandChance, this.shipIslandChance );
 	}
 
 	/** Generation stage for where to generate the structure. */
