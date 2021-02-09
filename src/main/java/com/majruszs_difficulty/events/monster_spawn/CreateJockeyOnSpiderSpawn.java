@@ -15,7 +15,7 @@ public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
 	private static final String CONFIG_COMMENT = "Extra chance for jockey to spawn.";
 
 	public CreateJockeyOnSpiderSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, GameState.State.EXPERT, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.125, GameState.State.EXPERT, false );
 	}
 
 	@Override
