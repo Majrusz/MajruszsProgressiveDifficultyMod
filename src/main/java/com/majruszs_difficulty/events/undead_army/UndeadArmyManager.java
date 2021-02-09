@@ -27,7 +27,7 @@ import java.util.Optional;
 @Mod.EventBusSubscriber
 public class UndeadArmyManager extends WorldSavedData {
 	public static final String DATA_NAME = "undead_army";
-	public static final double maximumDistanceToArmy = 9001.0;
+	public static final double maximumDistanceToArmy = 12000.0;
 	private ServerWorld world;
 	private final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	private final List< UndeadArmyToBeSpawned > undeadArmiesToBeSpawned = new ArrayList<>();
