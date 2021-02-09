@@ -22,7 +22,7 @@ public abstract class WhenDamagedBase extends FeatureBase {
 
 	 @param target Entity target that was attacked.
 	 */
-	public abstract void whenDamaged( LivingEntity target );
+	public abstract void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target );
 
 	/** Checking if all conditions were met. */
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {

@@ -42,22 +42,22 @@ public class EndShardOre extends Block {
 	}
 
 	/**
-	 Makes all endermans in the given distance target the player.
+	 Makes all endermans in the given distance target the entity.
 
-	 @param player          Player to target.
-	 @param maximumDistance Maximum distance from enderman to player.
+	 @param target          Entity to target.
+	 @param maximumDistance Maximum distance from enderman to entity.
 	 */
-	public static void targetEndermansOnEntity( PlayerEntity player, double maximumDistance ) {
-		if( !( player.world instanceof ServerWorld ) )
+	public static void targetEndermansOnEntity( LivingEntity target, double maximumDistance ) {
+		if( !( target.world instanceof ServerWorld ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )player.world;
-		for( Entity entity : world.getEntities( null, enderman->enderman.getDistanceSq( player ) < maximumDistance ) )
+		ServerWorld world = ( ServerWorld )target.world;
+		for( Entity entity : world.getEntities( null, enderman->enderman.getDistanceSq( target ) < maximumDistance ) )
 			if( entity instanceof EndermanEntity ) {
 				EndermanEntity enderman = ( EndermanEntity )entity;
 				LivingEntity currentEndermanTarget = enderman.getRevengeTarget();
 				if( currentEndermanTarget == null || !currentEndermanTarget.isAlive() )
-					enderman.setRevengeTarget( player );
+					enderman.setRevengeTarget( target );
 			}
 	}
 

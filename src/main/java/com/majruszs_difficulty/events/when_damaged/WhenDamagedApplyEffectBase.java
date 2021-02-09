@@ -9,6 +9,8 @@ import net.minecraft.potion.Effect;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.Nullable;
+
 /** Base class representing event on which enemies will receive some effects after being attacked. */
 public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	protected final Effect[] effects;
@@ -39,7 +41,7 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	 @param target Entity target that was attacked.
 	 */
 	@Override
-	public void whenDamaged( LivingEntity target ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target ) {
 		ServerWorld world = ( ServerWorld )target.getEntityWorld();
 		Difficulty difficulty = world.getDifficulty();
 
