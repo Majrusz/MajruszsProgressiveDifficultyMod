@@ -42,7 +42,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 			this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1 );
 
 		if( this.leaderArmor != null )
-			giveArmorToLeader( entity, world );
+			giveArmorToLeader( entity );
 
 		spawnChildren( childrenAmount, entity, world );
 	}
@@ -51,9 +51,8 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	 Gives full armor to leader.
 
 	 @param leader Entity to give an armor.
-	 @param world  Entity world.
 	 */
-	private void giveArmorToLeader( LivingEntity leader, ServerWorld world ) {
+	private void giveArmorToLeader( LivingEntity leader ) {
 		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( leader );
 
 		List< ItemStack > itemStacks = new ArrayList<>();
@@ -67,7 +66,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	}
 
 	/** Gives weapon from generateWeapon method to given entity. */
-	private void giveWeaponTo( LivingEntity child, ServerWorld world ) {
+	private void giveWeaponTo( LivingEntity child ) {
 		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( child );
 
 		ItemStack weapon = generateWeaponForChild();
@@ -100,7 +99,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 			double z = spawnPosition.z - 3 + MajruszLibrary.RANDOM.nextInt( 7 );
 			child.setPosition( x, y, z );
 			setupGoals( ( CreatureEntity )leader, child, 9, 9 );
-			giveWeaponTo( child, world );
+			giveWeaponTo( child );
 
 			world.summonEntity( child );
 		}
