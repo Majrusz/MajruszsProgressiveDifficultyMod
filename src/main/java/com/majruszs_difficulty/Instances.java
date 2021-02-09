@@ -144,6 +144,7 @@ public class Instances {
 		WhenDamagedEvent.REGISTRY_LIST.add( new ThrownTridentBleedingOnHurt() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new BiteBleedingOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new EndermanTeleportOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new EndSwordLevitationOnAttack() );
 
 		// On enemy to be spawned
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
