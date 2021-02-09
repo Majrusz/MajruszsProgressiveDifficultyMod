@@ -10,6 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -29,6 +32,11 @@ public class HasteOnDestroyingBlocks {
 		EffectHelper.applyEffectIfPossible( player, Effects.HASTE, TimeConverter.secondsToTicks( 5.0 ), 0 );
 	}
 
+	public static IFormattableTextComponent getTooltip() {
+		return new TranslationTextComponent( "majruszs_difficulty.effects.haste_tooltip" ).mergeStyle( TextFormatting.GRAY );
+	}
+
+	/** Checks whether tool is made from end ingredients. */
 	private static boolean isEndTool( Item item ) {
 		return item instanceof EndHoeItem || item instanceof EndAxeItem || item instanceof EndPickaxeItem || item instanceof EndShovelItem;
 	}
