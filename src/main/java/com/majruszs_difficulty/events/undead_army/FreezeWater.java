@@ -74,9 +74,9 @@ public class FreezeWater {
 
 	/** Checks whether entity belongs to Undead Army. */
 	protected static boolean isEntityValid( LivingEntity entity ) {
-		if( entity instanceof MonsterEntity && !( RegistryHandler.UNDEAD_ARMY_MANAGER.doesEntityBelongToUndeadArmy( entity ) ) )
+		if( !( entity instanceof MonsterEntity ) )
 			return false;
 
-		return entity.isServerWorld();
+		return UndeadArmy.doesEntityBelongToUndeadArmy( entity ) && entity.isServerWorld();
 	}
 }
