@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
@@ -37,7 +38,7 @@ public class EndShardOre extends Block {
 		BlockState blockState = event.getState();
 
 		if( blockState.getBlock() instanceof EndShardOre )
-			targetEndermansOnEntity( event.getPlayer(), 2000.0 );
+			targetEndermansOnEntity( event.getPlayer(), 1000.0 );
 	}
 
 	/**
@@ -46,7 +47,7 @@ public class EndShardOre extends Block {
 	 @param player          Player to target.
 	 @param maximumDistance Maximum distance from enderman to player.
 	 */
-	private static void targetEndermansOnEntity( PlayerEntity player, double maximumDistance ) {
+	public static void targetEndermansOnEntity( PlayerEntity player, double maximumDistance ) {
 		if( !( player.world instanceof ServerWorld ) )
 			return;
 
@@ -54,7 +55,9 @@ public class EndShardOre extends Block {
 		for( Entity entity : world.getEntities( null, enderman->enderman.getDistanceSq( player ) < maximumDistance ) )
 			if( entity instanceof EndermanEntity ) {
 				EndermanEntity enderman = ( EndermanEntity )entity;
-				enderman.setRevengeTarget( player );
+				LivingEntity currentEndermanTarget = enderman.getRevengeTarget();
+				if( currentEndermanTarget == null || !currentEndermanTarget.isAlive() )
+					enderman.setRevengeTarget( player );
 			}
 	}
 
