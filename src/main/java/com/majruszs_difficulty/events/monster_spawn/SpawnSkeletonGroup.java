@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.CreatureEntity;
@@ -30,7 +31,7 @@ public class SpawnSkeletonGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	protected boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof SkeletonEntity && super.shouldBeExecuted( entity );
+		return entity instanceof SkeletonEntity && !( entity instanceof EliteSkeletonEntity ) && super.shouldBeExecuted( entity );
 	}
 
 	@Override
