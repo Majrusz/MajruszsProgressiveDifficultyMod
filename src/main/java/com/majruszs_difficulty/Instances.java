@@ -156,6 +156,7 @@ public class Instances {
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnSkeletonGroup() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnZombieGroup() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new CreateJockeyOnSpiderSpawn() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnEliteSkeletonGroup() );
 
 		// Misc
 		UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
