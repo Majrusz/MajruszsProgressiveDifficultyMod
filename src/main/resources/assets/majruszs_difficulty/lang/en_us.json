@@ -31,7 +31,7 @@
   "item.majruszs_difficulty.end_shard": "End Shard",
   "item.majruszs_difficulty.end_ingot": "End Ingot",
   "item.majruszs_difficulty.end_sword": "End Sword",
-  "item.majruszs_difficulty.end_sword.item_tooltip": "Attacking while sneaking may inflict Levitation on enemies.",
+  "item.majruszs_difficulty.end_sword.item_tooltip": "Attacking while sneaking may inflict stackable Levitation on enemies.",
   "item.majruszs_difficulty.end_shovel": "End Shovel",
   "item.majruszs_difficulty.end_pickaxe": "End Pickaxe",
   "item.majruszs_difficulty.end_axe": "End Axe",
@@ -59,7 +59,7 @@
   "majruszs_difficulty.undead_army.south": "south",
   "majruszs_difficulty.subtitle.undead_army.approaching": "Undead Army Approaching",
   "majruszs_difficulty.subtitle.undead_army.wave_started": "Wave Started",
-  "majruszs_difficulty.effects.haste_tooltip": "Destroying blocks gives you a haste effect.",
+  "majruszs_difficulty.effects.haste_tooltip": "Destroying blocks gives you Haste.",
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death from injuries caused by %2$s"
 }
