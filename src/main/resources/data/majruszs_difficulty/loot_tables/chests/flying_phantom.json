@@ -3,7 +3,7 @@
   "pools": [
     {
       "rolls": {
-        "min": 2.0,
+        "min": 3.0,
         "max": 4.0,
         "type": "minecraft:uniform"
       },
@@ -25,7 +25,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 40,
+          "weight": 35,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -49,6 +49,11 @@
             }
           ],
           "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "majruszs_difficulty:end_shard"
         }
       ]
     },

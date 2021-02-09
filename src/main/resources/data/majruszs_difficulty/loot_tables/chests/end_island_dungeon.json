@@ -24,8 +24,13 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 10,
+          "weight": 9,
           "name": "minecraft:shulker_shell"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "majruszs_difficulty:end_shard"
         }
       ]
     }

@@ -24,7 +24,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 30,
+          "weight": 25,
           "name": "minecraft:diamond",
           "functions": [
             {
@@ -61,6 +61,11 @@
             }
           ],
           "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "majruszs_difficulty:end_shard"
         }
       ]
     },
