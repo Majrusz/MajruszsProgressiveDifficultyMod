@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.structures;
+package com.majruszs_difficulty.generation.structures;
 
 import com.google.common.collect.ImmutableMap;
 import com.mlib.config.AvailabilityConfig;

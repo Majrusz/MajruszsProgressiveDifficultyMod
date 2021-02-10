@@ -1,9 +1,9 @@
-package com.majruszs_difficulty.structures;
+package com.majruszs_difficulty.generation.structures;
 
 import com.google.common.collect.ImmutableList;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
-import com.majruszs_difficulty.structure_pieces.FlyingEndIslandPiece;
+import com.majruszs_difficulty.generation.structure_pieces.FlyingEndIslandPiece;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.util.Rotation;

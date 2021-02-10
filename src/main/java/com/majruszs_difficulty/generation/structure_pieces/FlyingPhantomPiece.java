@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.structure_pieces;
+package com.majruszs_difficulty.generation.structure_pieces;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
