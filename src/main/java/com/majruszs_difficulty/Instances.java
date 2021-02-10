@@ -44,6 +44,10 @@ public class Instances {
 	public static final EndAxeItem END_AXE_ITEM;
 	public static final EndHoeItem END_HOE_ITEM;
 	public static final TatteredClothItem TATTERED_CLOTH_ITEM;
+	public static final EndHelmetItem END_HELMET_ITEM;
+	public static final EndChestplateItem END_CHESTPLATE_ITEM;
+	public static final EndLeggingsItem END_LEGGINGS_ITEM;
+	public static final EndBootsItem END_BOOTS_ITEM;
 
 	// Treasure Bags
 	public static final TreasureBagItem UNDEAD_ARMY_TREASURE_BAG;
@@ -95,6 +99,10 @@ public class Instances {
 		END_AXE_ITEM = new EndAxeItem();
 		END_HOE_ITEM = new EndHoeItem();
 		TATTERED_CLOTH_ITEM = new TatteredClothItem();
+		END_HELMET_ITEM = new EndHelmetItem();
+		END_CHESTPLATE_ITEM = new EndChestplateItem();
+		END_LEGGINGS_ITEM = new EndLeggingsItem();
+		END_BOOTS_ITEM = new EndBootsItem();
 
 		// Treasure Bags
 		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );

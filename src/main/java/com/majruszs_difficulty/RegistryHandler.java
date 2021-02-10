@@ -121,6 +121,10 @@ public class RegistryHandler {
 		ITEMS.register( "end_axe", ()->Instances.END_AXE_ITEM );
 		ITEMS.register( "end_hoe", ()->Instances.END_HOE_ITEM );
 		ITEMS.register( "tattered_cloth", ()->Instances.TATTERED_CLOTH_ITEM );
+		ITEMS.register( "end_helmet", ()->Instances.END_HELMET_ITEM );
+		ITEMS.register( "end_chestplate", ()->Instances.END_CHESTPLATE_ITEM );
+		ITEMS.register( "end_leggings", ()->Instances.END_LEGGINGS_ITEM );
+		ITEMS.register( "end_boots", ()->Instances.END_BOOTS_ITEM );
 		ITEMS.register( modEventBus );
 	}
 
