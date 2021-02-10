@@ -45,7 +45,7 @@ public class EndShardOre extends Block {
 			player.sendStatusMessage( new TranslationTextComponent( "block.majruszs_difficulty.end_shard_ore.warning" ).mergeStyle( TextFormatting.BOLD ), true );
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void onBlockDestroy( BlockEvent.BreakEvent event ) {
 		BlockState blockState = event.getState();

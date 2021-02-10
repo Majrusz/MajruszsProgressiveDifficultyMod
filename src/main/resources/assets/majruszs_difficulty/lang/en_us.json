@@ -42,6 +42,7 @@
   "block.majruszs_difficulty.end_block": "End Block",
   "commands.game_state.change": "Game state changed to",
   "commands.game_state.current": "Current game state is",
+  "commands.undead_army.undead_left": "Undead Army entities left:",
   "majruszs_difficulty.states.normal": "Normal Mode",
   "majruszs_difficulty.states.expert": "Expert Mode",
   "majruszs_difficulty.states.master": "Master Mode",
