@@ -25,7 +25,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 35,
+          "weight": 30,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -52,7 +52,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
+          "weight": 10,
           "name": "majruszs_difficulty:end_shard"
         }
       ]
