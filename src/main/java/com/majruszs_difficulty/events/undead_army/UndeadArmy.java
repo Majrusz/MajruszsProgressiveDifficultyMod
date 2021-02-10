@@ -254,8 +254,11 @@ public class UndeadArmy {
 		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( SPAWN_RADIUS / 7.0 ) >= this.undeadToKill / 2 ) )
 			createSpawner();
 
-		if( this.undeadKilled == this.undeadToKill || shouldWaveEndPrematurely() )
+		if( shouldWaveEndPrematurely() )
 			killAllUndeadArmyEntities();
+
+		if( this.undeadKilled == this.undeadToKill )
+			endWave();
 
 		if( shouldEntitiesBeHighlighted() )
 			highlightUndeadArmy();
