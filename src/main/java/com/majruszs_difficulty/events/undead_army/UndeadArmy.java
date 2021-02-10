@@ -400,10 +400,12 @@ public class UndeadArmy {
 
 	/** Gives a random amount of leather armor to monster. */
 	private void equipWithDyedLeatherArmor( MonsterEntity monster ) {
+		double armorPieceChance = getArmorOdds();
+
 		equipWithArmorPiece( monster, Items.LEATHER_HELMET, EquipmentSlotType.HEAD, "helmet", 1.0 );
-		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, EquipmentSlotType.CHEST, "chestplate", 0.5 );
-		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, EquipmentSlotType.LEGS, "leggings", 0.5 );
-		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, EquipmentSlotType.FEET, "boots", 0.5 );
+		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, EquipmentSlotType.CHEST, "chestplate", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, EquipmentSlotType.LEGS, "leggings", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, EquipmentSlotType.FEET, "boots", armorPieceChance );
 	}
 
 	/** Creates new armor piece for undead entity. */
@@ -525,5 +527,10 @@ public class UndeadArmy {
 	/** Returns extra chance for entities to have enchanted items. */
 	private double getEnchantmentOdds() {
 		return Instances.UNDEAD_ARMY_CONFIG.enchantedItems.getCurrentGameStateValue();
+	}
+
+	/** Returns chance for entities to have armor piece. */
+	private double getArmorOdds() {
+		return Instances.UNDEAD_ARMY_CONFIG.armorChance.getCurrentGameStateValue();
 	}
 }

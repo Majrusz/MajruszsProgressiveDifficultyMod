@@ -18,24 +18,27 @@ public class UndeadArmyConfig {
 	public final GameStateIntegerConfig experienceReward;
 	public final GameStateIntegerConfig treasureBagReward;
 	public final GameStateDoubleConfig enchantedItems;
+	public final GameStateDoubleConfig armorChance;
 
 	public UndeadArmyConfig() {
 		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
 
-		String availability_comment = "Is Undead Army enabled?";
-		String kill_comment = "Amount of undead required to kill at night to start Undead Army.";
-		String scale_comment = "Undead Army size extra multiplier with each extra player.";
-		String exp_comment = "Experience for each player after defeating Undead Army.";
-		String bag_comment = "Treasure Bags for each player after defeating Undead Army.";
-		String enchant_comment = "Chance for entities to have enchanted items.";
-		this.availability = new AvailabilityConfig( "is_enabled", availability_comment, false, true );
-		this.killRequirement = new IntegerConfig( "kill_requirement", kill_comment, false, 100, 10, 1000 );
-		this.scaleWithPlayers = new DoubleConfig( "player_scale", scale_comment, false, 0.5, 0.1, 1.0 );
-		this.experienceReward = new GameStateIntegerConfig( "experience", exp_comment, 40, 80, 120, 4, 1000 );
-		this.treasureBagReward = new GameStateIntegerConfig( "treasure_bags", bag_comment, 1, 1, 2, 1, 5 );
-		this.enchantedItems = new GameStateDoubleConfig( "enchanted_items", enchant_comment, 0.125, 0.25, 0.5, 0.0, 1.0 );
+		String availabilityComment = "Is Undead Army enabled?";
+		String killComment = "Amount of undead required to kill at night to start Undead Army.";
+		String scaleComment = "Undead Army size extra multiplier with each extra player.";
+		String expComment = "Experience for each player after defeating Undead Army.";
+		String bagComment = "Treasure Bags for each player after defeating Undead Army.";
+		String enchantComment = "Chance for entities to have enchanted items.";
+		String armorComment = "Chance for entities to have a armor piece. Separate chance for each piece.";
+		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, false, true );
+		this.killRequirement = new IntegerConfig( "kill_requirement", killComment, false, 100, 10, 1000 );
+		this.scaleWithPlayers = new DoubleConfig( "player_scale", scaleComment, false, 0.5, 0.1, 1.0 );
+		this.experienceReward = new GameStateIntegerConfig( "experience", expComment, 40, 80, 120, 4, 1000 );
+		this.treasureBagReward = new GameStateIntegerConfig( "treasure_bags", bagComment, 1, 1, 2, 1, 5 );
+		this.enchantedItems = new GameStateDoubleConfig( "enchanted_items", enchantComment, 0.125, 0.25, 0.5, 0.0, 1.0 );
+		this.armorChance = new GameStateDoubleConfig( "armor_chance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
 		this.group.addConfigs( this.availability, this.killRequirement, this.scaleWithPlayers, this.experienceReward, this.treasureBagReward,
-			this.enchantedItems
+			this.enchantedItems, this.armorChance
 		);
 	}
 }
