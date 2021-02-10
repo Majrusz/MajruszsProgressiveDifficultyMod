@@ -32,7 +32,7 @@ public class UndeadBattleStandardItem extends Item {
 	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
 		ItemStack itemStack = player.getHeldItem( hand );
 
-		if( !world.isRemote && RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player, ( ServerWorld )world ) ) {
+		if( !world.isRemote && RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player ) ) {
 			if( !player.abilities.isCreativeMode )
 				itemStack.shrink( 1 );
 			player.addStat( Stats.ITEM_USED.get( this ) );

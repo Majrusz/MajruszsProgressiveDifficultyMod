@@ -60,7 +60,7 @@ public class CountKilledUndead {
 		CompoundNBT nbt = player.getPersistentData();
 
 		if( nbt.getInt( NBT_TAG ) >= Instances.UNDEAD_ARMY_CONFIG.killRequirement.get() && player.world instanceof ServerWorld )
-			if( RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player, ( ServerWorld )player.world ) )
+			if( RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player ) )
 				nbt.putInt( NBT_TAG, 0 );
 	}
 

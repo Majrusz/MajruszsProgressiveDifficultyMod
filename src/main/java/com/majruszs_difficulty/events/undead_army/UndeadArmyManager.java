@@ -70,18 +70,17 @@ public class UndeadArmyManager extends WorldSavedData {
 			undeadArmy.updateWorld( world );
 	}
 
-	public boolean spawn( PlayerEntity player, ServerWorld world ) {
+	public boolean spawn( PlayerEntity player ) {
 		BlockPos attackPosition = getAttackPosition( player );
 
 		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere(
 			attackPosition ) || Instances.UNDEAD_ARMY_CONFIG.availability.isDisabled() )
 			return false;
 
-		if( this.world.isDaytime() || !WorldHelper.isEntityIn( player, World.OVERWORLD ) )
+		if( !WorldHelper.isEntityIn( player, World.OVERWORLD ) )
 			return false;
 
 		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
-
 		this.world.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundCategory.AMBIENT, 0.25f, 1.0f );
 
 		return true;
