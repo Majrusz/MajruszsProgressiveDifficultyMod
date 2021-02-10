@@ -12,7 +12,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +36,16 @@ public class EndShardOre extends Block {
 		return silkTouchLevel == 0 ? MathHelper.nextInt( MajruszLibrary.RANDOM, 6, 11 ) : 0;
 	}
 
+	@SubscribeEvent
+	public static void onBlockDestroying( PlayerEvent.BreakSpeed event ) {
+		BlockState blockState = event.getState();
+		Block block = blockState.getBlock();
+		if( block.equals( Instances.END_SHARD_ORE ) ) {
+			PlayerEntity player = event.getPlayer();
+			player.sendStatusMessage( new TranslationTextComponent( "block.majruszs_difficulty.end_shard_ore.warning" ).mergeStyle( TextFormatting.BOLD ), true );
+		}
+	}
+	
 	@SubscribeEvent
 	public static void onBlockDestroy( BlockEvent.BreakEvent event ) {
 		BlockState blockState = event.getState();

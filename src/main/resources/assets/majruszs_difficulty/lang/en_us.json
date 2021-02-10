@@ -38,6 +38,7 @@
   "item.majruszs_difficulty.end_hoe": "End Hoe",
   "item.majruszs_difficulty.tattered_cloth": "Tattered Cloth",
   "block.majruszs_difficulty.end_shard_ore": "End Shard Ore",
+  "block.majruszs_difficulty.end_shard_ore.warning": "After destroying this block, all nearby Endermans will attack you!",
   "block.majruszs_difficulty.end_block": "End Block",
   "commands.game_state.change": "Game state changed to",
   "commands.game_state.current": "Current game state is",
