@@ -22,13 +22,14 @@ public final class UndeadArmyManagerCommand {
 				.executes( entity->highlightUndeadArmy( entity.getSource() ) ) )
 			.then( Commands.literal( "undead_left" )
 				.executes( entity->countUndeadLeft( entity.getSource() ) ) )
+			.then( Commands.literal( "kill_all" )
+				.executes( entity->killUndeadArmy( entity.getSource() ) ) )
 		);
 	}
 
 	/** Command responsible for stopping Undead Army in the player position. */
 	public static int stopUndeadArmy( CommandSource source ) {
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
-
 		if( undeadArmy == null )
 			return -1;
 
@@ -39,7 +40,6 @@ public final class UndeadArmyManagerCommand {
 	/** Command responsible for highlighting all Undead Army units in the player position. */
 	public static int highlightUndeadArmy( CommandSource source ) {
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
-
 		if( undeadArmy == null )
 			return -1;
 
@@ -50,13 +50,22 @@ public final class UndeadArmyManagerCommand {
 	/** Command responsible for informing the player how many Undead Army units left in the player position. */
 	public static int countUndeadLeft( CommandSource source ) {
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
-
 		if( undeadArmy == null )
 			return -1;
 
 		IFormattableTextComponent feedback = new TranslationTextComponent( "commands.undead_army.undead_left" );
 		feedback.appendString( " " + undeadArmy.countUndeadEntitiesLeft() + "." );
 		source.sendFeedback( feedback, true );
+		return 0;
+	}
+
+	/** Command responsible for killing all Undead Army entities. */
+	public static int killUndeadArmy( CommandSource source ) {
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
+		if( undeadArmy == null )
+			return -1;
+
+		undeadArmy.killAllUndeadArmyEntities();
 		return 0;
 	}
 }
