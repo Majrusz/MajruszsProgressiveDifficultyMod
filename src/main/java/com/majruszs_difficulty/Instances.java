@@ -154,6 +154,7 @@ public class Instances {
 		WhenDamagedEvent.REGISTRY_LIST.add( new EndermanTeleportOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new EndSwordLevitationOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new TriggerAllEndermansOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new ShulkerBlindnessOnAttack() );
 
 		// On enemy to be spawned
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
