@@ -23,8 +23,11 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
@@ -50,6 +53,7 @@ import java.util.function.Predicate;
 /** Class representing Undead Army which is new raid activated after killing certain undead at night. */
 @Mod.EventBusSubscriber
 public class UndeadArmy {
+	public final static int ARMOR_COLOR = 0x92687b;
 	private final static int BETWEEN_RAID_TICKS_MAXIMUM = TimeConverter.secondsToTicks( 10.0 );
 	private final static int TICKS_INACTIVE_MAXIMUM = TimeConverter.minutesToTicks( 15.0 );
 	private final static int SPAWN_RADIUS = 70;
@@ -351,6 +355,7 @@ public class UndeadArmy {
 				MonsterEntity monster = ( MonsterEntity )entity;
 				monster.enablePersistence();
 				updateUndeadGoal( monster );
+				equipWithDyedLeatherArmor( monster );
 				tryToEnchantEquipment( monster );
 				updateUndeadData( monster );
 
@@ -391,6 +396,33 @@ public class UndeadArmy {
 				if( armor.getEquipmentSlot() != null )
 					monster.setItemStackToSlot( armor.getEquipmentSlot(), armor );
 			}
+	}
+
+	/** Gives a random amount of leather armor to monster. */
+	private void equipWithDyedLeatherArmor( MonsterEntity monster ) {
+		equipWithArmorPiece( monster, Items.LEATHER_HELMET, EquipmentSlotType.HEAD, "helmet", 1.0 );
+		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, EquipmentSlotType.CHEST, "chestplate", 0.5 );
+		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, EquipmentSlotType.LEGS, "leggings", 0.5 );
+		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, EquipmentSlotType.FEET, "boots", 0.5 );
+	}
+
+	/** Creates new armor piece for undead entity. */
+	private void equipWithArmorPiece( MonsterEntity monster, Item item, EquipmentSlotType equipmentSlotType, String registerName, double chance ) {
+		if( Random.tryChance( 1.0 - chance ) )
+			return;
+
+		ItemStack armorPiece = new ItemStack( item );
+		setUndeadArmyColorAndName( armorPiece, registerName );
+		ItemHelper.damageItem( armorPiece, 0.75 );
+		monster.setItemStackToSlot( equipmentSlotType, armorPiece );
+	}
+
+	/** Changes color of leather armor. */
+	private void setUndeadArmyColorAndName( ItemStack armor, String registerName ) {
+		CompoundNBT nbt = armor.getOrCreateChildTag( "display" );
+		nbt.putInt( "color", ARMOR_COLOR );
+		nbt.putString( "Name", "{\"translate\":\"majruszs_difficulty.items.undead_" + registerName + "\",\"italic\":false}" );
+		armor.setTagInfo( "display", nbt );
 	}
 
 	/** Rewards all player participating in the raid. */
