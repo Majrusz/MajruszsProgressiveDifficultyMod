@@ -16,11 +16,11 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Set;
 
-/** Adding natural spawn for entities and natural generation for structures. */
+/** Adding natural spawn for entities, natural ore generation and natural generation for structures. */
 @Mod.EventBusSubscriber
-public class BiomeEntityAndStructureLoading {
+public class BiomeLoading {
 	@SubscribeEvent( priority = EventPriority.HIGH )
-	public static void addEntitiesAndStructuresToBiomes( BiomeLoadingEvent event ) {
+	public static void onLoad( BiomeLoadingEvent event ) {
 		Biome.Category category = event.getCategory();
 		MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
 		BiomeGenerationSettingsBuilder generationSettingsBuilder = event.getGeneration();
