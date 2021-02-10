@@ -3,10 +3,14 @@ package com.majruszs_difficulty.events;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
+import com.majruszs_difficulty.generation.OreGeneration;
+import com.mlib.MajruszLibrary;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -32,6 +36,7 @@ public class BiomeLoading {
 			addNetherEntities( spawnInfoBuilder );
 		} else if( doBiomeCategoryBelongsToTheEnd( category ) ) {
 			addEndStructures( generationSettingsBuilder );
+			addEndOres( generationSettingsBuilder );
 		}
 	}
 
@@ -58,6 +63,14 @@ public class BiomeLoading {
 	protected static void addEndStructures( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
 		generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
 		generationSettingsBuilder.withStructure( Instances.FLYING_END_ISLAND_FEATURE );
+	}
+
+	/** Adding natural generation for ores. */
+	protected static void addEndOres( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
+		for( ConfiguredFeature< ?, ? > ore : OreGeneration.END_ORES )
+			generationSettingsBuilder.withFeature( GenerationStage.Decoration.UNDERGROUND_ORES, ore );
+
+		MajruszLibrary.LOGGER.debug( "Ores loaded! " + OreGeneration.END_ORES.size() );
 	}
 
 	/** Checking whether given biome category belongs to overworld. */

@@ -9,6 +9,7 @@ import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
+import com.majruszs_difficulty.generation.OreGeneration;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
@@ -204,6 +205,7 @@ public class RegistryHandler {
 
 		event.enqueueWork( Instances.FLYING_PHANTOM::setup );
 		event.enqueueWork( Instances.FLYING_END_ISLAND::setup );
+		OreGeneration.registerOres();
 	}
 
 	/** Registration of commands. */
