@@ -27,7 +27,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
@@ -375,12 +374,14 @@ public class UndeadArmy {
 
 	/** Checks whether Undead Army should be highlighted. */
 	private boolean shouldEntitiesBeHighlighted() {
-		return this.ticksWaveActive >= TimeConverter.minutesToTicks( 1.0 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill/2;
+		return this.ticksWaveActive >= TimeConverter.minutesToTicks(
+			1.0 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill / 2;
 	}
 
 	/** Checks whether wave should be ended earlier. */
 	private boolean shouldWaveEndPrematurely() {
-		return this.undeadKilled >= (this.undeadToKill * 0.8) && this.ticksWaveActive >= TimeConverter.minutesToTicks( 3.0 ) && countUndeadEntitiesLeft() < 2;
+		return this.undeadKilled >= ( this.undeadToKill * 0.8 ) && this.ticksWaveActive >= TimeConverter.minutesToTicks(
+			3.0 ) && countUndeadEntitiesLeft() < 2;
 	}
 
 	/** Tries to enchant weapons and armor for given monster. */
