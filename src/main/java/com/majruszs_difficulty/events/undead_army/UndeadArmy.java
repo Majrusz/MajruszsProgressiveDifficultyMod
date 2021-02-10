@@ -32,6 +32,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -226,6 +227,14 @@ public class UndeadArmy {
 		this.bossInfo.removeAllPlayers();
 	}
 
+	/** Kills all nearby entities from Undead Army. */
+	public void killAllUndeadArmyEntities() {
+		for( MonsterEntity monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+			monster.attackEntityFrom( DamageSource.MAGIC, 9001 );
+
+		this.undeadKilled = this.undeadToKill;
+	}
+
 	/** Calculates single frame when waiting on next wave. */
 	private void tickBetweenWaves() {
 		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
@@ -246,7 +255,7 @@ public class UndeadArmy {
 			createSpawner();
 
 		if( this.undeadKilled == this.undeadToKill || shouldWaveEndPrematurely() )
-			endWave();
+			killAllUndeadArmyEntities();
 
 		if( shouldEntitiesBeHighlighted() )
 			highlightUndeadArmy();
