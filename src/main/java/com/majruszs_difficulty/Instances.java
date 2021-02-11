@@ -16,6 +16,7 @@ import com.majruszs_difficulty.generation.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.SwordItem;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.DamageSource;
@@ -48,6 +49,7 @@ public class Instances {
 	public static final EndChestplateItem END_CHESTPLATE_ITEM;
 	public static final EndLeggingsItem END_LEGGINGS_ITEM;
 	public static final EndBootsItem END_BOOTS_ITEM;
+	public static final EndShardLocatorItem END_SHARD_LOCATOR_ITEM;
 
 	// Treasure Bags
 	public static final TreasureBagItem UNDEAD_ARMY_TREASURE_BAG;
@@ -103,6 +105,11 @@ public class Instances {
 		END_CHESTPLATE_ITEM = new EndChestplateItem();
 		END_LEGGINGS_ITEM = new EndLeggingsItem();
 		END_BOOTS_ITEM = new EndBootsItem();
+		END_SHARD_LOCATOR_ITEM = new EndShardLocatorItem();
+
+		ItemModelsProperties.registerProperty( END_SHARD_LOCATOR_ITEM, new ResourceLocation( "shard_distance" ),
+			EndShardLocatorItem::calculateDistanceToEndShard
+		);
 
 		// Treasure Bags
 		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );

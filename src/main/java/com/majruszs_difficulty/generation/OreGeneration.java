@@ -4,6 +4,7 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.mlib.MajruszLibrary;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.CompassItem;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -25,11 +26,13 @@ public class OreGeneration {
 			new OreFeatureConfig( new BlockMatchRuleTest( Blocks.END_STONE ), Instances.END_SHARD_ORE.getDefaultState(), 2 ) )
 			.range( 128 )
 			.square()
+			.func_242731_b( 16 )
 		);
 		ConfiguredFeature< ?, ? > endShardOreLargeGeneration = register( "end_shard_ore_large", Feature.ORE.withConfiguration(
 			new OreFeatureConfig( new BlockMatchRuleTest( Blocks.END_STONE ), Instances.END_SHARD_ORE.getDefaultState(), 3 ) )
 			.range( 128 )
 			.square()
+			.func_242731_b( 8 )
 		);
 
 		END_ORES.add( endShardOreSmallGeneration );
