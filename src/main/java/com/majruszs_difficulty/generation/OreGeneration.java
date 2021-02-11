@@ -35,10 +35,10 @@ public class OreGeneration {
 			.func_242731_b( 8 )
 		);
 		ConfiguredFeature< ?, ? > infestedEndStoneGeneration = register( "infested_end_stone", Feature.ORE.withConfiguration(
-			new OreFeatureConfig( new BlockMatchRuleTest( Blocks.END_STONE ), Instances.INFESTED_END_STONE.getDefaultState(), 16 ) )
+			new OreFeatureConfig( new BlockMatchRuleTest( Blocks.END_STONE ), Instances.INFESTED_END_STONE.getDefaultState(), 4 ) )
 			.range( 128 )
 			.square()
-			.func_242731_b( 32 )
+			.func_242731_b( 64 )
 		);
 
 		END_ORES.add( endShardOreSmallGeneration );
