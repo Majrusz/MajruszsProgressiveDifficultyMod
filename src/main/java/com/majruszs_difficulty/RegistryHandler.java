@@ -139,6 +139,8 @@ public class RegistryHandler {
 		ITEMS.register( "end_shard_ore", ()->Instances.END_SHARD_ORE_ITEM );
 		BLOCKS.register( "end_block", ()->Instances.END_BLOCK );
 		ITEMS.register( "end_block", ()->Instances.END_BLOCK_ITEM );
+		BLOCKS.register( "infested_end_stone", ()->Instances.INFESTED_END_STONE );
+		ITEMS.register( "infested_end_stone", ()->Instances.INFESTED_END_STONE_ITEM );
 		BLOCKS.register( modEventBus );
 	}
 

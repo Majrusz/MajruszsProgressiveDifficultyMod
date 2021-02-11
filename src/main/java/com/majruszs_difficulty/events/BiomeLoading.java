@@ -69,8 +69,6 @@ public class BiomeLoading {
 	protected static void addEndOres( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
 		for( ConfiguredFeature< ?, ? > ore : OreGeneration.END_ORES )
 			generationSettingsBuilder.withFeature( GenerationStage.Decoration.UNDERGROUND_ORES, ore );
-
-		MajruszLibrary.LOGGER.debug( "Ores loaded! " + OreGeneration.END_ORES.size() );
 	}
 
 	/** Checking whether given biome category belongs to overworld. */

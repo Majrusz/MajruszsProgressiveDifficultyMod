@@ -2,6 +2,7 @@ package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.blocks.EndBlock;
 import com.majruszs_difficulty.blocks.EndShardOre;
+import com.majruszs_difficulty.blocks.InfestedEndStone;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
@@ -63,6 +64,8 @@ public class Instances {
 	public static final EndShardOre.EndShardOreItem END_SHARD_ORE_ITEM;
 	public static final EndBlock END_BLOCK;
 	public static final EndBlock.EndBlockItem END_BLOCK_ITEM;
+	public static final InfestedEndStone INFESTED_END_STONE;
+	public static final InfestedEndStone.InfestedEndStoneItem INFESTED_END_STONE_ITEM;
 
 	// Entities
 	public static final EntitiesConfig ENTITIES_CONFIG;
@@ -119,6 +122,8 @@ public class Instances {
 		END_SHARD_ORE_ITEM = new EndShardOre.EndShardOreItem();
 		END_BLOCK = new EndBlock();
 		END_BLOCK_ITEM = new EndBlock.EndBlockItem();
+		INFESTED_END_STONE = new InfestedEndStone();
+		INFESTED_END_STONE_ITEM = new InfestedEndStone.InfestedEndStoneItem();
 
 		// Entities
 		ENTITIES_CONFIG = new EntitiesConfig();

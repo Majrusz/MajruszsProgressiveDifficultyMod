@@ -34,9 +34,16 @@ public class OreGeneration {
 			.square()
 			.func_242731_b( 8 )
 		);
+		ConfiguredFeature< ?, ? > infestedEndStoneGeneration = register( "infested_end_stone", Feature.ORE.withConfiguration(
+			new OreFeatureConfig( new BlockMatchRuleTest( Blocks.END_STONE ), Instances.INFESTED_END_STONE.getDefaultState(), 16 ) )
+			.range( 128 )
+			.square()
+			.func_242731_b( 32 )
+		);
 
 		END_ORES.add( endShardOreSmallGeneration );
 		END_ORES.add( endShardOreLargeGeneration );
+		END_ORES.add( infestedEndStoneGeneration );
 	}
 
 	/** Register generation config. */
