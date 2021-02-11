@@ -2,6 +2,21 @@
   "type": "minecraft:gift",
   "pools": [
     {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszs_difficulty:end_shard_locator",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
       "rolls": {
         "min": 20.0,
         "max": 30.0,
