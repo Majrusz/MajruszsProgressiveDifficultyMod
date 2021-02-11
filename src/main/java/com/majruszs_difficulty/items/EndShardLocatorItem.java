@@ -4,13 +4,10 @@ import com.majruszs_difficulty.Instances;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -42,7 +39,7 @@ public class EndShardLocatorItem extends Item {
 
 		World world = entity.world;
 		Vector3d entityPosition = entity.getPositionVec();
-		IronGolemEntity
+
 		CompoundNBT data = entity.getPersistentData();
 		int counter = data.getInt( COUNTER_TAG );
 		BlockPos nearestEndShard = new BlockPos( data.getInt( POSITION_X_TAG ), data.getInt( POSITION_Y_TAG ), data.getInt( POSITION_Z_TAG ) );
