@@ -107,10 +107,6 @@ public class Instances {
 		END_BOOTS_ITEM = new EndBootsItem();
 		END_SHARD_LOCATOR_ITEM = new EndShardLocatorItem();
 
-		ItemModelsProperties.registerProperty( END_SHARD_LOCATOR_ITEM, new ResourceLocation( "shard_distance" ),
-			EndShardLocatorItem::calculateDistanceToEndShard
-		);
-
 		// Treasure Bags
 		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );
 		ELDER_GUARDIAN_TREASURE_BAG = new TreasureBagItem( "elder_guardian", "Elder Guardian" );
