@@ -30,8 +30,10 @@ public final class UndeadArmyManagerCommand {
 	/** Command responsible for stopping Undead Army in the player position. */
 	public static int stopUndeadArmy( CommandSource source ) {
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
-		if( undeadArmy == null )
+		if( undeadArmy == null ) {
+			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;
+		}
 
 		undeadArmy.finish();
 		return 0;
@@ -40,8 +42,10 @@ public final class UndeadArmyManagerCommand {
 	/** Command responsible for highlighting all Undead Army units in the player position. */
 	public static int highlightUndeadArmy( CommandSource source ) {
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
-		if( undeadArmy == null )
+		if( undeadArmy == null ) {
+			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;
+		}
 
 		undeadArmy.highlightUndeadArmy();
 		return 0;
@@ -50,8 +54,10 @@ public final class UndeadArmyManagerCommand {
 	/** Command responsible for informing the player how many Undead Army units left in the player position. */
 	public static int countUndeadLeft( CommandSource source ) {
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
-		if( undeadArmy == null )
+		if( undeadArmy == null ) {
+			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;
+		}
 
 		IFormattableTextComponent feedback = new TranslationTextComponent( "commands.undead_army.undead_left" );
 		feedback.appendString( " " + undeadArmy.countUndeadEntitiesLeft() + "." );
@@ -62,10 +68,16 @@ public final class UndeadArmyManagerCommand {
 	/** Command responsible for killing all Undead Army entities. */
 	public static int killUndeadArmy( CommandSource source ) {
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
-		if( undeadArmy == null )
+		if( undeadArmy == null ) {
+			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;
+		}
 
 		undeadArmy.killAllUndeadArmyEntities();
 		return 0;
+	}
+
+	private static IFormattableTextComponent getMissingUndeadArmyFeedback() {
+		return new TranslationTextComponent( "commands.undead_army.missing" );
 	}
 }
