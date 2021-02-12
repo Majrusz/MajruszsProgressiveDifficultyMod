@@ -15,7 +15,7 @@ public class ShulkerBlindnessOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_COMMENT = "Shulker inflict Blindness.";
 
 	public ShulkerBlindnessOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, 5.0, GameState.State.MASTER, true, Effects.BLINDNESS );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 5.0, GameState.State.MASTER, true, Effects.BLINDNESS );
 	}
 
 	/** Checking if all conditions were met. */
