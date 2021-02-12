@@ -29,40 +29,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.majruszs_difficulty.generation.structure_pieces.FlyingEndIslandPiece.FORGE_CHEST_RESOURCE_LOCATION;
+
 /** All possible Flying End Island pieces. */
-public class FlyingEndIslandPiece extends TemplateStructurePiece {
-	public static final List< ResourceLocation > BUILDING_ISLAND_RESOURCE_LOCATIONS = new ArrayList<>();
-	public static final List< ResourceLocation > EMPTY_ISLAND_RESOURCE_LOCATIONS = new ArrayList<>();
-	public static final ResourceLocation DUNGEON_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_dungeon" );
-	public static final ResourceLocation TOWER_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_tower" );
-	public static final ResourceLocation ARCHER_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_archer_tower" );
-	public static final ResourceLocation POTION_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_potion" );
-	public static final ResourceLocation FORGE_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_forge" );
+public class FlyingEndShipPiece extends TemplateStructurePiece {
+	public static final List< ResourceLocation > SHIP_RESOURCE_LOCATIONS = new ArrayList<>();
+	public static final List< Block > RANDOM_BLOCKS = new ArrayList<>();
+	public static final ResourceLocation SHIP_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_ship" );
+	public static final ResourceLocation SHIP_EXTRA_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_ship_extra" );
 	private final Rotation rotation;
 
 	static {
-		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_1" ) );
-		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_tower_2" ) );
-		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_dungeon" ) );
-		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_alchemist" ) );
-		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_archer_tower" ) );
-		BUILDING_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_forge" ) );
+		SHIP_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_ship_military" ) );
+		SHIP_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_ship_trader" ) );
 
-		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_1" ) );
-		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_2" ) );
-		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_3" ) );
-		EMPTY_ISLAND_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_empty_4" ) );
+		for( int i = 0; i < 40; i++ )
+			RANDOM_BLOCKS.add( Blocks.IRON_BLOCK );
+		for( int i = 0; i < 40; i++ )
+			RANDOM_BLOCKS.add( Blocks.GOLD_BLOCK );
+		for( int i = 0; i < 10; i++ )
+			RANDOM_BLOCKS.add( Blocks.EMERALD_BLOCK );
+		for( int i = 0; i < 5; i++ )
+			RANDOM_BLOCKS.add( Blocks.DIAMOND_BLOCK );
+		for( int i = 0; i < 5; i++ )
+			RANDOM_BLOCKS.add( Blocks.ANCIENT_DEBRIS );
 	}
 
-	public FlyingEndIslandPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
-		super( Instances.FLYING_END_ISLAND_PIECE, 0 );
+	public FlyingEndShipPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
+		super( Instances.FLYING_END_SHIP_PIECE, 0 );
 		this.templatePosition = position;
 		this.rotation = rotation;
 		this.setupPiece( templateManager );
 	}
 
-	public FlyingEndIslandPiece( TemplateManager templateManager, CompoundNBT compoundNBT ) {
-		super( Instances.FLYING_END_ISLAND_PIECE, compoundNBT );
+	public FlyingEndShipPiece( TemplateManager templateManager, CompoundNBT compoundNBT ) {
+		super( Instances.FLYING_END_SHIP_PIECE, compoundNBT );
 		this.rotation = Rotation.valueOf( compoundNBT.getString( "Rot" ) );
 		this.setupPiece( templateManager );
 	}
@@ -81,32 +82,19 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 
 			if( tileEntity instanceof ChestTileEntity ) {
 				ChestTileEntity chest = ( ChestTileEntity )tileEntity;
-				if( function.startsWith( "chest_dung" ) ) {
-					if( com.mlib.Random.tryChance( 0.3 ) )
-						chest.setLootTable( DUNGEON_CHEST_RESOURCE_LOCATION, random.nextLong() );
+				if( function.startsWith( "chest_forge" ) ) {
+					chest.setLootTable( FORGE_CHEST_RESOURCE_LOCATION, random.nextLong() );
+				} else if( function.startsWith( "chest_ship" ) ) {
+					chest.setLootTable( SHIP_CHEST_RESOURCE_LOCATION, random.nextLong() );
+				} else if( function.startsWith( "chest_extra" ) ) {
+					if( com.mlib.Random.tryChance( 0.25 ) )
+						chest.setLootTable( SHIP_EXTRA_CHEST_RESOURCE_LOCATION, random.nextLong() );
 					else
 						world.setBlockState( position.down(), Blocks.AIR.getDefaultState(), 2 );
-
-				} else if( function.startsWith( "chest_tower" ) ) {
-					chest.setLootTable( TOWER_CHEST_RESOURCE_LOCATION, random.nextLong() );
-				} else if( function.startsWith( "chest_archer" ) ) {
-					chest.setLootTable( ARCHER_CHEST_RESOURCE_LOCATION, random.nextLong() );
-				} else if( function.startsWith( "chest_potion" ) ) {
-					chest.setLootTable( POTION_CHEST_RESOURCE_LOCATION, random.nextLong() );
-				} else if( function.startsWith( "chest_forge" ) ) {
-					chest.setLootTable( FORGE_CHEST_RESOURCE_LOCATION, random.nextLong() );
 				}
 			}
 			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 
-		} else if( function.startsWith( "shulker" ) ) {
-			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
-			ShulkerEntity monster = EntityType.SHULKER.create( world.getWorld() );
-			if( monster != null ) {
-				monster.enablePersistence();
-				monster.setPosition( position.getX(), position.getY(), position.getZ() );
-				world.addEntity( monster );
-			}
 		} else if( function.startsWith( "end_keeper" ) ) {
 			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 			SkyKeeperEntity monster = SkyKeeperEntity.type.create( world.getWorld() );
@@ -125,6 +113,9 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 				AbstractSpawner abstractSpawner = mobSpawnerTileEntity.getSpawnerBaseLogic();
 				abstractSpawner.setEntityType( EntityType.ENDERMITE );
 			}
+		} else if( function.startsWith( "random_block" ) ) {
+			Block randomBlock = RANDOM_BLOCKS.get( MajruszLibrary.RANDOM.nextInt( RANDOM_BLOCKS.size() ) );
+			world.setBlockState( position, randomBlock.getDefaultState(), 2 );
 		}
 	}
 
@@ -133,7 +124,7 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 		BlockPos rotationOffSet = new BlockPos( 0, 0, 0 ).rotate( rotation );
 		BlockPos blockpos = rotationOffSet.add( position.getX(), position.getY(), position.getZ() );
 
-		pieces.add( new FlyingEndIslandPiece( templateManager, blockpos, rotation ) );
+		pieces.add( new FlyingEndShipPiece( templateManager, blockpos, rotation ) );
 	}
 
 	private void setupPiece( TemplateManager templateManager ) {
@@ -146,9 +137,6 @@ public class FlyingEndIslandPiece extends TemplateStructurePiece {
 
 	/** Returns random resource location to building. */
 	private ResourceLocation getRandomResourceLocation() {
-		if( com.mlib.Random.tryChance( Instances.FLYING_END_ISLAND.buildingIslandChance.get() ) ) {
-			return BUILDING_ISLAND_RESOURCE_LOCATIONS.get( MajruszLibrary.RANDOM.nextInt( BUILDING_ISLAND_RESOURCE_LOCATIONS.size() ) );
-		} else
-			return EMPTY_ISLAND_RESOURCE_LOCATIONS.get( MajruszLibrary.RANDOM.nextInt( EMPTY_ISLAND_RESOURCE_LOCATIONS.size() ) );
+		return SHIP_RESOURCE_LOCATIONS.get( MajruszLibrary.RANDOM.nextInt( SHIP_RESOURCE_LOCATIONS.size() ) );
 	}
 }

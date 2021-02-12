@@ -1,9 +1,8 @@
 package com.majruszs_difficulty.generation.structures;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.generation.structure_pieces.FlyingEndIslandPiece;
+import com.majruszs_difficulty.generation.structure_pieces.FlyingEndShipPiece;
 import com.mlib.MajruszLibrary;
-import com.mlib.config.DoubleConfig;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -17,20 +16,14 @@ import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 /** Flying Island structures in The End. */
-public class FlyingEndIslandStructure extends FlyingEndStructure {
-	public final DoubleConfig buildingIslandChance;
-
-	public FlyingEndIslandStructure() {
-		super( "FlyingEndIsland", "Flying End Island", 1717171718, 6, 12, Instances.FLYING_END_ISLAND_FEATURE );
-
-		String buildingComment = "Chance for spawning building on island.";
-		this.buildingIslandChance = new DoubleConfig( "building_chance", buildingComment, false, 0.2, 0.0, 1.0 );
-		this.group.addConfigs( this.buildingIslandChance );
+public class FlyingEndShipStructure extends FlyingEndStructure {
+	public FlyingEndShipStructure() {
+		super( "FlyingEndShip", "Flying End Ship", 1717171719, 32, 64, Instances.FLYING_END_SHIP_FEATURE );
 	}
 
 	/** Factory for generating new structures. */
 	public IStartFactory< NoFeatureConfig > getStartFactory() {
-		return FlyingEndIslandStructure.Start::new;
+		return FlyingEndShipStructure.Start::new;
 	}
 
 	public static class Start extends StructureStart< NoFeatureConfig > {
@@ -49,7 +42,7 @@ public class FlyingEndIslandStructure extends FlyingEndStructure {
 			int y = Math.max( chunkGenerator.getHeight( x, z, Heightmap.Type.WORLD_SURFACE_WG ) + 6, 40 + MajruszLibrary.RANDOM.nextInt( 30 ) );
 
 			BlockPos blockpos = new BlockPos( x, y, z );
-			FlyingEndIslandPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
+			FlyingEndShipPiece.start( templateManager, blockpos, rotation, this.components, this.rand );
 
 			this.recalculateStructureSize();
 		}

@@ -167,10 +167,12 @@ public class RegistryHandler {
 	private static void registerStructures( final IEventBus modEventBus ) {
 		STRUCTURES.register( "flying_phantom_structure", ()->Instances.FLYING_PHANTOM );
 		STRUCTURES.register( "flying_end_island", ()->Instances.FLYING_END_ISLAND );
+		STRUCTURES.register( "flying_end_ship", ()->Instances.FLYING_END_SHIP );
 		STRUCTURES.register( modEventBus );
 
 		Structure.NAME_STRUCTURE_BIMAP.put( "flying_phantom_structure", Instances.FLYING_PHANTOM );
 		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_island", Instances.FLYING_END_ISLAND );
+		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_ship", Instances.FLYING_END_SHIP );
 	}
 
 	/** Registration of everything. */
@@ -211,6 +213,7 @@ public class RegistryHandler {
 
 		event.enqueueWork( Instances.FLYING_PHANTOM::setup );
 		event.enqueueWork( Instances.FLYING_END_ISLAND::setup );
+		event.enqueueWork( Instances.FLYING_END_SHIP::setup );
 		OreGeneration.registerOres();
 	}
 
@@ -264,6 +267,7 @@ public class RegistryHandler {
 				.func_236195_a_() );
 			tempMap.putIfAbsent( Instances.FLYING_PHANTOM, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_PHANTOM ) );
 			tempMap.putIfAbsent( Instances.FLYING_END_ISLAND, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_ISLAND ) );
+			tempMap.putIfAbsent( Instances.FLYING_END_SHIP, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_SHIP ) );
 			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
 		}
 	}

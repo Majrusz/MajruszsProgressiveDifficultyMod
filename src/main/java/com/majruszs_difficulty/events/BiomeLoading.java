@@ -63,6 +63,7 @@ public class BiomeLoading {
 	protected static void addEndStructures( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
 		generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
 		generationSettingsBuilder.withStructure( Instances.FLYING_END_ISLAND_FEATURE );
+		generationSettingsBuilder.withStructure( Instances.FLYING_END_SHIP_FEATURE );
 	}
 
 	/** Adding natural generation for ores. */
