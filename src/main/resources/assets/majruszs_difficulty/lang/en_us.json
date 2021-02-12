@@ -42,7 +42,7 @@
   "item.majruszs_difficulty.end_boots": "End Boots",
   "item.majruszs_difficulty.tattered_cloth": "Tattered Cloth",
   "item.majruszs_difficulty.end_shard_locator": "End Shard Locator",
-  "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informs the player how far it is from the End Shard.",
+  "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informs the player how far it is from the End Shard Ore.",
   "block.majruszs_difficulty.end_shard_ore": "End Shard Ore",
   "block.majruszs_difficulty.end_shard_ore.warning": "After destroying this block all nearby Endermans will attack you!",
   "block.majruszs_difficulty.end_block": "End Block",

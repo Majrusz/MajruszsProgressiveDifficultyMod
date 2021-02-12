@@ -42,7 +42,7 @@
   "item.majruszs_difficulty.end_boots": "Buty kresu",
   "item.majruszs_difficulty.tattered_cloth": "Potargany materiał",
   "item.majruszs_difficulty.end_shard_locator": "Lokalizator kryształów kresu",
-  "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informuje gracza jak daleko znajduje się od kryształu kresu.",
+  "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informuje gracza jak daleko znajduje się od rudy kryształu kresu.",
   "block.majruszs_difficulty.end_shard_ore": "Ruda kryształu kresu",
   "block.majruszs_difficulty.end_shard_ore.warning": "Po zniszczeniu tej rudy wszystkie Enderman'y Cię zaatakują!",
   "block.majruszs_difficulty.end_block": "Blok kresu",
