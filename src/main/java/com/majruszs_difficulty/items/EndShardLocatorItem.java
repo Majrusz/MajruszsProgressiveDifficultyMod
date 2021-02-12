@@ -2,6 +2,7 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -10,11 +11,15 @@ import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /** Item for locating End Shards. */
 public class EndShardLocatorItem extends Item {
@@ -29,6 +34,15 @@ public class EndShardLocatorItem extends Item {
 		super( ( new Item.Properties() ).group( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON )
 			.maxStackSize( 1 ) );
+	}
+
+	@Override
+	@OnlyIn( Dist.CLIENT )
+	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		if( !flag.isAdvanced() )
+			return;
+
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.end_shard_locator.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
 	}
 
 	/** Calculates distance to the nearest End Shard. */
