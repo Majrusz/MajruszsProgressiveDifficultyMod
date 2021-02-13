@@ -69,7 +69,6 @@ public class FishermanEmblemItem extends Item {
 	public static void increaseLuck( TickEvent.PlayerTickEvent event ) {
 		PlayerEntity player = event.player;
 
-		LUCK_ATTRIBUTE.setValue( Instances.FISHERMAN_EMBLEM_ITEM.getEmblemLuckBonus( player ) )
-			.apply( player );
+		LUCK_ATTRIBUTE.setValueAndApply( player, Instances.FISHERMAN_EMBLEM_ITEM.getEmblemLuckBonus( player ) );
 	}
 }
