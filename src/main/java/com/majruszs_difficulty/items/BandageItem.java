@@ -48,8 +48,8 @@ public class BandageItem extends Item {
 		String usableComment = "Is Bandage always usable? If not player can only use Bandage when it is bleeding.";
 		String durationComment = "Duration in seconds of Regeneration effect.";
 		String amplifierComment = "Level/amplifier of Regeneration effect.";
-		this.isAlwaysUsable = new AvailabilityConfig( "is_always_usable", usableComment, false, false );
-		this.effectDuration = new DurationConfig( "duration", durationComment, false, 5.0, 1.0, 120.0 );
+		this.isAlwaysUsable = new AvailabilityConfig( "is_always_usable", usableComment, false, true );
+		this.effectDuration = new DurationConfig( "duration", durationComment, false, 4.0, 1.0, 120.0 );
 		this.effectAmplifier = new IntegerConfig( "amplifier", amplifierComment, false, 0, 0, 10 );
 		this.configGroup.addConfigs( this.isAlwaysUsable, this.effectDuration, this.effectAmplifier );
 	}
