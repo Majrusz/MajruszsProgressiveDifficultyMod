@@ -11,6 +11,7 @@ import com.majruszs_difficulty.events.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.generation.OreGeneration;
 import com.majruszs_difficulty.items.EndShardLocatorItem;
+import com.mlib.MajruszLibrary;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
@@ -251,6 +252,7 @@ public class RegistryHandler {
 		UNDEAD_ARMY_MANAGER.updateWorld( world );
 
 		GAME_DATA_SAVER = manager.getOrCreate( GameDataSaver::new, GameDataSaver.DATA_NAME );
+		GAME_DATA_SAVER.updateGameState();
 
 		ReloadUndeadArmyGoals.resetTimer();
 

@@ -9,14 +9,14 @@ public class GameDataSaver extends WorldSavedData {
 	private CompoundNBT data = new CompoundNBT();
 
 	public GameDataSaver() {
-		super( MajruszsDifficulty.MOD_ID );
+		super( DATA_NAME );
 	}
 
 	@Override
 	public void read( CompoundNBT nbt ) {
 		this.data = nbt.getCompound( "MajruszsDifficultyCompound" );
 
-		GameState.changeMode( GameState.convertIntegerToState( this.data.getInt( "DifficultyState" ) ) );
+		updateGameState();
 	}
 
 	@Override
@@ -25,5 +25,9 @@ public class GameDataSaver extends WorldSavedData {
 
 		nbt.put( "MajruszsDifficultyCompound", this.data );
 		return nbt;
+	}
+
+	public void updateGameState() {
+		GameState.changeMode( GameState.convertIntegerToState( this.data.getInt( "DifficultyState" ) ) );
 	}
 }
