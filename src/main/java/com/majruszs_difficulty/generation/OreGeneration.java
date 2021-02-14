@@ -41,8 +41,10 @@ public class OreGeneration {
 			.func_242731_b( 64 )
 		);
 
-		END_ORES.add( endShardOreSmallGeneration );
-		END_ORES.add( endShardOreLargeGeneration );
+		if( Instances.END_SHARD_ORE.isEnabled() ) {
+			END_ORES.add( endShardOreSmallGeneration );
+			END_ORES.add( endShardOreLargeGeneration );
+		}
 		END_ORES.add( infestedEndStoneGeneration );
 	}
 

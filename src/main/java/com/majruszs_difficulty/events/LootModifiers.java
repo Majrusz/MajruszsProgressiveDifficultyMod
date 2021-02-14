@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.loot_modifiers.AddTreasureBagsToLoot;
+import com.majruszs_difficulty.loot_modifiers.DisableCertainLoot;
 import com.majruszs_difficulty.loot_modifiers.DoubleLoot;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,5 +18,6 @@ public class LootModifiers {
 
 		registry.register( new DoubleLoot.Serializer().setRegistryName( MajruszsDifficulty.getLocation( "double_loot" ) ) );
 		registry.register( new AddTreasureBagsToLoot.Serializer().setRegistryName( MajruszsDifficulty.getLocation( "add_treasure_bag_to_loot" ) ) );
+		registry.register( new DisableCertainLoot.Serializer().setRegistryName( MajruszsDifficulty.getLocation( "disable_certain_loot" ) ) );
 	}
 }

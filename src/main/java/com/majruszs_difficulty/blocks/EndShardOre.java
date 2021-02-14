@@ -1,7 +1,13 @@
 package com.majruszs_difficulty.blocks;
 
 import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.MajruszLibrary;
+import com.mlib.config.AvailabilityConfig;
+import com.mlib.config.ConfigGroup;
+import com.mlib.config.DoubleConfig;
+import com.mlib.config.DurationConfig;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -20,15 +26,32 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
+
 /** New late game crystal ore located in The End. */
 @Mod.EventBusSubscriber
 public class EndShardOre extends Block {
+	protected final ConfigGroup configGroup;
+	protected final AvailabilityConfig availability;
+
 	public EndShardOre() {
 		super( AbstractBlock.Properties.create( Material.IRON, MaterialColor.YELLOW )
 			.harvestLevel( 4 )
 			.setRequiresTool()
 			.hardnessAndResistance( 30.0f, 1200.0f )
-			.sound( SoundType.ANCIENT_DEBRIS ) );
+			.sound( SoundType.ANCIENT_DEBRIS )
+		);
+
+		this.configGroup = new ConfigGroup( "EndShardOre", "Configuration for new late game ore." );
+		FEATURES_GROUP.addGroup( this.configGroup );
+
+		String availabilityComment = "Should this ore be available in survival mode? (ore generation, loot tables etc.) (requires game restart!)";
+		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, true, true );
+		this.configGroup.addConfig( this.availability );
+	}
+
+	public boolean isEnabled() {
+		return this.availability.isEnabled();
 	}
 
 	@Override
