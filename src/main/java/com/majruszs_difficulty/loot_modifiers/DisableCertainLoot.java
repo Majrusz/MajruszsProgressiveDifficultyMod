@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.items.EndShardItem;
 import com.majruszs_difficulty.items.EndShardLocatorItem;
-import com.mlib.MajruszLibrary;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
