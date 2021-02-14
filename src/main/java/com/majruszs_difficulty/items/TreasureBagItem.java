@@ -82,6 +82,8 @@ public class TreasureBagItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, this.availability.isEnabled() );
+
 		if( !flag.isAdvanced() )
 			return;
 
