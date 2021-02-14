@@ -24,6 +24,7 @@ public class MajruszsDifficulty {
 	public static final ConfigGroup FEATURES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Features", "" ) );
 	public static final ConfigGroup ENTITIES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Entities", "" ) );
 	public static final ConfigGroup STRUCTURES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Structures", "" ) );
+	public static final ConfigGroup STATE_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "GameState", "" ) );
 
 	public MajruszsDifficulty() {
 		RegistryHandler.init();

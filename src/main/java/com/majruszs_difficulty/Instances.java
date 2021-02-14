@@ -8,6 +8,7 @@ import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
 import com.majruszs_difficulty.events.FallDamageWithNegativeEffects;
 import com.majruszs_difficulty.events.FishingRewarder;
+import com.majruszs_difficulty.events.IncreaseGameDifficulty;
 import com.majruszs_difficulty.events.monster_spawn.*;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyConfig;
 import com.majruszs_difficulty.events.when_damaged.*;
@@ -90,6 +91,7 @@ public class Instances {
 	public static final IStructurePieceType FLYING_END_SHIP_PIECE;
 
 	// Misc
+	public static final IncreaseGameDifficulty INCREASE_GAME_DIFFICULTY;
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG;
 	public static final ExperienceBonus EXPERIENCE_BONUS;
 	public static final FallDamageWithNegativeEffects FALL_DAMAGE_EFFECTS;
@@ -191,6 +193,7 @@ public class Instances {
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnEliteSkeletonGroup() );
 
 		// Misc
+		INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
 		UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
 		EXPERIENCE_BONUS = new ExperienceBonus();
 		FALL_DAMAGE_EFFECTS = new FallDamageWithNegativeEffects();
