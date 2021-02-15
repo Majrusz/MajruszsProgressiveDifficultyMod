@@ -25,7 +25,7 @@ public class EndermanTeleportOnAttack extends WhenDamagedBase {
 	}
 
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
 		ServerWorld world = ( ServerWorld )target.world;
 
 		double distanceFactor = 5.0;

@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.Instances;
+import com.mlib.MajruszLibrary;
 import com.mlib.TimeConverter;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
@@ -8,12 +9,14 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
+/** Inflicts Nausea and Slowness when player takes damage from falling. */
 @Mod.EventBusSubscriber
 public class FallDamageWithNegativeEffects {
 	protected final ConfigGroup fallGroup;
@@ -37,7 +40,8 @@ public class FallDamageWithNegativeEffects {
 	@SubscribeEvent
 	public static void onFall( LivingFallEvent event ) {
 		double distance = event.getDistance();
-		if( distance < Instances.FALL_DAMAGE_EFFECTS.minimumDistance.get() )
+		MajruszLibrary.LOGGER.debug( event.getDamageMultiplier() );
+		if( distance < Instances.FALL_DAMAGE_EFFECTS.minimumDistance.get() || true )
 			return;
 
 		LivingEntity livingEntity = event.getEntityLiving();

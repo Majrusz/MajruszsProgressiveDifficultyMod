@@ -22,7 +22,7 @@ public class DrownedLightningOnAttack extends WhenDamagedBase {
 	}
 
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
 		if( !Random.tryChance( calculateChance( target ) ) )
 			return;
 

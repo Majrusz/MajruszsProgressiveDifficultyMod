@@ -41,7 +41,7 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	 @param target Entity target that was attacked.
 	 */
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
 		ServerWorld world = ( ServerWorld )target.getEntityWorld();
 		Difficulty difficulty = world.getDifficulty();
 

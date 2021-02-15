@@ -22,7 +22,7 @@ public class TriggerAllEndermansOnAttack extends WhenDamagedBase {
 	}
 
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
 		if( attacker != null )
 			EndShardOre.targetEndermansOnEntity( attacker, 500.0 );
 	}

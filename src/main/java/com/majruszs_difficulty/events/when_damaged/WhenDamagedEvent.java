@@ -22,6 +22,6 @@ public class WhenDamagedEvent {
 
 		for( WhenDamagedBase register : REGISTRY_LIST )
 			if( register.shouldBeExecuted( attacker, target, damageSource ) && event.getAmount() > 0 )
-				register.whenDamaged( attacker, target );
+				register.whenDamaged( attacker, target, event.getAmount() );
 	}
 }
