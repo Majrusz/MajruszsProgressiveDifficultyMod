@@ -4,7 +4,6 @@ import com.majruszs_difficulty.GameState;
 import com.mlib.Random;
 import com.mlib.TimeConverter;
 import com.mlib.config.AvailabilityConfig;
-import com.mlib.config.DoubleConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
