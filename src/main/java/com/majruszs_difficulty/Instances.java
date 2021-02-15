@@ -6,7 +6,6 @@ import com.majruszs_difficulty.blocks.InfestedEndStone;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
-import com.majruszs_difficulty.events.FallDamageWithNegativeEffects;
 import com.majruszs_difficulty.events.FishingRewarder;
 import com.majruszs_difficulty.events.IncreaseGameDifficulty;
 import com.majruszs_difficulty.events.monster_spawn.*;
@@ -20,7 +19,6 @@ import com.majruszs_difficulty.generation.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.SwordItem;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.DamageSource;
@@ -94,7 +92,6 @@ public class Instances {
 	public static final IncreaseGameDifficulty INCREASE_GAME_DIFFICULTY;
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG;
 	public static final ExperienceBonus EXPERIENCE_BONUS;
-	public static final FallDamageWithNegativeEffects FALL_DAMAGE_EFFECTS;
 	public static final FishingRewarder FISHING_REWARDER;
 
 	static {
@@ -178,6 +175,7 @@ public class Instances {
 		WhenDamagedEvent.REGISTRY_LIST.add( new EndSwordLevitationOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new TriggerAllEndermansOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new ShulkerBlindnessOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new NauseaAndSlownessWhenFalling() );
 
 		// On enemy to be spawned
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
@@ -196,7 +194,6 @@ public class Instances {
 		INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
 		UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
 		EXPERIENCE_BONUS = new ExperienceBonus();
-		FALL_DAMAGE_EFFECTS = new FallDamageWithNegativeEffects();
 		FISHING_REWARDER = new FishingRewarder();
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
