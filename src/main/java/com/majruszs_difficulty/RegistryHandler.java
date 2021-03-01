@@ -200,13 +200,13 @@ public class RegistryHandler {
 		GlobalEntityTypeAttributes.put( SkyKeeperEntity.type, SkyKeeperEntity.getAttributeMap() );
 
 		EntitySpawnPlacementRegistry.register( GiantEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GiantEntity::canMonsterSpawn
+			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GiantEntity::canMonsterSpawnInLight
 		);
 		EntitySpawnPlacementRegistry.register( PillagerWolfEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
 			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PillagerWolfEntity::canAnimalSpawn
 		);
 		EntitySpawnPlacementRegistry.register( EliteSkeletonEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EliteSkeletonEntity::canMonsterSpawn
+			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EliteSkeletonEntity::canMonsterSpawnInLight
 		);
 		EntitySpawnPlacementRegistry.register( SkyKeeperEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
 			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SkyKeeperEntity::canSpawnOn
