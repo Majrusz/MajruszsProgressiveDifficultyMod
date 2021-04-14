@@ -24,7 +24,7 @@ public class RegistryHandlerClient {
 		RenderingRegistry.registerEntityRenderingHandler( EliteSkeletonEntity.type, EliteSkeletonRenderer::new );
 		RenderingRegistry.registerEntityRenderingHandler( SkyKeeperEntity.type, SkyKeeperRenderer::new );
 
-		ItemModelsProperties.registerProperty( Instances.END_SHARD_LOCATOR_ITEM, new ResourceLocation( "shard_distance" ),
+		ItemModelsProperties.register( Instances.END_SHARD_LOCATOR_ITEM, new ResourceLocation( "shard_distance" ),
 			EndShardLocatorItem::calculateDistanceToEndShard
 		);
 	}

@@ -18,7 +18,7 @@ public class PillagerWolfRenderer extends WolfRenderer {
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture( WolfEntity entity ) {
+	public ResourceLocation getTextureLocation( WolfEntity entity ) {
 		return ANGRY_WOLF_TEXTURES;
 	}
 }

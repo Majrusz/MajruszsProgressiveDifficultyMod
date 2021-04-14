@@ -21,21 +21,21 @@ import net.minecraft.world.server.ServerWorld;
 /** New end block which works like End Stone block but spawns Endermite when destroyed. */
 public class InfestedEndStone extends Block {
 	public InfestedEndStone() {
-		super( Properties.create( Material.CLAY, MaterialColor.YELLOW )
-			.hardnessAndResistance( 0.0f, 0.75f )
+		super( Properties.of( Material.CLAY, MaterialColor.COLOR_YELLOW )
+			.strength( 0.0f /* hardness */, 0.75f /* resistance */ )
 			.sound( SoundType.STONE ) );
 	}
 
 	@Override
-	public void spawnAdditionalDrops( BlockState state, ServerWorld worldIn, BlockPos pos, ItemStack stack ) {
-		super.spawnAdditionalDrops( state, worldIn, pos, stack );
+	public void spawnAfterBreak( BlockState state, ServerWorld worldIn, BlockPos pos, ItemStack stack ) {
+		super.spawnAfterBreak( state, worldIn, pos, stack );
 		GameRules gameRules = worldIn.getGameRules();
-		if( gameRules.getBoolean( GameRules.DO_TILE_DROPS ) && EnchantmentHelper.getEnchantmentLevel( Enchantments.SILK_TOUCH, stack ) == 0 )
+		if( gameRules.getBoolean( GameRules.RULE_DOBLOCKDROPS ) && EnchantmentHelper.getItemEnchantmentLevel( Enchantments.SILK_TOUCH, stack ) == 0 )
 			this.spawnEndermite( worldIn, pos );
 	}
 
 	@Override
-	public void onExplosionDestroy( World world, BlockPos position, Explosion explosion ) {
+	public void wasExploded( World world, BlockPos position, Explosion explosion ) {
 		if( world instanceof ServerWorld )
 			this.spawnEndermite( ( ServerWorld )world, position );
 	}
@@ -45,15 +45,15 @@ public class InfestedEndStone extends Block {
 		if( endermite == null )
 			return;
 
-		endermite.setLocationAndAngles( position.getX() + 0.5, position.getY(), position.getZ() + 0.5, 0.0f, 0.0f );
-		world.addEntity( endermite );
-		endermite.spawnExplosionParticle();
+		endermite.moveTo( endermite.getX() + 0.5, endermite.getY(), endermite.getZ() + 0.5, 0.0f, 0.0f );
+		world.addFreshEntity( endermite );
+		endermite.spawnAnim();
 	}
 
 	public static class InfestedEndStoneItem extends BlockItem {
 		public InfestedEndStoneItem() {
-			super( Instances.INFESTED_END_STONE, ( new Properties() ).maxStackSize( 64 )
-				.group( Instances.ITEM_GROUP ) );
+			super( Instances.INFESTED_END_STONE, ( new Properties() ).stacksTo( 64 )
+				.tab( Instances.ITEM_GROUP ) );
 		}
 	}
 }

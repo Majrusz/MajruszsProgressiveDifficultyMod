@@ -33,8 +33,8 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	public static final EntityType< EliteSkeletonEntity > type;
 
 	static {
-		type = EntityType.Builder.create( EliteSkeletonEntity::new, EntityClassification.MONSTER )
-			.size( 0.6f, 2.0f )
+		type = EntityType.Builder.of( EliteSkeletonEntity::new, EntityClassification.MONSTER )
+			.sized( 0.6f, 2.0f )
 			.build( MajruszsDifficulty.getLocation( "elite_skeleton" )
 				.toString() );
 	}

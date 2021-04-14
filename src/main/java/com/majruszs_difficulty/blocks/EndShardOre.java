@@ -44,10 +44,10 @@ public class EndShardOre extends Block {
 	protected final AvailabilityConfig availability;
 
 	public EndShardOre() {
-		super( AbstractBlock.Properties.create( Material.IRON, MaterialColor.YELLOW )
+		super( AbstractBlock.Properties.of( Material.METAL, MaterialColor.COLOR_YELLOW )
 			.harvestLevel( 4 )
-			.setRequiresTool()
-			.hardnessAndResistance( 30.0f, 1200.0f )
+			.requiresCorrectToolForDrops()
+			.strength( 30.0f /* hardness */, 1200.0f /* resistance */ )
 			.sound( SoundType.ANCIENT_DEBRIS )
 		);
 
@@ -74,7 +74,7 @@ public class EndShardOre extends Block {
 		Block block = blockState.getBlock();
 		if( block.equals( Instances.END_SHARD_ORE ) ) {
 			PlayerEntity player = event.getPlayer();
-			player.sendStatusMessage( new TranslationTextComponent( "block.majruszs_difficulty.end_shard_ore.warning" ).mergeStyle( TextFormatting.BOLD ), true );
+			player.displayClientMessage( new TranslationTextComponent( "block.majruszs_difficulty.end_shard_ore.warning" ).withStyle( TextFormatting.BOLD ), true );
 		}
 	}
 
@@ -93,28 +93,28 @@ public class EndShardOre extends Block {
 	 @param maximumDistance Maximum distance from enderman to entity.
 	 */
 	public static void targetEndermansOnEntity( LivingEntity target, double maximumDistance ) {
-		if( !( target.world instanceof ServerWorld ) )
+		if( !( target.getCommandSenderWorld() instanceof ServerWorld ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )target.world;
-		for( Entity entity : world.getEntities( null, enderman->enderman.getDistanceSq( target ) < maximumDistance ) )
+		ServerWorld world = ( ServerWorld )target.getCommandSenderWorld();
+		for( Entity entity : world.getEntities( null, enderman->enderman.distanceToSqr( target ) < maximumDistance ) )
 			if( entity instanceof EndermanEntity ) {
 				EndermanEntity enderman = ( EndermanEntity )entity;
-				LivingEntity currentEndermanTarget = enderman.getRevengeTarget();
+				LivingEntity currentEndermanTarget = enderman.getTarget();
 				if( currentEndermanTarget == null || !currentEndermanTarget.isAlive() )
-					enderman.setRevengeTarget( target );
+					enderman.setTarget( target );
 			}
 	}
 
 	public static class EndShardOreItem extends BlockItem {
 		public EndShardOreItem() {
-			super( Instances.END_SHARD_ORE, ( new Properties() ).maxStackSize( 64 )
-				.group( Instances.ITEM_GROUP ) );
+			super( Instances.END_SHARD_ORE, ( new Properties() ).stacksTo( 64 )
+				.tab( Instances.ITEM_GROUP ) );
 		}
 
 		@Override
 		@OnlyIn( Dist.CLIENT )
-		public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 			MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
 		}
 	}

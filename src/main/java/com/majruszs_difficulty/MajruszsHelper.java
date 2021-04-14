@@ -16,24 +16,24 @@ import javax.annotation.Nullable;
 public class MajruszsHelper {
 	@Nullable
 	public static PlayerEntity getPlayerFromDamageSource( DamageSource damageSource ) {
-		if( !( damageSource.getTrueSource() instanceof PlayerEntity ) )
+		if( !( damageSource.getDirectEntity() instanceof PlayerEntity ) )
 			return null;
 
-		return ( PlayerEntity )damageSource.getTrueSource();
+		return ( PlayerEntity )damageSource.getDirectEntity();
 	}
 
 	@Nullable
 	public static ServerWorld getServerWorldFromEntity( Entity entity ) {
-		if( !( entity.world instanceof ServerWorld ) )
+		if( !( entity.getCommandSenderWorld() instanceof ServerWorld ) )
 			return null;
 
-		return ( ServerWorld )entity.world;
+		return ( ServerWorld )entity.getCommandSenderWorld();
 	}
 
 	public static void giveItemStackToPlayer( ItemStack itemStack, PlayerEntity player, ServerWorld world ) {
-		if( !player.inventory.addItemStackToInventory( itemStack ) ) {
-			double x = player.getPosX(), y = player.getPosY() + 1.0, z = player.getPosZ();
-			world.addEntity( new ItemEntity( world, x, y, z, itemStack ) );
+		if( !player.inventory.add( itemStack ) ) {
+			double x = player.getX(), y = player.getY() + 1.0, z = player.getZ();
+			world.addFreshEntity( new ItemEntity( world, x, y, z, itemStack ) );
 		}
 	}
 

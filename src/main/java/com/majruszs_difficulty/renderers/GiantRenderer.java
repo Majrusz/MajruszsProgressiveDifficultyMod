@@ -17,16 +17,16 @@ public class GiantRenderer extends ZombieRenderer {
 
 	public GiantRenderer( EntityRendererManager renderManagerIn ) {
 		super( renderManagerIn );
-		this.shadowSize = 0.375f * GiantEntity.scale;
+		this.shadowRadius = 0.375f * GiantEntity.scale;
 	}
 
 	@Override
-	protected void preRenderCallback( ZombieEntity entity, MatrixStack matrixStackIn, float partialTickTime ) {
+	protected void scale( ZombieEntity entity, MatrixStack matrixStackIn, float partialTickTime ) {
 		matrixStackIn.scale( GiantEntity.scale, GiantEntity.scale, GiantEntity.scale );
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture( ZombieEntity entity ) {
+	public ResourceLocation getTextureLocation( ZombieEntity entity ) {
 		return TEXTURE;
 	}
 }

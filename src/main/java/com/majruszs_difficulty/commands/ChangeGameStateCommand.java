@@ -13,7 +13,7 @@ public final class ChangeGameStateCommand {
 
 	public static void register( CommandDispatcher< CommandSource > dispatcher ) {
 		dispatcher.register( Commands.literal( "gamestate" )
-			.requires( source->source.hasPermissionLevel( 4 ) )
+			.requires( source->source.hasPermission( 4 ) )
 			.then( Commands.literal( "normal" )
 				.executes( entity->changeState( entity.getSource(), GameState.State.NORMAL ) ) )
 			.then( Commands.literal( "expert" )
@@ -22,19 +22,19 @@ public final class ChangeGameStateCommand {
 				.executes( entity->changeState( entity.getSource(), GameState.State.MASTER ) ) ) );
 
 		dispatcher.register( Commands.literal( "gamestate" )
-			.requires( source->source.hasPermissionLevel( 0 ) )
+			.requires( source->source.hasPermission( 0 ) )
 			.executes( entity->getCurrentState( entity.getSource() ) ) );
 	}
 
 	public static int getCurrentState( CommandSource source ) {
-		source.sendFeedback( getFeedbackMessage( GameState.getCurrentMode(), "current" ), true );
+		source.sendSuccess( getFeedbackMessage( GameState.getCurrentMode(), "current" ), true );
 
 		return GameState.convertStateToInteger( GameState.getCurrentMode() );
 	}
 
 	public static int changeState( CommandSource source, GameState.State state ) {
 		if( GameState.changeMode( state ) )
-			source.sendFeedback( getFeedbackMessage( state, "change" ), true );
+			source.sendSuccess( getFeedbackMessage( state, "change" ), true );
 
 		return GameState.convertStateToInteger( state );
 	}
@@ -55,9 +55,9 @@ public final class ChangeGameStateCommand {
 				break;
 		}
 
-		feedback.appendString( " " );
+		feedback.append( " " );
 		feedback.append( feedback_mode );
-		feedback.appendString( "!" );
+		feedback.append( "!" );
 
 		return feedback;
 	}

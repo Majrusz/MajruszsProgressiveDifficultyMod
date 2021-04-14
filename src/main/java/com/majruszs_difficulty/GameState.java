@@ -84,8 +84,8 @@ public class GameState {
 
 	private static IFormattableTextComponent generateModeText( String modeName, TextFormatting color ) {
 		IFormattableTextComponent text = new TranslationTextComponent( "majruszs_difficulty.states." + modeName );
-		text.mergeStyle( color );
-		text.mergeStyle( TextFormatting.BOLD );
+		text.withStyle( color );
+		text.withStyle( TextFormatting.BOLD );
 
 		return text;
 	}

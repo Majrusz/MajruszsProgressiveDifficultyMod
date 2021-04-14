@@ -171,9 +171,9 @@ public class RegistryHandler {
 		STRUCTURES.register( "flying_end_ship", ()->Instances.FLYING_END_SHIP );
 		STRUCTURES.register( modEventBus );
 
-		Structure.NAME_STRUCTURE_BIMAP.put( "flying_phantom_structure", Instances.FLYING_PHANTOM );
-		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_island", Instances.FLYING_END_ISLAND );
-		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_ship", Instances.FLYING_END_SHIP );
+		Structure.STRUCTURES_REGISTRY.put( "flying_phantom_structure", Instances.FLYING_PHANTOM );
+		Structure.STRUCTURES_REGISTRY.put( "flying_end_island", Instances.FLYING_END_ISLAND );
+		Structure.STRUCTURES_REGISTRY.put( "flying_end_ship", Instances.FLYING_END_SHIP );
 	}
 
 	/** Registration of everything. */
@@ -200,16 +200,16 @@ public class RegistryHandler {
 		GlobalEntityTypeAttributes.put( SkyKeeperEntity.type, SkyKeeperEntity.getAttributeMap() );
 
 		EntitySpawnPlacementRegistry.register( GiantEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GiantEntity::canMonsterSpawnInLight
+			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkAnyLightMonsterSpawnRules
 		);
 		EntitySpawnPlacementRegistry.register( PillagerWolfEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PillagerWolfEntity::canAnimalSpawn
+			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PillagerWolfEntity::checkAnimalSpawnRules
 		);
 		EntitySpawnPlacementRegistry.register( EliteSkeletonEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EliteSkeletonEntity::canMonsterSpawnInLight
+			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EliteSkeletonEntity::checkAnyLightMonsterSpawnRules
 		);
 		EntitySpawnPlacementRegistry.register( SkyKeeperEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SkyKeeperEntity::canSpawnOn
+			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SkyKeeperEntity::checkMobSpawnRules
 		);
 
 		event.enqueueWork( Instances.FLYING_PHANTOM::setup );
@@ -231,7 +231,7 @@ public class RegistryHandler {
 	 */
 	private static void onServerStart( FMLServerStartingEvent event ) {
 		MinecraftServer server = event.getServer();
-		UNDEAD_ARMY_MANAGER.updateWorld( server.func_241755_D_() );
+		UNDEAD_ARMY_MANAGER.updateWorld( server.overworld() );
 
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, Instances.ELDER_GUARDIAN_TREASURE_BAG, true );
 		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, Instances.WITHER_TREASURE_BAG, false );
@@ -246,12 +246,12 @@ public class RegistryHandler {
 			return;
 
 		ServerWorld world = ( ServerWorld )event.getWorld();
-		DimensionSavedDataManager manager = world.getSavedData();
+		DimensionSavedDataManager manager = world.getDataStorage();
 
-		UNDEAD_ARMY_MANAGER = manager.getOrCreate( ()->new UndeadArmyManager( world ), UndeadArmyManager.DATA_NAME );
+		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( ()->new UndeadArmyManager( world ), UndeadArmyManager.DATA_NAME );
 		UNDEAD_ARMY_MANAGER.updateWorld( world );
 
-		GAME_DATA_SAVER = manager.getOrCreate( GameDataSaver::new, GameDataSaver.DATA_NAME );
+		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::new, GameDataSaver.DATA_NAME );
 		GAME_DATA_SAVER.updateGameState();
 
 		ReloadUndeadArmyGoals.resetTimer();
@@ -259,18 +259,17 @@ public class RegistryHandler {
 		if( event.getWorld() instanceof ServerWorld ) {
 			ServerWorld serverWorld = ( ServerWorld )event.getWorld();
 
-			if( serverWorld.getChunkProvider()
-				.getChunkGenerator() instanceof FlatChunkGenerator && serverWorld.getDimensionKey()
+			if( serverWorld.getChunkSource().generator instanceof FlatChunkGenerator && serverWorld.dimension()
 				.equals( World.OVERWORLD ) ) {
 				return;
 			}
 
-			Map< Structure< ? >, StructureSeparationSettings > tempMap = new HashMap<>( serverWorld.getChunkProvider().generator.func_235957_b_()
+			Map< Structure< ? >, StructureSeparationSettings > tempMap = new HashMap<>( serverWorld.getChunkSource().generator.func_235957_b_()
 				.func_236195_a_() );
 			tempMap.putIfAbsent( Instances.FLYING_PHANTOM, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_PHANTOM ) );
 			tempMap.putIfAbsent( Instances.FLYING_END_ISLAND, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_ISLAND ) );
 			tempMap.putIfAbsent( Instances.FLYING_END_SHIP, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_SHIP ) );
-			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
+			serverWorld.getChunkSource().generator.func_235957_b_().field_236193_d_ = tempMap;
 		}
 	}
 
@@ -281,7 +280,7 @@ public class RegistryHandler {
 		if( !( event.getWorld() instanceof ServerWorld ) )
 			return;
 
-		GAME_DATA_SAVER.markDirty();
-		UNDEAD_ARMY_MANAGER.markDirty();
+		GAME_DATA_SAVER.setDirty();
+		UNDEAD_ARMY_MANAGER.setDirty();
 	}
 }

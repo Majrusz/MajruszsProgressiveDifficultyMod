@@ -54,17 +54,17 @@ public class BleedingEffect extends Effect {
 
 	/** Called every time when effect 'isReady'. */
 	@Override
-	public void performEffect( LivingEntity entity, int amplifier ) {
-		entity.attackEntityFrom( Instances.DamageSources.BLEEDING, ( float )this.damage.get() );
+	public void applyEffectTick( LivingEntity entity, int amplifier ) {
+		entity.hurt( Instances.DamageSources.BLEEDING, ( float )this.damage.get() );
 	}
 
 	/** When effect starts bleeding will not do anything. */
 	@Override
-	public void affectEntity( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health ) {}
+	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health ) {}
 
 	/** Calculating whether effect is ready to deal damage. */
 	@Override
-	public boolean isReady( int duration, int amplifier ) {
+	public boolean isDurationEffectTick( int duration, int amplifier ) {
 		int cooldown = Math.max( 4, this.baseCooldown.getDuration() >> amplifier );
 
 		return duration % cooldown == 0;
@@ -98,7 +98,7 @@ public class BleedingEffect extends Effect {
 	public double getChanceMultiplierDependingOnArmor( LivingEntity entity ) {
 		double chance = 1.0;
 
-		for( ItemStack armorPiece : entity.getArmorInventoryList() )
+		for( ItemStack armorPiece : entity.getArmorSlots() )
 			if( !armorPiece.isEmpty() )
 				chance -= this.armorChanceReduction.get();
 
@@ -110,15 +110,15 @@ public class BleedingEffect extends Effect {
 	public static void spawnParticles( TickEvent.PlayerTickEvent event ) {
 		PlayerEntity player = event.player;
 
-		if( !( player.world instanceof ServerWorld ) || !( player instanceof ServerPlayerEntity ) )
+		if( !( player.getCommandSenderWorld() instanceof ServerWorld ) || !( player instanceof ServerPlayerEntity ) )
 			return;
 
 		CompoundNBT data = player.getPersistentData();
 		data.putInt( BLEEDING_TAG_COUNTER, ( data.getInt( BLEEDING_TAG_COUNTER )+1 )%5 );
-		ServerWorld world = ( ServerWorld )player.world;
-		if( player.isPotionActive( Instances.BLEEDING ) && data.getInt( BLEEDING_TAG_COUNTER ) == 0 )
-			world.spawnParticle( Instances.BLOOD_PARTICLE, player.getPosX(),
-				player.getPosYHeight( 0.5 ), player.getPosZ(), 1, 0.125, 0.5, 0.125, 0.1
+		ServerWorld world = ( ServerWorld )player.getCommandSenderWorld();
+		if( player.hasEffect( Instances.BLEEDING ) && data.getInt( BLEEDING_TAG_COUNTER ) == 0 )
+			world.sendParticles( Instances.BLOOD_PARTICLE, player.getX(),
+				player.getY( 0.5 ), player.getZ(), 1, 0.125, 0.5, 0.125, 0.1
 			);
 	}
 }

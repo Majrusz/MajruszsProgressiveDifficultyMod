@@ -13,14 +13,14 @@ public class GameDataSaver extends WorldSavedData {
 	}
 
 	@Override
-	public void read( CompoundNBT nbt ) {
+	public void load( CompoundNBT nbt ) {
 		this.data = nbt.getCompound( "MajruszsDifficultyCompound" );
 
 		updateGameState();
 	}
 
 	@Override
-	public CompoundNBT write( CompoundNBT nbt ) {
+	public CompoundNBT save( CompoundNBT nbt ) {
 		this.data.putInt( "DifficultyState", GameState.convertStateToInteger( GameState.getCurrentMode() ) );
 
 		nbt.put( "MajruszsDifficultyCompound", this.data );

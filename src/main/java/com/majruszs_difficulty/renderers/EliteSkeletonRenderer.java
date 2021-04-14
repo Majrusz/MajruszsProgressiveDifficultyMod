@@ -18,7 +18,7 @@ public class EliteSkeletonRenderer extends SkeletonRenderer {
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture( AbstractSkeletonEntity entity ) {
+	public ResourceLocation getTextureLocation( AbstractSkeletonEntity entity ) {
 		return TEXTURE;
 	}
 }

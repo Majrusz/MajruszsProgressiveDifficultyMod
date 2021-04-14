@@ -142,23 +142,23 @@ public class Instances {
 		ResourceLocation flyingPhantomResource = MajruszsDifficulty.getLocation( "flying_phantom_structure" );
 		FLYING_PHANTOM = new FlyingPhantomStructure();
 		FLYING_PHANTOM_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingPhantomResource.toString(),
-			FLYING_PHANTOM.withConfiguration( NoFeatureConfig.field_236559_b_ )
+			FLYING_PHANTOM.configured( NoFeatureConfig.NONE )
 		);
-		FLYING_PHANTOM_PIECE = IStructurePieceType.register( FlyingPhantomPiece::new, flyingPhantomResource.toString() );
+		FLYING_PHANTOM_PIECE = IStructurePieceType.setPieceId( FlyingPhantomPiece::new, flyingPhantomResource.toString() );
 
 		ResourceLocation flyingEndIslandResource = MajruszsDifficulty.getLocation( "flying_end_island_structure" );
 		FLYING_END_ISLAND = new FlyingEndIslandStructure();
 		FLYING_END_ISLAND_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingEndIslandResource.toString(),
-			FLYING_END_ISLAND.withConfiguration( NoFeatureConfig.field_236559_b_ )
+			FLYING_END_ISLAND.configured( NoFeatureConfig.NONE )
 		);
-		FLYING_END_ISLAND_PIECE = IStructurePieceType.register( FlyingEndIslandPiece::new, flyingEndIslandResource.toString() );
+		FLYING_END_ISLAND_PIECE = IStructurePieceType.setPieceId( FlyingEndIslandPiece::new, flyingEndIslandResource.toString() );
 
 		ResourceLocation flyingEndShipResource = MajruszsDifficulty.getLocation( "flying_end_ship_structure" );
 		FLYING_END_SHIP = new FlyingEndShipStructure();
 		FLYING_END_SHIP_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingEndShipResource.toString(),
-			FLYING_END_SHIP.withConfiguration( NoFeatureConfig.field_236559_b_ )
+			FLYING_END_SHIP.configured( NoFeatureConfig.NONE )
 		);
-		FLYING_END_SHIP_PIECE = IStructurePieceType.register( FlyingEndShipPiece::new, flyingEndShipResource.toString() );
+		FLYING_END_SHIP_PIECE = IStructurePieceType.setPieceId( FlyingEndShipPiece::new, flyingEndShipResource.toString() );
 
 		// When damaged events
 		WhenDamagedEvent.REGISTRY_LIST.add( new SpiderPoisonOnAttack() );
@@ -221,7 +221,7 @@ public class Instances {
 		public static final DamageSource BLEEDING;
 
 		static {
-			BLEEDING = new DamageSource( "bleeding" ).setDamageBypassesArmor();
+			BLEEDING = new DamageSource( "bleeding" ).bypassArmor();
 		}
 	}
 

@@ -40,7 +40,7 @@ public class UndeadArmyManager extends WorldSavedData {
 	}
 
 	@Override
-	public void read( CompoundNBT nbt ) {
+	public void load( CompoundNBT nbt ) {
 		this.ticksActive = nbt.getLong( "TicksActive" );
 		ListNBT listNBT = nbt.getList( "Armies", 10 );
 
@@ -49,7 +49,7 @@ public class UndeadArmyManager extends WorldSavedData {
 	}
 
 	@Override
-	public CompoundNBT write( CompoundNBT compoundNBT ) {
+	public CompoundNBT save( CompoundNBT compoundNBT ) {
 		compoundNBT.putLong( "Tick", this.ticksActive );
 		ListNBT listNBT = new ListNBT();
 
