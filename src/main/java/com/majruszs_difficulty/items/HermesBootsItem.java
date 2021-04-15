@@ -36,7 +36,7 @@ public class HermesBootsItem extends ArmorItem {
 	protected final ConfigGroup configGroup;
 
 	public HermesBootsItem() {
-		super( CustomArmorMaterial.HERMES, EquipmentSlotType.FEET, ( new Properties() ).group( Instances.ITEM_GROUP )
+		super( CustomArmorMaterial.HERMES, EquipmentSlotType.FEET, ( new Properties() ).tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
 		String comment = "Movement speed extra multiplier.";
@@ -50,11 +50,11 @@ public class HermesBootsItem extends ArmorItem {
 	/** Adding tooltip with information for what bandage is used. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		if( !flag.isAdvanced() )
 			return;
 
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.hermes_boots.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.hermes_boots.item_tooltip" ).withStyle( TextFormatting.GRAY ) );
 	}
 
 	@SubscribeEvent
@@ -66,7 +66,7 @@ public class HermesBootsItem extends ArmorItem {
 	}
 
 	public double getMovementSpeedBonus( LivingEntity entity ) {
-		ItemStack boots = entity.getItemStackFromSlot( EquipmentSlotType.FEET );
+		ItemStack boots = entity.getItemBySlot( EquipmentSlotType.FEET );
 		return ( boots.getItem() instanceof HermesBootsItem ? 1.0 : 0.0 ) * this.movementSpeedBonus.get();
 	}
 }

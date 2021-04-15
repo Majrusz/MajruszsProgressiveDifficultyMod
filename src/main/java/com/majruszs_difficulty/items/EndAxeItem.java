@@ -17,13 +17,13 @@ import java.util.List;
 /** New late game axe. */
 public class EndAxeItem extends AxeItem {
 	public EndAxeItem() {
-		super( CustomItemTier.END, 6.0f, -3.1f, ( new Properties() ).group( Instances.ITEM_GROUP )
-			.isImmuneToFire() );
+		super( CustomItemTier.END, 6.0f, -3.1f, ( new Properties() ).tab( Instances.ITEM_GROUP )
+			.fireResistant() );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
 
 		if( !flag.isAdvanced() )

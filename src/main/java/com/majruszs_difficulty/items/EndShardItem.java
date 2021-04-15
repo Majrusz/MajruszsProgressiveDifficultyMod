@@ -17,13 +17,13 @@ import java.util.List;
 /** End Crystal which is drop from End Crystal Ore. */
 public class EndShardItem extends Item {
 	public EndShardItem() {
-		super( new Item.Properties().group( Instances.ITEM_GROUP )
+		super( new Item.Properties().tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
 	}
 }

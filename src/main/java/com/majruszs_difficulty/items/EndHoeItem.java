@@ -17,13 +17,13 @@ import java.util.List;
 /** New late game hoe. */
 public class EndHoeItem extends HoeItem {
 	public EndHoeItem() {
-		super( CustomItemTier.END, -5, 0.0f, ( new Properties() ).group( Instances.ITEM_GROUP )
-			.isImmuneToFire() );
+		super( CustomItemTier.END, -5, 0.0f, ( new Properties() ).tab( Instances.ITEM_GROUP )
+			.fireResistant() );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
 
 		if( !flag.isAdvanced() )

@@ -17,13 +17,13 @@ import java.util.List;
 /** New late game pickaxe. */
 public class EndPickaxeItem extends PickaxeItem {
 	public EndPickaxeItem() {
-		super( CustomItemTier.END, 1, -2.8f, ( new Properties() ).group( Instances.ITEM_GROUP )
-			.isImmuneToFire() );
+		super( CustomItemTier.END, 1, -2.8f, ( new Properties() ).tab( Instances.ITEM_GROUP )
+			.fireResistant() );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
 
 		if( !flag.isAdvanced() )

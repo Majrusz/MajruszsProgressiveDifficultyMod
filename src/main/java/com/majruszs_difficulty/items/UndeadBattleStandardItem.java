@@ -23,35 +23,35 @@ import java.util.List;
 
 public class UndeadBattleStandardItem extends Item {
 	public UndeadBattleStandardItem() {
-		super( ( new Item.Properties() ).maxStackSize( 1 )
-			.group( Instances.ITEM_GROUP )
+		super( ( new Item.Properties() ).stacksTo( 1 )
+			.tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override
-	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
-		ItemStack itemStack = player.getHeldItem( hand );
+	public ActionResult< ItemStack > use( World world, PlayerEntity player, Hand hand ) {
+		ItemStack itemStack = player.getItemInHand( hand );
 
-		if( !world.isRemote && RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player ) ) {
-			if( !player.abilities.isCreativeMode )
+		if( !world.isClientSide() && RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player ) ) {
+			if( !player.abilities.instabuild )
 				itemStack.shrink( 1 );
-			player.addStat( Stats.ITEM_USED.get( this ) );
+			player.awardStat( Stats.ITEM_USED.get( this ) );
 		}
 
-		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
+		return ActionResult.sidedSuccess( itemStack, world.isClientSide() );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip1" ) );
 
 		if( !flag.isAdvanced() )
 			return;
 
 		toolTip.add(
-			new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip2" ).mergeStyle( TextFormatting.GRAY ) );
+			new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip2" ).withStyle( TextFormatting.GRAY ) );
 		toolTip.add(
-			new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip3" ).mergeStyle( TextFormatting.GRAY ) );
+			new TranslationTextComponent( "item.majruszs_difficulty.undead_battle_standard.item_tooltip3" ).withStyle( TextFormatting.GRAY ) );
 	}
 }

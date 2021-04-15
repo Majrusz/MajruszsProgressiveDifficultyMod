@@ -36,9 +36,9 @@ public class FishermanEmblemItem extends Item {
 	protected final GameStateIntegerConfig luck;
 
 	public FishermanEmblemItem() {
-		super( ( new Item.Properties() ).maxStackSize( 1 )
+		super( ( new Item.Properties() ).stacksTo( 1 )
 			.rarity( Rarity.UNCOMMON )
-			.group( Instances.ITEM_GROUP ) );
+			.tab( Instances.ITEM_GROUP ) );
 
 		String luck_comment = "Luck bonus when fishing.";
 		String group_comment = "Functionality of Fisherman Emblem.";
@@ -51,18 +51,18 @@ public class FishermanEmblemItem extends Item {
 	/** Adding tooltip with information for what this embled does. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip1" ).mergeStyle( TextFormatting.GOLD ) );
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip1" ).withStyle( TextFormatting.GOLD ) );
 
 		if( !flag.isAdvanced() )
 			return;
 
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip2" ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip2" ).withStyle( TextFormatting.GRAY ) );
 	}
 
 	/** Returns current luck bonus. (whether player has emblem or not) */
 	public int getEmblemLuckBonus( PlayerEntity player ) {
-		return player.fishingBobber != null ? this.luck.getCurrentGameStateValue() : 0;
+		return player.fishing != null ? this.luck.getCurrentGameStateValue() : 0;
 	}
 
 	@SubscribeEvent

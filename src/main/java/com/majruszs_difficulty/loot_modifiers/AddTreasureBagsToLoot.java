@@ -26,8 +26,8 @@ public class AddTreasureBagsToLoot extends LootModifier {
 	@Nonnull
 	@Override
 	public List< ItemStack > doApply( List< ItemStack > generatedLoot, LootContext context ) {
-		Entity entity = context.get( LootParameters.THIS_ENTITY );
-		DamageSource damageSource = context.get( LootParameters.DAMAGE_SOURCE );
+		Entity entity = context.getParamOrNull( LootParameters.THIS_ENTITY );
+		DamageSource damageSource = context.getParamOrNull( LootParameters.DAMAGE_SOURCE );
 
 		if( entity == null || damageSource == null )
 			return generatedLoot;

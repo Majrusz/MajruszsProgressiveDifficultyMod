@@ -17,13 +17,13 @@ import java.util.List;
 /** New strong end-game ingot. */
 public class EndIngotItem extends Item {
 	public EndIngotItem() {
-		super( new Properties().group( Instances.ITEM_GROUP )
+		super( new Properties().tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
 	}
 }

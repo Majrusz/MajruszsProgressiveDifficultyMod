@@ -11,7 +11,7 @@ public class CustomItemGroup extends ItemGroup {
 	}
 
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack( Instances.BATTLE_STANDARD_ITEM );
 	}
 }

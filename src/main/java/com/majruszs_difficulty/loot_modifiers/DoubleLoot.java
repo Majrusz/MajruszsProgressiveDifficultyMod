@@ -42,7 +42,7 @@ public class DoubleLoot extends LootModifier {
 		double chance = GameState.getValueDependingOnGameState( this.normalModeChance, this.expertModeChance, this.masterModeChance );
 
 		if( Random.tryChance( chance ) ) {
-			Entity entity = context.get( LootParameters.THIS_ENTITY );
+			Entity entity = context.getParamOrNull( LootParameters.THIS_ENTITY );
 			if( generatedLoot.size() > 0 && entity != null )
 				spawnParticles( entity );
 
@@ -54,12 +54,12 @@ public class DoubleLoot extends LootModifier {
 
 	/** Spawning particles to let the player know that the loot was doubled. */
 	protected void spawnParticles( Entity entity ) {
-		if( !( entity.world instanceof ServerWorld ) )
+		if( !( entity.getCommandSenderWorld() instanceof ServerWorld ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )entity.world;
+		ServerWorld world = ( ServerWorld )entity.getCommandSenderWorld();
 		for( int i = 0; i < 8; i++ )
-			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, entity.getPosX(), entity.getPosYHeight( 0.5 ), entity.getPosZ(), 1, 0.5, 0.5, 0.5,
+			world.sendParticles( ParticleTypes.HAPPY_VILLAGER, entity.getX(), entity.getY( 0.5 ), entity.getZ(), 1, 0.5, 0.5, 0.5,
 				0.5
 			);
 	}
@@ -88,10 +88,10 @@ public class DoubleLoot extends LootModifier {
 	public static class Serializer extends GlobalLootModifierSerializer< DoubleLoot > {
 		@Override
 		public DoubleLoot read( ResourceLocation name, JsonObject object, ILootCondition[] conditions ) {
-			double normalModeChance = JSONUtils.getFloat( object, "normal_chance" );
-			double expertModeChance = JSONUtils.getFloat( object, "expert_chance" );
-			double masterModeChance = JSONUtils.getFloat( object, "master_chance" );
-			JsonArray items = JSONUtils.getJsonArray( object, "forbidden_items" );
+			double normalModeChance = JSONUtils.getAsFloat( object, "normal_chance" );
+			double expertModeChance = JSONUtils.getAsFloat( object, "expert_chance" );
+			double masterModeChance = JSONUtils.getAsFloat( object, "master_chance" );
+			JsonArray items = JSONUtils.getAsJsonArray( object, "forbidden_items" );
 
 			List< Item > forbiddenItemsToDuplicate = new ArrayList<>();
 			for( int i = 0; i < items.size(); i++ ) {

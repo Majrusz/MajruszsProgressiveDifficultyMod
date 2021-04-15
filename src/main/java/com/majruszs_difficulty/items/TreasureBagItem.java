@@ -45,8 +45,8 @@ public class TreasureBagItem extends Item {
 	private final AvailabilityConfig availability;
 
 	public TreasureBagItem( String id, String entityNameForConfiguration ) {
-		super( ( new Item.Properties() ).maxStackSize( 16 )
-			.group( Instances.ITEM_GROUP )
+		super( ( new Item.Properties() ).stacksTo( 16 )
+			.tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
 		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
@@ -57,37 +57,37 @@ public class TreasureBagItem extends Item {
 
 	/** Opening treasure bag on right click. */
 	@Override
-	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
-		ItemStack itemStack = player.getHeldItem( hand );
+	public ActionResult< ItemStack > use( World world, PlayerEntity player, Hand hand ) {
+		ItemStack itemStack = player.getItemInHand( hand );
 
-		if( !world.isRemote ) {
-			if( !player.abilities.isCreativeMode )
+		if( !world.isClientSide() ) {
+			if( !player.abilities.instabuild )
 				itemStack.shrink( 1 );
-			player.addStat( Stats.ITEM_USED.get( this ) );
-			world.playSound( null, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 0.9f );
+			player.awardStat( Stats.ITEM_USED.get( this ) );
+			world.playSound( null, player.blockPosition(), SoundEvents.ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 0.9f );
 
 			List< ItemStack > loot = generateLoot( player );
 			for( ItemStack reward : loot ) {
-				if( player.canPickUpItem( reward ) )
-					player.inventory.addItemStackToInventory( reward );
+				if( player.canTakeItem( reward ) )
+					player.inventory.add( reward );
 				else
-					world.addEntity( new ItemEntity( world, player.getPosX(), player.getPosY() + 1, player.getPosZ(), reward ) );
+					world.addFreshEntity( new ItemEntity( world, player.getX(), player.getY() + 1, player.getZ(), reward ) );
 			}
 		}
 
-		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
+		return ActionResult.pass( itemStack );
 	}
 
 	/** Adding simple tooltip to treasure bag. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, this.availability.isEnabled() );
 
 		if( !flag.isAdvanced() )
 			return;
 
-		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.treasure_bag.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.treasure_bag.item_tooltip" ).withStyle( TextFormatting.GRAY ) );
 	}
 
 	/** Registers given treasure bag. */
@@ -102,11 +102,11 @@ public class TreasureBagItem extends Item {
 
 	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
 	protected static LootContext generateLootContext( PlayerEntity player ) {
-		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerWorld )player.getEntityWorld() );
-		lootContextBuilder.withParameter( LootParameters.field_237457_g_, player.getPositionVec() );
+		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerWorld )player.getCommandSenderWorld() );
+		lootContextBuilder.withParameter( LootParameters.ORIGIN, player.getPosition( 0.0f ) );
 		lootContextBuilder.withParameter( LootParameters.THIS_ENTITY, player );
 
-		return lootContextBuilder.build( LootParameterSets.GIFT );
+		return lootContextBuilder.create( LootParameterSets.GIFT );
 	}
 
 	/**
@@ -117,14 +117,14 @@ public class TreasureBagItem extends Item {
 	protected List< ItemStack > generateLoot( PlayerEntity player ) {
 		LootTable lootTable = getLootTable();
 
-		return lootTable.generate( generateLootContext( player ) );
+		return lootTable.getRandomItems( generateLootContext( player ) );
 	}
 
 	/** Returning loot table for current treasure bag. (possible loot) */
 	protected LootTable getLootTable() {
 		return ServerLifecycleHooks.getCurrentServer()
-			.getLootTableManager()
-			.getLootTableFromLocation( this.lootTableLocation );
+			.getLootTables()
+			.get( this.lootTableLocation );
 	}
 
 	/** Creates comment for configuration. */

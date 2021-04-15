@@ -15,10 +15,10 @@ import java.util.function.Supplier;
 
 /** Mod custom armor materials. */
 public enum CustomArmorMaterial implements IArmorMaterial {
-	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
-		return Ingredient.fromItems( Items.FEATHER );
-	} ), END( "end", 39, new int[]{ 4, 6, 8, 4 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->{
-		return Ingredient.fromItems( Instances.END_INGOT_ITEM );
+	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
+		return Ingredient.of( Items.FEATHER );
+	} ), END( "end", 39, new int[]{ 4, 6, 8, 4 }, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->{
+		return Ingredient.of( Instances.END_INGOT_ITEM );
 	} );
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };
@@ -45,28 +45,28 @@ public enum CustomArmorMaterial implements IArmorMaterial {
 	}
 
 	@Override
-	public int getDurability( EquipmentSlotType equipmentSlotType ) {
+	public int getDurabilityForSlot( EquipmentSlotType equipmentSlotType ) {
 		return this.maxDamageFactor * MAX_DAMAGE_ARRAY[ equipmentSlotType.getIndex() ];
 	}
 
 	@Override
-	public int getDamageReductionAmount( EquipmentSlotType equipmentSlotType ) {
+	public int getDefenseForSlot( EquipmentSlotType equipmentSlotType ) {
 		return this.damageReductionAmountArray[ equipmentSlotType.getIndex() ];
 	}
 
 	@Override
-	public int getEnchantability() {
+	public int getEnchantmentValue() {
 		return this.enchantability;
 	}
 
 	@Override
-	public SoundEvent getSoundEvent() {
+	public SoundEvent getEquipSound() {
 		return this.soundEvent;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() {
-		return this.repairMaterial.getValue();
+	public Ingredient getRepairIngredient() {
+		return this.repairMaterial.get();
 	}
 
 	@Override

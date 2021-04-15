@@ -39,8 +39,8 @@ public class BandageItem extends Item {
 	protected final IntegerConfig effectAmplifier;
 
 	public BandageItem() {
-		super( ( new Properties() ).maxStackSize( 16 )
-			.group( Instances.ITEM_GROUP ) );
+		super( ( new Properties() ).stacksTo( 16 )
+			.tab( Instances.ITEM_GROUP ) );
 
 		this.configGroup = new ConfigGroup( "Bandage", "Configuration for Bandage item." );
 		FEATURES_GROUP.addGroup( this.configGroup );
@@ -56,21 +56,21 @@ public class BandageItem extends Item {
 
 	/** Using bandage on right click. (self healing) */
 	@Override
-	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
-		ItemStack itemStack = player.getHeldItem( hand );
+	public ActionResult< ItemStack > use( World world, PlayerEntity player, Hand hand ) {
+		ItemStack itemStack = player.getItemInHand( hand );
 		Instances.BANDAGE_ITEM.useIfPossible( itemStack, player, player );
 
-		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
+		return ActionResult.pass( itemStack );
 	}
 
 	/** Adding tooltip with information for what bandage is used. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		if( !flag.isAdvanced() )
 			return;
 
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.bandage.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.bandage.item_tooltip" ).withStyle( TextFormatting.GRAY ) );
 	}
 
 	/** Using bandage on right click. (other entity healing) */
@@ -111,13 +111,13 @@ public class BandageItem extends Item {
 		if( !couldBeUsedOn( target, bandage ) )
 			return false;
 
-		if( !player.abilities.isCreativeMode )
+		if( !player.abilities.instabuild )
 			bandage.shrink( 1 );
 
-		player.addStat( Stats.ITEM_USED.get( bandage.getItem() ) );
+		player.awardStat( Stats.ITEM_USED.get( bandage.getItem() ) );
 		removeBleeding( target );
 		applyRegeneration( target );
-		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
+		target.getCommandSenderWorld().playSound( null, target.blockPosition(), SoundEvents.ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
 
 		return true;
 	}
@@ -125,17 +125,17 @@ public class BandageItem extends Item {
 	/** Checks whether item could be used on target. */
 	private boolean couldBeUsedOn( LivingEntity target, ItemStack bandage ) {
 		boolean isBandage = bandage.getItem() instanceof BandageItem;
-		boolean targetHasRegeneration = target.isPotionActive( Effects.REGENERATION );
+		boolean targetHasRegeneration = target.hasEffect( Effects.REGENERATION );
 
-		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.isPotionActive( Instances.BLEEDING ) );
+		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.hasEffect( Instances.BLEEDING ) );
 	}
 
 	/** Removes Bleeding effect from the target. */
 	private void removeBleeding( LivingEntity target ) {
 		BleedingEffect bleeding = Instances.BLEEDING;
 
-		target.removePotionEffect( bleeding );
-		target.removeActivePotionEffect( bleeding );
+		target.removeEffect( bleeding );
+		target.removeEffectNoUpdate( bleeding );
 	}
 
 	/** Applies Regeneration on target depending on current mod settings. */

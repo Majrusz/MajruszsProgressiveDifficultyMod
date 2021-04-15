@@ -56,10 +56,10 @@ public class EndLeggingsItem extends EndArmorItem {
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		super.addInformation( stack, world, toolTip, flag );
+	public void appendHoverText( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
+		super.appendHoverText( stack, world, toolTip, flag );
 
-		CompoundNBT tag = stack.getOrCreateChildTag( ARMOR_TAG );
+		CompoundNBT tag = stack.getOrCreateTagElement( ARMOR_TAG );
 		double bonus = tag.getDouble( ARMOR_BONUS_TAG );
 
 		if( bonus > 0.0 )
@@ -70,17 +70,17 @@ public class EndLeggingsItem extends EndArmorItem {
 	public static void applyArmorBonus( LivingEquipmentChangeEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
 		double armorBonus = calculateEnchantmentBonus( entity );
-		ItemStack leggingsItemStack = entity.getItemStackFromSlot( EquipmentSlotType.LEGS );
+		ItemStack leggingsItemStack = entity.getItemBySlot( EquipmentSlotType.LEGS );
 		boolean hasEndLeggings = leggingsItemStack.getItem() instanceof EndLeggingsItem;
 
-		updateLeggingsTag( entity.getItemStackFromSlot( EquipmentSlotType.LEGS ), armorBonus );
+		updateLeggingsTag( entity.getItemBySlot( EquipmentSlotType.LEGS ), armorBonus );
 		ARMOR_ATTRIBUTE.setValueAndApply( entity, hasEndLeggings ? armorBonus : 0.0 );
 	}
 
 	@SubscribeEvent
 	public static void updateArmorBonusOnAllItems( LivingEvent.LivingUpdateEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
-		if( !( entity.world instanceof ServerWorld ) || !( entity instanceof PlayerEntity ) )
+		if( !( entity.getCommandSenderWorld() instanceof ServerWorld ) || !( entity instanceof PlayerEntity ) )
 			return;
 
 		CompoundNBT data = entity.getPersistentData();
@@ -88,7 +88,7 @@ public class EndLeggingsItem extends EndArmorItem {
 		data.putInt( ARMOR_COUNTER_TAG, counter );
 
 		if( counter == 0 )
-			for( ItemStack itemStack : ( ( PlayerEntity )entity ).inventory.mainInventory )
+			for( ItemStack itemStack : ( ( PlayerEntity )entity ).inventory.items )
 				updateLeggingsTag( itemStack, 0.0 );
 	}
 
@@ -96,9 +96,9 @@ public class EndLeggingsItem extends EndArmorItem {
 	private static double calculateEnchantmentBonus( LivingEntity entity ) {
 		double armorBonus = Instances.END_LEGGINGS_ITEM.armorBonus.get();
 		int enchantmentLevelSum = 0;
-		ItemStack leggings = entity.getItemStackFromSlot( EquipmentSlotType.LEGS );
+		ItemStack leggings = entity.getItemBySlot( EquipmentSlotType.LEGS );
 		if( leggings.getItem() instanceof EndLeggingsItem ) {
-			for( ItemStack armorPiece : entity.getArmorInventoryList() ) {
+			for( ItemStack armorPiece : entity.getArmorSlots() ) {
 				if( armorPiece.isEmpty() )
 					continue;
 
@@ -116,16 +116,16 @@ public class EndLeggingsItem extends EndArmorItem {
 		if( leggings.isEmpty() || !( leggings.getItem() instanceof EndLeggingsItem ) )
 			return;
 
-		CompoundNBT tag = leggings.getOrCreateChildTag( ARMOR_TAG );
+		CompoundNBT tag = leggings.getOrCreateTagElement( ARMOR_TAG );
 		tag.putDouble( ARMOR_BONUS_TAG, armorBonus );
-		leggings.setTagInfo( ARMOR_TAG, tag );
+		leggings.addTagElement( ARMOR_TAG, tag );
 	}
 
 	/** Returns text with current armor bonus. */
 	@OnlyIn( Dist.CLIENT )
 	private IFormattableTextComponent getArmorBonusTooltip( double armorBonus ) {
-		IFormattableTextComponent text = new StringTextComponent( "+" ).appendString( armorBonus + " " );
+		IFormattableTextComponent text = new StringTextComponent( "+" ).append( armorBonus + " " );
 		return text.append( new TranslationTextComponent( "item.majruszs_difficulty.end_leggings.item_tooltip" ) )
-			.mergeStyle( TextFormatting.GRAY );
+			.withStyle( TextFormatting.GRAY );
 	}
 }
