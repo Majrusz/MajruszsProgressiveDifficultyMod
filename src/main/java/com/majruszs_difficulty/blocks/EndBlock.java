@@ -11,8 +11,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,14 +25,15 @@ public class EndBlock extends Block {
 			.harvestLevel( 1 )
 			.setRequiresTool()
 			.hardnessAndResistance( 5.0f, 6.0f )
-			.sound( SoundType.METAL )
-		);
+			.sound( SoundType.METAL ) );
 	}
 
 	public static class EndBlockItem extends BlockItem {
 		public EndBlockItem() {
-			super( Instances.END_BLOCK, ( new Properties() ).maxStackSize( 64 ).rarity( Rarity.UNCOMMON )
-				.group( Instances.ITEM_GROUP ) );
+			super( Instances.END_BLOCK, ( new Properties() ).maxStackSize( 64 )
+				.rarity( Rarity.UNCOMMON )
+				.group( Instances.ITEM_GROUP )
+			);
 		}
 
 		@Override

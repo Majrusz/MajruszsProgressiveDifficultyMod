@@ -2,13 +2,13 @@ package com.majruszs_difficulty.blocks;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
-import com.mlib.config.DoubleConfig;
-import com.mlib.config.DurationConfig;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.util.ITooltipFlag;
@@ -48,8 +48,7 @@ public class EndShardOre extends Block {
 			.harvestLevel( 4 )
 			.setRequiresTool()
 			.hardnessAndResistance( 30.0f, 1200.0f )
-			.sound( SoundType.ANCIENT_DEBRIS )
-		);
+			.sound( SoundType.ANCIENT_DEBRIS ) );
 
 		this.configGroup = new ConfigGroup( "EndShardOre", "Configuration for new late game ore." );
 		FEATURES_GROUP.addGroup( this.configGroup );
@@ -57,10 +56,6 @@ public class EndShardOre extends Block {
 		String availabilityComment = "Should this ore be available in survival mode? (ore generation, loot tables etc.) (requires game restart!)";
 		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, true, true );
 		this.configGroup.addConfig( this.availability );
-	}
-
-	public boolean isEnabled() {
-		return this.availability.isEnabled();
 	}
 
 	@Override
@@ -74,7 +69,8 @@ public class EndShardOre extends Block {
 		Block block = blockState.getBlock();
 		if( block.equals( Instances.END_SHARD_ORE ) ) {
 			PlayerEntity player = event.getPlayer();
-			player.sendStatusMessage( new TranslationTextComponent( "block.majruszs_difficulty.end_shard_ore.warning" ).mergeStyle( TextFormatting.BOLD ), true );
+			player.sendStatusMessage(
+				new TranslationTextComponent( "block.majruszs_difficulty.end_shard_ore.warning" ).mergeStyle( TextFormatting.BOLD ), true );
 		}
 	}
 
@@ -104,6 +100,10 @@ public class EndShardOre extends Block {
 				if( currentEndermanTarget == null || !currentEndermanTarget.isAlive() )
 					enderman.setRevengeTarget( target );
 			}
+	}
+
+	public boolean isEnabled() {
+		return this.availability.isEnabled();
 	}
 
 	public static class EndShardOreItem extends BlockItem {
