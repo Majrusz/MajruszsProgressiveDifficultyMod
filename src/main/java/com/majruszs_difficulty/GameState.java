@@ -9,35 +9,37 @@ public class GameState {
 	public static final TextFormatting NORMAL_MODE_COLOR = TextFormatting.WHITE;
 	public static final TextFormatting EXPERT_MODE_COLOR = TextFormatting.RED;
 	public static final TextFormatting MASTER_MODE_COLOR = TextFormatting.DARK_PURPLE;
-	private static State current = State.NORMAL;
+	private static State CURRENT = State.NORMAL;
 
 	/** Changing current game state globally. */
 	public static boolean changeMode( State state ) {
-		if( state == current )
+		if( state == CURRENT )
 			return false;
 
-		current = state;
+		CURRENT = state;
 		return true;
 	}
 
 	/** Returning current server game state. */
 	public static State getCurrentMode() {
-		return current;
+		return CURRENT;
 	}
 
 	/** Checking if current state is equal or higher than given state. */
 	public static boolean atLeast( State state ) {
-		if( state == State.EXPERT ) {
-			return ( current == State.EXPERT || current == State.MASTER );
-		} else if( state == State.MASTER ) {
-			return current == State.MASTER;
-		} else
-			return true;
+		switch( state ) {
+			case MASTER:
+				return CURRENT == State.MASTER;
+			case EXPERT:
+				return CURRENT == State.EXPERT || CURRENT == State.MASTER;
+			default:
+				return true;
+		}
 	}
 
 	/** Converting game state to integer. */
 	public static int convertStateToInteger( State state ) {
-		return getValueDependingOnGameState( 0, 1, 2 );
+		return getValueDependingOnGameState( state, 0, 1, 2 );
 	}
 
 	/** Converting integer to game state. */
@@ -53,14 +55,15 @@ public class GameState {
 	}
 
 	/**
-	 Returns configuration value depending on current game state.
+	 Returns configuration value depending on given game state.
 
+	 @param state Game state to test.
 	 @param normal Configuration value for Normal game state.
 	 @param expert Configuration value for Expert game state.
 	 @param master Configuration value for Master game state.
 	 */
-	public static < ConfigType > ConfigType getValueDependingOnGameState( ConfigType normal, ConfigType expert, ConfigType master ) {
-		switch( current ) {
+	public static < ConfigType > ConfigType getValueDependingOnGameState( State state, ConfigType normal, ConfigType expert, ConfigType master ) {
+		switch( state ) {
 			default:
 				return normal;
 			case EXPERT:
@@ -68,6 +71,17 @@ public class GameState {
 			case MASTER:
 				return master;
 		}
+	}
+
+	/**
+	 Returns configuration value depending on current game state.
+
+	 @param normal Configuration value for Normal game state.
+	 @param expert Configuration value for Expert game state.
+	 @param master Configuration value for Master game state.
+	 */
+	public static < ConfigType > ConfigType getValueDependingOnCurrentGameState( ConfigType normal, ConfigType expert, ConfigType master ) {
+		return getValueDependingOnGameState( CURRENT, normal, expert, master );
 	}
 
 	public static IFormattableTextComponent getNormalModeText() {
