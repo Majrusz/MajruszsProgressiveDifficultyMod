@@ -6,7 +6,9 @@ import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.DurationConfig;
+import com.mlib.config.StringListConfig;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -16,6 +18,7 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,32 +39,38 @@ public class BleedingEffect extends Effect {
 	protected final DurationConfig baseCooldown;
 	protected final DoubleConfig armorChanceReduction;
 	protected final GameStateIntegerConfig amplifier;
+	protected final StringListConfig entitiesBlackList;
 
 	public BleedingEffect() {
 		super( EffectType.HARMFUL, 0xffdd5555 );
 
-		String damage_comment = "Damage dealt by bleeding.";
-		String cooldown_comment = "Cooldown between attacking entity.";
-		String armor_comment = "Bleeding chance reduction per armor piece.";
-		String amplifier_comment = "Bleeding amplifier.";
-		String group_comment = "Bleeding effect.";
-		this.damage = new DoubleConfig( "damage", damage_comment, false, 1.0, 0.0, 20.0 );
-		this.baseCooldown = new DurationConfig( "cooldown", cooldown_comment, false, 5.0, 0.0, 20.0 );
-		this.armorChanceReduction = new DoubleConfig( "armor_reduction", armor_comment, false, 0.2, 0.0, 0.25 );
-		this.amplifier = new GameStateIntegerConfig( "Amplifier", amplifier_comment, 0, 1, 2, 0, 10 );
+		String damageComment = "Damage dealt by bleeding every tick.";
+		String cooldownComment = "Cooldown between attacking entity.";
+		String armorComment = "Bleeding chance reduction per armor piece.";
+		String amplifierComment = "Bleeding amplifier.";
+		String blackComment = "List of entities that are immune to Bleeding effect. (only human-like mobs and animals)";
+		this.damage = new DoubleConfig( "damage", damageComment, false, 1.0, 0.0, 20.0 );
+		this.baseCooldown = new DurationConfig( "cooldown", cooldownComment, false, 5.0, 0.0, 20.0 );
+		this.armorChanceReduction = new DoubleConfig( "armor_reduction", armorComment, false, 0.2, 0.0, 0.25 );
+		this.amplifier = new GameStateIntegerConfig( "amplifier", amplifierComment, 0, 1, 2, 0, 10 );
+		this.entitiesBlackList = new StringListConfig( "black_list", blackComment, false, "minecraft:skeleton_horse" );
 
-		this.bleedingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Bleeding", group_comment ) );
-		this.bleedingGroup.addConfigs( this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier );
+		this.bleedingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Bleeding", "Bleeding potion effect." ) );
+		this.bleedingGroup.addConfigs( this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier, this.entitiesBlackList );
 	}
 
 	/** Called every time when effect 'isReady'. */
 	@Override
 	public void performEffect( LivingEntity entity, int amplifier ) {
-		BleedingEffectInstance bleedingEffectInstance = ( BleedingEffectInstance )entity.getActivePotionEffect( Instances.BLEEDING );
 		float damageAmount = ( float )this.damage.get();
 
-		entity.attackEntityFrom( bleedingEffectInstance != null ? new EntityBleedingDamageSource(
-			bleedingEffectInstance.damageSourceEntity ) : Instances.DamageSources.BLEEDING, damageAmount );
+		if( entity.getActivePotionEffect( Instances.BLEEDING ) instanceof BleedingEffectInstance ) {
+			BleedingEffectInstance bleedingEffectInstance = ( BleedingEffectInstance )entity.getActivePotionEffect( Instances.BLEEDING );
+			entity.attackEntityFrom( bleedingEffectInstance != null ? new EntityBleedingDamageSource(
+				bleedingEffectInstance.damageSourceEntity ) : Instances.DamageSources.BLEEDING, damageAmount );
+		} else {
+			entity.attackEntityFrom( Instances.DamageSources.BLEEDING, damageAmount );
+		}
 	}
 
 	/** When effect starts bleeding will not do anything. */
@@ -110,7 +119,17 @@ public class BleedingEffect extends Effect {
 	 @param entity Entity to test.
 	 */
 	public boolean mayBleed( @Nullable Entity entity ) {
-		return MajruszsHelper.isAnimal( entity ) || MajruszsHelper.isHuman( entity );
+		return ( MajruszsHelper.isAnimal( entity ) || MajruszsHelper.isHuman( entity ) ) && !isBlackListed( entity );
+	}
+
+	/** Returns whether is set that given entity should not bleed. */
+	private boolean isBlackListed( @Nullable Entity entity ) {
+		if( entity == null )
+			return false;
+
+		EntityType< ? > entityType = entity.getType();
+		ResourceLocation entityLocation = entityType.getRegistryName();
+		return entityLocation != null && this.entitiesBlackList.contains( entityLocation.toString() );
 	}
 
 	/**
