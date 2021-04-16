@@ -24,7 +24,7 @@ public class UndeadArmyConfig {
 		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
 
 		String availabilityComment = "Is Undead Army enabled?";
-		String killComment = "Amount of undead required to kill at night to start Undead Army.";
+		String killComment = "Amount of undead required to kill to start Undead Army.";
 		String scaleComment = "Undead Army size extra multiplier with each extra player.";
 		String expComment = "Experience for each player after defeating Undead Army.";
 		String bagComment = "Treasure Bags for each player after defeating Undead Army.";
