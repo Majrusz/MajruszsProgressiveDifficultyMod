@@ -57,7 +57,7 @@ public class GameState {
 	/**
 	 Returns configuration value depending on given game state.
 
-	 @param state Game state to test.
+	 @param state  Game state to test.
 	 @param normal Configuration value for Normal game state.
 	 @param expert Configuration value for Expert game state.
 	 @param master Configuration value for Master game state.
@@ -86,11 +86,10 @@ public class GameState {
 
 	/** Returns formatted text depending on given game state. */
 	public static IFormattableTextComponent getGameStateText( State state ) {
-		return getValueDependingOnGameState( state,
-			generateModeText( "normal", NORMAL_MODE_COLOR ),
-			generateModeText( "expert", EXPERT_MODE_COLOR ),
-			generateModeText( "master", MASTER_MODE_COLOR )
-		);
+		String modeName = getValueDependingOnGameState( state, "normal", "expert", "master" );
+		TextFormatting textColor = getValueDependingOnGameState( state, NORMAL_MODE_COLOR, EXPERT_MODE_COLOR, MASTER_MODE_COLOR );
+
+		return generateModeText( modeName, textColor );
 	}
 
 	/** Returns formatted game state text. */
