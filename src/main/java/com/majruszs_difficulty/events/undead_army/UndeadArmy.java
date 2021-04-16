@@ -519,7 +519,7 @@ public class UndeadArmy {
 
 	/** Returns entity type for monster spawner. */
 	private EntityType< ? > getEntityTypeForMonsterSpawner() {
-		return GameState.getValueDependingOnGameState( EntityType.ZOMBIE, EntityType.SKELETON, EliteSkeletonEntity.type );
+		return GameState.getValueDependingOnCurrentGameState( EntityType.ZOMBIE, EntityType.SKELETON, EliteSkeletonEntity.type );
 	}
 
 	/** Returns amount of treasure bag each player will receive. */
@@ -534,7 +534,7 @@ public class UndeadArmy {
 
 	/** Returns total amount of waves. */
 	private int getWaves() {
-		return GameState.getValueDependingOnGameState( 3, 4, 5 );
+		return GameState.getValueDependingOnCurrentGameState( 3, 4, 5 );
 	}
 
 	/** Returns extra chance for entities to have enchanted items. */

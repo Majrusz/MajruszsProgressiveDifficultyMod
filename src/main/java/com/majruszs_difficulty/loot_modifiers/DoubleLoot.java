@@ -39,7 +39,7 @@ public class DoubleLoot extends LootModifier {
 	@Nonnull
 	@Override
 	public List< ItemStack > doApply( List< ItemStack > generatedLoot, LootContext context ) {
-		double chance = GameState.getValueDependingOnGameState( this.normalModeChance, this.expertModeChance, this.masterModeChance );
+		double chance = GameState.getValueDependingOnCurrentGameState( this.normalModeChance, this.expertModeChance, this.masterModeChance );
 
 		if( Random.tryChance( chance ) ) {
 			Entity entity = context.get( LootParameters.THIS_ENTITY );
