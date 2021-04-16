@@ -2,93 +2,167 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import com.mlib.WorldHelper;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
+import com.mlib.config.StringListConfig;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.majruszs_difficulty.MajruszsDifficulty.CONFIG_HANDLER;
+import javax.annotation.Nullable;
+
 import static com.majruszs_difficulty.MajruszsDifficulty.STATE_GROUP;
 
+/** Increasing game difficulty mode after certain meeting certain criteria. */
 @Mod.EventBusSubscriber
 public class IncreaseGameDifficulty {
 	protected final ConfigGroup configGroup;
-	protected final AvailabilityConfig dragonStartsMasterMode;
-	protected final AvailabilityConfig witherStartsMasterMode;
+	protected final StringListConfig entitiesStartingExpertMode;
+	protected final StringListConfig entitiesStartingMasterMode;
+	protected final StringListConfig dimensionsStartingExpertMode;
+	protected final StringListConfig dimensionsStartingMasterMode;
+	protected final AvailabilityConfig enteringAnyDimensionStartsExpertMode;
 
 	public IncreaseGameDifficulty() {
 		this.configGroup = new ConfigGroup( "IncreasingDifficulty", "" );
 		STATE_GROUP.addConfig( this.configGroup );
 
-		String dragonComment = "Should killing Ender Dragon start Master Mode?";
-		String witherComment = "Should killing Wither start Master Mode?";
-		this.dragonStartsMasterMode = new AvailabilityConfig( "dragon_start_master_mode", dragonComment, false, true );
-		this.witherStartsMasterMode = new AvailabilityConfig( "wither_start_master_mode", witherComment, false, false );
-		this.configGroup.addConfigs( this.dragonStartsMasterMode, this.witherStartsMasterMode );
+		String entitiesExpertComment = "List of entities starting Expert Mode after killing them.";
+		String entitiesMasterComment = "List of entities starting Master Mode after killing them.";
+		String dimensionsExpertComment = "List of dimensions starting Expert Mode when a player enters it for the first time. (ignored when any_dimension_expert is set to true)";
+		String dimensionsMasterComment = "List of dimensions starting Master Mode when a player enters it for the first time.";
+		String anyDimensionComment = "Should entering any dimension start Expert Mode?";
+		this.entitiesStartingExpertMode = new StringListConfig( "entities_expert", entitiesExpertComment, false, "none" );
+		this.entitiesStartingMasterMode = new StringListConfig( "entities_master", entitiesMasterComment, false, "minecraft:ender_dragon",
+			"minecraft:wither"
+		);
+		this.dimensionsStartingExpertMode = new StringListConfig( "dimensions_expert", dimensionsExpertComment, false, "minecraft:the_nether" );
+		this.dimensionsStartingMasterMode = new StringListConfig( "dimensions_master", dimensionsMasterComment, false, "none" );
+		this.enteringAnyDimensionStartsExpertMode = new AvailabilityConfig( "any_dimension_expert", anyDimensionComment, false, true );
+		this.configGroup.addConfigs( this.entitiesStartingExpertMode, this.entitiesStartingMasterMode, this.dimensionsStartingExpertMode,
+			this.dimensionsStartingMasterMode, this.enteringAnyDimensionStartsExpertMode
+		);
 	}
 
 	@SubscribeEvent
-	public static void enableExpertMode( PlayerEvent.PlayerChangedDimensionEvent event ) {
-		PlayerEntity playerEnteringDimension = event.getPlayer();
+	public static void onChangingDimension( PlayerEvent.PlayerChangedDimensionEvent event ) {
+		IncreaseGameDifficulty gameDifficulty = Instances.INCREASE_GAME_DIFFICULTY;
+		PlayerEntity player = event.getPlayer();
 
-		if( !WorldHelper.isEntityIn( playerEnteringDimension, World.THE_NETHER ) )
+		switch( GameState.getCurrentMode() ) {
+			case NORMAL:
+				gameDifficulty.handleDimensionExpertMode( player, event.getTo() );
+				break;
+			case EXPERT:
+				gameDifficulty.handleDimensionMasterMode( player, event.getTo() );
+				break;
+		}
+	}
+
+	@SubscribeEvent
+	public static void onKillingEntity( LivingDeathEvent event ) {
+		IncreaseGameDifficulty gameDifficulty = Instances.INCREASE_GAME_DIFFICULTY;
+		LivingEntity entity = event.getEntityLiving();
+
+		switch( GameState.getCurrentMode() ) {
+			case NORMAL:
+				gameDifficulty.handleKillingEntityExpertMode( entity );
+				break;
+			case EXPERT:
+				gameDifficulty.handleKillingEntityMasterMode( entity );
+				break;
+		}
+	}
+
+	/** Changes current game state to Expert Mode if dimension conditions are met. */
+	protected void handleDimensionExpertMode( PlayerEntity player, RegistryKey< World > dimension ) {
+		if( !shouldDimensionStartExpertMode( dimension.getLocation() ) )
 			return;
 
-		if( GameState.getCurrentMode() != GameState.State.NORMAL )
+		startExpertMode( player.getServer() );
+	}
+
+	/** Checks whether entering given dimension should start Expert Mode. */
+	protected boolean shouldDimensionStartExpertMode( ResourceLocation dimensionLocation ) {
+		return this.enteringAnyDimensionStartsExpertMode.isEnabled() || this.dimensionsStartingExpertMode.contains( dimensionLocation.toString() );
+	}
+
+	/** Changes current game state to Master Mode if dimension conditions are met. */
+	protected void handleDimensionMasterMode( PlayerEntity player, RegistryKey< World > dimension ) {
+		if( !shouldDimensionStartMasterMode( dimension.getLocation() ) )
 			return;
 
-		MinecraftServer minecraftServer = playerEnteringDimension.getServer();
+		startMasterMode( player.getServer() );
+	}
 
+	/** Checks whether entering given dimension should start Master Mode. */
+	protected boolean shouldDimensionStartMasterMode( ResourceLocation dimensionLocation ) {
+		return this.dimensionsStartingMasterMode.contains( dimensionLocation.toString() );
+	}
+
+	/** Changes current game state to Expert Mode if entity conditions are met. */
+	protected void handleKillingEntityExpertMode( LivingEntity entity ) {
+		EntityType< ? > entityType = entity.getType();
+		if( !shouldKillingEntityStartExpertMode( entityType.getRegistryName() ) )
+			return;
+
+		startExpertMode( entity.getServer() );
+	}
+
+	/** Checks whether killing given entity should start Expert Mode. */
+	protected boolean shouldKillingEntityStartExpertMode( @Nullable ResourceLocation entityLocation ) {
+		return entityLocation != null && this.entitiesStartingExpertMode.contains( entityLocation.toString() );
+	}
+
+	/** Changes current game state to Expert Mode if entity conditions are met. */
+	protected void handleKillingEntityMasterMode( LivingEntity entity ) {
+		EntityType< ? > entityType = entity.getType();
+		if( !shouldKillingEntityStartMasterMode( entityType.getRegistryName() ) )
+			return;
+
+		startMasterMode( entity.getServer() );
+	}
+
+	/** Checks whether killing given entity should start Master Mode. */
+	protected boolean shouldKillingEntityStartMasterMode( @Nullable ResourceLocation entityLocation ) {
+		return entityLocation != null && this.entitiesStartingMasterMode.contains( entityLocation.toString() );
+	}
+
+	/** Starts Expert Mode and sends message to all players. */
+	protected void startExpertMode( @Nullable MinecraftServer minecraftServer ) {
 		if( minecraftServer == null )
 			return;
 
 		GameState.changeMode( GameState.State.EXPERT );
-
-		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.EXPERT_MODE_COLOR );
+		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.EXPERT_MODE_COLOR );
 	}
 
-	@SubscribeEvent
-	public static void enableMasterMode( LivingDeathEvent event ) {
-		LivingEntity monster = event.getEntityLiving();
-
-		if( GameState.getCurrentMode() == GameState.State.MASTER || !Instances.INCREASE_GAME_DIFFICULTY.isValidEntityToStartMasterMode( monster ) )
-			return;
-
-		MinecraftServer minecraftServer = monster.getServer();
+	/** Starts Master Mode and sends message to all players. */
+	protected void startMasterMode( @Nullable MinecraftServer minecraftServer ) {
 		if( minecraftServer == null )
 			return;
 
 		GameState.changeMode( GameState.State.MASTER );
-		sendMessage( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.MASTER_MODE_COLOR );
+		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.MASTER_MODE_COLOR );
 	}
 
-	private boolean isValidEntityToStartMasterMode( LivingEntity entity ) {
-		boolean isDragon = entity instanceof EnderDragonEntity;
-		boolean isWither = entity instanceof WitherEntity;
-		boolean isServerWorld = entity.getEntityWorld() instanceof ServerWorld;
-
-		return ( this.dragonStartsMasterMode.isEnabled() && isDragon || this.witherStartsMasterMode.isEnabled() && isWither ) && isServerWorld;
-	}
-
-	protected static void sendMessage( PlayerList playerList, String translationKey, TextFormatting textColor ) {
+	/** Sends message to all players depending on current language. */
+	protected void sendMessageToAllPlayers( PlayerList playerList, String translationKey, TextFormatting textColor ) {
 		for( PlayerEntity player : playerList.getPlayers() ) {
 			IFormattableTextComponent message = new TranslationTextComponent( translationKey );
-			message.mergeStyle( textColor );
-			message.mergeStyle( TextFormatting.BOLD );
+			message.mergeStyle( textColor, TextFormatting.BOLD );
 
 			player.sendStatusMessage( message, false );
 		}
