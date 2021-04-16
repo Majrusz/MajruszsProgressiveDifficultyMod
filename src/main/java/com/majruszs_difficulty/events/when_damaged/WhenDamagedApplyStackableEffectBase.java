@@ -6,6 +6,8 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.Difficulty;
 
+import javax.annotation.Nullable;
+
 /** Base class representing event on which enemies will receive some stackable effects after being attacked. */
 public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApplyEffectBase {
 	protected final boolean isAmplifierStackable;
@@ -42,11 +44,11 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	 @param difficulty Current world difficulty.
 	 */
 	@Override
-	protected void applyEffect( LivingEntity target, Effect effect, Difficulty difficulty ) {
+	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, Effect effect, Difficulty difficulty ) {
 		EffectInstance previousEffectInstance = target.getActivePotionEffect( effect );
 
 		if( previousEffectInstance == null ) {
-			super.applyEffect( target, effect, difficulty );
+			super.applyEffect( attacker, target, effect, difficulty );
 			return;
 		}
 

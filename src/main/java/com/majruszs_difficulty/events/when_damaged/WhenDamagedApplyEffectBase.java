@@ -49,7 +49,7 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 			if( !Random.tryChance( calculateChance( target ) ) )
 				continue;
 
-			applyEffect( target, effect, difficulty );
+			applyEffect( attacker, target, effect, difficulty );
 		}
 	}
 
@@ -60,7 +60,7 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	 @param effect     Effect type to apply.
 	 @param difficulty Current world difficulty.
 	 */
-	protected void applyEffect( LivingEntity target, Effect effect, Difficulty difficulty ) {
+	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, Effect effect, Difficulty difficulty ) {
 		EffectHelper.applyEffectIfPossible( target, effect, getDurationInTicks( difficulty ), getAmplifier( difficulty ) );
 	}
 
