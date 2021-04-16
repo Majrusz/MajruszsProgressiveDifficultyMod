@@ -32,7 +32,7 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	 */
 	@Override
 	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, Effect effect, Difficulty difficulty ) {
-		BleedingEffectInstance effectInstance = new BleedingEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), true, true,
+		BleedingEffectInstance effectInstance = new BleedingEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false, true,
 			attacker
 		);
 
