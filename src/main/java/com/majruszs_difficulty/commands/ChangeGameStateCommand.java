@@ -41,19 +41,7 @@ public final class ChangeGameStateCommand {
 
 	private static IFormattableTextComponent getFeedbackMessage( GameState.State state, String translationPart ) {
 		IFormattableTextComponent feedback = new TranslationTextComponent( "commands.game_state." + translationPart );
-
-		IFormattableTextComponent feedback_mode;
-		switch( state ) {
-			default:
-				feedback_mode = GameState.getNormalModeText();
-				break;
-			case EXPERT:
-				feedback_mode = GameState.getExpertModeText();
-				break;
-			case MASTER:
-				feedback_mode = GameState.getMasterModeText();
-				break;
-		}
+		IFormattableTextComponent feedback_mode = GameState.getGameStateText( state );
 
 		feedback.appendString( " " );
 		feedback.append( feedback_mode );

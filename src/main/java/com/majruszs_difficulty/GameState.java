@@ -84,22 +84,19 @@ public class GameState {
 		return getValueDependingOnGameState( CURRENT, normal, expert, master );
 	}
 
-	public static IFormattableTextComponent getNormalModeText() {
-		return generateModeText( "normal", NORMAL_MODE_COLOR );
+	/** Returns formatted text depending on given game state. */
+	public static IFormattableTextComponent getGameStateText( State state ) {
+		return getValueDependingOnGameState( state,
+			generateModeText( "normal", NORMAL_MODE_COLOR ),
+			generateModeText( "expert", EXPERT_MODE_COLOR ),
+			generateModeText( "master", MASTER_MODE_COLOR )
+		);
 	}
 
-	public static IFormattableTextComponent getExpertModeText() {
-		return generateModeText( "expert", EXPERT_MODE_COLOR );
-	}
-
-	public static IFormattableTextComponent getMasterModeText() {
-		return generateModeText( "master", MASTER_MODE_COLOR );
-	}
-
+	/** Returns formatted game state text. */
 	private static IFormattableTextComponent generateModeText( String modeName, TextFormatting color ) {
 		IFormattableTextComponent text = new TranslationTextComponent( "majruszs_difficulty.states." + modeName );
-		text.mergeStyle( color );
-		text.mergeStyle( TextFormatting.BOLD );
+		text.mergeStyle( color, TextFormatting.BOLD );
 
 		return text;
 	}
