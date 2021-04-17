@@ -84,6 +84,7 @@ public class TreasureBagManager {
 		return false;
 	}
 
+	/** Register representing Treasure Bag assigned to entity type. */
 	static class Register {
 		public final EntityType< ? > entityType;
 		public final TreasureBagItem treasureBag;
