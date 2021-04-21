@@ -68,6 +68,6 @@ public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig 
 			.put( this, this.separationSettings )
 			.build();
 		DimensionSettings.field_242740_q.getStructures().field_236193_d_.put( this, this.separationSettings );
-		// FlatGenerationSettings.STRUCTURES.put( this, this.structureFeature );
+		FlatGenerationSettings.STRUCTURES.put( this, this.structureFeature );
 	}
 }
