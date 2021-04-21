@@ -101,7 +101,7 @@ public class GameState {
 	}
 
 	/** All possible game states. */
-	public enum State {
+	public static enum State {
 		NORMAL, EXPERT, MASTER
 	}
 }

@@ -102,6 +102,7 @@ public class EndShardOre extends Block {
 			}
 	}
 
+	/** Returns whether End Shard Ore is enabled in config file. */
 	public boolean isEnabled() {
 		return this.availability.isEnabled();
 	}
