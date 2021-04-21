@@ -66,12 +66,14 @@ public class TreasureBagItem extends Item {
 			player.addStat( Stats.ITEM_USED.get( this ) );
 			world.playSound( null, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 0.9f );
 
-			List< ItemStack > loot = generateLoot( player );
-			for( ItemStack reward : loot ) {
-				if( player.canPickUpItem( reward ) )
-					player.inventory.addItemStackToInventory( reward );
-				else
-					world.addEntity( new ItemEntity( world, player.getPosX(), player.getPosY() + 1, player.getPosZ(), reward ) );
+			if( this.availability.isEnabled() ) {
+				List< ItemStack > loot = generateLoot( player );
+				for( ItemStack reward : loot ) {
+					if( player.canPickUpItem( reward ) )
+						player.inventory.addItemStackToInventory( reward );
+					else
+						world.addEntity( new ItemEntity( world, player.getPosX(), player.getPosY() + 1, player.getPosZ(), reward ) );
+				}
 			}
 		}
 
