@@ -47,6 +47,11 @@ public class PillagerWolfEntity extends WolfEntity {
 		return true;
 	}
 
+	@Override
+	public boolean canDespawn( double distanceToClosestPlayer ) {
+		return distanceToClosestPlayer > 100.0;
+	}
+
 	public static AttributeModifierMap getAttributeMap() {
 		return MobEntity.func_233666_p_()
 			.createMutableAttribute( Attributes.MAX_HEALTH, 12.0 )
