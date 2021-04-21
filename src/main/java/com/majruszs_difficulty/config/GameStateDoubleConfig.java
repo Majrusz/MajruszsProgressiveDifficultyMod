@@ -6,6 +6,7 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.config.IConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+/** Config with double value depending on current game state. */
 public class GameStateDoubleConfig implements IConfig {
 	protected final ConfigGroup group;
 	protected final DoubleConfig normal;
@@ -22,15 +23,9 @@ public class GameStateDoubleConfig implements IConfig {
 		this.group.addConfigs( this.normal, this.expert, this.master );
 	}
 
+	/** Returns double value depending on current game state. */
 	public double getCurrentGameStateValue() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return this.normal.get();
-			case EXPERT:
-				return this.expert.get();
-			case MASTER:
-				return this.master.get();
-		}
+		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
 	}
 
 	@Override

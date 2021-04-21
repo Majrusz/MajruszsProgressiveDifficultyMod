@@ -7,7 +7,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.ENTITIES_GROUP;
 
-/** Handling config for a single entity. */
+/** Config for a entity availability. */
 public class EntityConfig implements IConfig {
 	public final ConfigGroup entityGroup;
 	public final AvailabilityConfig availability;

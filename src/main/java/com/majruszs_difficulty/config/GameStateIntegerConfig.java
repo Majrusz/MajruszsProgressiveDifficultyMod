@@ -6,6 +6,7 @@ import com.mlib.config.IConfig;
 import com.mlib.config.IntegerConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+/** Config with integer value depending on current game state. */
 public class GameStateIntegerConfig implements IConfig {
 	protected final ConfigGroup group;
 	protected final IntegerConfig normal;
@@ -22,15 +23,9 @@ public class GameStateIntegerConfig implements IConfig {
 		this.group.addConfigs( this.normal, this.expert, this.master );
 	}
 
+	/** Returns integer value depending on current game state. */
 	public int getCurrentGameStateValue() {
-		switch( GameState.getCurrentMode() ) {
-			default:
-				return this.normal.get();
-			case EXPERT:
-				return this.expert.get();
-			case MASTER:
-				return this.master.get();
-		}
+		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
 	}
 
 	@Override
