@@ -5,7 +5,6 @@ import com.majruszs_difficulty.items.TreasureBagItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -77,8 +76,10 @@ public class TreasureBagManager {
 
 				MajruszsHelper.giveItemStackToPlayer( new ItemStack( getTreasureBag( killedEntity.getType() ) ), player, world );
 			}
+			int amountOfPlayersRewarded = listNBT.size();
+			listNBT.clear();
 
-			return listNBT.size() > 0;
+			return amountOfPlayersRewarded > 0;
 		}
 
 		return false;
