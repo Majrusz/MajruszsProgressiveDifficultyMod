@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 /** Makes Enderman attacks have a chance to teleport entity. */
 public class EndermanTeleportOnAttack extends WhenDamagedBase {
 	private static final String CONFIG_NAME = "EndermanTeleport";
-	private static final String CONFIG_COMMENT = "Spider inflicts poison.";
+	private static final String CONFIG_COMMENT = "Enderman attack teleports the player somewhere nearby.";
 
 	public EndermanTeleportOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, GameState.State.MASTER, true );
