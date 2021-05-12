@@ -17,12 +17,11 @@ repositories {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = '0.5.3'
-group = 'com.majruszs_difficulty' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'com.majruszsdifficulty' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'majruszs-difficulty-1.16.4'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -99,7 +98,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.4-35.1.4'
-    // implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     compile fg.deobf('com.mlib:majrusz-library-1.16.4:1.5.0')
 }
 
@@ -118,11 +117,7 @@ jar {
     }
 }
 
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
+jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
