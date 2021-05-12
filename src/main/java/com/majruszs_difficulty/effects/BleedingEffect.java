@@ -19,6 +19,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -66,8 +67,12 @@ public class BleedingEffect extends Effect {
 
 		if( entity.getActivePotionEffect( Instances.BLEEDING ) instanceof BleedingEffectInstance ) {
 			BleedingEffectInstance bleedingEffectInstance = ( BleedingEffectInstance )entity.getActivePotionEffect( Instances.BLEEDING );
+
+			Vector3d motion = entity.getMotion();
 			entity.attackEntityFrom( bleedingEffectInstance != null ? new EntityBleedingDamageSource(
 				bleedingEffectInstance.damageSourceEntity ) : Instances.DamageSources.BLEEDING, damageAmount );
+			entity.setMotion( motion ); // sets previous motion to avoid any jumping from bleeding
+
 		} else {
 			entity.attackEntityFrom( Instances.DamageSources.BLEEDING, damageAmount );
 		}

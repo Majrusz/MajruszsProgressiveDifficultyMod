@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.effects.BleedingEffect.BleedingEffectInstance;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.entity.LivingEntity;
@@ -20,7 +21,7 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	/** Checking if all conditions were met. */
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return Instances.BLEEDING.mayBleed( target ) && super.shouldBeExecuted( attacker, target, damageSource );
+		return Instances.BLEEDING.mayBleed( target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	/**
