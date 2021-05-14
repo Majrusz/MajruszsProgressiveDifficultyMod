@@ -189,6 +189,7 @@ public class Instances {
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnZombieGroup() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new CreateJockeyOnSpiderSpawn() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnEliteSkeletonGroup() );
+		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new AddAIToCreeperOnSpawn() );
 
 		// Misc
 		INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
