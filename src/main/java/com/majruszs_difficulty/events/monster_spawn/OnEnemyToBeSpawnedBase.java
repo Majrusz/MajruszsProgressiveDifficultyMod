@@ -1,13 +1,13 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.events.FeatureBase;
+import com.majruszs_difficulty.events.ChanceFeatureBase;
 import com.mlib.Random;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.server.ServerWorld;
 
 /** Base class for handling enemy spawn events. */
-public abstract class OnEnemyToBeSpawnedBase extends FeatureBase {
+public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase {
 	protected boolean shouldBeCancelled = false;
 
 	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,

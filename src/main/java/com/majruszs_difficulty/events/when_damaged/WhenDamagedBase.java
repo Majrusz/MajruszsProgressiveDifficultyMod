@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.events.FeatureBase;
+import com.majruszs_difficulty.events.ChanceFeatureBase;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.server.ServerWorld;
@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 
 /** Base class representing event on which entity was damaged. */
-public abstract class WhenDamagedBase extends FeatureBase {
+public abstract class WhenDamagedBase extends ChanceFeatureBase {
 	public WhenDamagedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
 		boolean shouldChanceBeMultipliedByCRD
 	) {
