@@ -100,7 +100,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.4-35.1.4'
     // implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile fg.deobf('com.mlib:majrusz-library-1.16.4:1.5.0')
+    compile fg.deobf('com.mlib:majrusz-library-1.16.4:1.6.0')
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
