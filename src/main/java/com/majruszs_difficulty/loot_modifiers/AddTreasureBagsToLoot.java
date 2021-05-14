@@ -5,7 +5,6 @@ import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
