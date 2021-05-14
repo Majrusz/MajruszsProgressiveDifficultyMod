@@ -8,6 +8,7 @@ import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
 import com.majruszs_difficulty.events.FishingRewarder;
 import com.majruszs_difficulty.events.IncreaseGameDifficulty;
+import com.majruszs_difficulty.events.StrongerExplosions;
 import com.majruszs_difficulty.events.monster_spawn.*;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyConfig;
 import com.majruszs_difficulty.events.when_damaged.*;
@@ -87,6 +88,9 @@ public class Instances {
 	public static final IStructurePieceType FLYING_PHANTOM_PIECE;
 	public static final IStructurePieceType FLYING_END_ISLAND_PIECE;
 	public static final IStructurePieceType FLYING_END_SHIP_PIECE;
+
+	// Events
+	public static final StrongerExplosions STRONGER_EXPLOSIONS;
 
 	// Misc
 	public static final IncreaseGameDifficulty INCREASE_GAME_DIFFICULTY;
@@ -190,6 +194,9 @@ public class Instances {
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new CreateJockeyOnSpiderSpawn() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnEliteSkeletonGroup() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new AddAIToCreeperOnSpawn() );
+
+		// Events
+		STRONGER_EXPLOSIONS = new StrongerExplosions();
 
 		// Misc
 		INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
