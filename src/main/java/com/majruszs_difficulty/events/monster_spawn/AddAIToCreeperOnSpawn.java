@@ -2,7 +2,6 @@ package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.goals.CreeperExplodeWallsGoal;
-import com.mlib.MajruszLibrary;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.world.server.ServerWorld;
