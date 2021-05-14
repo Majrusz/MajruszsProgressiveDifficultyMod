@@ -20,7 +20,6 @@ public class AddAIToCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
 		CreeperEntity creeper = ( CreeperEntity )entity;
 
-		MajruszLibrary.LOGGER.info( "Added AI!" );
 		creeper.goalSelector.addGoal( 2, new CreeperExplodeWallsGoal( creeper ) );
 	}
 
