@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.horse.LlamaEntity;
 import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nullable;
@@ -21,6 +22,7 @@ public class BiteBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	@Override
 	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		boolean mayBite = attacker instanceof AnimalEntity || attacker instanceof ZombieEntity || attacker instanceof SpiderEntity;
+		mayBite &= !( attacker instanceof LlamaEntity );
 
 		return mayBite && super.shouldBeExecuted( attacker, target, damageSource );
 	}
