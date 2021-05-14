@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.WorldHelper;
 import com.mlib.config.DoubleConfig;
@@ -27,9 +26,10 @@ public class StrongerExplosions {
 	public static void onExplosion( ExplosionSizeEvent event ) {
 		LivingEntity causer = event.explosion.getExploder() instanceof LivingEntity ? ( LivingEntity )event.explosion.getExploder() : event.explosion.getExplosivePlacedBy();
 
-		event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
-		MajruszLibrary.LOGGER.info( STRONGER_EXPLOSIONS.biggerSize.getRadius( causer ) );
-		if( Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
+		if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
+			event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
+
+		if( STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
 			event.causesFire = true;
 	}
 
