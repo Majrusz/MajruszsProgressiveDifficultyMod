@@ -4,10 +4,6 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.blocks.EndShardOre;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nullable;

@@ -4,7 +4,6 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.generation.OreGeneration;
-import com.mlib.MajruszLibrary;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.Biome;

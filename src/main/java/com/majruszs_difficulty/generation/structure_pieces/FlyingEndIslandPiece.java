@@ -4,7 +4,6 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.entities.SkyKeeperEntity;
 import com.mlib.MajruszLibrary;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.ShulkerEntity;

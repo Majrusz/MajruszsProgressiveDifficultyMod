@@ -2,7 +2,6 @@ package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
 import com.mlib.Random;
-import com.mlib.WorldHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.particles.ParticleTypes;

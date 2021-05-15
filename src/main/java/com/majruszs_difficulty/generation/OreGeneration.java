@@ -2,9 +2,7 @@ package com.majruszs_difficulty.generation;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.mlib.MajruszLibrary;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.CompassItem;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.ConfiguredFeature;

@@ -1,6 +1,5 @@
 package com.majruszs_difficulty.events.undead_army;
 
-import com.majruszs_difficulty.RegistryHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
