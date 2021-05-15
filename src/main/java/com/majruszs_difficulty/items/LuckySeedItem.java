@@ -16,7 +16,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -60,12 +63,13 @@ public class LuckySeedItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.lucky_seed.item_tooltip1" ).mergeStyle( TextFormatting.GOLD ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.lucky_seed.item_tooltip" ).mergeStyle( TextFormatting.GOLD ) );
 
 		if( !flag.isAdvanced() )
 			return;
 
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.lucky_seed.item_tooltip2" ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new StringTextComponent( " " ) );
+		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.items.inventory_item" ).mergeStyle( TextFormatting.GRAY ) );
 	}
 
 	/** Returns current chance for double crops. */
@@ -104,7 +108,14 @@ public class LuckySeedItem extends Item {
 				event.generatedLoot.add( new ItemStack( luckySeed, 1 ) );
 
 		if( luckySeed.hasAny( player ) )
-			if( Random.tryChance( luckySeed.getDoubleLootChance() ) )
+			if( Random.tryChance( luckySeed.getDoubleLootChance() ) ) {
 				event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
+
+				ServerWorld world = ( ServerWorld )player.world;
+				Vector3d position = event.origin;
+				world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25,
+					0.25, 0.1
+				);
+			}
 	}
 }

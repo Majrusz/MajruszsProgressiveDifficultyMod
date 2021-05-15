@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -52,12 +53,13 @@ public class FishermanEmblemItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip1" ).mergeStyle( TextFormatting.GOLD ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip" ).mergeStyle( TextFormatting.GOLD ) );
 
 		if( !flag.isAdvanced() )
 			return;
 
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.fisherman_emblem.item_tooltip2" ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new StringTextComponent( " " ) );
+		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.items.inventory_item" ).mergeStyle( TextFormatting.GRAY ) );
 	}
 
 	/** Returns current luck bonus. (whether player has emblem or not) */

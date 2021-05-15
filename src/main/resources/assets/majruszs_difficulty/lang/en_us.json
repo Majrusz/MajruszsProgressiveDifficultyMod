@@ -24,8 +24,7 @@
   "item.majruszs_difficulty.bandage": "Bandage",
   "item.majruszs_difficulty.bandage.item_tooltip": "Removes bleeding from the target.",
   "item.majruszs_difficulty.fisherman_emblem": "Fisherman Emblem",
-  "item.majruszs_difficulty.fisherman_emblem.item_tooltip1": "Increases luck when fishing.",
-  "item.majruszs_difficulty.fisherman_emblem.item_tooltip2": "It works whenever the player has it anywhere in the inventory.",
+  "item.majruszs_difficulty.fisherman_emblem.item_tooltip": "Increases luck when fishing.",
   "item.majruszs_difficulty.hermes_boots": "Hermes Boots",
   "item.majruszs_difficulty.hermes_boots.item_tooltip": "Increases moving speed when worn.",
   "item.majruszs_difficulty.end_shard": "End Shard",
@@ -47,6 +46,8 @@
   "item.majruszs_difficulty.tattered_cloth": "Tattered Cloth",
   "item.majruszs_difficulty.end_shard_locator": "End Shard Locator",
   "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informs the player how far it is from the End Shard Ore.",
+  "item.majruszs_difficulty.lucky_seed": "Lucky Seed",
+  "item.majruszs_difficulty.lucky_seed.item_tooltip": "Gives a chance to double the loot from the crops.",
   "block.majruszs_difficulty.end_shard_ore": "End Shard Ore",
   "block.majruszs_difficulty.end_shard_ore.warning": "After destroying this block all nearby Endermans will attack you!",
   "block.majruszs_difficulty.end_block": "End Block",
@@ -79,6 +80,7 @@
   "majruszs_difficulty.items.undead_leggings": "Undead Army Leggings",
   "majruszs_difficulty.items.undead_boots": "Undead Army Boots",
   "majruszs_difficulty.items.disabled_tooltip": "This item is disabled and is not available in Survival Mode!",
+  "majruszs_difficulty.items.inventory_item": "It works whenever the player has it anywhere in the inventory.",
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death from injuries caused by %2$s"
 }
