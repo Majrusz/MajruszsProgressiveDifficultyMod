@@ -2,16 +2,12 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
-import com.mlib.WorldHelper;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.events.HarvestCropEvent;
-import com.mlib.items.ItemHelper;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,7 +26,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
@@ -53,7 +52,7 @@ public class LuckySeedItem extends Item {
 		String groupComment = "Functionality of Lucky Seed.";
 		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.005, 0.0, 1.0 );
 		this.chance = new GameStateDoubleConfig( "Chance", chanceComment, 0.15, 0.3, 0.45, 0.0, 1.0 );
-		this.alwaysDrops = new AvailabilityConfig( "always_drops", alwaysComment, false, false );
+		this.alwaysDrops = new AvailabilityConfig( "always_drops", alwaysComment, false, true );
 
 		this.group = FEATURES_GROUP.addGroup( new ConfigGroup( "LuckySeed", groupComment ) );
 		this.group.addConfigs( this.dropChance, this.chance, this.alwaysDrops );
@@ -70,6 +69,28 @@ public class LuckySeedItem extends Item {
 
 		toolTip.add( new StringTextComponent( " " ) );
 		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.items.inventory_item" ).mergeStyle( TextFormatting.GRAY ) );
+	}
+
+	@SubscribeEvent
+	public static void handleHarvesting( HarvestCropEvent event ) {
+		LuckySeedItem luckySeed = Instances.LUCKY_SEED_ITEM;
+		PlayerEntity player = event.getPlayer();
+
+		if( !( player.world instanceof ServerWorld && event.crops.isMaxAge( event.blockState ) ) )
+			return;
+
+		if( luckySeed.shouldDrop( player ) )
+			if( Random.tryChance( luckySeed.getDropChance() ) )
+				event.generatedLoot.add( new ItemStack( luckySeed, 1 ) );
+
+		if( luckySeed.hasAny( player ) )
+			if( Random.tryChance( luckySeed.getDoubleLootChance() ) ) {
+				event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
+
+				ServerWorld world = ( ServerWorld )player.world;
+				Vector3d position = event.origin;
+				world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25, 0.25, 0.1 );
+			}
 	}
 
 	/** Returns current chance for double crops. */
@@ -93,29 +114,5 @@ public class LuckySeedItem extends Item {
 		items.add( this );
 
 		return player.inventory.hasAny( items );
-	}
-
-	@SubscribeEvent
-	public static void handleHarvesting( HarvestCropEvent event ) {
-		LuckySeedItem luckySeed = Instances.LUCKY_SEED_ITEM;
-		PlayerEntity player = event.getPlayer();
-
-		if( !( player.world instanceof ServerWorld && event.crops.isMaxAge( event.blockState ) ) )
-			return;
-
-		if( luckySeed.shouldDrop( player ) )
-			if( Random.tryChance( luckySeed.getDropChance() ) )
-				event.generatedLoot.add( new ItemStack( luckySeed, 1 ) );
-
-		if( luckySeed.hasAny( player ) )
-			if( Random.tryChance( luckySeed.getDoubleLootChance() ) ) {
-				event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
-
-				ServerWorld world = ( ServerWorld )player.world;
-				Vector3d position = event.origin;
-				world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25,
-					0.25, 0.1
-				);
-			}
 	}
 }
