@@ -53,6 +53,7 @@ public class Instances {
 	public static final EndLeggingsItem END_LEGGINGS_ITEM;
 	public static final EndBootsItem END_BOOTS_ITEM;
 	public static final EndShardLocatorItem END_SHARD_LOCATOR_ITEM;
+	public static final LuckySeedItem LUCKY_SEED_ITEM;
 
 	// Treasure Bags
 	public static final TreasureBagItem UNDEAD_ARMY_TREASURE_BAG;
@@ -117,6 +118,7 @@ public class Instances {
 		END_LEGGINGS_ITEM = new EndLeggingsItem();
 		END_BOOTS_ITEM = new EndBootsItem();
 		END_SHARD_LOCATOR_ITEM = new EndShardLocatorItem();
+		LUCKY_SEED_ITEM = new LuckySeedItem();
 
 		// Treasure Bags
 		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );

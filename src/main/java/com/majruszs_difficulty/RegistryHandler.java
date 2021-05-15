@@ -127,6 +127,7 @@ public class RegistryHandler {
 		ITEMS.register( "end_leggings", ()->Instances.END_LEGGINGS_ITEM );
 		ITEMS.register( "end_boots", ()->Instances.END_BOOTS_ITEM );
 		ITEMS.register( "end_shard_locator", ()->Instances.END_SHARD_LOCATOR_ITEM );
+		ITEMS.register( "lucky_seed", ()->Instances.LUCKY_SEED_ITEM );
 		ITEMS.register( modEventBus );
 	}
 
