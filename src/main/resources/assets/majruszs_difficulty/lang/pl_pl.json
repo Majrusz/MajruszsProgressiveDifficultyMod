@@ -24,8 +24,7 @@
   "item.majruszs_difficulty.bandage": "Bandaż",
   "item.majruszs_difficulty.bandage.item_tooltip": "Usuwa krwawienie z celu.",
   "item.majruszs_difficulty.fisherman_emblem": "Emblemat rybaka",
-  "item.majruszs_difficulty.fisherman_emblem.item_tooltip1": "Zwiększa szczęście podczas łowienia.",
-  "item.majruszs_difficulty.fisherman_emblem.item_tooltip2": "Działa z dowolnego miejsca w ekwipunku.",
+  "item.majruszs_difficulty.fisherman_emblem.item_tooltip": "Zwiększa szczęście podczas łowienia.",
   "item.majruszs_difficulty.hermes_boots": "Buty hermesa",
   "item.majruszs_difficulty.hermes_boots.item_tooltip": "Zwiększają prędkość poruszania się, gdy są założone.",
   "item.majruszs_difficulty.end_shard": "Kryształ kresu",
@@ -43,6 +42,8 @@
   "item.majruszs_difficulty.tattered_cloth": "Potargany materiał",
   "item.majruszs_difficulty.end_shard_locator": "Lokalizator kryształów kresu",
   "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informuje gracza jak daleko znajduje się od rudy kryształu kresu.",
+  "item.majruszs_difficulty.lucky_seed": "Szczęśliwe nasiono",
+  "item.majruszs_difficulty.lucky_seed.item_tooltip": "Daje szansę na podwójne zbiory z plonów.",
   "block.majruszs_difficulty.end_shard_ore": "Ruda kryształu kresu",
   "block.majruszs_difficulty.end_shard_ore.warning": "Po zniszczeniu tej rudy wszystkie Enderman'y Cię zaatakują!",
   "block.majruszs_difficulty.end_block": "Blok kresu",
@@ -74,6 +75,7 @@
   "majruszs_difficulty.items.undead_chestplate": "Napierśnik armii nieumarłych",
   "majruszs_difficulty.items.undead_leggings": "Nogawice armii nieumarłych",
   "majruszs_difficulty.items.undead_boots": "Buty armii nieumarłych",
+  "majruszs_difficulty.items.inventory_item": "Działa z dowolnego miejsca w ekwipunku.",
   "death.attack.bleeding": "%1$s wykrwawił się na śmierć",
   "death.attack.bleeding.player": "%1$s wykrwawił się na śmierć na wskutek ran od %2$s"
 }
