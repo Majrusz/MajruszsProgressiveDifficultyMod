@@ -19,11 +19,11 @@ public class ExperienceBonus {
 	protected final GameStateDoubleConfig bonusMultiplier;
 
 	public ExperienceBonus() {
-		String exp_comment = "Extra experience multiplier.";
-		String group_comment = "Experience bonuses.";
-		this.bonusMultiplier = new GameStateDoubleConfig( "BonusMultiplier", exp_comment, 0.0, 0.25, 0.5, 0.0, 10.0 );
+		String expComment = "Extra experience multiplier.";
+		String groupComment = "Experience bonuses.";
+		this.bonusMultiplier = new GameStateDoubleConfig( "BonusMultiplier", expComment, 0.0, 0.25, 0.5, 0.0, 10.0 );
 
-		this.experienceGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Experience", group_comment ) );
+		this.experienceGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Experience", groupComment ) );
 		this.experienceGroup.addConfig( this.bonusMultiplier );
 	}
 

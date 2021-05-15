@@ -22,11 +22,11 @@ public class FishingRewarder {
 	protected final GameStateIntegerConfig treasureBagRequirement;
 
 	public FishingRewarder() {
-		String requirement_comment = "Required amount of items fished to get Treasure Bag.";
-		String group_comment = "Everything related to fishing.";
-		this.treasureBagRequirement = new GameStateIntegerConfig( "RequiredItems", requirement_comment, 20, 15, 10, 3, 100 );
+		String requirementComment = "Required amount of items fished to get Treasure Bag.";
+		String groupComment = "Everything related to fishing.";
+		this.treasureBagRequirement = new GameStateIntegerConfig( "RequiredItems", requirementComment, 20, 15, 10, 3, 100 );
 
-		this.fishingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Fishing", group_comment ) );
+		this.fishingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Fishing", groupComment ) );
 		this.fishingGroup.addConfig( this.treasureBagRequirement );
 	}
 
