@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "majruszs_difficulty:item/lucky_seed"
+    "layer0": "majruszs_difficulty:item/giant_seed"
   }
 }

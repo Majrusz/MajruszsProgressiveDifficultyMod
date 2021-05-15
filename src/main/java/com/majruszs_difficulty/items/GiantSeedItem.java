@@ -35,26 +35,26 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
 /** Seed that gives a chance for double loot from crops. */
 @Mod.EventBusSubscriber
-public class LuckySeedItem extends Item {
+public class GiantSeedItem extends Item {
 	protected final ConfigGroup group;
 	protected final DoubleConfig dropChance;
 	protected final GameStateDoubleConfig chance;
 	protected final AvailabilityConfig alwaysDrops;
 
-	public LuckySeedItem() {
+	public GiantSeedItem() {
 		super( ( new Properties() ).maxStackSize( 1 )
 			.rarity( Rarity.UNCOMMON )
 			.group( Instances.ITEM_GROUP ) );
 
-		String dropComment = "Chance for Lucky Seed to drop from harvesting.";
+		String dropComment = "Chance for Giant Seed to drop from harvesting.";
 		String chanceComment = "Chance for double loot when harvesting crops.";
-		String alwaysComment = "Should Lucky Seed drop even though player already has one in inventory?";
-		String groupComment = "Functionality of Lucky Seed.";
+		String alwaysComment = "Should Giant Seed drop even though player already has one in inventory?";
+		String groupComment = "Functionality of Giant Seed.";
 		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.005, 0.0, 1.0 );
 		this.chance = new GameStateDoubleConfig( "Chance", chanceComment, 0.15, 0.3, 0.45, 0.0, 1.0 );
 		this.alwaysDrops = new AvailabilityConfig( "always_drops", alwaysComment, false, true );
 
-		this.group = FEATURES_GROUP.addGroup( new ConfigGroup( "LuckySeed", groupComment ) );
+		this.group = FEATURES_GROUP.addGroup( new ConfigGroup( "GiantSeed", groupComment ) );
 		this.group.addConfigs( this.dropChance, this.chance, this.alwaysDrops );
 	}
 
@@ -62,7 +62,7 @@ public class LuckySeedItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.lucky_seed.item_tooltip" ).mergeStyle( TextFormatting.GOLD ) );
+		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.giant_seed.item_tooltip" ).mergeStyle( TextFormatting.GOLD ) );
 
 		if( !flag.isAdvanced() )
 			return;
@@ -73,18 +73,18 @@ public class LuckySeedItem extends Item {
 
 	@SubscribeEvent
 	public static void handleHarvesting( HarvestCropEvent event ) {
-		LuckySeedItem luckySeed = Instances.LUCKY_SEED_ITEM;
+		GiantSeedItem giantSeed = Instances.GIANT_SEED_ITEM;
 		PlayerEntity player = event.getPlayer();
 
 		if( !( player.world instanceof ServerWorld && event.crops.isMaxAge( event.blockState ) ) )
 			return;
 
-		if( luckySeed.shouldDrop( player ) )
-			if( Random.tryChance( luckySeed.getDropChance() ) )
-				event.generatedLoot.add( new ItemStack( luckySeed, 1 ) );
+		if( giantSeed.shouldDrop( player ) )
+			if( Random.tryChance( giantSeed.getDropChance() ) )
+				event.generatedLoot.add( new ItemStack( giantSeed, 1 ) );
 
-		if( luckySeed.hasAny( player ) )
-			if( Random.tryChance( luckySeed.getDoubleLootChance() ) ) {
+		if( giantSeed.hasAny( player ) )
+			if( Random.tryChance( giantSeed.getDoubleLootChance() ) ) {
 				event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
 
 				ServerWorld world = ( ServerWorld )player.world;
@@ -98,17 +98,17 @@ public class LuckySeedItem extends Item {
 		return this.chance.getCurrentGameStateValue();
 	}
 
-	/** Returns a chance for Lucky Seed to drop. */
+	/** Returns a chance for Giant Seed to drop. */
 	public double getDropChance() {
 		return this.dropChance.get();
 	}
 
-	/** Checks whether player does not have Lucky Seed in inventory or it should always drop. */
+	/** Checks whether player does not have Giant Seed in inventory or it should always drop. */
 	public boolean shouldDrop( PlayerEntity player ) {
 		return !hasAny( player ) || this.alwaysDrops.isEnabled();
 	}
 
-	/** Checks whether player have any Lucky Seed in inventory. */
+	/** Checks whether player have any Giant Seed in inventory. */
 	public boolean hasAny( PlayerEntity player ) {
 		Set< Item > items = new HashSet<>();
 		items.add( this );
