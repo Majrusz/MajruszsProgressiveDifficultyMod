@@ -28,15 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.majruszs_difficulty.generation.structure_pieces.FlyingEndIslandPiece.FORGE_CHEST_RESOURCE_LOCATION;
-
 /** All possible Flying End Island pieces. */
 public class FlyingEndShipPiece extends TemplateStructurePiece {
 	public static final List< ResourceLocation > SHIP_RESOURCE_LOCATIONS = new ArrayList<>();
 	public static final List< Block > RANDOM_BLOCKS = new ArrayList<>();
-	public static final ResourceLocation SHIP_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_ship" );
-	public static final ResourceLocation SHIP_EXTRA_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_island_ship_extra" );
-	private final Rotation rotation;
+	public static final ResourceLocation SHIP_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_ship" );
+	public static final ResourceLocation SHIP_EXTRA_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_ship_extra" );
+	public static final ResourceLocation SHIP_MILITARY_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_ship_military" );
+	public static final ResourceLocation SHIP_MILITARY_SMALL_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_ship_military_small" );
+	public static final ResourceLocation SHIP_TRADER_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_ship_trader" );
 
 	static {
 		SHIP_RESOURCE_LOCATIONS.add( MajruszsDifficulty.getLocation( "end_island_ship_military" ) );
@@ -53,6 +53,8 @@ public class FlyingEndShipPiece extends TemplateStructurePiece {
 		for( int i = 0; i < 5; i++ )
 			RANDOM_BLOCKS.add( Blocks.ANCIENT_DEBRIS );
 	}
+
+	private final Rotation rotation;
 
 	public FlyingEndShipPiece( TemplateManager templateManager, BlockPos position, Rotation rotation ) {
 		super( Instances.FLYING_END_SHIP_PIECE, 0 );
@@ -78,22 +80,14 @@ public class FlyingEndShipPiece extends TemplateStructurePiece {
 	protected void handleDataMarker( String function, BlockPos position, IServerWorld world, Random random, MutableBoundingBox boundingBox ) {
 		if( function.startsWith( "chest" ) ) {
 			TileEntity tileEntity = world.getTileEntity( position.down() );
-
 			if( tileEntity instanceof ChestTileEntity ) {
 				ChestTileEntity chest = ( ChestTileEntity )tileEntity;
-				if( function.startsWith( "chest_forge" ) ) {
-					chest.setLootTable( FORGE_CHEST_RESOURCE_LOCATION, random.nextLong() );
-				} else if( function.startsWith( "chest_ship" ) ) {
-					chest.setLootTable( SHIP_CHEST_RESOURCE_LOCATION, random.nextLong() );
-				} else if( function.startsWith( "chest_extra" ) ) {
-					if( com.mlib.Random.tryChance( 0.25 ) )
-						chest.setLootTable( SHIP_EXTRA_CHEST_RESOURCE_LOCATION, random.nextLong() );
-					else
-						world.setBlockState( position.down(), Blocks.AIR.getDefaultState(), 2 );
-				}
+				chest.setLootTable( getLootTable( function ), random.nextLong() );
+				if( function.startsWith( "chest_extra" ) && com.mlib.Random.tryChance( 0.75 ) )
+					world.setBlockState( position.down(), Blocks.AIR.getDefaultState(), 2 );
 			}
-			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 
+			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 		} else if( function.startsWith( "end_keeper" ) ) {
 			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
 			SkyKeeperEntity monster = SkyKeeperEntity.type.create( world.getWorld() );
@@ -124,6 +118,23 @@ public class FlyingEndShipPiece extends TemplateStructurePiece {
 		BlockPos blockpos = rotationOffSet.add( position.getX(), position.getY(), position.getZ() );
 
 		pieces.add( new FlyingEndShipPiece( templateManager, blockpos, rotation ) );
+	}
+
+	/** Returns loot table resource location depending on given id. **/
+	private ResourceLocation getLootTable( String id ) {
+		switch( id ) {
+			default:
+			case "chest_ship":
+				return SHIP_CHEST_RESOURCE_LOCATION;
+			case "chest_extra":
+				return SHIP_EXTRA_CHEST_RESOURCE_LOCATION;
+			case "chest_military":
+				return SHIP_MILITARY_RESOURCE_LOCATION;
+			case "chest_military_small":
+				return SHIP_MILITARY_SMALL_RESOURCE_LOCATION;
+			case "chest_trader":
+				return SHIP_TRADER_RESOURCE_LOCATION;
+		}
 	}
 
 	private void setupPiece( TemplateManager templateManager ) {
