@@ -10,7 +10,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 30,
+          "weight": 20,
           "name": "minecraft:chorus_fruit",
           "functions": [
             {
@@ -24,7 +24,21 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 15,
+          "name": "minecraft:emerald",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
           "name": "minecraft:diamond",
           "functions": [
             {
@@ -38,21 +52,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
-          "name": "minecraft:diamond",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "min": 2,
-                "max": 4
-              }
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 20,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
@@ -78,7 +78,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 50,
+          "weight": 60,
           "name": "minecraft:ender_pearl",
           "functions": [
             {
@@ -92,7 +92,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 50,
+          "weight": 40,
           "name": "minecraft:shulker_shell"
         }
       ]

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "majruszs_difficulty:chests/end_ship_military_small"
+        }
+      ]
+    }
+  ]
+}

@@ -4,13 +4,13 @@
     {
       "rolls": {
         "min": 3.0,
-        "max": 4.0,
+        "max": 5.0,
         "type": "minecraft:uniform"
       },
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 40,
+          "weight": 30,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -40,7 +40,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 30,
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
