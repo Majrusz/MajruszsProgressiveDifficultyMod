@@ -34,7 +34,7 @@ public class FishermanEmblemItem extends InventoryItem {
 		LUCK_ATTRIBUTE.setValueAndApply( player, Instances.FISHERMAN_EMBLEM_ITEM.getEmblemLuckBonus( player ) );
 	}
 
-	/** Returns current luck bonus. (whether player has emblem or not) */
+	/** Returns current luck bonus. (whether player has emblem and is fishing or not) */
 	public int getEmblemLuckBonus( PlayerEntity player ) {
 		return player.fishingBobber != null && hasAny( player, this ) ? this.luck.getCurrentGameStateValue() : 0;
 	}
