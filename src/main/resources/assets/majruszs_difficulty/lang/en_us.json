@@ -48,6 +48,8 @@
   "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informs the player how far it is from the End Shard Ore.",
   "item.majruszs_difficulty.giant_seed": "Giant Seed",
   "item.majruszs_difficulty.giant_seed.item_tooltip": "Gives a chance to double the loot from the crops.",
+  "item.majruszs_difficulty.lucky_rock": "Lucky Rock",
+  "item.majruszs_difficulty.lucky_rock.item_tooltip": "Gives a chance for extra loot when mining.",
   "block.majruszs_difficulty.end_shard_ore": "End Shard Ore",
   "block.majruszs_difficulty.end_shard_ore.warning": "After destroying this block all nearby Endermans will attack you!",
   "block.majruszs_difficulty.end_block": "End Block",
