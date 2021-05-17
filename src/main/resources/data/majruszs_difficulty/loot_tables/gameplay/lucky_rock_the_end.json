@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 50,
+          "name": "minecraft:ender_pearl"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 30,
+          "name": "minecraft:ender_eye"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 9,
+          "name": "majruszs_difficulty:end_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "majruszs_difficulty:end_ingot"
+        }
+      ]
+    }
+  ]
+}
