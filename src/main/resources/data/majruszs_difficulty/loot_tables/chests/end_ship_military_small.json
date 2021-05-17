@@ -2,7 +2,11 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 2,
+      "rolls": {
+        "min": 1.0,
+        "max": 2.0,
+        "type": "minecraft:uniform"
+      },
       "entries": [
         {
           "type": "minecraft:item",
@@ -25,7 +29,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 15,
+          "weight": 18,
           "name": "minecraft:diamond_sword",
           "functions": [
             {
@@ -44,7 +48,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
+          "weight": 2,
           "name": "majruszs_difficulty:end_sword",
           "functions": [
             {
@@ -102,7 +106,11 @@
       ]
     },
     {
-      "rolls": 2,
+      "rolls": {
+        "min": 1.0,
+        "max": 2.0,
+        "type": "minecraft:uniform"
+      },
       "entries": [
         {
           "type": "minecraft:item",
