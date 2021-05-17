@@ -4,7 +4,7 @@
 	"pattern":
 	[ 
 		"ccc",
-		"cic",
+		"eie",
 		"ccc"
 	],
 	"key":
@@ -16,6 +16,10 @@
 		"i":
 		{
 			"item": "minecraft:iron_ingot"
+		},
+		"e":
+		{
+			"item": "minecraft:ender_eye"
 		}
 	},
 	"result":
