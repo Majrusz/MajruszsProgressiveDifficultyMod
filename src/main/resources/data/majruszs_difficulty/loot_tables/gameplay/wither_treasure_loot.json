@@ -11,7 +11,13 @@
               "function": "minecraft:enchant_randomly"
             }
           ],
-          "name": "majruszs_difficulty:wither_sword"
+          "name": "majruszs_difficulty:wither_sword",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.333
+            }
+          ]
         }
       ]
     },
