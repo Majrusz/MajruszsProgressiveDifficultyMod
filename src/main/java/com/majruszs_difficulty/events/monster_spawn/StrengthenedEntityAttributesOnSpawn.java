@@ -5,8 +5,12 @@ import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.monster.piglin.PiglinEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.world.server.ServerWorld;
 
 /** Increases damage and health of spawning hostile entities. */
@@ -45,6 +49,13 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 			.apply( entity );
 
 		entity.setHealth( entity.getMaxHealth() );
+	}
+
+	@Override
+	protected boolean shouldBeExecuted( LivingEntity entity ) {
+		ModifiableAttributeInstance damageAttribute = entity.getAttribute( Attributes.ATTACK_DAMAGE );
+
+		return damageAttribute != null && damageAttribute.getValue() > 0.0 && super.shouldBeExecuted( entity );
 	}
 
 	/**
