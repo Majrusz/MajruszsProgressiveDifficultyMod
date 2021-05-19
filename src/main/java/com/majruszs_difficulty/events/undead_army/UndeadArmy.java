@@ -14,7 +14,6 @@ import com.mlib.WorldHelper;
 import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -359,16 +358,19 @@ public class UndeadArmy {
 		for( WaveMember waveMember : WaveMember.values() ) {
 			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
 				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.world, this.positionToAttack, SPAWN_RADIUS );
-				Entity entity = waveMember.type.spawn( this.world, null, null, null, randomPosition, SpawnReason.EVENT, true, true );
-				if( !( entity instanceof MonsterEntity ) )
+				MonsterEntity monster = waveMember.type.create( this.world, null, null, null, randomPosition, SpawnReason.EVENT, true, true );
+				if( monster == null )
 					continue;
 
-				MonsterEntity monster = ( MonsterEntity )entity;
 				monster.enablePersistence();
 				updateUndeadGoal( monster );
 				equipWithDyedLeatherArmor( monster );
 				tryToEnchantEquipment( monster );
 				updateUndeadData( monster );
+
+				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.world, randomPosition.getX(), randomPosition.getY(), randomPosition.getZ(), null, SpawnReason.EVENT ) )
+					continue;
+				this.world.func_242417_l( monster ); // adds monster to the world
 
 				this.undeadToKill++;
 			}
@@ -464,7 +466,7 @@ public class UndeadArmy {
 
 	/** Adds Undead Army AI goal for given monster. */
 	private void updateUndeadGoal( MonsterEntity monster ) {
-		monster.goalSelector.addGoal( 9, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 20.0f, 3.0f ) );
+		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, this.positionToAttack, 1.25f, 20.0f, 3.0f ) );
 	}
 
 	/** Updates visibility of Undead Army progress bar for nearby players. */
