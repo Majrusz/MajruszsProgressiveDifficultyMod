@@ -27,7 +27,7 @@ public class FreezeWater {
 		BlockPos position = new BlockPos( monster.getPositionVec() );
 
 		BlockState blockState = Blocks.FROSTED_ICE.getDefaultState();
-		double factor = 3.0;
+		double factor = 4.0;
 		BlockPos.Mutable mutablePosition = new BlockPos.Mutable();
 		Iterable< BlockPos > blockPositions = BlockPos.getAllInBoxMutable( position.add( -factor, -1.0, -factor ),
 			position.add( factor, -1.0, factor )
