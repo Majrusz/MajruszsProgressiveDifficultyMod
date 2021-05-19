@@ -4,6 +4,7 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.events.ChanceFeatureBase;
 import com.mlib.Random;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.world.server.ServerWorld;
 
 /** Base class for handling enemy spawn events. */
@@ -26,13 +27,7 @@ public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase {
 
 	/** Checking if all conditions were met. */
 	protected boolean shouldBeExecuted( LivingEntity entity ) {
-		if( !GameState.atLeast( this.minimumState ) )
-			return false;
-
-		if( !( entity.world instanceof ServerWorld ) )
-			return false;
-
-		if( !isEnabled() )
+		if( !GameState.atLeast( this.minimumState ) || !( entity.world instanceof ServerWorld ) || !isEnabled() || !( entity instanceof MobEntity ) )
 			return false;
 
 		return Random.tryChance( calculateChance( entity ) );
