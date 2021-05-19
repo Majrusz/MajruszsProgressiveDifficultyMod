@@ -7,11 +7,11 @@ import net.minecraft.util.math.BlockPos;
 
 public class UndeadAttackPositionGoal extends Goal {
 	protected final MobEntity undead;
-	private final PathNavigator navigation;
 	protected final BlockPos attackPosition;
 	protected final double speedModifier;
 	protected final float maxDistanceFromPosition;
 	protected final float stopDistance;
+	private final PathNavigator navigation;
 	protected int ticksToRecalculatePath;
 
 	public UndeadAttackPositionGoal( MobEntity undead, BlockPos attackPosition, double speedModifier, float maxDistanceFromPosition,
@@ -28,11 +28,12 @@ public class UndeadAttackPositionGoal extends Goal {
 
 	@Override
 	public boolean shouldExecute() {
-		return !isInRadius();
+		return !isInRadius() && !hasAnyTarget();
 	}
 
+	@Override
 	public boolean shouldContinueExecuting() {
-		return !isInRadius() && !this.navigation.noPath();
+		return !isInRadius() && !this.navigation.noPath() && !hasAnyTarget();
 	}
 
 	public void startExecuting() {
@@ -49,6 +50,10 @@ public class UndeadAttackPositionGoal extends Goal {
 
 	protected boolean isInRadius() {
 		return getDistanceToAttackPosition() < this.maxDistanceFromPosition;
+	}
+
+	protected boolean hasAnyTarget() {
+		return this.undead.getAttackTarget() != null || this.undead.getRevengeTarget() != null;
 	}
 
 	protected double getDistanceToAttackPosition() {
