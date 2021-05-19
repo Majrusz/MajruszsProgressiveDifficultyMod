@@ -2,10 +2,13 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.models.HermesArmorModel;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -13,6 +16,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -40,14 +44,14 @@ public class HermesBootsItem extends ArmorItem {
 			.rarity( Rarity.UNCOMMON ) );
 
 		String comment = "Movement speed extra multiplier.";
-		this.movementSpeedBonus = new DoubleConfig( "movement_speed_bonus", comment, false, 0.2, 0.0, 1.0 );
+		this.movementSpeedBonus = new DoubleConfig( "movement_speed_bonus", comment, false, 0.25, 0.0, 1.0 );
 
 		this.configGroup = new ConfigGroup( "HermesBoots", "Hermes Boots item configuration." );
 		MajruszsDifficulty.FEATURES_GROUP.addGroup( this.configGroup );
 		this.configGroup.addConfig( this.movementSpeedBonus );
 	}
 
-	/** Adding tooltip with information for what bandage is used. */
+	/** Adds tooltip about Hermes Boots movement speed bonus. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
@@ -55,6 +59,40 @@ public class HermesBootsItem extends ArmorItem {
 			return;
 
 		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.hermes_boots.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+	}
+
+	/** Returns path to Hermes Boots texture. */
+	@Nullable
+	@Override
+	public String getArmorTexture( ItemStack stack, Entity entity, EquipmentSlotType slot, String type ) {
+		ResourceLocation textureLocation = MajruszsDifficulty.getLocation( "textures/models/armor/hermes_layer.png" );
+		return textureLocation.toString();
+	}
+
+	/** Returns model used to render armor. */
+	@OnlyIn( Dist.CLIENT )
+	@Nullable
+	@Override
+	public < ArmorModel extends BipedModel< ? > > ArmorModel getArmorModel( LivingEntity entity, ItemStack itemStack, EquipmentSlotType armorSlot,
+		ArmorModel defaultModel
+	) {
+		HermesArmorModel model = new HermesArmorModel();
+
+		model.bipedHead.showModel = armorSlot == EquipmentSlotType.HEAD;
+		model.bipedHeadwear.showModel = false;
+		model.bipedBody.showModel = armorSlot == EquipmentSlotType.CHEST;
+		model.bipedLeftArm.showModel = false;
+		model.bipedRightArm.showModel = false;
+		model.bipedRightLeg.showModel = armorSlot == EquipmentSlotType.FEET;
+		model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
+
+		model.isChild = defaultModel.isChild;
+		model.isSitting = defaultModel.isSitting;
+		model.isSneak = defaultModel.isSneak;
+		model.rightArmPose = defaultModel.rightArmPose;
+		model.leftArmPose = defaultModel.leftArmPose;
+
+		return ( ArmorModel )model;
 	}
 
 	@SubscribeEvent
@@ -65,6 +103,7 @@ public class HermesBootsItem extends ArmorItem {
 			.apply( entity );
 	}
 
+	/** Returns movement speed bonus if entity has Hermes Boots equipped. */
 	public double getMovementSpeedBonus( LivingEntity entity ) {
 		ItemStack boots = entity.getItemStackFromSlot( EquipmentSlotType.FEET );
 		return ( boots.getItem() instanceof HermesBootsItem ? 1.0 : 0.0 ) * this.movementSpeedBonus.get();
