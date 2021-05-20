@@ -29,7 +29,7 @@ public class GiantSeedItem extends InventoryItem {
 		String dropComment = "Chance for Giant Seed to drop from harvesting.";
 		String chanceComment = "Chance for double loot when harvesting crops.";
 		String alwaysComment = "Should Giant Seed drop even though player already has one in inventory?";
-		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.005, 0.0, 1.0 );
+		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.001, 0.0, 1.0 );
 		this.chance = new GameStateDoubleConfig( "Chance", chanceComment, 0.25, 0.4, 0.55, 0.0, 1.0 );
 		this.alwaysDrops = new AvailabilityConfig( "always_drops", alwaysComment, false, true );
 

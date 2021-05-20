@@ -39,7 +39,7 @@ public class LuckyRockItem extends InventoryItem {
 
 		String dropComment = "Chance for Lucky Rock to drop from mining.";
 		String chanceComment = "Chance for extra loot when mining.";
-		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.002, 0.0, 1.0 );
+		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.0002, 0.0, 1.0 );
 		this.chance = new GameStateDoubleConfig( "Chance", chanceComment, 0.03, 0.045, 0.06, 0.0, 1.0 );
 
 		this.group.addConfigs( this.dropChance, this.chance );
