@@ -58,7 +58,7 @@ public class StrongerExplosions {
 
 	public static class CausingFire extends ChanceFeatureBase {
 		private static final String CONFIG_NAME = "ExplosionCausingFire";
-		private static final String CONFIG_COMMENT = "Makes all explosions to leave fire.";
+		private static final String CONFIG_COMMENT = "Makes all explosions leave fire.";
 
 		public CausingFire() {
 			super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.EXPERT, true );
