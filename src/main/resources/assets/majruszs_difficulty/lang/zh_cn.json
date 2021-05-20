@@ -24,8 +24,7 @@
   "item.majruszs_difficulty.bandage": "绷带",
   "item.majruszs_difficulty.bandage.item_tooltip": "移除目标的流血效果",
   "item.majruszs_difficulty.fisherman_emblem": "渔夫徽章",
-  "item.majruszs_difficulty.fisherman_emblem.item_tooltip1": "钓鱼更加幸运",
-  "item.majruszs_difficulty.fisherman_emblem.item_tooltip2": "放在背包内就能生效",
+  "item.majruszs_difficulty.fisherman_emblem.item_tooltip": "钓鱼更加幸运",
   "item.majruszs_difficulty.hermes_boots": "赫尔墨斯之靴",
   "item.majruszs_difficulty.hermes_boots.item_tooltip": "增加移速",
   "item.majruszs_difficulty.end_shard": "末影碎片",
@@ -79,6 +78,7 @@
   "majruszs_difficulty.items.undead_leggings": "亡灵军团护腿",
   "majruszs_difficulty.items.undead_boots": "亡灵军团靴子",
   "majruszs_difficulty.items.disabled_tooltip": "该物品在生存模式下无法使用！",
+  "majruszs_difficulty.items.inventory_item": "放在背包内就能生效",
   "death.attack.bleeding": "%1$s流血致死",
   "death.attack.bleeding.player": "%1$s因%2$s流血致死"
 }
