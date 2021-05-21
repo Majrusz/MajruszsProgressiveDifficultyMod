@@ -66,7 +66,7 @@ public class StrongerExplosions {
 			super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.NORMAL );
 
 			String multiplierComment = "Explosion radius multiplier. (this value is scaled by Clamped Regional Difficulty)";
-			this.maximumMultiplier = new DoubleConfig( "maximum_multiplier", multiplierComment, false, 2.0, 1.0, 10.0 );
+			this.maximumMultiplier = new DoubleConfig( "maximum_multiplier", multiplierComment, false, 1.2599, 1.0, 10.0 );
 
 			this.featureGroup.addConfig( this.maximumMultiplier );
 		}
