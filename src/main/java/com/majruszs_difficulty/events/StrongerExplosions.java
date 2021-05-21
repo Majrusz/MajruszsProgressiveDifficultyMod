@@ -35,7 +35,6 @@ public class StrongerExplosions {
 		if( causer == null )
 			causer = getNearestEntity( event.explosion, event.world );
 
-		MajruszLibrary.LOGGER.info( causer );
 		if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
 			event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
 
