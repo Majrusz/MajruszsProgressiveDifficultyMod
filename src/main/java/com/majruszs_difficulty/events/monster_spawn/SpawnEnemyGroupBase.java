@@ -12,6 +12,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 
@@ -23,8 +24,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	protected final int minimumAmountOfChildren;
 	protected final int maximumAmountOfChildren;
 	protected final Item[] leaderArmor;
-
-	protected abstract CreatureEntity spawnChild( ServerWorld world );
+	private static final String SIDEKICK_TAG = "MajruszsDifficultySidekick";
 
 	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD,
 		int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor
@@ -41,10 +41,32 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 		int childrenAmount = this.minimumAmountOfChildren + MajruszLibrary.RANDOM.nextInt(
 			this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1 );
 
+		if( isSidekick( entity ) )
+			return;
+
 		if( this.leaderArmor != null )
 			giveArmorToLeader( entity );
 
 		spawnChildren( childrenAmount, entity, world );
+	}
+
+	protected abstract CreatureEntity spawnChild( ServerWorld world );
+
+	/** Generates weapon for child. */
+	protected ItemStack generateWeaponForChild() {
+		return null;
+	}
+
+	/** Sets tag that informs this entity is a sidekick. */
+	protected void markAsSidekick( LivingEntity entity ) {
+		CompoundNBT data = entity.getPersistentData();
+		data.putBoolean( SIDEKICK_TAG, true );
+	}
+
+	/** Checks whether given entity is a sidekick. */
+	protected boolean isSidekick( LivingEntity entity ) {
+		CompoundNBT data = entity.getPersistentData();
+		return data.contains( SIDEKICK_TAG ) && data.getBoolean( SIDEKICK_TAG );
 	}
 
 	/**
@@ -80,11 +102,6 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 		follower.targetSelector.addGoal( targetPriority, new TargetAsLeaderGoal( follower, leader ) );
 	}
 
-	/** Generates weapon for child. */
-	protected ItemStack generateWeaponForChild() {
-		return null;
-	}
-
 	/** Spawns given amount of children near the leader. */
 	private void spawnChildren( int amount, LivingEntity leader, ServerWorld world ) {
 		Vector3d spawnPosition = leader.getPositionVec();
@@ -100,6 +117,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 			child.setPosition( x, y, z );
 			setupGoals( ( CreatureEntity )leader, child, 9, 9 );
 			giveWeaponTo( child );
+			markAsSidekick( child );
 
 			world.summonEntity( child );
 		}
