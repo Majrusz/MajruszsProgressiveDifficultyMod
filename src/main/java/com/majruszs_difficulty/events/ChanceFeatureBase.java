@@ -5,6 +5,8 @@ import com.mlib.WorldHelper;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
 
+import javax.annotation.Nullable;
+
 /** Class representing base feature that depends on chance and can be disabled. */
 public abstract class ChanceFeatureBase extends FeatureBase {
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
@@ -29,7 +31,9 @@ public abstract class ChanceFeatureBase extends FeatureBase {
 	}
 
 	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
-	protected double calculateChance( LivingEntity target ) {
-		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? WorldHelper.getClampedRegionalDifficulty( target ) : 1.0 );
+	protected double calculateChance( @Nullable LivingEntity target ) {
+		double clampedRegionalDifficulty = target != null ? WorldHelper.getClampedRegionalDifficulty( target ) : 0.25;
+
+		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? clampedRegionalDifficulty : 1.0 );
 	}
 }

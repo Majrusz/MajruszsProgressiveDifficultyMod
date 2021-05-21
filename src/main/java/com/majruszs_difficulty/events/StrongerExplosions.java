@@ -1,13 +1,20 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
+import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.WorldHelper;
 import com.mlib.config.DoubleConfig;
 import com.mlib.events.ExplosionSizeEvent;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import javax.annotation.Nullable;
 
 import static com.majruszs_difficulty.Instances.STRONGER_EXPLOSIONS;
 
@@ -25,12 +32,29 @@ public class StrongerExplosions {
 	@SubscribeEvent
 	public static void onExplosion( ExplosionSizeEvent event ) {
 		LivingEntity causer = event.explosion.getExploder() instanceof LivingEntity ? ( LivingEntity )event.explosion.getExploder() : event.explosion.getExplosivePlacedBy();
+		if( causer == null )
+			causer = getNearestEntity( event.explosion, event.world );
 
+		MajruszLibrary.LOGGER.info( causer );
 		if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
 			event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
 
 		if( STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
 			event.causesFire = true;
+	}
+
+	/** Returns nearest entity to given explosion. (required to calculating regional difficulty) */
+	private static @Nullable
+	LivingEntity getNearestEntity( Explosion explosion, World world ) {
+		Vector3d position = explosion.getPosition();
+		double offset = 50.0;
+		AxisAlignedBB axisAlignedBB = new AxisAlignedBB( position.x - offset, position.y - offset, position.z - offset, position.x + offset,
+			position.y + offset, position.z + offset
+		);
+		for( LivingEntity entity : world.getEntitiesWithinAABB( LivingEntity.class, axisAlignedBB ) )
+			return entity;
+
+		return null;
 	}
 
 	public static class BiggerSize extends FeatureBase {
