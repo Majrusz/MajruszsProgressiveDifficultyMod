@@ -2,6 +2,7 @@ package com.majruszs_difficulty.blocks;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -39,7 +40,7 @@ public class EndBlock extends Block {
 		@Override
 		@OnlyIn( Dist.CLIENT )
 		public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-			MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
+			MajruszsHelper.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
 		}
 	}
 }

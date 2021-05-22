@@ -2,6 +2,7 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
@@ -84,7 +85,7 @@ public class TreasureBagItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		MajruszsDifficulty.addExtraTooltipIfDisabled( toolTip, this.availability.isEnabled() );
+		MajruszsHelper.addExtraTooltipIfDisabled( toolTip, this.availability.isEnabled() );
 
 		if( !flag.isAdvanced() )
 			return;
