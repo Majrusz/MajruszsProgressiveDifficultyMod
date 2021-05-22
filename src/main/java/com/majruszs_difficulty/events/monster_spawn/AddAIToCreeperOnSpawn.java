@@ -19,7 +19,7 @@ public class AddAIToCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
 		CreeperEntity creeper = ( CreeperEntity )entity;
 
-		creeper.goalSelector.addGoal( 2, new CreeperExplodeWallsGoal( creeper ) );
+		creeper.goalSelector.addGoal( 1, new CreeperExplodeWallsGoal( creeper ) );
 	}
 
 	@Override
