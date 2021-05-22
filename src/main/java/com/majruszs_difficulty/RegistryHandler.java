@@ -107,12 +107,7 @@ public class RegistryHandler {
 
 	/** Registration of items. */
 	private static void registerItems( final IEventBus modEventBus ) {
-		registerSpawnEggs();
-		registerTreasureBags();
 		ITEMS.register( "wither_sword", ()->Instances.Tools.WITHER_SWORD );
-		ITEMS.register( "undead_battle_standard", ()->Instances.BATTLE_STANDARD_ITEM );
-		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
-		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( "hermes_boots", ()->Instances.HERMES_BOOTS_ITEM );
 		ITEMS.register( "end_shard", ()->Instances.END_SHARD_ITEM );
 		ITEMS.register( "end_ingot", ()->Instances.END_INGOT_ITEM );
@@ -121,14 +116,19 @@ public class RegistryHandler {
 		ITEMS.register( "end_pickaxe", ()->Instances.END_PICKAXE_ITEM );
 		ITEMS.register( "end_axe", ()->Instances.END_AXE_ITEM );
 		ITEMS.register( "end_hoe", ()->Instances.END_HOE_ITEM );
-		ITEMS.register( "tattered_cloth", ()->Instances.TATTERED_CLOTH_ITEM );
 		ITEMS.register( "end_helmet", ()->Instances.END_HELMET_ITEM );
 		ITEMS.register( "end_chestplate", ()->Instances.END_CHESTPLATE_ITEM );
 		ITEMS.register( "end_leggings", ()->Instances.END_LEGGINGS_ITEM );
 		ITEMS.register( "end_boots", ()->Instances.END_BOOTS_ITEM );
 		ITEMS.register( "end_shard_locator", ()->Instances.END_SHARD_LOCATOR_ITEM );
+		ITEMS.register( "tattered_cloth", ()->Instances.TATTERED_CLOTH_ITEM );
+		ITEMS.register( "undead_battle_standard", ()->Instances.BATTLE_STANDARD_ITEM );
+		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
+		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( "giant_seed", ()->Instances.GIANT_SEED_ITEM );
 		ITEMS.register( "lucky_rock", ()->Instances.LUCKY_ROCK_ITEM );
+		registerTreasureBags();
+		registerSpawnEggs();
 		ITEMS.register( modEventBus );
 	}
 
