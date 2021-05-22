@@ -1,6 +1,8 @@
-package com.majruszs_difficulty.events;
+package com.majruszs_difficulty.events.special;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.events.ChanceFeatureBase;
+import com.majruszs_difficulty.events.FeatureBase;
 import com.mlib.Random;
 import com.mlib.WorldHelper;
 import com.mlib.config.DoubleConfig;
