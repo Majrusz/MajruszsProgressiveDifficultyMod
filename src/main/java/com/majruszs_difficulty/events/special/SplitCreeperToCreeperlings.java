@@ -24,7 +24,7 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 	protected final GameStateIntegerConfig creeperlingsAmount;
 
 	public SplitCreeperToCreeperlings() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, GameState.State.NORMAL, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.666, GameState.State.NORMAL, false );
 
 		String creeperlingComment = "Maximum amount of Creeperlings.";
 		this.creeperlingsAmount = new GameStateIntegerConfig( "maximum_creeperlings", creeperlingComment, 1, 3, 5, 0, 10 );
