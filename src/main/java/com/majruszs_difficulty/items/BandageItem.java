@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
@@ -16,8 +17,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -68,12 +67,8 @@ public class BandageItem extends Item {
 	/** Adding tooltip with information for what bandage is used. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		if( !flag.isAdvanced() )
-			return;
-
-		toolTip.add( new TranslationTextComponent( TOOLTIP_TRANSLATION_KEY_1 ).mergeStyle( TextFormatting.GRAY ) );
-		toolTip.add( new TranslationTextComponent( TOOLTIP_TRANSLATION_KEY_2 ).mergeStyle( TextFormatting.GRAY ) );
+	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		MajruszsHelper.addAdvancedTooltips( tooltip, flag, TOOLTIP_TRANSLATION_KEY_1, TOOLTIP_TRANSLATION_KEY_2 );
 	}
 
 	/** Using bandage on right click. (other entity healing) */

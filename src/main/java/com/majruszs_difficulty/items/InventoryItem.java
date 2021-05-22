@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.MajruszsHelper;
 import com.mlib.config.ConfigGroup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,6 +27,7 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 public class InventoryItem extends Item {
 	protected final ConfigGroup group;
 	private final String translationKey;
+	private static final String INVENTORY_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.items.inventory_item";
 
 	public InventoryItem( String configName, String translationKeyID ) {
 		super( ( new Properties() ).maxStackSize( 1 )
@@ -40,14 +42,10 @@ public class InventoryItem extends Item {
 	/** Adding tooltip for what this inventory item does. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		toolTip.add( new TranslationTextComponent( this.translationKey ).mergeStyle( TextFormatting.GOLD ) );
+	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		tooltip.add( new TranslationTextComponent( this.translationKey ).mergeStyle( TextFormatting.GOLD ) );
 
-		if( !flag.isAdvanced() )
-			return;
-
-		toolTip.add( new StringTextComponent( " " ) );
-		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.items.inventory_item" ).mergeStyle( TextFormatting.GRAY ) );
+		MajruszsHelper.addAdvancedTooltips( tooltip, flag, " ", INVENTORY_TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Checks whether player have this item in inventory. */

@@ -2,6 +2,7 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
+import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.models.HermesArmorModel;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.ConfigGroup;
@@ -38,6 +39,7 @@ public class HermesBootsItem extends ArmorItem {
 	);
 	protected final DoubleConfig movementSpeedBonus;
 	protected final ConfigGroup configGroup;
+	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszs_difficulty.hermes_boots.item_tooltip";
 
 	public HermesBootsItem() {
 		super( CustomArmorMaterial.HERMES, EquipmentSlotType.FEET, ( new Properties() ).group( Instances.ITEM_GROUP )
@@ -54,11 +56,8 @@ public class HermesBootsItem extends ArmorItem {
 	/** Adds tooltip about Hermes Boots movement speed bonus. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		if( !flag.isAdvanced() )
-			return;
-
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.hermes_boots.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Returns path to Hermes Boots texture. */

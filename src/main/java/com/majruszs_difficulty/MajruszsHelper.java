@@ -1,5 +1,6 @@
 package com.majruszs_difficulty;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
@@ -44,6 +45,19 @@ public class MajruszsHelper {
 	 */
 	public static boolean isAnimal( @Nullable Entity entity ) {
 		return entity instanceof AnimalEntity;
+	}
+
+	/** Adds tooltip to list if advanced tooltips are enabled. */
+	public static void addAdvancedTooltip( List< ITextComponent > tooltip, ITooltipFlag flag, String translationKey ) {
+		if( flag.isAdvanced() )
+			tooltip.add( new TranslationTextComponent( translationKey ).mergeStyle( TextFormatting.GRAY ) );
+	}
+
+	/** Adds multiple tooltips to list if advanced tooltips are enabled. */
+	public static void addAdvancedTooltips( List< ITextComponent > tooltip, ITooltipFlag flag, String ...translationKeys ) {
+		if( flag.isAdvanced() )
+			for( String translationKey : translationKeys )
+				addAdvancedTooltip( tooltip, flag, translationKey );
 	}
 
 	/** Returns formatted text with information that item is disabled. */

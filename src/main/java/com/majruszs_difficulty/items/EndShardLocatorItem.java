@@ -3,6 +3,7 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.events.HasteOnDestroyingBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
@@ -25,6 +26,7 @@ import java.util.List;
 
 /** Item for locating End Shards. */
 public class EndShardLocatorItem extends Item {
+	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszs_difficulty.end_shard_locator.item_tooltip";
 	private static final String COUNTER_TAG = "EndShardLocatorCounter";
 	private static final String POSITION_X_TAG = "EndShardLocatorX";
 	private static final String POSITION_Y_TAG = "EndShardLocatorY";
@@ -40,13 +42,9 @@ public class EndShardLocatorItem extends Item {
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		MajruszsHelper.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
-
-		if( !flag.isAdvanced() )
-			return;
-
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.end_shard_locator.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Calculates distance to the nearest End Shard. */

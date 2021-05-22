@@ -34,6 +34,10 @@ public class HasteOnDestroyingBlocks {
 		return new TranslationTextComponent( "majruszs_difficulty.effects.haste_tooltip" ).mergeStyle( TextFormatting.GRAY );
 	}
 
+	public static String getTooltipTranslationKey() {
+		return "majruszs_difficulty.effects.haste_tooltip";
+	}
+
 	/** Checks whether tool is made from end ingredients. */
 	private static boolean isEndTool( Item item ) {
 		return item instanceof EndHoeItem || item instanceof EndAxeItem || item instanceof EndPickaxeItem || item instanceof EndShovelItem;

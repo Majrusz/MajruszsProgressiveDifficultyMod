@@ -116,8 +116,8 @@ public class EndShardOre extends Block {
 
 		@Override
 		@OnlyIn( Dist.CLIENT )
-		public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-			MajruszsHelper.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
+		public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+			MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
 		}
 	}
 }

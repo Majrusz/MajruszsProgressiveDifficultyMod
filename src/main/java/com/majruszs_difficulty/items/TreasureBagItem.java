@@ -36,6 +36,7 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 /** Class representing treasure bag. */
 public class TreasureBagItem extends Item {
 	protected final static ConfigGroup CONFIG_GROUP;
+	private final static String TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.item_tooltip";
 	static {
 		CONFIG_GROUP = new ConfigGroup( "TreasureBag", "Configuration for treasure bags." );
 		FEATURES_GROUP.addGroup( CONFIG_GROUP );
@@ -84,13 +85,9 @@ public class TreasureBagItem extends Item {
 	/** Adding simple tooltip to treasure bag. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		MajruszsHelper.addExtraTooltipIfDisabled( toolTip, this.availability.isEnabled() );
-
-		if( !flag.isAdvanced() )
-			return;
-
-		toolTip.add( new TranslationTextComponent( "majruszs_difficulty.treasure_bag.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, this.availability.isEnabled() );
+		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Registers given treasure bag. */

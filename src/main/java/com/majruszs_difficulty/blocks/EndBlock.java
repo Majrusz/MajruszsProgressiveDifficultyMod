@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.blocks;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -39,8 +38,8 @@ public class EndBlock extends Block {
 
 		@Override
 		@OnlyIn( Dist.CLIENT )
-		public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-			MajruszsHelper.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
+		public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+			MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
 		}
 	}
 }

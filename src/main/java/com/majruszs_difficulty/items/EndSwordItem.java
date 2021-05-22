@@ -19,6 +19,8 @@ import java.util.List;
 
 /** New late game sword. */
 public class EndSwordItem extends SwordItem {
+	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszs_difficulty.end_sword.item_tooltip";
+
 	public EndSwordItem() {
 		super( CustomItemTier.END, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP )
 			.isImmuneToFire() );
@@ -28,10 +30,6 @@ public class EndSwordItem extends SwordItem {
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
-
-		if( !flag.isAdvanced() )
-			return;
-
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.end_sword.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+		MajruszsHelper.addAdvancedTooltip( toolTip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 }

@@ -56,14 +56,14 @@ public class EndLeggingsItem extends EndArmorItem {
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack stack, @Nullable World world, List< ITextComponent > toolTip, ITooltipFlag flag ) {
-		super.addInformation( stack, world, toolTip, flag );
+	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		super.addInformation( itemStack, world, tooltip, flag );
 
-		CompoundNBT tag = stack.getOrCreateChildTag( ARMOR_TAG );
+		CompoundNBT tag = itemStack.getOrCreateChildTag( ARMOR_TAG );
 		double bonus = tag.getDouble( ARMOR_BONUS_TAG );
 
 		if( bonus > 0.0 )
-			toolTip.add( getArmorBonusTooltip( bonus ) );
+			tooltip.add( getArmorBonusTooltip( bonus ) );
 	}
 
 	@SubscribeEvent
