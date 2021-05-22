@@ -23,7 +23,7 @@ public abstract class FeatureBase {
 	}
 
 	/** Checking if event is not disabled by the player. */
-	protected boolean isEnabled() {
+	public boolean isEnabled() {
 		return this.availability.isEnabled();
 	}
 }

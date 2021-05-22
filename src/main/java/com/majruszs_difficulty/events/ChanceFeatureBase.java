@@ -26,12 +26,12 @@ public abstract class ChanceFeatureBase extends FeatureBase {
 	}
 
 	/** Returns chance of applying event on entity. */
-	protected double getChance() {
+	public double getChance() {
 		return this.chance.get();
 	}
 
 	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
-	protected double calculateChance( @Nullable LivingEntity target ) {
+	public double calculateChance( @Nullable LivingEntity target ) {
 		double clampedRegionalDifficulty = target != null ? WorldHelper.getClampedRegionalDifficulty( target ) : 0.25;
 
 		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? clampedRegionalDifficulty : 1.0 );
