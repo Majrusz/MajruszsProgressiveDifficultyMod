@@ -8,6 +8,7 @@ import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
 import com.majruszs_difficulty.events.FishingRewarder;
 import com.majruszs_difficulty.events.IncreaseGameDifficulty;
+import com.majruszs_difficulty.events.special.SplitCreeperToCreeperlings;
 import com.majruszs_difficulty.events.special.StrongerExplosions;
 import com.majruszs_difficulty.events.monster_spawn.*;
 import com.majruszs_difficulty.events.undead_army.UndeadArmyConfig;
@@ -93,6 +94,7 @@ public class Instances {
 
 	// Events
 	public static final StrongerExplosions STRONGER_EXPLOSIONS;
+	public static final SplitCreeperToCreeperlings SPLIT_CREEPER_TO_CREEPERLINGS;
 
 	// Misc
 	public static final IncreaseGameDifficulty INCREASE_GAME_DIFFICULTY;
@@ -201,6 +203,7 @@ public class Instances {
 
 		// Events
 		STRONGER_EXPLOSIONS = new StrongerExplosions();
+		SPLIT_CREEPER_TO_CREEPERLINGS = new SplitCreeperToCreeperlings();
 
 		// Misc
 		INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
