@@ -1,6 +1,8 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
+import com.mlib.MajruszLibrary;
+import com.mlib.Random;
 import com.mlib.WorldHelper;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
@@ -35,5 +37,10 @@ public abstract class ChanceFeatureBase extends FeatureBase {
 		double clampedRegionalDifficulty = target != null ? WorldHelper.getClampedRegionalDifficulty( target ) : 0.25;
 
 		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? clampedRegionalDifficulty : 1.0 );
+	}
+
+	/** Returns whether feature should be executed. (depending on chance) */
+	public boolean tryChance( @Nullable LivingEntity target ) {
+		return Random.tryChance( calculateChance( target ) );
 	}
 }
