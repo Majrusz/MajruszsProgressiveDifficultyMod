@@ -35,15 +35,4 @@ public class MajruszsDifficulty {
 	public static ResourceLocation getLocation( String register ) {
 		return new ResourceLocation( MOD_ID, register );
 	}
-
-	/** Returns formatted text with information that item is disabled. */
-	public static IFormattableTextComponent getDisabledItemTooltip() {
-		return new TranslationTextComponent( "majruszs_difficulty.items.disabled_tooltip" ).mergeStyle( TextFormatting.RED, TextFormatting.BOLD );
-	}
-
-	/** Adds information that item is disabled if certain conditions are met. */
-	public static void addExtraTooltipIfDisabled( List< ITextComponent > toolTip, boolean isEnabled ) {
-		if( !isEnabled )
-			toolTip.add( getDisabledItemTooltip() );
-	}
 }

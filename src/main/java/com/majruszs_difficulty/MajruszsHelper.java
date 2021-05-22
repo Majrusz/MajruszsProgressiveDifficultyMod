@@ -9,9 +9,14 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class MajruszsHelper {
 	/**
@@ -39,5 +44,16 @@ public class MajruszsHelper {
 	 */
 	public static boolean isAnimal( @Nullable Entity entity ) {
 		return entity instanceof AnimalEntity;
+	}
+
+	/** Returns formatted text with information that item is disabled. */
+	public static IFormattableTextComponent getDisabledItemTooltip() {
+		return new TranslationTextComponent( "majruszs_difficulty.items.disabled_tooltip" ).mergeStyle( TextFormatting.RED, TextFormatting.BOLD );
+	}
+
+	/** Adds information that item is disabled if certain conditions are met. */
+	public static void addExtraTooltipIfDisabled( List< ITextComponent > toolTip, boolean isEnabled ) {
+		if( !isEnabled )
+			toolTip.add( getDisabledItemTooltip() );
 	}
 }
