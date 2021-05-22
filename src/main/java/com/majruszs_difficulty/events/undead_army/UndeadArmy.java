@@ -3,7 +3,6 @@ package com.majruszs_difficulty.events.undead_army;
 import com.google.common.collect.Sets;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
@@ -368,7 +367,9 @@ public class UndeadArmy {
 				tryToEnchantEquipment( monster );
 				updateUndeadData( monster );
 
-				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.world, randomPosition.getX(), randomPosition.getY(), randomPosition.getZ(), null, SpawnReason.EVENT ) )
+				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.world, randomPosition.getX(), randomPosition.getY(),
+					randomPosition.getZ(), null, SpawnReason.EVENT
+				) )
 					continue;
 				this.world.func_242417_l( monster ); // adds monster to the world
 
@@ -451,7 +452,7 @@ public class UndeadArmy {
 
 			if( Instances.UNDEAD_ARMY_TREASURE_BAG.isAvailable() )
 				for( int i = 0; i < getTreasureBagsAmount(); i++ )
-					MajruszsHelper.giveItemStackToPlayer( new ItemStack( Instances.UNDEAD_ARMY_TREASURE_BAG ), player, this.world );
+					ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.UNDEAD_ARMY_TREASURE_BAG ), player, this.world );
 		}
 	}
 

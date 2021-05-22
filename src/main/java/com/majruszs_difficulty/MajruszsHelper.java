@@ -14,27 +14,13 @@ import net.minecraft.world.server.ServerWorld;
 import javax.annotation.Nullable;
 
 public class MajruszsHelper {
+	/**
+	 Returns player from given damage source.
+	 Returns null if casting was impossible.
+	 */
 	@Nullable
 	public static PlayerEntity getPlayerFromDamageSource( DamageSource damageSource ) {
-		if( !( damageSource.getTrueSource() instanceof PlayerEntity ) )
-			return null;
-
-		return ( PlayerEntity )damageSource.getTrueSource();
-	}
-
-	@Nullable
-	public static ServerWorld getServerWorldFromEntity( Entity entity ) {
-		if( !( entity.world instanceof ServerWorld ) )
-			return null;
-
-		return ( ServerWorld )entity.world;
-	}
-
-	public static void giveItemStackToPlayer( ItemStack itemStack, PlayerEntity player, ServerWorld world ) {
-		if( !player.inventory.addItemStackToInventory( itemStack ) ) {
-			double x = player.getPosX(), y = player.getPosY() + 1.0, z = player.getPosZ();
-			world.addEntity( new ItemEntity( world, x, y, z, itemStack ) );
-		}
+		return damageSource.getTrueSource() instanceof PlayerEntity ? ( PlayerEntity )damageSource.getTrueSource() : null;
 	}
 
 	/**

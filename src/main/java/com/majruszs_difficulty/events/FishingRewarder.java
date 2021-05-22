@@ -1,9 +1,9 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.config.ConfigGroup;
+import com.mlib.items.ItemHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -50,8 +50,7 @@ public class FishingRewarder {
 
 	/** Gives a treasure bag to specified player. */
 	protected static void giveTreasureBagTo( PlayerEntity player ) {
-		ItemStack treasureBag = new ItemStack( Instances.FISHING_TREASURE_BAG );
-		MajruszsHelper.giveItemStackToPlayer( treasureBag, player, ( ServerWorld )player.world );
+		ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.FISHING_TREASURE_BAG ), player, ( ServerWorld )player.world );
 	}
 
 	/** Returns how many fish player must fished to get treasure bag. */

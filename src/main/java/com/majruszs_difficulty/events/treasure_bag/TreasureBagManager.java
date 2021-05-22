@@ -2,6 +2,8 @@ package com.majruszs_difficulty.events.treasure_bag;
 
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.items.TreasureBagItem;
+import com.mlib.WorldHelper;
+import com.mlib.items.ItemHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,9 +22,10 @@ public class TreasureBagManager {
 	public static final String TREASURE_BAG_TAG = "TreasureBagPlayersToReward", PLAYER_TAG = "TreasureBagPlayerUUID";
 	private static final List< Register > registers = new ArrayList<>();
 
-	/** Adding new treasure bag for given entity.
+	/**
+	 Adding new treasure bag for given entity.
 
-	 @param entityType Entity that will drop treasure bag.
+	 @param entityType  Entity that will drop treasure bag.
 	 @param treasureBag Treasure Bag for each player.
 	 @param replaceLoot Should treasure bag replace default loot? When it is true entity will only drop treasure bag.
 	 */
@@ -61,7 +64,7 @@ public class TreasureBagManager {
 	/** Reward all players that deal damage to given entity. */
 	public static boolean rewardAllPlayers( LivingEntity killedEntity ) {
 		CompoundNBT data = killedEntity.getPersistentData();
-		ServerWorld world = MajruszsHelper.getServerWorldFromEntity( killedEntity );
+		ServerWorld world = WorldHelper.getServerWorldFromEntity( killedEntity );
 
 		if( data.contains( TREASURE_BAG_TAG ) && world != null ) {
 			ListNBT listNBT = data.getList( TREASURE_BAG_TAG, 10 );
@@ -71,10 +74,8 @@ public class TreasureBagManager {
 				String playerUUID = playerNBT.getString( PLAYER_TAG );
 
 				PlayerEntity player = world.getPlayerByUuid( UUID.fromString( playerUUID ) );
-				if( player == null )
-					continue;
-
-				MajruszsHelper.giveItemStackToPlayer( new ItemStack( getTreasureBag( killedEntity.getType() ) ), player, world );
+				if( player != null )
+					ItemHelper.giveItemStackToPlayer( new ItemStack( getTreasureBag( killedEntity.getType() ) ), player, world );
 			}
 			int amountOfPlayersRewarded = listNBT.size();
 			listNBT.clear();
