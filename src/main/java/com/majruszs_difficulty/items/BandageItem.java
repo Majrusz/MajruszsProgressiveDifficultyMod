@@ -33,6 +33,8 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 /** Simple bandage item that removes bleeding effect and gives regeneration for few seconds. */
 @Mod.EventBusSubscriber
 public class BandageItem extends Item {
+	private static final String TOOLTIP_TRANSLATION_KEY_1 = "item.majruszs_difficulty.bandage.item_tooltip1";
+	private static final String TOOLTIP_TRANSLATION_KEY_2 = "item.majruszs_difficulty.bandage.item_tooltip2";
 	protected final ConfigGroup configGroup;
 	protected final AvailabilityConfig isAlwaysUsable;
 	protected final DurationConfig effectDuration;
@@ -70,7 +72,8 @@ public class BandageItem extends Item {
 		if( !flag.isAdvanced() )
 			return;
 
-		toolTip.add( new TranslationTextComponent( "item.majruszs_difficulty.bandage.item_tooltip" ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( TOOLTIP_TRANSLATION_KEY_1 ).mergeStyle( TextFormatting.GRAY ) );
+		toolTip.add( new TranslationTextComponent( TOOLTIP_TRANSLATION_KEY_2 ).mergeStyle( TextFormatting.GRAY ) );
 	}
 
 	/** Using bandage on right click. (other entity healing) */
