@@ -21,6 +21,7 @@ public class CreeperlingEntity extends CreeperEntity {
 	public CreeperlingEntity( EntityType< ? extends CreeperEntity > type, World world ) {
 		super( type, world );
 		this.explosionRadius *= 0.7f;
+		this.experienceValue = 3;
 	}
 
 	@Override
