@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.goals;
 
+import com.majruszs_difficulty.entities.CreeperlingEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -27,7 +28,7 @@ public class CreeperExplodeWallsGoal extends Goal {
 	public boolean shouldExecute() {
 		LivingEntity target = getNearestPlayer( this.creeper );
 
-		return this.creeper.getCreeperState() > 0 || target != null && this.creeper.getDistanceSq( target ) < this.maximumStartDistance;
+		return this.creeper.getCreeperState() > 0 || target != null && this.creeper.getDistanceSq( target ) < this.maximumStartDistance * getDistanceMultiplier();
 	}
 
 	/** Executes task at the beginning of goal. */
@@ -44,13 +45,17 @@ public class CreeperExplodeWallsGoal extends Goal {
 
 	/** Updates state of goal each tick. */
 	public void tick() {
-		if( this.attackTarget == null || this.creeper.getDistanceSq( this.attackTarget ) > this.maximumExplodeDistance ) {
+		if( this.attackTarget == null || this.creeper.getDistanceSq( this.attackTarget ) > this.maximumExplodeDistance * getDistanceMultiplier() ) {
 			this.creeper.setCreeperState( -1 ); // stops creeper's explosion
 		} else {
 			this.creeper.setCreeperState( 1 );
 		}
 	}
 
+	/** Returns distance multiplier depending on entity is Creeper or Creeperling. */
+	private double getDistanceMultiplier() {
+		return this.creeper instanceof CreeperlingEntity ? 0.6 : 1.0;
+	}
 	/** Returns nearest player. */
 	@Nullable
 	private PlayerEntity getNearestPlayer( CreeperEntity creeper ) {
