@@ -1,9 +1,7 @@
 package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -15,7 +13,7 @@ public class CreeperlingEntity extends CreeperEntity {
 
 	static {
 		type = EntityType.Builder.create( CreeperlingEntity::new, EntityClassification.MONSTER )
-			.size( 0.6f, 1.0f )
+			.size( 0.6f, 0.9f )
 			.build( MajruszsDifficulty.getLocation( "creeperling" )
 				.toString() );
 	}
@@ -28,6 +26,11 @@ public class CreeperlingEntity extends CreeperEntity {
 	@Override
 	public boolean isCharged() {
 		return false; // creeperling can not be charged
+	}
+
+	@Override
+	protected float getStandingEyeHeight( Pose poseIn, EntitySize sizeIn ) {
+		return 0.75f;
 	}
 
 	public static AttributeModifierMap getAttributeMap() {
