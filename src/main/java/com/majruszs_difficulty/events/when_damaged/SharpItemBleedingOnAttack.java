@@ -17,11 +17,10 @@ public class SharpItemBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		if( attacker != null ) {
 			ItemStack heldItemStack = attacker.getHeldItemMainhand();
 			Item heldItem = heldItemStack.getItem();
-
 			boolean attackerHasSharpItem = heldItem instanceof ToolItem || heldItem instanceof TridentItem || heldItem instanceof SwordItem || heldItem instanceof ShearsItem;
 
 			return attackerHasSharpItem && super.shouldBeExecuted( attacker, target, damageSource );

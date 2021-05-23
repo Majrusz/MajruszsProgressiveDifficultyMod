@@ -1,17 +1,19 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.events.FeatureBase;
+import com.majruszs_difficulty.events.ChanceFeatureBase;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
-/** Base class representing event on which entity was damaged. */
-public abstract class WhenDamagedBase extends FeatureBase implements IWhenDamaged {
-	public WhenDamagedBase( String configName, String configComment, GameState.State minimumState ) {
-		super( configName, configComment, minimumState );
+/** Base class representing event on which entity was damaged that has certain chance to happen. */
+public abstract class ChanceWhenDamagedBase extends ChanceFeatureBase implements IWhenDamaged {
+	public ChanceWhenDamagedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+		boolean shouldChanceBeMultipliedByCRD
+	) {
+		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 	}
 
 	/** Checks if all conditions were met. */

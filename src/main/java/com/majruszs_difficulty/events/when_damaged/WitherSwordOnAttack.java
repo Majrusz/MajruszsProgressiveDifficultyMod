@@ -15,12 +15,12 @@ public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_COMMENT = "Wither Sword inflicts Wither II.";
 
 	public WitherSwordOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.75, 6.0, GameState.State.NORMAL, false, Effects.WITHER );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 6.0, GameState.State.NORMAL, false, Effects.WITHER );
 	}
 
-	/** Checking if all conditions were met. */
+	/** Checks if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		boolean isHoldingWitherSword = attacker != null && attacker.getHeldItemMainhand()
 			.getItem() instanceof WitherSwordItem;
 

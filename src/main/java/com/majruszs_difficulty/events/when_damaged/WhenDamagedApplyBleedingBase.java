@@ -20,7 +20,7 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return Instances.BLEEDING.mayBleed( target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
@@ -48,6 +48,7 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	}
 
 	/** Calculating final chance. (after applying clamped regional difficulty and armor multipliers) */
+	@Override
 	public double calculateChance( LivingEntity target ) {
 		return Instances.BLEEDING.getChanceMultiplierDependingOnArmor( target ) * super.calculateChance( target );
 	}

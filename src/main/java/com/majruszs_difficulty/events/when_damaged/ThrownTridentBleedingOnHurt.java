@@ -17,7 +17,7 @@ public class ThrownTridentBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return damageSource.getImmediateSource() instanceof TridentEntity && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

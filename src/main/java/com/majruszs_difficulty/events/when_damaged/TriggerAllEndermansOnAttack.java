@@ -5,6 +5,7 @@ import com.majruszs_difficulty.blocks.EndShardOre;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
 
@@ -14,18 +15,18 @@ public class TriggerAllEndermansOnAttack extends WhenDamagedBase {
 	private static final String CONFIG_COMMENT = "Makes all nearby enderman target player when it hits any of them.";
 
 	public TriggerAllEndermansOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0,  GameState.State.MASTER, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.MASTER );
 	}
 
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, LivingHurtEvent event ) {
 		if( attacker != null )
 			EndShardOre.targetEndermansOnEntity( attacker, 500.0 );
 	}
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return attacker != null && target instanceof EndermanEntity && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

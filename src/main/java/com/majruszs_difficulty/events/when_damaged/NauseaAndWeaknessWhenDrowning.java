@@ -23,7 +23,7 @@ public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffe
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return damageSource.equals( DamageSource.DROWN ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 

@@ -11,6 +11,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
 
@@ -33,19 +34,20 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return damageSource.equals( DamageSource.FALL ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	/** When entity takes fall damage. */
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, LivingHurtEvent event ) {
+		float damage = event.getAmount();
 		if( damage < 1.5f )
 			return;
 
 		ServerWorld world = ( ServerWorld )target.getEntityWorld();
 		for( Effect effect : this.effects ) {
-			if( !Random.tryChance( calculateChance( target ) ) )
+			if( !tryChance( target ) )
 				continue;
 
 			if( effect == Effects.SLOWNESS && this.slownessAvailability.isEnabled() ) {

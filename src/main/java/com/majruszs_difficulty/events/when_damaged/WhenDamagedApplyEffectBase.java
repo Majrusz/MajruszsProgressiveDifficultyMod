@@ -1,18 +1,18 @@
 package com.majruszs_difficulty.events.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.mlib.Random;
 import com.mlib.config.DurationConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
 
 /** Base class representing event on which enemies will receive some effects after being attacked. */
-public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
+public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 	protected final Effect[] effects;
 	protected final DurationConfig effectDuration;
 
@@ -38,24 +38,24 @@ public abstract class WhenDamagedApplyEffectBase extends WhenDamagedBase {
 	/**
 	 Function called when entity was damaged.
 
-	 @param target Entity target that was attacked.
+	 @param attacker Entity that dealt damage.
+	 @param target   Entity target that was attacked.
+	 @param event    More information about event.
 	 */
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, LivingHurtEvent event ) {
 		ServerWorld world = ( ServerWorld )target.getEntityWorld();
 		Difficulty difficulty = world.getDifficulty();
 
-		for( Effect effect : this.effects ) {
-			if( !Random.tryChance( calculateChance( target ) ) )
-				continue;
-
-			applyEffect( attacker, target, effect, difficulty );
-		}
+		for( Effect effect : this.effects )
+			if( tryChance( target ) )
+				applyEffect( attacker, target, effect, difficulty );
 	}
 
 	/**
 	 Applying effect on entity directly. (if possible, because enemy may be immune for example)
 
+	 @param attacker   Entity that dealt damage.
 	 @param target     Entity who will get effect.
 	 @param effect     Effect type to apply.
 	 @param difficulty Current world difficulty.

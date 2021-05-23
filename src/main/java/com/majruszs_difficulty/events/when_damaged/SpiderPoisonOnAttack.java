@@ -21,7 +21,7 @@ public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return attacker instanceof SpiderEntity && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 

@@ -12,7 +12,7 @@ import java.util.List;
 /** Handling all 'WhenDamaged' events. */
 @Mod.EventBusSubscriber
 public class WhenDamagedEvent {
-	public static final List< WhenDamagedBase > REGISTRY_LIST = new ArrayList<>();
+	public static final List< IWhenDamaged > REGISTRY_LIST = new ArrayList<>();
 
 	@SubscribeEvent
 	public static void onAttack( LivingHurtEvent event ) {
@@ -20,8 +20,8 @@ public class WhenDamagedEvent {
 		LivingEntity attacker = damageSource.getTrueSource() instanceof LivingEntity ? ( LivingEntity )damageSource.getTrueSource() : null;
 		LivingEntity target = event.getEntityLiving();
 
-		for( WhenDamagedBase register : REGISTRY_LIST )
+		for( IWhenDamaged register : REGISTRY_LIST )
 			if( register.shouldBeExecuted( attacker, target, damageSource ) && event.getAmount() > 0 )
-				register.whenDamaged( attacker, target, event.getAmount() );
+				register.whenDamaged( attacker, target, event );
 	}
 }

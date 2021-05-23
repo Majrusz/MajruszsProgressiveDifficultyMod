@@ -20,7 +20,7 @@ public class BiteBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		boolean mayBite = attacker instanceof AnimalEntity || attacker instanceof ZombieEntity || attacker instanceof SpiderEntity;
 		mayBite &= !( attacker instanceof LlamaEntity );
 

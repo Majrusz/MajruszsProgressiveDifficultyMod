@@ -11,11 +11,12 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
 
 /** Makes Enderman attacks have a chance to teleport entity. */
-public class EndermanTeleportOnAttack extends WhenDamagedBase {
+public class EndermanTeleportOnAttack extends ChanceWhenDamagedBase {
 	private static final String CONFIG_NAME = "EndermanTeleport";
 	private static final String CONFIG_COMMENT = "Enderman attack teleports the player somewhere nearby.";
 
@@ -24,8 +25,8 @@ public class EndermanTeleportOnAttack extends WhenDamagedBase {
 	}
 
 	@Override
-	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, float damage ) {
-		if( !Random.tryChance( calculateChance( target ) ) )
+	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, LivingHurtEvent event ) {
+		if( !tryChance( target ) )
 			return;
 
 		ServerWorld world = ( ServerWorld )target.world;
@@ -48,7 +49,7 @@ public class EndermanTeleportOnAttack extends WhenDamagedBase {
 
 	/** Checking if all conditions were met. */
 	@Override
-	protected boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
+	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return attacker instanceof EndermanEntity && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }
