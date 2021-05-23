@@ -186,6 +186,8 @@ public class Instances {
 		WhenDamagedEvent.REGISTRY_LIST.add( new TriggerAllEndermansOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new ShulkerBlindnessOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new NauseaAndSlownessWhenFalling() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new CreeperDamageReductionOnHurt() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new IgniteCreeperOnHurt() );
 
 		// On enemy to be spawned
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
