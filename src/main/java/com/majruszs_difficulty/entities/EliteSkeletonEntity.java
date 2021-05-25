@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.entities;
 
+import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.mlib.MajruszLibrary;
@@ -84,7 +85,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 
 		double finalChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get();
 		if( isServerWorld() )
-			finalChance *= WorldHelper.getClampedRegionalDifficulty( this );
+			finalChance *= GameState.getRegionalDifficulty( this );
 
 		if( finalChance >= MajruszLibrary.RANDOM.nextDouble() && ammunition.getItem() instanceof ArrowItem ) {
 			ammunition = new ItemStack( Items.TIPPED_ARROW );

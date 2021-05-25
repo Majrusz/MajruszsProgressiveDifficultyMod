@@ -74,7 +74,7 @@ public class StrongerExplosions {
 		/** Returns current radius multiplier depending on Clamped Regional Difficulty. */
 		public float getRadius( LivingEntity entity ) {
 			double factor = this.maximumMultiplier.get() - 1.0;
-			double difficultyFactor = entity != null ? WorldHelper.getClampedRegionalDifficulty( entity ) : 0.5;
+			double difficultyFactor = entity != null ? GameState.getRegionalDifficulty( entity ) : 0.5;
 
 			return ( float )( 1.0 + factor * difficultyFactor );
 		}

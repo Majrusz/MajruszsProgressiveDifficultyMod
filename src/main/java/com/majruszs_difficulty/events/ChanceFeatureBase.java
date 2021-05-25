@@ -34,7 +34,7 @@ public abstract class ChanceFeatureBase extends FeatureBase {
 
 	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
 	public double calculateChance( @Nullable LivingEntity target ) {
-		double clampedRegionalDifficulty = target != null ? WorldHelper.getClampedRegionalDifficulty( target ) : 0.25;
+		double clampedRegionalDifficulty = target != null ? GameState.getRegionalDifficulty( target ) : 0.25;
 
 		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? clampedRegionalDifficulty : 1.0 );
 	}

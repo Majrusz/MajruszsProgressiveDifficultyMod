@@ -401,7 +401,7 @@ public class UndeadArmy {
 
 	/** Tries to enchant weapons and armor for given monster. */
 	private void tryToEnchantEquipment( MonsterEntity monster ) {
-		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( monster );
+		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( monster );
 
 		if( monster.hasItemInSlot( EquipmentSlotType.MAINHAND ) && Random.tryChance( getEnchantmentOdds() ) )
 			monster.setHeldItem( Hand.MAIN_HAND, ItemHelper.enchantItem( monster.getHeldItemMainhand(), clampedRegionalDifficulty, false ) );

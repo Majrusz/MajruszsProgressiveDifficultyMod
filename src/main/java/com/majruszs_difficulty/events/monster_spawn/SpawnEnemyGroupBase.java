@@ -75,7 +75,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	 @param leader Entity to give an armor.
 	 */
 	private void giveArmorToLeader( LivingEntity leader ) {
-		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( leader );
+		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( leader );
 
 		List< ItemStack > itemStacks = new ArrayList<>();
 		for( Item item : this.leaderArmor )
@@ -89,7 +89,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 	/** Gives weapon from generateWeapon method to given entity. */
 	private void giveWeaponTo( LivingEntity child ) {
-		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( child );
+		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( child );
 
 		ItemStack weapon = generateWeaponForChild();
 		if( weapon != null )

@@ -26,7 +26,7 @@ public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( entity );
+		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( entity );
 
 		entity.setItemStackToSlot( this.equipmentSlotType, getFinalItemStack( clampedRegionalDifficulty ) );
 	}

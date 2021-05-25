@@ -1,6 +1,7 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.commands.ChangeGameStateCommand;
+import com.majruszs_difficulty.commands.GetDifficultyCommand;
 import com.majruszs_difficulty.commands.UndeadArmyManagerCommand;
 import com.majruszs_difficulty.entities.*;
 import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
@@ -225,6 +226,7 @@ public class RegistryHandler {
 
 		ChangeGameStateCommand.register( dispatcher );
 		UndeadArmyManagerCommand.register( dispatcher );
+		GetDifficultyCommand.register( dispatcher );
 	}
 
 	/**

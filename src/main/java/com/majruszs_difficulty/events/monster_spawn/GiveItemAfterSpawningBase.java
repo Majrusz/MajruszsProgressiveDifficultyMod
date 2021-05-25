@@ -32,7 +32,7 @@ public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		double clampedRegionalDifficulty = WorldHelper.getClampedRegionalDifficulty( entity );
+		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( entity );
 
 		Data data = new Data();
 		data.uuid = entity.getUniqueID();

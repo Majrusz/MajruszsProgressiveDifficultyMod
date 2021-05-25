@@ -1,8 +1,13 @@
 package com.majruszs_difficulty;
 
+import com.mlib.WorldHelper;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import javax.annotation.Nullable;
 
 /** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
@@ -90,6 +95,19 @@ public class GameState {
 		TextFormatting textColor = getValueDependingOnGameState( state, NORMAL_MODE_COLOR, EXPERT_MODE_COLOR, MASTER_MODE_COLOR );
 
 		return generateModeText( modeName, textColor );
+	}
+
+	/** Returns clamped regional difficulty increased by certain value depending on current game state. */
+	public static double getRegionalDifficulty( LivingEntity target ) {
+		double clampedRegionalDifficulty = target != null ? WorldHelper.getClampedRegionalDifficulty( target ) : 0.25;
+		double stateModifier = getStateModifier();
+
+		return MathHelper.clamp( clampedRegionalDifficulty + stateModifier, 0.0, 1.0 );
+	}
+
+	/** Returns clamped regional difficulty modifier depending on current game state. */
+	public static double getStateModifier() {
+		return getValueDependingOnCurrentGameState( 0.0, 0.15, 0.3 );
 	}
 
 	/** Returns formatted game state text. */
