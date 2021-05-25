@@ -13,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
@@ -40,18 +41,22 @@ public class BandageItem extends Item {
 	protected final IntegerConfig effectAmplifier;
 
 	public BandageItem() {
-		super( ( new Properties() ).maxStackSize( 16 )
-			.group( Instances.ITEM_GROUP ) );
+		this( "Bandage", 0, Rarity.COMMON );
+	}
 
-		this.configGroup = new ConfigGroup( "Bandage", "Configuration for Bandage item." );
+	public BandageItem( String name, int defaultAmplifier, Rarity rarity ) {
+		super( ( new Properties() ).maxStackSize( 16 )
+			.group( Instances.ITEM_GROUP ).rarity( rarity ) );
+
+		this.configGroup = new ConfigGroup( name, "Configuration for " + name + " item." );
 		FEATURES_GROUP.addGroup( this.configGroup );
 
-		String usableComment = "Is Bandage always usable? If not player can only use Bandage when it is bleeding.";
+		String usableComment = "Is " + name + " always usable? If not player can only use " + name + " when it is bleeding.";
 		String durationComment = "Duration in seconds of Regeneration effect.";
 		String amplifierComment = "Level/amplifier of Regeneration effect.";
 		this.isAlwaysUsable = new AvailabilityConfig( "is_always_usable", usableComment, false, true );
-		this.effectDuration = new DurationConfig( "duration", durationComment, false, 4.0, 1.0, 120.0 );
-		this.effectAmplifier = new IntegerConfig( "amplifier", amplifierComment, false, 0, 0, 10 );
+		this.effectDuration = new DurationConfig( "regeneration_duration", durationComment, false, 4.0, 1.0, 120.0 );
+		this.effectAmplifier = new IntegerConfig( "regeneration_amplifier", amplifierComment, false, defaultAmplifier, 0, 10 );
 		this.configGroup.addConfigs( this.isAlwaysUsable, this.effectDuration, this.effectAmplifier );
 	}
 
@@ -59,7 +64,7 @@ public class BandageItem extends Item {
 	@Override
 	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
 		ItemStack itemStack = player.getHeldItem( hand );
-		Instances.BANDAGE_ITEM.useIfPossible( itemStack, player, player );
+		useIfPossible( itemStack, player, player );
 
 		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
 	}
@@ -96,6 +101,11 @@ public class BandageItem extends Item {
 		return this.effectAmplifier.get();
 	}
 
+	/** Applies Regeneration on target depending on current mod settings. */
+	protected void applyEffects( LivingEntity target ) {
+		EffectHelper.applyEffectIfPossible( target, Effects.REGENERATION, getRegenerationDuration(), getRegenerationAmplifier() );
+	}
+
 	/**
 	 Removes bleeding from the target or applies regeneration if it is possible.
 
@@ -114,7 +124,7 @@ public class BandageItem extends Item {
 
 		player.addStat( Stats.ITEM_USED.get( bandage.getItem() ) );
 		removeBleeding( target );
-		applyRegeneration( target );
+		applyEffects( target );
 		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
 
 		return true;
@@ -134,10 +144,5 @@ public class BandageItem extends Item {
 
 		target.removePotionEffect( bleeding );
 		target.removeActivePotionEffect( bleeding );
-	}
-
-	/** Applies Regeneration on target depending on current mod settings. */
-	private void applyRegeneration( LivingEntity target ) {
-		EffectHelper.applyEffectIfPossible( target, Effects.REGENERATION, getRegenerationDuration(), getRegenerationAmplifier() );
 	}
 }

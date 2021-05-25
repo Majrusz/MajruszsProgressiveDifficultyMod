@@ -124,6 +124,7 @@ public class RegistryHandler {
 		ITEMS.register( "tattered_cloth", ()->Instances.TATTERED_CLOTH_ITEM );
 		ITEMS.register( "undead_battle_standard", ()->Instances.BATTLE_STANDARD_ITEM );
 		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
+		ITEMS.register( "golden_bandage", ()->Instances.GOLDEN_BANDAGE_ITEM );
 		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( "giant_seed", ()->Instances.GIANT_SEED_ITEM );
 		ITEMS.register( "lucky_rock", ()->Instances.LUCKY_ROCK_ITEM );
