@@ -7,7 +7,7 @@
         {
           "type": "minecraft:item",
           "weight": 600,
-          "name": "minecraft:iron_nugget",
+          "name": "minecraft:gold_nugget",
           "functions": [
             {
               "function": "minecraft:set_count",
