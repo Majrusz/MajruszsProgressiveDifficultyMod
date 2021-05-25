@@ -36,6 +36,11 @@ public class FishermanEmblemItem extends InventoryItem {
 
 	/** Returns current luck bonus. (whether player has emblem and is fishing or not) */
 	public int getEmblemLuckBonus( PlayerEntity player ) {
-		return player.fishingBobber != null && hasAny( player, this ) ? this.luck.getCurrentGameStateValue() : 0;
+		return player.fishingBobber != null && hasAny( player, this ) ? getLuckBonus( player ) : 0;
+	}
+
+	/** Returns total luck bonus. */
+	public int getLuckBonus( PlayerEntity player ) {
+		return ( int )Math.round( this.luck.getCurrentGameStateValue() * ( 1.0 + getHighestEffectiveness( player, this ) ) );
 	}
 }

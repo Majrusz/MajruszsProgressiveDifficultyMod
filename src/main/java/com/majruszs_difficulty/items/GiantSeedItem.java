@@ -9,6 +9,7 @@ import com.mlib.events.HarvestCropEvent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -45,22 +46,25 @@ public class GiantSeedItem extends InventoryItem {
 			return;
 
 		if( giantSeed.shouldDrop( player ) )
-			if( Random.tryChance( giantSeed.getDropChance() ) )
-				event.generatedLoot.add( new ItemStack( giantSeed, 1 ) );
+			if( Random.tryChance( giantSeed.getDropChance() ) ) {
+				ItemStack itemStack = new ItemStack( giantSeed, 1 );
+				giantSeed.setRandomEffectiveness( itemStack );
 
-		if( giantSeed.hasAny( player ) )
-			if( Random.tryChance( giantSeed.getDoubleLootChance() ) ) {
-				event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
-
-				ServerWorld world = ( ServerWorld )player.world;
-				Vector3d position = event.origin;
-				world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25, 0.25, 0.1 );
+				event.generatedLoot.add( itemStack );
 			}
+
+		if( giantSeed.hasAny( player ) && Random.tryChance( giantSeed.getDoubleLootChance( player ) ) ) {
+			event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
+
+			ServerWorld world = ( ServerWorld )player.world;
+			Vector3d position = event.origin;
+			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25, 0.25, 0.1 );
+		}
 	}
 
 	/** Returns current chance for double crops. */
-	public double getDoubleLootChance() {
-		return this.chance.getCurrentGameStateValue();
+	public double getDoubleLootChance( PlayerEntity player ) {
+		return MathHelper.clamp( this.chance.getCurrentGameStateValue() * ( 1.0 + getHighestEffectiveness( player ) ), 0.0, 1.0 );
 	}
 
 	/** Returns a chance for Giant Seed to drop. */
@@ -76,5 +80,10 @@ public class GiantSeedItem extends InventoryItem {
 	/** Checks whether player have any Giant Seed in inventory. */
 	public boolean hasAny( PlayerEntity player ) {
 		return hasAny( player, this );
+	}
+
+	/** Returns highest Giant Seed item effectiveness. */
+	protected double getHighestEffectiveness( PlayerEntity player ) {
+		return super.getHighestEffectiveness( player, this );
 	}
 }

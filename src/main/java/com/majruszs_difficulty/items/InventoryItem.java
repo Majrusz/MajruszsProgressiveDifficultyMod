@@ -12,10 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,14 +26,15 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
 /** Class with shared code for all inventory items. (Fisherman Emblem, Giant Seed etc.) */
 public class InventoryItem extends Item {
+	private static final String INVENTORY_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.items.inventory_item";
+	private static final String EFFECTIVENESS_TRANSLATION_KEY = "majruszs_difficulty.items.effectiveness";
+	private static final String EFFECTIVENESS_TAG = "Effectiveness";
+	private static final String EFFECTIVENESS_VALUE_TAG = "Value";
 	protected final ConfigGroup group;
 	protected final AvailabilityConfig effectiveness;
 	protected final DoubleConfig minimumEffectiveness;
 	protected final DoubleConfig maximumEffectiveness;
 	private final String translationKey;
-	private static final String INVENTORY_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.items.inventory_item";
-	private static final String EFFECTIVENESS_TAG = "Effectiveness";
-	private static final String EFFECTIVENESS_VALUE_TAG = "Value";
 
 	public InventoryItem( String configName, String translationKeyID ) {
 		super( ( new Properties() ).maxStackSize( 1 )
@@ -61,13 +59,39 @@ public class InventoryItem extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
 		tooltip.add( new TranslationTextComponent( this.translationKey ).mergeStyle( TextFormatting.GOLD ) );
+		if( isEffectivenessEnabled() && getEffectiveness( itemStack ) != 0.0 ) {
+			IFormattableTextComponent text = new StringTextComponent( getEffectiveness( itemStack ) > 0.0 ? "+" : "" );
+			text.appendString( "" + ( int )( getEffectiveness( itemStack ) * 100 ) + "% " );
+			text.append( new TranslationTextComponent( EFFECTIVENESS_TRANSLATION_KEY ) );
+			text.mergeStyle( getEffectivenessColor( itemStack ) );
+
+			tooltip.add( text );
+		}
 
 		MajruszsHelper.addAdvancedTooltips( tooltip, flag, " ", INVENTORY_TOOLTIP_TRANSLATION_KEY );
+	}
+
+	/** Returns effectiveness color depending on current value. */
+	@OnlyIn( Dist.CLIENT )
+	public TextFormatting getEffectivenessColor( ItemStack itemStack ) {
+		double value = getEffectiveness( itemStack );
+		if( value == this.maximumEffectiveness.get() )
+			return TextFormatting.GOLD;
+		else if( value < 0.0 )
+			return TextFormatting.RED;
+		else
+			return TextFormatting.GREEN;
 	}
 
 	/** Returns whether effectiveness mechanic is enabled and is valid. */
 	public boolean isEffectivenessEnabled() {
 		return this.effectiveness.isEnabled() && this.minimumEffectiveness.get() <= this.maximumEffectiveness.get();
+	}
+
+	/** Checks whether item stack has effectiveness tag. */
+	public boolean hasEffectivenessTag( ItemStack itemStack ) {
+		return itemStack.getOrCreateChildTag( EFFECTIVENESS_TAG )
+			.contains( EFFECTIVENESS_VALUE_TAG );
 	}
 
 	/** Returns current effectiveness from item stack. */
@@ -84,8 +108,8 @@ public class InventoryItem extends Item {
 		if( !isEffectivenessEnabled() )
 			return;
 
-		int bound = ( int )( this.maximumEffectiveness.get()-this.minimumEffectiveness.get() )*100+1;
-		double value = MajruszLibrary.RANDOM.nextInt( bound )/100.0+this.minimumEffectiveness.get();
+		int bound = ( int )( this.maximumEffectiveness.get() - this.minimumEffectiveness.get() ) * 100 + 1;
+		double value = MajruszLibrary.RANDOM.nextInt( bound ) / 100.0 + this.minimumEffectiveness.get();
 
 		CompoundNBT data = itemStack.getOrCreateChildTag( EFFECTIVENESS_TAG );
 		data.putDouble( EFFECTIVENESS_VALUE_TAG, value );
@@ -97,5 +121,15 @@ public class InventoryItem extends Item {
 		items.add( item );
 
 		return player.inventory.hasAny( items );
+	}
+
+	/** Returns highest inventory item effectiveness. */
+	protected double getHighestEffectiveness( PlayerEntity player, InventoryItem item ) {
+		double bonus = this.minimumEffectiveness.get();
+		for( ItemStack itemStack : player.inventory.mainInventory )
+			if( item.equals( itemStack.getItem() ) && item.getEffectiveness( itemStack ) > bonus )
+				bonus = item.getEffectiveness( itemStack );
+
+		return bonus;
 	}
 }

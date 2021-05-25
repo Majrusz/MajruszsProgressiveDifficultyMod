@@ -16,6 +16,7 @@ import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTable;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -29,8 +30,12 @@ import java.util.List;
 @Mod.EventBusSubscriber
 public class LuckyRockItem extends InventoryItem {
 	private static final ResourceLocation LOOT_TABLE_LOCATION = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/lucky_rock" );
-	private static final ResourceLocation LOOT_TABLE_THE_NETHER_LOCATION = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/lucky_rock_the_nether" );
-	private static final ResourceLocation LOOT_TABLE_THE_END_LOCATION = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/lucky_rock_the_end" );
+	private static final ResourceLocation LOOT_TABLE_THE_NETHER_LOCATION = new ResourceLocation( MajruszsDifficulty.MOD_ID,
+		"gameplay/lucky_rock_the_nether"
+	);
+	private static final ResourceLocation LOOT_TABLE_THE_END_LOCATION = new ResourceLocation( MajruszsDifficulty.MOD_ID,
+		"gameplay/lucky_rock_the_end"
+	);
 	protected final DoubleConfig dropChance;
 	protected final GameStateDoubleConfig chance;
 
@@ -68,20 +73,24 @@ public class LuckyRockItem extends InventoryItem {
 		PlayerEntity player = ( PlayerEntity )event.entity;
 		ServerWorld world = ( ServerWorld )player.world;
 
-		if( luckyRock.hasAny( player ) && Random.tryChance( luckyRock.getExtraLootChance() ) ) {
+		if( luckyRock.hasAny( player ) && Random.tryChance( luckyRock.getExtraLootChance( player ) ) ) {
 			event.generatedLoot.addAll( luckyRock.generateLoot( player ) );
 
 			Vector3d position = event.origin;
 			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25, 0.25, 0.1 );
 		}
 
-		if( Random.tryChance( luckyRock.getDropChance() ) )
-			event.generatedLoot.add( new ItemStack( luckyRock, 1 ) );
+		if( Random.tryChance( luckyRock.getDropChance() ) ) {
+			ItemStack itemStack = new ItemStack( luckyRock, 1 );
+			luckyRock.setRandomEffectiveness( itemStack );
+
+			event.generatedLoot.add( itemStack );
+		}
 	}
 
 	/** Returns current chance for extra loot from mining. */
-	public double getExtraLootChance() {
-		return this.chance.getCurrentGameStateValue();
+	public double getExtraLootChance( PlayerEntity player ) {
+		return MathHelper.clamp( this.chance.getCurrentGameStateValue() * ( 1.0 + getHighestEffectiveness( player ) ), 0.0, 1.0 );
 	}
 
 	/** Returns a chance for Lucky Rock to drop. */
@@ -99,6 +108,11 @@ public class LuckyRockItem extends InventoryItem {
 		LootTable lootTable = getLootTable( player );
 
 		return lootTable.generate( generateLootContext( player ) );
+	}
+
+	/** Returns highest Lucky Rock item effectiveness. */
+	protected double getHighestEffectiveness( PlayerEntity player ) {
+		return super.getHighestEffectiveness( player, this );
 	}
 
 	/** Returning loot table for Lucky Rock. (possible loot) */
