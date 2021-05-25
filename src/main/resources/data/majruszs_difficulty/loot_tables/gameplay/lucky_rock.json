@@ -6,7 +6,21 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 35,
+          "weight": 30,
+          "name": "minecraft:coal",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
+        },{
+          "type": "minecraft:item",
+          "weight": 20,
           "name": "minecraft:iron_nugget",
           "functions": [
             {
@@ -21,7 +35,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 35,
+          "weight": 20,
           "name": "minecraft:gold_nugget",
           "functions": [
             {
@@ -42,8 +56,8 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 4.0,
-                "max": 8.0,
+                "min": 2.0,
+                "max": 6.0,
                 "type": "minecraft:uniform"
               }
             }
