@@ -6,17 +6,32 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 95,
+          "weight": 600,
+          "name": "minecraft:iron_nugget",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2.0,
+                "max": 6.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 380,
           "name": "minecraft:quartz"
         },
         {
           "type": "minecraft:item",
-          "weight": 4,
+          "weight": 18,
           "name": "minecraft:netherite_scrap"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 2,
           "name": "minecraft:netherite_ingot"
         }
       ]
