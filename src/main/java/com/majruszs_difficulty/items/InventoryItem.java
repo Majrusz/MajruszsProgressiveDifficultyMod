@@ -40,7 +40,7 @@ public class InventoryItem extends Item {
 
 	public InventoryItem( String configName, String translationKeyID ) {
 		super( ( new Properties() ).maxStackSize( 1 )
-			.rarity( Rarity.UNCOMMON )
+			.rarity( Rarity.RARE )
 			.group( Instances.ITEM_GROUP ) );
 
 		String groupComment = "Functionality of " + configName + ".";
