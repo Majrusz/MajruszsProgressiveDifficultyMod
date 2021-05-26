@@ -128,6 +128,7 @@ public class RegistryHandler {
 		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
 		ITEMS.register( "giant_seed", ()->Instances.GIANT_SEED_ITEM );
 		ITEMS.register( "lucky_rock", ()->Instances.LUCKY_ROCK_ITEM );
+		ITEMS.register( "idol_of_fertility", ()->Instances.IDOL_OF_FERTILITY_ITEM );
 		registerTreasureBags();
 		registerSpawnEggs();
 		ITEMS.register( modEventBus );

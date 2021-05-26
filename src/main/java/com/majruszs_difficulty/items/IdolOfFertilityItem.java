@@ -1,123 +1,102 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
-import com.mlib.events.AnyLootModificationEvent;
-import net.minecraft.block.material.Material;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.LootTable;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
-/**
-
-
- */
+/** Idol that gives a chance of having twins after breeding. */
 @Mod.EventBusSubscriber
 public class IdolOfFertilityItem extends InventoryItem {
 	protected final DoubleConfig dropChance;
-	protected final GameStateDoubleConfig instantAdultChance;
 	protected final GameStateDoubleConfig extraAnimalChance;
 
 	public IdolOfFertilityItem() {
 		super( "Idol Of Fertility", "idol_of_fertility" );
 
 		String dropComment = "Chance for Idol of Fertility to drop from breeding.";
-		String adultComment = "Chance for the animal to become an adult immediately after breeding.";
-		String extraComment = "Chance for the twins to become an adult immediately after breeding.";
-		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.0002, 0.0, 1.0 );
-		this.instantAdultChance = new GameStateDoubleConfig( "AdultChance", adultComment, 0.1, 0.125, 0.15, 0.0, 1.0 );
-		this.extraAnimalChance = new GameStateDoubleConfig( "ExtraAnimalChance", extraComment, 0.1, 0.125, 0.15, 0.0, 1.0 );
+		String extraComment = "Chance of having twins after breeding.";
+		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.001, 0.0, 1.0 );
+		this.extraAnimalChance = new GameStateDoubleConfig( "ExtraAnimalChance", extraComment, 0.25, 0.35, 0.5, 0.0, 1.0 );
 
-		this.group.addConfigs( this.dropChance, this.instantAdultChance, this.extraAnimalChance );
-	}
-
-	/** Generating loot context. (who has Lucky Rock, where is, etc.) */
-	protected static LootContext generateLootContext( PlayerEntity player ) {
-		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerWorld )player.getEntityWorld() );
-		lootContextBuilder.withParameter( LootParameters.field_237457_g_, player.getPositionVec() );
-		lootContextBuilder.withParameter( LootParameters.THIS_ENTITY, player );
-
-		return lootContextBuilder.build( LootParameterSets.GIFT );
+		this.group.addConfigs( this.dropChance, this.extraAnimalChance );
 	}
 
 	@SubscribeEvent
-	public static void onGeneratingLoot( AnyLootModificationEvent event ) {
-		if( event.origin == null || event.blockState == null || event.tool == null || !( event.entity instanceof PlayerEntity ) || !( event.entity.world instanceof ServerWorld ) )
+	public static void onBreed( BabyEntitySpawnEvent event ) {
+		PlayerEntity player = event.getCausedByPlayer();
+		AgeableEntity child = event.getChild();
+		MobEntity parent1 = event.getParentA(), parent2 = event.getParentB();
+		IdolOfFertilityItem idolOfFertility = Instances.IDOL_OF_FERTILITY_ITEM;
+		if( child == null || !( child.world instanceof ServerWorld ) )
 			return;
 
-		boolean isRock = event.blockState.getMaterial() == Material.ROCK;
-		boolean wasMinedWithPickaxe = event.tool.getItem() instanceof PickaxeItem;
-		if( !( isRock && wasMinedWithPickaxe ) )
+		ServerWorld world = ( ServerWorld )child.world;
+		idolOfFertility.tryToDrop( parent1, world );
+		if( player == null || !idolOfFertility.hasAny( player ) )
 			return;
 
-		IdolOfFertilityItem luckyRock = Instances.LUCKY_ROCK_ITEM;
-		PlayerEntity player = ( PlayerEntity )event.entity;
-		ServerWorld world = ( ServerWorld )player.world;
-
-		if( luckyRock.hasAny( player ) && Random.tryChance( luckyRock.getExtraLootChance() ) ) {
-			event.generatedLoot.addAll( luckyRock.generateLoot( player ) );
-
-			Vector3d position = event.origin;
-			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25, 0.25, 0.1 );
-		}
-
-		if( Random.tryChance( luckyRock.getDropChance() ) )
-			event.generatedLoot.add( new ItemStack( luckyRock, 1 ) );
+		idolOfFertility.tryToSpawnAnotherChild( player, world, ( AnimalEntity )parent1, ( AnimalEntity )parent2 );
 	}
 
-	/** Returns current chance for extra loot from mining. */
-	public double getExtraLootChance() {
-		return this.chance.getCurrentGameStateValue();
+	/** Tries to drop the Idol of Fertility. */
+	public void tryToDrop( MobEntity parent, ServerWorld world ) {
+		if( !Random.tryChance( getDropChance() ) )
+			return;
+
+		ItemStack itemStack = new ItemStack( this, 1 );
+		setRandomEffectiveness( itemStack );
+
+		world.addEntity( new ItemEntity( world, parent.getPosX(), parent.getPosY(), parent.getPosZ(), itemStack ) );
 	}
 
-	/** Returns a chance for Lucky Rock to drop. */
+	/** Tries to spawn another child. */
+	public void tryToSpawnAnotherChild( PlayerEntity player, ServerWorld world, @Nullable AnimalEntity parent1, @Nullable AnimalEntity parent2 ) {
+		if( !Random.tryChance( getTwinsChance( player ) ) )
+			return;
+
+		if( parent1 == null || parent2 == null )
+			return;
+
+		AgeableEntity child2 = parent1.func_241840_a( world, parent2 );
+		if( child2 == null )
+			return;
+
+		child2.setChild( true );
+		child2.setLocationAndAngles( parent1.getPosX(), parent1.getPosY(), parent1.getPosZ(), 0.0f, 0.0f );
+		world.func_242417_l( child2 ); // adds child to the world
+	}
+
+	/** Returns current chance of having twins from breeding. */
+	public double getTwinsChance( PlayerEntity player ) {
+		return MathHelper.clamp( this.extraAnimalChance.getCurrentGameStateValue() * ( 1.0 + getHighestEffectiveness( player ) ), 0.0, 1.0 );
+	}
+
+	/** Returns a chance for Idol of Fertility to drop. */
 	public double getDropChance() {
 		return this.dropChance.get();
 	}
 
-	/** Checks whether player has any Lucky Rock in inventory. */
+	/** Checks whether player have any Idol of Fertility in inventory. */
 	public boolean hasAny( PlayerEntity player ) {
 		return hasAny( player, this );
 	}
 
-	/** Generating random loot from Lucky Rock's loot table. */
-	public List< ItemStack > generateLoot( PlayerEntity player ) {
-		LootTable lootTable = getLootTable( player );
-
-		return lootTable.generate( generateLootContext( player ) );
-	}
-
-	/** Returning loot table for Lucky Rock. (possible loot) */
-	protected LootTable getLootTable( PlayerEntity player ) {
-		return ServerLifecycleHooks.getCurrentServer()
-			.getLootTableManager()
-			.getLootTableFromLocation( getLootTableLocation( player ) );
-	}
-
-	/** Returns loot table location depending on player's dimension. */
-	private ResourceLocation getLootTableLocation( PlayerEntity player ) {
-		if( player.world.getDimensionKey() == World.THE_NETHER )
-			return LOOT_TABLE_THE_NETHER_LOCATION;
-		else if( player.world.getDimensionKey() == World.THE_END )
-			return LOOT_TABLE_THE_END_LOCATION;
-
-		return LOOT_TABLE_LOCATION;
+	/** Returns highest Idol of Fertility item effectiveness. */
+	protected double getHighestEffectiveness( PlayerEntity player ) {
+		return super.getHighestEffectiveness( player, this );
 	}
 }

@@ -54,6 +54,8 @@
   "item.majruszs_difficulty.lucky_rock": "Lucky Rock",
   "item.majruszs_difficulty.lucky_rock.item_tooltip": "Gives a chance for extra loot when mining.",
   "item.majruszs_difficulty.golden_bandage": "Golden Bandage",
+  "item.majruszs_difficulty.idol_of_fertility": "Idol of Fertility",
+  "item.majruszs_difficulty.idol_of_fertility.item_tooltip": "Gives a chance of having twins after breeding two animals.",
   "block.majruszs_difficulty.end_shard_ore": "End Shard Ore",
   "block.majruszs_difficulty.end_shard_ore.warning": "After destroying this block all nearby Endermans will attack you!",
   "block.majruszs_difficulty.end_block": "End Block",
