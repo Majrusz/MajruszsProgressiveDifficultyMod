@@ -18,7 +18,7 @@ public class SpawnEliteSkeletonGroup extends SpawnEnemyGroupBase {
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof EliteSkeletonEntity && super.shouldBeExecuted( entity );
 	}
 

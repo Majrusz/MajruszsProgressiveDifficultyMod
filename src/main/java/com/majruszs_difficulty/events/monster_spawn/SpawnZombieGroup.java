@@ -30,7 +30,7 @@ public class SpawnZombieGroup extends SpawnEnemyGroupBase {
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return !( entity instanceof ZombifiedPiglinEntity ) && entity instanceof ZombieEntity && super.shouldBeExecuted( entity );
 	}
 

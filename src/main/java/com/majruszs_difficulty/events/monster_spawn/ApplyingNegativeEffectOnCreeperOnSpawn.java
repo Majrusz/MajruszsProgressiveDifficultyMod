@@ -34,7 +34,7 @@ public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBa
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof CreeperEntity && super.shouldBeExecuted( entity );
 	}
 }

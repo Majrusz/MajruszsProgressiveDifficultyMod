@@ -8,7 +8,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.world.server.ServerWorld;
 
 /** Base class for handling enemy spawn events. */
-public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase {
+public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implements IOnSpawn {
 	protected boolean shouldBeCancelled = false;
 
 	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
@@ -26,7 +26,7 @@ public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase {
 	}
 
 	/** Checking if all conditions were met. */
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		if( !GameState.atLeast( this.minimumState ) || !( entity.world instanceof ServerWorld ) || !isEnabled() || !( entity instanceof MobEntity ) )
 			return false;
 

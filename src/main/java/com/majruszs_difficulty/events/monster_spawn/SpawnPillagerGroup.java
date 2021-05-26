@@ -17,7 +17,7 @@ public class SpawnPillagerGroup extends SpawnEnemyGroupBase {
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof PillagerEntity && super.shouldBeExecuted( entity );
 	}
 

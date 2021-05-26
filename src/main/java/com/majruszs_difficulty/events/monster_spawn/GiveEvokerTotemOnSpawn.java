@@ -17,7 +17,7 @@ public class GiveEvokerTotemOnSpawn extends GiveItemAfterSpawningBase {
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof EvokerEntity && super.shouldBeExecuted( entity );
 	}
 

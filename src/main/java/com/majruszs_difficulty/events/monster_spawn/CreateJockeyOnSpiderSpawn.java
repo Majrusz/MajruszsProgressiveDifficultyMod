@@ -30,7 +30,7 @@ public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof SpiderEntity && !( entity instanceof CaveSpiderEntity ) && super.shouldBeExecuted( entity );
 	}
 }

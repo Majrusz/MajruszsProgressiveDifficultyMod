@@ -26,7 +26,7 @@ public class SpawnPiglinGroup extends SpawnEnemyGroupBase {
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof PiglinEntity && super.shouldBeExecuted( entity );
 	}
 

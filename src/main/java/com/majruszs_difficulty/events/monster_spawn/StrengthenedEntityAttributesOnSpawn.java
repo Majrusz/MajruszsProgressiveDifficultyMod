@@ -49,7 +49,7 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		ModifiableAttributeInstance damageAttribute = entity.getAttribute( Attributes.ATTACK_DAMAGE );
 
 		return damageAttribute != null && damageAttribute.getValue() > 0.0 && super.shouldBeExecuted( entity );

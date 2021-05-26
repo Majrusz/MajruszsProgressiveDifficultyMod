@@ -23,7 +23,7 @@ public class AddAIToCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
 	}
 
 	@Override
-	protected boolean shouldBeExecuted( LivingEntity entity ) {
+	public boolean shouldBeExecuted( LivingEntity entity ) {
 		return entity instanceof CreeperEntity && super.shouldBeExecuted( entity );
 	}
 }
