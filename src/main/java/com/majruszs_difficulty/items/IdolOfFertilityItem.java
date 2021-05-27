@@ -78,6 +78,7 @@ public class IdolOfFertilityItem extends InventoryItem {
 		child2.setChild( true );
 		child2.setLocationAndAngles( parent1.getPosX(), parent1.getPosY(), parent1.getPosZ(), 0.0f, 0.0f );
 		world.func_242417_l( child2 ); // adds child to the world
+		spawnParticles( parent1.getPositionVec(), world, 0.25 );
 	}
 
 	/** Returns current chance of having twins from breeding. */

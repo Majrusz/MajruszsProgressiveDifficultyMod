@@ -12,8 +12,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -131,5 +134,10 @@ public class InventoryItem extends Item {
 				bonus = item.getEffectiveness( itemStack );
 
 		return bonus;
+	}
+
+	/** Spawns special particles at given position. */
+	protected void spawnParticles( Vector3d position, ServerWorld world, double offset ) {
+		world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, offset, offset, offset, 0.1 );
 	}
 }

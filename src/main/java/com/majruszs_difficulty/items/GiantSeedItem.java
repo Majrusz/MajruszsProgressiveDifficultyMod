@@ -16,6 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** Seed that gives a chance for double loot from crops. */
 @Mod.EventBusSubscriber
@@ -54,11 +55,11 @@ public class GiantSeedItem extends InventoryItem {
 			}
 
 		if( giantSeed.hasAny( player ) && Random.tryChance( giantSeed.getDoubleLootChance( player ) ) ) {
+			List< ItemStack > extraItems = new ArrayList<>( event.generatedLoot );
+			extraItems.removeIf( itemStack -> itemStack.getItem() instanceof GiantSeedItem );
+			
 			event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
-
-			ServerWorld world = ( ServerWorld )player.world;
-			Vector3d position = event.origin;
-			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25, 0.25, 0.1 );
+			giantSeed.spawnParticles( event.origin, ( ServerWorld )player.world, 0.25 );
 		}
 	}
 

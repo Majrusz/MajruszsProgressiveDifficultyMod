@@ -75,9 +75,7 @@ public class LuckyRockItem extends InventoryItem {
 
 		if( luckyRock.hasAny( player ) && Random.tryChance( luckyRock.getExtraLootChance( player ) ) ) {
 			event.generatedLoot.addAll( luckyRock.generateLoot( player ) );
-
-			Vector3d position = event.origin;
-			world.spawnParticle( ParticleTypes.HAPPY_VILLAGER, position.getX(), position.getY(), position.getZ(), 5, 0.25, 0.25, 0.25, 0.1 );
+			luckyRock.spawnParticles( event.origin, world, 0.375 );
 		}
 
 		if( Random.tryChance( luckyRock.getDropChance() ) ) {
