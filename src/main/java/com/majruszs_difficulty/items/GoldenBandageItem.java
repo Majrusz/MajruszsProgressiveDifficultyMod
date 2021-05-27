@@ -1,7 +1,9 @@
 package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.Instances;
 import com.mlib.config.DurationConfig;
 import com.mlib.config.IntegerConfig;
+import com.mlib.effects.EffectHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Rarity;
 import net.minecraftforge.fml.common.Mod;
@@ -22,10 +24,20 @@ public class GoldenBandageItem extends BandageItem {
 		this.configGroup.addConfigs( this.immunityDuration, this.immunityAmplifier );
 	}
 
+	/** Returns duration in ticks of Bleeding immunity effect. */
+	public int getImmunityDuration() {
+		return this.immunityDuration.getDuration();
+	}
+
+	/** Returns amplifier of Bleeding immunity effect. */
+	public int getImmunityAmplifier() {
+		return this.immunityAmplifier.get();
+	}
+
 	/** Applies Regeneration and Bleeding immunity on target depending on current mod settings. */
 	@Override
 	protected void applyEffects( LivingEntity target ) {
 		super.applyEffects( target );
-		// EffectHelper.applyEffectIfPossible( target, Effects.REGENERATION, getRegenerationDuration(), getRegenerationAmplifier() );
+		EffectHelper.applyEffectIfPossible( target, Instances.BLEEDING_IMMUNITY, getImmunityDuration(), getImmunityAmplifier() );
 	}
 }

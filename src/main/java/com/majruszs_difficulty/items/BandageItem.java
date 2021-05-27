@@ -82,7 +82,9 @@ public class BandageItem extends Item {
 		if( !( event.getTarget() instanceof LivingEntity ) )
 			return;
 
-		if( Instances.BANDAGE_ITEM.useIfPossible( event.getItemStack(), event.getPlayer(), ( LivingEntity )event.getTarget() ) )
+		ItemStack itemStack = event.getItemStack();
+		BandageItem bandage = ( BandageItem )itemStack.getItem();
+		if( bandage.useIfPossible( event.getItemStack(), event.getPlayer(), ( LivingEntity )event.getTarget() ) )
 			event.setCancellationResult( ActionResultType.SUCCESS );
 	}
 
