@@ -6,12 +6,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 50,
+          "weight": 60,
           "name": "minecraft:ender_pearl"
         },
         {
           "type": "minecraft:item",
-          "weight": 30,
+          "weight": 20,
           "name": "minecraft:ender_eye"
         },
         {

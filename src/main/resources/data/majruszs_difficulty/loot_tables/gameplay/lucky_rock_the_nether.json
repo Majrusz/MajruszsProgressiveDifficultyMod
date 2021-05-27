@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 600,
+          "weight": 60,
           "name": "minecraft:gold_nugget",
           "functions": [
             {
@@ -21,17 +21,17 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 380,
+          "weight": 35,
           "name": "minecraft:quartz"
         },
         {
           "type": "minecraft:item",
-          "weight": 18,
+          "weight": 4,
           "name": "minecraft:netherite_scrap"
         },
         {
           "type": "minecraft:item",
-          "weight": 2,
+          "weight": 1,
           "name": "minecraft:netherite_ingot"
         }
       ]
