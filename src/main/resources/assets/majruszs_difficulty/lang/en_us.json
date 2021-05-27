@@ -5,6 +5,7 @@
   "entity.majruszs_difficulty.sky_keeper": "End Keeper",
   "entity.majruszs_difficulty.creeperling": "Creeperling",
   "effect.majruszs_difficulty.bleeding": "Bleeding",
+  "effect.majruszs_difficulty.bleeding_immunity": "Bleeding Immunity",
   "itemGroup.majruszs_tab": "Majrusz's Progressive Difficulty",
   "item.majruszs_difficulty.giant_spawn_egg": "Giant Spawn Egg",
   "item.majruszs_difficulty.illusioner_spawn_egg": "Illusioner Spawn Egg",

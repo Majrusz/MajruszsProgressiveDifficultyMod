@@ -4,6 +4,7 @@ import com.majruszs_difficulty.blocks.EndBlock;
 import com.majruszs_difficulty.blocks.EndShardOre;
 import com.majruszs_difficulty.blocks.InfestedEndStone;
 import com.majruszs_difficulty.effects.BleedingEffect;
+import com.majruszs_difficulty.effects.BleedingImmunityEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
 import com.majruszs_difficulty.events.FishingRewarder;
@@ -79,6 +80,7 @@ public class Instances {
 
 	// Effects
 	public static final BleedingEffect BLEEDING;
+	public static final BleedingImmunityEffect BLEEDING_IMMUNITY;
 
 	// Particles
 	public static final BasicParticleType BLOOD_PARTICLE;
@@ -148,6 +150,7 @@ public class Instances {
 
 		// Effects
 		BLEEDING = new BleedingEffect();
+		BLEEDING_IMMUNITY = new BleedingImmunityEffect();
 
 		// Particles
 		BLOOD_PARTICLE = new BasicParticleType( true );
