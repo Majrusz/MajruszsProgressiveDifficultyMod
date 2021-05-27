@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.events.special;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.entities.CreeperlingEntity;
 import com.majruszs_difficulty.events.ChanceFeatureBase;
 import com.majruszs_difficulty.events.FeatureBase;
 import com.mlib.Random;
@@ -39,7 +40,7 @@ public class StrongerExplosions {
 		if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
 			event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
 
-		if( STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
+		if( !( causer instanceof CreeperlingEntity ) && STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
 			event.causesFire = true;
 	}
 
