@@ -29,7 +29,7 @@ public class IdolOfFertilityItem extends InventoryItem {
 
 		String dropComment = "Chance for Idol of Fertility to drop from breeding.";
 		String extraComment = "Chance of having twins after breeding.";
-		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.001, 0.0, 1.0 );
+		this.dropChance = new DoubleConfig( "drop_chance", dropComment, false, 0.01, 0.0, 1.0 );
 		this.extraAnimalChance = new GameStateDoubleConfig( "ExtraAnimalChance", extraComment, 0.25, 0.35, 0.5, 0.0, 1.0 );
 
 		this.group.addConfigs( this.dropChance, this.extraAnimalChance );
