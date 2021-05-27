@@ -6,6 +6,7 @@ import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.events.HasteOnDestroyingBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -18,7 +19,7 @@ import java.util.List;
 /** New late game shovel. */
 public class EndShovelItem extends ShovelItem {
 	public EndShovelItem() {
-		super( CustomItemTier.END, 1.5f, -3.0f, ( new Properties() ).group( Instances.ITEM_GROUP )
+		super( CustomItemTier.END, 1.5f, -3.0f, ( new Properties() ).group( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON )
 			.isImmuneToFire() );
 	}
 

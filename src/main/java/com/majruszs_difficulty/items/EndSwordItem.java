@@ -6,6 +6,7 @@ import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -22,7 +23,7 @@ public class EndSwordItem extends SwordItem {
 	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszs_difficulty.end_sword.item_tooltip";
 
 	public EndSwordItem() {
-		super( CustomItemTier.END, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP )
+		super( CustomItemTier.END, 3, -2.4f, ( new Item.Properties() ).group( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON )
 			.isImmuneToFire() );
 	}
 
