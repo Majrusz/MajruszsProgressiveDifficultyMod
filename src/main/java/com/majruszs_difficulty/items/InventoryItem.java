@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
@@ -111,9 +112,10 @@ public class InventoryItem extends Item {
 		if( !isEffectivenessEnabled() )
 			return;
 
-		int bound = ( int )( this.maximumEffectiveness.get() - this.minimumEffectiveness.get() ) * 100 + 1;
-		double value = MajruszLibrary.RANDOM.nextInt( bound ) / 100.0 + this.minimumEffectiveness.get();
-
+		double gaussianRandom = MathHelper.clamp( MajruszLibrary.RANDOM.nextGaussian()/3.0, -1.0, 1.0 ); // random value from range [-1.0; 1.0] with mean ~= 0.0 and standard deviation ~= 0.3333..
+		double gaussianRandomShifted = ( gaussianRandom + 1.0 ) / 2.0; // random value from range [0.0; 1.0] with mean ~= 0.5 and standard deviation ~= 0.1666..
+		double randomValue = gaussianRandomShifted*( this.maximumEffectiveness.get() - this.minimumEffectiveness.get() ) + this.minimumEffectiveness.get();
+		double value = Math.round( randomValue * 100.0 )/100.0;
 		CompoundNBT data = itemStack.getOrCreateChildTag( EFFECTIVENESS_TAG );
 		data.putDouble( EFFECTIVENESS_VALUE_TAG, value );
 	}
