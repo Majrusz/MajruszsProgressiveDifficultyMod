@@ -8,9 +8,7 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.events.HarvestCropEvent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,8 +54,8 @@ public class GiantSeedItem extends InventoryItem {
 
 		if( giantSeed.hasAny( player ) && Random.tryChance( giantSeed.getDoubleLootChance( player ) ) ) {
 			List< ItemStack > extraItems = new ArrayList<>( event.generatedLoot );
-			extraItems.removeIf( itemStack -> itemStack.getItem() instanceof GiantSeedItem );
-			
+			extraItems.removeIf( itemStack->itemStack.getItem() instanceof GiantSeedItem );
+
 			event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
 			giantSeed.spawnParticles( event.origin, ( ServerWorld )player.world, 0.25 );
 		}
