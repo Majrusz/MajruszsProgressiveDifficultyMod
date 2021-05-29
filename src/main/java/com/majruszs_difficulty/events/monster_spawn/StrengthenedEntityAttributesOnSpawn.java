@@ -6,6 +6,7 @@ import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.world.server.ServerWorld;
@@ -50,9 +51,9 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		ModifiableAttributeInstance damageAttribute = entity.getAttribute( Attributes.ATTACK_DAMAGE );
+		AttributeModifierManager attributeModifierManager = entity.getAttributeManager();
 
-		return damageAttribute != null && damageAttribute.getValue() > 0.0 && super.shouldBeExecuted( entity );
+		return attributeModifierManager.hasAttributeInstance( Attributes.ATTACK_DAMAGE ) && super.shouldBeExecuted( entity );
 	}
 
 	/**
