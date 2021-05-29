@@ -51,8 +51,8 @@ public class InventoryItem extends Item {
 		String maxComment = "Maximum effectiveness bonus.";
 		this.group = FEATURES_GROUP.addGroup( new ConfigGroup( configName.replace( " ", "" ), groupComment ) );
 		this.effectiveness = new AvailabilityConfig( "effectiveness", availabilityComment, false, true );
-		this.minimumEffectiveness = new DoubleConfig( "minimum_effectiveness", minComment, false, -0.5, -1.0, 10.0 );
-		this.maximumEffectiveness = new DoubleConfig( "maximum_effectiveness", maxComment, false, 0.5, -1.0, 10.0 );
+		this.minimumEffectiveness = new DoubleConfig( "minimum_effectiveness", minComment, false, -0.6, -1.0, 10.0 );
+		this.maximumEffectiveness = new DoubleConfig( "maximum_effectiveness", maxComment, false, 0.6, -1.0, 10.0 );
 		this.group.addConfigs( this.effectiveness, this.minimumEffectiveness, this.maximumEffectiveness );
 
 		this.translationKey = "item.majruszs_difficulty." + translationKeyID + ".item_tooltip";
