@@ -114,10 +114,9 @@ public class InventoryItem extends Item {
 
 		double gaussianRandom = MathHelper.clamp( MajruszLibrary.RANDOM.nextGaussian()/3.0, -1.0, 1.0 ); // random value from range [-1.0; 1.0] with mean ~= 0.0 and standard deviation ~= 0.3333..
 		double gaussianRandomShifted = ( gaussianRandom + 1.0 ) / 2.0; // random value from range [0.0; 1.0] with mean ~= 0.5 and standard deviation ~= 0.1666..
-		double randomValue = gaussianRandomShifted*( this.maximumEffectiveness.get() - this.minimumEffectiveness.get() ) + this.minimumEffectiveness.get();
-		double value = Math.round( randomValue * 100.0 )/100.0;
+		double randomValue = gaussianRandomShifted*( this.maximumEffectiveness.get() - this.minimumEffectiveness.get() ) + this.minimumEffectiveness.get(); // random value from range set in config [-min; max]
 		CompoundNBT data = itemStack.getOrCreateChildTag( EFFECTIVENESS_TAG );
-		data.putDouble( EFFECTIVENESS_VALUE_TAG, value );
+		data.putDouble( EFFECTIVENESS_VALUE_TAG, Math.round( randomValue * 100.0 )/100.0 );
 	}
 
 	/** Checks whether player have this item in inventory. */
