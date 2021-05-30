@@ -51,9 +51,7 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		AttributeModifierManager attributeModifierManager = entity.getAttributeManager();
-
-		return attributeModifierManager.hasAttributeInstance( Attributes.ATTACK_DAMAGE ) && super.shouldBeExecuted( entity );
+		return AttributeHandler.hasAttribute( entity, Attributes.ATTACK_DAMAGE ) && super.shouldBeExecuted( entity );
 	}
 
 	/**
