@@ -59,6 +59,7 @@ public class Instances {
 	public static final LuckyRockItem LUCKY_ROCK_ITEM;
 	public static final GoldenBandageItem GOLDEN_BANDAGE_ITEM;
 	public static final IdolOfFertilityItem IDOL_OF_FERTILITY_ITEM;
+	public static final TamingCertificateItem TAMING_CERTIFICATE_ITEM;
 
 	// Treasure Bags
 	public static final TreasureBagItem UNDEAD_ARMY_TREASURE_BAG;
@@ -129,6 +130,7 @@ public class Instances {
 		LUCKY_ROCK_ITEM = new LuckyRockItem();
 		GOLDEN_BANDAGE_ITEM = new GoldenBandageItem();
 		IDOL_OF_FERTILITY_ITEM = new IdolOfFertilityItem();
+		TAMING_CERTIFICATE_ITEM = new TamingCertificateItem();
 
 		// Treasure Bags
 		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );
