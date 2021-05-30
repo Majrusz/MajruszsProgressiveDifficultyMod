@@ -13,7 +13,7 @@ public class GoldenBandageItem extends BandageItem {
 	protected final DurationConfig immunityDuration;
 
 	public GoldenBandageItem() {
-		super( "Golden Bandage", 1, Rarity.RARE );
+		super( "GoldenBandage", 1, Rarity.RARE );
 
 		String durationComment = "Duration in seconds of Bleeding Immunity effect.";
 		this.immunityDuration = new DurationConfig( "immunity_duration", durationComment, false, 90.0, 1.0, 600.0 );

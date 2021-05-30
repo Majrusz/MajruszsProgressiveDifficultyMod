@@ -47,7 +47,7 @@ public class TamingCertificateItem extends InventoryItem {
 	protected final GameStateDoubleConfig horseBonusesMultiplier;
 
 	public TamingCertificateItem() {
-		super( "Certificate of Taming", "taming_certificate" );
+		super( "Certificate Of Taming", "taming_certificate" );
 
 		String dropComment = "Chance for Certificate of Taming to drop from taming animals.";
 		String healthComment = "Health multiplier when the animal is tamed.";

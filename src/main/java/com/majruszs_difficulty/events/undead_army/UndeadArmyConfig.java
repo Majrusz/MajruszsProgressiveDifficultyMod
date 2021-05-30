@@ -33,10 +33,10 @@ public class UndeadArmyConfig {
 		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, false, true );
 		this.killRequirement = new IntegerConfig( "kill_requirement", killComment, false, 100, 10, 1000 );
 		this.scaleWithPlayers = new DoubleConfig( "player_scale", scaleComment, false, 0.5, 0.1, 1.0 );
-		this.experienceReward = new GameStateIntegerConfig( "experience", expComment, 40, 80, 120, 4, 1000 );
-		this.treasureBagReward = new GameStateIntegerConfig( "treasure_bags", bagComment, 1, 1, 2, 1, 5 );
-		this.enchantedItems = new GameStateDoubleConfig( "enchanted_items", enchantComment, 0.125, 0.25, 0.5, 0.0, 1.0 );
-		this.armorChance = new GameStateDoubleConfig( "armor_chance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
+		this.experienceReward = new GameStateIntegerConfig( "Experience", expComment, 40, 80, 120, 4, 1000 );
+		this.treasureBagReward = new GameStateIntegerConfig( "TreasureBags", bagComment, 1, 1, 2, 1, 5 );
+		this.enchantedItems = new GameStateDoubleConfig( "EnchantedItems", enchantComment, 0.125, 0.25, 0.5, 0.0, 1.0 );
+		this.armorChance = new GameStateDoubleConfig( "ArmorChance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
 		this.group.addConfigs( this.availability, this.killRequirement, this.scaleWithPlayers, this.experienceReward, this.treasureBagReward,
 			this.enchantedItems, this.armorChance
 		);
