@@ -27,6 +27,7 @@ public class AddInventoryItemsToVillagerTrades {
 		TRADE_REGISTRIES.add( new TradeRegistry( VillagerProfession.FARMER, Instances.GIANT_SEED_ITEM, 5 ) );
 		TRADE_REGISTRIES.add( new TradeRegistry( VillagerProfession.FISHERMAN, Instances.FISHERMAN_EMBLEM_ITEM, 2 ) );
 		TRADE_REGISTRIES.add( new TradeRegistry( VillagerProfession.MASON, Instances.LUCKY_ROCK_ITEM, 2 ) );
+		TRADE_REGISTRIES.add( new TradeRegistry( VillagerProfession.SHEPHERD, Instances.TAMING_CERTIFICATE_ITEM, 2 ) );
 	}
 
 	@SubscribeEvent
