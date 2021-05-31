@@ -56,7 +56,7 @@ public class GiantSeedItem extends InventoryItem {
 			List< ItemStack > extraItems = new ArrayList<>( event.generatedLoot );
 			extraItems.removeIf( itemStack->itemStack.getItem() instanceof GiantSeedItem );
 
-			event.generatedLoot.addAll( new ArrayList<>( event.generatedLoot ) );
+			event.generatedLoot.addAll( extraItems );
 			giantSeed.spawnParticles( event.origin, ( ServerWorld )player.world, 0.25 );
 		}
 	}
