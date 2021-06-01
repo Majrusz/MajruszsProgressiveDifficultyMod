@@ -20,13 +20,13 @@ public final class GetDifficultyCommand {
 	private GetDifficultyCommand() {}
 
 	public static void register( CommandDispatcher< CommandSource > dispatcher ) {
-		LiteralCommandNode< CommandSource > command = dispatcher.register( Commands.literal( "clampedregionaldifficulty" )
+		dispatcher.register( Commands.literal( "clampedregionaldifficulty" )
 			.requires( source->source.hasPermissionLevel( 0 ) )
 			.executes( entity->getCurrentDifficulty( entity.getSource() ) ) );
 
 		dispatcher.register( Commands.literal( "crd" )
 			.requires( source->source.hasPermissionLevel( 0 ) )
-			.redirect( command ) );
+			.executes( entity->getCurrentDifficulty( entity.getSource() ) ) );
 	}
 
 	/** Sends feedback message to entity. */
