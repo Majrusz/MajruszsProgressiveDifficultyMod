@@ -3,7 +3,6 @@ package com.majruszs_difficulty.commands;
 import com.majruszs_difficulty.GameState;
 import com.mlib.WorldHelper;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.Entity;
