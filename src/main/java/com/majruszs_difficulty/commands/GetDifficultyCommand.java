@@ -3,6 +3,7 @@ package com.majruszs_difficulty.commands;
 import com.majruszs_difficulty.GameState;
 import com.mlib.WorldHelper;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.Entity;
@@ -19,9 +20,13 @@ public final class GetDifficultyCommand {
 	private GetDifficultyCommand() {}
 
 	public static void register( CommandDispatcher< CommandSource > dispatcher ) {
-		dispatcher.register( Commands.literal( "regionaldifficulty" )
+		LiteralCommandNode< CommandSource > command = dispatcher.register( Commands.literal( "clampedregionaldifficulty" )
 			.requires( source->source.hasPermissionLevel( 0 ) )
 			.executes( entity->getCurrentDifficulty( entity.getSource() ) ) );
+
+		dispatcher.register( Commands.literal( "crd" )
+			.requires( source->source.hasPermissionLevel( 0 ) )
+			.redirect( command ) );
 	}
 
 	/** Sends feedback message to entity. */
@@ -31,7 +36,7 @@ public final class GetDifficultyCommand {
 		return 0;
 	}
 
-	/** Returns full formatted feedback message. */
+	/** Returns fully formatted feedback message. */
 	private static IFormattableTextComponent getFeedbackMessage( Entity entity ) {
 		IFormattableTextComponent feedback = new TranslationTextComponent( "commands.regional_difficulty" );
 		feedback.append( getStateModifierText( ( LivingEntity )entity ) );
