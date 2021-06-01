@@ -4,7 +4,6 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.mlib.MajruszLibrary;
-import com.mlib.WorldHelper;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

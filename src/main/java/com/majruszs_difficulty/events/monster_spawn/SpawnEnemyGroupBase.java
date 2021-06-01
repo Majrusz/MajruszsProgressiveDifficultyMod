@@ -4,7 +4,6 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.goals.FollowGroupLeaderGoal;
 import com.majruszs_difficulty.goals.TargetAsLeaderGoal;
 import com.mlib.MajruszLibrary;
-import com.mlib.WorldHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;

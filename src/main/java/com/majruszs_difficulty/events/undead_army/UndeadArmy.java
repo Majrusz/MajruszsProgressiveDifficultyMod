@@ -9,7 +9,6 @@ import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
 import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.TimeConverter;
-import com.mlib.WorldHelper;
 import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.block.Blocks;

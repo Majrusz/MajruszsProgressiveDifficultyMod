@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;

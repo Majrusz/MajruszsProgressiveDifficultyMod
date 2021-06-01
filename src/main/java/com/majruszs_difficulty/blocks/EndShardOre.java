@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.blocks;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.AvailabilityConfig;

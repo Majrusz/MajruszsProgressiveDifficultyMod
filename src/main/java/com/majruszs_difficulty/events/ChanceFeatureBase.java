@@ -1,9 +1,7 @@
 package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
-import com.mlib.WorldHelper;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
 

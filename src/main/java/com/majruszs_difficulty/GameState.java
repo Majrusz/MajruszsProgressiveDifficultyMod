@@ -7,8 +7,6 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import javax.annotation.Nullable;
-
 /** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
 	public static final TextFormatting NORMAL_MODE_COLOR = TextFormatting.WHITE;

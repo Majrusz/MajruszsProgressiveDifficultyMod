@@ -5,7 +5,6 @@ import com.majruszs_difficulty.entities.CreeperlingEntity;
 import com.majruszs_difficulty.events.ChanceFeatureBase;
 import com.majruszs_difficulty.events.FeatureBase;
 import com.mlib.Random;
-import com.mlib.WorldHelper;
 import com.mlib.config.DoubleConfig;
 import com.mlib.events.ExplosionSizeEvent;
 import net.minecraft.entity.LivingEntity;

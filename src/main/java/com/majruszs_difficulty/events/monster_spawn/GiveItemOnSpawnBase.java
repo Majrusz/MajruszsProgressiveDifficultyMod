@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.events.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.mlib.WorldHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;

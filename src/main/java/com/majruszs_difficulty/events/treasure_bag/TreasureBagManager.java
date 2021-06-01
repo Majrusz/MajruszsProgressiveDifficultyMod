@@ -1,6 +1,5 @@
 package com.majruszs_difficulty.events.treasure_bag;
 
-import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.mlib.WorldHelper;
 import com.mlib.items.ItemHelper;

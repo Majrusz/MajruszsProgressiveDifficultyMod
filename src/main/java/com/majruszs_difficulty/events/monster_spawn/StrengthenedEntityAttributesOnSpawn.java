@@ -6,9 +6,7 @@ import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.world.server.ServerWorld;
 
 /** Increases damage and health of spawning hostile entities. */

@@ -19,8 +19,6 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
