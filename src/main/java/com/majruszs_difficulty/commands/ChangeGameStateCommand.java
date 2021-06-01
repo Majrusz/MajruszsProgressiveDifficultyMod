@@ -12,6 +12,10 @@ public final class ChangeGameStateCommand {
 	private ChangeGameStateCommand() {}
 
 	public static void register( CommandDispatcher< CommandSource > dispatcher ) {
+		dispatcher.register( Commands.literal( "currentgamestate" )
+			.requires( source->source.hasPermissionLevel( 0 ) )
+			.executes( entity->getCurrentState( entity.getSource() ) ) );
+
 		dispatcher.register( Commands.literal( "gamestate" )
 			.requires( source->source.hasPermissionLevel( 4 ) )
 			.then( Commands.literal( "normal" )
@@ -20,10 +24,6 @@ public final class ChangeGameStateCommand {
 				.executes( entity->changeState( entity.getSource(), GameState.State.EXPERT ) ) )
 			.then( Commands.literal( "master" )
 				.executes( entity->changeState( entity.getSource(), GameState.State.MASTER ) ) ) );
-
-		dispatcher.register( Commands.literal( "gamestate" )
-			.requires( source->source.hasPermissionLevel( 0 ) )
-			.executes( entity->getCurrentState( entity.getSource() ) ) );
 	}
 
 	public static int getCurrentState( CommandSource source ) {
