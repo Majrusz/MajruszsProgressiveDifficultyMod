@@ -5,6 +5,7 @@ import com.majruszs_difficulty.MajruszsHelper;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
+import com.mlib.config.DoubleConfig;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -40,8 +41,10 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 /** New late game crystal ore located in The End. */
 @Mod.EventBusSubscriber
 public class EndShardOre extends Block {
+	private static final String WARNING_TRANSLATION_KEY = "block.majruszs_difficulty.end_shard_ore.warning";
 	protected final ConfigGroup configGroup;
 	protected final AvailabilityConfig availability;
+	protected final DoubleConfig triggerDistance;
 
 	public EndShardOre() {
 		super( AbstractBlock.Properties.create( Material.IRON, MaterialColor.YELLOW )
@@ -50,12 +53,13 @@ public class EndShardOre extends Block {
 			.hardnessAndResistance( 30.0f, 1200.0f )
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 
-		this.configGroup = new ConfigGroup( "EndShardOre", "Configuration for new late game ore." );
-		FEATURES_GROUP.addGroup( this.configGroup );
-
 		String availabilityComment = "Should this ore be available in survival mode? (ore generation, loot tables etc.) (requires game restart!)";
+		String triggerComment = "Maximum distance within which all nearby Endermans will be triggered. (when block was mined)";
 		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, true, true );
-		this.configGroup.addConfig( this.availability );
+		this.triggerDistance = new DoubleConfig( "trigger_distance", triggerComment, false, 700.0, 0.0, 1e+6 );
+
+		this.configGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "EndShardOre", "Configuration for new late game ore." ) );
+		this.configGroup.addConfigs( this.availability, this.triggerDistance );
 	}
 
 	@Override
@@ -66,12 +70,11 @@ public class EndShardOre extends Block {
 	@SubscribeEvent
 	public static void onBlockDestroying( PlayerEvent.BreakSpeed event ) {
 		BlockState blockState = event.getState();
-		Block block = blockState.getBlock();
-		if( block.equals( Instances.END_SHARD_ORE ) ) {
-			PlayerEntity player = event.getPlayer();
-			player.sendStatusMessage(
-				new TranslationTextComponent( "block.majruszs_difficulty.end_shard_ore.warning" ).mergeStyle( TextFormatting.BOLD ), true );
-		}
+		if( !( blockState.getBlock() instanceof EndShardOre ) )
+			return;
+
+		PlayerEntity player = event.getPlayer();
+		player.sendStatusMessage( new TranslationTextComponent( WARNING_TRANSLATION_KEY ).mergeStyle( TextFormatting.BOLD ), true );
 	}
 
 	@SubscribeEvent
@@ -79,7 +82,7 @@ public class EndShardOre extends Block {
 		BlockState blockState = event.getState();
 
 		if( blockState.getBlock() instanceof EndShardOre )
-			targetEndermansOnEntity( event.getPlayer(), 1000.0 );
+			targetEndermansOnEntity( event.getPlayer(), Instances.END_SHARD_ORE.triggerDistance.get() );
 	}
 
 	/**
