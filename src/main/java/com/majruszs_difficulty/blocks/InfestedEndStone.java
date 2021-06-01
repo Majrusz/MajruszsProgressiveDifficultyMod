@@ -29,6 +29,7 @@ public class InfestedEndStone extends Block {
 	@Override
 	public void spawnAdditionalDrops( BlockState state, ServerWorld worldIn, BlockPos pos, ItemStack stack ) {
 		super.spawnAdditionalDrops( state, worldIn, pos, stack );
+
 		GameRules gameRules = worldIn.getGameRules();
 		if( gameRules.getBoolean( GameRules.DO_TILE_DROPS ) && EnchantmentHelper.getEnchantmentLevel( Enchantments.SILK_TOUCH, stack ) == 0 )
 			this.spawnEndermite( worldIn, pos );
@@ -40,6 +41,7 @@ public class InfestedEndStone extends Block {
 			this.spawnEndermite( ( ServerWorld )world, position );
 	}
 
+	/** Spawns a Endermite at given position. */
 	private void spawnEndermite( ServerWorld world, BlockPos position ) {
 		EndermiteEntity endermite = EntityType.ENDERMITE.create( world );
 		if( endermite == null )
