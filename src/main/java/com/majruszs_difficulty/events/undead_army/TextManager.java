@@ -25,7 +25,7 @@ public class TextManager {
 	}
 
 	public void notifyAboutStart( List< ServerPlayerEntity > players, Direction direction ) {
-		IFormattableTextComponent message = ( IFormattableTextComponent )this.approaching;
+		IFormattableTextComponent message = this.approaching.copyRaw();
 		message.appendString( " " );
 		message.append( new TranslationTextComponent( "majruszs_difficulty.undead_army." + direction.toString()
 			.toLowerCase() ) );
