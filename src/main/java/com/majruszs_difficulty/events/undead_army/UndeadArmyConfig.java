@@ -21,8 +21,6 @@ public class UndeadArmyConfig {
 	public final GameStateDoubleConfig armorChance;
 
 	public UndeadArmyConfig() {
-		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
-
 		String availabilityComment = "Is Undead Army enabled?";
 		String killComment = "Amount of undead required to kill to start Undead Army.";
 		String scaleComment = "Undead Army size extra multiplier with each extra player.";
@@ -37,8 +35,40 @@ public class UndeadArmyConfig {
 		this.treasureBagReward = new GameStateIntegerConfig( "TreasureBags", bagComment, 1, 1, 2, 1, 5 );
 		this.enchantedItems = new GameStateDoubleConfig( "EnchantedItems", enchantComment, 0.125, 0.25, 0.5, 0.0, 1.0 );
 		this.armorChance = new GameStateDoubleConfig( "ArmorChance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
+
+		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
 		this.group.addConfigs( this.availability, this.killRequirement, this.scaleWithPlayers, this.experienceReward, this.treasureBagReward,
 			this.enchantedItems, this.armorChance
 		);
+	}
+
+	/** Returns required amount of killed undead to start the Undead Army. */
+	public int getRequiredKills() {
+		return this.killRequirement.get();
+	}
+
+	/** Returns size multiplier depending on amount of players participating in. */
+	public double getSizeMultiplier( int amountOfPlayers ) {
+		return 1.0 + this.scaleWithPlayers.get() * ( amountOfPlayers - 1 );
+	}
+
+	/** Returns amount of experience as a reward for completing the Undead Army. */
+	public int getAmountOfVictoryExperience() {
+		return this.experienceReward.getCurrentGameStateValue();
+	}
+
+	/** Returns amount of Treasure Bags every player should get after victory. */
+	public int getAmountOfVictoryTreasureBags() {
+		return this.treasureBagReward.getCurrentGameStateValue();
+	}
+
+	/** Returns chance for undead to have a enchanted items instead of standard ones. (separately for each item) */
+	public double getEnchantedItemChance() {
+		return this.enchantedItems.getCurrentGameStateValue();
+	}
+
+	/** Returns a chance for undead to have a armor piece. (separately for each armor piece) */
+	public double getArmorPieceChance() {
+		return this.armorChance.getCurrentGameStateValue();
 	}
 }
