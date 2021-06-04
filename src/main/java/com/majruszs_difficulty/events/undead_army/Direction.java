@@ -27,7 +27,7 @@ public enum Direction {
 		return Direction.values()[ MajruszLibrary.RANDOM.nextInt( Direction.values().length ) ];
 	}
 
-	/** Returns direction by given name. */
+	/** Returns direction by given string. */
 	public static Direction getByName( String name ) {
 		for( Direction direction : Direction.values() )
 			if( name.equalsIgnoreCase( direction.name() ) )
