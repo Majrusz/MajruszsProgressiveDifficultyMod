@@ -349,7 +349,7 @@ public class UndeadArmy {
 
 	/** Spawns monsters depending on current wave. */
 	private void spawnWaveEnemies() {
-		double playersFactor = 1.0 + ( Math.max( 1, countNearbyPlayers() ) - 1 ) * Instances.UNDEAD_ARMY_CONFIG.scaleWithPlayers.get();
+		double playersFactor = Instances.UNDEAD_ARMY_CONFIG.getSizeMultiplier( countNearbyPlayers() );
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
 
@@ -526,12 +526,12 @@ public class UndeadArmy {
 
 	/** Returns amount of treasure bag each player will receive. */
 	private int getTreasureBagsAmount() {
-		return Instances.UNDEAD_ARMY_CONFIG.treasureBagReward.getCurrentGameStateValue();
+		return Instances.UNDEAD_ARMY_CONFIG.getAmountOfVictoryTreasureBags();
 	}
 
 	/** Returns amount of experience each player will receive. */
 	private int getExperienceAmount() {
-		return Instances.UNDEAD_ARMY_CONFIG.experienceReward.getCurrentGameStateValue();
+		return Instances.UNDEAD_ARMY_CONFIG.getAmountOfVictoryExperience();
 	}
 
 	/** Returns total amount of waves. */
@@ -541,11 +541,11 @@ public class UndeadArmy {
 
 	/** Returns extra chance for entities to have enchanted items. */
 	private double getEnchantmentOdds() {
-		return Instances.UNDEAD_ARMY_CONFIG.enchantedItems.getCurrentGameStateValue();
+		return Instances.UNDEAD_ARMY_CONFIG.getEnchantedItemChance();
 	}
 
 	/** Returns chance for entities to have armor piece. */
 	private double getArmorOdds() {
-		return Instances.UNDEAD_ARMY_CONFIG.armorChance.getCurrentGameStateValue();
+		return Instances.UNDEAD_ARMY_CONFIG.getArmorPieceChance();
 	}
 }

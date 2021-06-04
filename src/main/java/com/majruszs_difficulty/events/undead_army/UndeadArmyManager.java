@@ -74,7 +74,7 @@ public class UndeadArmyManager extends WorldSavedData {
 		BlockPos attackPosition = getAttackPosition( player );
 
 		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere(
-			attackPosition ) || Instances.UNDEAD_ARMY_CONFIG.availability.isDisabled() )
+			attackPosition ) || Instances.UNDEAD_ARMY_CONFIG.isUndeadArmyEnabled() )
 			return false;
 
 		if( !WorldHelper.isEntityIn( player, World.OVERWORLD ) )

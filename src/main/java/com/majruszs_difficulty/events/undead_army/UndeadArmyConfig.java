@@ -11,23 +11,23 @@ import static com.majruszs_difficulty.MajruszsDifficulty.CONFIG_HANDLER;
 
 /** All possible configurations for Undead Army. */
 public class UndeadArmyConfig {
-	public final ConfigGroup group;
-	public final AvailabilityConfig availability;
-	public final IntegerConfig killRequirement;
-	public final DoubleConfig scaleWithPlayers;
-	public final GameStateIntegerConfig experienceReward;
-	public final GameStateIntegerConfig treasureBagReward;
-	public final GameStateDoubleConfig enchantedItems;
-	public final GameStateDoubleConfig armorChance;
+	private final ConfigGroup group;
+	private final AvailabilityConfig availability;
+	private final IntegerConfig killRequirement;
+	private final DoubleConfig scaleWithPlayers;
+	private final GameStateIntegerConfig experienceReward;
+	private final GameStateIntegerConfig treasureBagReward;
+	private final GameStateDoubleConfig enchantedItems;
+	private final GameStateDoubleConfig armorChance;
 
 	public UndeadArmyConfig() {
-		String availabilityComment = "Is Undead Army enabled?";
-		String killComment = "Amount of undead required to kill to start Undead Army.";
+		String availabilityComment = "Is the Undead Army enabled?";
+		String killComment = "Required amount of killed undead to start the Undead Army.";
 		String scaleComment = "Undead Army size extra multiplier with each extra player.";
-		String expComment = "Experience for each player after defeating Undead Army.";
-		String bagComment = "Treasure Bags for each player after defeating Undead Army.";
-		String enchantComment = "Chance for entities to have enchanted items.";
-		String armorComment = "Chance for entities to have a armor piece. Separate chance for each piece.";
+		String expComment = "Experience for each player after defeating the Undead Army.";
+		String bagComment = "Treasure Bags for each player after defeating the Undead Army.";
+		String enchantComment = "Chance of the undead to have enchanted items. (separate for each item)";
+		String armorComment = "Chance of the undead to have armor piece. (separate for each armor piece)";
 		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, false, true );
 		this.killRequirement = new IntegerConfig( "kill_requirement", killComment, false, 100, 10, 1000 );
 		this.scaleWithPlayers = new DoubleConfig( "player_scale", scaleComment, false, 0.5, 0.1, 1.0 );
@@ -42,6 +42,11 @@ public class UndeadArmyConfig {
 		);
 	}
 
+	/** Returns whether Undead Army is enabled. */
+	public boolean isUndeadArmyEnabled() {
+		return this.availability.isEnabled();
+	}
+
 	/** Returns required amount of killed undead to start the Undead Army. */
 	public int getRequiredKills() {
 		return this.killRequirement.get();
@@ -49,7 +54,7 @@ public class UndeadArmyConfig {
 
 	/** Returns size multiplier depending on amount of players participating in. */
 	public double getSizeMultiplier( int amountOfPlayers ) {
-		return 1.0 + this.scaleWithPlayers.get() * ( amountOfPlayers - 1 );
+		return 1.0 + this.scaleWithPlayers.get() * ( Math.max( 1, amountOfPlayers ) - 1 );
 	}
 
 	/** Returns amount of experience as a reward for completing the Undead Army. */
