@@ -47,12 +47,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import static com.majruszs_difficulty.events.undead_army.UndeadArmyHelper.ARMOR_COLOR;
+
 /** Class representing Undead Army which is new raid activated after killing certain undead at night. */
 @Mod.EventBusSubscriber
 public class UndeadArmy {
-	public final static int ARMOR_COLOR = 0x92687b;
-	private final static int BETWEEN_RAID_TICKS_MAXIMUM = TimeConverter.secondsToTicks( 10.0 );
-	private final static int TICKS_INACTIVE_MAXIMUM = TimeConverter.minutesToTicks( 15.0 );
 	private final static int SPAWN_RADIUS = 70;
 	private final static TextManager TEXT_MANAGER = new TextManager();
 	private final ServerBossInfo bossInfo = new ServerBossInfo( TEXT_MANAGER.title, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
@@ -63,14 +62,18 @@ public class UndeadArmy {
 	private long ticksActive = 0;
 	private int ticksInactive = 0;
 	private int ticksWaveActive = 0;
-	private int betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM;
+	private int ticksBetweenWaves = 0;
 	private int currentWave = 0;
 	private int undeadToKill = 1;
 	private int undeadKilled = 0;
 	private Status status = Status.BETWEEN_WAVES;
 	private boolean spawnerWasCreated = false;
 
+	private int ticksBetweenWavesMaximum, ticksInactiveMaximum;
+
 	public UndeadArmy( ServerWorld world, BlockPos positionToAttack, Direction direction ) {
+		setConfigurationValues();
+
 		this.world = world;
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
@@ -79,6 +82,8 @@ public class UndeadArmy {
 	}
 
 	public UndeadArmy( ServerWorld world, CompoundNBT nbt ) {
+		setConfigurationValues();
+
 		this.positionToAttack = new BlockPos( nbt.getInt( "PositionX" ), nbt.getInt( "PositionY" ), nbt.getInt( "PositionZ" ) );
 		this.direction = Direction.getByName( nbt.getString( "Direction" ) );
 		this.world = world;
@@ -86,7 +91,7 @@ public class UndeadArmy {
 		this.ticksActive = nbt.getLong( "TicksActive" );
 		this.ticksInactive = nbt.getInt( "TicksInactive" );
 		this.ticksWaveActive = nbt.getInt( "TicksWaveActive" );
-		this.betweenRaidTicks = nbt.getInt( "BetweenRaidTick" );
+		this.ticksBetweenWaves = nbt.getInt( "BetweenRaidTick" );
 		this.currentWave = nbt.getInt( "CurrentWave" );
 		this.undeadToKill = nbt.getInt( "UndeadToKill" );
 		this.undeadKilled = nbt.getInt( "UndeadKilled" );
@@ -94,6 +99,14 @@ public class UndeadArmy {
 		this.spawnerWasCreated = nbt.getBoolean( "SpawnerWasCreated" );
 
 		updateBarText();
+	}
+
+	/** Sets the value of variables depending on config values. */
+	private void setConfigurationValues() {
+		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+
+		this.ticksBetweenWaves = this.ticksBetweenWavesMaximum = config.getAmountOfTicksBetweenWaves();
+		this.ticksInactiveMaximum = config.getAmountOfInactivityTicks();
 	}
 
 	/** Checks whether entity was spawned on Undead Army. */
@@ -113,7 +126,7 @@ public class UndeadArmy {
 		nbt.putLong( "TicksActive", this.ticksActive );
 		nbt.putInt( "TicksInactive", this.ticksInactive );
 		nbt.putInt( "TicksWaveActive", this.ticksWaveActive );
-		nbt.putInt( "BetweenRaidTicks", this.betweenRaidTicks );
+		nbt.putInt( "BetweenRaidTicks", this.ticksBetweenWaves );
 		nbt.putInt( "CurrentWave", this.currentWave );
 		nbt.putInt( "UndeadToKill", this.undeadToKill );
 		nbt.putInt( "UndeadKilled", this.undeadKilled );
@@ -234,10 +247,10 @@ public class UndeadArmy {
 
 	/** Calculates single frame when waiting on next wave. */
 	private void tickBetweenWaves() {
-		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
-		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.betweenRaidTicks ) / BETWEEN_RAID_TICKS_MAXIMUM, 0.0f, 1.0f ) );
+		this.ticksBetweenWaves = Math.max( this.ticksBetweenWaves - 1, 0 );
+		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.ticksBetweenWaves ) / this.ticksBetweenWavesMaximum, 0.0f, 1.0f ) );
 
-		if( this.betweenRaidTicks == 0 )
+		if( this.ticksBetweenWaves == 0 )
 			nextWave();
 	}
 
@@ -265,17 +278,17 @@ public class UndeadArmy {
 
 	/** Calculates single frame when Undead Army was defeated. */
 	private void tickVictory() {
-		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
+		this.ticksBetweenWaves = Math.max( this.ticksBetweenWaves - 1, 0 );
 
-		if( this.betweenRaidTicks == 0 )
+		if( this.ticksBetweenWaves == 0 )
 			finish();
 	}
 
 	/** Calculates single frame when Undead Army defeated players. */
 	private void tickFailed() {
-		this.betweenRaidTicks = Math.max( this.betweenRaidTicks - 1, 0 );
+		this.ticksBetweenWaves = Math.max( this.ticksBetweenWaves - 1, 0 );
 
-		if( this.betweenRaidTicks == 0 )
+		if( this.ticksBetweenWaves == 0 )
 			finish();
 	}
 
@@ -286,7 +299,7 @@ public class UndeadArmy {
 		if( countNearbyPlayers() > 0 )
 			this.status = Status.ONGOING;
 
-		if( this.ticksInactive >= TICKS_INACTIVE_MAXIMUM )
+		if( this.ticksInactive >= this.ticksInactiveMaximum )
 			endWave();
 	}
 
@@ -301,20 +314,20 @@ public class UndeadArmy {
 
 	/** Ends current wave and changes status depending on wave. */
 	private void endWave() {
-		if( this.ticksInactive >= TICKS_INACTIVE_MAXIMUM ) {
+		if( this.ticksInactive >= this.ticksInactiveMaximum ) {
 			this.status = Status.FAILED;
-			this.betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM * 2;
+			this.ticksBetweenWaves = this.ticksBetweenWavesMaximum * 2;
 			this.bossInfo.setPercent( 1.0f );
 			this.spawnerWasCreated = false;
 			createSpawner();
 		} else if( this.currentWave >= getWaves() ) {
 			this.status = Status.VICTORY;
-			this.betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM * 2;
+			this.ticksBetweenWaves = this.ticksBetweenWavesMaximum * 2;
 			rewardPlayers();
 			this.bossInfo.setPercent( 1.0f );
 		} else {
 			this.status = Status.BETWEEN_WAVES;
-			this.betweenRaidTicks = BETWEEN_RAID_TICKS_MAXIMUM;
+			this.ticksBetweenWaves = this.ticksBetweenWavesMaximum;
 		}
 
 		updateBarText();
