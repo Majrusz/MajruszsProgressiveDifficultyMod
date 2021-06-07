@@ -1,13 +1,16 @@
 package com.majruszs_difficulty.events.on_death;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+
+import javax.annotation.Nullable;
 
 /** Interface for all events that do something on certain entity death. */
 public interface IOnDeath {
 	/** Called when all requirements were met. */
-	void onExecute( LivingEntity entity, ServerWorld world );
+	void onExecute( @Nullable LivingEntity attacker, LivingEntity victim, LivingDeathEvent event );
 
 	/** Checking if all conditions were met. */
-	boolean shouldBeExecuted( LivingEntity entity );
+	boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource );
 }
