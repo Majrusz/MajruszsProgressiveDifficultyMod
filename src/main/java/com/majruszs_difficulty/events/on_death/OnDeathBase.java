@@ -19,6 +19,6 @@ public abstract class OnDeathBase extends ChanceFeatureBase implements IOnDeath 
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return tryChance( target ) && target.world instanceof ServerWorld;
+		return tryChance( target ) && isEnabled() && GameState.atLeast( this.minimumState ) && target.world instanceof ServerWorld;
 	}
 }

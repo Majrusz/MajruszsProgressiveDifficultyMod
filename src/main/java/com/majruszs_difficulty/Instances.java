@@ -9,6 +9,8 @@ import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
 import com.majruszs_difficulty.events.FishingRewarder;
 import com.majruszs_difficulty.events.IncreaseGameDifficulty;
+import com.majruszs_difficulty.events.on_death.OnDeathEventHandler;
+import com.majruszs_difficulty.events.on_death.SpawnPlayerZombieOnDeath;
 import com.majruszs_difficulty.events.special.SplitCreeperToCreeperlings;
 import com.majruszs_difficulty.events.special.StrongerExplosions;
 import com.majruszs_difficulty.events.monster_spawn.*;
@@ -212,6 +214,9 @@ public class Instances {
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new CreateJockeyOnSpiderSpawn() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnEliteSkeletonGroup() );
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new AddAIToCreeperOnSpawn() );
+
+		// On death events
+		OnDeathEventHandler.REGISTRY_LIST.add( new SpawnPlayerZombieOnDeath() );
 
 		// Events
 		STRONGER_EXPLOSIONS = new StrongerExplosions();
