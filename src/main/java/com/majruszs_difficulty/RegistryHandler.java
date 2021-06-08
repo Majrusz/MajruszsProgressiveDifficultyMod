@@ -103,6 +103,7 @@ public class RegistryHandler {
 		Instances.WITHER_TREASURE_BAG.register();
 		Instances.ENDER_DRAGON_TREASURE_BAG.register();
 		Instances.FISHING_TREASURE_BAG.register();
+		Instances.PILLAGER_TREASURE_BAG.register();
 	}
 
 	/** Registration of items. */

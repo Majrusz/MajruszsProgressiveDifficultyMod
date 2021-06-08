@@ -7,7 +7,7 @@ import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.effects.BleedingImmunityEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.events.ExperienceBonus;
-import com.majruszs_difficulty.events.FishingRewarder;
+import com.majruszs_difficulty.events.treasure_bag.FishingRewarder;
 import com.majruszs_difficulty.events.IncreaseGameDifficulty;
 import com.majruszs_difficulty.events.on_death.OnDeathEventHandler;
 import com.majruszs_difficulty.events.on_death.SpawnPlayerZombieOnDeath;
@@ -69,6 +69,7 @@ public class Instances {
 	public static final TreasureBagItem WITHER_TREASURE_BAG;
 	public static final TreasureBagItem ENDER_DRAGON_TREASURE_BAG;
 	public static final TreasureBagItem FISHING_TREASURE_BAG;
+	public static final TreasureBagItem PILLAGER_TREASURE_BAG;
 
 	// Blocks
 	public static final EndShardOre END_SHARD_ORE;
@@ -140,6 +141,7 @@ public class Instances {
 		WITHER_TREASURE_BAG = new TreasureBagItem( "wither", "Wither" );
 		ENDER_DRAGON_TREASURE_BAG = new TreasureBagItem( "ender_dragon", "Ender Dragon" );
 		FISHING_TREASURE_BAG = new TreasureBagItem( "fishing", "Fishing" );
+		PILLAGER_TREASURE_BAG = new TreasureBagItem( "pillager", "Pillager Raid" );
 
 		// Blocks
 		END_SHARD_ORE = new EndShardOre();
