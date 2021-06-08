@@ -51,7 +51,7 @@ public class BleedingEffect extends Effect {
 		String amplifierComment = "Bleeding amplifier.";
 		String blackComment = "List of entities that are immune to Bleeding effect. (only human-like mobs and animals)";
 		this.damage = new DoubleConfig( "damage", damageComment, false, 1.0, 0.0, 20.0 );
-		this.baseCooldown = new DurationConfig( "cooldown", cooldownComment, false, 5.0, 0.0, 20.0 );
+		this.baseCooldown = new DurationConfig( "cooldown", cooldownComment, false, 4.0, 0.0, 20.0 );
 		this.armorChanceReduction = new DoubleConfig( "armor_reduction", armorComment, false, 0.2, 0.0, 0.25 );
 		this.amplifier = new GameStateIntegerConfig( "amplifier", amplifierComment, 0, 1, 2, 0, 10 );
 		this.entitiesBlackList = new StringListConfig( "black_list", blackComment, false, "minecraft:skeleton_horse" );
