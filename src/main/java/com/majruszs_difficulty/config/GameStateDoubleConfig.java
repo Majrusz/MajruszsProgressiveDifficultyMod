@@ -3,11 +3,11 @@ package com.majruszs_difficulty.config;
 import com.majruszs_difficulty.GameState;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.config.IConfig;
+import com.mlib.config.IConfigType;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 /** Config with double value depending on current game state. */
-public class GameStateDoubleConfig implements IConfig {
+public class GameStateDoubleConfig implements IConfigType< Double > {
 	protected final ConfigGroup group;
 	protected final DoubleConfig normal;
 	protected final DoubleConfig expert;
@@ -25,11 +25,18 @@ public class GameStateDoubleConfig implements IConfig {
 
 	/** Returns double value depending on current game state. */
 	public double getCurrentGameStateValue() {
-		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
+		return get();
 	}
 
+	/** Builds current config. */
 	@Override
 	public void build( ForgeConfigSpec.Builder builder ) {
 		this.group.build( builder );
+	}
+
+	/** Returns value directly stored in a config. */
+	@Override
+	public Double get() {
+		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
 	}
 }

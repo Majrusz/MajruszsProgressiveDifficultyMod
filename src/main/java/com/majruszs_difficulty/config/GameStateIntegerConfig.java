@@ -2,12 +2,12 @@ package com.majruszs_difficulty.config;
 
 import com.majruszs_difficulty.GameState;
 import com.mlib.config.ConfigGroup;
-import com.mlib.config.IConfig;
+import com.mlib.config.IConfigType;
 import com.mlib.config.IntegerConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 /** Config with integer value depending on current game state. */
-public class GameStateIntegerConfig implements IConfig {
+public class GameStateIntegerConfig implements IConfigType< Integer > {
 	protected final ConfigGroup group;
 	protected final IntegerConfig normal;
 	protected final IntegerConfig expert;
@@ -23,13 +23,20 @@ public class GameStateIntegerConfig implements IConfig {
 		this.group.addConfigs( this.normal, this.expert, this.master );
 	}
 
-	/** Returns integer value depending on current game state. */
-	public int getCurrentGameStateValue() {
-		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
-	}
-
+	/** Builds current config. */
 	@Override
 	public void build( ForgeConfigSpec.Builder builder ) {
 		this.group.build( builder );
+	}
+
+	/** Returns value directly stored in a config. */
+	@Override
+	public Integer get() {
+		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
+	}
+
+	/** Returns integer value depending on current game state. */
+	public int getCurrentGameStateValue() {
+		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
 	}
 }
