@@ -1,8 +1,11 @@
 package com.majruszs_difficulty.events.undead_army;
 
+import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
+import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.mlib.config.*;
+import net.minecraft.entity.EntityType;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.CONFIG_HANDLER;
 
@@ -49,13 +52,13 @@ public class UndeadArmyConfig {
 
 		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
 		this.group.addConfigs( this.availability, this.killRequirement, this.sizeMultiplier, this.experienceReward, this.treasureBagReward,
-			this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves
+			this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration
 		);
 	}
 
-	/** Returns whether Undead Army is enabled. */
-	public boolean isUndeadArmyEnabled() {
-		return this.availability.isEnabled();
+	/** Returns whether Undead Army is disabled. */
+	public boolean isUndeadArmyDisabled() {
+		return this.availability.isDisabled();
 	}
 
 	/** Returns required amount of killed undead to start the Undead Army. */
@@ -96,5 +99,15 @@ public class UndeadArmyConfig {
 	/** Returns amount of ticks when the Undead Army will end if there is not any player nearby. */
 	public int getAmountOfInactivityTicks() {
 		return this.maximumInactiveDuration.getDuration();
+	}
+
+	/** Returns amount of waves. */
+	public int getWaves() {
+		return GameState.getValueDependingOnCurrentGameState( 3, 4, 5 );
+	}
+
+	/** Returns entity type for monster spawner. */
+	public EntityType< ? > getEntityTypeForMonsterSpawner() {
+		return GameState.getValueDependingOnCurrentGameState( EntityType.ZOMBIE, EntityType.SKELETON, EliteSkeletonEntity.type );
 	}
 }

@@ -29,7 +29,7 @@ public final class UndeadArmyManagerCommand {
 
 	/** Command responsible for stopping Undead Army in the player position. */
 	public static int stopUndeadArmy( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
 		if( undeadArmy == null ) {
 			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;
@@ -41,7 +41,7 @@ public final class UndeadArmyManagerCommand {
 
 	/** Command responsible for highlighting all Undead Army units in the player position. */
 	public static int highlightUndeadArmy( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
 		if( undeadArmy == null ) {
 			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;
@@ -53,7 +53,7 @@ public final class UndeadArmyManagerCommand {
 
 	/** Command responsible for informing the player how many Undead Army units left in the player position. */
 	public static int countUndeadLeft( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
 		if( undeadArmy == null ) {
 			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;
@@ -67,7 +67,7 @@ public final class UndeadArmyManagerCommand {
 
 	/** Command responsible for killing all Undead Army entities. */
 	public static int killUndeadArmy( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( source.getPos() ) );
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
 		if( undeadArmy == null ) {
 			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
 			return -1;

@@ -2,23 +2,20 @@ package com.majruszs_difficulty.events.undead_army;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
+import com.mlib.damage.DamageHelper;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-/** Counting killed undead and starting Undead Army if all conditions were met. */
+/** Counting killed undead and starting the Undead Army if all conditions were met. */
 @Mod.EventBusSubscriber
 public class CountKilledUndead {
-	public static final String NBT_TAG = "UndeadKills";
-
 	@SubscribeEvent
 	public static void onUndeadKill( LivingDeathEvent event ) {
 		if( !( event.getEntityLiving() instanceof MonsterEntity ) )
@@ -28,29 +25,28 @@ public class CountKilledUndead {
 		if( monster.getCreatureAttribute() != CreatureAttribute.UNDEAD )
 			return;
 
-		if( monster.isServerWorld() && RegistryHandler.UNDEAD_ARMY_MANAGER.doesEntityBelongToUndeadArmy( monster ) )
-			if( updateUndeadArmy( monster.getPositionVec() ) )
-				return;
-
-		DamageSource damageSource = event.getSource();
-		if( !( damageSource.getTrueSource() instanceof PlayerEntity ) )
+		if( monster.isServerWorld() && RegistryHandler.UNDEAD_ARMY_MANAGER.doesEntityBelongToUndeadArmy( monster ) && updateUndeadArmyKillCounter(
+			monster.getPositionVec() ) )
 			return;
 
-		PlayerEntity player = ( PlayerEntity )damageSource.getTrueSource();
+		PlayerEntity player = DamageHelper.getPlayerFromDamageSource( event.getSource() );
+		if( player == null )
+			return;
+
 		increaseKill( player );
 		spawnArmyIfPossible( player );
 	}
 
-	/** Returns current undead kill counter for given player. */
+	/** Returns amount of undead killed by the player. */
 	public static int getKills( PlayerEntity player ) {
-		CompoundNBT nbt = player.getPersistentData();
-		return nbt.getInt( NBT_TAG );
+		return player.getPersistentData()
+			.getInt( UndeadArmyKeys.KILLED );
 	}
 
-	/** Updates player's kill counter. */
+	/** Increases player's kill counter by 1. */
 	protected static void increaseKill( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
-		nbt.putInt( NBT_TAG, getKills( player ) + 1 );
+		nbt.putInt( UndeadArmyKeys.KILLED, getKills( player ) + 1 );
 
 		player.writeAdditional( nbt );
 	}
@@ -58,16 +54,18 @@ public class CountKilledUndead {
 	/** Spawns Undead Army at player's position if player met all requirements. */
 	private static void spawnArmyIfPossible( PlayerEntity player ) {
 		CompoundNBT nbt = player.getPersistentData();
+		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 
-		if( nbt.getInt( NBT_TAG ) >= Instances.UNDEAD_ARMY_CONFIG.getRequiredKills() && player.world instanceof ServerWorld )
+		if( nbt.getInt( UndeadArmyKeys.KILLED ) >= config.getRequiredKills() && player.isServerWorld() )
 			if( RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player ) )
-				nbt.putInt( NBT_TAG, 0 );
+				nbt.putInt( UndeadArmyKeys.KILLED, 0 );
 	}
 
-	private static boolean updateUndeadArmy( Vector3d position ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findUndeadArmy( new BlockPos( position ) );
+	/** Updates kill counter of the Undead Army at given position. */
+	private static boolean updateUndeadArmyKillCounter( Vector3d position ) {
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
-			undeadArmy.onUndeadKill();
+			undeadArmy.increaseUndeadCounter();
 			return true;
 		}
 

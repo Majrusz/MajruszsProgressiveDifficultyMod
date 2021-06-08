@@ -27,10 +27,10 @@ import java.util.Optional;
 @Mod.EventBusSubscriber
 public class UndeadArmyManager extends WorldSavedData {
 	public static final String DATA_NAME = "undead_army";
-	public static final double maximumDistanceToArmy = 12000.0;
-	private ServerWorld world;
+	public static final double MAXIMUM_DISTANCE_TO_ARMY = 12000.0;
 	private final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	private final List< UndeadArmyToBeSpawned > undeadArmiesToBeSpawned = new ArrayList<>();
+	private ServerWorld world;
 	private long ticksActive = 0L;
 
 	public UndeadArmyManager( ServerWorld world ) {
@@ -39,87 +39,30 @@ public class UndeadArmyManager extends WorldSavedData {
 		this.world = world;
 	}
 
+	/** Reads information about stored in memory Undead Armies. */
 	@Override
 	public void read( CompoundNBT nbt ) {
-		this.ticksActive = nbt.getLong( "TicksActive" );
-		ListNBT listNBT = nbt.getList( "Armies", 10 );
+		this.ticksActive = nbt.getLong( UndeadArmyKeys.TICKS_ACTIVE );
 
+		ListNBT listNBT = nbt.getList( UndeadArmyKeys.ARMIES, 10 );
 		for( int i = 0; i < listNBT.size(); i++ )
 			this.undeadArmies.add( new UndeadArmy( this.world, listNBT.getCompound( i ) ) );
 	}
 
+	/** Writes information about all current Undead Armies to memory. */
 	@Override
 	public CompoundNBT write( CompoundNBT compoundNBT ) {
-		compoundNBT.putLong( "Tick", this.ticksActive );
-		ListNBT listNBT = new ListNBT();
+		compoundNBT.putLong( UndeadArmyKeys.TICKS_ACTIVE, this.ticksActive );
 
+		ListNBT listNBT = new ListNBT();
 		for( UndeadArmy undeadArmy : this.undeadArmies ) {
 			CompoundNBT nbt = new CompoundNBT();
 			undeadArmy.write( nbt );
 			listNBT.add( nbt );
 		}
+		compoundNBT.put( UndeadArmyKeys.ARMIES, listNBT );
 
-		compoundNBT.put( "Armies", listNBT );
 		return compoundNBT;
-	}
-
-	public void updateWorld( ServerWorld world ) {
-		this.world = world;
-
-		for( UndeadArmy undeadArmy : this.undeadArmies )
-			undeadArmy.updateWorld( world );
-	}
-
-	public boolean spawn( PlayerEntity player ) {
-		BlockPos attackPosition = getAttackPosition( player );
-
-		if( findUndeadArmy( attackPosition ) != null || isArmySpawningHere(
-			attackPosition ) || Instances.UNDEAD_ARMY_CONFIG.isUndeadArmyEnabled() )
-			return false;
-
-		if( !WorldHelper.isEntityIn( player, World.OVERWORLD ) )
-			return false;
-
-		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
-		this.world.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundCategory.AMBIENT, 0.25f, 1.0f );
-
-		return true;
-	}
-
-	public void tick() {
-		this.ticksActive++;
-
-		tickArmiesToBeSpawned();
-		tickArmies();
-
-		if( this.ticksActive % 200L == 0L )
-			this.markDirty();
-	}
-
-	@Nullable
-	public UndeadArmy findUndeadArmy( BlockPos position ) {
-		UndeadArmy nearestArmy = null;
-		double maximumDistance = maximumDistanceToArmy;
-
-		for( UndeadArmy undeadArmy : this.undeadArmies ) {
-			double distance = undeadArmy.getPosition()
-				.distanceSq( position );
-
-			if( undeadArmy.isActive() && distance < maximumDistance ) {
-				nearestArmy = undeadArmy;
-				maximumDistance = distance;
-			}
-		}
-
-		return nearestArmy;
-	}
-
-	public boolean isArmySpawningHere( BlockPos position ) {
-		for( UndeadArmyToBeSpawned undeadArmyToBeSpawned : this.undeadArmiesToBeSpawned )
-			if( undeadArmyToBeSpawned.position.distanceSq( position ) < maximumDistanceToArmy )
-				return true;
-
-		return false;
 	}
 
 	@SubscribeEvent
@@ -130,11 +73,83 @@ public class UndeadArmyManager extends WorldSavedData {
 		RegistryHandler.UNDEAD_ARMY_MANAGER.tick();
 	}
 
-	public void updateUndeadGoals() {
+	/* ?????????????? */
+	public void updateWorld( ServerWorld world ) {
+		this.world = world;
+
 		for( UndeadArmy undeadArmy : this.undeadArmies )
-			undeadArmy.updateNearbyUndeadGoals();
+			undeadArmy.updateWorld( world );
 	}
 
+	/**
+	 Spawns the Undead Army at player's position if possible.
+
+	 @return Returns whether the Undead Army had spawned.
+	 */
+	public boolean spawn( PlayerEntity player ) {
+		BlockPos attackPosition = getAttackPosition( player );
+		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+
+		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere(
+			attackPosition ) || config.isUndeadArmyDisabled() || !WorldHelper.isEntityIn( player, World.OVERWORLD ) )
+			return false;
+
+		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
+		this.world.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundCategory.AMBIENT, 0.25f, 1.0f );
+
+		return true;
+	}
+
+	/** Updates information about armies that should be spawned and currently spawned. */
+	public void tick() {
+		this.ticksActive++;
+
+		tickArmiesToBeSpawned();
+		tickArmies();
+
+		if( this.ticksActive % 200L == 0L )
+			this.markDirty();
+	}
+
+	/**
+	 Returns nearest Undead Army to given position.
+
+	 @return May return null if there is none Undead Army or if one is very far away.
+	 */
+	@Nullable
+	public UndeadArmy findNearestUndeadArmy( BlockPos position ) {
+		UndeadArmy nearestArmy = null;
+		double minimumDistance = MAXIMUM_DISTANCE_TO_ARMY;
+
+		for( UndeadArmy undeadArmy : this.undeadArmies ) {
+			double distanceToUndeadArmy = undeadArmy.getAttackPosition()
+				.distanceSq( position );
+
+			if( undeadArmy.isActive() && distanceToUndeadArmy < minimumDistance ) {
+				nearestArmy = undeadArmy;
+				minimumDistance = distanceToUndeadArmy;
+			}
+		}
+
+		return nearestArmy;
+	}
+
+	/** Returns whether any Undead Army is spawning at given position. (when the sound is hearable) */
+	public boolean isArmySpawningHere( BlockPos position ) {
+		for( UndeadArmyToBeSpawned undeadArmyToBeSpawned : this.undeadArmiesToBeSpawned )
+			if( undeadArmyToBeSpawned.position.distanceSq( position ) < MAXIMUM_DISTANCE_TO_ARMY )
+				return true;
+
+		return false;
+	}
+
+	/** Updates AI goals of Undead Army after reloading the game. */
+	public void updateUndeadAIGoals() {
+		for( UndeadArmy undeadArmy : this.undeadArmies )
+			undeadArmy.updateNearbyUndeadAIGoals();
+	}
+
+	/** Updates all Undead Armies that will be spawned every tick. */
 	private void tickArmiesToBeSpawned() {
 		for( UndeadArmyToBeSpawned undeadArmyToBeSpawned : this.undeadArmiesToBeSpawned ) {
 			undeadArmyToBeSpawned.ticksToSpawn--;
@@ -146,6 +161,7 @@ public class UndeadArmyManager extends WorldSavedData {
 		this.undeadArmiesToBeSpawned.removeIf( undeadArmyToBeSpawned->undeadArmyToBeSpawned.ticksToSpawn == 0 );
 	}
 
+	/** Updates all Undead Armies every tick. */
 	private void tickArmies() {
 		for( UndeadArmy undeadArmy : this.undeadArmies )
 			undeadArmy.tick();
@@ -154,21 +170,15 @@ public class UndeadArmyManager extends WorldSavedData {
 			this.undeadArmies.removeIf( undeadArmy->!undeadArmy.isActive() );
 	}
 
+	/** Returns position to attack depending on player's position. */
 	private BlockPos getAttackPosition( PlayerEntity player ) {
 		Optional< BlockPos > bedPosition = player.getBedPosition();
 		BlockPos playerPosition = new BlockPos( player.getPositionVec() );
+		BlockPos attackPosition = !bedPosition.isPresent() || playerPosition.distanceSq(
+			bedPosition.get() ) >= MAXIMUM_DISTANCE_TO_ARMY ? playerPosition : bedPosition.get();
 
-		BlockPos attackPosition;
-		if( !bedPosition.isPresent() || playerPosition.distanceSq( bedPosition.get() ) >= maximumDistanceToArmy )
-			attackPosition = playerPosition;
-		else
-			attackPosition = bedPosition.get();
-
-		int x = attackPosition.getX();
-		int z = attackPosition.getZ();
-		int y = this.world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z );
-
-		return new BlockPos( x, y, z );
+		int x = attackPosition.getX(), z = attackPosition.getZ();
+		return new BlockPos( x, this.world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z ), z );
 	}
 
 	/** Checks whether entity was spawned on Undead Army. */
@@ -176,6 +186,7 @@ public class UndeadArmyManager extends WorldSavedData {
 		return UndeadArmy.doesEntityBelongToUndeadArmy( entity );
 	}
 
+	/** Struct that holds information where should Undead Army be spawned. (because firstly plays a sound and then after few seconds Undead Army will truly spawn) */
 	public static class UndeadArmyToBeSpawned {
 		public int ticksToSpawn;
 		public BlockPos position;
