@@ -8,7 +8,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.monster.HuskEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -44,7 +46,8 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 	public void onExecute( @Nullable LivingEntity attacker, LivingEntity target, LivingDeathEvent event ) {
 		ServerWorld world = ( ServerWorld )target.world;
 		PlayerEntity player = ( PlayerEntity )target;
-		Entity entity = EntityType.ZOMBIE.spawn( world, null, null, player.getPosition(), SpawnReason.EVENT, true, true );
+		EntityType< ? extends ZombieEntity > zombieType = getZombieType( attacker );
+		Entity entity = zombieType.spawn( world, null, null, player.getPosition(), SpawnReason.EVENT, true, true );
 		if( entity == null )
 			return;
 
@@ -65,9 +68,10 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		boolean hasPlayerDied = target instanceof PlayerEntity;
-		boolean isSourceZombieOrBleeding = attacker instanceof ZombieEntity || damageSource.damageType.equals( Instances.BLEEDING.getName() );
+		boolean hasDiedFromBleeding = damageSource.damageType.equals( Instances.BLEEDING.getName() );
+		boolean hasDiedFromZombie = attacker instanceof ZombieEntity;
 
-		return super.shouldBeExecuted( attacker, target, damageSource ) && hasPlayerDied && isSourceZombieOrBleeding;
+		return super.shouldBeExecuted( attacker, target, damageSource ) && hasPlayerDied && ( hasDiedFromZombie || hasDiedFromBleeding );
 	}
 
 	/** Returns player's head item stack. */
@@ -79,5 +83,15 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 		playerSkull.setTag( nbt );
 
 		return playerSkull;
+	}
+
+	/** Returns Zombie type depending on entity that killed the player. */
+	private EntityType< ? extends ZombieEntity > getZombieType( @Nullable LivingEntity attacker ) {
+		if( attacker instanceof ZombifiedPiglinEntity )
+			return EntityType.ZOMBIFIED_PIGLIN;
+		else if( attacker instanceof HuskEntity )
+			return EntityType.HUSK;
+		else
+			return EntityType.ZOMBIE;
 	}
 }
