@@ -63,18 +63,18 @@ public class BleedingEffect extends Effect {
 	/** Called every time when effect 'isReady'. */
 	@Override
 	public void performEffect( LivingEntity entity, int amplifier ) {
-		float damageAmount = ( float )this.damage.get();
+		double damageAmount = this.damage.get();
 
 		if( entity.getActivePotionEffect( Instances.BLEEDING ) instanceof BleedingEffectInstance ) {
 			BleedingEffectInstance bleedingEffectInstance = ( BleedingEffectInstance )entity.getActivePotionEffect( Instances.BLEEDING );
 
 			Vector3d motion = entity.getMotion();
 			entity.attackEntityFrom( bleedingEffectInstance != null ? new EntityBleedingDamageSource(
-				bleedingEffectInstance.damageSourceEntity ) : Instances.DamageSources.BLEEDING, damageAmount );
+				bleedingEffectInstance.damageSourceEntity ) : Instances.DamageSources.BLEEDING, ( float )damageAmount );
 			entity.setMotion( motion ); // sets previous motion to avoid any jumping from bleeding
 
 		} else {
-			entity.attackEntityFrom( Instances.DamageSources.BLEEDING, damageAmount );
+			entity.attackEntityFrom( Instances.DamageSources.BLEEDING, ( float )damageAmount );
 		}
 	}
 
