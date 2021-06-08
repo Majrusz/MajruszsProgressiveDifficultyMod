@@ -45,9 +45,7 @@ public class IncreaseGameDifficulty {
 		String dimensionsMasterComment = "List of dimensions starting Master Mode when a player enters it for the first time.";
 		String anyDimensionComment = "Should entering any dimension start Expert Mode?";
 		this.entitiesStartingExpertMode = new StringListConfig( "entities_expert", entitiesExpertComment, false, "none" );
-		this.entitiesStartingMasterMode = new StringListConfig( "entities_master", entitiesMasterComment, false, "minecraft:ender_dragon",
-			"minecraft:wither"
-		);
+		this.entitiesStartingMasterMode = new StringListConfig( "entities_master", entitiesMasterComment, false, "minecraft:ender_dragon" );
 		this.dimensionsStartingExpertMode = new StringListConfig( "dimensions_expert", dimensionsExpertComment, false, "minecraft:the_nether" );
 		this.dimensionsStartingMasterMode = new StringListConfig( "dimensions_master", dimensionsMasterComment, false, "none" );
 		this.enteringAnyDimensionStartsExpertMode = new AvailabilityConfig( "any_dimension_expert", anyDimensionComment, false, true );
