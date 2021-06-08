@@ -391,13 +391,13 @@ public class UndeadArmy {
 	/** Checks whether Undead Army should be highlighted. */
 	private boolean shouldEntitiesBeHighlighted() {
 		return this.ticksWaveActive >= TimeConverter.minutesToTicks(
-			0.75 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill / 2;
+			1.5 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill / 2;
 	}
 
 	/** Checks whether wave should be ended earlier. */
 	private boolean shouldWaveEndPrematurely() {
 		boolean isOnlyFewUndeadLeft = this.undeadKilled >= ( this.undeadToKill * 0.8 ) && countUndeadEntitiesLeft() < 3;
-		return isOnlyFewUndeadLeft && this.ticksWaveActive >= TimeConverter.minutesToTicks( 2.0 );
+		return isOnlyFewUndeadLeft && this.ticksWaveActive >= TimeConverter.minutesToTicks( 2.5 );
 	}
 
 	/** Tries to enchant weapons and armor for given monster. */
