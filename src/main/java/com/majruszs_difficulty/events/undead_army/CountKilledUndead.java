@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,7 +26,7 @@ public class CountKilledUndead {
 		if( monster.getCreatureAttribute() != CreatureAttribute.UNDEAD )
 			return;
 
-		if( monster.isServerWorld() && RegistryHandler.UNDEAD_ARMY_MANAGER.doesEntityBelongToUndeadArmy( monster ) && updateUndeadArmyKillCounter(
+		if( monster.world instanceof ServerWorld && RegistryHandler.UNDEAD_ARMY_MANAGER.doesEntityBelongToUndeadArmy( monster ) && updateUndeadArmyKillCounter(
 			monster.getPositionVec() ) )
 			return;
 
@@ -56,7 +57,7 @@ public class CountKilledUndead {
 		CompoundNBT nbt = player.getPersistentData();
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 
-		if( nbt.getInt( UndeadArmyKeys.KILLED ) >= config.getRequiredKills() && player.isServerWorld() )
+		if( nbt.getInt( UndeadArmyKeys.KILLED ) >= config.getRequiredKills() && player.world instanceof ServerWorld )
 			if( RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player ) )
 				nbt.putInt( UndeadArmyKeys.KILLED, 0 );
 	}

@@ -26,6 +26,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 /** Entity that is more powerful version of Skeleton. */
 public class EliteSkeletonEntity extends SkeletonEntity {
@@ -83,7 +84,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 		ItemStack ammunition = findAmmo( getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) ) );
 
 		double finalChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get();
-		if( isServerWorld() )
+		if( this.world instanceof ServerWorld )
 			finalChance *= GameState.getRegionalDifficulty( this );
 
 		if( finalChance >= MajruszLibrary.RANDOM.nextDouble() && ammunition.getItem() instanceof ArrowItem ) {
