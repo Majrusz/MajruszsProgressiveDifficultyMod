@@ -60,8 +60,6 @@ public class UndeadArmy {
 	private ServerWorld world;
 
 	public UndeadArmy( ServerWorld world, BlockPos positionToAttack, Direction direction ) {
-		setConfigurationValues();
-
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
 		this.status = Status.BETWEEN_WAVES;
@@ -76,12 +74,11 @@ public class UndeadArmy {
 		this.undeadKilled = 0;
 		this.world = world;
 
+		setConfigurationValues();
 		this.bossInfo.setPercent( 0.0f );
 	}
 
 	public UndeadArmy( ServerWorld world, CompoundNBT nbt ) {
-		setConfigurationValues();
-
 		this.positionToAttack = NBTHelper.loadBlockPos( nbt, UndeadArmyKeys.POSITION );
 		this.direction = Direction.getByName( nbt.getString( UndeadArmyKeys.DIRECTION ) );
 		this.status = Status.getByName( nbt.getString( UndeadArmyKeys.STATUS ) );
@@ -96,6 +93,7 @@ public class UndeadArmy {
 		this.undeadKilled = nbt.getInt( UndeadArmyKeys.KILLED );
 		this.world = world;
 
+		setConfigurationValues();
 		updateBarText();
 	}
 
