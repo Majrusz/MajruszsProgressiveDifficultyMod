@@ -10,6 +10,7 @@ public class EntitiesConfig {
 	public final EntityConfig illusioner;
 	public final EntityConfig pillagerWolf;
 	public final EntityConfig skyKeeper;
+	public final EntityConfig creeperling;
 
 	public EntitiesConfig() {
 		this.eliteSkeleton = new EliteSkeletonConfig();
@@ -17,6 +18,7 @@ public class EntitiesConfig {
 		this.illusioner = new EntityConfig( "Illusioner" );
 		this.pillagerWolf = new EntityConfig( "PillagerWolf" );
 		this.skyKeeper = new EntityConfig( "SkyKeeper" );
+		this.creeperling = new EntityConfig( "Creeperling" );
 	}
 
 	public static class EliteSkeletonConfig extends EntityConfig {

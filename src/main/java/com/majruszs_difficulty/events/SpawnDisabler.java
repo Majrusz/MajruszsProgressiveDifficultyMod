@@ -2,10 +2,7 @@ package com.majruszs_difficulty.events;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.entities.EliteSkeletonEntity;
-import com.majruszs_difficulty.entities.GiantEntity;
-import com.majruszs_difficulty.entities.PillagerWolfEntity;
-import com.majruszs_difficulty.entities.SkyKeeperEntity;
+import com.majruszs_difficulty.entities.*;
 import com.mlib.config.AvailabilityConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IllusionerEntity;
@@ -27,22 +24,26 @@ public class SpawnDisabler {
 
 	/** Checks whether given entity should not spawn. */
 	protected static boolean shouldEntitySpawnBeDisabled( Entity entity ) {
+		EntitiesConfig config = Instances.ENTITIES_CONFIG;
 		boolean isGiant = entity instanceof GiantEntity;
 		boolean isIllusioner = entity instanceof IllusionerEntity;
 		boolean isPillagerWolf = entity instanceof PillagerWolfEntity;
 		boolean isEliteSkeleton = entity instanceof EliteSkeletonEntity;
 		boolean isSkyKeeper = entity instanceof SkyKeeperEntity;
+		boolean isCreeperling = entity instanceof CreeperlingEntity;
 
 		if( isGiant )
-			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.giant.availability );
+			return shouldBeDisabled( GameState.State.EXPERT, config.giant.availability );
 		else if( isIllusioner )
-			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.illusioner.availability ) || isVillageNearby( entity );
+			return shouldBeDisabled( GameState.State.EXPERT, config.illusioner.availability ) || isVillageNearby( entity );
 		else if( isPillagerWolf )
-			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.pillagerWolf.availability );
+			return shouldBeDisabled( GameState.State.EXPERT, config.pillagerWolf.availability );
 		else if( isEliteSkeleton )
-			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.eliteSkeleton.availability );
+			return shouldBeDisabled( GameState.State.EXPERT, config.eliteSkeleton.availability );
 		else if( isSkyKeeper )
-			return shouldBeDisabled( GameState.State.EXPERT, Instances.ENTITIES_CONFIG.skyKeeper.availability );
+			return shouldBeDisabled( GameState.State.EXPERT, config.skyKeeper.availability );
+		else if( isCreeperling )
+			return shouldBeDisabled( GameState.State.NORMAL, config.creeperling.availability );
 		else
 			return false;
 	}
