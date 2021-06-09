@@ -94,10 +94,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	protected AbstractArrowEntity getArrowEntity( float distanceFactor ) {
 		ItemStack ammunition = findAmmo( getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) ) );
 
-		double tippedArrowChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get();
-		if( this.world instanceof ServerWorld )
-			tippedArrowChance *= GameState.getRegionalDifficulty( this );
-
+		double tippedArrowChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get() * GameState.getRegionalDifficulty( this );
 		if( Random.tryChance( tippedArrowChance ) && ammunition.getItem() instanceof ArrowItem ) {
 			ammunition = new ItemStack( Items.TIPPED_ARROW );
 			PotionUtils.addPotionToItemStack( ammunition, arrowPotions[ MajruszLibrary.RANDOM.nextInt( arrowPotions.length ) ] );
@@ -115,7 +112,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	protected void handleQuickShot( double quickShotChance ) {
 		if( this.quickShotsLeft == 0 && Random.tryChance( quickShotChance ) && this.world instanceof ServerWorld ) {
 			ServerWorld serverWorld = ( ServerWorld )this.world;
-			serverWorld.spawnParticle( ParticleTypes.ANGRY_VILLAGER, getPosX(), getPosYHeight( 0.5 ), getPosZ(), 6, 0.625, 0.25, 0.625, 0.125 );
+			serverWorld.spawnParticle( ParticleTypes.ANGRY_VILLAGER, getPosX(), getPosYHeight( 0.5 ), getPosZ(), 6, 0.5, 0.25, 0.5, 0.125 );
 			this.quickShotsLeft = 3;
 			this.aiArrowAttack.setAttackCooldown( 1 );
 		} else if( this.quickShotsLeft > 0 && --this.quickShotsLeft == 0 ) {
@@ -126,8 +123,8 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	/** Handles the Skeleton's shooting with 3 arrows instead of 1. */
 	protected void handleExtraArrows( double multiShotChance, LivingEntity target, float distanceFactor ) {
 		if( this.quickShotsLeft == 0 && Random.tryChance( multiShotChance ) ) {
-			spawnArrow( 0.75, target, distanceFactor );
-			spawnArrow( -0.75, target, distanceFactor );
+			spawnArrow( 1.25, target, distanceFactor );
+			spawnArrow( -1.25, target, distanceFactor );
 		}
 	}
 }
