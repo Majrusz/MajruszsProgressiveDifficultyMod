@@ -53,9 +53,10 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	@Override
 	public void attackEntityWithRangedAttack( LivingEntity target, float distanceFactor ) {
 		EntitiesConfig.EliteSkeletonConfig config = Instances.ENTITIES_CONFIG.eliteSkeleton;
+		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( this );
 
-		handleQuickShot( config.quickShotChance.get() );
-		handleExtraArrows( config.multiShotChance.get(), target, distanceFactor );
+		handleQuickShot( config.quickShotChance.get() * clampedRegionalDifficulty );
+		handleExtraArrows( config.multiShotChance.get() * clampedRegionalDifficulty, target, distanceFactor );
 
 		spawnArrow( 0.0, target, distanceFactor );
 		playSound( SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / ( MajruszLibrary.RANDOM.nextFloat() * 0.4f + 0.8f ) );
