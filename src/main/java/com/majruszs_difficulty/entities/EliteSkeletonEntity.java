@@ -12,7 +12,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -35,6 +34,7 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	public static final Potion[] arrowPotions = new Potion[]{ Potions.HARMING, Potions.POISON, Potions.SLOWNESS, Potions.WEAKNESS };
 	public static final EntityType< EliteSkeletonEntity > type;
 	private static final float ARROW_VELOCITY = 2.0f, ARROW_INACCURACY = 0.0f;
+
 	static {
 		type = EntityType.Builder.create( EliteSkeletonEntity::new, EntityClassification.MONSTER )
 			.size( 0.6f, 2.0f )
@@ -52,12 +52,21 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	/** Overriding basic Skeleton attack method with changes to inaccuracy, velocity and ammo this entity uses. */
 	@Override
 	public void attackEntityWithRangedAttack( LivingEntity target, float distanceFactor ) {
-		handleQuickShot();
-		if( this.quickShotsLeft == 0 && Random.tryChance( 0.25 ) )
-			shootExtraArrows( target, distanceFactor );
+		EntitiesConfig.EliteSkeletonConfig config = Instances.ENTITIES_CONFIG.eliteSkeleton;
+
+		handleQuickShot( config.quickShotChance.get() );
+		handleExtraArrows( config.multiShotChance.get(), target, distanceFactor );
 
 		spawnArrow( 0.0, target, distanceFactor );
 		playSound( SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / ( MajruszLibrary.RANDOM.nextFloat() * 0.4f + 0.8f ) );
+	}
+
+	public static AttributeModifierMap getAttributeMap() {
+		return MobEntity.func_233666_p_()
+			.createMutableAttribute( Attributes.MAX_HEALTH, 20.0 )
+			.createMutableAttribute( Attributes.MOVEMENT_SPEED, 0.3 )
+			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 2.5 )
+			.create();
 	}
 
 	/** Spawns the arrow directed to target position. */
@@ -76,14 +85,6 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 		this.world.addEntity( arrowEntity );
 	}
 
-	public static AttributeModifierMap getAttributeMap() {
-		return MobEntity.func_233666_p_()
-			.createMutableAttribute( Attributes.MAX_HEALTH, 20.0 )
-			.createMutableAttribute( Attributes.MOVEMENT_SPEED, 0.3 )
-			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 2.5 )
-			.create();
-	}
-
 	/**
 	 Generating ammunition the skeleton will use. Skeleton have a chance to use tipped arrow instead of standard one.
 
@@ -92,11 +93,11 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	protected AbstractArrowEntity getArrowEntity( float distanceFactor ) {
 		ItemStack ammunition = findAmmo( getHeldItem( ProjectileHelper.getHandWith( this, Items.BOW ) ) );
 
-		double finalChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get();
+		double tippedArrowChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get();
 		if( this.world instanceof ServerWorld )
-			finalChance *= GameState.getRegionalDifficulty( this );
+			tippedArrowChance *= GameState.getRegionalDifficulty( this );
 
-		if( finalChance >= MajruszLibrary.RANDOM.nextDouble() && ammunition.getItem() instanceof ArrowItem ) {
+		if( Random.tryChance( tippedArrowChance ) && ammunition.getItem() instanceof ArrowItem ) {
 			ammunition = new ItemStack( Items.TIPPED_ARROW );
 			PotionUtils.addPotionToItemStack( ammunition, arrowPotions[ MajruszLibrary.RANDOM.nextInt( arrowPotions.length ) ] );
 		}
@@ -110,8 +111,8 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 	}
 
 	/** Handles the Skeleton's shooting without any cooldown. (only the time it takes to draw the bowstring) */
-	protected void handleQuickShot() {
-		if( this.quickShotsLeft == 0 && Random.tryChance( 0.5 ) && this.world instanceof ServerWorld ) {
+	protected void handleQuickShot( double quickShotChance ) {
+		if( this.quickShotsLeft == 0 && Random.tryChance( quickShotChance ) && this.world instanceof ServerWorld ) {
 			ServerWorld serverWorld = ( ServerWorld )this.world;
 			serverWorld.spawnParticle( ParticleTypes.ANGRY_VILLAGER, getPosX(), getPosYHeight( 0.5 ), getPosZ(), 6, 0.625, 0.25, 0.625, 0.125 );
 			this.quickShotsLeft = 3;
@@ -121,9 +122,11 @@ public class EliteSkeletonEntity extends SkeletonEntity {
 		}
 	}
 
-	/** Shoots 2 extra arrows. */
-	protected void shootExtraArrows( LivingEntity target, float distanceFactor ) {
-		spawnArrow( 0.75, target, distanceFactor );
-		spawnArrow( -0.75, target, distanceFactor );
+	/** Handles the Skeleton's shooting with 3 arrows instead of 1. */
+	protected void handleExtraArrows( double multiShotChance, LivingEntity target, float distanceFactor ) {
+		if( this.quickShotsLeft == 0 && Random.tryChance( multiShotChance ) ) {
+			spawnArrow( 0.75, target, distanceFactor );
+			spawnArrow( -0.75, target, distanceFactor );
+		}
 	}
 }
