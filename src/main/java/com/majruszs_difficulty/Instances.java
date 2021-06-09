@@ -86,6 +86,9 @@ public class Instances {
 	public static final BleedingEffect BLEEDING;
 	public static final BleedingImmunityEffect BLEEDING_IMMUNITY;
 
+	// Damage sources
+	public static final DamageSource BLEEDING_SOURCE;
+
 	// Particles
 	public static final BasicParticleType BLOOD_PARTICLE;
 
@@ -157,6 +160,9 @@ public class Instances {
 		// Effects
 		BLEEDING = new BleedingEffect();
 		BLEEDING_IMMUNITY = new BleedingImmunityEffect();
+
+		// Damage sources
+		BLEEDING_SOURCE = new DamageSource( "bleeding" ).setDamageBypassesArmor();
 
 		// Particles
 		BLOOD_PARTICLE = new BasicParticleType( true );
@@ -250,13 +256,4 @@ public class Instances {
 			UNDEAD_ARMY_WAVE_STARTED = new SoundEvent( MajruszsDifficulty.getLocation( "undead_army.wave_started" ) );
 		}
 	}
-
-	public static class DamageSources {
-		public static final DamageSource BLEEDING;
-
-		static {
-			BLEEDING = new DamageSource( "bleeding" ).setDamageBypassesArmor();
-		}
-	}
-
 }

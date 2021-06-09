@@ -70,11 +70,11 @@ public class BleedingEffect extends Effect {
 
 			Vector3d motion = entity.getMotion();
 			entity.attackEntityFrom( bleedingEffectInstance != null ? new EntityBleedingDamageSource(
-				bleedingEffectInstance.damageSourceEntity ) : Instances.DamageSources.BLEEDING, ( float )damageAmount );
+				bleedingEffectInstance.damageSourceEntity ) : Instances.BLEEDING_SOURCE, ( float )damageAmount );
 			entity.setMotion( motion ); // sets previous motion to avoid any jumping from bleeding
 
 		} else {
-			entity.attackEntityFrom( Instances.DamageSources.BLEEDING, ( float )damageAmount );
+			entity.attackEntityFrom( Instances.BLEEDING_SOURCE, ( float )damageAmount );
 		}
 	}
 
@@ -158,7 +158,7 @@ public class BleedingEffect extends Effect {
 		protected final Entity damageSourceEntity;
 
 		public EntityBleedingDamageSource( @Nullable Entity damageSourceEntity ) {
-			super( "bleeding" );
+			super( Instances.BLEEDING_SOURCE.damageType );
 			setDamageBypassesArmor();
 
 			this.damageSourceEntity = damageSourceEntity;

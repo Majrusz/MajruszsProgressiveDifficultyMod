@@ -2,6 +2,7 @@ package com.majruszs_difficulty.events.on_death;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
+import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.Entity;
@@ -68,7 +69,7 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		boolean hasPlayerDied = target instanceof PlayerEntity;
-		boolean hasDiedFromBleeding = damageSource.damageType.equals( Instances.BLEEDING.getName() );
+		boolean hasDiedFromBleeding = damageSource.damageType.equals( Instances.BLEEDING_SOURCE.damageType );
 		boolean hasDiedFromZombie = attacker instanceof ZombieEntity;
 
 		return super.shouldBeExecuted( attacker, target, damageSource ) && hasPlayerDied && ( hasDiedFromZombie || hasDiedFromBleeding );
