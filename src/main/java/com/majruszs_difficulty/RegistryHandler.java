@@ -131,6 +131,7 @@ public class RegistryHandler {
 		ITEMS.register( "lucky_rock", ()->Instances.LUCKY_ROCK_ITEM );
 		ITEMS.register( "idol_of_fertility", ()->Instances.IDOL_OF_FERTILITY_ITEM );
 		ITEMS.register( "taming_certificate", ()->Instances.TAMING_CERTIFICATE_ITEM );
+		ITEMS.register( "recall_potion", ()->Instances.RECALL_POTION_ITEM );
 		registerTreasureBags();
 		registerSpawnEggs();
 		ITEMS.register( modEventBus );
