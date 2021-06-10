@@ -2,6 +2,7 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.WorldHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -54,21 +55,8 @@ public class RecallPotionItem extends Item {
 				itemStack.shrink( 1 );
 
 			if( world instanceof ServerWorld && player instanceof ServerPlayerEntity ) {
-				ServerWorld serverWorld = ( ServerWorld )world;
-				ServerPlayerEntity serverPlayer = ( ServerPlayerEntity )player;
-
-				BlockPos spawnPosition = serverPlayer.func_241140_K_();
-				Optional< BlockPos > position = Optional.empty();
-				if( spawnPosition != null ) {
-					Optional< Vector3d > newPosition = ServerPlayerEntity.func_242374_a( serverWorld, spawnPosition, serverPlayer.func_242109_L(),
-						serverPlayer.func_241142_M_(), true
-					);
-					if( newPosition.isPresent() )
-						position = Optional.of( new BlockPos( newPosition.get() ) );
-				}
-
-				BlockPos finalSpawnPosition = position.orElseGet( serverWorld::getSpawnPoint );
-				player.attemptTeleport( finalSpawnPosition.getX() + 0.5, finalSpawnPosition.getY() + 1.0, finalSpawnPosition.getZ() + 0.5, true );
+				BlockPos spawnPosition = WorldHelper.getSpawnPosition( ( ServerPlayerEntity )player, ( ServerWorld )world );
+				player.attemptTeleport( spawnPosition.getX() + 0.5, spawnPosition.getY() + 1.0, spawnPosition.getZ() + 0.5, true );
 			}
 		}
 
