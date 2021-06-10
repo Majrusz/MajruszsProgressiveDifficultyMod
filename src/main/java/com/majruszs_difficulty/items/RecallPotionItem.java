@@ -1,7 +1,9 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.MajruszsHelper;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -15,13 +17,20 @@ import net.minecraft.util.DrinkHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 
 /** Potion that will teleport the player to spawn/bed position after drinking it. */
 public class RecallPotionItem extends Item {
+	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszs_difficulty.recall_potion.item_tooltip";
+
 	public RecallPotionItem() {
 		super( new Item.Properties().group( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON )
@@ -74,6 +83,13 @@ public class RecallPotionItem extends Item {
 	@Override
 	public int getUseDuration( ItemStack itemStack ) {
 		return 32;
+	}
+
+	/** Adding tooltip for what this item does. */
+	@Override
+	@OnlyIn( Dist.CLIENT )
+	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		MajruszsHelper.addAdvancedTooltips( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	public boolean hasEffect( ItemStack itemStack ) {
