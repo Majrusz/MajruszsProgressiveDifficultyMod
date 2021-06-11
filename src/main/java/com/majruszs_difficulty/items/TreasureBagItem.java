@@ -4,8 +4,10 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
+import com.majruszs_difficulty.events.TreasureBagOpenedEvent;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
+import com.mlib.events.HarvestCropEvent;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -68,6 +71,7 @@ public class TreasureBagItem extends Item {
 
 			if( this.availability.isEnabled() ) {
 				List< ItemStack > loot = generateLoot( player );
+				MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) );
 				for( ItemStack reward : loot ) {
 					if( player.canPickUpItem( reward ) )
 						player.inventory.addItemStackToInventory( reward );
