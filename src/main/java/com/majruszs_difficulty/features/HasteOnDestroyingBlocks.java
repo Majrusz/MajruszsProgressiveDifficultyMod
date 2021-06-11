@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events;
+package com.majruszs_difficulty.features;
 
 import com.majruszs_difficulty.items.EndAxeItem;
 import com.majruszs_difficulty.items.EndHoeItem;

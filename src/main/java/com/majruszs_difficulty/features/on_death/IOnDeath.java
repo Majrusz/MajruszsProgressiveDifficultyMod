@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.on_death;
+package com.majruszs_difficulty.features.on_death;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;

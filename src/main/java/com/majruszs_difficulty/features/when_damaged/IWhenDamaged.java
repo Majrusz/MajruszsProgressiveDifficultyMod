@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.when_damaged;
+package com.majruszs_difficulty.features.when_damaged;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;

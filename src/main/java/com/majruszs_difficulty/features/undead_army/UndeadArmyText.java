@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.undead_army;
+package com.majruszs_difficulty.features.undead_army;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.*;

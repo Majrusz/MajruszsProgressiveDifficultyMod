@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.undead_army;
+package com.majruszs_difficulty.features.undead_army;
 
 import com.majruszs_difficulty.RegistryHandler;
 import com.mlib.TimeConverter;

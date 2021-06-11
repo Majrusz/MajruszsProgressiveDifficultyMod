@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.monster_spawn;
+package com.majruszs_difficulty.features.monster_spawn;
 
 import com.mlib.TimeConverter;
 import net.minecraft.entity.Entity;

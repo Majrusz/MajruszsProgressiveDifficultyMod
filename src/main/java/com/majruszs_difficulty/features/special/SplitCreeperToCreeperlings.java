@@ -1,10 +1,10 @@
-package com.majruszs_difficulty.events.special;
+package com.majruszs_difficulty.features.special;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.majruszs_difficulty.entities.CreeperlingEntity;
-import com.majruszs_difficulty.events.ChanceFeatureBase;
+import com.majruszs_difficulty.features.ChanceFeatureBase;
 import com.mlib.MajruszLibrary;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.CreeperEntity;

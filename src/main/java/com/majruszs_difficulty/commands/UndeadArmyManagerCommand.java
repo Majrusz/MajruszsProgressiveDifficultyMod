@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.commands;
 
 import com.majruszs_difficulty.RegistryHandler;
-import com.majruszs_difficulty.events.undead_army.UndeadArmy;
+import com.majruszs_difficulty.features.undead_army.UndeadArmy;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;

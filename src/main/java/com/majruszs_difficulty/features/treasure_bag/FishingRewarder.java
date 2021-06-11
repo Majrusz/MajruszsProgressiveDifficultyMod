@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.treasure_bag;
+package com.majruszs_difficulty.features.treasure_bag;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;

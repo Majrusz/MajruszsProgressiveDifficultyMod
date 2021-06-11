@@ -1,7 +1,7 @@
-package com.majruszs_difficulty.events.on_death;
+package com.majruszs_difficulty.features.on_death;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.events.ChanceFeatureBase;
+import com.majruszs_difficulty.features.ChanceFeatureBase;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.server.ServerWorld;

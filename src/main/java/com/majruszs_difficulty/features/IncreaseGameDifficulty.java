@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events;
+package com.majruszs_difficulty.features;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;

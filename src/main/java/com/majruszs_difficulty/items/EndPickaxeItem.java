@@ -2,7 +2,7 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.events.HasteOnDestroyingBlocks;
+import com.majruszs_difficulty.features.HasteOnDestroyingBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;

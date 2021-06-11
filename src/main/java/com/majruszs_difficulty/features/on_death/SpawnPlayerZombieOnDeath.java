@@ -1,8 +1,7 @@
-package com.majruszs_difficulty.events.on_death;
+package com.majruszs_difficulty.features.on_death;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.entity.Entity;

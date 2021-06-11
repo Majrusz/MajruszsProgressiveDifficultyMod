@@ -1,7 +1,7 @@
-package com.majruszs_difficulty.events.monster_spawn;
+package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.events.ChanceFeatureBase;
+import com.majruszs_difficulty.features.ChanceFeatureBase;
 import com.mlib.Random;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;

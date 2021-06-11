@@ -1,9 +1,9 @@
-package com.majruszs_difficulty.events.special;
+package com.majruszs_difficulty.features.special;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.entities.CreeperlingEntity;
-import com.majruszs_difficulty.events.ChanceFeatureBase;
-import com.majruszs_difficulty.events.FeatureBase;
+import com.majruszs_difficulty.features.ChanceFeatureBase;
+import com.majruszs_difficulty.features.FeatureBase;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.events.ExplosionSizeEvent;

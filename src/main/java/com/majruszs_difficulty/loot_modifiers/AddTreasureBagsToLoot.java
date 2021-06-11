@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.loot_modifiers;
 
 import com.google.gson.JsonObject;
-import com.majruszs_difficulty.events.treasure_bag.TreasureBagManager;
+import com.majruszs_difficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

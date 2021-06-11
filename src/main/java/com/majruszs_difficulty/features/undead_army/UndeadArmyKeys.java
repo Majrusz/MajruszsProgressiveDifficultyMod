@@ -1,4 +1,4 @@
-package com.majruszs_difficulty.events.undead_army;
+package com.majruszs_difficulty.features.undead_army;
 
 /** Class that stores all Undead Army-related keys. */
 public class UndeadArmyKeys {

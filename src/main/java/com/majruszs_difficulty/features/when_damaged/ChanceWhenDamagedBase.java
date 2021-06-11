@@ -1,7 +1,7 @@
-package com.majruszs_difficulty.events.when_damaged;
+package com.majruszs_difficulty.features.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.events.ChanceFeatureBase;
+import com.majruszs_difficulty.features.ChanceFeatureBase;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.server.ServerWorld;
