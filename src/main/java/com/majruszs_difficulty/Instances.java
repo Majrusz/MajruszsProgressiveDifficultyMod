@@ -42,7 +42,6 @@ public class Instances {
 	// Items
 	public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
 	public static final BandageItem BANDAGE_ITEM;
-	public static final FishermanEmblemItem FISHERMAN_EMBLEM_ITEM;
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
 	public static final EndShardItem END_SHARD_ITEM;
 	public static final EndIngotItem END_INGOT_ITEM;
@@ -57,11 +56,7 @@ public class Instances {
 	public static final EndLeggingsItem END_LEGGINGS_ITEM;
 	public static final EndBootsItem END_BOOTS_ITEM;
 	public static final EndShardLocatorItem END_SHARD_LOCATOR_ITEM;
-	public static final GiantSeedItem GIANT_SEED_ITEM;
-	public static final LuckyRockItem LUCKY_ROCK_ITEM;
 	public static final GoldenBandageItem GOLDEN_BANDAGE_ITEM;
-	public static final IdolOfFertilityItem IDOL_OF_FERTILITY_ITEM;
-	public static final TamingCertificateItem TAMING_CERTIFICATE_ITEM;
 	public static final RecallPotionItem RECALL_POTION_ITEM;
 
 	// Treasure Bags
@@ -118,7 +113,6 @@ public class Instances {
 		// Items
 		BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
 		BANDAGE_ITEM = new BandageItem();
-		FISHERMAN_EMBLEM_ITEM = new FishermanEmblemItem();
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
 		END_SHARD_ITEM = new EndShardItem();
 		END_INGOT_ITEM = new EndIngotItem();
@@ -133,11 +127,7 @@ public class Instances {
 		END_LEGGINGS_ITEM = new EndLeggingsItem();
 		END_BOOTS_ITEM = new EndBootsItem();
 		END_SHARD_LOCATOR_ITEM = new EndShardLocatorItem();
-		GIANT_SEED_ITEM = new GiantSeedItem();
-		LUCKY_ROCK_ITEM = new LuckyRockItem();
 		GOLDEN_BANDAGE_ITEM = new GoldenBandageItem();
-		IDOL_OF_FERTILITY_ITEM = new IdolOfFertilityItem();
-		TAMING_CERTIFICATE_ITEM = new TamingCertificateItem();
 		RECALL_POTION_ITEM = new RecallPotionItem();
 
 		// Treasure Bags

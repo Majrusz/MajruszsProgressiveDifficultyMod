@@ -126,11 +126,6 @@ public class RegistryHandler {
 		ITEMS.register( "undead_battle_standard", ()->Instances.BATTLE_STANDARD_ITEM );
 		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
 		ITEMS.register( "golden_bandage", ()->Instances.GOLDEN_BANDAGE_ITEM );
-		ITEMS.register( "fisherman_emblem", ()->Instances.FISHERMAN_EMBLEM_ITEM );
-		ITEMS.register( "giant_seed", ()->Instances.GIANT_SEED_ITEM );
-		ITEMS.register( "lucky_rock", ()->Instances.LUCKY_ROCK_ITEM );
-		ITEMS.register( "idol_of_fertility", ()->Instances.IDOL_OF_FERTILITY_ITEM );
-		ITEMS.register( "taming_certificate", ()->Instances.TAMING_CERTIFICATE_ITEM );
 		ITEMS.register( "recall_potion", ()->Instances.RECALL_POTION_ITEM );
 		registerTreasureBags();
 		registerSpawnEggs();
