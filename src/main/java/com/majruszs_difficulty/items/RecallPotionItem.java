@@ -17,7 +17,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DrinkHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -26,7 +25,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 /** Potion that will teleport the player to spawn/bed position after drinking it. */
 public class RecallPotionItem extends Item {

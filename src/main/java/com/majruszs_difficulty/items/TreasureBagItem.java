@@ -7,7 +7,6 @@ import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.TreasureBagOpenedEvent;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
-import com.mlib.events.HarvestCropEvent;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
