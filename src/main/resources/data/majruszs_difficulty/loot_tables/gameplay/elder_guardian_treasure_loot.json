@@ -6,11 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:trident",
+          "name": "majruszs_difficulty:ocean_shield",
           "conditions": [
             {
               "condition": "minecraft:random_chance",
-              "chance": 0.05
+              "chance": 0.1
             }
           ],
           "functions": [
