@@ -37,6 +37,7 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 public class TreasureBagItem extends Item {
 	protected final static ConfigGroup CONFIG_GROUP;
 	private final static String TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.item_tooltip";
+
 	static {
 		CONFIG_GROUP = new ConfigGroup( "TreasureBag", "Configuration for treasure bags." );
 		FEATURES_GROUP.addGroup( CONFIG_GROUP );
@@ -91,6 +92,20 @@ public class TreasureBagItem extends Item {
 		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
+	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
+	protected static LootContext generateLootContext( PlayerEntity player ) {
+		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerWorld )player.getEntityWorld() );
+		lootContextBuilder.withParameter( LootParameters.field_237457_g_, player.getPositionVec() );
+		lootContextBuilder.withParameter( LootParameters.THIS_ENTITY, player );
+
+		return lootContextBuilder.build( LootParameterSets.GIFT );
+	}
+
+	/** Creates comment for configuration. */
+	private static String getComment( String treasureBagSourceName ) {
+		return "Is treasure bag from " + treasureBagSourceName + " available in survival mode?";
+	}
+
 	/** Registers given treasure bag. */
 	public RegistryObject< TreasureBagItem > register() {
 		return RegistryHandler.ITEMS.register( this.id + "_treasure_bag", ()->this );
@@ -99,15 +114,6 @@ public class TreasureBagItem extends Item {
 	/** Checks whether treasure bag is not disabled in configuration file? */
 	public boolean isAvailable() {
 		return this.availability.isEnabled();
-	}
-
-	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
-	protected static LootContext generateLootContext( PlayerEntity player ) {
-		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerWorld )player.getEntityWorld() );
-		lootContextBuilder.withParameter( LootParameters.field_237457_g_, player.getPositionVec() );
-		lootContextBuilder.withParameter( LootParameters.THIS_ENTITY, player );
-
-		return lootContextBuilder.build( LootParameterSets.GIFT );
 	}
 
 	/**
@@ -126,10 +132,5 @@ public class TreasureBagItem extends Item {
 		return ServerLifecycleHooks.getCurrentServer()
 			.getLootTableManager()
 			.getLootTableFromLocation( this.lootTableLocation );
-	}
-
-	/** Creates comment for configuration. */
-	private static String getComment( String treasureBagSourceName ) {
-		return "Is treasure bag from " + treasureBagSourceName + " available in survival mode?";
 	}
 }
