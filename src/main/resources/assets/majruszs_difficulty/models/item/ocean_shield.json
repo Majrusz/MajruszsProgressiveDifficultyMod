@@ -1,0 +1,14 @@
+{
+  "parent": "item/shield",
+  "textures": {
+    "particle": "block/prismarine"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "majruszs_difficulty:item/ocean_shield_blocking"
+    }
+  ]
+}

@@ -58,6 +58,7 @@ public class Instances {
 	public static final EndShardLocatorItem END_SHARD_LOCATOR_ITEM;
 	public static final GoldenBandageItem GOLDEN_BANDAGE_ITEM;
 	public static final RecallPotionItem RECALL_POTION_ITEM;
+	public static final OceanShieldItem OCEAN_SHIELD_ITEM;
 
 	// Treasure Bags
 	public static final TreasureBagItem UNDEAD_ARMY_TREASURE_BAG;
@@ -129,6 +130,7 @@ public class Instances {
 		END_SHARD_LOCATOR_ITEM = new EndShardLocatorItem();
 		GOLDEN_BANDAGE_ITEM = new GoldenBandageItem();
 		RECALL_POTION_ITEM = new RecallPotionItem();
+		OCEAN_SHIELD_ITEM = new OceanShieldItem();
 
 		// Treasure Bags
 		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );

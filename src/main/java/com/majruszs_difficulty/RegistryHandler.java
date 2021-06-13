@@ -11,10 +11,12 @@ import com.majruszs_difficulty.generation.OreGeneration;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.Effect;
@@ -28,10 +30,14 @@ import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -67,6 +73,7 @@ public class RegistryHandler {
 		registerEverything( modEventBus );
 		modEventBus.addListener( RegistryHandler::setup );
 		modEventBus.addListener( RegistryHandler::setupClient );
+		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->modEventBus.addListener( RegistryHandler::onTextureStitch ) );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( RegistryHandler::onLoadingWorld );
@@ -127,6 +134,7 @@ public class RegistryHandler {
 		ITEMS.register( "bandage", ()->Instances.BANDAGE_ITEM );
 		ITEMS.register( "golden_bandage", ()->Instances.GOLDEN_BANDAGE_ITEM );
 		ITEMS.register( "recall_potion", ()->Instances.RECALL_POTION_ITEM );
+		ITEMS.register( "ocean_shield", ()->Instances.OCEAN_SHIELD_ITEM );
 		registerTreasureBags();
 		registerSpawnEggs();
 		ITEMS.register( modEventBus );
@@ -287,5 +295,13 @@ public class RegistryHandler {
 
 		GAME_DATA_SAVER.markDirty();
 		UNDEAD_ARMY_MANAGER.markDirty();
+	}
+
+	/** Adds custom textures to the game. (curios slot) */
+	@OnlyIn( Dist.CLIENT )
+	private static void onTextureStitch( TextureStitchEvent.Pre event ) {
+		final AtlasTexture map = event.getMap();
+		if( PlayerContainer.LOCATION_BLOCKS_TEXTURE.equals( map.getTextureLocation() ) )
+			event.addSprite( RegistryHandlerClient.OCEAN_SHIELD_MATERIAL.getTextureLocation() );
 	}
 }
