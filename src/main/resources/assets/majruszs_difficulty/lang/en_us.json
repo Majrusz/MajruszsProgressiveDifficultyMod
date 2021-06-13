@@ -67,6 +67,7 @@
   "item.majruszs_difficulty.pillager_treasure_bag": "Raid Treasure Bag",
   "item.majruszs_difficulty.recall_potion": "Recall Potion",
   "item.majruszs_difficulty.recall_potion.item_tooltip": "Teleports back home after drinking it.",
+  "item.majruszs_difficulty.ocean_shield": "Ocean Shield",
   "block.majruszs_difficulty.end_shard_ore": "End Shard Ore",
   "block.majruszs_difficulty.end_shard_ore.warning": "After destroying this block all nearby Endermans will attack you!",
   "block.majruszs_difficulty.end_block": "End Block",
