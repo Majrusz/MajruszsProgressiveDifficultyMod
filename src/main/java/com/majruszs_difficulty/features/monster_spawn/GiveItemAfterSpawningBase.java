@@ -47,9 +47,6 @@ public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 			return;
 
 		ServerWorld world = ( ServerWorld )event.world;
-		if( world.getDimensionKey() != World.THE_NETHER )
-			return;
-
 		for( Data data : dataList ) {
 			Entity entity = world.getEntityByUuid( data.uuid );
 			if( entity == null )
