@@ -55,7 +55,7 @@ public class OceanShieldItem extends ShieldItem {
 			return;
 
 		LivingEntity attacker = ( LivingEntity )damageSource.getImmediateSource();
-		attacker.attackEntityFrom( DamageSource.causeThornsDamage( target ), 2.0f );
+		attacker.attackEntityFrom( DamageSource.causeThornsDamage( target ), 3.0f );
 		shieldItem.damageItem( 1, target, livingEntity->livingEntity.sendBreakAnimation( hand ) );
 	}
 
