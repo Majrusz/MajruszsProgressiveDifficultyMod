@@ -21,7 +21,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0.0-unofficial'
+version = '1.0.0'
 group = 'com.majruszs_difficulty' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'majruszs-difficulty-1.16.4'
 
@@ -100,7 +100,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.4-35.1.4'
     // implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile fg.deobf('com.mlib:majrusz-library-1.16.4:2.0.0-unofficial')
+    compile fg.deobf('com.mlib:majrusz-library-1.16.4:2.0.0')
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
