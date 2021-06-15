@@ -35,7 +35,7 @@ public class OceanShieldRenderer extends ItemStackTileEntityRenderer {
 		this.oceanShield.handle.render( matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F );
 		if( !flag ) {
 			ImmutableList.of( this.oceanShield.plate, this.oceanShield.spike1, this.oceanShield.spike2, this.oceanShield.spike3,
-				this.oceanShield.spike4, this.oceanShield.spike5
+				this.oceanShield.spike4, this.oceanShield.spike5, this.oceanShield.spike6, this.oceanShield.spike7, this.oceanShield.spike8
 			)
 				.forEach( ( part )->part.render( matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F ) );
 		}
