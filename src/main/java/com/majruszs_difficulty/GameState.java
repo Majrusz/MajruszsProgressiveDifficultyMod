@@ -4,7 +4,6 @@ import com.mlib.WorldHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -35,11 +34,16 @@ public class GameState {
 		return true;
 	}
 
-	/** Triggers game state advancement if possible. */
+	/** Triggers game state advancement for all players if possible. */
 	public static void triggerAdvancement( MinecraftServer minecraftServer ) {
-		PlayerList playerList = minecraftServer.getPlayerList();
-		for( ServerPlayerEntity player : playerList.getPlayers() )
-			Instances.GAME_STATE_TRIGGER.trigger( player, CURRENT );
+		minecraftServer.getPlayerList()
+			.getPlayers()
+			.forEach( GameState::triggerAdvancement );
+	}
+
+	/** Triggers game state advancement for player if possible. */
+	public static void triggerAdvancement( ServerPlayerEntity player ) {
+		Instances.GAME_STATE_TRIGGER.trigger( player, CURRENT );
 	}
 
 	/** Returning current server game state. */

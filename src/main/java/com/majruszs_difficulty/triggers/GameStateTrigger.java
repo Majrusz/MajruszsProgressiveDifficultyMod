@@ -12,8 +12,12 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 /** Trigger called when given game state is enabled. */
+@Mod.EventBusSubscriber
 public class GameStateTrigger extends AbstractCriterionTrigger< GameStateTrigger.Instance > {
 	private static final ResourceLocation ID = MajruszsDifficulty.getLocation( "game_state" );
 
@@ -30,8 +34,15 @@ public class GameStateTrigger extends AbstractCriterionTrigger< GameStateTrigger
 		return new GameStateTrigger.Instance( entityPredicate, GameState.convertIntegerToState( stateElement.getAsInt() ) );
 	}
 
+	/** Triggers an advancement for given player. */
 	public void trigger( ServerPlayerEntity player, GameState.State state ) {
 		this.triggerListeners( player, instance->instance.test( state ) );
+	}
+
+	@SubscribeEvent
+	public static void onStart( PlayerEvent.PlayerLoggedInEvent event ) {
+		if( event.getPlayer() instanceof ServerPlayerEntity )
+			GameState.triggerAdvancement( ( ServerPlayerEntity )event.getPlayer() );
 	}
 
 	public static class Instance extends CriterionInstance {
