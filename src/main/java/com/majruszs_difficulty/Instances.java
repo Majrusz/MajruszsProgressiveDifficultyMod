@@ -23,6 +23,8 @@ import com.majruszs_difficulty.generation.structure_pieces.FlyingEndIslandPiece;
 import com.majruszs_difficulty.generation.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
+import com.majruszs_difficulty.triggers.GameStateTrigger;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
 import net.minecraft.particles.BasicParticleType;
@@ -109,6 +111,9 @@ public class Instances {
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG;
 	public static final ExperienceBonus EXPERIENCE_BONUS;
 	public static final FishingRewarder FISHING_REWARDER;
+
+	// Triggers
+	public static final GameStateTrigger GAME_STATE_TRIGGER;
 
 	static {
 		// Items
@@ -229,6 +234,9 @@ public class Instances {
 		UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
 		EXPERIENCE_BONUS = new ExperienceBonus();
 		FISHING_REWARDER = new FishingRewarder();
+
+		// Triggers
+		GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStateTrigger() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

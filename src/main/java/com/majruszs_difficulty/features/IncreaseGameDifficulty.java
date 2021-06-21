@@ -143,7 +143,7 @@ public class IncreaseGameDifficulty {
 		if( minecraftServer == null )
 			return;
 
-		GameState.changeMode( GameState.State.EXPERT );
+		GameState.changeMode( GameState.State.EXPERT, minecraftServer );
 		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszs_difficulty.on_expert_mode_start", GameState.EXPERT_MODE_COLOR );
 	}
 
@@ -152,7 +152,7 @@ public class IncreaseGameDifficulty {
 		if( minecraftServer == null )
 			return;
 
-		GameState.changeMode( GameState.State.MASTER );
+		GameState.changeMode( GameState.State.MASTER, minecraftServer );
 		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszs_difficulty.on_master_mode_start", GameState.MASTER_MODE_COLOR );
 	}
 
