@@ -8,6 +8,7 @@ import com.majruszs_difficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.features.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.features.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.generation.OreGeneration;
+import com.majruszs_difficulty.items.FakeItem;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
@@ -103,6 +104,13 @@ public class RegistryHandler {
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "creeperling_spawn_egg", CreeperlingEntity.type, 0x0DA70B, 0x000000 );
 	}
 
+	/** Registration of all fake items. (custom icons) */
+	private static void registerFakeItems() {
+		ITEMS.register( "mode_normal", FakeItem::new );
+		ITEMS.register( "mode_expert", FakeItem::new );
+		ITEMS.register( "mode_master", FakeItem::new );
+	}
+
 	/** Registration of treasure bags. */
 	private static void registerTreasureBags() {
 		Instances.UNDEAD_ARMY_TREASURE_BAG.register();
@@ -137,6 +145,7 @@ public class RegistryHandler {
 		ITEMS.register( "ocean_shield", ()->Instances.OCEAN_SHIELD_ITEM );
 		registerTreasureBags();
 		registerSpawnEggs();
+		registerFakeItems();
 		ITEMS.register( modEventBus );
 	}
 
