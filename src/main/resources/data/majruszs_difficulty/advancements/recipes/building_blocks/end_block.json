@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszs_difficulty:end_block"
+    ]
+  },
+  "criteria": {
+    "has_end_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "majruszs_difficulty:end_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "majruszs_difficulty:end_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_end_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

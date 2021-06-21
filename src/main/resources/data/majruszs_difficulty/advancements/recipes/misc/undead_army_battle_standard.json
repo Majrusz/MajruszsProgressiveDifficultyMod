@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszs_difficulty:undead_army_battle_standard"
+    ]
+  },
+  "criteria": {
+    "has_cloth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "majruszs_difficulty:tattered_cloth"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "majruszs_difficulty:undead_army_battle_standard"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cloth",
+      "has_the_recipe"
+    ]
+  ]
+}

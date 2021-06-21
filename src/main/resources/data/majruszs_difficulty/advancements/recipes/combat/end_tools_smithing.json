@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszs_difficulty:end_axe_smithing",
+      "majruszs_difficulty:end_hoe_smithing",
+      "majruszs_difficulty:end_pickaxe_smithing",
+      "majruszs_difficulty:end_tools_smithing",
+      "majruszs_difficulty:end_sword_smithing"
+    ]
+  },
+  "criteria": {
+    "has_end_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "majruszs_difficulty:end_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "majruszs_difficulty:end_sword_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_end_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}
