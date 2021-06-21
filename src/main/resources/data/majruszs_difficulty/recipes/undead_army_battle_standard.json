@@ -1,6 +1,6 @@
 { 
 	"type": "minecraft:crafting_shaped",
-	"group": "tattered_cloth",
+	"group": "undead_army_battle_standard",
 	"pattern":
 	[ 
 		"ccc",
