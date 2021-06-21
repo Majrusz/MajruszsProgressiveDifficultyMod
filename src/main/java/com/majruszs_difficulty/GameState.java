@@ -50,19 +50,7 @@ public class GameState {
 
 	/** Checking if current state is equal or higher than given state. */
 	public static boolean atLeast( State state ) {
-		switch( state ) {
-			case MASTER:
-				return CURRENT == State.MASTER;
-			case EXPERT:
-				return CURRENT == State.EXPERT || CURRENT == State.MASTER;
-			default:
-				return true;
-		}
-	}
-
-	/** Checking if current state is equal or less than given state. */
-	public static boolean atMost( State state ) {
-		return getValueDependingOnGameState( state, CURRENT == State.NORMAL, CURRENT == State.NORMAL || CURRENT == State.EXPERT, true );
+		return getValueDependingOnGameState( state, true, CURRENT == State.EXPERT || CURRENT == State.MASTER, CURRENT == State.MASTER );
 	}
 
 	/** Converting game state to integer. */
