@@ -104,11 +104,15 @@ public class RegistryHandler {
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "creeperling_spawn_egg", CreeperlingEntity.type, 0x0DA70B, 0x000000 );
 	}
 
+	/** Registers list of fake items. */
+	private static void registerFakeItems( String ...registerNames ) {
+		for( String registerName : registerNames )
+			ITEMS.register( "advancement_" + registerName, FakeItem::new );
+	}
+
 	/** Registration of all fake items. (custom icons) */
 	private static void registerFakeItems() {
-		ITEMS.register( "mode_normal", FakeItem::new );
-		ITEMS.register( "mode_expert", FakeItem::new );
-		ITEMS.register( "mode_master", FakeItem::new );
+		registerFakeItems( "normal", "expert", "master", "bleeding" );
 	}
 
 	/** Registration of treasure bags. */
