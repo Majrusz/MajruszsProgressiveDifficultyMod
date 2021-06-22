@@ -26,6 +26,7 @@ import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
 import com.majruszs_difficulty.triggers.CactusBleedingTrigger;
 import com.majruszs_difficulty.triggers.GameStateTrigger;
 import com.majruszs_difficulty.triggers.TreasureBagTrigger;
+import com.majruszs_difficulty.triggers.UndeadArmyDefeatedTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
@@ -118,6 +119,7 @@ public class Instances {
 	public static final GameStateTrigger GAME_STATE_TRIGGER;
 	public static final CactusBleedingTrigger CACTUS_BLEEDING_TRIGGER;
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER;
+	public static final UndeadArmyDefeatedTrigger UNDEAD_ARMY_DEFEATED_TRIGGER;
 
 	static {
 		// Items
@@ -243,6 +245,7 @@ public class Instances {
 		GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStateTrigger() );
 		CACTUS_BLEEDING_TRIGGER = CriteriaTriggers.register( new CactusBleedingTrigger() );
 		TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
+		UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.items.TreasureBagItem;
-import com.mlib.MajruszLibrary;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.advancements.criterion.EntityPredicate;

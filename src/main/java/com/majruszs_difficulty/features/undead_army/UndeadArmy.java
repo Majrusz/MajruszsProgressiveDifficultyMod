@@ -453,6 +453,9 @@ public class UndeadArmy {
 			for( int i = 0; i < config.getAmountOfVictoryExperience() / 4; i++ )
 				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), 4 ) );
 
+			if( player instanceof ServerPlayerEntity )
+				Instances.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( ( ServerPlayerEntity )player, this.currentWave );
+
 			if( Instances.UNDEAD_ARMY_TREASURE_BAG.isAvailable() )
 				for( int i = 0; i < config.getAmountOfVictoryTreasureBags(); i++ )
 					ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.UNDEAD_ARMY_TREASURE_BAG ), player, this.world );
