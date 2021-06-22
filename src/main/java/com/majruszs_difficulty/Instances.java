@@ -23,10 +23,7 @@ import com.majruszs_difficulty.generation.structure_pieces.FlyingEndIslandPiece;
 import com.majruszs_difficulty.generation.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
-import com.majruszs_difficulty.triggers.CactusBleedingTrigger;
-import com.majruszs_difficulty.triggers.GameStateTrigger;
-import com.majruszs_difficulty.triggers.TreasureBagTrigger;
-import com.majruszs_difficulty.triggers.UndeadArmyDefeatedTrigger;
+import com.majruszs_difficulty.triggers.*;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
@@ -120,6 +117,7 @@ public class Instances {
 	public static final CactusBleedingTrigger CACTUS_BLEEDING_TRIGGER;
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER;
 	public static final UndeadArmyDefeatedTrigger UNDEAD_ARMY_DEFEATED_TRIGGER;
+	public static final BandageTrigger BANDAGE_TRIGGER;
 
 	static {
 		// Items
@@ -246,6 +244,7 @@ public class Instances {
 		CACTUS_BLEEDING_TRIGGER = CriteriaTriggers.register( new CactusBleedingTrigger() );
 		TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 		UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
+		BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

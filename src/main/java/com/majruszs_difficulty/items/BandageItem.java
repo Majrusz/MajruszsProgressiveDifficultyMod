@@ -11,6 +11,7 @@ import com.mlib.effects.EffectHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -127,7 +128,7 @@ public class BandageItem extends Item {
 			bandage.shrink( 1 );
 
 		player.addStat( Stats.ITEM_USED.get( bandage.getItem() ) );
-		removeBleeding( target );
+		removeBleeding( target, player );
 		applyEffects( target );
 		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
 
@@ -143,8 +144,11 @@ public class BandageItem extends Item {
 	}
 
 	/** Removes Bleeding effect from the target. */
-	private void removeBleeding( LivingEntity target ) {
+	private void removeBleeding( LivingEntity target, PlayerEntity causer ) {
 		BleedingEffect bleeding = Instances.BLEEDING;
+
+		if( target.isPotionActive( bleeding ) && causer instanceof ServerPlayerEntity )
+			Instances.BANDAGE_TRIGGER.trigger( ( ServerPlayerEntity )causer, this, target.equals( causer ) );
 
 		target.removePotionEffect( bleeding );
 		target.removeActivePotionEffect( bleeding );
