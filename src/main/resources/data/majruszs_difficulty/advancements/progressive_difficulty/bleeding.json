@@ -1,0 +1,36 @@
+{
+  "parent": "majruszs_difficulty:progressive_difficulty/root",
+  "display": {
+    "icon": {
+      "item": "majruszs_difficulty:advancement_bleeding"
+    },
+    "title": {
+      "translate": "advancements.progressive_difficulty.bleeding.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_difficulty.bleeding.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "rewards": {
+    "experience": 5
+  },
+  "criteria": {
+    "bleeding_applied": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "majruszs_difficulty:bleeding": {}
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bleeding_applied"
+    ]
+  ]
+}
