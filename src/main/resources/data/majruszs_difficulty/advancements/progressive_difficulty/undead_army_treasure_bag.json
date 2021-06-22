@@ -1,5 +1,5 @@
 {
-  "parent": "majruszs_difficulty:progressive_difficulty/root",
+  "parent": "majruszs_difficulty:progressive_difficulty/undead_army",
   "display": {
     "icon": {
       "item": "majruszs_difficulty:undead_army_treasure_bag"

@@ -1,5 +1,5 @@
 {
-  "parent": "majruszs_difficulty:progressive_difficulty/root",
+  "parent": "minecraft:story/root",
   "display": {
     "icon": {
       "item": "majruszs_difficulty:advancement_bleeding"
@@ -14,9 +14,6 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": true
-  },
-  "rewards": {
-    "experience": 5
   },
   "criteria": {
     "bleeding_applied": {

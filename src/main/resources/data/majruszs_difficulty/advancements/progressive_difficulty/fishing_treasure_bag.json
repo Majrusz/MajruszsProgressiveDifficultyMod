@@ -1,5 +1,5 @@
 {
-  "parent": "majruszs_difficulty:progressive_difficulty/root",
+  "parent": "minecraft:husbandry/fishy_business",
   "display": {
     "icon": {
       "item": "majruszs_difficulty:fishing_treasure_bag"

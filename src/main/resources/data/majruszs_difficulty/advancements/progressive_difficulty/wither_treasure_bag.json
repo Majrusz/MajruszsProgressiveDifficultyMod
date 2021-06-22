@@ -1,5 +1,5 @@
 {
-  "parent": "majruszs_difficulty:progressive_difficulty/expert_mode",
+  "parent": "minecraft:nether/summon_wither",
   "display": {
     "icon": {
       "item": "majruszs_difficulty:wither_treasure_bag"
@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.progressive_difficulty.wither_treasure_bag.description"
     },
-    "frame": "task",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": true

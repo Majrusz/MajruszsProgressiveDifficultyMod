@@ -1,5 +1,5 @@
 {
-  "parent": "majruszs_difficulty:progressive_difficulty/master_mode",
+  "parent": "minecraft:end/kill_dragon",
   "display": {
     "icon": {
       "item": "majruszs_difficulty:ender_dragon_treasure_bag"

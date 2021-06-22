@@ -1,5 +1,5 @@
 {
-  "parent": "majruszs_difficulty:progressive_difficulty/root",
+  "parent": "minecraft:adventure/voluntary_exile",
   "display": {
     "icon": {
       "item": "majruszs_difficulty:pillager_treasure_bag"
