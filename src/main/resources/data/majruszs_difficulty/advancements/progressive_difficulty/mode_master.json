@@ -2,7 +2,7 @@
   "parent": "majruszs_difficulty:progressive_difficulty/mode_expert",
   "display": {
     "icon": {
-      "item": "majruszs_difficulty:mode_master"
+      "item": "majruszs_difficulty:advancement_master"
     },
     "title": {
       "translate": "advancements.progressive_difficulty.master_mode.title"

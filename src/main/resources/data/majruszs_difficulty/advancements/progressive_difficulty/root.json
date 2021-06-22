@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "majruszs_difficulty:mode_normal"
+      "item": "majruszs_difficulty:advancement_normal"
     },
     "title": {
       "translate": "advancements.progressive_difficulty.root.title"
