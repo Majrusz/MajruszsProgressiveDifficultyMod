@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.triggers;
 
 import com.google.gson.JsonObject;
-import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
@@ -20,10 +19,10 @@ public class CactusBleedingTrigger extends AbstractCriterionTrigger< CactusBleed
 	}
 
 	@Override
-	public CactusBleedingTrigger.Instance deserializeTrigger( JsonObject jsonObject, EntityPredicate.AndPredicate entityPredicate,
-		ConditionArrayParser conditionsParser
+	public CactusBleedingTrigger.Instance deserializeTrigger( JsonObject jsonObject, EntityPredicate.AndPredicate predicate,
+		ConditionArrayParser conditions
 	) {
-		return new CactusBleedingTrigger.Instance( entityPredicate );
+		return new CactusBleedingTrigger.Instance( predicate );
 	}
 
 	/** Triggers an advancement for given player. */

@@ -27,11 +27,11 @@ public class GameStateTrigger extends AbstractCriterionTrigger< GameStateTrigger
 	}
 
 	@Override
-	public GameStateTrigger.Instance deserializeTrigger( JsonObject jsonObject, EntityPredicate.AndPredicate entityPredicate,
-		ConditionArrayParser conditionsParser
+	public GameStateTrigger.Instance deserializeTrigger( JsonObject jsonObject, EntityPredicate.AndPredicate predicate,
+		ConditionArrayParser conditions
 	) {
 		JsonElement stateElement = jsonObject.get( "state_id" );
-		return new GameStateTrigger.Instance( entityPredicate, GameState.convertIntegerToState( stateElement.getAsInt() ) );
+		return new GameStateTrigger.Instance( predicate, GameState.convertIntegerToState( stateElement.getAsInt() ) );
 	}
 
 	/** Triggers an advancement for given player. */
