@@ -5,10 +5,10 @@
       "item": "majruszs_difficulty:wither_treasure_bag"
     },
     "title": {
-      "translate": "advancements.progressive_difficulty.wither_treasure_bag_10.title"
+      "translate": "advancements.progressive_difficulty.wither_treasure_bag_16.title"
     },
     "description": {
-      "translate": "advancements.progressive_difficulty.wither_treasure_bag_10.description"
+      "translate": "advancements.progressive_difficulty.wither_treasure_bag_16.description"
     },
     "frame": "goal",
     "show_toast": true,
@@ -16,14 +16,14 @@
     "hidden": false
   },
   "rewards": {
-    "experience": 400
+    "experience": 600
   },
   "criteria": {
     "bag_opened": {
       "trigger": "majruszs_difficulty:treasure_bag_opened",
       "conditions": {
         "bag_id": "majruszs_difficulty:wither_treasure_bag",
-        "amount": 10
+        "amount": 16
       }
     }
   },

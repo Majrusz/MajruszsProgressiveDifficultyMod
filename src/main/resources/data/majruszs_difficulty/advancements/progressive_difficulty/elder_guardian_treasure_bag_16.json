@@ -5,25 +5,25 @@
       "item": "majruszs_difficulty:elder_guardian_treasure_bag"
     },
     "title": {
-      "translate": "advancements.progressive_difficulty.elder_guardian_treasure_bag_10.title"
+      "translate": "advancements.progressive_difficulty.elder_guardian_treasure_bag_16.title"
     },
     "description": {
-      "translate": "advancements.progressive_difficulty.elder_guardian_treasure_bag_10.description"
+      "translate": "advancements.progressive_difficulty.elder_guardian_treasure_bag_16.description"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "rewards": {
-    "experience": 200
+    "experience": 300
   },
   "criteria": {
     "bag_opened": {
       "trigger": "majruszs_difficulty:treasure_bag_opened",
       "conditions": {
         "bag_id": "majruszs_difficulty:elder_guardian_treasure_bag",
-        "amount": 10
+        "amount": 16
       }
     }
   },
