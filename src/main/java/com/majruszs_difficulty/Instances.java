@@ -25,6 +25,7 @@ import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
 import com.majruszs_difficulty.triggers.CactusBleedingTrigger;
 import com.majruszs_difficulty.triggers.GameStateTrigger;
+import com.majruszs_difficulty.triggers.TreasureBagTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
@@ -116,6 +117,7 @@ public class Instances {
 	// Triggers
 	public static final GameStateTrigger GAME_STATE_TRIGGER;
 	public static final CactusBleedingTrigger CACTUS_BLEEDING_TRIGGER;
+	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER;
 
 	static {
 		// Items
@@ -240,6 +242,7 @@ public class Instances {
 		// Triggers
 		GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStateTrigger() );
 		CACTUS_BLEEDING_TRIGGER = CriteriaTriggers.register( new CactusBleedingTrigger() );
+		TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

@@ -10,6 +10,7 @@ import com.mlib.config.ConfigGroup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -17,6 +18,8 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTable;
+import net.minecraft.stats.ServerStatisticsManager;
+import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
@@ -66,7 +69,9 @@ public class TreasureBagItem extends Item {
 		if( !world.isRemote ) {
 			if( !player.abilities.isCreativeMode )
 				itemStack.shrink( 1 );
-			player.addStat( Stats.ITEM_USED.get( this ) );
+			if( player instanceof ServerPlayerEntity )
+				handleStatistics( ( ServerPlayerEntity )player );
+
 			world.playSound( null, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 0.9f );
 
 			if( this.availability.isEnabled() ) {
@@ -132,5 +137,14 @@ public class TreasureBagItem extends Item {
 		return ServerLifecycleHooks.getCurrentServer()
 			.getLootTableManager()
 			.getLootTableFromLocation( this.lootTableLocation );
+	}
+
+	/** Handles statistics and advancements for a Treasure Bag. */
+	protected void handleStatistics( ServerPlayerEntity player ) {
+		Stat< ? > statistic = Stats.ITEM_USED.get( this );
+		ServerStatisticsManager statisticsManager = player.getStats();
+
+		player.addStat( statistic );
+		Instances.TREASURE_BAG_TRIGGER.trigger( player, this, statisticsManager.getValue( statistic ) );
 	}
 }
