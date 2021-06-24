@@ -30,7 +30,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 50,
+          "weight": 45,
           "name": "minecraft:wither_rose"
         },
         {
@@ -42,6 +42,11 @@
           "type": "minecraft:item",
           "weight": 15,
           "name": "minecraft:blaze_rod"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:wither_skeleton_skull"
         },
         {
           "type": "minecraft:item",
