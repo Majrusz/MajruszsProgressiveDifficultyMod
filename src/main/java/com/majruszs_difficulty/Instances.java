@@ -118,6 +118,7 @@ public class Instances {
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER;
 	public static final UndeadArmyDefeatedTrigger UNDEAD_ARMY_DEFEATED_TRIGGER;
 	public static final BandageTrigger BANDAGE_TRIGGER;
+	public static final EndermanTeleportAttackTrigger ENDERMAN_TELEPORT_ATTACK_TRIGGER;
 
 	static {
 		// Items
@@ -245,6 +246,7 @@ public class Instances {
 		TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 		UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
 		BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
+		ENDERMAN_TELEPORT_ATTACK_TRIGGER = CriteriaTriggers.register( new EndermanTeleportAttackTrigger() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

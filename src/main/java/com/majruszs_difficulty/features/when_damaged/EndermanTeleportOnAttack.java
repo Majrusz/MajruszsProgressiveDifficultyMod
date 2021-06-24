@@ -1,9 +1,11 @@
 package com.majruszs_difficulty.features.when_damaged;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.Instances;
 import com.mlib.Random;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -44,7 +46,9 @@ public class EndermanTeleportOnAttack extends ChanceWhenDamagedBase {
 
 		world.playSound( null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f );
 		world.spawnParticle( ParticleTypes.PORTAL, target.prevPosX, target.getPosYHeight( 0.5 ), target.prevPosZ, 10, 0.25, 0.25, 0.25, 0.1 );
-		target.attemptTeleport( newPosition.x, target.prevPosY + 8 > y ? y : newPosition.y, newPosition.z, true );
+		boolean teleportedTarget = target.attemptTeleport( newPosition.x, target.prevPosY + 8 > y ? y : newPosition.y, newPosition.z, true );
+		if( teleportedTarget && target instanceof ServerPlayerEntity )
+			Instances.ENDERMAN_TELEPORT_ATTACK_TRIGGER.trigger( ( ServerPlayerEntity )target );
 	}
 
 	/** Checking if all conditions were met. */
