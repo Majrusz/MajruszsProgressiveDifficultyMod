@@ -2,7 +2,7 @@
   "parent": "minecraft:end/kill_dragon",
   "display": {
     "icon": {
-      "item": "minecraft:ender_pearl"
+      "item": "minecraft:ender_eye"
     },
     "title": {
       "translate": "advancements.progressive_difficulty.enderman_teleport_attack.title"
