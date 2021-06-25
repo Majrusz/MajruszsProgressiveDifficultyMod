@@ -29,6 +29,6 @@ public class CactusBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 		super.applyEffect( attacker, target, effect, difficulty );
 
 		if( target instanceof ServerPlayerEntity )
-			Instances.CACTUS_BLEEDING_TRIGGER.trigger( ( ServerPlayerEntity )target );
+			Instances.SIMPLE_TRIGGER.trigger( ( ServerPlayerEntity )target, "cactus_bleeding" );
 	}
 }

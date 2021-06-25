@@ -48,7 +48,7 @@ public class EndermanTeleportOnAttack extends ChanceWhenDamagedBase {
 		world.spawnParticle( ParticleTypes.PORTAL, target.prevPosX, target.getPosYHeight( 0.5 ), target.prevPosZ, 10, 0.25, 0.25, 0.25, 0.1 );
 		boolean teleportedTarget = target.attemptTeleport( newPosition.x, target.prevPosY + 8 > y ? y : newPosition.y, newPosition.z, true );
 		if( teleportedTarget && target instanceof ServerPlayerEntity )
-			Instances.ENDERMAN_TELEPORT_ATTACK_TRIGGER.trigger( ( ServerPlayerEntity )target );
+			Instances.SIMPLE_TRIGGER.trigger( ( ServerPlayerEntity )target, "enderman_teleport_attack" );
 	}
 
 	/** Checking if all conditions were met. */

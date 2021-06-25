@@ -114,11 +114,9 @@ public class Instances {
 
 	// Triggers
 	public static final GameStateTrigger GAME_STATE_TRIGGER;
-	public static final CactusBleedingTrigger CACTUS_BLEEDING_TRIGGER;
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER;
 	public static final UndeadArmyDefeatedTrigger UNDEAD_ARMY_DEFEATED_TRIGGER;
 	public static final BandageTrigger BANDAGE_TRIGGER;
-	public static final EndermanTeleportAttackTrigger ENDERMAN_TELEPORT_ATTACK_TRIGGER;
 	public static final SimpleTrigger SIMPLE_TRIGGER;
 
 	static {
@@ -243,11 +241,9 @@ public class Instances {
 
 		// Triggers
 		GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStateTrigger() );
-		CACTUS_BLEEDING_TRIGGER = CriteriaTriggers.register( new CactusBleedingTrigger() );
 		TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 		UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
 		BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
-		ENDERMAN_TELEPORT_ATTACK_TRIGGER = CriteriaTriggers.register( new EndermanTeleportAttackTrigger() );
 		SIMPLE_TRIGGER = CriteriaTriggers.register( new SimpleTrigger() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );

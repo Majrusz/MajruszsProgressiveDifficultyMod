@@ -20,11 +20,9 @@
   },
   "criteria": {
     "bleeding_applied": {
-      "trigger": "majruszs_difficulty:cactus_bleeding",
+      "trigger": "majruszs_difficulty:simple_trigger",
       "conditions": {
-        "effects": {
-          "majruszs_difficulty:bleeding": {}
-        }
+        "type": "cactus_bleeding"
       }
     }
   },

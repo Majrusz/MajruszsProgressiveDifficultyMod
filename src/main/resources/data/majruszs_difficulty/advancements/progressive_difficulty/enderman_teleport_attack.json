@@ -17,8 +17,10 @@
   },
   "criteria": {
     "teleported_player": {
-      "trigger": "majruszs_difficulty:enderman_teleport_attack",
-      "conditions": {}
+      "trigger": "majruszs_difficulty:simple_trigger",
+      "conditions": {
+        "type": "enderman_teleport_attack"
+      }
     }
   },
   "requirements": [
