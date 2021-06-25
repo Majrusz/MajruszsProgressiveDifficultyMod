@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.advancements.criterion.EntityPredicate;
@@ -34,15 +33,15 @@ public class GameStateTrigger extends AbstractCriterionTrigger< GameStateTrigger
 		return new GameStateTrigger.Instance( predicate, GameState.convertIntegerToState( stateElement.getAsInt() ) );
 	}
 
-	/** Triggers an advancement for given player. */
-	public void trigger( ServerPlayerEntity player, GameState.State state ) {
-		this.triggerListeners( player, instance->instance.test( state ) );
-	}
-
 	@SubscribeEvent
 	public static void onStart( PlayerEvent.PlayerLoggedInEvent event ) {
 		if( event.getPlayer() instanceof ServerPlayerEntity )
 			GameState.triggerAdvancement( ( ServerPlayerEntity )event.getPlayer() );
+	}
+
+	/** Triggers an advancement for given player. */
+	public void trigger( ServerPlayerEntity player, GameState.State state ) {
+		this.triggerListeners( player, instance->instance.test( state ) );
 	}
 
 	public static class Instance extends CriterionInstance {
