@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.progressive_difficulty.wither_treasure_bag_16.description"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
