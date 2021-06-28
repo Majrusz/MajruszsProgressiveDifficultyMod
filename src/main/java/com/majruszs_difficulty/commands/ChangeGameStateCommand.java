@@ -33,7 +33,7 @@ public final class ChangeGameStateCommand {
 	}
 
 	public static int changeState( CommandSource source, GameState.State state ) {
-		if( GameState.changeMode( state, source.getServer() ) )
+		if( GameState.changeModeWithAdvancement( state, source.getServer() ) )
 			source.sendFeedback( getFeedbackMessage( state, "change" ), true );
 
 		return GameState.convertStateToInteger( state );

@@ -26,7 +26,7 @@ public class GameState {
 	}
 
 	/** Changing current game state globally and triggers the advancement if possible. */
-	public static boolean changeMode( State state, MinecraftServer minecraftServer ) {
+	public static boolean changeModeWithAdvancement( State state, MinecraftServer minecraftServer ) {
 		if( !changeMode( state ) )
 			return false;
 
