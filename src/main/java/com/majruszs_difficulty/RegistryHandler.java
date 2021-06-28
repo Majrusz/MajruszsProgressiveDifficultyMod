@@ -127,7 +127,7 @@ public class RegistryHandler {
 
 	/** Registration of items. */
 	private static void registerItems( final IEventBus modEventBus ) {
-		ITEMS.register( "wither_sword", ()->Instances.Tools.WITHER_SWORD );
+		ITEMS.register( "wither_sword", ()->Instances.WITHER_SWORD );
 		ITEMS.register( "hermes_boots", ()->Instances.HERMES_BOOTS_ITEM );
 		ITEMS.register( "end_shard", ()->Instances.END_SHARD_ITEM );
 		ITEMS.register( "end_ingot", ()->Instances.END_INGOT_ITEM );

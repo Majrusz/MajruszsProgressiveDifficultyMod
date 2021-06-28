@@ -23,6 +23,6 @@ public class GiveWitherSkeletonSwordOnSpawn extends GiveItemAfterSpawningBase {
 
 	@Override
 	public ItemStack getItemStack() {
-		return new ItemStack( Instances.Tools.WITHER_SWORD );
+		return new ItemStack( Instances.WITHER_SWORD );
 	}
 }

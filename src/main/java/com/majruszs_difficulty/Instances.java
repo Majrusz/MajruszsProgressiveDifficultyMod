@@ -43,6 +43,7 @@ public class Instances {
 
 	// Items
 	public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
+	public static final SwordItem WITHER_SWORD;
 	public static final BandageItem BANDAGE_ITEM;
 	public static final HermesBootsItem HERMES_BOOTS_ITEM;
 	public static final EndShardItem END_SHARD_ITEM;
@@ -122,6 +123,7 @@ public class Instances {
 	static {
 		// Items
 		BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
+		WITHER_SWORD = new WitherSwordItem();
 		BANDAGE_ITEM = new BandageItem();
 		HERMES_BOOTS_ITEM = new HermesBootsItem();
 		END_SHARD_ITEM = new EndShardItem();
@@ -247,14 +249,6 @@ public class Instances {
 		SIMPLE_TRIGGER = CriteriaTriggers.register( new SimpleTrigger() );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
-	}
-
-	public static class Tools {
-		public static final SwordItem WITHER_SWORD;
-
-		static {
-			WITHER_SWORD = new WitherSwordItem();
-		}
 	}
 
 	public static class Sounds {
