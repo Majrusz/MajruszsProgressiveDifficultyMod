@@ -1,7 +1,6 @@
 package com.majruszs_difficulty.items;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.mlib.MajruszLibrary;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -23,8 +22,6 @@ public abstract class AttributeArmorItem extends ArmorItem {
 
 	/** Updates attribute values in all AttributeArmorItem class items. */
 	public static void updateAllItemsAttributes() {
-		MajruszLibrary.LOGGER.info( "COOOL!" );
-
 		ALL_ATTRIBUTE_ITEMS.forEach( AttributeArmorItem::updateSingleItem );
 	}
 
