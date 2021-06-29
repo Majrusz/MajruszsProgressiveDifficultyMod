@@ -8,6 +8,7 @@ import com.majruszs_difficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.features.undead_army.ReloadUndeadArmyGoals;
 import com.majruszs_difficulty.features.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.generation.OreGeneration;
+import com.majruszs_difficulty.items.AttributeArmorItem;
 import com.majruszs_difficulty.items.FakeItem;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
@@ -240,6 +241,8 @@ public class RegistryHandler {
 		event.enqueueWork( Instances.FLYING_END_ISLAND::setup );
 		event.enqueueWork( Instances.FLYING_END_SHIP::setup );
 		OreGeneration.registerOres();
+
+		AttributeArmorItem.updateAllItemsAttributes();
 	}
 
 	/** Registration of commands. */
