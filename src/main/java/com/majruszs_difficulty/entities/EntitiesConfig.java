@@ -11,6 +11,7 @@ public class EntitiesConfig {
 	public final EntityConfig pillagerWolf;
 	public final EntityConfig skyKeeper;
 	public final EntityConfig creeperling;
+	public final EntityConfig parasite;
 
 	public EntitiesConfig() {
 		this.eliteSkeleton = new EliteSkeletonConfig();
@@ -19,6 +20,7 @@ public class EntitiesConfig {
 		this.pillagerWolf = new EntityConfig( "PillagerWolf" );
 		this.skyKeeper = new EntityConfig( "SkyKeeper" );
 		this.creeperling = new EntityConfig( "Creeperling" );
+		this.parasite = new EntityConfig( "Parasite" );
 	}
 
 	public static class EliteSkeletonConfig extends EntityConfig {

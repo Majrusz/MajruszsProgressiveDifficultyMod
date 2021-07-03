@@ -91,6 +91,7 @@ public class RegistryHandler {
 		ENTITIES.register( "elite_skeleton", ()->EliteSkeletonEntity.type );
 		ENTITIES.register( "sky_keeper", ()->SkyKeeperEntity.type );
 		ENTITIES.register( "creeperling", ()->CreeperlingEntity.type );
+		ENTITIES.register( "parasite", ()->ParasiteEntity.type );
 		ENTITIES.register( modEventBus );
 	}
 
@@ -103,6 +104,7 @@ public class RegistryHandler {
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "elite_skeleton_spawn_egg", EliteSkeletonEntity.type, 12698049, 0xFE484D );
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "sky_keeper_spawn_egg", SkyKeeperEntity.type, 0x7B45AD, 0xF0F0F0 );
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "creeperling_spawn_egg", CreeperlingEntity.type, 0x0DA70B, 0x000000 );
+		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "parasite_spawn_egg", ParasiteEntity.type, 0x161616, 0x946794 );
 	}
 
 	/** Registers list of fake items. */
@@ -220,6 +222,7 @@ public class RegistryHandler {
 		GlobalEntityTypeAttributes.put( EliteSkeletonEntity.type, EliteSkeletonEntity.getAttributeMap() );
 		GlobalEntityTypeAttributes.put( SkyKeeperEntity.type, SkyKeeperEntity.getAttributeMap() );
 		GlobalEntityTypeAttributes.put( CreeperlingEntity.type, CreeperlingEntity.getAttributeMap() );
+		GlobalEntityTypeAttributes.put( ParasiteEntity.type, ParasiteEntity.getAttributeMap() );
 
 		EntitySpawnPlacementRegistry.register( GiantEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
 			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GiantEntity::canMonsterSpawnInLight
@@ -235,6 +238,9 @@ public class RegistryHandler {
 		);
 		EntitySpawnPlacementRegistry.register( CreeperlingEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
 			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::canSpawnOn
+		);
+		EntitySpawnPlacementRegistry.register( ParasiteEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
+			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::canMonsterSpawnInLight
 		);
 
 		event.enqueueWork( Instances.FLYING_PHANTOM::setup );
