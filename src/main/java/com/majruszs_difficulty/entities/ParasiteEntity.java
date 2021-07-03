@@ -30,6 +30,7 @@ public class ParasiteEntity extends SpiderEntity {
 		return MobEntity.func_233666_p_()
 			.createMutableAttribute( Attributes.MAX_HEALTH, 14.0 )
 			.createMutableAttribute( Attributes.MOVEMENT_SPEED, 0.35 )
+			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 8.0D )
 			.create();
 	}
 }
