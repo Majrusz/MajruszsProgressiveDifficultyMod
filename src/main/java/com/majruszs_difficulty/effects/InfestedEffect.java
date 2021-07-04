@@ -6,6 +6,7 @@ import com.mlib.Random;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.DurationConfig;
+import com.mlib.config.IntegerConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -33,6 +34,7 @@ public class InfestedEffect extends Effect {
 	protected final ConfigGroup effectGroup;
 	protected final DurationConfig duration;
 	protected final DoubleConfig damage;
+	protected final IntegerConfig maximumAmplifier;
 
 	public InfestedEffect() {
 		super( EffectType.HARMFUL, 0xff161616 );
@@ -43,14 +45,16 @@ public class InfestedEffect extends Effect {
 		String damageComment = "Damage dealt after this effect expires. (per level) (1.0 = half a heart)";
 		this.damage = new DurationConfig( "damage", damageComment, false, 1.0, 0.0, 20.0 );
 
+		String amplifierComment = "Maximum amplifier that can be applied by Parasite.";
+		this.maximumAmplifier = new IntegerConfig( "maximum_amplifier", amplifierComment, false, 4, 0, 100 );
+
 		this.effectGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Infested", "Infested potion effect." ) );
-		this.effectGroup.addConfigs( this.duration, this.damage );
+		this.effectGroup.addConfigs( this.duration, this.damage, this.maximumAmplifier );
 	}
 
 	/** Removes default milk bucket from curative items. */
 	@Override
 	public List< ItemStack > getCurativeItems() {
-
 		return new ArrayList<>();
 	}
 
@@ -69,9 +73,16 @@ public class InfestedEffect extends Effect {
 	/** Applies Infested on given target or if it has one then it increases the amplifier. */
 	public void applyTo( LivingEntity target ) {
 		EffectInstance currentEffect = target.getActivePotionEffect( this );
-		int amplifier = currentEffect != null ? currentEffect.getAmplifier() + 1 : 0;
+		int amplifier = currentEffect != null ? Math.min( currentEffect.getAmplifier() + 1, this.maximumAmplifier.get() ) : 0;
 
 		EffectHelper.applyEffectIfPossible( target, this, this.duration.getDuration(), amplifier );
+	}
+
+	/** Checks whether given target can have Infested effect. */
+	public boolean canBeAppliedTo( LivingEntity target ) {
+		EffectInstance currentEffect = target.getActivePotionEffect( this );
+
+		return currentEffect == null || currentEffect.getAmplifier() < this.maximumAmplifier.get();
 	}
 
 	/** Spawns parasites depending on potion amplifier and near the target. */
