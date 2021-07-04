@@ -178,6 +178,7 @@ public class RegistryHandler {
 	private static void registerEffects( final IEventBus modEventBus ) {
 		EFFECTS.register( "bleeding", ()->Instances.BLEEDING );
 		EFFECTS.register( "bleeding_immunity", ()->Instances.BLEEDING_IMMUNITY );
+		EFFECTS.register( "infested", ()->Instances.INFESTED );
 		EFFECTS.register( modEventBus );
 	}
 

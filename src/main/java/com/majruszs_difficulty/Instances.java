@@ -5,6 +5,7 @@ import com.majruszs_difficulty.blocks.EndShardOre;
 import com.majruszs_difficulty.blocks.InfestedEndStone;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.effects.BleedingImmunityEffect;
+import com.majruszs_difficulty.effects.InfestedEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.features.ExperienceBonus;
 import com.majruszs_difficulty.features.treasure_bag.FishingRewarder;
@@ -85,6 +86,7 @@ public class Instances {
 	// Effects
 	public static final BleedingEffect BLEEDING;
 	public static final BleedingImmunityEffect BLEEDING_IMMUNITY;
+	public static final InfestedEffect INFESTED;
 
 	// Damage sources
 	public static final DamageSource BLEEDING_SOURCE;
@@ -165,6 +167,7 @@ public class Instances {
 		// Effects
 		BLEEDING = new BleedingEffect();
 		BLEEDING_IMMUNITY = new BleedingImmunityEffect();
+		INFESTED = new InfestedEffect();
 
 		// Damage sources
 		BLEEDING_SOURCE = new DamageSource( "bleeding" ).setDamageBypassesArmor();
