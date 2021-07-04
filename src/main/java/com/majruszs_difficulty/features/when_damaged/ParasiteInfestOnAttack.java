@@ -11,11 +11,11 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Makes parasite have a chance to infest the target. */
-public class ParasiteInfestOnHurt extends ChanceWhenDamagedBase {
+public class ParasiteInfestOnAttack extends ChanceWhenDamagedBase {
 	private static final String CONFIG_NAME = "ParasiteInfest";
 	private static final String CONFIG_COMMENT = "Makes parasite have a chance to infest the target.";
 
-	public ParasiteInfestOnHurt() {
+	public ParasiteInfestOnAttack() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, GameState.State.NORMAL, false );
 	}
 
