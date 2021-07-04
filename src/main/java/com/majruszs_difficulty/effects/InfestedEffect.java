@@ -90,7 +90,7 @@ public class InfestedEffect extends Effect {
 		int effectAmplifier = effectInstance.getAmplifier();
 		BlockPos targetPosition = target.getPosition();
 		for( int i = 0; i < effectAmplifier + 2; ++i ) {
-			Vector3d offset = Random.getRandomVector3d( -1.0, 1.0, 0.0, 0.0, -1.0, 1.0 );
+			Vector3d offset = Random.getRandomVector3d( -2.5, 2.5, 0.0, 0.0, -2.5, 2.5 );
 			BlockPos parasitePosition = targetPosition.add( offset.x, 0.0, offset.z );
 			Entity entity = ParasiteEntity.type.spawn( world, null, null, parasitePosition, SpawnReason.EVENT, true, true );
 			if( !( entity instanceof ParasiteEntity ) )

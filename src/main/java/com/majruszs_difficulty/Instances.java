@@ -216,7 +216,8 @@ public class Instances {
 		WhenDamagedEvent.REGISTRY_LIST.add( new CreeperDamageReductionOnHurt() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new IgniteCreeperOnHurt() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new SlimeSlownessOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new ParasiteInfestOnHurt() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new ParasiteInfestOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new ParasiteDodgeOnHurt() );
 
 		// On enemy to be spawned
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
