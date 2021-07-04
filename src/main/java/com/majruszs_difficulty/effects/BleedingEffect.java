@@ -169,6 +169,12 @@ public class BleedingEffect extends Effect {
 		public Entity getTrueSource() {
 			return this.damageSourceEntity;
 		}
+
+		@Nullable
+		@Override
+		public Entity getImmediateSource() {
+			return null;
+		}
 	}
 
 	/** Bleeding effect instance that stores information about the causer of bleeding. (required for converting villager to zombie villager etc.) */
