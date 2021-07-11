@@ -35,27 +35,43 @@ public class InfestedEffect extends Effect {
 	protected final DurationConfig duration;
 	protected final DoubleConfig damage;
 	protected final IntegerConfig maximumAmplifier;
+	protected final DurationConfig damageCooldown;
 
 	public InfestedEffect() {
 		super( EffectType.HARMFUL, 0xff161616 );
 
 		String durationComment = "Duration of this effect whenever it is applied by Parasite. (in seconds)";
-		this.duration = new DurationConfig( "duration", durationComment, false, 15.0, 1.0, 120.0 );
+		this.duration = new DurationConfig( "duration", durationComment, false, 8.0, 1.0, 120.0 );
 
-		String damageComment = "Damage dealt after this effect expires. (per level) (1.0 = half a heart)";
+		String damageComment = "Damage dealt after this effect expires and every cooldown ticks. (per level) (1.0 = half a heart)";
 		this.damage = new DurationConfig( "damage", damageComment, false, 1.0, 0.0, 20.0 );
 
 		String amplifierComment = "Maximum amplifier that can be applied by Parasite.";
 		this.maximumAmplifier = new IntegerConfig( "maximum_amplifier", amplifierComment, false, 4, 0, 100 );
 
+		String cooldownComment = "Cooldown between attacking the entity. (in seconds)";
+		this.damageCooldown = new DurationConfig( "damage_cooldown", cooldownComment, false, 1.5, 0.1, 10.0 );
+
 		this.effectGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Infested", "Infested potion effect." ) );
-		this.effectGroup.addConfigs( this.duration, this.damage, this.maximumAmplifier );
+		this.effectGroup.addConfigs( this.duration, this.damage, this.maximumAmplifier, this.damageCooldown );
 	}
 
 	/** Removes default milk bucket from curative items. */
 	@Override
 	public List< ItemStack > getCurativeItems() {
 		return new ArrayList<>();
+	}
+
+	/** Called every time when effect 'isReady'. */
+	@Override
+	public void performEffect( LivingEntity entity, int amplifier ) {
+		damageEntity( amplifier, entity );
+	}
+
+	/** Calculating whether effect is ready to deal damage. */
+	@Override
+	public boolean isReady( int duration, int amplifier ) {
+		return duration % this.damageCooldown.getDuration() == 0;
 	}
 
 	@SubscribeEvent
@@ -67,7 +83,7 @@ public class InfestedEffect extends Effect {
 			return;
 
 		infestedEffect.spawnParasites( effectInstance, target, ( ServerWorld )target.world );
-		infestedEffect.damageEntity( effectInstance, target );
+		infestedEffect.damageEntity( effectInstance.getAmplifier(), target );
 	}
 
 	/** Applies Infested on given target or if it has one then it increases the amplifier. */
@@ -103,7 +119,7 @@ public class InfestedEffect extends Effect {
 	}
 
 	/** Damages the target depending on potion amplifier. */
-	protected void damageEntity( EffectInstance effectInstance, LivingEntity target ) {
-		target.attackEntityFrom( DamageSource.MAGIC, ( float )( ( effectInstance.getAmplifier() + 1 ) * this.damage.get() ) );
+	protected void damageEntity( int amplifier, LivingEntity target ) {
+		target.attackEntityFrom( DamageSource.MAGIC, ( float )( ( amplifier + 1 ) * this.damage.get() ) );
 	}
 }
