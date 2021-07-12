@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
@@ -120,6 +119,6 @@ public class InfestedEffect extends Effect {
 
 	/** Damages the target depending on potion amplifier. */
 	protected void damageEntity( int amplifier, LivingEntity target ) {
-		target.attackEntityFrom( DamageSource.MAGIC, ( float )( ( amplifier + 1 ) * this.damage.get() ) );
+		target.attackEntityFrom( Instances.INFESTED_SOURCE, ( float )( ( amplifier + 1 ) * this.damage.get() ) );
 	}
 }

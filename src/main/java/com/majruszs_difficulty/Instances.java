@@ -90,6 +90,7 @@ public class Instances {
 
 	// Damage sources
 	public static final DamageSource BLEEDING_SOURCE;
+	public static final DamageSource INFESTED_SOURCE;
 
 	// Particles
 	public static final BasicParticleType BLOOD_PARTICLE;
@@ -171,6 +172,7 @@ public class Instances {
 
 		// Damage sources
 		BLEEDING_SOURCE = new DamageSource( "bleeding" ).setDamageBypassesArmor();
+		INFESTED_SOURCE = new DamageSource( "infested" ).setDamageBypassesArmor();
 
 		// Particles
 		BLOOD_PARTICLE = new BasicParticleType( true );
