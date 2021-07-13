@@ -2,7 +2,9 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
+import com.mlib.TimeConverter;
 import com.mlib.WorldHelper;
+import com.mlib.effects.EffectHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.UseAction;
+import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DrinkHelper;
@@ -55,6 +58,7 @@ public class RecallPotionItem extends Item {
 			if( world instanceof ServerWorld && player instanceof ServerPlayerEntity ) {
 				BlockPos spawnPosition = WorldHelper.getSpawnPosition( ( ServerPlayerEntity )player, ( ServerWorld )world );
 				player.attemptTeleport( spawnPosition.getX() + 0.5, spawnPosition.getY() + 1.0, spawnPosition.getZ() + 0.5, true );
+				EffectHelper.applyEffectIfPossible( player, Effects.NAUSEA, TimeConverter.secondsToTicks( 6.0 ), 0 );
 			}
 		}
 
