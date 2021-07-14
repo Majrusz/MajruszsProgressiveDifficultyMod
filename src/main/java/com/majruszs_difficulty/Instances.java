@@ -8,6 +8,7 @@ import com.majruszs_difficulty.effects.BleedingImmunityEffect;
 import com.majruszs_difficulty.effects.InfestedEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.features.ExperienceBonus;
+import com.majruszs_difficulty.features.on_death.SpawnParasitesOnDeath;
 import com.majruszs_difficulty.features.treasure_bag.FishingRewarder;
 import com.majruszs_difficulty.features.IncreaseGameDifficulty;
 import com.majruszs_difficulty.features.on_death.OnDeathEventHandler;
@@ -25,6 +26,7 @@ import com.majruszs_difficulty.generation.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
 import com.majruszs_difficulty.triggers.*;
+import javafx.beans.binding.When;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
@@ -237,6 +239,7 @@ public class Instances {
 
 		// On death events
 		OnDeathEventHandler.REGISTRY_LIST.add( new SpawnPlayerZombieOnDeath() );
+		OnDeathEventHandler.REGISTRY_LIST.add( new SpawnParasitesOnDeath() );
 
 		// Events
 		STRONGER_EXPLOSIONS = new StrongerExplosions();

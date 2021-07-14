@@ -40,7 +40,7 @@ public class InfestedEffect extends Effect {
 		super( EffectType.HARMFUL, 0xff161616 );
 
 		String durationComment = "Duration of this effect whenever it is applied by Parasite. (in seconds)";
-		this.duration = new DurationConfig( "duration", durationComment, false, 8.0, 1.0, 120.0 );
+		this.duration = new DurationConfig( "duration", durationComment, false, 7.0, 1.0, 120.0 );
 
 		String damageComment = "Damage dealt after this effect expires and every cooldown ticks. (per level) (1.0 = half a heart)";
 		this.damage = new DurationConfig( "damage", damageComment, false, 1.0, 0.0, 20.0 );
@@ -81,7 +81,7 @@ public class InfestedEffect extends Effect {
 		if( effectInstance == null || !infestedEffect.equals( effectInstance.getPotion() ) || !( target.world instanceof ServerWorld ) )
 			return;
 
-		infestedEffect.spawnParasites( effectInstance, target, ( ServerWorld )target.world );
+		infestedEffect.spawnParasites( effectInstance.getAmplifier(), target, ( ServerWorld )target.world );
 		infestedEffect.damageEntity( effectInstance.getAmplifier(), target );
 	}
 
@@ -101,8 +101,7 @@ public class InfestedEffect extends Effect {
 	}
 
 	/** Spawns parasites depending on potion amplifier and near the target. */
-	protected void spawnParasites( EffectInstance effectInstance, LivingEntity target, ServerWorld world ) {
-		int effectAmplifier = effectInstance.getAmplifier();
+	public void spawnParasites( int effectAmplifier, LivingEntity target, ServerWorld world ) {
 		BlockPos targetPosition = target.getPosition();
 		for( int i = 0; i < effectAmplifier + 2; ++i ) {
 			Vector3d offset = Random.getRandomVector3d( -2.5, 2.5, 0.0, 0.0, -2.5, 2.5 );
