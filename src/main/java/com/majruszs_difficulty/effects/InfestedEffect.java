@@ -40,7 +40,7 @@ public class InfestedEffect extends Effect {
 		super( EffectType.HARMFUL, 0xff161616 );
 
 		String durationComment = "Duration of this effect whenever it is applied by Parasite. (in seconds)";
-		this.duration = new DurationConfig( "duration", durationComment, false, 7.0, 1.0, 120.0 );
+		this.duration = new DurationConfig( "duration", durationComment, false, 6.0, 1.0, 120.0 );
 
 		String damageComment = "Damage dealt after this effect expires and every cooldown ticks. (per level) (1.0 = half a heart)";
 		this.damage = new DurationConfig( "damage", damageComment, false, 1.0, 0.0, 20.0 );

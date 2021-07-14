@@ -4,7 +4,10 @@ import com.majruszs_difficulty.MajruszsDifficulty;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -29,6 +32,9 @@ public class ParasiteEntity extends SpiderEntity {
 
 	public ParasiteEntity( EntityType< ? extends SpiderEntity > type, World world ) {
 		super( type, world );
+
+		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, AnimalEntity.class, true ) );
+		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, VillagerEntity.class, true ) );
 	}
 
 	@Override
@@ -46,7 +52,7 @@ public class ParasiteEntity extends SpiderEntity {
 		return MobEntity.func_233666_p_()
 			.createMutableAttribute( Attributes.MAX_HEALTH, 14.0 )
 			.createMutableAttribute( Attributes.MOVEMENT_SPEED, 0.4 )
-			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 3.0 )
+			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 2.0 )
 			.create();
 	}
 
