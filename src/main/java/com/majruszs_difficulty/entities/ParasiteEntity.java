@@ -56,6 +56,11 @@ public class ParasiteEntity extends SpiderEntity {
 			.create();
 	}
 
+	@Override
+	public boolean isWaterSensitive() {
+		return true;
+	}
+
 	/** Spawns teleport particles and plays sounds at given block position. */
 	public static void spawnEffects( ServerWorld world, BlockPos position ) {
 		world.spawnParticle( ParticleTypes.PORTAL, position.getX(), position.getY(), position.getZ(), 32, 0.5, 0.5, 0.5, 0.25 );
