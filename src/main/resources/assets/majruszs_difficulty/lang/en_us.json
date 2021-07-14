@@ -7,6 +7,7 @@
   "entity.majruszs_difficulty.parasite": "Parasite",
   "effect.majruszs_difficulty.bleeding": "Bleeding",
   "effect.majruszs_difficulty.bleeding_immunity": "Bleeding Immunity",
+  "effect.majruszs_difficulty.infested": "Infested",
   "itemGroup.majruszs_tab": "Majrusz's Progressive Difficulty",
   "item.majruszs_difficulty.giant_spawn_egg": "Giant Spawn Egg",
   "item.majruszs_difficulty.illusioner_spawn_egg": "Illusioner Spawn Egg",
