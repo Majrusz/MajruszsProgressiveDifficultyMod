@@ -21,7 +21,7 @@ public class TriggerAllEndermansOnAttack extends WhenDamagedBase {
 	@Override
 	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, LivingHurtEvent event ) {
 		if( attacker != null )
-			EndShardOre.targetEndermansOnEntity( attacker, 500.0 );
+			EndShardOre.targetEndermansOnEntity( attacker, 250.0 );
 	}
 
 	/** Checking if all conditions were met. */
