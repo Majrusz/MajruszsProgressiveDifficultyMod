@@ -3,6 +3,7 @@ package com.majruszs_difficulty.features;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
+import com.majruszs_difficulty.entities.ParasiteEntity;
 import com.majruszs_difficulty.generation.OreGeneration;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -34,6 +35,7 @@ public class BiomeLoading {
 		} else if( doBiomeCategoryBelongsToNether( category ) ) {
 			addNetherEntities( spawnInfoBuilder );
 		} else if( doBiomeCategoryBelongsToTheEnd( category ) ) {
+			addEndEntities( spawnInfoBuilder );
 			addEndStructures( generationSettingsBuilder );
 			addEndOres( generationSettingsBuilder );
 		}
@@ -56,6 +58,11 @@ public class BiomeLoading {
 		Set< EntityType< ? > > entityTypes = spawnInfoBuilder.getEntityTypes();
 		if( entityTypes.contains( EntityType.SKELETON ) || entityTypes.contains( EntityType.WITHER_SKELETON ) )
 			addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EliteSkeletonEntity.type, 5, 1, 1 );
+	}
+
+	/** Adding natural spawning for end entities. */
+	protected static void addEndEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
+		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, ParasiteEntity.type, 1, 2, 6 );
 	}
 
 	/** Adding natural generating for end structures. */

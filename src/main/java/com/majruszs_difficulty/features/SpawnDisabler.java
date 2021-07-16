@@ -31,6 +31,7 @@ public class SpawnDisabler {
 		boolean isEliteSkeleton = entity instanceof EliteSkeletonEntity;
 		boolean isSkyKeeper = entity instanceof SkyKeeperEntity;
 		boolean isCreeperling = entity instanceof CreeperlingEntity;
+		boolean isParasite = entity instanceof ParasiteEntity;
 
 		if( isGiant )
 			return shouldBeDisabled( GameState.State.EXPERT, config.giant.availability );
@@ -44,6 +45,8 @@ public class SpawnDisabler {
 			return shouldBeDisabled( GameState.State.EXPERT, config.skyKeeper.availability );
 		else if( isCreeperling )
 			return shouldBeDisabled( GameState.State.NORMAL, config.creeperling.availability );
+		else if( isParasite )
+			return shouldBeDisabled( GameState.State.MASTER, config.parasite.availability );
 		else
 			return false;
 	}
