@@ -2,7 +2,8 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import com.majruszs_difficulty.features.HasteOnDestroyingBlocks;
+import com.majruszs_difficulty.features.end_items.EndItems;
+import com.majruszs_difficulty.features.end_items.HasteOnDestroyingBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -26,6 +27,6 @@ public class EndShovelItem extends ShovelItem {
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
-		MajruszsHelper.addAdvancedTooltip( tooltip, flag, HasteOnDestroyingBlocks.getTooltipTranslationKey() );
+		MajruszsHelper.addAdvancedTooltip( tooltip, flag, EndItems.Keys.HASTE_TOOLTIP );
 	}
 }

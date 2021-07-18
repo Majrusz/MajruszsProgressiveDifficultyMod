@@ -82,7 +82,7 @@
   "majruszs_difficulty.undead_army.south": "south",
   "majruszs_difficulty.subtitle.undead_army.approaching": "Undead Army Approaching",
   "majruszs_difficulty.subtitle.undead_army.wave_started": "Wave Started",
-  "majruszs_difficulty.effects.haste_tooltip": "Gives Haste when destroying blocks.",
+  "majruszs_difficulty.end_items.haste_tooltip": "Applies Haste effect whenever a block is destroyed.",
   "majruszs_difficulty.items.undead_helmet": "Undead Army Helmet",
   "majruszs_difficulty.items.undead_chestplate": "Undead Army Chestplate",
   "majruszs_difficulty.items.undead_leggings": "Undead Army Leggings",
