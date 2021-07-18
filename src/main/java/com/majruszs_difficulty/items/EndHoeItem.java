@@ -45,7 +45,7 @@ public class EndHoeItem extends HoeItem {
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
-		MajruszsHelper.addAdvancedTooltip( tooltip, flag, EndItems.Keys.HASTE_TOOLTIP );
+		MajruszsHelper.addAdvancedTooltips( tooltip, flag, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP, EndItems.Keys.TILL_TOOLTIP );
 	}
 
 	/** Tills nearby blocks in 3x1x3 grid around the context. */

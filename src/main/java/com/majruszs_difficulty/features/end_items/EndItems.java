@@ -9,6 +9,7 @@ public class EndItems {
 		public static final String HASTE_TOOLTIP = "majruszs_difficulty.end_items.haste_tooltip";
 		public static final String BLEED_TOOLTIP = "majruszs_difficulty.end_items.bleed_tooltip";
 		public static final String LEVITATION_TOOLTIP = "majruszs_difficulty.end_items.levitation_tooltip";
+		public static final String TILL_TOOLTIP = "majruszs_difficulty.end_items.till_tooltip";
 	}
 
 	/** Returns whether item is either end tool or end sword. */

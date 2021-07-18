@@ -27,6 +27,6 @@ public class EndAxeItem extends AxeItem {
 	@OnlyIn( Dist.CLIENT )
 	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
-		MajruszsHelper.addAdvancedTooltip( tooltip, flag, EndItems.Keys.HASTE_TOOLTIP );
+		MajruszsHelper.addAdvancedTooltips( tooltip, flag, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP );
 	}
 }
