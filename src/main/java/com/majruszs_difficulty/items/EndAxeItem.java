@@ -18,7 +18,7 @@ import java.util.List;
 /** New late game axe. */
 public class EndAxeItem extends AxeItem {
 	public EndAxeItem() {
-		super( CustomItemTier.END, 6.0f, -3.1f, ( new Properties() ).rarity( Rarity.UNCOMMON ).group( Instances.ITEM_GROUP )
+		super( CustomItemTier.END, 7.0f, -3.1f, ( new Properties() ).rarity( Rarity.UNCOMMON ).group( Instances.ITEM_GROUP )
 			.isImmuneToFire() );
 	}
 
