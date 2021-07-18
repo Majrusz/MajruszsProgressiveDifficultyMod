@@ -8,6 +8,8 @@ import com.majruszs_difficulty.effects.BleedingImmunityEffect;
 import com.majruszs_difficulty.effects.InfestedEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.features.ExperienceBonus;
+import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsBleedingOnHurt;
+import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsLevitationOnAttack;
 import com.majruszs_difficulty.features.on_death.SpawnParasitesOnDeath;
 import com.majruszs_difficulty.features.treasure_bag.FishingRewarder;
 import com.majruszs_difficulty.features.IncreaseGameDifficulty;
@@ -26,7 +28,6 @@ import com.majruszs_difficulty.generation.structure_pieces.FlyingPhantomPiece;
 import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
 import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
 import com.majruszs_difficulty.triggers.*;
-import javafx.beans.binding.When;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
@@ -213,7 +214,6 @@ public class Instances {
 		WhenDamagedEvent.REGISTRY_LIST.add( new ThrownTridentBleedingOnHurt() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new BiteBleedingOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new EndermanTeleportOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new EndSwordLevitationOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new TriggerAllEndermansOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new ShulkerBlindnessOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new NauseaAndSlownessWhenFalling() );
@@ -222,6 +222,8 @@ public class Instances {
 		WhenDamagedEvent.REGISTRY_LIST.add( new SlimeSlownessOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new ParasiteInfestOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new ParasiteDodgeOnHurt() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new EndToolsLevitationOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new EndToolsBleedingOnHurt() );
 
 		// On enemy to be spawned
 		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
