@@ -7,29 +7,33 @@ import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.TreasureBagOpenedEvent;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.LootTable;
-import net.minecraft.stats.ServerStatisticsManager;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -51,8 +55,8 @@ public class TreasureBagItem extends Item {
 	private final AvailabilityConfig availability;
 
 	public TreasureBagItem( String id, String entityNameForConfiguration ) {
-		super( ( new Item.Properties() ).maxStackSize( 16 )
-			.group( Instances.ITEM_GROUP )
+		super( ( new Item.Properties() ).stacksTo( 16 )
+			.tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
 		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
@@ -63,47 +67,48 @@ public class TreasureBagItem extends Item {
 
 	/** Opening treasure bag on right click. */
 	@Override
-	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
-		ItemStack itemStack = player.getHeldItem( hand );
+	public InteractionResultHolder< ItemStack > use( Level world, Player player, InteractionHand hand ) {
+		ItemStack itemStack = player.getItemInHand( hand );
 
-		if( !world.isRemote ) {
-			if( !player.abilities.isCreativeMode )
+		if( !world.isClientSide ) {
+			if( !player.getAbilities().instabuild )
 				itemStack.shrink( 1 );
-			if( player instanceof ServerPlayerEntity )
-				handleStatistics( ( ServerPlayerEntity )player );
+			if( player instanceof ServerPlayer )
+				handleStatistics( ( ServerPlayer )player );
 
-			world.playSound( null, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 0.9f );
+			world.playSound( null, player.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 0.9f );
 
 			if( this.availability.isEnabled() ) {
 				List< ItemStack > loot = generateLoot( player );
 				MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) );
 				for( ItemStack reward : loot ) {
-					if( player.canPickUpItem( reward ) )
-						player.inventory.addItemStackToInventory( reward );
+					if( player.canTakeItem( reward ) )
+						player.getInventory()
+							.add( reward );
 					else
-						world.addEntity( new ItemEntity( world, player.getPosX(), player.getPosY() + 1, player.getPosZ(), reward ) );
+						world.addFreshEntity( new ItemEntity( world, player.getX(), player.getY() + 1, player.getZ(), reward ) );
 				}
 			}
 		}
 
-		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
+		return InteractionResultHolder.sidedSuccess( itemStack, world.isClientSide() );
 	}
 
 	/** Adding simple tooltip to treasure bag. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, this.availability.isEnabled() );
 		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
-	protected static LootContext generateLootContext( PlayerEntity player ) {
-		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerWorld )player.getEntityWorld() );
-		lootContextBuilder.withParameter( LootParameters.field_237457_g_, player.getPositionVec() );
-		lootContextBuilder.withParameter( LootParameters.THIS_ENTITY, player );
+	protected static LootContext generateLootContext( Player player ) {
+		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerLevel )player.level );
+		lootContextBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
+		lootContextBuilder.withParameter( LootContextParams.THIS_ENTITY, player );
 
-		return lootContextBuilder.build( LootParameterSets.GIFT );
+		return lootContextBuilder.create( LootContextParamSets.GIFT );
 	}
 
 	/** Creates comment for configuration. */
@@ -126,25 +131,25 @@ public class TreasureBagItem extends Item {
 
 	 @param player Player required to generate loot context.
 	 */
-	protected List< ItemStack > generateLoot( PlayerEntity player ) {
+	protected List< ItemStack > generateLoot( Player player ) {
 		LootTable lootTable = getLootTable();
 
-		return lootTable.generate( generateLootContext( player ) );
+		return lootTable.getRandomItems( generateLootContext( player ) );
 	}
 
 	/** Returning loot table for current treasure bag. (possible loot) */
 	protected LootTable getLootTable() {
 		return ServerLifecycleHooks.getCurrentServer()
-			.getLootTableManager()
-			.getLootTableFromLocation( this.lootTableLocation );
+			.getLootTables()
+			.get( this.lootTableLocation );
 	}
 
 	/** Handles statistics and advancements for a Treasure Bag. */
-	protected void handleStatistics( ServerPlayerEntity player ) {
+	protected void handleStatistics( ServerPlayer player ) {
 		Stat< ? > statistic = Stats.ITEM_USED.get( this );
-		ServerStatisticsManager statisticsManager = player.getStats();
+		ServerStatsCounter statisticsManager = player.getStats();
 
-		player.addStat( statistic );
+		player.awardStat( statistic );
 		Instances.TREASURE_BAG_TRIGGER.trigger( player, this, statisticsManager.getValue( statistic ) );
 	}
 }

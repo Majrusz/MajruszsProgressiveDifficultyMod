@@ -5,25 +5,25 @@ import com.majruszs_difficulty.goals.FollowGroupLeaderGoal;
 import com.majruszs_difficulty.goals.TargetAsLeaderGoal;
 import com.mlib.MajruszLibrary;
 import com.mlib.items.ItemHelper;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /** Spawning enemies in groups with leader and followers. */
 public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
+	private static final String SIDEKICK_TAG = "MajruszsDifficultySidekick";
 	protected final int minimumAmountOfChildren;
 	protected final int maximumAmountOfChildren;
 	protected final Item[] leaderArmor;
-	private static final String SIDEKICK_TAG = "MajruszsDifficultySidekick";
 
 	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD,
 		int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor
@@ -36,7 +36,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 	/** Called when all requirements were met. */
 	@Override
-	public void onExecute( LivingEntity entity, ServerWorld world ) {
+	public void onExecute( LivingEntity entity, ServerLevel world ) {
 		int childrenAmount = this.minimumAmountOfChildren + MajruszLibrary.RANDOM.nextInt(
 			this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1 );
 
@@ -49,7 +49,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 		spawnChildren( childrenAmount, entity, world );
 	}
 
-	protected abstract CreatureEntity spawnChild( ServerWorld world );
+	protected abstract PathfinderMob spawnChild( ServerLevel world );
 
 	/** Generates weapon for child. */
 	protected ItemStack generateWeaponForChild() {
@@ -58,13 +58,13 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 	/** Sets tag that informs this entity is a sidekick. */
 	protected void markAsSidekick( LivingEntity entity ) {
-		CompoundNBT data = entity.getPersistentData();
+		CompoundTag data = entity.getPersistentData();
 		data.putBoolean( SIDEKICK_TAG, true );
 	}
 
 	/** Checks whether given entity is a sidekick. */
 	protected boolean isSidekick( LivingEntity entity ) {
-		CompoundNBT data = entity.getPersistentData();
+		CompoundTag data = entity.getPersistentData();
 		return data.contains( SIDEKICK_TAG ) && data.getBoolean( SIDEKICK_TAG );
 	}
 
@@ -80,10 +80,10 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 		for( Item item : this.leaderArmor )
 			itemStacks.add( ItemHelper.damageAndEnchantItem( new ItemStack( item ), clampedRegionalDifficulty, true, 0.5 ) );
 
-		leader.setItemStackToSlot( EquipmentSlotType.FEET, itemStacks.get( 0 ) );
-		leader.setItemStackToSlot( EquipmentSlotType.LEGS, itemStacks.get( 1 ) );
-		leader.setItemStackToSlot( EquipmentSlotType.CHEST, itemStacks.get( 2 ) );
-		leader.setItemStackToSlot( EquipmentSlotType.HEAD, itemStacks.get( 3 ) );
+		leader.setItemSlot( EquipmentSlot.FEET, itemStacks.get( 0 ) );
+		leader.setItemSlot( EquipmentSlot.LEGS, itemStacks.get( 1 ) );
+		leader.setItemSlot( EquipmentSlot.CHEST, itemStacks.get( 2 ) );
+		leader.setItemSlot( EquipmentSlot.HEAD, itemStacks.get( 3 ) );
 	}
 
 	/** Gives weapon from generateWeapon method to given entity. */
@@ -92,33 +92,33 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 		ItemStack weapon = generateWeaponForChild();
 		if( weapon != null )
-			child.setItemStackToSlot( EquipmentSlotType.MAINHAND, ItemHelper.damageAndEnchantItem( weapon, clampedRegionalDifficulty, true, 0.5 ) );
+			child.setItemSlot( EquipmentSlot.MAINHAND, ItemHelper.damageAndEnchantItem( weapon, clampedRegionalDifficulty, true, 0.5 ) );
 	}
 
 	/** Setting up AI goals like following leader. */
-	private void setupGoals( CreatureEntity leader, CreatureEntity follower, int goalPriority, int targetPriority ) {
+	private void setupGoals( PathfinderMob leader, PathfinderMob follower, int goalPriority, int targetPriority ) {
 		follower.goalSelector.addGoal( goalPriority, new FollowGroupLeaderGoal( follower, leader, 1.0D, 6.0f, 5.0f ) );
 		follower.targetSelector.addGoal( targetPriority, new TargetAsLeaderGoal( follower, leader ) );
 	}
 
 	/** Spawns given amount of children near the leader. */
-	private void spawnChildren( int amount, LivingEntity leader, ServerWorld world ) {
-		Vector3d spawnPosition = leader.getPositionVec();
+	private void spawnChildren( int amount, LivingEntity leader, ServerLevel world ) {
+		Vec3 spawnPosition = leader.position();
 
-		if( !( leader instanceof CreatureEntity ) )
+		if( !( leader instanceof PathfinderMob ) )
 			return;
 
 		for( int childID = 0; childID < amount; childID++ ) {
-			CreatureEntity child = spawnChild( world );
+			PathfinderMob child = spawnChild( world );
 			double x = spawnPosition.x - 3 + MajruszLibrary.RANDOM.nextInt( 7 );
 			double y = spawnPosition.y + 0.5;
 			double z = spawnPosition.z - 3 + MajruszLibrary.RANDOM.nextInt( 7 );
-			child.setPosition( x, y, z );
-			setupGoals( ( CreatureEntity )leader, child, 9, 9 );
+			child.setPos( x, y, z );
+			setupGoals( ( PathfinderMob )leader, child, 9, 9 );
 			giveWeaponTo( child );
 			markAsSidekick( child );
 
-			world.summonEntity( child );
+			world.addFreshEntity( child );
 		}
 	}
 

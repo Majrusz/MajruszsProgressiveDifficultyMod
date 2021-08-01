@@ -4,20 +4,16 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.monster.HuskEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.monster.ZombifiedPiglinEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Husk;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.ZombifiedPiglin;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import javax.annotation.Nullable;
@@ -44,41 +40,41 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( @Nullable LivingEntity attacker, LivingEntity target, LivingDeathEvent event ) {
-		ServerWorld world = ( ServerWorld )target.world;
-		PlayerEntity player = ( PlayerEntity )target;
-		EntityType< ? extends ZombieEntity > zombieType = getZombieType( attacker );
-		Entity entity = zombieType.spawn( world, null, null, player.getPosition(), SpawnReason.EVENT, true, true );
+		ServerLevel world = ( ServerLevel )target.level;
+		Player player = ( Player )target;
+		EntityType< ? extends Zombie > zombieType = getZombieType( attacker );
+		Entity entity = zombieType.spawn( world, null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
 		if( entity == null )
 			return;
 
-		ZombieEntity zombie = ( ZombieEntity )entity;
+		Zombie zombie = ( Zombie )entity;
 
 		if( Random.tryChance( this.playerHeadChance.get() ) ) {
 			ItemStack playerSkull = getHead( player );
-			zombie.setItemStackToSlot( EquipmentSlotType.HEAD, playerSkull );
-			zombie.setDropChance( EquipmentSlotType.HEAD, ( float )( double )this.playerHeadDropChance.get() );
+			zombie.setItemSlot( EquipmentSlot.HEAD, playerSkull );
+			zombie.setDropChance( EquipmentSlot.HEAD, ( float )( double )this.playerHeadDropChance.get() );
 		}
 
 		zombie.setCustomName( player.getName() );
 		zombie.setCanPickUpLoot( true );
-		zombie.enablePersistence();
+		zombie.setPersistenceRequired();
 	}
 
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean hasPlayerDied = target instanceof PlayerEntity;
-		boolean hasDiedFromBleeding = damageSource.damageType.equals( Instances.BLEEDING_SOURCE.damageType );
-		boolean hasDiedFromZombie = attacker instanceof ZombieEntity;
+		boolean hasPlayerDied = target instanceof Player;
+		boolean hasDiedFromBleeding = damageSource.msgId.equals( Instances.BLEEDING_SOURCE.msgId );
+		boolean hasDiedFromZombie = attacker instanceof Zombie;
 
 		return super.shouldBeExecuted( attacker, target, damageSource ) && hasPlayerDied && ( hasDiedFromZombie || hasDiedFromBleeding );
 	}
 
 	/** Returns player's head item stack. */
-	private ItemStack getHead( PlayerEntity player ) {
+	private ItemStack getHead( Player player ) {
 		ItemStack playerSkull = new ItemStack( Items.PLAYER_HEAD, 1 );
 
-		CompoundNBT nbt = playerSkull.getOrCreateTag();
+		CompoundTag nbt = playerSkull.getOrCreateTag();
 		nbt.putString( "SkullOwner", player.getScoreboardName() );
 		playerSkull.setTag( nbt );
 
@@ -86,10 +82,10 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 	}
 
 	/** Returns Zombie type depending on entity that killed the player. */
-	private EntityType< ? extends ZombieEntity > getZombieType( @Nullable LivingEntity attacker ) {
-		if( attacker instanceof ZombifiedPiglinEntity )
+	private EntityType< ? extends Zombie > getZombieType( @Nullable LivingEntity attacker ) {
+		if( attacker instanceof ZombifiedPiglin )
 			return EntityType.ZOMBIFIED_PIGLIN;
-		else if( attacker instanceof HuskEntity )
+		else if( attacker instanceof Husk )
 			return EntityType.HUSK;
 		else
 			return EntityType.ZOMBIE;

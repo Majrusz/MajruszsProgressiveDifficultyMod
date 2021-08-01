@@ -1,16 +1,16 @@
 package com.majruszs_difficulty.commands;
 
 import com.majruszs_difficulty.GameState;
-import com.mlib.WorldHelper;
+import com.mlib.LevelHelper;
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
@@ -18,52 +18,52 @@ import javax.annotation.Nullable;
 public final class GetDifficultyCommand {
 	private GetDifficultyCommand() {}
 
-	public static void register( CommandDispatcher< CommandSource > dispatcher ) {
+	public static void register( CommandDispatcher< CommandSourceStack > dispatcher ) {
 		dispatcher.register( Commands.literal( "clampedregionaldifficulty" )
-			.requires( source->source.hasPermissionLevel( 0 ) )
+			.requires( source->source.hasPermission( 0 ) )
 			.executes( entity->getCurrentDifficulty( entity.getSource() ) ) );
 
 		dispatcher.register( Commands.literal( "crd" )
-			.requires( source->source.hasPermissionLevel( 0 ) )
+			.requires( source->source.hasPermission( 0 ) )
 			.executes( entity->getCurrentDifficulty( entity.getSource() ) ) );
 	}
 
 	/** Sends feedback message to entity. */
-	public static int getCurrentDifficulty( CommandSource source ) {
-		source.sendFeedback( getFeedbackMessage( source.getEntity() ), true );
+	public static int getCurrentDifficulty( CommandSourceStack source ) {
+		source.sendSuccess( getFeedbackMessage( source.getEntity() ), true );
 
 		return 0;
 	}
 
 	/** Returns fully formatted feedback message. */
-	private static IFormattableTextComponent getFeedbackMessage( Entity entity ) {
-		IFormattableTextComponent feedback = new TranslationTextComponent( "commands.regional_difficulty" );
+	private static MutableComponent getFeedbackMessage( Entity entity ) {
+		MutableComponent feedback = new TranslatableComponent( "commands.regional_difficulty" );
 		feedback.append( getStateModifierText( ( LivingEntity )entity ) );
 
 		return feedback;
 	}
 
 	/** Returns formatted regional difficulty. */
-	private static IFormattableTextComponent getStateModifierText( @Nullable LivingEntity target ) {
+	private static MutableComponent getStateModifierText( @Nullable LivingEntity target ) {
 		if( target == null )
-			return new StringTextComponent( "invalid target" ).mergeStyle( TextFormatting.RED );
+			return new TextComponent( "invalid target" ).withStyle( ChatFormatting.RED );
 
-		IFormattableTextComponent text = new StringTextComponent( " " + String.format( "%.2f", WorldHelper.getClampedRegionalDifficulty( target ) ) );
-		IFormattableTextComponent stateText = new StringTextComponent(
+		MutableComponent text = new TextComponent( " " + String.format( "%.2f", LevelHelper.getClampedRegionalDifficulty( target ) ) );
+		MutableComponent stateText = new TextComponent(
 			"+ " + GameState.getStateModifier() + " = " + String.format( "%.2f", GameState.getRegionalDifficulty( target ) ) );
 		switch( GameState.getCurrentMode() ) {
 			case EXPERT:
-				stateText.mergeStyle( GameState.EXPERT_MODE_COLOR, TextFormatting.BOLD );
-				text.appendString( " (" );
+				stateText.withStyle( GameState.EXPERT_MODE_COLOR, ChatFormatting.BOLD );
+				text.append( " (" );
 				text.append( stateText );
-				text.appendString( ")" );
+				text.append( ")" );
 
 				return text;
 			case MASTER:
-				stateText.mergeStyle( GameState.MASTER_MODE_COLOR, TextFormatting.BOLD );
-				text.appendString( " (" );
+				stateText.withStyle( GameState.MASTER_MODE_COLOR, ChatFormatting.BOLD );
+				text.append( " (" );
 				text.append( stateText );
-				text.appendString( ")" );
+				text.append( ")" );
 
 				return text;
 			default:

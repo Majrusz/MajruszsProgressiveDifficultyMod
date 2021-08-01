@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.features.on_death;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,7 +18,7 @@ public class OnDeathEventHandler {
 	@SubscribeEvent
 	public static void onDeath( LivingDeathEvent event ) {
 		DamageSource damageSource = event.getSource();
-		@Nullable LivingEntity attacker = damageSource.getTrueSource() instanceof LivingEntity ? ( LivingEntity )damageSource.getTrueSource() : null;
+		@Nullable LivingEntity attacker = damageSource.getEntity() instanceof LivingEntity ? ( LivingEntity )damageSource.getEntity() : null;
 		LivingEntity target = event.getEntityLiving();
 
 		for( IOnDeath register : REGISTRY_LIST )

@@ -2,13 +2,13 @@ package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.entities.ParasiteEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.monster.CaveSpiderEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.monster.CaveSpider;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Spider;
 
 /** Spawns extra skeleton and makes him ride the spider. */
 public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
@@ -20,19 +20,19 @@ public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
 	}
 
 	@Override
-	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		SkeletonEntity skeleton = EntityType.SKELETON.create( world );
+	public void onExecute( LivingEntity entity, ServerLevel world ) {
+		Skeleton skeleton = EntityType.SKELETON.create( world );
 		if( skeleton == null )
 			return;
 
-		skeleton.setLocationAndAngles( entity.getPosX(), entity.getPosY(), entity.getPosZ(), entity.rotationYaw, 0.0f );
-		skeleton.onInitialSpawn( world, world.getDifficultyForLocation( entity.getPosition() ), SpawnReason.JOCKEY, null, null );
+		skeleton.moveTo( entity.getX(), entity.getY(), entity.getZ(), entity.yBodyRot, 0.0f );
+		skeleton.finalizeSpawn( world, world.getCurrentDifficultyAt( entity.blockPosition() ), MobSpawnType.JOCKEY, null, null );
 		skeleton.startRiding( entity );
 	}
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof SpiderEntity && !( entity instanceof CaveSpiderEntity ) && !( entity instanceof ParasiteEntity ) && super.shouldBeExecuted(
+		return entity instanceof Spider && !( entity instanceof CaveSpider ) && !( entity instanceof ParasiteEntity ) && super.shouldBeExecuted(
 			entity );
 	}
 }

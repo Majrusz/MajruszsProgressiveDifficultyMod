@@ -4,12 +4,12 @@ import com.majruszs_difficulty.GameState;
 import com.mlib.TimeConverter;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.effects.EffectHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
@@ -22,7 +22,9 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
 	protected final AvailabilityConfig slownessAvailability;
 
 	public NauseaAndSlownessWhenFalling() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 10.0, GameState.State.NORMAL, false, new Effect[]{ Effects.NAUSEA, Effects.SLOWNESS } );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 10.0, GameState.State.NORMAL, false,
+			new MobEffect[]{ MobEffects.CONFUSION, MobEffects.MOVEMENT_SLOWDOWN }
+		);
 
 		String nauseaComment = "Is applying Nausea enabled?";
 		String slownessComment = "Is applying Slowness enabled?";
@@ -44,16 +46,16 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
 		if( damage < 1.5f )
 			return;
 
-		ServerWorld world = ( ServerWorld )target.getEntityWorld();
-		for( Effect effect : this.effects ) {
+		ServerLevel world = ( ServerLevel )target.level;
+		for( MobEffect effect : this.effects ) {
 			if( !tryChance( target ) )
 				continue;
 
-			if( effect == Effects.SLOWNESS && this.slownessAvailability.isEnabled() ) {
+			if( effect == MobEffects.MOVEMENT_SLOWDOWN && this.slownessAvailability.isEnabled() ) {
 				EffectHelper.applyEffectIfPossible( target, effect,
 					getDurationInTicks( world.getDifficulty() ) + TimeConverter.secondsToTicks( damage * 0.5 ), ( int )( damage / 8.0 )
 				);
-			} else if( effect == Effects.NAUSEA && this.nauseaAvailability.isEnabled() ) {
+			} else if( effect == MobEffects.CONFUSION && this.nauseaAvailability.isEnabled() ) {
 				EffectHelper.applyEffectIfPossible( target, effect, TimeConverter.secondsToTicks( 6.0 ), ( int )( damage / 6.0 ) );
 			}
 		}

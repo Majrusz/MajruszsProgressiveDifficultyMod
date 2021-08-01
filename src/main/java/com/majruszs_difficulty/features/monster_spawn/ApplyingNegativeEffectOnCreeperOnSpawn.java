@@ -3,16 +3,18 @@ package com.majruszs_difficulty.features.monster_spawn;
 import com.majruszs_difficulty.GameState;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DurationConfig;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Creeper;
 
 /** Applying some negative effects on creeper. */
 public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
-	protected static final Effect[] EFFECTS = new Effect[]{ Effects.WEAKNESS, Effects.SLOWNESS, Effects.MINING_FATIGUE, Effects.SATURATION };
+	protected static final MobEffect[] EFFECTS = new MobEffect[]{ MobEffects.WEAKNESS, MobEffects.MOVEMENT_SLOWDOWN, MobEffects.DIG_SLOWDOWN,
+		MobEffects.SATURATION
+	};
 	private static final String CONFIG_NAME = "CreeperEffects";
 	private static final String CONFIG_COMMENT = "Creeper spawns with negative effects applied.";
 	protected final DurationConfig duration;
@@ -26,15 +28,15 @@ public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBa
 	}
 
 	@Override
-	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		CreeperEntity creeper = ( CreeperEntity )entity;
+	public void onExecute( LivingEntity entity, ServerLevel world ) {
+		Creeper creeper = ( Creeper )entity;
 
-		Effect randomEffect = EFFECTS[ MajruszLibrary.RANDOM.nextInt( EFFECTS.length ) ];
-		creeper.addPotionEffect( new EffectInstance( randomEffect, this.duration.getDuration(), 0 ) );
+		MobEffect randomEffect = EFFECTS[ MajruszLibrary.RANDOM.nextInt( EFFECTS.length ) ];
+		creeper.addEffect( new MobEffectInstance( randomEffect, this.duration.getDuration(), 0 ) );
 	}
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof CreeperEntity && super.shouldBeExecuted( entity );
+		return entity instanceof Creeper && super.shouldBeExecuted( entity );
 	}
 }

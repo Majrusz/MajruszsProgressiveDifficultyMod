@@ -2,9 +2,9 @@ package com.majruszs_difficulty.features.when_damaged;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.blocks.EndShardOre;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
@@ -27,6 +27,6 @@ public class TriggerAllEndermansOnAttack extends WhenDamagedBase {
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return attacker != null && target instanceof EndermanEntity && super.shouldBeExecuted( attacker, target, damageSource );
+		return attacker != null && target instanceof EnderMan && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

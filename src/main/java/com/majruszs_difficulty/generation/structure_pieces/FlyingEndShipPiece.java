@@ -1,35 +1,10 @@
 package com.majruszs_difficulty.generation.structure_pieces;
 
-import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.entities.SkyKeeperEntity;
-import com.mlib.MajruszLibrary;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.spawner.AbstractSpawner;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 /** All possible Flying End Island pieces. */
-public class FlyingEndShipPiece extends TemplateStructurePiece {
+public class FlyingEndShipPiece {
+
+}
+/*extends TemplateStructurePiece {
 	public static final List< ResourceLocation > SHIP_RESOURCE_LOCATIONS = new ArrayList<>();
 	public static final List< Block > RANDOM_BLOCKS = new ArrayList<>();
 	public static final ResourceLocation SHIP_CHEST_RESOURCE_LOCATION = MajruszsDifficulty.getLocation( "chests/end_ship" );
@@ -63,56 +38,56 @@ public class FlyingEndShipPiece extends TemplateStructurePiece {
 		this.setupPiece( templateManager );
 	}
 
-	public FlyingEndShipPiece( TemplateManager templateManager, CompoundNBT compoundNBT ) {
+	public FlyingEndShipPiece( TemplateManager templateManager, CompoundTag compoundNBT ) {
 		super( Instances.FLYING_END_SHIP_PIECE, compoundNBT );
 		this.rotation = Rotation.valueOf( compoundNBT.getString( "Rot" ) );
 		this.setupPiece( templateManager );
 	}
 
 	@Override
-	protected void readAdditional( CompoundNBT compoundNBT ) {
+	protected void readAdditional( CompoundTag compoundNBT ) {
 		super.readAdditional( compoundNBT );
 
 		compoundNBT.putString( "Rot", this.rotation.name() );
 	}
 
 	@Override
-	protected void handleDataMarker( String function, BlockPos position, IServerWorld world, Random random, MutableBoundingBox boundingBox ) {
+	protected void handleDataMarker( String function, BlockPos position, IServerLevel world, Random random, MutableBoundingBox boundingBox ) {
 		if( function.startsWith( "chest" ) ) {
 			TileEntity tileEntity = world.getTileEntity( position.down() );
 			if( tileEntity instanceof ChestTileEntity ) {
 				ChestTileEntity chest = ( ChestTileEntity )tileEntity;
 				chest.setLootTable( getLootTable( function ), random.nextLong() );
 				if( function.startsWith( "chest_extra" ) && com.mlib.Random.tryChance( 0.75 ) )
-					world.setBlockState( position.down(), Blocks.AIR.getDefaultState(), 2 );
+					world.setBlockState( position.down(), Blocks.AIR.defaultBlockState(), 2 );
 			}
 
-			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
+			world.setBlockState( position, Blocks.AIR.defaultBlockState(), 2 );
 		} else if( function.startsWith( "end_keeper" ) ) {
-			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
-			SkyKeeperEntity monster = SkyKeeperEntity.type.create( world.getWorld() );
+			world.setBlockState( position, Blocks.AIR.defaultBlockState(), 2 );
+			SkyKeeperEntity monster = SkyKeeperEntity.type.create( world.getLevel() );
 			if( monster != null ) {
-				monster.enablePersistence();
+				monster.setPersistenceRequired();
 				monster.setPosition( position.getX(), position.getY(), position.getZ() );
-				world.addEntity( monster );
+				world.addFreshEntity( monster );
 			}
 		} else if( function.startsWith( "spawner" ) ) {
-			world.setBlockState( position, Blocks.AIR.getDefaultState(), 2 );
-			world.setBlockState( position.down(), Blocks.SPAWNER.getDefaultState(), 2 );
+			world.setBlockState( position, Blocks.AIR.defaultBlockState(), 2 );
+			world.setBlockState( position.down(), Blocks.SPAWNER.defaultBlockState(), 2 );
 			TileEntity tileEntity = world.getTileEntity( position.down() );
 
-			if( tileEntity instanceof MobSpawnerTileEntity ) {
-				MobSpawnerTileEntity mobSpawnerTileEntity = ( MobSpawnerTileEntity )tileEntity;
+			if( tileEntity instanceof SpawnerBlockEntity ) {
+				SpawnerBlockEntity mobSpawnerTileEntity = ( SpawnerBlockEntity )tileEntity;
 				AbstractSpawner abstractSpawner = mobSpawnerTileEntity.getSpawnerBaseLogic();
 				abstractSpawner.setEntityType( EntityType.ENDERMITE );
 			}
 		} else if( function.startsWith( "random_block" ) ) {
 			Block randomBlock = RANDOM_BLOCKS.get( MajruszLibrary.RANDOM.nextInt( RANDOM_BLOCKS.size() ) );
-			world.setBlockState( position, randomBlock.getDefaultState(), 2 );
+			world.setBlockState( position, randomBlock.defaultBlockState(), 2 );
 		}
 	}
 
-	/** Begins assembling your structure and where the pieces needs to go. */
+	// /** Begins assembling your structure and where the pieces needs to go. /
 	public static void start( TemplateManager templateManager, BlockPos position, Rotation rotation, List< StructurePiece > pieces, Random random ) {
 		BlockPos rotationOffSet = new BlockPos( 0, 0, 0 ).rotate( rotation );
 		BlockPos blockpos = rotationOffSet.add( position.getX(), position.getY(), position.getZ() );
@@ -120,7 +95,7 @@ public class FlyingEndShipPiece extends TemplateStructurePiece {
 		pieces.add( new FlyingEndShipPiece( templateManager, blockpos, rotation ) );
 	}
 
-	/** Returns loot table resource location depending on given id. **/
+	// /** Returns loot table resource location depending on given id. /
 	private ResourceLocation getLootTable( String id ) {
 		switch( id ) {
 			default:
@@ -145,8 +120,8 @@ public class FlyingEndShipPiece extends TemplateStructurePiece {
 		this.setup( template, this.templatePosition, placementsettings );
 	}
 
-	/** Returns random resource location to building. */
+	// /** Returns random resource location to building. /
 	private ResourceLocation getRandomResourceLocation() {
 		return SHIP_RESOURCE_LOCATIONS.get( MajruszLibrary.RANDOM.nextInt( SHIP_RESOURCE_LOCATIONS.size() ) );
 	}
-}
+}*/

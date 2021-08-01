@@ -3,18 +3,17 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.features.end_items.EndItems;
-import com.majruszs_difficulty.features.end_items.HasteOnDestroyingBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -25,17 +24,17 @@ import java.util.List;
 /** New late game hoe. */
 public class EndHoeItem extends HoeItem {
 	public EndHoeItem() {
-		super( CustomItemTier.END, -5, 0.0f, ( new Properties() ).group( Instances.ITEM_GROUP )
+		super( CustomItemTier.END, -5, 0.0f, ( new Properties() ).tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON )
-			.isImmuneToFire() );
+			.fireResistant() );
 	}
 
 	@Override
-	public ActionResultType onItemUse( ItemUseContext context ) {
-		PlayerEntity player = context.getPlayer();
-		ActionResultType resultType = super.onItemUse( context );
+	public InteractionResult useOn( UseOnContext context ) {
+		Player player = context.getPlayer();
+		InteractionResult resultType = super.useOn( context );
 
-		if( player != null && !player.isCrouching() && resultType == ActionResultType.CONSUME )
+		if( player != null && !player.isCrouching() && resultType == InteractionResult.CONSUME )
 			tillNearbyBlocks( context );
 
 		return resultType;
@@ -43,35 +42,37 @@ public class EndHoeItem extends HoeItem {
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
-		MajruszsHelper.addAdvancedTooltips( tooltip, flag, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP, EndItems.Keys.TILL_TOOLTIP );
+		MajruszsHelper.addAdvancedTooltips( tooltip, flag, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP,
+			EndItems.Keys.TILL_TOOLTIP
+		);
 	}
 
 	/** Tills nearby blocks in 3x1x3 grid around the context. */
-	protected void tillNearbyBlocks( ItemUseContext context ) {
-		World world = context.getWorld();
-		BlockPos blockPosition = context.getPos();
-		PlayerEntity player = context.getPlayer();
-		ItemStack itemStack = context.getItem();
+	protected void tillNearbyBlocks( UseOnContext context ) {
+		Level world = context.getLevel();
+		BlockPos blockPosition = context.getClickedPos();
+		Player player = context.getPlayer();
+		ItemStack itemStack = context.getItemInHand();
 
 		for( int x = -1; x <= 1; ++x )
 			for( int z = -1; z <= 1; ++z ) {
 				if( x == 0 && z == 0 )
 					continue;
 
-				BlockPos newPosition = blockPosition.add( x, 0, z );
-				if( !world.isAirBlock( newPosition.up() ) )
+				BlockPos newPosition = blockPosition.offset( x, 0, z );
+				if( !world.isEmptyBlock( newPosition.above() ) )
 					continue;
 
 				BlockState blockState = world.getBlockState( newPosition )
 					.getToolModifiedState( world, newPosition, player, itemStack, ToolType.HOE );
-				if( blockState == null || world.isRemote )
+				if( blockState == null || world.isClientSide )
 					continue;
 
-				world.setBlockState( newPosition, blockState, 11 );
+				world.setBlock( newPosition, blockState, 11 );
 				if( player != null )
-					itemStack.damageItem( 1, player, user->user.sendBreakAnimation( context.getHand() ) );
+					itemStack.hurtAndBreak( 1, player, user->user.broadcastBreakEvent( context.getHand() ) );
 			}
 	}
 }

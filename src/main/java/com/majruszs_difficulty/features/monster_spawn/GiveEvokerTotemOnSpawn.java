@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EvokerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Evoker;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 /** Gives Totem for Evoker on spawn. */
 public class GiveEvokerTotemOnSpawn extends GiveItemAfterSpawningBase {
@@ -13,12 +13,12 @@ public class GiveEvokerTotemOnSpawn extends GiveItemAfterSpawningBase {
 	private static final String CONFIG_COMMENT = "Evoker spawns with Totem of Undying.";
 
 	public GiveEvokerTotemOnSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.NORMAL, false, EquipmentSlotType.MAINHAND, false, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.NORMAL, false, EquipmentSlot.MAINHAND, false, false );
 	}
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof EvokerEntity && super.shouldBeExecuted( entity );
+		return entity instanceof Evoker && super.shouldBeExecuted( entity );
 	}
 
 	@Override

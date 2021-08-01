@@ -5,7 +5,7 @@ import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.mlib.config.*;
-import net.minecraft.entity.EntityType;
+import net.minecraft.world.entity.EntityType;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.CONFIG_HANDLER;
 

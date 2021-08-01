@@ -3,7 +3,7 @@ package com.majruszs_difficulty.features;
 import com.majruszs_difficulty.GameState;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 

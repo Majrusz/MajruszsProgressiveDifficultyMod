@@ -3,19 +3,19 @@ package com.majruszs_difficulty.commands;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.features.undead_army.UndeadArmy;
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /** All commands for undead army. */
 public final class UndeadArmyManagerCommand {
 	private UndeadArmyManagerCommand() {}
 
-	public static void register( CommandDispatcher< CommandSource > dispatcher ) {
+	public static void register( CommandDispatcher< CommandSourceStack > dispatcher ) {
 		dispatcher.register( Commands.literal( "undead_army" )
-			.requires( source->source.hasPermissionLevel( 4 ) )
+			.requires( source->source.hasPermission( 4 ) )
 			.then( Commands.literal( "stop" )
 				.executes( entity->stopUndeadArmy( entity.getSource() ) ) )
 			.then( Commands.literal( "highlight" )
@@ -23,15 +23,17 @@ public final class UndeadArmyManagerCommand {
 			.then( Commands.literal( "undead_left" )
 				.executes( entity->countUndeadLeft( entity.getSource() ) ) )
 			.then( Commands.literal( "kill_all" )
-				.executes( entity->killUndeadArmy( entity.getSource() ) ) )
-		);
+				.executes( entity->killUndeadArmy( entity.getSource() ) ) ) );
 	}
 
 	/** Command responsible for stopping Undead Army in the player position. */
-	public static int stopUndeadArmy( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
+	public static int stopUndeadArmy( CommandSourceStack source ) {
+		if( RegistryHandler.UNDEAD_ARMY_MANAGER == null )
+			return -1;
+
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPosition() ) );
 		if( undeadArmy == null ) {
-			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
+			source.sendSuccess( getMissingUndeadArmyFeedback(), true );
 			return -1;
 		}
 
@@ -40,10 +42,13 @@ public final class UndeadArmyManagerCommand {
 	}
 
 	/** Command responsible for highlighting all Undead Army units in the player position. */
-	public static int highlightUndeadArmy( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
+	public static int highlightUndeadArmy( CommandSourceStack source ) {
+		if( RegistryHandler.UNDEAD_ARMY_MANAGER == null )
+			return -1;
+
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPosition() ) );
 		if( undeadArmy == null ) {
-			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
+			source.sendSuccess( getMissingUndeadArmyFeedback(), true );
 			return -1;
 		}
 
@@ -52,24 +57,30 @@ public final class UndeadArmyManagerCommand {
 	}
 
 	/** Command responsible for informing the player how many Undead Army units left in the player position. */
-	public static int countUndeadLeft( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
+	public static int countUndeadLeft( CommandSourceStack source ) {
+		if( RegistryHandler.UNDEAD_ARMY_MANAGER == null )
+			return -1;
+
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPosition() ) );
 		if( undeadArmy == null ) {
-			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
+			source.sendSuccess( getMissingUndeadArmyFeedback(), true );
 			return -1;
 		}
 
-		IFormattableTextComponent feedback = new TranslationTextComponent( "commands.undead_army.undead_left" );
-		feedback.appendString( " " + undeadArmy.countUndeadEntitiesLeft() + "." );
-		source.sendFeedback( feedback, true );
+		MutableComponent feedback = new TranslatableComponent( "commands.undead_army.undead_left" );
+		feedback.append( " " + undeadArmy.countUndeadEntitiesLeft() + "." );
+		source.sendSuccess( feedback, true );
 		return 0;
 	}
 
 	/** Command responsible for killing all Undead Army entities. */
-	public static int killUndeadArmy( CommandSource source ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPos() ) );
+	public static int killUndeadArmy( CommandSourceStack source ) {
+		if( RegistryHandler.UNDEAD_ARMY_MANAGER == null )
+			return -1;
+
+		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( source.getPosition() ) );
 		if( undeadArmy == null ) {
-			source.sendFeedback( getMissingUndeadArmyFeedback(), true );
+			source.sendSuccess( getMissingUndeadArmyFeedback(), true );
 			return -1;
 		}
 
@@ -77,7 +88,7 @@ public final class UndeadArmyManagerCommand {
 		return 0;
 	}
 
-	private static IFormattableTextComponent getMissingUndeadArmyFeedback() {
-		return new TranslationTextComponent( "commands.undead_army.missing" );
+	private static MutableComponent getMissingUndeadArmyFeedback() {
+		return new TranslatableComponent( "commands.undead_army.missing" );
 	}
 }

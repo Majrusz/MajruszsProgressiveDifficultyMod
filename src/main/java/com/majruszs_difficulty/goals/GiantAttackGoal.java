@@ -1,8 +1,8 @@
 package com.majruszs_difficulty.goals;
 
 import com.majruszs_difficulty.entities.GiantEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
 public class GiantAttackGoal extends MeleeAttackGoal {
 	private final GiantEntity giant;
@@ -13,24 +13,25 @@ public class GiantAttackGoal extends MeleeAttackGoal {
 		this.giant = giant;
 	}
 
-	public void startExecuting() {
-		super.startExecuting();
+	@Override
+	public void start() {
+		super.start();
 		this.raiseArmTicks = 0;
 	}
 
-	public void resetTask() {
-		super.resetTask();
-		this.giant.setAggroed( false );
+	public void stop() {
+		super.stop();
+		this.giant.setAggressive( false );
 	}
 
 	public void tick() {
 		super.tick();
 		++this.raiseArmTicks;
-		this.giant.setAggroed( this.raiseArmTicks >= 5 && this.func_234041_j_() < this.func_234042_k_() / 2 );
+		this.giant.setAggressive( this.raiseArmTicks >= 5 && this.getTicksUntilNextAttack() < this.getAttackInterval() / 2 );
 	}
 
 	@Override
 	protected double getAttackReachSqr( LivingEntity attackTarget ) {
-		return this.attacker.getWidth() * 0.9f * this.attacker.getWidth() * 0.9f + attackTarget.getWidth();
+		return this.mob.getBbWidth() * 0.9f * this.mob.getBbWidth() * 0.9f + attackTarget.getBbWidth();
 	}
 }

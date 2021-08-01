@@ -2,10 +2,10 @@ package com.majruszs_difficulty.features.on_death;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import javax.annotation.Nullable;
@@ -22,14 +22,14 @@ public class SpawnParasitesOnDeath extends OnDeathBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( @Nullable LivingEntity attacker, LivingEntity target, LivingDeathEvent event ) {
-		EffectInstance effect = target.getActivePotionEffect( Instances.INFESTED );
+		MobEffectInstance effect = target.getEffect( Instances.INFESTED );
 		if( effect != null )
-			Instances.INFESTED.spawnParasites( effect.getAmplifier(), target, ( ServerWorld )target.world );
+			Instances.INFESTED.spawnParasites( effect.getAmplifier(), target, ( ServerLevel )target.level );
 	}
 
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return super.shouldBeExecuted( attacker, target, damageSource ) && target.isPotionActive( Instances.INFESTED );
+		return super.shouldBeExecuted( attacker, target, damageSource ) && target.hasEffect( Instances.INFESTED );
 	}
 }

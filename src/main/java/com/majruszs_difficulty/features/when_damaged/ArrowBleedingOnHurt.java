@@ -1,8 +1,8 @@
 package com.majruszs_difficulty.features.when_damaged;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Arrow;
 
 import javax.annotation.Nullable;
 
@@ -18,6 +18,6 @@ public class ArrowBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return damageSource.getImmediateSource() instanceof ArrowEntity && super.shouldBeExecuted( attacker, target, damageSource );
+		return damageSource.getDirectEntity() instanceof Arrow && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

@@ -1,44 +1,71 @@
 package com.majruszs_difficulty.renderers;
 
-import com.google.common.collect.ImmutableList;
-import com.majruszs_difficulty.RegistryHandlerClient;
+import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.models.OceanShieldModel;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.RenderMaterial;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.ItemStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.blockentity.BannerRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.List;
+
 @OnlyIn( Dist.CLIENT )
-public class OceanShieldRenderer extends ItemStackTileEntityRenderer {
-	private final OceanShieldModel oceanShield = new OceanShieldModel();
+public class OceanShieldRenderer implements ResourceManagerReloadListener {
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( MajruszsDifficulty.getLocation( "ocean_shield" ), "shield" );
+	private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
+	private final EntityModelSet entityModelSet;
+	private OceanShieldModel oceanShield;
+
+	public OceanShieldRenderer( BlockEntityRenderDispatcher renderDispatcher, EntityModelSet modelSet ) {
+		this.blockEntityRenderDispatcher = renderDispatcher;
+		this.entityModelSet = modelSet;
+	}
 
 	@Override
-	public void func_239207_a_( ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer,
+	public void onResourceManagerReload( ResourceManager p_172555_ ) {
+		this.oceanShield = new OceanShieldModel( this.entityModelSet.bakeLayer( LAYER_LOCATION ) );
+	}
+
+	public void renderByItem( ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource,
 		int combinedLight, int combinedOverlay
 	) {
-		matrixStack.push();
-		matrixStack.scale( 1, -1, -1 );
-		boolean flag = stack.getChildTag( "BlockEntityTag" ) != null;
-		RenderMaterial renderMaterial = RegistryHandlerClient.OCEAN_SHIELD_MATERIAL;
-
-
-		IVertexBuilder ivertexbuilder = renderMaterial.getSprite()
-			.wrapBuffer( ItemRenderer.getEntityGlintVertexBuilder( buffer, this.oceanShield.getRenderType( renderMaterial.getAtlasLocation() ), true,
-				stack.hasEffect()
+		boolean flag = itemStack.getTagElement( "BlockEntityTag" ) != null;
+		poseStack.pushPose();
+		poseStack.scale( 1.0F, -1.0F, -1.0F );
+		Material material = flag ? ModelBakery.SHIELD_BASE : ModelBakery.NO_PATTERN_SHIELD;
+		VertexConsumer vertexconsumer = material.sprite()
+			.wrap( ItemRenderer.getFoilBufferDirect( bufferSource, this.oceanShield.renderType( material.atlasLocation() ), true,
+				itemStack.hasFoil()
 			) );
-		this.oceanShield.handle.render( matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F );
-		if( !flag ) {
-			ImmutableList.of( this.oceanShield.plate, this.oceanShield.spike1, this.oceanShield.spike2, this.oceanShield.spike3,
-				this.oceanShield.spike4, this.oceanShield.spike5, this.oceanShield.spike6, this.oceanShield.spike7, this.oceanShield.spike8
-			)
-				.forEach( ( part )->part.render( matrixStack, ivertexbuilder, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F ) );
+		this.oceanShield.handle.render( poseStack, vertexconsumer, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F );
+		if( flag ) {
+			List< Pair< BannerPattern, DyeColor > > list = BannerBlockEntity.createPatterns( ShieldItem.getColor( itemStack ),
+				BannerBlockEntity.getItemPatterns( itemStack )
+			);
+			BannerRenderer.renderPatterns( poseStack, bufferSource, combinedLight, combinedOverlay, this.oceanShield.plate, material, false, list,
+				itemStack.hasFoil()
+			);
+		} else {
+			this.oceanShield.plate.render( poseStack, vertexconsumer, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F );
 		}
-		matrixStack.pop();
+
+		poseStack.popPose();
 	}
 }

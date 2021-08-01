@@ -4,16 +4,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.items.TreasureBagItem;
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
 /** Trigger called when player opens a treasure bag. */
-public class TreasureBagTrigger extends AbstractCriterionTrigger< TreasureBagTrigger.Instance > {
+public class TreasureBagTrigger extends SimpleCriterionTrigger< TreasureBagTrigger.Instance > {
 	private static final ResourceLocation ID = MajruszsDifficulty.getLocation( "treasure_bag_opened" );
 
 	@Override
@@ -22,8 +18,7 @@ public class TreasureBagTrigger extends AbstractCriterionTrigger< TreasureBagTri
 	}
 
 	@Override
-	public TreasureBagTrigger.Instance deserializeTrigger( JsonObject jsonObject, EntityPredicate.AndPredicate predicate,
-		ConditionArrayParser conditions
+	public TreasureBagTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate, DeserializationContext conditions
 	) {
 		JsonElement bagID = jsonObject.get( "bag_id" );
 		JsonElement amountOfBags = jsonObject.get( "amount" );
@@ -31,23 +26,23 @@ public class TreasureBagTrigger extends AbstractCriterionTrigger< TreasureBagTri
 	}
 
 	/** Triggers an advancement for given player. */
-	public void trigger( ServerPlayerEntity player, TreasureBagItem item, int amountOfBags ) {
-		this.triggerListeners( player, instance->instance.test( item, amountOfBags ) );
+	public void trigger( ServerPlayer player, TreasureBagItem item, int amountOfBags ) {
+		this.trigger( player, instance->instance.test( item, amountOfBags ) );
 	}
 
-	public static class Instance extends CriterionInstance {
+	public static class Instance extends AbstractCriterionTriggerInstance {
 		private final String bagID;
 		private final int amountOfBags;
 
-		public Instance( EntityPredicate.AndPredicate predicate, String bagID, int amountOfBags ) {
+		public Instance( EntityPredicate.Composite predicate, String bagID, int amountOfBags ) {
 			super( TreasureBagTrigger.ID, predicate );
 
 			this.bagID = bagID;
 			this.amountOfBags = amountOfBags;
 		}
 
-		public JsonObject serialize( ConditionArraySerializer conditions ) {
-			JsonObject jsonObject = super.serialize( conditions );
+		public JsonObject serializeToJson( SerializationContext conditions ) {
+			JsonObject jsonObject = super.serializeToJson( conditions );
 			jsonObject.addProperty( "bag_id", this.bagID );
 			jsonObject.addProperty( "amount", this.amountOfBags );
 

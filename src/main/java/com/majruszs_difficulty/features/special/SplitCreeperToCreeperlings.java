@@ -6,12 +6,12 @@ import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.majruszs_difficulty.entities.CreeperlingEntity;
 import com.majruszs_difficulty.features.ChanceFeatureBase;
 import com.mlib.MajruszLibrary;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -38,8 +38,8 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 
 		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Instances.SPLIT_CREEPER_TO_CREEPERLINGS;
 		Explosion explosion = event.getExplosion();
-		CreeperEntity creeper = ( CreeperEntity )explosion.getExploder();
-		ServerWorld world = ( ServerWorld )event.getWorld();
+		Creeper creeper = ( Creeper )explosion.getExploder();
+		ServerLevel world = ( ServerLevel )event.getWorld();
 		int amountOfCreeperlings = splitCreeperToCreeperlings.getRandomAmountOfCreeperlings();
 		if( creeper == null )
 			return;
@@ -47,27 +47,27 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 		for( int i = 0; i < amountOfCreeperlings; ++i ) {
 			BlockPos position = getNearbyPosition( creeper );
 
-			CreeperlingEntity creeperling = CreeperlingEntity.type.spawn( world, null, null, null, position, SpawnReason.SPAWNER, true, true );
+			CreeperlingEntity creeperling = CreeperlingEntity.type.spawn( world, null, null, null, position, MobSpawnType.SPAWNER, true, true );
 			if( creeperling != null )
-				creeperling.setAttackTarget( creeper.getAttackTarget() );
+				creeperling.setTarget( creeper.getTarget() );
 		}
 	}
 
 	/** Returns position nearby given Creeper. */
-	private static BlockPos getNearbyPosition( CreeperEntity creeper ) {
-		BlockPos position = creeper.getPosition();
+	private static BlockPos getNearbyPosition( Creeper creeper ) {
+		BlockPos position = creeper.blockPosition();
 		double x = position.getX() + MajruszLibrary.RANDOM.nextDouble() - 0.5, y = position.getY() + MajruszLibrary.RANDOM.nextDouble() - 0.5, z = position.getZ() + MajruszLibrary.RANDOM.nextDouble() - 0.5;
 
 		return new BlockPos( x, y, z );
 	}
 
 	/** Checks whether feature should be called. */
-	private static boolean isValid( Explosion explosion, World world ) {
+	private static boolean isValid( Explosion explosion, Level world ) {
 		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Instances.SPLIT_CREEPER_TO_CREEPERLINGS;
-		boolean isCausedByCreeper = explosion.getExploder() instanceof CreeperEntity && !( explosion.getExploder() instanceof CreeperlingEntity );
-		boolean isServerWorld = world instanceof ServerWorld;
+		boolean isCausedByCreeper = explosion.getExploder() instanceof Creeper && !( explosion.getExploder() instanceof CreeperlingEntity );
+		boolean isServerLevel = world instanceof ServerLevel;
 
-		return isCausedByCreeper && isServerWorld && splitCreeperToCreeperlings.isEnabled() && splitCreeperToCreeperlings.tryChance( null );
+		return isCausedByCreeper && isServerLevel && splitCreeperToCreeperlings.isEnabled() && splitCreeperToCreeperlings.tryChance( null );
 	}
 
 	/** Returns random amount of Creeperlings from range [0; maximum]. */

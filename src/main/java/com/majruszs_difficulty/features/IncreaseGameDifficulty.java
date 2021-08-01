@@ -5,17 +5,17 @@ import com.majruszs_difficulty.Instances;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.StringListConfig;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -57,7 +57,7 @@ public class IncreaseGameDifficulty {
 	@SubscribeEvent
 	public static void onChangingDimension( PlayerEvent.PlayerChangedDimensionEvent event ) {
 		IncreaseGameDifficulty gameDifficulty = Instances.INCREASE_GAME_DIFFICULTY;
-		PlayerEntity player = event.getPlayer();
+		Player player = event.getPlayer();
 
 		switch( GameState.getCurrentMode() ) {
 			case NORMAL:
@@ -85,8 +85,8 @@ public class IncreaseGameDifficulty {
 	}
 
 	/** Changes current game state to Expert Mode if dimension conditions are met. */
-	protected void handleDimensionExpertMode( PlayerEntity player, RegistryKey< World > dimension ) {
-		if( !shouldDimensionStartExpertMode( dimension.getLocation() ) )
+	protected void handleDimensionExpertMode( Player player, ResourceKey< Level > dimension ) {
+		if( !shouldDimensionStartExpertMode( dimension.location() ) )
 			return;
 
 		startExpertMode( player.getServer() );
@@ -98,8 +98,8 @@ public class IncreaseGameDifficulty {
 	}
 
 	/** Changes current game state to Master Mode if dimension conditions are met. */
-	protected void handleDimensionMasterMode( PlayerEntity player, RegistryKey< World > dimension ) {
-		if( !shouldDimensionStartMasterMode( dimension.getLocation() ) )
+	protected void handleDimensionMasterMode( Player player, ResourceKey< Level > dimension ) {
+		if( !shouldDimensionStartMasterMode( dimension.location() ) )
 			return;
 
 		startMasterMode( player.getServer() );
@@ -157,12 +157,12 @@ public class IncreaseGameDifficulty {
 	}
 
 	/** Sends message to all players depending on current language. */
-	protected void sendMessageToAllPlayers( PlayerList playerList, String translationKey, TextFormatting textColor ) {
-		for( PlayerEntity player : playerList.getPlayers() ) {
-			IFormattableTextComponent message = new TranslationTextComponent( translationKey );
-			message.mergeStyle( textColor, TextFormatting.BOLD );
+	protected void sendMessageToAllPlayers( PlayerList playerList, String translationKey, ChatFormatting textColor ) {
+		for( Player player : playerList.getPlayers() ) {
+			MutableComponent message = new TranslatableComponent( translationKey );
+			message.withStyle( textColor, ChatFormatting.BOLD );
 
-			player.sendStatusMessage( message, false );
+			player.displayClientMessage( message, false );
 		}
 	}
 }

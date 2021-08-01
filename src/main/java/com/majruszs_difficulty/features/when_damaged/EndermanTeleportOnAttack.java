@@ -3,14 +3,14 @@ package com.majruszs_difficulty.features.when_damaged;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
@@ -29,21 +29,19 @@ public class EndermanTeleportOnAttack extends ChanceWhenDamagedBase {
 		if( !tryChance( target ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )target.world;
+		ServerLevel world = ( ServerLevel )target.level;
 		if( !MajruszsHelper.teleportNearby( target, world, 5.0, 10.0 ) )
 			return;
 
-		world.playSound( null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f,
-			1.0f
-		);
-		world.spawnParticle( ParticleTypes.PORTAL, target.prevPosX, target.getPosYHeight( 0.5 ), target.prevPosZ, 10, 0.25, 0.25, 0.25, 0.1 );
-		if( target instanceof ServerPlayerEntity )
-			Instances.SIMPLE_TRIGGER.trigger( ( ServerPlayerEntity )target, "enderman_teleport_attack" );
+		world.playSound( null, target.xo, target.yo, target.zo, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.0f );
+		world.sendParticles( ParticleTypes.PORTAL, target.xo, target.getY( 0.5 ), target.zo, 10, 0.25, 0.25, 0.25, 0.1 );
+		if( target instanceof ServerPlayer )
+			Instances.SIMPLE_TRIGGER.trigger( ( ServerPlayer )target, "enderman_teleport_attack" );
 	}
 
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return attacker instanceof EndermanEntity && super.shouldBeExecuted( attacker, target, damageSource );
+		return attacker instanceof EnderMan && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

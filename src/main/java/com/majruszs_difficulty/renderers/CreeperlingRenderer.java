@@ -3,11 +3,12 @@ package com.majruszs_difficulty.renderers;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.entities.CreeperlingEntity;
 import com.majruszs_difficulty.models.CreeperlingModel;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -15,31 +16,34 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn( Dist.CLIENT )
 public class CreeperlingRenderer extends MobRenderer< CreeperlingEntity, CreeperlingModel< CreeperlingEntity > > {
 	private static final ResourceLocation CREEPERLING_TEXTURES = MajruszsDifficulty.getLocation( "textures/entity/creeperling.png" );
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( MajruszsDifficulty.getLocation( "creeperling" ), "main" );
 
-	public CreeperlingRenderer( EntityRendererManager renderManager ) {
-		super( renderManager, new CreeperlingModel<>(), 0.25f );
+	public CreeperlingRenderer( EntityRendererProvider.Context context ) {
+		super( context, new CreeperlingModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.25f );
 	}
 
-	protected float getOverlayProgress( CreeperlingEntity creeperling, float partialTicks ) {
-		float f = creeperling.getCreeperFlashIntensity( partialTicks );
-		return ( int )( f * 10.0f ) % 2 == 0 ? 0.0f : MathHelper.clamp( f, 0.5f, 1.0f );
+	@Override
+	protected float getWhiteOverlayProgress( CreeperlingEntity creeperling, float partialTicks ) {
+		float f = creeperling.getSwelling( partialTicks );
+		return ( int )( f * 10.0f ) % 2 == 0 ? 0.0f : Mth.clamp( f, 0.5f, 1.0f );
 	}
 
-	protected void preRenderCallback( CreeperlingEntity creeperling, MatrixStack matrixStack, float partialTickTime ) {
-		float f = creeperling.getCreeperFlashIntensity( partialTickTime );
-		float f1 = 1.0f + MathHelper.sin( f * 100.0f ) * f * 0.01f;
-		f = MathHelper.clamp( f, 0.0f, 1.0f );
+	@Override
+	protected void scale( CreeperlingEntity creeperling, PoseStack stack, float partialTickTime ) {
+		float f = creeperling.getSwelling( partialTickTime );
+		float f1 = 1.0f + Mth.sin( f * 100.0f ) * f * 0.01f;
+		f = Mth.clamp( f, 0.0f, 1.0f );
 		f = f * f;
 		f = f * f;
 		float f2 = ( 1.0f + f * 0.4f ) * f1;
 		float f3 = ( 1.0f + f * 0.1f ) / f1;
-		matrixStack.scale( f2, f3, f2 );
+		stack.scale( f2, f3, f2 );
 	}
 
 	/**
 	 Returns the location of an entity's texture.
 	 */
-	public ResourceLocation getEntityTexture( CreeperlingEntity entity ) {
+	public ResourceLocation getTextureLocation( CreeperlingEntity entity ) {
 		return CREEPERLING_TEXTURES;
 	}
 }

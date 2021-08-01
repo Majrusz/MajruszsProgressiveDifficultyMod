@@ -8,42 +8,30 @@ import com.majruszs_difficulty.effects.BleedingImmunityEffect;
 import com.majruszs_difficulty.effects.InfestedEffect;
 import com.majruszs_difficulty.entities.EntitiesConfig;
 import com.majruszs_difficulty.features.ExperienceBonus;
+import com.majruszs_difficulty.features.IncreaseGameDifficulty;
 import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsBleedingOnHurt;
 import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsLevitationOnAttack;
-import com.majruszs_difficulty.features.on_death.SpawnParasitesOnDeath;
-import com.majruszs_difficulty.features.treasure_bag.FishingRewarder;
-import com.majruszs_difficulty.features.IncreaseGameDifficulty;
+import com.majruszs_difficulty.features.monster_spawn.*;
 import com.majruszs_difficulty.features.on_death.OnDeathEventHandler;
+import com.majruszs_difficulty.features.on_death.SpawnParasitesOnDeath;
 import com.majruszs_difficulty.features.on_death.SpawnPlayerZombieOnDeath;
 import com.majruszs_difficulty.features.special.SplitCreeperToCreeperlings;
 import com.majruszs_difficulty.features.special.StrongerExplosions;
-import com.majruszs_difficulty.features.monster_spawn.*;
+import com.majruszs_difficulty.features.treasure_bag.FishingRewarder;
 import com.majruszs_difficulty.features.undead_army.UndeadArmyConfig;
 import com.majruszs_difficulty.features.when_damaged.*;
-import com.majruszs_difficulty.generation.structure_pieces.FlyingEndShipPiece;
-import com.majruszs_difficulty.generation.structures.FlyingEndShipStructure;
 import com.majruszs_difficulty.items.*;
-import com.majruszs_difficulty.generation.structure_pieces.FlyingEndIslandPiece;
-import com.majruszs_difficulty.generation.structure_pieces.FlyingPhantomPiece;
-import com.majruszs_difficulty.generation.structures.FlyingEndIslandStructure;
-import com.majruszs_difficulty.generation.structures.FlyingPhantomStructure;
 import com.majruszs_difficulty.triggers.*;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.SwordItem;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.StructureFeature;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.fml.ModLoadingContext;
 
 public class Instances {
-	public static final ItemGroup ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
+	public static final CreativeModeTab ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 
 	// Items
 	public static final UndeadBattleStandardItem BATTLE_STANDARD_ITEM;
@@ -96,18 +84,18 @@ public class Instances {
 	public static final DamageSource INFESTED_SOURCE;
 
 	// Particles
-	public static final BasicParticleType BLOOD_PARTICLE;
+	public static final SimpleParticleType BLOOD_PARTICLE;
 
 	// Structures
-	public static final FlyingPhantomStructure FLYING_PHANTOM;
-	public static final FlyingEndIslandStructure FLYING_END_ISLAND;
-	public static final FlyingEndShipStructure FLYING_END_SHIP;
-	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_PHANTOM_FEATURE;
-	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_END_ISLAND_FEATURE;
-	public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_END_SHIP_FEATURE;
-	public static final IStructurePieceType FLYING_PHANTOM_PIECE;
-	public static final IStructurePieceType FLYING_END_ISLAND_PIECE;
-	public static final IStructurePieceType FLYING_END_SHIP_PIECE;
+	// public static final FlyingPhantomStructure FLYING_PHANTOM;
+	// public static final FlyingEndIslandStructure FLYING_END_ISLAND;
+	// public static final FlyingEndShipStructure FLYING_END_SHIP;
+	// public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_PHANTOM_FEATURE;
+	// public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_END_ISLAND_FEATURE;
+	// public static final StructureFeature< NoFeatureConfig, ? extends Structure< NoFeatureConfig > > FLYING_END_SHIP_FEATURE;
+	// public static final IStructurePieceType FLYING_PHANTOM_PIECE;
+	// public static final IStructurePieceType FLYING_END_ISLAND_PIECE;
+	// public static final IStructurePieceType FLYING_END_SHIP_PIECE;
 
 	// Events
 	public static final StrongerExplosions STRONGER_EXPLOSIONS;
@@ -174,14 +162,14 @@ public class Instances {
 		INFESTED = new InfestedEffect();
 
 		// Damage sources
-		BLEEDING_SOURCE = new DamageSource( "bleeding" ).setDamageBypassesArmor();
-		INFESTED_SOURCE = new DamageSource( "infested" ).setDamageBypassesArmor();
+		BLEEDING_SOURCE = new DamageSource( "bleeding" ).bypassArmor();
+		INFESTED_SOURCE = new DamageSource( "infested" ).bypassArmor();
 
 		// Particles
-		BLOOD_PARTICLE = new BasicParticleType( true );
+		BLOOD_PARTICLE = new SimpleParticleType( true );
 
 		// Structures
-		ResourceLocation flyingPhantomResource = MajruszsDifficulty.getLocation( "flying_phantom_structure" );
+		/*ResourceLocation flyingPhantomResource = MajruszsDifficulty.getLocation( "flying_phantom_structure" );
 		FLYING_PHANTOM = new FlyingPhantomStructure();
 		FLYING_PHANTOM_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingPhantomResource.toString(),
 			FLYING_PHANTOM.withConfiguration( NoFeatureConfig.field_236559_b_ )
@@ -200,7 +188,7 @@ public class Instances {
 		FLYING_END_SHIP_FEATURE = WorldGenRegistries.register( WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, flyingEndShipResource.toString(),
 			FLYING_END_SHIP.withConfiguration( NoFeatureConfig.field_236559_b_ )
 		);
-		FLYING_END_SHIP_PIECE = IStructurePieceType.register( FlyingEndShipPiece::new, flyingEndShipResource.toString() );
+		FLYING_END_SHIP_PIECE = IStructurePieceType.register( FlyingEndShipPiece::new, flyingEndShipResource.toString() );*/
 
 		// When damaged events
 		WhenDamagedEvent.REGISTRY_LIST.add( new SpiderPoisonOnAttack() );

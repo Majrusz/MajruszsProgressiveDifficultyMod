@@ -1,10 +1,10 @@
 package com.majruszs_difficulty.features.treasure_bag;
 
 import com.majruszs_difficulty.MajruszsHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,40 +13,40 @@ import net.minecraftforge.fml.common.Mod;
 public class UpdatePlayerList {
 	@SubscribeEvent
 	public static void onHit( LivingHurtEvent event ) {
-		PlayerEntity player = MajruszsHelper.getPlayerFromDamageSource( event.getSource() );
+		Player player = MajruszsHelper.getPlayerFromDamageSource( event.getSource() );
 		LivingEntity target = event.getEntityLiving();
 
 		if( player == null || !TreasureBagManager.hasTreasureBag( target.getType() ) )
 			return;
 
-		ListNBT listNBT = getOrCreateList( target );
-		CompoundNBT playerNBT = getPlayerCompound( player );
+		ListTag listNBT = getOrCreateList( target );
+		CompoundTag playerNBT = getPlayerCompound( player );
 
 		if( !isPlayerInList( player, listNBT ) )
 			listNBT.add( playerNBT );
 
-		CompoundNBT data = target.getPersistentData();
+		CompoundTag data = target.getPersistentData();
 		data.put( TreasureBagManager.TREASURE_BAG_TAG, listNBT );
 	}
 
-	protected static ListNBT getOrCreateList( LivingEntity entity ) {
-		CompoundNBT data = entity.getPersistentData();
+	protected static ListTag getOrCreateList( LivingEntity entity ) {
+		CompoundTag data = entity.getPersistentData();
 
-		return ( data.contains( TreasureBagManager.TREASURE_BAG_TAG ) ? data.getList( TreasureBagManager.TREASURE_BAG_TAG, 10 ) : new ListNBT() );
+		return ( data.contains( TreasureBagManager.TREASURE_BAG_TAG ) ? data.getList( TreasureBagManager.TREASURE_BAG_TAG, 10 ) : new ListTag() );
 	}
 
-	protected static String getPlayerUUID( PlayerEntity player ) {
-		return String.valueOf( player.getUniqueID() );
+	protected static String getPlayerUUID( Player player ) {
+		return String.valueOf( player.getUUID() );
 	}
 
-	protected static CompoundNBT getPlayerCompound( PlayerEntity player ) {
-		CompoundNBT nbt = new CompoundNBT();
+	protected static CompoundTag getPlayerCompound( Player player ) {
+		CompoundTag nbt = new CompoundTag();
 		nbt.putString( TreasureBagManager.PLAYER_TAG, getPlayerUUID( player ) );
 
 		return nbt;
 	}
 
-	protected static boolean isPlayerInList( PlayerEntity player, ListNBT listNBT ) {
+	protected static boolean isPlayerInList( Player player, ListTag listNBT ) {
 		String uuid = getPlayerUUID( player );
 
 		for( int i = 0; i < listNBT.size(); i++ )

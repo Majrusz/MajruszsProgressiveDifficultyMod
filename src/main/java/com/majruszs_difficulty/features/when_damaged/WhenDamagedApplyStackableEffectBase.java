@@ -1,10 +1,10 @@
 package com.majruszs_difficulty.features.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
@@ -16,7 +16,7 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	protected final int maximumDurationInTicks;
 
 	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects, boolean isAmplifierStackable, boolean isDurationStackable,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect[] effects, boolean isAmplifierStackable, boolean isDurationStackable,
 		int maximumAmplifier, int maximumDurationInTicks
 	) {
 		super( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, effects );
@@ -28,10 +28,10 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	}
 
 	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect, boolean isAmplifierStackable, boolean isDurationStackable,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect effect, boolean isAmplifierStackable, boolean isDurationStackable,
 		int maximumAmplifier, int maximumDurationInTicks
 	) {
-		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect },
+		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new MobEffect[]{ effect },
 			isAmplifierStackable, isDurationStackable, maximumAmplifier, maximumDurationInTicks
 		);
 	}
@@ -40,28 +40,28 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	 Applying effect on entity directly. (if possible, because enemy may be immune for example)
 
 	 @param target     Entity who will get effect.
-	 @param effect     Effect type to apply.
+	 @param effect     MobEffect type to apply.
 	 @param difficulty Current world difficulty.
 	 */
 	@Override
-	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, Effect effect, Difficulty difficulty ) {
-		EffectInstance previousEffectInstance = target.getActivePotionEffect( effect );
+	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, MobEffect effect, Difficulty difficulty ) {
+		MobEffectInstance previousMobEffectInstance = target.getEffect( effect );
 
-		if( previousEffectInstance == null ) {
+		if( previousMobEffectInstance == null ) {
 			super.applyEffect( attacker, target, effect, difficulty );
 			return;
 		}
 
 		int durationInTicks = getDurationInTicks( difficulty );
 		if( this.isDurationStackable )
-			durationInTicks = Math.min( durationInTicks + previousEffectInstance.getDuration(), this.maximumDurationInTicks );
+			durationInTicks = Math.min( durationInTicks + previousMobEffectInstance.getDuration(), this.maximumDurationInTicks );
 
 		int amplifier = getAmplifier( difficulty );
 		if( this.isAmplifierStackable )
-			amplifier = Math.min( amplifier + previousEffectInstance.getAmplifier() + 1, this.maximumAmplifier );
+			amplifier = Math.min( amplifier + previousMobEffectInstance.getAmplifier() + 1, this.maximumAmplifier );
 
-		EffectInstance effectInstance = new EffectInstance( effect, durationInTicks, amplifier );
-		if( target.isPotionApplicable( effectInstance ) )
-			target.addPotionEffect( effectInstance );
+		MobEffectInstance effectInstance = new MobEffectInstance( effect, durationInTicks, amplifier );
+		if( target.canBeAffected( effectInstance ) )
+			target.addEffect( effectInstance );
 	}
 }

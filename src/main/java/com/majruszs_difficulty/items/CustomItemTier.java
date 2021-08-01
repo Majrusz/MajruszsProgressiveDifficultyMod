@@ -1,17 +1,15 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.function.Supplier;
 
 /** Adding custom item tiers to the game. */
-public enum CustomItemTier implements IItemTier {
-	WITHER( 360, 3, 15, 5.0f, 3.0f, ()->Ingredient.fromItems( Items.BONE ) ), END( 2137, 4, 15, 10.0f, 5.0f,
-		()->Ingredient.fromItems( Instances.END_INGOT_ITEM )
-	);
+public enum CustomItemTier implements Tier {
+	WITHER( 360, 3, 15, 5.0f, 3.0f, ()->Ingredient.of( Items.BONE ) ), END( 2137, 4, 15, 10.0f, 5.0f, ()->Ingredient.of( Instances.END_INGOT_ITEM ) );
 
 	protected final int maxUses, harvestLevel, enchantability;
 	protected final float efficiency, attackDamage;
@@ -27,32 +25,32 @@ public enum CustomItemTier implements IItemTier {
 	}
 
 	@Override
-	public int getMaxUses() {
+	public int getUses() {
 		return this.maxUses;
 	}
 
 	@Override
-	public float getEfficiency() {
+	public float getSpeed() {
 		return this.efficiency;
 	}
 
 	@Override
-	public float getAttackDamage() {
+	public float getAttackDamageBonus() {
 		return this.attackDamage;
 	}
 
 	@Override
-	public int getHarvestLevel() {
+	public int getLevel() {
 		return this.harvestLevel;
 	}
 
 	@Override
-	public int getEnchantability() {
+	public int getEnchantmentValue() {
 		return this.enchantability;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() {
+	public Ingredient getRepairIngredient() {
 		return this.repairMaterial.get();
 	}
 }

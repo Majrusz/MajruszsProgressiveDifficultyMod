@@ -3,8 +3,8 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.mlib.config.DurationConfig;
 import com.mlib.effects.EffectHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Rarity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.fml.common.Mod;
 
 /** Simple bandage item that removes bleeding effect and gives regeneration for few seconds. */

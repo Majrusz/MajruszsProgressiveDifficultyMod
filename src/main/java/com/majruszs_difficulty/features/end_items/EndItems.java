@@ -1,7 +1,7 @@
 package com.majruszs_difficulty.features.end_items;
 
 import com.majruszs_difficulty.items.*;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 /** Class with common functions/variables for end items special functionalities. */
 public class EndItems {

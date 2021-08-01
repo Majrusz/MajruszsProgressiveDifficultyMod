@@ -1,23 +1,23 @@
 package com.majruszs_difficulty.goals;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.controller.LookController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 
 public class FollowGroupLeaderGoal extends Goal {
-	protected final MobEntity follower;
-	protected final MobEntity leader;
-	private final PathNavigator navigation;
+	protected final Mob follower;
+	protected final Mob leader;
 	protected final double speedModifier;
 	protected final float maxDistanceFromLeader;
 	protected final float stopDistance;
+	private final PathNavigation navigation;
 	protected int ticksToRecalculatePath;
 
-	public FollowGroupLeaderGoal( MobEntity follower, MobEntity leader, double speedModifier, float maxDistanceFromLeader, float stopDistance ) {
+	public FollowGroupLeaderGoal( Mob follower, Mob leader, double speedModifier, float maxDistanceFromLeader, float stopDistance ) {
 		this.follower = follower;
 		this.leader = leader;
-		this.navigation = follower.getNavigator();
+		this.navigation = follower.getNavigation();
 		this.speedModifier = speedModifier;
 		this.maxDistanceFromLeader = maxDistanceFromLeader;
 		this.stopDistance = stopDistance;
@@ -25,18 +25,10 @@ public class FollowGroupLeaderGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return ( this.leader != null && this.leader.isAlive() && ( this.leader.getDistance( this.follower ) >= this.maxDistanceFromLeader
-		) && this.follower.getAttackTarget() == null
+	public boolean canUse() {
+		return ( this.leader != null && this.leader.isAlive() && ( this.leader.distanceTo( this.follower ) >= this.maxDistanceFromLeader
+		) && this.follower.getTarget() == null
 		);
-	}
-
-	public boolean shouldContinueExecuting() {
-		return this.leader != null && !this.navigation.noPath() && this.follower.getDistance( this.leader ) > ( double )( this.stopDistance );
-	}
-
-	public void startExecuting() {
-		this.ticksToRecalculatePath = 0;
 	}
 
 	public void tick() {
@@ -46,24 +38,32 @@ public class FollowGroupLeaderGoal extends Goal {
 		if( --this.ticksToRecalculatePath > 0 )
 			return;
 
-		this.follower.getLookController()
-			.setLookPositionWithEntity( this.leader, 10.0F, ( float )this.follower.getVerticalFaceSpeed() );
+		this.follower.getLookControl()
+			.setLookAt( this.leader, 10.0F, ( float )this.follower.getHeadRotSpeed() );
 		this.ticksToRecalculatePath = 10;
-		double distance = this.follower.getDistance( this.leader );
+		double distance = this.follower.distanceTo( this.leader );
 
 		if( distance <= ( double )( this.maxDistanceFromLeader ) )
 			recalculatePath( distance );
 		else
-			this.navigation.tryMoveToEntityLiving( this.leader, this.speedModifier );
+			this.navigation.moveTo( this.leader, this.speedModifier );
+	}
+
+	public boolean shouldContinueExecuting() {
+		return this.leader != null && !this.navigation.isDone() && this.follower.distanceTo( this.leader ) > ( double )( this.stopDistance );
+	}
+
+	public void startExecuting() {
+		this.ticksToRecalculatePath = 0;
 	}
 
 	protected void recalculatePath( double distance ) {
-		this.navigation.clearPath();
-		LookController lookcontroller = this.leader.getLookController();
-		if( distance <= ( double )this.maxDistanceFromLeader || lookcontroller.getLookPosX() == this.follower.getPosX() && lookcontroller.getLookPosY() == this.follower.getPosY() && lookcontroller.getLookPosZ() == this.follower.getPosZ() ) {
-			double d4 = this.follower.getPosX() - this.leader.getPosX();
-			double d5 = this.follower.getPosZ() - this.leader.getPosZ();
-			this.navigation.tryMoveToXYZ( this.follower.getPosX() - d4, this.follower.getPosY(), this.follower.getPosZ() - d5, this.speedModifier );
+		this.navigation.stop();
+		LookControl lookcontroller = this.leader.getLookControl();
+		if( distance <= ( double )this.maxDistanceFromLeader || lookcontroller.getWantedX() == this.follower.getX() && lookcontroller.getWantedY() == this.follower.getY() && lookcontroller.getWantedZ() == this.follower.getZ() ) {
+			double d4 = this.follower.getX() - this.leader.getX();
+			double d5 = this.follower.getZ() - this.leader.getZ();
+			this.navigation.moveTo( this.follower.getX() - d4, this.follower.getY(), this.follower.getZ() - d5, this.speedModifier );
 		}
 	}
 }

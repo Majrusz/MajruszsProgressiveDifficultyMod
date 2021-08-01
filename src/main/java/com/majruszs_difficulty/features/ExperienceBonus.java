@@ -4,8 +4,8 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.mlib.Random;
 import com.mlib.config.ConfigGroup;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,13 +33,13 @@ public class ExperienceBonus {
 		if( bonusExperience <= 0 )
 			return;
 
-		PlayerEntity player = event.getPlayer();
+		Player player = event.getPlayer();
 		player.giveExperiencePoints( bonusExperience );
 	}
 
 	/** Returns final experience amount after applying game state bonus. */
-	private int getExtraExperience( ExperienceOrbEntity experienceOrb ) {
-		return Random.randomizeExperience( getExperienceMultiplier() * experienceOrb.getXpValue() );
+	private int getExtraExperience( ExperienceOrb experienceOrb ) {
+		return Random.randomizeExperience( getExperienceMultiplier() * experienceOrb.getValue() );
 	}
 
 	/** Returns extra experience depending on current game state. */

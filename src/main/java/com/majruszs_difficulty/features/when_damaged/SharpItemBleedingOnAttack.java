@@ -1,8 +1,8 @@
 package com.majruszs_difficulty.features.when_damaged;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.*;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.*;
 
 import javax.annotation.Nullable;
 
@@ -19,9 +19,9 @@ public class SharpItemBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		if( attacker != null ) {
-			ItemStack heldItemStack = attacker.getHeldItemMainhand();
+			ItemStack heldItemStack = attacker.getMainHandItem();
 			Item heldItem = heldItemStack.getItem();
-			boolean attackerHasSharpItem = heldItem instanceof ToolItem || heldItem instanceof TridentItem || heldItem instanceof SwordItem || heldItem instanceof ShearsItem;
+			boolean attackerHasSharpItem = heldItem instanceof TieredItem || heldItem instanceof TridentItem || heldItem instanceof SwordItem || heldItem instanceof ShearsItem;
 
 			return attackerHasSharpItem && super.shouldBeExecuted( attacker, target, damageSource );
 		}

@@ -3,21 +3,16 @@ package com.majruszs_difficulty.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import com.majruszs_difficulty.models.HermesArmorModel;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
@@ -30,7 +25,7 @@ public class HermesBootsItem extends AttributeArmorItem {
 	protected final ConfigGroup configGroup;
 
 	public HermesBootsItem() {
-		super( CustomArmorMaterial.HERMES, EquipmentSlotType.FEET, ( new Properties() ).group( Instances.ITEM_GROUP )
+		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, ( new Properties() ).tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON ) );
 
 		String comment = "Movement speed extra multiplier. (requires game/world restart!)";
@@ -44,27 +39,27 @@ public class HermesBootsItem extends AttributeArmorItem {
 	/** Returns path to Hermes Boots texture. */
 	@Nullable
 	@Override
-	public String getArmorTexture( ItemStack stack, Entity entity, EquipmentSlotType slot, String type ) {
+	public String getArmorTexture( ItemStack stack, Entity entity, EquipmentSlot slot, String type ) {
 		ResourceLocation textureLocation = MajruszsDifficulty.getLocation( "textures/models/armor/hermes_layer.png" );
 		return textureLocation.toString();
 	}
 
 	/** Returns model used to render armor. */
-	@OnlyIn( Dist.CLIENT )
+	/*@OnlyIn( Dist.CLIENT )
 	@Nullable
 	@Override
-	public < ArmorModel extends BipedModel< ? > > ArmorModel getArmorModel( LivingEntity entity, ItemStack itemStack, EquipmentSlotType armorSlot,
+	public < ArmorModel extends BipedModel< ? > > ArmorModel getArmorModel( LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot,
 		ArmorModel defaultModel
 	) {
 		HermesArmorModel model = new HermesArmorModel();
 
-		model.bipedHead.showModel = armorSlot == EquipmentSlotType.HEAD;
+		model.bipedHead.showModel = armorSlot == EquipmentSlot.HEAD;
 		model.bipedHeadwear.showModel = false;
-		model.bipedBody.showModel = armorSlot == EquipmentSlotType.CHEST;
+		model.bipedBody.showModel = armorSlot == EquipmentSlot.CHEST;
 		model.bipedLeftArm.showModel = false;
 		model.bipedRightArm.showModel = false;
-		model.bipedRightLeg.showModel = armorSlot == EquipmentSlotType.FEET;
-		model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
+		model.bipedRightLeg.showModel = armorSlot == EquipmentSlot.FEET;
+		model.bipedLeftLeg.showModel = armorSlot == EquipmentSlot.FEET;
 
 		model.isChild = defaultModel.isChild;
 		model.isSitting = defaultModel.isSitting;
@@ -73,7 +68,7 @@ public class HermesBootsItem extends AttributeArmorItem {
 		model.leftArmPose = defaultModel.leftArmPose;
 
 		return ( ArmorModel )model;
-	}
+	}*/
 
 	/** Called whenever attributes should be updated. */
 	@Override

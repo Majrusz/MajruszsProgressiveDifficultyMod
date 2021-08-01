@@ -8,18 +8,22 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.DurationConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.effects.EffectHelper;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.potion.Effects;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -46,8 +50,9 @@ public class BandageItem extends Item {
 	}
 
 	public BandageItem( String name, int defaultAmplifier, Rarity rarity ) {
-		super( ( new Properties() ).maxStackSize( 16 )
-			.group( Instances.ITEM_GROUP ).rarity( rarity ) );
+		super( ( new Properties() ).stacksTo( 16 )
+			.tab( Instances.ITEM_GROUP )
+			.rarity( rarity ) );
 
 		this.configGroup = new ConfigGroup( name, "Configuration for " + name + " item." );
 		FEATURES_GROUP.addGroup( this.configGroup );
@@ -63,17 +68,17 @@ public class BandageItem extends Item {
 
 	/** Using bandage on right click. (self healing) */
 	@Override
-	public ActionResult< ItemStack > onItemRightClick( World world, PlayerEntity player, Hand hand ) {
-		ItemStack itemStack = player.getHeldItem( hand );
+	public InteractionResultHolder< ItemStack > use( Level world, Player player, InteractionHand hand ) {
+		ItemStack itemStack = player.getItemInHand( hand );
 		useIfPossible( itemStack, player, player );
 
-		return ActionResult.func_233538_a_( itemStack, world.isRemote() );
+		return InteractionResultHolder.sidedSuccess( itemStack, world.isClientSide() );
 	}
 
 	/** Adding tooltip with information for what bandage is used. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addAdvancedTooltips( tooltip, flag, TOOLTIP_TRANSLATION_KEY_1, TOOLTIP_TRANSLATION_KEY_2 );
 	}
 
@@ -88,7 +93,7 @@ public class BandageItem extends Item {
 			return;
 		BandageItem bandage = ( BandageItem )itemStack.getItem();
 		if( bandage.useIfPossible( event.getItemStack(), event.getPlayer(), ( LivingEntity )event.getTarget() ) )
-			event.setCancellationResult( ActionResultType.SUCCESS );
+			event.setCancellationResult( InteractionResult.SUCCESS );
 	}
 
 	/** Checks whether Bandage is always usable. (player can use it even if it does not have a Bleeding effect) */
@@ -108,7 +113,7 @@ public class BandageItem extends Item {
 
 	/** Applies Regeneration on target depending on current mod settings. */
 	protected void applyEffects( LivingEntity target ) {
-		EffectHelper.applyEffectIfPossible( target, Effects.REGENERATION, getRegenerationDuration(), getRegenerationAmplifier() );
+		EffectHelper.applyEffectIfPossible( target, MobEffects.REGENERATION, getRegenerationDuration(), getRegenerationAmplifier() );
 	}
 
 	/**
@@ -120,17 +125,17 @@ public class BandageItem extends Item {
 
 	 @return Returns information (boolean) if bleeding was removed or regeneration was applied.
 	 */
-	private boolean useIfPossible( ItemStack bandage, PlayerEntity player, LivingEntity target ) {
+	private boolean useIfPossible( ItemStack bandage, Player player, LivingEntity target ) {
 		if( !couldBeUsedOn( target, bandage ) )
 			return false;
 
-		if( !player.abilities.isCreativeMode )
+		if( !player.getAbilities().instabuild )
 			bandage.shrink( 1 );
 
-		player.addStat( Stats.ITEM_USED.get( bandage.getItem() ) );
+		player.awardStat( Stats.ITEM_USED.get( bandage.getItem() ) );
 		removeBleeding( target, player );
 		applyEffects( target );
-		target.world.playSound( null, target.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0f, 1.0f );
+		target.level.playSound( null, target.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 1.0f );
 
 		return true;
 	}
@@ -138,19 +143,19 @@ public class BandageItem extends Item {
 	/** Checks whether item could be used on target. */
 	private boolean couldBeUsedOn( LivingEntity target, ItemStack bandage ) {
 		boolean isBandage = bandage.getItem() instanceof BandageItem;
-		boolean targetHasRegeneration = target.isPotionActive( Effects.REGENERATION );
+		boolean targetHasRegeneration = target.hasEffect( MobEffects.REGENERATION );
 
-		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.isPotionActive( Instances.BLEEDING ) );
+		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.hasEffect( Instances.BLEEDING ) );
 	}
 
 	/** Removes Bleeding effect from the target. */
-	private void removeBleeding( LivingEntity target, PlayerEntity causer ) {
+	private void removeBleeding( LivingEntity target, Player causer ) {
 		BleedingEffect bleeding = Instances.BLEEDING;
 
-		if( target.isPotionActive( bleeding ) && causer instanceof ServerPlayerEntity )
-			Instances.BANDAGE_TRIGGER.trigger( ( ServerPlayerEntity )causer, this, target.equals( causer ) );
+		if( target.hasEffect( bleeding ) && causer instanceof ServerPlayer )
+			Instances.BANDAGE_TRIGGER.trigger( ( ServerPlayer )causer, this, target.equals( causer ) );
 
-		target.removePotionEffect( bleeding );
-		target.removeActivePotionEffect( bleeding );
+		target.removeEffect( bleeding );
+		target.removeEffectNoUpdate( bleeding );
 	}
 }

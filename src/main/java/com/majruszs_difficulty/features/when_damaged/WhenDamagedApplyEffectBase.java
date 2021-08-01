@@ -3,21 +3,21 @@ package com.majruszs_difficulty.features.when_damaged;
 import com.majruszs_difficulty.GameState;
 import com.mlib.config.DurationConfig;
 import com.mlib.effects.EffectHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effect;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
 
 /** Base class representing event on which enemies will receive some effects after being attacked. */
 public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
-	protected final Effect[] effects;
+	protected final MobEffect[] effects;
 	protected final DurationConfig effectDuration;
 
 	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect[] effects
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect[] effects
 	) {
 		super( configName, configComment, defaultChance, minimumState, shouldBeMultipliedByCRD );
 		this.effects = effects;
@@ -30,9 +30,9 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 	}
 
 	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, Effect effect
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect effect
 	) {
-		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new Effect[]{ effect } );
+		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new MobEffect[]{ effect } );
 	}
 
 	/**
@@ -44,10 +44,10 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 	 */
 	@Override
 	public void whenDamaged( @Nullable LivingEntity attacker, LivingEntity target, LivingHurtEvent event ) {
-		ServerWorld world = ( ServerWorld )target.getEntityWorld();
+		ServerLevel world = ( ServerLevel )target.level;
 		Difficulty difficulty = world.getDifficulty();
 
-		for( Effect effect : this.effects )
+		for( MobEffect effect : this.effects )
 			if( tryChance( target ) )
 				applyEffect( attacker, target, effect, difficulty );
 	}
@@ -57,10 +57,10 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 
 	 @param attacker   Entity that dealt damage.
 	 @param target     Entity who will get effect.
-	 @param effect     Effect type to apply.
+	 @param effect     MobEffect type to apply.
 	 @param difficulty Current world difficulty.
 	 */
-	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, Effect effect, Difficulty difficulty ) {
+	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, MobEffect effect, Difficulty difficulty ) {
 		EffectHelper.applyEffectIfPossible( target, effect, getDurationInTicks( difficulty ), getAmplifier( difficulty ) );
 	}
 

@@ -3,9 +3,9 @@ package com.majruszs_difficulty.features.when_damaged;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.entities.ParasiteEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
@@ -24,9 +24,9 @@ public class ParasiteDodgeOnHurt extends ChanceWhenDamagedBase {
 		if( !tryChance( target ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )target.world;
+		ServerLevel world = ( ServerLevel )target.level;
 		if( MajruszsHelper.teleportNearby( target, world, 3.0, 4.0 ) )
-			ParasiteEntity.spawnEffects( world, target.getPosition() );
+			ParasiteEntity.spawnEffects( world, target.blockPosition() );
 	}
 
 	/** Checking if all conditions were met. */

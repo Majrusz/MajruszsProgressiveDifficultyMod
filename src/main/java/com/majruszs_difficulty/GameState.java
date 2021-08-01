@@ -1,19 +1,19 @@
 package com.majruszs_difficulty;
 
-import com.mlib.WorldHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import com.mlib.LevelHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 
 /** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
-	public static final TextFormatting NORMAL_MODE_COLOR = TextFormatting.WHITE;
-	public static final TextFormatting EXPERT_MODE_COLOR = TextFormatting.RED;
-	public static final TextFormatting MASTER_MODE_COLOR = TextFormatting.DARK_PURPLE;
+	public static final ChatFormatting NORMAL_MODE_COLOR = ChatFormatting.WHITE;
+	public static final ChatFormatting EXPERT_MODE_COLOR = ChatFormatting.RED;
+	public static final ChatFormatting MASTER_MODE_COLOR = ChatFormatting.DARK_PURPLE;
 	private static State CURRENT = State.NORMAL;
 
 	/** Changing current game state globally. */
@@ -42,7 +42,7 @@ public class GameState {
 	}
 
 	/** Triggers game state advancement for player if possible. */
-	public static void triggerAdvancement( ServerPlayerEntity player ) {
+	public static void triggerAdvancement( ServerPlayer player ) {
 		Instances.GAME_STATE_TRIGGER.trigger( player, CURRENT );
 	}
 
@@ -104,19 +104,19 @@ public class GameState {
 	}
 
 	/** Returns formatted text depending on given game state. */
-	public static IFormattableTextComponent getGameStateText( State state ) {
+	public static MutableComponent getGameStateText( State state ) {
 		String modeName = getValueDependingOnGameState( state, "normal", "expert", "master" );
-		TextFormatting textColor = getValueDependingOnGameState( state, NORMAL_MODE_COLOR, EXPERT_MODE_COLOR, MASTER_MODE_COLOR );
+		ChatFormatting textColor = getValueDependingOnGameState( state, NORMAL_MODE_COLOR, EXPERT_MODE_COLOR, MASTER_MODE_COLOR );
 
 		return generateModeText( modeName, textColor );
 	}
 
 	/** Returns clamped regional difficulty increased by certain value depending on current game state. */
 	public static double getRegionalDifficulty( LivingEntity target ) {
-		double clampedRegionalDifficulty = target != null ? WorldHelper.getClampedRegionalDifficulty( target ) : 0.25;
+		double clampedRegionalDifficulty = target != null ? LevelHelper.getClampedRegionalDifficulty( target ) : 0.25;
 		double stateModifier = getStateModifier();
 
-		return MathHelper.clamp( clampedRegionalDifficulty + stateModifier, 0.0, 1.0 );
+		return Mth.clamp( clampedRegionalDifficulty + stateModifier, 0.0, 1.0 );
 	}
 
 	/** Returns clamped regional difficulty modifier depending on current game state. */
@@ -125,15 +125,15 @@ public class GameState {
 	}
 
 	/** Returns formatted game state text. */
-	private static IFormattableTextComponent generateModeText( String modeName, TextFormatting color ) {
-		IFormattableTextComponent text = new TranslationTextComponent( "majruszs_difficulty.states." + modeName );
-		text.mergeStyle( color, TextFormatting.BOLD );
+	private static MutableComponent generateModeText( String modeName, ChatFormatting color ) {
+		MutableComponent text = new TranslatableComponent( "majruszs_difficulty.states." + modeName );
+		text.withStyle( color, ChatFormatting.BOLD );
 
 		return text;
 	}
 
 	/** All possible game states. */
-	public static enum State {
+	public enum State {
 		NORMAL, EXPERT, MASTER
 	}
 }

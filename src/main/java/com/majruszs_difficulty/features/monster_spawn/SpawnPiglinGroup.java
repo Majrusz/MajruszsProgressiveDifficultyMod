@@ -3,13 +3,13 @@ package com.majruszs_difficulty.features.monster_spawn;
 import com.majruszs_difficulty.GameState;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.piglin.PiglinEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 /** Spawns piglins in group. */
 public class SpawnPiglinGroup extends SpawnEnemyGroupBase {
@@ -27,11 +27,11 @@ public class SpawnPiglinGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof PiglinEntity && super.shouldBeExecuted( entity );
+		return entity instanceof Piglin && super.shouldBeExecuted( entity );
 	}
 
 	@Override
-	protected CreatureEntity spawnChild( ServerWorld world ) {
+	protected PathfinderMob spawnChild( ServerLevel world ) {
 		return EntityType.PIGLIN.create( world );
 	}
 

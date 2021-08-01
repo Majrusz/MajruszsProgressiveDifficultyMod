@@ -12,43 +12,36 @@ import com.majruszs_difficulty.items.AttributeArmorItem;
 import com.majruszs_difficulty.items.FakeItem;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.command.CommandSource;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.item.Item;
-import net.minecraft.particles.ParticleType;
-import net.minecraft.potion.Effect;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.FlatChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.StructureSeparationSettings;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.DimensionSavedDataManager;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /** Main class registering most registers like entities, items and sounds. */
 public class RegistryHandler {
@@ -56,8 +49,8 @@ public class RegistryHandler {
 	public static final DeferredRegister< Block > BLOCKS = DeferredRegister.create( ForgeRegistries.BLOCKS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Item > ITEMS = DeferredRegister.create( ForgeRegistries.ITEMS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< SoundEvent > SOUNDS = DeferredRegister.create( ForgeRegistries.SOUND_EVENTS, MajruszsDifficulty.MOD_ID );
-	public static final DeferredRegister< Effect > EFFECTS = DeferredRegister.create( ForgeRegistries.POTIONS, MajruszsDifficulty.MOD_ID );
-	public static final DeferredRegister< Structure< ? > > STRUCTURES = DeferredRegister.create( ForgeRegistries.STRUCTURE_FEATURES,
+	public static final DeferredRegister< MobEffect > EFFECTS = DeferredRegister.create( ForgeRegistries.POTIONS, MajruszsDifficulty.MOD_ID );
+	public static final DeferredRegister< StructureFeature< ? > > STRUCTURES = DeferredRegister.create( ForgeRegistries.STRUCTURE_FEATURES,
 		MajruszsDifficulty.MOD_ID
 	);
 	public static final DeferredRegister< ParticleType< ? > > PARTICLES = DeferredRegister.create( ForgeRegistries.PARTICLE_TYPES,
@@ -75,6 +68,7 @@ public class RegistryHandler {
 		registerEverything( modEventBus );
 		modEventBus.addListener( RegistryHandler::setup );
 		modEventBus.addListener( RegistryHandler::setupClient );
+		modEventBus.addListener( RegistryHandler::setupEntities );
 		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->modEventBus.addListener( RegistryHandler::onTextureStitch ) );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
@@ -108,7 +102,7 @@ public class RegistryHandler {
 	}
 
 	/** Registers list of fake items. */
-	private static void registerFakeItems( String ...registerNames ) {
+	private static void registerFakeItems( String... registerNames ) {
 		for( String registerName : registerNames )
 			ITEMS.register( "advancement_" + registerName, FakeItem::new );
 	}
@@ -190,14 +184,14 @@ public class RegistryHandler {
 
 	/** Registration of structures. */
 	private static void registerStructures( final IEventBus modEventBus ) {
-		STRUCTURES.register( "flying_phantom_structure", ()->Instances.FLYING_PHANTOM );
+		/*STRUCTURES.register( "flying_phantom_structure", ()->Instances.FLYING_PHANTOM );
 		STRUCTURES.register( "flying_end_island", ()->Instances.FLYING_END_ISLAND );
 		STRUCTURES.register( "flying_end_ship", ()->Instances.FLYING_END_SHIP );
 		STRUCTURES.register( modEventBus );
 
 		Structure.NAME_STRUCTURE_BIMAP.put( "flying_phantom_structure", Instances.FLYING_PHANTOM );
 		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_island", Instances.FLYING_END_ISLAND );
-		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_ship", Instances.FLYING_END_SHIP );
+		Structure.NAME_STRUCTURE_BIMAP.put( "flying_end_ship", Instances.FLYING_END_SHIP );*/
 	}
 
 	/** Registration of everything. */
@@ -216,37 +210,40 @@ public class RegistryHandler {
 		RegistryHandlerClient.setup();
 	}
 
+	/** Sets up all entities. */
+	private static void setupEntities( EntityAttributeCreationEvent event ) {
+		event.put( GiantEntity.type, GiantEntity.getAttributeMap() );
+		event.put( PillagerWolfEntity.type, PillagerWolfEntity.getAttributeMap() );
+		event.put( EliteSkeletonEntity.type, EliteSkeletonEntity.getAttributeMap() );
+		event.put( SkyKeeperEntity.type, SkyKeeperEntity.getAttributeMap() );
+		event.put( CreeperlingEntity.type, CreeperlingEntity.getAttributeMap() );
+		event.put( ParasiteEntity.type, ParasiteEntity.getAttributeMap() );
+	}
+
 	/** Setting up entities and structures. */
 	private static void setup( final FMLCommonSetupEvent event ) {
-		GlobalEntityTypeAttributes.put( GiantEntity.type, GiantEntity.getAttributeMap() );
-		GlobalEntityTypeAttributes.put( PillagerWolfEntity.type, PillagerWolfEntity.getAttributeMap() );
-		GlobalEntityTypeAttributes.put( EliteSkeletonEntity.type, EliteSkeletonEntity.getAttributeMap() );
-		GlobalEntityTypeAttributes.put( SkyKeeperEntity.type, SkyKeeperEntity.getAttributeMap() );
-		GlobalEntityTypeAttributes.put( CreeperlingEntity.type, CreeperlingEntity.getAttributeMap() );
-		GlobalEntityTypeAttributes.put( ParasiteEntity.type, ParasiteEntity.getAttributeMap() );
-
-		EntitySpawnPlacementRegistry.register( GiantEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GiantEntity::canMonsterSpawnInLight
+		SpawnPlacements.register( GiantEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			GiantEntity::checkMonsterSpawnRules
 		);
-		EntitySpawnPlacementRegistry.register( PillagerWolfEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PillagerWolfEntity::canAnimalSpawn
+		SpawnPlacements.register( PillagerWolfEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			PillagerWolfEntity::checkAnimalSpawnRules
 		);
-		EntitySpawnPlacementRegistry.register( EliteSkeletonEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EliteSkeletonEntity::canMonsterSpawnInLight
+		SpawnPlacements.register( EliteSkeletonEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			EliteSkeletonEntity::checkMonsterSpawnRules
 		);
-		EntitySpawnPlacementRegistry.register( SkyKeeperEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SkyKeeperEntity::canSpawnOn
+		SpawnPlacements.register( SkyKeeperEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			SkyKeeperEntity::checkMobSpawnRules
 		);
-		EntitySpawnPlacementRegistry.register( CreeperlingEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::canSpawnOn
+		SpawnPlacements.register( CreeperlingEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			CreeperlingEntity::checkMobSpawnRules
 		);
-		EntitySpawnPlacementRegistry.register( ParasiteEntity.type, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-			Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::canMonsterSpawnInLight
+		SpawnPlacements.register( ParasiteEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			ParasiteEntity::checkMonsterSpawnRules
 		);
 
-		event.enqueueWork( Instances.FLYING_PHANTOM::setup );
+		/*event.enqueueWork( Instances.FLYING_PHANTOM::setup );
 		event.enqueueWork( Instances.FLYING_END_ISLAND::setup );
-		event.enqueueWork( Instances.FLYING_END_SHIP::setup );
+		event.enqueueWork( Instances.FLYING_END_SHIP::setup );*/
 		OreGeneration.registerOres();
 
 		AttributeArmorItem.updateAllItemsAttributes();
@@ -254,7 +251,7 @@ public class RegistryHandler {
 
 	/** Registration of commands. */
 	private static void registerCommands( RegisterCommandsEvent event ) {
-		CommandDispatcher< CommandSource > dispatcher = event.getDispatcher();
+		CommandDispatcher< CommandSourceStack > dispatcher = event.getDispatcher();
 
 		ChangeGameStateCommand.register( dispatcher );
 		UndeadArmyManagerCommand.register( dispatcher );
@@ -266,7 +263,8 @@ public class RegistryHandler {
 	 */
 	private static void onServerStart( FMLServerStartingEvent event ) {
 		MinecraftServer server = event.getServer();
-		UNDEAD_ARMY_MANAGER.updateWorld( server.func_241755_D_() );
+		if( UNDEAD_ARMY_MANAGER != null )
+			UNDEAD_ARMY_MANAGER.updateWorld( server.getLevel( ServerLevel.OVERWORLD ) );
 
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, Instances.ELDER_GUARDIAN_TREASURE_BAG, false );
 		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, Instances.WITHER_TREASURE_BAG, false );
@@ -277,25 +275,26 @@ public class RegistryHandler {
 	 *
 	 */
 	public static void onLoadingWorld( WorldEvent.Load event ) {
-		if( !( event.getWorld() instanceof ServerWorld ) )
+		if( !( event.getWorld() instanceof ServerLevel ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )event.getWorld();
-		DimensionSavedDataManager manager = world.getSavedData();
+		ServerLevel world = ( ServerLevel )event.getWorld();
+		DimensionDataStorage manager = world.getDataStorage();
 
-		UNDEAD_ARMY_MANAGER = manager.getOrCreate( ()->new UndeadArmyManager( world ), UndeadArmyManager.DATA_NAME );
-		UNDEAD_ARMY_MANAGER.updateWorld( world );
+		UNDEAD_ARMY_MANAGER = manager.get( nbt->UndeadArmyManager.load( nbt, world ), UndeadArmyManager.DATA_NAME );
+		if( UNDEAD_ARMY_MANAGER != null )
+			UNDEAD_ARMY_MANAGER.updateWorld( world );
 
-		GAME_DATA_SAVER = manager.getOrCreate( GameDataSaver::new, GameDataSaver.DATA_NAME );
-		GAME_DATA_SAVER.updateGameState();
+		GAME_DATA_SAVER = manager.get( GameDataSaver::load, GameDataSaver.DATA_NAME );
+		if( GAME_DATA_SAVER != null )
+			GAME_DATA_SAVER.updateGameState();
 
 		ReloadUndeadArmyGoals.resetTimer();
 
-		if( event.getWorld() instanceof ServerWorld ) {
-			ServerWorld serverWorld = ( ServerWorld )event.getWorld();
+		/*if( event.getWorld() instanceof ServerLevel ) {
+			ServerLevel serverLevel = ( ServerLevel )event.getWorld();
 
-			if( serverWorld.getChunkProvider()
-				.getChunkGenerator() instanceof FlatChunkGenerator && serverWorld.getDimensionKey()
+			if( serverLevel.getChunkSource().generator instanceof FlatChunkGenerator && serverWorld.getDimensionKey()
 				.equals( World.OVERWORLD ) ) {
 				return;
 			}
@@ -306,25 +305,28 @@ public class RegistryHandler {
 			tempMap.putIfAbsent( Instances.FLYING_END_ISLAND, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_ISLAND ) );
 			tempMap.putIfAbsent( Instances.FLYING_END_SHIP, DimensionStructuresSettings.field_236191_b_.get( Instances.FLYING_END_SHIP ) );
 			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
-		}
+		}*/
 	}
 
 	/**
 	 *
 	 */
 	public static void onSavingWorld( WorldEvent.Save event ) {
-		if( !( event.getWorld() instanceof ServerWorld ) )
+		if( !( event.getWorld() instanceof ServerLevel ) )
 			return;
 
-		GAME_DATA_SAVER.markDirty();
-		UNDEAD_ARMY_MANAGER.markDirty();
+		if( GAME_DATA_SAVER != null )
+			GAME_DATA_SAVER.setDirty();
+
+		if( UNDEAD_ARMY_MANAGER != null )
+			UNDEAD_ARMY_MANAGER.setDirty();
 	}
 
 	/** Adds custom textures to the game. (curios slot) */
 	@OnlyIn( Dist.CLIENT )
 	private static void onTextureStitch( TextureStitchEvent.Pre event ) {
-		final AtlasTexture map = event.getMap();
-		if( PlayerContainer.LOCATION_BLOCKS_TEXTURE.equals( map.getTextureLocation() ) )
-			event.addSprite( RegistryHandlerClient.OCEAN_SHIELD_MATERIAL.getTextureLocation() );
+		final TextureAtlas map = event.getMap();
+		if( InventoryMenu.BLOCK_ATLAS.equals( map.location() ) )
+			event.addSprite( RegistryHandlerClient.OCEAN_SHIELD_MATERIAL.atlasLocation() );
 	}
 }

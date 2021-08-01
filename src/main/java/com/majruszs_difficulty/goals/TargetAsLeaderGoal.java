@@ -1,32 +1,33 @@
 package com.majruszs_difficulty.goals;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.ai.goal.TargetGoal;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
 public class TargetAsLeaderGoal extends TargetGoal {
-	private static final EntityPredicate predicate = ( new EntityPredicate() ).setLineOfSiteRequired()
-		.setUseInvisibilityCheck();
-	protected final CreatureEntity leader;
+	private static final TargetingConditions predicate = TargetingConditions.forCombat()
+		.ignoreLineOfSight()
+		.ignoreInvisibilityTesting();
+	protected final PathfinderMob leader;
 
-	public TargetAsLeaderGoal( CreatureEntity follower, CreatureEntity leader ) {
+	public TargetAsLeaderGoal( PathfinderMob follower, PathfinderMob leader ) {
 		super( follower, false );
 		this.leader = leader;
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return this.leader != null && this.leader.isAlive() && this.isSuitableTarget( this.leader.getAttackTarget(),
+	public boolean canUse() {
+		return this.leader != null && this.leader.isAlive() && this.canAttack( this.leader.getTarget(),
 			predicate
-		) && ( this.leader.getAttackTarget() != this.goalOwner.getAttackTarget() );
+		) && ( this.leader.getTarget() != this.mob.getTarget() );
 	}
 
 	@Override
-	public void startExecuting() {
-		this.goalOwner.setAttackTarget( this.leader.getAttackTarget() );
-		this.target = this.leader.getAttackTarget();
+	public void start() {
+		this.mob.setTarget( this.leader.getTarget() );
+		this.targetMob = this.leader.getTarget();
 		this.unseenMemoryTicks = 300;
 
-		super.startExecuting();
+		super.start();
 	}
 }

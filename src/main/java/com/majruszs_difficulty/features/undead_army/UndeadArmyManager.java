@@ -2,18 +2,18 @@ package com.majruszs_difficulty.features.undead_army;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
+import com.mlib.LevelHelper;
 import com.mlib.TimeConverter;
-import com.mlib.WorldHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,42 +21,29 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /** Handling all Undead Armies in the world. */
 @Mod.EventBusSubscriber
-public class UndeadArmyManager extends WorldSavedData {
+public class UndeadArmyManager extends SavedData {
 	public static final String DATA_NAME = "undead_army";
 	public static final double MAXIMUM_DISTANCE_TO_ARMY = 12000.0;
 	private final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	private final List< UndeadArmyToBeSpawned > undeadArmiesToBeSpawned = new ArrayList<>();
-	private ServerWorld world;
+	private ServerLevel level;
 	private long ticksActive = 0L;
 
-	public UndeadArmyManager( ServerWorld world ) {
-		super( DATA_NAME );
-
-		this.world = world;
-	}
-
-	/** Reads information about stored in memory Undead Armies. */
-	@Override
-	public void read( CompoundNBT nbt ) {
-		this.ticksActive = nbt.getLong( UndeadArmyKeys.TICKS_ACTIVE );
-
-		ListNBT listNBT = nbt.getList( UndeadArmyKeys.ARMIES, 10 );
-		for( int i = 0; i < listNBT.size(); i++ )
-			this.undeadArmies.add( new UndeadArmy( this.world, listNBT.getCompound( i ) ) );
+	public UndeadArmyManager( ServerLevel world ) {
+		this.level = world;
 	}
 
 	/** Writes information about all current Undead Armies to memory. */
 	@Override
-	public CompoundNBT write( CompoundNBT compoundNBT ) {
+	public CompoundTag save( CompoundTag compoundNBT ) {
 		compoundNBT.putLong( UndeadArmyKeys.TICKS_ACTIVE, this.ticksActive );
 
-		ListNBT listNBT = new ListNBT();
+		ListTag listNBT = new ListTag();
 		for( UndeadArmy undeadArmy : this.undeadArmies ) {
-			CompoundNBT nbt = new CompoundNBT();
+			CompoundTag nbt = new CompoundTag();
 			undeadArmy.write( nbt );
 			listNBT.add( nbt );
 		}
@@ -65,17 +52,30 @@ public class UndeadArmyManager extends WorldSavedData {
 		return compoundNBT;
 	}
 
+	/** Reads information about stored in memory Undead Armies. */
+	public static UndeadArmyManager load( CompoundTag nbt, ServerLevel level ) {
+		UndeadArmyManager armyManager = new UndeadArmyManager( level );
+		armyManager.ticksActive = nbt.getLong( UndeadArmyKeys.TICKS_ACTIVE );
+
+		ListTag listNBT = nbt.getList( UndeadArmyKeys.ARMIES, 10 );
+		for( int i = 0; i < listNBT.size(); i++ )
+			armyManager.undeadArmies.add( new UndeadArmy( armyManager.level, listNBT.getCompound( i ) ) );
+
+		return armyManager;
+	}
+
 	@SubscribeEvent
 	public static void onUpdate( TickEvent.ServerTickEvent event ) {
 		if( event.side.isClient() || event.phase == TickEvent.Phase.END )
 			return;
 
-		RegistryHandler.UNDEAD_ARMY_MANAGER.tick();
+		if( RegistryHandler.UNDEAD_ARMY_MANAGER != null )
+			RegistryHandler.UNDEAD_ARMY_MANAGER.tick();
 	}
 
 	/* ?????????????? */
-	public void updateWorld( ServerWorld world ) {
-		this.world = world;
+	public void updateWorld( ServerLevel world ) {
+		this.level = world;
 
 		for( UndeadArmy undeadArmy : this.undeadArmies )
 			undeadArmy.updateWorld( world );
@@ -86,16 +86,16 @@ public class UndeadArmyManager extends WorldSavedData {
 
 	 @return Returns whether the Undead Army had spawned.
 	 */
-	public boolean spawn( PlayerEntity player ) {
+	public boolean spawn( Player player ) {
 		BlockPos attackPosition = getAttackPosition( player );
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 
 		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere(
-			attackPosition ) || config.isUndeadArmyDisabled() || !WorldHelper.isEntityIn( player, World.OVERWORLD ) )
+			attackPosition ) || config.isUndeadArmyDisabled() || !LevelHelper.isEntityIn( player, Level.OVERWORLD ) )
 			return false;
 
 		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
-		this.world.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundCategory.AMBIENT, 0.25f, 1.0f );
+		this.level.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundSource.AMBIENT, 0.25f, 1.0f );
 
 		return true;
 	}
@@ -108,7 +108,7 @@ public class UndeadArmyManager extends WorldSavedData {
 		tickArmies();
 
 		if( this.ticksActive % 200L == 0L )
-			this.markDirty();
+			this.setDirty();
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class UndeadArmyManager extends WorldSavedData {
 
 		for( UndeadArmy undeadArmy : this.undeadArmies ) {
 			double distanceToUndeadArmy = undeadArmy.getAttackPosition()
-				.distanceSq( position );
+				.distSqr( position );
 
 			if( undeadArmy.isActive() && distanceToUndeadArmy < minimumDistance ) {
 				nearestArmy = undeadArmy;
@@ -137,7 +137,7 @@ public class UndeadArmyManager extends WorldSavedData {
 	/** Returns whether any Undead Army is spawning at given position. (when the sound is hearable) */
 	public boolean isArmySpawningHere( BlockPos position ) {
 		for( UndeadArmyToBeSpawned undeadArmyToBeSpawned : this.undeadArmiesToBeSpawned )
-			if( undeadArmyToBeSpawned.position.distanceSq( position ) < MAXIMUM_DISTANCE_TO_ARMY )
+			if( undeadArmyToBeSpawned.position.distSqr( position ) < MAXIMUM_DISTANCE_TO_ARMY )
 				return true;
 
 		return false;
@@ -155,7 +155,7 @@ public class UndeadArmyManager extends WorldSavedData {
 			undeadArmyToBeSpawned.ticksToSpawn--;
 
 			if( undeadArmyToBeSpawned.ticksToSpawn == 0 )
-				this.undeadArmies.add( new UndeadArmy( this.world, undeadArmyToBeSpawned.position, undeadArmyToBeSpawned.direction ) );
+				this.undeadArmies.add( new UndeadArmy( this.level, undeadArmyToBeSpawned.position, undeadArmyToBeSpawned.direction ) );
 		}
 
 		this.undeadArmiesToBeSpawned.removeIf( undeadArmyToBeSpawned->undeadArmyToBeSpawned.ticksToSpawn == 0 );
@@ -171,14 +171,16 @@ public class UndeadArmyManager extends WorldSavedData {
 	}
 
 	/** Returns position to attack depending on player's position. */
-	private BlockPos getAttackPosition( PlayerEntity player ) {
-		Optional< BlockPos > bedPosition = player.getBedPosition();
-		BlockPos playerPosition = new BlockPos( player.getPositionVec() );
+	private BlockPos getAttackPosition( Player player ) {
+		//Optional< BlockPos > bedPosition = Optional.of( player.blockPosition() );
+		/*BlockPos playerPosition = new BlockPos( player.position() );
 		BlockPos attackPosition = !bedPosition.isPresent() || playerPosition.distanceSq(
 			bedPosition.get() ) >= MAXIMUM_DISTANCE_TO_ARMY ? playerPosition : bedPosition.get();
+		*/
 
-		int x = attackPosition.getX(), z = attackPosition.getZ();
-		return new BlockPos( x, this.world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z ), z );
+		BlockPos playerPosition = player.blockPosition();
+		int x = playerPosition.getX(), y = playerPosition.getY(), z = playerPosition.getZ();
+		return new BlockPos( x, this.level.getHeight( Heightmap.Types.WORLD_SURFACE, x, z ), z );
 	}
 
 	/** Checks whether entity was spawned on Undead Army. */

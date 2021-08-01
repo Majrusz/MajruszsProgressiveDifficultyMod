@@ -3,12 +3,12 @@ package com.majruszs_difficulty.features.when_damaged;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.effects.BleedingEffect;
-import com.majruszs_difficulty.effects.BleedingEffect.BleedingEffectInstance;
+import com.majruszs_difficulty.effects.BleedingEffect.BleedingMobEffectInstance;
 import com.mlib.effects.EffectHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
@@ -21,20 +21,23 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return Instances.BLEEDING.mayBleed( target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target, damageSource );
+		return Instances.BLEEDING.mayBleed(
+			target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target,
+			damageSource
+		);
 	}
 
 	/**
 	 Applying effect on entity directly. (if possible, because enemy may be immune for example)
 
 	 @param target     Entity who will get effect.
-	 @param effect     Effect type to apply.
+	 @param effect     MobEffect type to apply.
 	 @param difficulty Current world difficulty.
 	 */
 	@Override
-	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, Effect effect, Difficulty difficulty ) {
-		BleedingEffectInstance effectInstance = new BleedingEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false, true,
-			attacker
+	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, MobEffect effect, Difficulty difficulty ) {
+		BleedingMobEffectInstance effectInstance = new BleedingMobEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false,
+			true, attacker
 		);
 
 		EffectHelper.applyEffectIfPossible( target, effectInstance );

@@ -1,85 +1,107 @@
 package com.majruszs_difficulty.models;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
 public class OceanShieldModel extends Model {
-	public ModelRenderer plate;
-	public ModelRenderer handle;
-	public ModelRenderer spike1, spike2, spike3, spike4, spike5, spike6, spike7, spike8;
+	public ModelPart root;
+	public ModelPart plate;
+	public ModelPart handle;
+	public ModelPart spike1, spike2, spike3, spike4, spike5, spike6, spike7, spike8;
 
-	public OceanShieldModel() {
-		super( RenderType::getEntitySolid );
+	public OceanShieldModel( ModelPart modelPart ) {
+		super( RenderType::entitySolid );
 
-		this.textureWidth = 64;
-		this.textureHeight = 64;
-
-		this.handle = new ModelRenderer(this, 0, 0);
-		this.handle.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.handle.setTextureOffset(30, 0).addBox(-1.0F, -3.0F, -1.0F, 2.0F, 6.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-
-		this.plate = new ModelRenderer(this, 0, 0);
-		this.plate.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.plate.addBox(-7.0F, -11.0F, -2.0F, 14.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.plate.setTextureOffset(0, 13).addBox(-6.0F, 1.0F, -2.0F, 12.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.plate.setTextureOffset(0, 17).addBox(-5.0F, 4.0F, -2.0F, 10.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.plate.setTextureOffset(0, 21).addBox(-4.0F, 7.0F, -2.0F, 8.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.plate.setTextureOffset(0, 24).addBox(-3.0F, 9.0F, -2.0F, 6.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-
-		this.spike1 = new ModelRenderer(this, 0, 0);
-		this.spike1.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike1.setTextureOffset(46, 0).addBox(-4.0F, -8.0F, -4.0F, 1.0F, 1.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(spike1, 0.0F, 0.17453292519943295F, 0.0F);
-
-		this.spike2 = new ModelRenderer(this, 0, 0);
-		this.spike2.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike2.setTextureOffset(46, 0).addBox(3.0F, -8.0F, -4.0F, 1.0F, 1.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(spike2, 0.0F, -0.17453292519943295F, 0.0F);
-
-		this.spike3 = new ModelRenderer(this, 0, 0);
-		this.spike3.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike3.setTextureOffset(46, 0).addBox(2.0F, -1.0F, -4.0F, 1.0F, 1.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(spike3, 0.0F, -0.17453292519943295F, 0.0F);
-
-		this.spike4 = new ModelRenderer(this, 0, 0);
-		this.spike4.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike4.setTextureOffset(46, 0).addBox(-3.0F, -1.0F, -4.0F, 1.0F, 1.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(spike4, 0.0F, 0.17453292519943295F, 0.0F);
-
-		this.spike5 = new ModelRenderer(this, 0, 0);
-		this.spike5.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike5.setTextureOffset(46, 0).addBox(-0.5F, 5.0F, -4.0F, 1.0F, 1.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(spike5, 0.12217304763960307F, 0.0F, 0.0F);
-
-		this.spike6 = new ModelRenderer(this, 0, 0);
-		this.spike6.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike6.setTextureOffset(47, 1).addBox(-2.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-
-		this.spike7 = new ModelRenderer(this, 0, 0);
-		this.spike7.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike7.setTextureOffset(47, 1).addBox(1.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-
-		this.spike8 = new ModelRenderer(this, 0, 0);
-		this.spike8.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.spike8.setTextureOffset(47, 1).addBox(-0.5F, 2.0F, -3.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
+		this.root = modelPart;
+		this.plate = this.root.getChild( "plate" );
+		this.handle = this.root.getChild( "handle" );
+		this.spike1 = this.root.getChild( "spike1" );
+		this.spike2 = this.root.getChild( "spike2" );
+		this.spike3 = this.root.getChild( "spike3" );
+		this.spike4 = this.root.getChild( "spike4" );
+		this.spike5 = this.root.getChild( "spike5" );
+		this.spike6 = this.root.getChild( "spike6" );
+		this.spike7 = this.root.getChild( "spike7" );
+		this.spike8 = this.root.getChild( "spike8" );
 	}
 
 	@Override
-	public void render( MatrixStack matrix, IVertexBuilder buffer, int packedLight, int overlay, float red, float green, float blue, float alpha ) {
-		ImmutableList.of( this.plate, this.handle, this.spike1, this.spike2, this.spike3, this.spike4, this.spike5 )
-			.forEach( ( modelRenderer )->modelRenderer.render( matrix, buffer, packedLight, overlay, red, green, blue, alpha ) );
+	public void renderToBuffer( PoseStack poseStack, VertexConsumer consumer, int packedLight, int overlay, float red, float green, float blue,
+		float alpha
+	) {
+		this.root.render( poseStack, consumer, packedLight, overlay, red, green, blue, alpha );
 	}
 
-	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+	public static LayerDefinition createBodyLayer( CubeDeformation cubeDeformation ) {
+		MeshDefinition meshDefinition = new MeshDefinition();
+		PartDefinition partDefinition = meshDefinition.getRoot();
+
+		partDefinition.addOrReplaceChild( "handle", CubeListBuilder.create()
+			.texOffs( 30, 0 )
+			.addBox( -1.0F, -3.0F, -1.0F, 2.0F, 6.0F, 6.0F, cubeDeformation ), PartPose.offset( 0.0f, 0.0f, 0.0f ) );
+
+		partDefinition.addOrReplaceChild( "plate", CubeListBuilder.create()
+			.texOffs( 0, 0 )
+			.addBox( -7.0F, -11.0F, -2.0F, 14.0F, 12.0F, 1.0F, cubeDeformation )
+			.texOffs( 0, 13 )
+			.addBox( -6.0F, 1.0F, -2.0F, 12.0F, 3.0F, 1.0F, cubeDeformation )
+			.texOffs( 0, 17 )
+			.addBox( -5.0F, 4.0F, -2.0F, 10.0F, 3.0F, 1.0F, cubeDeformation )
+			.texOffs( 0, 21 )
+			.addBox( -4.0F, 7.0F, -2.0F, 8.0F, 2.0F, 1.0F, cubeDeformation )
+			.texOffs( 0, 24 )
+			.addBox( -3.0F, 9.0F, -2.0F, 6.0F, 1.0F, 1.0F, cubeDeformation ), PartPose.offset( 0.0f, 0.0f, 0.0f ) );
+
+		partDefinition.addOrReplaceChild( "spike1", CubeListBuilder.create()
+				.texOffs( 46, 0 )
+				.addBox( 2.0F, -1.0F, -4.0F, 1.0F, 1.0F, 2.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0f, 0.0f, 0.0f, 0.0F, 0.17453292519943295F, 0.0F )
+		);
+
+		partDefinition.addOrReplaceChild( "spike2", CubeListBuilder.create()
+				.texOffs( 46, 0 )
+				.addBox( 3.0F, -8.0F, -4.0F, 1.0F, 1.0F, 2.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0f, 0.0f, 0.0f, 0.0F, -0.17453292519943295F, 0.0F )
+		);
+
+		partDefinition.addOrReplaceChild( "spike3", CubeListBuilder.create()
+				.texOffs( 46, 0 )
+				.addBox( 2.0F, -1.0F, -4.0F, 1.0F, 1.0F, 2.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0f, 0.0f, 0.0f, 0.0F, -0.17453292519943295F, 0.0F )
+		);
+
+		partDefinition.addOrReplaceChild( "spike4", CubeListBuilder.create()
+				.texOffs( 46, 0 )
+				.addBox( -3.0F, -1.0F, -4.0F, 1.0F, 1.0F, 2.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0f, 0.0f, 0.0f, 0.0F, 0.17453292519943295F, 0.0F )
+		);
+
+		partDefinition.addOrReplaceChild( "spike5", CubeListBuilder.create()
+				.texOffs( 46, 0 )
+				.addBox( -0.5F, 5.0F, -4.0F, 1.0F, 1.0F, 2.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0f, 0.0f, 0.0f, 0.12217304763960307F, 0.0F, 0.0F )
+		);
+
+		partDefinition.addOrReplaceChild( "spike6", CubeListBuilder.create()
+			.texOffs( 47, 1 )
+			.addBox( -2.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F, cubeDeformation ), PartPose.offset( 0.0f, 0.0f, 0.0f ) );
+
+		partDefinition.addOrReplaceChild( "spike7", CubeListBuilder.create()
+			.texOffs( 47, 1 )
+			.addBox( 1.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F, cubeDeformation ), PartPose.offset( 0.0f, 0.0f, 0.0f ) );
+
+		partDefinition.addOrReplaceChild( "spike8", CubeListBuilder.create()
+			.texOffs( 47, 1 )
+			.addBox( -0.5F, 2.0F, -3.0F, 1.0F, 1.0F, 1.0F, cubeDeformation ), PartPose.offset( 0.0f, 0.0f, 0.0f ) );
+
+		return LayerDefinition.create( meshDefinition, 64, 64 );
 	}
 }

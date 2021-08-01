@@ -4,10 +4,10 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.*;
 import com.mlib.config.AvailabilityConfig;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.IllusionerEntity;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Illusioner;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +26,7 @@ public class SpawnDisabler {
 	protected static boolean shouldEntitySpawnBeDisabled( Entity entity ) {
 		EntitiesConfig config = Instances.ENTITIES_CONFIG;
 		boolean isGiant = entity instanceof GiantEntity;
-		boolean isIllusioner = entity instanceof IllusionerEntity;
+		boolean isIllusioner = entity instanceof Illusioner;
 		boolean isPillagerWolf = entity instanceof PillagerWolfEntity;
 		boolean isEliteSkeleton = entity instanceof EliteSkeletonEntity;
 		boolean isSkyKeeper = entity instanceof SkyKeeperEntity;
@@ -63,10 +63,10 @@ public class SpawnDisabler {
 	 players will have a problem to finish it.
 	 */
 	private static boolean isVillageNearby( Entity entity ) {
-		if( !( entity.world instanceof ServerWorld ) )
+		if( !( entity.level instanceof ServerLevel ) )
 			return false;
 
-		ServerWorld world = ( ServerWorld )entity.world;
-		return world.func_241117_a_( Structure.VILLAGE, entity.getPosition(), 10000, false ) != null;
+		ServerLevel world = ( ServerLevel )entity.level;
+		return world.findNearestMapFeature( StructureFeature.VILLAGE, entity.blockPosition(), 10000, false ) != null;
 	}
 }

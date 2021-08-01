@@ -1,13 +1,13 @@
 modLoader="javafml"
-loaderVersion="[35,)"
+loaderVersion="[37,)"
 license="MIT License"
 issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
 [[mods]]
     modId="majruszs_difficulty"
-    version="1.1.0"
+    version="1.2.0"
     displayName="Majrusz's Progressive Difficulty"
-    updateJSONURL="https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.16.4/update.json"
+    updateJSONURL="https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.17.1/update.json"
     displayURL="https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
     logoFile="logo.png"
     credits="Thanks for all your support!"
@@ -17,20 +17,20 @@ issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/iss
 [[dependencies.majruszs_difficulty]]
     modId="forge"
     mandatory=true
-    versionRange="[35,)"
+    versionRange="[37,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.majruszs_difficulty]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4,1.17)"
+    versionRange="[1.17.1,1.18)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.majruszs_difficulty]]
     modId="majrusz_library"
     mandatory=true
-    versionRange="[2.0.0,3.0.0)"
+    versionRange="[2.1.0,3.0.0)"
     ordering="NONE"
     side="BOTH"

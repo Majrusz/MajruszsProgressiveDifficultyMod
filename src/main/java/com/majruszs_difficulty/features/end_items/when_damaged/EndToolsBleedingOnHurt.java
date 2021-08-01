@@ -2,8 +2,8 @@ package com.majruszs_difficulty.features.end_items.when_damaged;
 
 import com.majruszs_difficulty.features.end_items.EndItems;
 import com.majruszs_difficulty.features.when_damaged.WhenDamagedApplyBleedingBase;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
@@ -19,7 +19,7 @@ public class EndToolsBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return attacker != null && EndItems.haveExtraBleedingChance( attacker.getHeldItemMainhand()
+		return attacker != null && EndItems.haveExtraBleedingChance( attacker.getMainHandItem()
 			.getItem() ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

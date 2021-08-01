@@ -1,14 +1,14 @@
 package com.majruszs_difficulty.features.when_damaged;
 
 import com.majruszs_difficulty.GameState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.monster.DrownedEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.TridentItem;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Drowned;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TridentItem;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import javax.annotation.Nullable;
@@ -27,20 +27,20 @@ public class DrownedLightningOnAttack extends ChanceWhenDamagedBase {
 		if( !tryChance( target ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )target.getEntityWorld();
-		LightningBoltEntity lightningBolt = EntityType.LIGHTNING_BOLT.create( world );
+		ServerLevel world = ( ServerLevel )target.level;
+		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( world );
 		if( lightningBolt == null )
 			return;
 
-		lightningBolt.moveForced( target.getPosX(), target.getPosY(), target.getPosZ() );
-		world.addEntity( lightningBolt );
+		lightningBolt.absMoveTo( target.getX(), target.getY(), target.getZ() );
+		world.addFreshEntity( lightningBolt );
 	}
 
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean isDrowned = attacker instanceof DrownedEntity;
-		ItemStack heldItemStack = attacker != null ? attacker.getHeldItemMainhand() : null;
+		boolean isDrowned = attacker instanceof Drowned;
+		ItemStack heldItemStack = attacker != null ? attacker.getMainHandItem() : null;
 		boolean isDrownedHoldingTrident = isDrowned && heldItemStack.getItem() instanceof TridentItem;
 
 		return isDrownedHoldingTrident && super.shouldBeExecuted( attacker, target, damageSource );

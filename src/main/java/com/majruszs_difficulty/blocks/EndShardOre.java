@@ -6,26 +6,26 @@ import com.mlib.MajruszLibrary;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -47,10 +47,10 @@ public class EndShardOre extends Block {
 	protected final DoubleConfig triggerDistance;
 
 	public EndShardOre() {
-		super( AbstractBlock.Properties.create( Material.IRON, MaterialColor.YELLOW )
+		super( Properties.of( Material.METAL, MaterialColor.COLOR_YELLOW )
 			.harvestLevel( 4 )
-			.setRequiresTool()
-			.hardnessAndResistance( 30.0f, 1200.0f )
+			.requiresCorrectToolForDrops()
+			.strength( 30.0f, 1200.0f )
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 
 		String availabilityComment = "Should this ore be available in survival mode? (ore generation, loot tables etc.) (requires game restart!)";
@@ -63,8 +63,8 @@ public class EndShardOre extends Block {
 	}
 
 	@Override
-	public int getExpDrop( BlockState state, net.minecraft.world.IWorldReader world, BlockPos position, int fortuneLevel, int silkTouchLevel ) {
-		return silkTouchLevel == 0 ? MathHelper.nextInt( MajruszLibrary.RANDOM, 6, 11 ) : 0;
+	public int getExpDrop( BlockState state, LevelReader world, BlockPos position, int fortuneLevel, int silkTouchLevel ) {
+		return silkTouchLevel == 0 ? Mth.nextInt( MajruszLibrary.RANDOM, 6, 11 ) : 0;
 	}
 
 	@SubscribeEvent
@@ -73,8 +73,8 @@ public class EndShardOre extends Block {
 		if( !( blockState.getBlock() instanceof EndShardOre ) )
 			return;
 
-		PlayerEntity player = event.getPlayer();
-		player.sendStatusMessage( new TranslationTextComponent( WARNING_TRANSLATION_KEY ).mergeStyle( TextFormatting.BOLD ), true );
+		Player player = event.getPlayer();
+		player.displayClientMessage( new TranslatableComponent( WARNING_TRANSLATION_KEY ).withStyle( ChatFormatting.BOLD ), true );
 	}
 
 	@SubscribeEvent
@@ -92,16 +92,16 @@ public class EndShardOre extends Block {
 	 @param maximumDistance Maximum distance from enderman to entity.
 	 */
 	public static void targetEndermansOnEntity( LivingEntity target, double maximumDistance ) {
-		if( !( target.world instanceof ServerWorld ) )
+		if( !( target.level instanceof ServerLevel ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )target.world;
-		for( Entity entity : world.getEntities( null, enderman->enderman.getDistanceSq( target ) < maximumDistance ) )
-			if( entity instanceof EndermanEntity ) {
-				EndermanEntity enderman = ( EndermanEntity )entity;
-				LivingEntity currentEndermanTarget = enderman.getRevengeTarget();
+		ServerLevel world = ( ServerLevel )target.level;
+		for( Entity entity : world.getEntities( null, enderman->enderman.distanceToSqr( target ) < maximumDistance ) )
+			if( entity instanceof EnderMan ) {
+				EnderMan enderman = ( EnderMan )entity;
+				LivingEntity currentEndermanTarget = enderman.getLastHurtByMob();
 				if( currentEndermanTarget == null || !currentEndermanTarget.isAlive() )
-					enderman.setRevengeTarget( target );
+					enderman.setLastHurtByMob( target );
 			}
 	}
 
@@ -112,13 +112,13 @@ public class EndShardOre extends Block {
 
 	public static class EndShardOreItem extends BlockItem {
 		public EndShardOreItem() {
-			super( Instances.END_SHARD_ORE, ( new Properties() ).maxStackSize( 64 )
-				.group( Instances.ITEM_GROUP ) );
+			super( Instances.END_SHARD_ORE, ( new Properties() ).stacksTo( 64 )
+				.tab( Instances.ITEM_GROUP ) );
 		}
 
 		@Override
 		@OnlyIn( Dist.CLIENT )
-		public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+		public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 			MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
 		}
 	}

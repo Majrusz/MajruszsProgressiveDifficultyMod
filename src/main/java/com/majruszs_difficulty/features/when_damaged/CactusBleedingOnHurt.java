@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.features.when_damaged;
 
 import com.majruszs_difficulty.Instances;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.util.DamageSource;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
@@ -25,10 +25,10 @@ public class CactusBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 	}
 
 	@Override
-	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, Effect effect, Difficulty difficulty ) {
+	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, MobEffect effect, Difficulty difficulty ) {
 		super.applyEffect( attacker, target, effect, difficulty );
 
-		if( target instanceof ServerPlayerEntity )
-			Instances.SIMPLE_TRIGGER.trigger( ( ServerPlayerEntity )target, "cactus_bleeding" );
+		if( target instanceof ServerPlayer )
+			Instances.SIMPLE_TRIGGER.trigger( ( ServerPlayer )target, "cactus_bleeding" );
 	}
 }

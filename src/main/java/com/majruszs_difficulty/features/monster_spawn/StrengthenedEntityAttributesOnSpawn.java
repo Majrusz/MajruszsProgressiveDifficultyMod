@@ -4,10 +4,10 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.config.GameStateDoubleConfig;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 /** Increases damage and health of spawning hostile entities. */
 public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase {
@@ -36,7 +36,7 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 	}
 
 	@Override
-	public void onExecute( LivingEntity entity, ServerWorld world ) {
+	public void onExecute( LivingEntity entity, ServerLevel world ) {
 		double bonusMultiplier = getAttributeMultiplier( world );
 
 		MAX_HEALTH_ATTRIBUTE.setValue( this.healthBonuses.getCurrentGameStateValue() * bonusMultiplier )
@@ -55,12 +55,12 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 	/**
 	 Returns current attribute multiplier.
 
-	 @param world World the multiplier is depending on.
+	 @param world Level the multiplier is depending on.
 	 */
-	protected double getAttributeMultiplier( ServerWorld world ) {
+	protected double getAttributeMultiplier( ServerLevel world ) {
 		double multiplier = 1.0;
 
-		if( world.isNightTime() )
+		if( world.isNight() )
 			multiplier *= this.multiplierAtNight.get();
 
 		return multiplier;

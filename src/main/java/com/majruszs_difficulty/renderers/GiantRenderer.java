@@ -2,11 +2,11 @@ package com.majruszs_difficulty.renderers;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.entities.GiantEntity;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -15,18 +15,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GiantRenderer extends ZombieRenderer {
 	private static final ResourceLocation TEXTURE = MajruszsDifficulty.getLocation( "textures/entity/giant.png" );
 
-	public GiantRenderer( EntityRendererManager renderManagerIn ) {
-		super( renderManagerIn );
-		this.shadowSize = 0.375f * GiantEntity.scale;
+	public GiantRenderer( EntityRendererProvider.Context context ) {
+		super( context );
+		this.shadowRadius = 0.375f * GiantEntity.scale;
 	}
 
 	@Override
-	protected void preRenderCallback( ZombieEntity entity, MatrixStack matrixStackIn, float partialTickTime ) {
-		matrixStackIn.scale( GiantEntity.scale, GiantEntity.scale, GiantEntity.scale );
+	protected void scale( Zombie entity, PoseStack stack, float partialTickTime ) {
+		stack.scale( GiantEntity.scale, GiantEntity.scale, GiantEntity.scale );
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture( ZombieEntity entity ) {
+	public ResourceLocation getTextureLocation( Zombie entity ) {
 		return TEXTURE;
 	}
 }

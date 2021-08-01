@@ -4,11 +4,11 @@ import com.google.gson.JsonObject;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.items.EndShardItem;
 import com.majruszs_difficulty.items.EndShardLocatorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
@@ -18,7 +18,7 @@ import java.util.List;
 
 /** Removes certain items from loot if they are disabled. */
 public class DisableCertainLoot extends LootModifier {
-	public DisableCertainLoot( ILootCondition[] conditions ) {
+	public DisableCertainLoot( LootItemCondition[] conditions ) {
 		super( conditions );
 	}
 
@@ -45,7 +45,7 @@ public class DisableCertainLoot extends LootModifier {
 
 	public static class Serializer extends GlobalLootModifierSerializer< DisableCertainLoot > {
 		@Override
-		public DisableCertainLoot read( ResourceLocation name, JsonObject object, ILootCondition[] conditions ) {
+		public DisableCertainLoot read( ResourceLocation name, JsonObject object, LootItemCondition[] conditions ) {
 			return new DisableCertainLoot( conditions );
 		}
 

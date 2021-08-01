@@ -1,24 +1,24 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Supplier;
 
 /** Mod custom armor materials. */
-public enum CustomArmorMaterial implements IArmorMaterial {
-	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
-		return Ingredient.fromItems( Items.FEATHER );
-	} ), END( "end", 39, new int[]{ 4, 6, 8, 4 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->{
-		return Ingredient.fromItems( Instances.END_INGOT_ITEM );
+public enum CustomArmorMaterial implements ArmorMaterial {
+	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
+		return Ingredient.of( Items.FEATHER );
+	} ), END( "end", 39, new int[]{ 4, 6, 8, 4 }, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->{
+		return Ingredient.of( Instances.END_INGOT_ITEM );
 	} );
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };
@@ -29,7 +29,7 @@ public enum CustomArmorMaterial implements IArmorMaterial {
 	private final SoundEvent soundEvent;
 	private final float toughness;
 	private final float knockbackResistance;
-	private final LazyValue< Ingredient > repairMaterial;
+	private final LazyLoadedValue< Ingredient > repairMaterial;
 
 	CustomArmorMaterial( String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent,
 		float toughness, float knockbackResistance, Supplier< Ingredient > repairMaterial
@@ -41,32 +41,32 @@ public enum CustomArmorMaterial implements IArmorMaterial {
 		this.soundEvent = soundEvent;
 		this.toughness = toughness;
 		this.knockbackResistance = knockbackResistance;
-		this.repairMaterial = new LazyValue<>( repairMaterial );
+		this.repairMaterial = new LazyLoadedValue<>( repairMaterial );
 	}
 
 	@Override
-	public int getDurability( EquipmentSlotType equipmentSlotType ) {
+	public int getDurabilityForSlot( EquipmentSlot equipmentSlotType ) {
 		return this.maxDamageFactor * MAX_DAMAGE_ARRAY[ equipmentSlotType.getIndex() ];
 	}
 
 	@Override
-	public int getDamageReductionAmount( EquipmentSlotType equipmentSlotType ) {
+	public int getDefenseForSlot( EquipmentSlot equipmentSlotType ) {
 		return this.damageReductionAmountArray[ equipmentSlotType.getIndex() ];
 	}
 
 	@Override
-	public int getEnchantability() {
+	public int getEnchantmentValue() {
 		return this.enchantability;
 	}
 
 	@Override
-	public SoundEvent getSoundEvent() {
+	public SoundEvent getEquipSound() {
 		return this.soundEvent;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() {
-		return this.repairMaterial.getValue();
+	public Ingredient getRepairIngredient() {
+		return this.repairMaterial.get();
 	}
 
 	@Override

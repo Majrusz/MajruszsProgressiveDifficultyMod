@@ -1,10 +1,11 @@
 package com.majruszs_difficulty.features.monster_spawn;
 
 import com.mlib.TimeConverter;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,7 +13,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /** Handling all 'OnEnemySpawn' events. */
 @Mod.EventBusSubscriber
@@ -29,7 +29,7 @@ public class OnEnemyToBeSpawnedEvent {
 		markEntity( entity );
 		for( OnEnemyToBeSpawnedBase register : REGISTRY_LIST )
 			if( register.shouldBeExecuted( entity ) ) {
-				register.onExecute( entity, ( ServerWorld )entity.world );
+				register.onExecute( entity, ( ServerLevel )entity.level );
 
 				if( register.shouldSpawnBeCancelled() )
 					event.setCanceled( true );
@@ -38,16 +38,16 @@ public class OnEnemyToBeSpawnedEvent {
 
 	@SubscribeEvent
 	public static void onTick( TickEvent.WorldTickEvent event ) {
-		if( !( event.world instanceof ServerWorld ) || event.phase == TickEvent.Phase.START )
+		if( !( event.world instanceof ServerLevel ) || event.phase == TickEvent.Phase.START )
 			return;
 
-		ServerWorld world = ( ServerWorld )event.world;
+		ServerLevel world = ( ServerLevel )event.world;
 		counter++;
 		if( counter % cooldown != 0 )
 			return;
 
-		Stream< Entity > entities = world.getEntities();
-		entities.forEach( entity->{
+		LevelEntityGetter< Entity > entities = world.getEntities();
+		for( Entity entity : entities.getAll() )
 			if( entity instanceof LivingEntity && !isMarked( entity ) ) {
 				LivingEntity livingEntity = ( LivingEntity )entity;
 
@@ -56,18 +56,17 @@ public class OnEnemyToBeSpawnedEvent {
 					if( register.shouldBeExecuted( livingEntity ) )
 						register.onExecute( livingEntity, world );
 			}
-		} );
 	}
 
-	/** Makes entity marked. (adds tag to inform that given entity has all 'OnEnemySpawn' events handled)   */
+	/** Makes entity marked. (adds tag to inform that given entity has all 'OnEnemySpawn' events handled) */
 	private static void markEntity( Entity entity ) {
-		CompoundNBT data = entity.getPersistentData();
+		CompoundTag data = entity.getPersistentData();
 		data.putBoolean( MARK_TAG, true );
 	}
 
 	/** Returns whether entity is marked. */
 	private static boolean isMarked( Entity entity ) {
-		CompoundNBT data = entity.getPersistentData();
+		CompoundTag data = entity.getPersistentData();
 		return data.contains( MARK_TAG ) && data.getBoolean( MARK_TAG );
 	}
 }

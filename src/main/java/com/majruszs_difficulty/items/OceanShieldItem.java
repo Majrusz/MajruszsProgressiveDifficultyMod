@@ -1,14 +1,13 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
-import com.majruszs_difficulty.renderers.OceanShieldRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,14 +16,14 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class OceanShieldItem extends ShieldItem {
 	public OceanShieldItem() {
-		super( ( new Properties() ).maxDamage( 555 )
+		super( ( new Properties() ).durability( 555 )
 			.rarity( Rarity.UNCOMMON )
-			.group( Instances.ITEM_GROUP )
-			.setISTER( ()->OceanShieldRenderer::new ) );
+			.tab( Instances.ITEM_GROUP ) );
+		//.setISTER( ()->OceanShieldRenderer::new ) );
 	}
 
 	@Override
-	public boolean getIsRepairable( ItemStack toRepair, ItemStack repair ) {
+	public boolean isValidRepairItem( ItemStack toRepair, ItemStack repair ) {
 		return Items.PRISMARINE_SHARD.equals( repair.getItem() ) || Items.PRISMARINE_CRYSTALS.equals( repair.getItem() );
 	}
 
@@ -37,26 +36,27 @@ public class OceanShieldItem extends ShieldItem {
 	public static void onHurt( LivingHurtEvent event ) {
 		LivingEntity target = event.getEntityLiving();
 		OceanShieldItem oceanShieldItem = Instances.OCEAN_SHIELD_ITEM;
-		ItemStack mainHandItemStack = target.getHeldItem( Hand.MAIN_HAND ), offHandItemStack = target.getHeldItem( Hand.OFF_HAND );
-		boolean isBlockingWithShield = target.isHandActive();
+		ItemStack mainHandItemStack = target.getItemInHand( InteractionHand.MAIN_HAND ), offHandItemStack = target.getItemInHand(
+			InteractionHand.OFF_HAND );
+		boolean isBlockingWithShield = target.isBlocking();
 
 		if( oceanShieldItem.equals( mainHandItemStack.getItem() ) ) {
 			if( isBlockingWithShield )
-				reflectDamage( event.getSource(), target, mainHandItemStack, Hand.MAIN_HAND );
+				reflectDamage( event.getSource(), target, mainHandItemStack, InteractionHand.MAIN_HAND );
 		} else if( oceanShieldItem.equals( offHandItemStack.getItem() ) ) {
 			if( isBlockingWithShield )
-				reflectDamage( event.getSource(), target, offHandItemStack, Hand.OFF_HAND );
+				reflectDamage( event.getSource(), target, offHandItemStack, InteractionHand.OFF_HAND );
 		}
 	}
 
 	/** Damages target that attack the player. */
-	private static void reflectDamage( DamageSource damageSource, LivingEntity target, ItemStack shieldItem, Hand hand ) {
-		if( !( damageSource.getImmediateSource() instanceof LivingEntity ) )
+	private static void reflectDamage( DamageSource damageSource, LivingEntity target, ItemStack shieldItem, InteractionHand hand ) {
+		if( !( damageSource.getDirectEntity() instanceof LivingEntity ) )
 			return;
 
-		LivingEntity attacker = ( LivingEntity )damageSource.getImmediateSource();
-		attacker.attackEntityFrom( DamageSource.causeThornsDamage( target ), 3.0f );
-		shieldItem.damageItem( 1, target, livingEntity->livingEntity.sendBreakAnimation( hand ) );
+		LivingEntity attacker = ( LivingEntity )damageSource.getDirectEntity();
+		attacker.hurt( DamageSource.thorns( target ), 3.0f );
+		shieldItem.hurtAndBreak( 1, target, livingEntity->livingEntity.broadcastBreakEvent( hand ) );
 	}
 
 	public int getItemEnchantability() {

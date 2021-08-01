@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,7 +20,7 @@ public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	private static final List< Data > dataList = new ArrayList<>();
 
 	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
-		boolean shouldChanceBeMultipliedByCRD, EquipmentSlotType equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
+		boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
 		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted,
 			shouldBeDamaged
@@ -29,11 +29,11 @@ public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 
 	/** Called when all requirements were met. */
 	@Override
-	public void onExecute( LivingEntity entity, ServerWorld world ) {
+	public void onExecute( LivingEntity entity, ServerLevel world ) {
 		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( entity );
 
 		Data data = new Data();
-		data.uuid = entity.getUniqueID();
+		data.uuid = entity.getUUID();
 		data.itemStack = getFinalItemStack( clampedRegionalDifficulty );
 		data.equipmentSlotType = this.equipmentSlotType;
 
@@ -42,16 +42,16 @@ public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 
 	@SubscribeEvent
 	public static void onUpdate( TickEvent.WorldTickEvent event ) {
-		if( dataList.size() <= 0 || !( event.world instanceof ServerWorld ) )
+		if( dataList.size() <= 0 || !( event.world instanceof ServerLevel ) )
 			return;
 
-		ServerWorld world = ( ServerWorld )event.world;
+		ServerLevel world = ( ServerLevel )event.world;
 		for( Data data : dataList ) {
-			Entity entity = world.getEntityByUuid( data.uuid );
+			Entity entity = world.getEntity( data.uuid );
 			if( entity == null )
 				continue;
 
-			entity.setItemStackToSlot( data.equipmentSlotType, data.itemStack );
+			entity.setItemSlot( data.equipmentSlotType, data.itemStack );
 		}
 
 		dataList.clear();
@@ -60,6 +60,6 @@ public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	private static class Data {
 		public UUID uuid;
 		public ItemStack itemStack;
-		public EquipmentSlotType equipmentSlotType;
+		public EquipmentSlot equipmentSlotType;
 	}
 }

@@ -1,24 +1,25 @@
 package com.majruszs_difficulty.renderers;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
+import net.minecraft.client.model.PhantomModel;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.AbstractEyesLayer;
-import net.minecraft.client.renderer.entity.model.PhantomModel;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.EyesLayer;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /** Layer responsible for drawing Sky Keeper's eyes separately. */
 @OnlyIn( Dist.CLIENT )
-public class SkyKeeperEyesLayer< T extends Entity > extends AbstractEyesLayer< T, PhantomModel< T > > {
-	private static final RenderType RENDER_TYPE = RenderType.getEyes( MajruszsDifficulty.getLocation( "textures/entity/sky_keeper_eyes.png" ) );
+public class SkyKeeperEyesLayer< T extends Phantom > extends EyesLayer< T, PhantomModel< T > > {
+	private static final RenderType RENDER_TYPE = RenderType.eyes( MajruszsDifficulty.getLocation( "textures/entity/sky_keeper_eyes.png" ) );
 
-	public SkyKeeperEyesLayer( IEntityRenderer< T, PhantomModel< T > > renderer ) {
+	public SkyKeeperEyesLayer( RenderLayerParent< T, PhantomModel< T > > renderer ) {
 		super( renderer );
 	}
 
-	public RenderType getRenderType() {
+	@Override
+	public RenderType renderType() {
 		return RENDER_TYPE;
 	}
 }

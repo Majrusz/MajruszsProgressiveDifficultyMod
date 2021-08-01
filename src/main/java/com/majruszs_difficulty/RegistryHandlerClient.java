@@ -2,33 +2,43 @@ package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.entities.*;
 import com.majruszs_difficulty.items.EndShardLocatorItem;
+import com.majruszs_difficulty.models.CreeperlingModel;
+import com.majruszs_difficulty.models.OceanShieldModel;
 import com.majruszs_difficulty.renderers.*;
-import net.minecraft.client.renderer.model.RenderMaterial;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.CreeperModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.client.ForgeHooksClient;
 
 /** Class registering things only on the client side. */
 @OnlyIn( Dist.CLIENT )
 public class RegistryHandlerClient {
-	public static final RenderMaterial OCEAN_SHIELD_MATERIAL = new RenderMaterial( AtlasTexture.LOCATION_BLOCKS_TEXTURE, MajruszsDifficulty.getLocation( "entity/ocean_shield" ) );
+	public static final Material OCEAN_SHIELD_MATERIAL = new Material( InventoryMenu.BLOCK_ATLAS,
+		MajruszsDifficulty.getLocation( "entity/ocean_shield" )
+	);
 
 	public static void setup() {
-		RenderingRegistry.registerEntityRenderingHandler( GiantEntity.type, GiantRenderer::new );
-		RenderingRegistry.registerEntityRenderingHandler( PillagerWolfEntity.type, PillagerWolfRenderer::new );
-		RenderingRegistry.registerEntityRenderingHandler( EliteSkeletonEntity.type, EliteSkeletonRenderer::new );
-		RenderingRegistry.registerEntityRenderingHandler( SkyKeeperEntity.type, SkyKeeperRenderer::new );
-		RenderingRegistry.registerEntityRenderingHandler( CreeperlingEntity.type, CreeperlingRenderer::new );
-		RenderingRegistry.registerEntityRenderingHandler( ParasiteEntity.type, ParasiteRenderer::new );
+		ForgeHooksClient.registerLayerDefinition( OceanShieldRenderer.LAYER_LOCATION, ()->OceanShieldModel.createBodyLayer( CubeDeformation.NONE ) );
+		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER_LOCATION, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
 
-		ItemModelsProperties.registerProperty( Instances.END_SHARD_LOCATOR_ITEM, new ResourceLocation( "shard_distance" ),
+		EntityRenderers.register( GiantEntity.type, GiantRenderer::new );
+		EntityRenderers.register( PillagerWolfEntity.type, PillagerWolfRenderer::new );
+		EntityRenderers.register( EliteSkeletonEntity.type, EliteSkeletonRenderer::new );
+		EntityRenderers.register( SkyKeeperEntity.type, SkyKeeperRenderer::new );
+		EntityRenderers.register( CreeperlingEntity.type, CreeperlingRenderer::new );
+		EntityRenderers.register( ParasiteEntity.type, ParasiteRenderer::new );
+
+		ItemProperties.register( Instances.END_SHARD_LOCATOR_ITEM, new ResourceLocation( "shard_distance" ),
 			EndShardLocatorItem::calculateDistanceToEndShard
 		);
-		ItemModelsProperties.registerProperty( Instances.OCEAN_SHIELD_ITEM, new ResourceLocation( "blocking" ),
-			( itemStack, world, entity )->entity != null && entity.isHandActive() && entity.getActiveItemStack() == itemStack ? 1.0f : 0.0f
+		ItemProperties.register( Instances.OCEAN_SHIELD_ITEM, new ResourceLocation( "blocking" ),
+			( itemStack, world, entity, p_174668_ )->entity != null && entity.isBlocking() && entity.getUseItem() == itemStack ? 1.0f : 0.0f
 		);
 	}
 }

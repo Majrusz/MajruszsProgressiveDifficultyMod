@@ -11,35 +11,35 @@ import com.mlib.TimeConverter;
 import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
 import com.mlib.nbt.NBTHelper;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.SPlaySoundEffectPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
@@ -51,15 +51,17 @@ import java.util.function.Predicate;
 public class UndeadArmy {
 	public final static int ARMOR_COLOR = 0x92687b;
 	private final static int SPAWN_RADIUS = 70;
-	private final ServerBossInfo bossInfo = new ServerBossInfo( UndeadArmyText.TITLE, BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_10 );
+	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE,
+		BossEvent.BossBarOverlay.NOTCHED_10
+	);
 	private final BlockPos positionToAttack;
 	private final Direction direction;
 	private Status status;
 	private boolean isActive, spawnerWasCreated;
 	private int ticksActive, ticksInactive, ticksInactiveMaximum, ticksWaveActive, ticksBetweenWaves, ticksBetweenWavesMaximum, currentWave, undeadToKill, undeadKilled;
-	private ServerWorld world;
+	private ServerLevel level;
 
-	public UndeadArmy( ServerWorld world, BlockPos positionToAttack, Direction direction ) {
+	public UndeadArmy( ServerLevel level, BlockPos positionToAttack, Direction direction ) {
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
 		this.status = Status.BETWEEN_WAVES;
@@ -72,13 +74,13 @@ public class UndeadArmy {
 		this.currentWave = 0;
 		this.undeadToKill = 1;
 		this.undeadKilled = 0;
-		this.world = world;
+		this.level = level;
 
 		setConfigurationValues();
-		this.bossInfo.setPercent( 0.0f );
+		this.bossInfo.setProgress( 0.0f );
 	}
 
-	public UndeadArmy( ServerWorld world, CompoundNBT nbt ) {
+	public UndeadArmy( ServerLevel level, CompoundTag nbt ) {
 		this.positionToAttack = NBTHelper.loadBlockPos( nbt, UndeadArmyKeys.POSITION );
 		this.direction = Direction.getByName( nbt.getString( UndeadArmyKeys.DIRECTION ) );
 		this.status = Status.getByName( nbt.getString( UndeadArmyKeys.STATUS ) );
@@ -91,7 +93,7 @@ public class UndeadArmy {
 		this.currentWave = nbt.getInt( UndeadArmyKeys.WAVE );
 		this.undeadToKill = nbt.getInt( UndeadArmyKeys.TO_KILL );
 		this.undeadKilled = nbt.getInt( UndeadArmyKeys.KILLED );
-		this.world = world;
+		this.level = level;
 
 		setConfigurationValues();
 		updateBarText();
@@ -112,7 +114,7 @@ public class UndeadArmy {
 	}
 
 	/** Saves information about the raid when saving world. */
-	public CompoundNBT write( CompoundNBT nbt ) {
+	public CompoundTag write( CompoundTag nbt ) {
 		NBTHelper.saveBlockPos( nbt, UndeadArmyKeys.POSITION, this.positionToAttack );
 		nbt.putString( UndeadArmyKeys.DIRECTION, String.valueOf( this.direction ) );
 		nbt.putString( UndeadArmyKeys.STATUS, String.valueOf( this.status ) );
@@ -140,8 +142,8 @@ public class UndeadArmy {
 	}
 
 	/** Updates the Undead Army world. */
-	public void updateWorld( ServerWorld world ) {
-		this.world = world;
+	public void updateWorld( ServerLevel world ) {
+		this.level = world;
 	}
 
 	/** Updates progression bar text depending on current status. */
@@ -201,7 +203,7 @@ public class UndeadArmy {
 	/** Calculates single frame when waiting on next wave. */
 	private void tickBetweenWaves() {
 		--this.ticksBetweenWaves;
-		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.ticksBetweenWaves ) / this.ticksBetweenWavesMaximum, 0.0f, 1.0f ) );
+		this.bossInfo.setProgress( Mth.clamp( 1.0f - ( ( float )this.ticksBetweenWaves ) / this.ticksBetweenWavesMaximum, 0.0f, 1.0f ) );
 
 		if( this.ticksBetweenWaves == 0 )
 			nextWave();
@@ -209,7 +211,7 @@ public class UndeadArmy {
 
 	/** Calculates single frame when wave is active. */
 	private void tickOngoing() {
-		this.bossInfo.setPercent( MathHelper.clamp( 1.0f - ( ( float )this.undeadKilled ) / this.undeadToKill, 0.0f, 1.0f ) );
+		this.bossInfo.setProgress( Mth.clamp( 1.0f - ( ( float )this.undeadKilled ) / this.undeadToKill, 0.0f, 1.0f ) );
 
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
@@ -247,7 +249,7 @@ public class UndeadArmy {
 		if( this.ticksInactive >= this.ticksInactiveMaximum ) {
 			this.status = Status.FAILED;
 			this.ticksBetweenWaves = this.ticksBetweenWavesMaximum * 2;
-			this.bossInfo.setPercent( 1.0f );
+			this.bossInfo.setProgress( 1.0f );
 			this.spawnerWasCreated = false;
 			createSpawner();
 		}
@@ -260,8 +262,8 @@ public class UndeadArmy {
 
 	/** Makes all the units from the Undead Army highlighted. */
 	public void highlightUndeadArmy() {
-		for( MonsterEntity monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
-			EffectHelper.applyEffectIfPossible( monster, Effects.GLOWING, TimeConverter.secondsToTicks( 15.0 ), 5 );
+		for( Monster monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+			EffectHelper.applyEffectIfPossible( monster, MobEffects.GLOWING, TimeConverter.secondsToTicks( 15.0 ), 5 );
 	}
 
 	/** Counts how many entities are left. */
@@ -271,9 +273,9 @@ public class UndeadArmy {
 
 	/** Updates all nearby undead entities AI goals. Required after world restart. */
 	public void updateNearbyUndeadAIGoals() {
-		List< MonsterEntity > monsters = getNearbyUndeadArmy( SPAWN_RADIUS );
+		List< Monster > monsters = getNearbyUndeadArmy( SPAWN_RADIUS );
 
-		for( MonsterEntity monster : monsters )
+		for( Monster monster : monsters )
 			updateUndeadAIGoal( monster );
 	}
 
@@ -285,8 +287,8 @@ public class UndeadArmy {
 
 	/** Kills all nearby entities from Undead Army. */
 	public void killAllUndeadArmyEntities() {
-		for( MonsterEntity monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
-			monster.attackEntityFrom( DamageSource.MAGIC, 9001 );
+		for( Monster monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+			monster.hurt( DamageSource.MAGIC, 9001 );
 
 		this.undeadKilled = this.undeadToKill;
 	}
@@ -308,7 +310,7 @@ public class UndeadArmy {
 			this.status = Status.VICTORY;
 			this.ticksBetweenWaves = this.ticksBetweenWavesMaximum * 2;
 			rewardPlayers();
-			this.bossInfo.setPercent( 1.0f );
+			this.bossInfo.setProgress( 1.0f );
 		} else {
 			this.status = Status.BETWEEN_WAVES;
 			this.ticksBetweenWaves = this.ticksBetweenWavesMaximum;
@@ -325,21 +327,21 @@ public class UndeadArmy {
 		for( int i = 0; i < 50 && !this.spawnerWasCreated; i++ ) {
 			int x = this.positionToAttack.getX() + MajruszLibrary.RANDOM.nextInt( spawnerRange * 2 + 1 ) - spawnerRange;
 			int z = this.positionToAttack.getZ() + MajruszLibrary.RANDOM.nextInt( spawnerRange * 2 + 1 ) - spawnerRange;
-			int y = world.getHeight( Heightmap.Type.WORLD_SURFACE, x, z );
+			int y = level.getHeight( Heightmap.Types.WORLD_SURFACE, x, z );
 			BlockPos position = new BlockPos( x, y, z );
 
-			if( this.world.isAirBlock( position ) ) {
-				this.world.setBlockState( position, Blocks.SPAWNER.getDefaultState() );
+			if( this.level.isEmptyBlock( position ) ) {
+				this.level.setBlockAndUpdate( position, Blocks.SPAWNER.defaultBlockState() );
 				this.spawnerWasCreated = true;
 
-				TileEntity tileEntity = this.world.getTileEntity( position );
-				if( !( tileEntity instanceof MobSpawnerTileEntity ) )
+				BlockEntity tileEntity = this.level.getBlockEntity( position );
+				if( !( tileEntity instanceof SpawnerBlockEntity ) )
 					continue;
 
-				( ( MobSpawnerTileEntity )tileEntity ).getSpawnerBaseLogic()
-					.setEntityType( config.getEntityTypeForMonsterSpawner() );
+				( ( SpawnerBlockEntity )tileEntity ).getSpawner()
+					.setEntityId( config.getEntityTypeForMonsterSpawner() );
 
-				this.world.spawnParticle( ParticleTypes.SMOKE, x, y, z, 40, 0.5, 0.5, 0.5, 0.01 );
+				this.level.sendParticles( ParticleTypes.SMOKE, x, y, z, 40, 0.5, 0.5, 0.5, 0.01 );
 			}
 		}
 
@@ -355,22 +357,22 @@ public class UndeadArmy {
 
 		for( WaveMember waveMember : WaveMember.values() ) {
 			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
-				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.world, this.positionToAttack, SPAWN_RADIUS );
-				MonsterEntity monster = waveMember.type.create( this.world, null, null, null, randomPosition, SpawnReason.EVENT, true, true );
+				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.level, this.positionToAttack, SPAWN_RADIUS );
+				Monster monster = waveMember.type.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
 				if( monster == null )
 					continue;
 
-				monster.enablePersistence();
+				monster.setPersistenceRequired();
 				updateUndeadAIGoal( monster );
 				equipWithDyedLeatherArmor( monster );
 				tryToEnchantEquipment( monster );
 				markAsUndeadArmyUnit( monster );
 
-				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.world, randomPosition.getX(), randomPosition.getY(),
-					randomPosition.getZ(), null, SpawnReason.EVENT
+				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(),
+					randomPosition.getZ(), null, MobSpawnType.EVENT
 				) )
 					continue;
-				this.world.func_242417_l( monster ); // adds monster to the world
+				this.level.addFreshEntity( monster ); // adds monster to the world
 
 				++this.undeadToKill;
 			}
@@ -379,9 +381,9 @@ public class UndeadArmy {
 		int x = this.positionToAttack.getX() + this.direction.x * SPAWN_RADIUS;
 		int z = this.positionToAttack.getZ() + this.direction.z * SPAWN_RADIUS;
 
-		for( ServerPlayerEntity player : getNearbyPlayers() )
-			player.connection.sendPacket(
-				new SPlaySoundEffectPacket( Instances.Sounds.UNDEAD_ARMY_WAVE_STARTED, SoundCategory.NEUTRAL, x, player.getPosY(), z, 64.0f, 1.0f ) );
+		for( ServerPlayer player : getNearbyPlayers() )
+			player.connection.send(
+				new ClientboundSoundPacket( Instances.Sounds.UNDEAD_ARMY_WAVE_STARTED, SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f ) );
 
 		this.undeadToKill = Math.max( this.undeadToKill, 1 );
 	}
@@ -399,107 +401,107 @@ public class UndeadArmy {
 	}
 
 	/** Tries to enchant weapons and armor for given monster. */
-	private void tryToEnchantEquipment( MonsterEntity monster ) {
+	private void tryToEnchantEquipment( Monster monster ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( monster );
 
-		if( monster.hasItemInSlot( EquipmentSlotType.MAINHAND ) && Random.tryChance( config.getEnchantedItemChance() ) )
-			monster.setHeldItem( Hand.MAIN_HAND, ItemHelper.enchantItem( monster.getHeldItemMainhand(), clampedRegionalDifficulty, false ) );
+		if( monster.hasItemInSlot( EquipmentSlot.MAINHAND ) && Random.tryChance( config.getEnchantedItemChance() ) )
+			monster.setItemInHand( InteractionHand.MAIN_HAND, ItemHelper.enchantItem( monster.getMainHandItem(), clampedRegionalDifficulty, false ) );
 
-		for( ItemStack armor : monster.getArmorInventoryList() )
+		for( ItemStack armor : monster.getArmorSlots() )
 			if( Random.tryChance( config.getEnchantedItemChance() / 2.0 ) ) {
 				armor = ItemHelper.enchantItem( armor, clampedRegionalDifficulty, false );
 				if( armor.getEquipmentSlot() != null )
-					monster.setItemStackToSlot( armor.getEquipmentSlot(), armor );
+					monster.setItemSlot( armor.getEquipmentSlot(), armor );
 			}
 	}
 
 	/** Gives a random amount of leather armor to monster. */
-	private void equipWithDyedLeatherArmor( MonsterEntity monster ) {
+	private void equipWithDyedLeatherArmor( Monster monster ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		double armorPieceChance = config.getArmorPieceChance();
 
-		equipWithArmorPiece( monster, Items.LEATHER_HELMET, EquipmentSlotType.HEAD, "helmet", 1.0 );
-		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, EquipmentSlotType.CHEST, "chestplate", armorPieceChance );
-		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, EquipmentSlotType.LEGS, "leggings", armorPieceChance );
-		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, EquipmentSlotType.FEET, "boots", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_HELMET, EquipmentSlot.HEAD, "helmet", 1.0 );
+		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, EquipmentSlot.CHEST, "chestplate", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, EquipmentSlot.LEGS, "leggings", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, EquipmentSlot.FEET, "boots", armorPieceChance );
 	}
 
 	/** Creates new armor piece for undead entity. */
-	private void equipWithArmorPiece( MonsterEntity monster, Item item, EquipmentSlotType equipmentSlotType, String registerName, double chance ) {
+	private void equipWithArmorPiece( Monster monster, Item item, EquipmentSlot equipmentSlotType, String registerName, double chance ) {
 		if( Random.tryChance( 1.0 - chance ) )
 			return;
 
 		ItemStack armorPiece = new ItemStack( item );
 		setUndeadArmyColorAndName( armorPiece, registerName );
 		ItemHelper.damageItem( armorPiece, 0.75 );
-		monster.setItemStackToSlot( equipmentSlotType, armorPiece );
+		monster.setItemSlot( equipmentSlotType, armorPiece );
 	}
 
 	/** Changes color of leather armor. */
 	private void setUndeadArmyColorAndName( ItemStack armor, String registerName ) {
-		CompoundNBT nbt = armor.getOrCreateChildTag( "display" );
+		CompoundTag nbt = armor.getOrCreateTagElement( "display" );
 		nbt.putInt( "color", ARMOR_COLOR );
 		nbt.putString( "Name", "{\"translate\":\"majruszs_difficulty.items.undead_" + registerName + "\",\"italic\":false}" );
-		armor.setTagInfo( "display", nbt );
+		armor.addTagElement( "display", nbt );
 	}
 
 	/** Rewards all player participating in the raid. */
 	private void rewardPlayers() {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 
-		for( PlayerEntity player : this.world.getPlayers( getParticipantsPredicate() ) ) {
-			Vector3d position = player.getPositionVec();
+		for( Player player : this.level.getPlayers( getParticipantsPredicate() ) ) {
+			Vec3 position = player.position();
 			for( int i = 0; i < config.getAmountOfVictoryExperience() / 4; i++ )
-				this.world.addEntity( new ExperienceOrbEntity( this.world, position.getX(), position.getY() + 1, position.getZ(), 4 ) );
+				this.level.addFreshEntity( new ExperienceOrb( this.level, position.x, position.y + 1, position.z, 4 ) );
 
-			if( player instanceof ServerPlayerEntity )
-				Instances.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( ( ServerPlayerEntity )player, this.currentWave );
+			if( player instanceof ServerPlayer )
+				Instances.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( ( ServerPlayer )player, this.currentWave );
 
 			if( Instances.UNDEAD_ARMY_TREASURE_BAG.isAvailable() )
 				for( int i = 0; i < config.getAmountOfVictoryTreasureBags(); i++ )
-					ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.UNDEAD_ARMY_TREASURE_BAG ), player, this.world );
+					ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.UNDEAD_ARMY_TREASURE_BAG ), player, this.level );
 		}
 	}
 
 	/** Saves information about undead army in monster data. */
-	private void markAsUndeadArmyUnit( MonsterEntity monster ) {
+	private void markAsUndeadArmyUnit( Monster monster ) {
 		NBTHelper.saveBlockPos( monster.getPersistentData(), UndeadArmyKeys.POSITION, this.positionToAttack );
 	}
 
 	/** Adds Undead Army AI goal for given monster. */
-	private void updateUndeadAIGoal( MonsterEntity monster ) {
+	private void updateUndeadAIGoal( Monster monster ) {
 		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackPosition(), 1.25f, 20.0f, 3.0f ) );
 	}
 
 	/** Updates visibility of Undead Army progress bar for nearby players. */
 	private void updateUndeadArmyBarVisibility() {
-		Set< ServerPlayerEntity > currentPlayers = Sets.newHashSet( this.bossInfo.getPlayers() );
-		List< ServerPlayerEntity > validPlayers = getNearbyPlayers();
+		Set< ServerPlayer > currentPlayers = Sets.newHashSet( this.bossInfo.getPlayers() );
+		List< ServerPlayer > validPlayers = getNearbyPlayers();
 
-		for( ServerPlayerEntity player : validPlayers )
+		for( ServerPlayer player : validPlayers )
 			if( !currentPlayers.contains( player ) )
 				this.bossInfo.addPlayer( player );
 
-		for( ServerPlayerEntity player : currentPlayers )
+		for( ServerPlayer player : currentPlayers )
 			if( !validPlayers.contains( player ) )
 				this.bossInfo.removePlayer( player );
 	}
 
-	private AxisAlignedBB getAxisAligned( double range ) {
-		Vector3i vector = new Vector3i( range, range, range );
+	private AABB getAxisAligned( double range ) {
+		Vec3i vector = new Vec3i( range, range, range );
 
-		return new AxisAlignedBB( getAttackPosition().subtract( vector ), getAttackPosition().add( vector ) );
+		return new AABB( getAttackPosition().subtract( vector ), getAttackPosition().offset( vector ) );
 	}
 
 	/** Predicate for checking whether given monster entity is alive and belongs to the Undead Army. */
-	private Predicate< MonsterEntity > getUndeadParticipantsPredicate() {
+	private Predicate< Monster > getUndeadParticipantsPredicate() {
 		return monster->( monster.isAlive() && doesEntityBelongToUndeadArmy( monster ) );
 	}
 
 	/** Returns list of nearby Undead Army units. */
-	private List< MonsterEntity > getNearbyUndeadArmy( double range ) {
-		return this.world.getEntitiesWithinAABB( MonsterEntity.class, getAxisAligned( range ), getUndeadParticipantsPredicate() );
+	private List< Monster > getNearbyUndeadArmy( double range ) {
+		return this.level.getEntitiesOfClass( Monster.class, getAxisAligned( range ), getUndeadParticipantsPredicate() );
 	}
 
 	/** Returns amount of nearby Undead Army units. */
@@ -508,15 +510,14 @@ public class UndeadArmy {
 	}
 
 	/** Predicate for checking whether given player is alive and is participating in the raid. */
-	private Predicate< ServerPlayerEntity > getParticipantsPredicate() {
-		return player->player.isAlive() && ( RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy(
-			new BlockPos( player.getPositionVec() ) ) == this
+	private Predicate< ServerPlayer > getParticipantsPredicate() {
+		return player->player.isAlive() && RegistryHandler.UNDEAD_ARMY_MANAGER != null && ( RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( player.position() ) ) == this
 		);
 	}
 
 	/** Returns list of nearby players participating in the raid. */
-	private List< ServerPlayerEntity > getNearbyPlayers() {
-		return this.world.getPlayers( getParticipantsPredicate() );
+	private List< ServerPlayer > getNearbyPlayers() {
+		return this.level.getPlayers( getParticipantsPredicate() );
 	}
 
 	/** Returns amount of nearby players participating in the raid. */

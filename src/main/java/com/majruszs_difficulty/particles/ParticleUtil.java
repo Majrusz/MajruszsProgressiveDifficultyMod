@@ -11,6 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 public class ParticleUtil {
 	@SubscribeEvent
 	public static void registerParticles( ParticleFactoryRegisterEvent event ) {
-		Minecraft.getInstance().particles.registerFactory( Instances.BLOOD_PARTICLE, BloodParticle.Factory::new );
+		Minecraft.getInstance().particleEngine.register( Instances.BLOOD_PARTICLE, BloodParticle.Factory::new );
 	}
 }

@@ -4,10 +4,10 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.items.ItemHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,12 +32,12 @@ public class FishingRewarder {
 
 	@SubscribeEvent
 	public static void onFishing( ItemFishedEvent event ) {
-		PlayerEntity player = event.getPlayer();
+		Player player = event.getPlayer();
 
-		if( !( player.world instanceof ServerWorld ) )
+		if( !( player.level instanceof ServerLevel ) )
 			return;
 
-		CompoundNBT data = player.getPersistentData();
+		CompoundTag data = player.getPersistentData();
 		int fishedItemsCounter = data.getInt( FISHING_TAG ) + 1;
 		data.putInt( FISHING_TAG, fishedItemsCounter );
 
@@ -49,8 +49,8 @@ public class FishingRewarder {
 	}
 
 	/** Gives a treasure bag to specified player. */
-	protected static void giveTreasureBagTo( PlayerEntity player ) {
-		ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.FISHING_TREASURE_BAG ), player, ( ServerWorld )player.world );
+	protected static void giveTreasureBagTo( Player player ) {
+		ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.FISHING_TREASURE_BAG ), player, ( ServerLevel )player.level );
 	}
 
 	/** Returns how many fish player must fished to get treasure bag. */

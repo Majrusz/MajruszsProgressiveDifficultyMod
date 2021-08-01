@@ -2,10 +2,10 @@ package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.entities.PillagerWolfEntity;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.PillagerEntity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.monster.Pillager;
 
 /** Spawns Pillager in group with Pillager Wolves. */
 public class SpawnPillagerGroup extends SpawnEnemyGroupBase {
@@ -18,11 +18,11 @@ public class SpawnPillagerGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof PillagerEntity && super.shouldBeExecuted( entity );
+		return entity instanceof Pillager && super.shouldBeExecuted( entity );
 	}
 
 	@Override
-	protected CreatureEntity spawnChild( ServerWorld world ) {
+	protected PathfinderMob spawnChild( ServerLevel world ) {
 		return PillagerWolfEntity.type.create( world );
 	}
 }

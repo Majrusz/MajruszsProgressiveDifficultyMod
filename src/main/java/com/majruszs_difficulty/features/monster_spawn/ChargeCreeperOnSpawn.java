@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Creeper;
 
 /** Charges creeper on spawn. (emulates attacking creeper with lightning bolt) */
 public class ChargeCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
@@ -17,18 +17,18 @@ public class ChargeCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
 	}
 
 	@Override
-	public void onExecute( LivingEntity entity, ServerWorld world ) {
-		CreeperEntity creeper = ( CreeperEntity )entity;
+	public void onExecute( LivingEntity entity, ServerLevel world ) {
+		Creeper creeper = ( Creeper )entity;
 
-		LightningBoltEntity lightningBolt = EntityType.LIGHTNING_BOLT.create( world );
+		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( world );
 		if( lightningBolt != null )
-			creeper.func_241841_a( world, lightningBolt );
+			creeper.thunderHit( world, lightningBolt );
 
-		creeper.extinguish();
+		creeper.clearFire();
 	}
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof CreeperEntity && super.shouldBeExecuted( entity );
+		return entity instanceof Creeper && super.shouldBeExecuted( entity );
 	}
 }

@@ -1,27 +1,10 @@
 package com.majruszs_difficulty.generation.structures;
 
-import com.google.common.collect.ImmutableMap;
-import com.mlib.config.AvailabilityConfig;
-import com.mlib.config.ConfigGroup;
-import com.mlib.config.IntegerConfig;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.FlatGenerationSettings;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.StructureFeature;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.StructureSeparationSettings;
-
-import static com.majruszs_difficulty.MajruszsDifficulty.STRUCTURES_GROUP;
-
 /** Base class for simple structures with basic configuration. */
-public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig > {
+public abstract class NoFeatureBaseStructure {
+
+}
+/* extends Structure< NoFeatureConfig > {
 	protected final ConfigGroup group;
 	protected final AvailabilityConfig availability;
 	protected final IntegerConfig minimumDistance;
@@ -48,7 +31,7 @@ public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig 
 		this.structureFeature = structureFeature;
 	}
 
-	/** Checking whether structure can spawn at given position. */
+	// /** Checking whether structure can spawn at given position. * /
 	protected boolean func_230363_a_( ChunkGenerator chunkGenerator, BiomeProvider biomeProvider, long p_230363_3_, SharedSeedRandom sharedSeedRandom,
 		int chunkX, int chunkZ, Biome biome, ChunkPos chunkPosition, NoFeatureConfig noFeatureConfig
 	) {
@@ -57,7 +40,7 @@ public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig 
 		return this.availability.isEnabled() && currentPosition.distanceSq( BlockPos.ZERO ) > 100000.0;
 	}
 
-	/** Setting up structure by adding it to world generation settings. */
+	// /** Setting up structure by adding it to world generation settings. * /
 	public void setup() {
 		int minimum = this.minimumDistance.get();
 		int maximum = Math.max( this.maximumDistance.get(), minimum + 1 );
@@ -71,3 +54,4 @@ public abstract class NoFeatureBaseStructure extends Structure< NoFeatureConfig 
 		FlatGenerationSettings.STRUCTURES.put( this, this.structureFeature );
 	}
 }
+*/

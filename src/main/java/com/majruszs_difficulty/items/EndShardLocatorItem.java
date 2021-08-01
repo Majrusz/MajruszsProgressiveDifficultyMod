@@ -2,18 +2,18 @@ package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,40 +31,42 @@ public class EndShardLocatorItem extends Item {
 	private static final float INVALID_DISTANCE = 9001.0f;
 
 	public EndShardLocatorItem() {
-		super( ( new Item.Properties() ).group( Instances.ITEM_GROUP )
+		super( ( new Item.Properties() ).tab( Instances.ITEM_GROUP )
 			.rarity( Rarity.UNCOMMON )
-			.maxStackSize( 1 ) );
+			.stacksTo( 1 ) );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void addInformation( ItemStack itemStack, @Nullable World world, List< ITextComponent > tooltip, ITooltipFlag flag ) {
+	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
 		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Calculates distance to the nearest End Shard. */
 	@OnlyIn( Dist.CLIENT )
-	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientWorld clientWorld, @Nullable LivingEntity entity ) {
+	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity,
+		int p_174668_
+	) {
 		if( entity == null )
 			return INVALID_DISTANCE;
 
-		World world = entity.world;
-		Vector3d entityPosition = entity.getPositionVec();
+		Level world = entity.level;
+		Vec3 entityPosition = entity.position();
 
-		CompoundNBT data = entity.getPersistentData();
+		CompoundTag data = entity.getPersistentData();
 		int counter = data.getInt( COUNTER_TAG );
 		BlockPos nearestEndShard = new BlockPos( data.getInt( POSITION_X_TAG ), data.getInt( POSITION_Y_TAG ), data.getInt( POSITION_Z_TAG ) );
 		BlockState currentBlockState = world.getBlockState( nearestEndShard );
 		boolean isValid = currentBlockState.getBlock() == Instances.END_SHARD_ORE;
 
-		double closestDistance = entityPosition.squareDistanceTo( Vector3d.copyCentered( nearestEndShard ) );
+		double closestDistance = entityPosition.distanceToSqr( Vec3.atCenterOf( nearestEndShard ) );
 		BlockPos endShardOre = findNearestEndShard( world, entityPosition, counter - COORDINATE_FACTOR );
 		if( endShardOre != null ) {
 			if( !isValid ) {
 				nearestEndShard = endShardOre;
 			} else {
-				double currentDistance = entityPosition.squareDistanceTo( Vector3d.copyCentered( endShardOre ) );
+				double currentDistance = entityPosition.distanceToSqr( Vec3.atCenterOf( endShardOre ) );
 				if( currentDistance < closestDistance )
 					nearestEndShard = endShardOre;
 			}
@@ -85,17 +87,17 @@ public class EndShardLocatorItem extends Item {
 	 z -> entity position +- factor
 	 */
 	@Nullable
-	private static BlockPos findNearestEndShard( World world, Vector3d entityPosition, int yFactor ) {
+	private static BlockPos findNearestEndShard( Level world, Vec3 entityPosition, int yFactor ) {
 		int y = ( int )( entityPosition.y + yFactor );
 		double closestDistance = INVALID_DISTANCE;
 		BlockPos blockPosition = new BlockPos( 0, 0, 0 );
 
-		for( int x = ( int )( entityPosition.getX() - COORDINATE_FACTOR ); x < entityPosition.getX() + COORDINATE_FACTOR; x++ )
-			for( int z = ( int )( entityPosition.getZ() - COORDINATE_FACTOR ); z < entityPosition.getZ() + COORDINATE_FACTOR; z++ ) {
+		for( int x = ( int )( entityPosition.x() - COORDINATE_FACTOR ); x < entityPosition.x() + COORDINATE_FACTOR; x++ )
+			for( int z = ( int )( entityPosition.z() - COORDINATE_FACTOR ); z < entityPosition.z() + COORDINATE_FACTOR; z++ ) {
 				BlockPos testPosition = new BlockPos( x, y, z );
 				BlockState testBlockState = world.getBlockState( testPosition );
 				if( testBlockState.getBlock() == Instances.END_SHARD_ORE ) {
-					double distance = entityPosition.squareDistanceTo( Vector3d.copyCentered( testPosition ) );
+					double distance = entityPosition.distanceToSqr( Vec3.atCenterOf( testPosition ) );
 					if( distance < closestDistance ) {
 						closestDistance = distance;
 						blockPosition = testPosition;

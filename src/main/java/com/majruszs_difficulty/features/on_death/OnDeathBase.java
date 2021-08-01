@@ -2,9 +2,9 @@ package com.majruszs_difficulty.features.on_death;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.features.ChanceFeatureBase;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
@@ -19,6 +19,6 @@ public abstract class OnDeathBase extends ChanceFeatureBase implements IOnDeath 
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return tryChance( target ) && isEnabled() && GameState.atLeast( this.minimumState ) && target.world instanceof ServerWorld;
+		return tryChance( target ) && isEnabled() && GameState.atLeast( this.minimumState ) && target.level instanceof ServerLevel;
 	}
 }

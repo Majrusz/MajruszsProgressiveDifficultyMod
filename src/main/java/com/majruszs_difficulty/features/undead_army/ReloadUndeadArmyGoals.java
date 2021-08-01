@@ -18,7 +18,7 @@ public class ReloadUndeadArmyGoals {
 
 		COUNTER++;
 
-		if( COUNTER % TimeConverter.secondsToTicks( 25.0 ) == 0L ) {
+		if( RegistryHandler.UNDEAD_ARMY_MANAGER != null && COUNTER % TimeConverter.secondsToTicks( 25.0 ) == 0L ) {
 			RegistryHandler.UNDEAD_ARMY_MANAGER.updateUndeadAIGoals();
 			COUNTER = -1L;
 		}

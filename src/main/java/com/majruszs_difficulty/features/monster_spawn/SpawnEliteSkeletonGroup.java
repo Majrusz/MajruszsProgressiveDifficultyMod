@@ -2,11 +2,11 @@ package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 /** Spawns Elite Skeletons in group. */
 public class SpawnEliteSkeletonGroup extends SpawnEnemyGroupBase {
@@ -23,7 +23,7 @@ public class SpawnEliteSkeletonGroup extends SpawnEnemyGroupBase {
 	}
 
 	@Override
-	protected CreatureEntity spawnChild( ServerWorld world ) {
+	protected PathfinderMob spawnChild( ServerLevel world ) {
 		return EliteSkeletonEntity.type.create( world );
 	}
 

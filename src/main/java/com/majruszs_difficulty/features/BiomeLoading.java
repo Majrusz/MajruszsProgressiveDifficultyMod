@@ -1,16 +1,15 @@
 package com.majruszs_difficulty.features;
 
-import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.ParasiteEntity;
 import com.majruszs_difficulty.generation.OreGeneration;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -25,7 +24,7 @@ import java.util.Set;
 public class BiomeLoading {
 	@SubscribeEvent( priority = EventPriority.HIGH )
 	public static void onLoad( BiomeLoadingEvent event ) {
-		Biome.Category category = event.getCategory();
+		Biome.BiomeCategory category = event.getCategory();
 		MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
 		BiomeGenerationSettingsBuilder generationSettingsBuilder = event.getGeneration();
 
@@ -43,9 +42,9 @@ public class BiomeLoading {
 
 	/** Adding natural spawning for overworld entities. */
 	protected static void addOverworldEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
-		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EntityType.ILLUSIONER, 20, 1, 2 );
-		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, GiantEntity.type, 3, 1, 1 );
-		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EliteSkeletonEntity.type, 20, 1, 1 );
+		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EntityType.ILLUSIONER, 20, 1, 2 );
+		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, GiantEntity.type, 3, 1, 1 );
+		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EliteSkeletonEntity.type, 20, 1, 1 );
 	}
 
 	/** Adding natural generating for overworld structures. */
@@ -57,55 +56,55 @@ public class BiomeLoading {
 	protected static void addNetherEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
 		Set< EntityType< ? > > entityTypes = spawnInfoBuilder.getEntityTypes();
 		if( entityTypes.contains( EntityType.SKELETON ) || entityTypes.contains( EntityType.WITHER_SKELETON ) )
-			addEntity( spawnInfoBuilder, EntityClassification.MONSTER, EliteSkeletonEntity.type, 5, 1, 1 );
+			addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EliteSkeletonEntity.type, 5, 1, 1 );
 	}
 
 	/** Adding natural spawning for end entities. */
 	protected static void addEndEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
-		addEntity( spawnInfoBuilder, EntityClassification.MONSTER, ParasiteEntity.type, 1, 2, 6 );
+		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, ParasiteEntity.type, 1, 2, 6 );
 	}
 
 	/** Adding natural generating for end structures. */
 	protected static void addEndStructures( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
-		generationSettingsBuilder.withStructure( Instances.FLYING_PHANTOM_FEATURE );
-		generationSettingsBuilder.withStructure( Instances.FLYING_END_ISLAND_FEATURE );
-		generationSettingsBuilder.withStructure( Instances.FLYING_END_SHIP_FEATURE );
+		// generationSettingsBuilder.addStructureStart( Instances.FLYING_PHANTOM_FEATURE );
+		// generationSettingsBuilder.addStructureStart( Instances.FLYING_END_ISLAND_FEATURE );
+		// generationSettingsBuilder.addStructureStart( Instances.FLYING_END_SHIP_FEATURE );
 	}
 
 	/** Adding natural generation for ores. */
 	protected static void addEndOres( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
 		for( ConfiguredFeature< ?, ? > ore : OreGeneration.END_ORES )
-			generationSettingsBuilder.withFeature( GenerationStage.Decoration.UNDERGROUND_ORES, ore );
+			generationSettingsBuilder.addFeature( GenerationStep.Decoration.UNDERGROUND_ORES, ore );
 	}
 
 	/** Checking whether given biome category belongs to overworld. */
-	protected static boolean doBiomeCategoryBelongsToOverworld( Biome.Category category ) {
-		boolean isTaiga = category == Biome.Category.TAIGA;
-		boolean isExtremeHills = category == Biome.Category.EXTREME_HILLS;
-		boolean isJungle = category == Biome.Category.JUNGLE;
-		boolean isMesa = category == Biome.Category.MESA;
-		boolean isPlains = category == Biome.Category.PLAINS;
-		boolean isSavanna = category == Biome.Category.SAVANNA;
-		boolean isIcy = category == Biome.Category.ICY;
-		boolean isBeach = category == Biome.Category.BEACH;
-		boolean isForest = category == Biome.Category.FOREST;
-		boolean isOcean = category == Biome.Category.OCEAN;
-		boolean isDesert = category == Biome.Category.DESERT;
-		boolean isRiver = category == Biome.Category.RIVER;
-		boolean isSwamp = category == Biome.Category.SWAMP;
-		boolean isMushroom = category == Biome.Category.MUSHROOM;
+	protected static boolean doBiomeCategoryBelongsToOverworld( Biome.BiomeCategory category ) {
+		boolean isTaiga = category == Biome.BiomeCategory.TAIGA;
+		boolean isExtremeHills = category == Biome.BiomeCategory.EXTREME_HILLS;
+		boolean isJungle = category == Biome.BiomeCategory.JUNGLE;
+		boolean isMesa = category == Biome.BiomeCategory.MESA;
+		boolean isPlains = category == Biome.BiomeCategory.PLAINS;
+		boolean isSavanna = category == Biome.BiomeCategory.SAVANNA;
+		boolean isIcy = category == Biome.BiomeCategory.ICY;
+		boolean isBeach = category == Biome.BiomeCategory.BEACH;
+		boolean isForest = category == Biome.BiomeCategory.FOREST;
+		boolean isOcean = category == Biome.BiomeCategory.OCEAN;
+		boolean isDesert = category == Biome.BiomeCategory.DESERT;
+		boolean isRiver = category == Biome.BiomeCategory.RIVER;
+		boolean isSwamp = category == Biome.BiomeCategory.SWAMP;
+		boolean isMushroom = category == Biome.BiomeCategory.MUSHROOM;
 
 		return isTaiga || isExtremeHills || isJungle || isMesa || isPlains || isSavanna || isIcy || isBeach || isForest || isOcean || isDesert || isRiver || isSwamp || isMushroom;
 	}
 
 	/** Checking whether given biome category belongs to the nether. */
-	protected static boolean doBiomeCategoryBelongsToNether( Biome.Category category ) {
-		return category == Biome.Category.NETHER;
+	protected static boolean doBiomeCategoryBelongsToNether( Biome.BiomeCategory category ) {
+		return category == Biome.BiomeCategory.NETHER;
 	}
 
 	/** Checking whether given biome category belongs to the end. */
-	protected static boolean doBiomeCategoryBelongsToTheEnd( Biome.Category category ) {
-		return category == Biome.Category.THEEND;
+	protected static boolean doBiomeCategoryBelongsToTheEnd( Biome.BiomeCategory category ) {
+		return category == Biome.BiomeCategory.THEEND;
 	}
 
 	/**
@@ -118,11 +117,11 @@ public class BiomeLoading {
 	 @param minimumCount     Minimum amount of entities to spawn.
 	 @param maximumCount     Maximum amount of entities to spawn.
 	 */
-	private static void addEntity( MobSpawnInfoBuilder spawnInfoBuilder, EntityClassification classification, EntityType< ? > entityType, int weight,
+	private static void addFreshEntity( MobSpawnInfoBuilder spawnInfoBuilder, MobCategory classification, EntityType< ? > entityType, int weight,
 		int minimumCount, int maximumCount
 	) {
-		MobSpawnInfo.Spawners spawners = new MobSpawnInfo.Spawners( entityType, weight, minimumCount, maximumCount );
+		MobSpawnSettings.SpawnerData spawners = new MobSpawnSettings.SpawnerData( entityType, weight, minimumCount, maximumCount );
 
-		spawnInfoBuilder.withSpawner( classification, spawners );
+		spawnInfoBuilder.addSpawn( classification, spawners );
 	}
 }

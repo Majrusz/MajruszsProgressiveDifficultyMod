@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.items;
 
 import com.google.common.collect.ImmutableMultimap;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class AttributeArmorItem extends ArmorItem {
 	protected static final List< AttributeArmorItem > ALL_ATTRIBUTE_ITEMS = new ArrayList<>();
 
-	public AttributeArmorItem( IArmorMaterial material, EquipmentSlotType slot, Properties properties ) {
+	public AttributeArmorItem( ArmorMaterial material, EquipmentSlot slot, Properties properties ) {
 		super( material, slot, properties );
 
 		ALL_ATTRIBUTE_ITEMS.add( this );
@@ -28,9 +28,9 @@ public abstract class AttributeArmorItem extends ArmorItem {
 	/** Copies all attributes and adds a new ones to a single item. */
 	private static void updateSingleItem( AttributeArmorItem item ) {
 		ImmutableMultimap.Builder< Attribute, AttributeModifier > builder = ImmutableMultimap.builder();
-		builder.putAll( item.field_234656_m_ );
+		builder.putAll( item.defaultModifiers );
 		item.updateAttributes( builder );
-		item.field_234656_m_ = builder.build();
+		item.defaultModifiers = builder.build();
 	}
 
 	/** Called whenever attributes should be updated. */

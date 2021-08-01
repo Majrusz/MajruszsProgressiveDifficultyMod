@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.features.monster_spawn;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface IOnSpawn {
 	/** Called when all requirements were met. */
-	void onExecute( LivingEntity entity, ServerWorld world );
+	void onExecute( LivingEntity entity, ServerLevel world );
 
 	/** Returns whether spawning current entity should be cancelled. */
 	boolean shouldSpawnBeCancelled();

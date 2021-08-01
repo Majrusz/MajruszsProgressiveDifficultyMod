@@ -3,16 +3,12 @@ package com.majruszs_difficulty.triggers;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.majruszs_difficulty.MajruszsDifficulty;
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
 /** Trigger called when player do certain action without any parameters. */
-public class SimpleTrigger extends AbstractCriterionTrigger< SimpleTrigger.Instance > {
+public class SimpleTrigger extends SimpleCriterionTrigger< SimpleTrigger.Instance > {
 	private static final ResourceLocation ID = MajruszsDifficulty.getLocation( "simple_trigger" );
 
 	@Override
@@ -21,7 +17,7 @@ public class SimpleTrigger extends AbstractCriterionTrigger< SimpleTrigger.Insta
 	}
 
 	@Override
-	public SimpleTrigger.Instance deserializeTrigger( JsonObject jsonObject, EntityPredicate.AndPredicate predicate, ConditionArrayParser conditions
+	public SimpleTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate, DeserializationContext conditions
 	) {
 		JsonElement triggerType = jsonObject.get( "type" );
 
@@ -29,21 +25,21 @@ public class SimpleTrigger extends AbstractCriterionTrigger< SimpleTrigger.Insta
 	}
 
 	/** Triggers an advancement for given player. */
-	public void trigger( ServerPlayerEntity player, String triggerType ) {
-		this.triggerListeners( player, instance->instance.test( triggerType ) );
+	public void trigger( ServerPlayer player, String triggerType ) {
+		this.trigger( player, instance->instance.test( triggerType ) );
 	}
 
-	public static class Instance extends CriterionInstance {
+	public static class Instance extends AbstractCriterionTriggerInstance {
 		private final String triggerType;
 
-		public Instance( EntityPredicate.AndPredicate predicate, String triggerType ) {
+		public Instance( EntityPredicate.Composite predicate, String triggerType ) {
 			super( SimpleTrigger.ID, predicate );
 
 			this.triggerType = triggerType;
 		}
 
-		public JsonObject serialize( ConditionArraySerializer conditions ) {
-			JsonObject jsonObject = super.serialize( conditions );
+		public JsonObject serializeToJson( SerializationContext conditions ) {
+			JsonObject jsonObject = super.serializeToJson( conditions );
 			jsonObject.addProperty( "type", this.triggerType );
 
 			return jsonObject;

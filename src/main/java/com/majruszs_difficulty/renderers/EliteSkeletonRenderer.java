@@ -1,10 +1,10 @@
 package com.majruszs_difficulty.renderers;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -13,12 +13,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class EliteSkeletonRenderer extends SkeletonRenderer {
 	private static final ResourceLocation TEXTURE = MajruszsDifficulty.getLocation( "textures/entity/elite_skeleton.png" );
 
-	public EliteSkeletonRenderer( EntityRendererManager renderManager ) {
-		super( renderManager );
+	public EliteSkeletonRenderer( EntityRendererProvider.Context context ) {
+		super( context );
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture( AbstractSkeletonEntity entity ) {
+	public ResourceLocation getTextureLocation( AbstractSkeleton entity ) {
 		return TEXTURE;
 	}
 }

@@ -2,10 +2,10 @@ package com.majruszs_difficulty.features.undead_army;
 
 import com.mlib.MajruszLibrary;
 import com.mlib.Random;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 
 /** Possible directions where can Undead Army spawn. */
 public enum Direction {
@@ -37,12 +37,12 @@ public enum Direction {
 	}
 
 	/** Returns random position for entity to spawn in given direction. */
-	public BlockPos getRandomSpawnPosition( ServerWorld world, BlockPos positionToAttack, int spawnRadius ) {
-		Vector3d offset = Random.getRandomVector3d( -this.xFactor, this.xFactor, 0.0, 0.0, -this.zFactor, this.zFactor );
+	public BlockPos getRandomSpawnPosition( ServerLevel world, BlockPos positionToAttack, int spawnRadius ) {
+		Vec3 offset = Random.getRandomVector3d( -this.xFactor, this.xFactor, 0.0, 0.0, -this.zFactor, this.zFactor );
 
 		int x = positionToAttack.getX() + this.x * spawnRadius + ( int )offset.x;
 		int z = positionToAttack.getZ() + this.z * spawnRadius + ( int )offset.z;
-		int y = world.getHeight( Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x, z ) + 1;
+		int y = world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) + 1;
 
 		return new BlockPos( x, y, z );
 	}

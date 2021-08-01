@@ -3,14 +3,14 @@ package com.majruszs_difficulty.features.monster_spawn;
 import com.majruszs_difficulty.GameState;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.monster.ZombifiedPiglinEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.ZombifiedPiglin;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 /** Spawns zombies in group. */
 public class SpawnZombieGroup extends SpawnEnemyGroupBase {
@@ -31,11 +31,11 @@ public class SpawnZombieGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return !( entity instanceof ZombifiedPiglinEntity ) && entity instanceof ZombieEntity && super.shouldBeExecuted( entity );
+		return !( entity instanceof ZombifiedPiglin ) && entity instanceof Zombie && super.shouldBeExecuted( entity );
 	}
 
 	@Override
-	protected CreatureEntity spawnChild( ServerWorld world ) {
+	protected PathfinderMob spawnChild( ServerLevel world ) {
 		return EntityType.ZOMBIE.create( world );
 	}
 

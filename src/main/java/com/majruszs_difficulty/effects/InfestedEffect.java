@@ -8,16 +8,16 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.config.DurationConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.effects.EffectHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,9 +27,9 @@ import java.util.List;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
-/** Effect that spawns parasites after it expires. */
+/** MobEffect that spawns parasites after it expires. */
 @Mod.EventBusSubscriber
-public class InfestedEffect extends Effect {
+public class InfestedEffect extends MobEffect {
 	protected final ConfigGroup effectGroup;
 	protected final DurationConfig duration;
 	protected final DoubleConfig damage;
@@ -37,7 +37,7 @@ public class InfestedEffect extends Effect {
 	protected final DurationConfig damageCooldown;
 
 	public InfestedEffect() {
-		super( EffectType.HARMFUL, 0xff161616 );
+		super( MobEffectCategory.HARMFUL, 0xff161616 );
 
 		String durationComment = "Duration of this effect whenever it is applied by Parasite. (in seconds)";
 		this.duration = new DurationConfig( "duration", durationComment, false, 6.0, 1.0, 120.0 );
@@ -61,33 +61,33 @@ public class InfestedEffect extends Effect {
 		return new ArrayList<>();
 	}
 
-	/** Called every time when effect 'isReady'. */
+	/** Called every time when effect 'isDurationEffectTick'. */
 	@Override
-	public void performEffect( LivingEntity entity, int amplifier ) {
+	public void applyEffectTick( LivingEntity entity, int amplifier ) {
 		damageEntity( amplifier, entity );
 	}
 
 	/** Calculating whether effect is ready to deal damage. */
 	@Override
-	public boolean isReady( int duration, int amplifier ) {
+	public boolean isDurationEffectTick( int duration, int amplifier ) {
 		return duration % this.damageCooldown.getDuration() == 0;
 	}
 
 	@SubscribeEvent
 	public static void onEffectExpired( PotionEvent.PotionExpiryEvent event ) {
-		EffectInstance effectInstance = event.getPotionEffect();
+		MobEffectInstance effectInstance = event.getPotionEffect();
 		LivingEntity target = event.getEntityLiving();
 		InfestedEffect infestedEffect = Instances.INFESTED;
-		if( effectInstance == null || !infestedEffect.equals( effectInstance.getPotion() ) || !( target.world instanceof ServerWorld ) )
+		if( effectInstance == null || !infestedEffect.equals( effectInstance.getEffect() ) || !( target.level instanceof ServerLevel ) )
 			return;
 
-		infestedEffect.spawnParasites( effectInstance.getAmplifier(), target, ( ServerWorld )target.world );
+		infestedEffect.spawnParasites( effectInstance.getAmplifier(), target, ( ServerLevel )target.level );
 		infestedEffect.damageEntity( effectInstance.getAmplifier(), target );
 	}
 
 	/** Applies Infested on given target or if it has one then it increases the amplifier. */
 	public void applyTo( LivingEntity target ) {
-		EffectInstance currentEffect = target.getActivePotionEffect( this );
+		MobEffectInstance currentEffect = target.getEffect( this );
 		int amplifier = currentEffect != null ? Math.min( currentEffect.getAmplifier() + 1, this.maximumAmplifier.get() ) : 0;
 
 		EffectHelper.applyEffectIfPossible( target, this, this.duration.getDuration(), amplifier );
@@ -95,29 +95,29 @@ public class InfestedEffect extends Effect {
 
 	/** Checks whether given target can have Infested effect. */
 	public boolean canBeAppliedTo( LivingEntity target ) {
-		EffectInstance currentEffect = target.getActivePotionEffect( this );
+		MobEffectInstance currentEffect = target.getEffect( this );
 
 		return currentEffect == null || currentEffect.getAmplifier() < this.maximumAmplifier.get();
 	}
 
 	/** Spawns parasites depending on potion amplifier and near the target. */
-	public void spawnParasites( int effectAmplifier, LivingEntity target, ServerWorld world ) {
-		BlockPos targetPosition = target.getPosition();
+	public void spawnParasites( int effectAmplifier, LivingEntity target, ServerLevel world ) {
+		BlockPos targetPosition = target.blockPosition();
 		for( int i = 0; i < effectAmplifier + 2; ++i ) {
-			Vector3d offset = Random.getRandomVector3d( -2.5, 2.5, 0.0, 0.0, -2.5, 2.5 );
-			BlockPos parasitePosition = targetPosition.add( offset.x, 0.0, offset.z );
-			Entity entity = ParasiteEntity.type.spawn( world, null, null, parasitePosition, SpawnReason.EVENT, true, true );
+			Vec3 offset = Random.getRandomVector3d( -2.5, 2.5, 0.0, 0.0, -2.5, 2.5 );
+			BlockPos parasitePosition = targetPosition.offset( offset.x, 0.0, offset.z );
+			Entity entity = ParasiteEntity.type.spawn( world, null, null, parasitePosition, MobSpawnType.EVENT, true, true );
 			if( !( entity instanceof ParasiteEntity ) )
 				continue;
 
 			ParasiteEntity parasite = ( ParasiteEntity )entity;
-			parasite.setAttackTarget( target );
+			parasite.setTarget( target );
 			ParasiteEntity.spawnEffects( world, parasitePosition );
 		}
 	}
 
 	/** Damages the target depending on potion amplifier. */
 	protected void damageEntity( int amplifier, LivingEntity target ) {
-		target.attackEntityFrom( Instances.INFESTED_SOURCE, ( float )( ( amplifier + 1 ) * this.damage.get() ) );
+		target.hurt( Instances.INFESTED_SOURCE, ( float )( ( amplifier + 1 ) * this.damage.get() ) );
 	}
 }

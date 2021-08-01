@@ -2,9 +2,9 @@ package com.majruszs_difficulty.features.end_items;
 
 import com.mlib.TimeConverter;
 import com.mlib.effects.EffectHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,10 +14,10 @@ import net.minecraftforge.fml.common.Mod;
 public class HasteOnDestroyingBlocks {
 	@SubscribeEvent
 	public static void onBlockDestroy( BlockEvent.BreakEvent event ) {
-		PlayerEntity player = event.getPlayer();
-		ItemStack tool = player.getHeldItemMainhand();
+		Player player = event.getPlayer();
+		ItemStack tool = player.getMainHandItem();
 
 		if( !tool.isEmpty() && EndItems.isEndItem( tool.getItem() ) )
-			EffectHelper.applyEffectIfPossible( player, Effects.HASTE, TimeConverter.secondsToTicks( 5.0 ), 0 );
+			EffectHelper.applyEffectIfPossible( player, MobEffects.DIG_SPEED, TimeConverter.secondsToTicks( 5.0 ), 0 );
 	}
 }

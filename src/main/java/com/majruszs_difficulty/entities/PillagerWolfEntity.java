@@ -1,62 +1,63 @@
 package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 /** Entity that is more powerful version of Wolf and always hostile. */
-public class PillagerWolfEntity extends WolfEntity {
+public class PillagerWolfEntity extends Wolf {
 	public static final EntityType< PillagerWolfEntity > type;
 
 	static {
-		type = EntityType.Builder.create( PillagerWolfEntity::new, EntityClassification.MONSTER )
-			.size( 0.625f, 0.85f )
+		type = EntityType.Builder.of( PillagerWolfEntity::new, MobCategory.MONSTER )
+			.sized( 0.625f, 0.85f )
 			.build( MajruszsDifficulty.getLocation( "pillager_wolf" )
 				.toString() );
 	}
 
-	public PillagerWolfEntity( EntityType< ? extends WolfEntity > type, World world ) {
+	public PillagerWolfEntity( EntityType< ? extends Wolf > type, Level world ) {
 		super( type, world );
-		this.experienceValue = 4;
+		this.xpReward = 4;
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal( 1, new SwimGoal( this ) );
-		this.goalSelector.addGoal( 2, new MeleeAttackGoal( this, 1.0, true ) );
-		this.goalSelector.addGoal( 4, new WaterAvoidingRandomWalkingGoal( this, 1.0 ) );
-		this.goalSelector.addGoal( 5, new LookAtGoal( this, PlayerEntity.class, 8.0f ) );
-		this.goalSelector.addGoal( 5, new LookRandomlyGoal( this ) );
-		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, PlayerEntity.class, true ) );
-		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, VillagerEntity.class, true ) );
-		this.targetSelector.addGoal( 4, new NearestAttackableTargetGoal<>( this, IronGolemEntity.class, true ) );
+		this.goalSelector.addGoal( 1, new FloatGoal( this ) );
+		this.goalSelector.addGoal( 5, new MeleeAttackGoal( this, 1.0D, true ) );
+		this.goalSelector.addGoal( 8, new WaterAvoidingRandomStrollGoal( this, 1.0D ) );
+		this.goalSelector.addGoal( 10, new LookAtPlayerGoal( this, Player.class, 8.0F ) );
+		this.goalSelector.addGoal( 10, new RandomLookAroundGoal( this ) );
+		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
+		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, Villager.class, true ) );
+		this.targetSelector.addGoal( 4, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
 	}
 
 	/** Makes wolf unable to be tamed. */
 	@Override
-	public boolean func_233678_J__() {
+	public boolean isTame() {
 		return true;
 	}
 
 	@Override
-	public boolean canDespawn( double distanceToClosestPlayer ) {
+	public boolean removeWhenFarAway( double distanceToClosestPlayer ) {
 		return distanceToClosestPlayer > 100.0;
 	}
 
-	public static AttributeModifierMap getAttributeMap() {
-		return MobEntity.func_233666_p_()
-			.createMutableAttribute( Attributes.MAX_HEALTH, 12.0 )
-			.createMutableAttribute( Attributes.MOVEMENT_SPEED, 0.3125 )
-			.createMutableAttribute( Attributes.ATTACK_DAMAGE, 4.0 )
-			.create();
+	public static AttributeSupplier getAttributeMap() {
+		return Mob.createMobAttributes()
+			.add( Attributes.MAX_HEALTH, 12.0 )
+			.add( Attributes.MOVEMENT_SPEED, 0.3125 )
+			.add( Attributes.ATTACK_DAMAGE, 4.0 )
+			.build();
 	}
 }

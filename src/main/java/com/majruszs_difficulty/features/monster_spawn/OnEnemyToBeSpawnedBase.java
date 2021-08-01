@@ -3,9 +3,9 @@ package com.majruszs_difficulty.features.monster_spawn;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.features.ChanceFeatureBase;
 import com.mlib.Random;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 
 /** Base class for handling enemy spawn events. */
 public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implements IOnSpawn {
@@ -18,7 +18,7 @@ public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implement
 	}
 
 	/** Called when all requirements were met. */
-	public abstract void onExecute( LivingEntity entity, ServerWorld world );
+	public abstract void onExecute( LivingEntity entity, ServerLevel world );
 
 	/** Returns whether spawning current entity should be cancelled. */
 	public boolean shouldSpawnBeCancelled() {
@@ -27,7 +27,7 @@ public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implement
 
 	/** Checking if all conditions were met. */
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		if( !GameState.atLeast( this.minimumState ) || !( entity.world instanceof ServerWorld ) || !isEnabled() || !( entity instanceof MobEntity ) )
+		if( !GameState.atLeast( this.minimumState ) || !( entity.level instanceof ServerLevel ) || !isEnabled() || !( entity instanceof Mob ) )
 			return false;
 
 		return Random.tryChance( calculateChance( entity ) );

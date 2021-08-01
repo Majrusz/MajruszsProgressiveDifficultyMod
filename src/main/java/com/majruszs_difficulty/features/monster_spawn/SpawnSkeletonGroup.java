@@ -4,13 +4,13 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 /** Spawns skeletons in group. */
 public class SpawnSkeletonGroup extends SpawnEnemyGroupBase {
@@ -31,11 +31,11 @@ public class SpawnSkeletonGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof SkeletonEntity && !( entity instanceof EliteSkeletonEntity ) && super.shouldBeExecuted( entity );
+		return entity instanceof Skeleton && !( entity instanceof EliteSkeletonEntity ) && super.shouldBeExecuted( entity );
 	}
 
 	@Override
-	protected CreatureEntity spawnChild( ServerWorld world ) {
+	protected PathfinderMob spawnChild( ServerLevel world ) {
 		return EntityType.SKELETON.create( world );
 	}
 

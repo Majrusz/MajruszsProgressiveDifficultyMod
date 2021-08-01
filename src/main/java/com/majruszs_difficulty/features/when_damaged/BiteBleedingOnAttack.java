@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.features.when_damaged;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.horse.LlamaEntity;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.horse.Llama;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.Zombie;
 
 import javax.annotation.Nullable;
 
@@ -21,8 +21,8 @@ public class BiteBleedingOnAttack extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean mayBite = attacker instanceof AnimalEntity || attacker instanceof ZombieEntity || attacker instanceof SpiderEntity;
-		mayBite &= !( attacker instanceof LlamaEntity );
+		boolean mayBite = attacker instanceof Animal || attacker instanceof Zombie || attacker instanceof Spider;
+		mayBite &= !( attacker instanceof Llama );
 
 		return mayBite && super.shouldBeExecuted( attacker, target, damageSource );
 	}

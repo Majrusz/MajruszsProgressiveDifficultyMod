@@ -3,12 +3,12 @@ package com.majruszs_difficulty.features.treasure_bag;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.mlib.items.ItemHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Effects;
-import net.minecraft.world.raid.Raid;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,13 +20,13 @@ public class RaidTreasureBagRewarder {
 
 	@SubscribeEvent
 	public static void onTick( TickEvent.PlayerTickEvent event ) {
-		if( !( event.player.world instanceof ServerWorld ) || event.phase.equals( TickEvent.Phase.START ) )
+		if( !( event.player.level instanceof ServerLevel ) || event.phase.equals( TickEvent.Phase.START ) )
 			return;
 
-		PlayerEntity player = event.player;
-		ServerWorld world = ( ServerWorld )player.world;
-		Raid pillagerRaid = world.findRaid( player.getPosition() );
-		if( pillagerRaid == null || !pillagerRaid.isVictory() || !player.isPotionActive( Effects.HERO_OF_THE_VILLAGE ) )
+		Player player = event.player;
+		ServerLevel world = ( ServerLevel )player.level;
+		Raid pillagerRaid = world.getRaidAt( player.blockPosition() );
+		if( pillagerRaid == null || !pillagerRaid.isVictory() || !player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) )
 			return;
 
 		if( pillagerRaid.getId() != getLastRaidID( player ) ) {
@@ -34,20 +34,21 @@ public class RaidTreasureBagRewarder {
 
 			TreasureBagItem treasureBagItem = Instances.PILLAGER_TREASURE_BAG;
 			if( treasureBagItem.isAvailable() )
-				ItemHelper.giveItemStackToPlayer( new ItemStack( treasureBagItem ), player, ( ServerWorld )player.world );
+				ItemHelper.giveItemStackToPlayer( new ItemStack( treasureBagItem ), player, ( ServerLevel )player.level );
 		}
 	}
 
 	/** Returns ID of last raid that rewarded the player with a Treasure Bag. */
-	private static int getLastRaidID( PlayerEntity player ) {
-		return player.getPersistentData().getInt( RAID_TAG );
+	private static int getLastRaidID( Player player ) {
+		return player.getPersistentData()
+			.getInt( RAID_TAG );
 	}
 
 	/** Updates ID of last raid that rewarded the player with a Treasure Bag. */
-	public static void setLastRaidID( PlayerEntity player, int id ) {
-		CompoundNBT nbt = player.getPersistentData();
+	public static void setLastRaidID( Player player, int id ) {
+		CompoundTag nbt = player.getPersistentData();
 		nbt.putInt( RAID_TAG, id );
 
-		player.writeAdditional( nbt );
+		player.save( nbt );
 	}
 }

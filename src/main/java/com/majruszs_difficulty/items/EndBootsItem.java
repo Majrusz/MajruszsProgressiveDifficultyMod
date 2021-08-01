@@ -1,10 +1,10 @@
 package com.majruszs_difficulty.items;
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.EquipmentSlot;
 
 /** New late game boots. */
 public class EndBootsItem extends EndArmorItem {
 	public EndBootsItem() {
-		super( EquipmentSlotType.FEET );
+		super( EquipmentSlot.FEET );
 	}
 }
