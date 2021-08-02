@@ -94,6 +94,7 @@
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death from injuries caused by %2$s",
   "death.attack.infested": "%1$s was eaten from the inside",
+  "death.attack.infested.player": "%1$s was eaten from the inside whilst fighting %2$s",
   "advancements.progressive_difficulty.root.title": "Normal Mode",
   "advancements.progressive_difficulty.root.description": "Everything seems so peaceful",
   "advancements.progressive_difficulty.expert_mode.title": "Expert Mode",
