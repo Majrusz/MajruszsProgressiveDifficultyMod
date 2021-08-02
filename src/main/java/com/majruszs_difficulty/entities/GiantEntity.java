@@ -42,7 +42,7 @@ public class GiantEntity extends Zombie {
 	/** Registration of the entity's basic goals. */
 	@Override
 	protected void registerGoals() {
-		super.registerGoals();
+		// super.registerGoals();
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );
 		this.applyEntityAI();
@@ -94,6 +94,5 @@ public class GiantEntity extends Zombie {
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, AbstractVillager.class, false ) );
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
 		this.targetSelector.addGoal( 5, new NearestAttackableTargetGoal<>( this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR ) );
-
 	}
 }
