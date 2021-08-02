@@ -5,13 +5,16 @@ import com.majruszs_difficulty.items.EndShardLocatorItem;
 import com.majruszs_difficulty.models.CreeperlingModel;
 import com.majruszs_difficulty.models.OceanShieldModel;
 import com.majruszs_difficulty.renderers.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CreeperModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -24,7 +27,7 @@ public class RegistryHandlerClient {
 	);
 
 	public static void setup() {
-		ForgeHooksClient.registerLayerDefinition( OceanShieldRenderer.LAYER_LOCATION, ()->OceanShieldModel.createBodyLayer( CubeDeformation.NONE ) );
+		ForgeHooksClient.registerLayerDefinition( OceanShieldRenderer.LAYER_LOCATION, OceanShieldModel::createLayer );
 		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER_LOCATION, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
 
 		EntityRenderers.register( GiantEntity.type, GiantRenderer::new );

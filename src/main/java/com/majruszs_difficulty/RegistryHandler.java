@@ -26,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -322,11 +323,11 @@ public class RegistryHandler {
 			UNDEAD_ARMY_MANAGER.setDirty();
 	}
 
-	/** Adds custom textures to the game. (curios slot) */
+	/** Adds custom textures to the game. */
 	@OnlyIn( Dist.CLIENT )
 	private static void onTextureStitch( TextureStitchEvent.Pre event ) {
 		final TextureAtlas map = event.getMap();
 		if( InventoryMenu.BLOCK_ATLAS.equals( map.location() ) )
-			event.addSprite( RegistryHandlerClient.OCEAN_SHIELD_MATERIAL.atlasLocation() );
+			event.addSprite( RegistryHandlerClient.OCEAN_SHIELD_MATERIAL.texture() );
 	}
 }

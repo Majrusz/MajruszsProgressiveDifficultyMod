@@ -1,13 +1,19 @@
 package com.majruszs_difficulty.items;
 
 import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.RegistryHandlerClient;
+import com.majruszs_difficulty.renderers.OceanShieldRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShieldItem;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +25,6 @@ public class OceanShieldItem extends ShieldItem {
 		super( ( new Properties() ).durability( 555 )
 			.rarity( Rarity.UNCOMMON )
 			.tab( Instances.ITEM_GROUP ) );
-		//.setISTER( ()->OceanShieldRenderer::new ) );
 	}
 
 	@Override
@@ -59,7 +64,20 @@ public class OceanShieldItem extends ShieldItem {
 		shieldItem.hurtAndBreak( 1, target, livingEntity->livingEntity.broadcastBreakEvent( hand ) );
 	}
 
-	public int getItemEnchantability() {
+	@Override
+	public int getEnchantmentValue() {
 		return 1;
+	}
+
+	@Override
+	public void initializeClient( java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer ) {
+		Minecraft minecraft = Minecraft.getInstance();
+
+		consumer.accept( new IItemRenderProperties() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+				return new OceanShieldRenderer( minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels() );
+			}
+		} );
 	}
 }
