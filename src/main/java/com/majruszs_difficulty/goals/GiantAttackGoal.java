@@ -19,11 +19,13 @@ public class GiantAttackGoal extends MeleeAttackGoal {
 		this.raiseArmTicks = 0;
 	}
 
+	@Override
 	public void stop() {
 		super.stop();
 		this.giant.setAggressive( false );
 	}
 
+	@Override
 	public void tick() {
 		super.tick();
 		++this.raiseArmTicks;

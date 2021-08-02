@@ -34,6 +34,7 @@ public class CreeperExplodeWallsGoal extends Goal {
 	}
 
 	/** Updates state of goal each tick. */
+	@Override
 	public void tick() {
 		if( this.attackTarget == null || this.creeper.distanceToSqr( this.attackTarget ) > this.maximumExplodeDistance * getDistanceMultiplier() ) {
 			this.creeper.setSwellDir( -1 ); // stops creeper's explosion
@@ -43,14 +44,16 @@ public class CreeperExplodeWallsGoal extends Goal {
 	}
 
 	/** Executes task at the beginning of goal. */
-	public void startExecuting() {
+	@Override
+	public void start() {
 		this.creeper.getNavigation()
 			.stop();
 		this.attackTarget = getNearestPlayer( this.creeper );
 	}
 
 	/** Resets the task's internal state. */
-	public void resetTask() {
+	@Override
+	public void stop() {
 		this.attackTarget = null;
 	}
 

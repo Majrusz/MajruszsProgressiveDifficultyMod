@@ -31,6 +31,7 @@ public class FollowGroupLeaderGoal extends Goal {
 		);
 	}
 
+	@Override
 	public void tick() {
 		if( this.leader == null )
 			return;
@@ -49,11 +50,13 @@ public class FollowGroupLeaderGoal extends Goal {
 			this.navigation.moveTo( this.leader, this.speedModifier );
 	}
 
-	public boolean shouldContinueExecuting() {
+	@Override
+	public boolean canContinueToUse() {
 		return this.leader != null && !this.navigation.isDone() && this.follower.distanceTo( this.leader ) > ( double )( this.stopDistance );
 	}
 
-	public void startExecuting() {
+	@Override
+	public void start() {
 		this.ticksToRecalculatePath = 0;
 	}
 

@@ -40,6 +40,7 @@ public class UndeadAttackPositionGoal extends Goal {
 		this.ticksToRecalculatePath = 0;
 	}
 
+	@Override
 	public void tick() {
 		if( --this.ticksToRecalculatePath > 0 )
 			return;
