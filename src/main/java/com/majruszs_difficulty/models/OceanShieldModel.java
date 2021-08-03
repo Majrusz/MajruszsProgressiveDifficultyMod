@@ -67,7 +67,7 @@ public class OceanShieldModel extends Model {
 
 		partDefinition.addOrReplaceChild( "spike1", CubeListBuilder.create()
 				.texOffs( 46, 0 )
-				.addBox( 2.0F, -1.0F, -4.0F, 1.0F, 1.0F, 2.0F ),
+				.addBox( -4.0F, -8.0F, -4.0F, 1.0F, 1.0F, 2.0F),
 			PartPose.offsetAndRotation( 0.0f, 0.0f, 0.0f, 0.0F, 0.17453292519943295F, 0.0F )
 		);
 
