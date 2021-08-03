@@ -20,9 +20,7 @@
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          {
-            "item": "majruszs_difficulty:end_ingot"
-          }
+          "majruszs_difficulty:end_ingot"
         ]
       }
     }
