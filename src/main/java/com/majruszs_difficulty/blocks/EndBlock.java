@@ -18,11 +18,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/** New late game end block. */
+/** New late game end block made from End Ingots. */
 public class EndBlock extends Block {
 	public EndBlock() {
 		super( Properties.of( Material.METAL, MaterialColor.COLOR_PURPLE )
-			.harvestLevel( 1 )
+			.harvestLevel( 4 )
 			.requiresCorrectToolForDrops()
 			.strength( 5.0f, 6.0f )
 			.sound( SoundType.METAL ) );
