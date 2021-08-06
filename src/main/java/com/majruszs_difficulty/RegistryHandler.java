@@ -50,7 +50,7 @@ public class RegistryHandler {
 	public static final DeferredRegister< Block > BLOCKS = DeferredRegister.create( ForgeRegistries.BLOCKS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< Item > ITEMS = DeferredRegister.create( ForgeRegistries.ITEMS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< SoundEvent > SOUNDS = DeferredRegister.create( ForgeRegistries.SOUND_EVENTS, MajruszsDifficulty.MOD_ID );
-	public static final DeferredRegister< MobEffect > EFFECTS = DeferredRegister.create( ForgeRegistries.POTIONS, MajruszsDifficulty.MOD_ID );
+	public static final DeferredRegister< MobEffect > EFFECTS = DeferredRegister.create( ForgeRegistries.MOB_EFFECTS, MajruszsDifficulty.MOD_ID );
 	public static final DeferredRegister< StructureFeature< ? > > STRUCTURES = DeferredRegister.create( ForgeRegistries.STRUCTURE_FEATURES,
 		MajruszsDifficulty.MOD_ID
 	);
