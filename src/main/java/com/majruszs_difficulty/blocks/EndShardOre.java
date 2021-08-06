@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -54,9 +55,10 @@ public class EndShardOre extends Block {
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 
 		String availabilityComment = "Should this ore be available in survival mode? (ore generation, loot tables etc.) (requires game restart!)";
-		String triggerComment = "Maximum distance within which all nearby Endermans will be triggered. (when block was mined)";
 		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, true, true );
-		this.triggerDistance = new DoubleConfig( "trigger_distance", triggerComment, false, 700.0, 0.0, 1e+6 );
+
+		String triggerComment = "Maximum distance within which all nearby Endermans are being triggered. (when block was mined)";
+		this.triggerDistance = new DoubleConfig( "trigger_distance", triggerComment, false, 450.0, 0.0, 1e+6 );
 
 		this.configGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "EndShardOre", "Configuration for new late game ore." ) );
 		this.configGroup.addConfigs( this.availability, this.triggerDistance );
@@ -96,13 +98,12 @@ public class EndShardOre extends Block {
 			return;
 
 		ServerLevel world = ( ServerLevel )target.level;
-		for( Entity entity : world.getEntities( null, enderman->enderman.distanceToSqr( target ) < maximumDistance ) )
-			if( entity instanceof EnderMan ) {
-				EnderMan enderman = ( EnderMan )entity;
-				LivingEntity currentEndermanTarget = enderman.getLastHurtByMob();
-				if( currentEndermanTarget == null || !currentEndermanTarget.isAlive() )
-					enderman.setLastHurtByMob( target );
-			}
+		AABB aabb = target.getBoundingBox().inflate( 100.0, 16.0, 100.0 );
+		for( EnderMan enderman : world.getEntitiesOfClass( EnderMan.class, aabb, enderman->enderman.distanceToSqr( target ) < maximumDistance ) ) {
+			LivingEntity currentEndermanTarget = enderman.getLastHurtByMob();
+			if( currentEndermanTarget == null || !currentEndermanTarget.isAlive() )
+				enderman.setLastHurtByMob( target );
+		}
 	}
 
 	/** Returns whether End Shard Ore is enabled in config file. */
