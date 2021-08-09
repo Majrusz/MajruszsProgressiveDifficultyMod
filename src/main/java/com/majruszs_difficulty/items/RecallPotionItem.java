@@ -77,7 +77,8 @@ public class RecallPotionItem extends Item {
 		MajruszsHelper.addAdvancedTooltips( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
-	public boolean hasEffect( ItemStack itemStack ) {
+	@Override
+	public boolean isFoil( ItemStack itemStack ) {
 		return true;
 	}
 }
