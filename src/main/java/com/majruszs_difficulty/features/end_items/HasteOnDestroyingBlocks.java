@@ -2,6 +2,7 @@ package com.majruszs_difficulty.features.end_items;
 
 import com.mlib.TimeConverter;
 import com.mlib.effects.EffectHelper;
+import com.mlib.entities.EntityHelper;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ public class HasteOnDestroyingBlocks {
 		Player player = event.getPlayer();
 		ItemStack tool = player.getMainHandItem();
 
-		if( !tool.isEmpty() && EndItems.isEndItem( tool.getItem() ) )
+		if( !tool.isEmpty() && EndItems.isEndItem( tool.getItem() ) && !EntityHelper.isOnCreativeMode( player ) )
 			EffectHelper.applyEffectIfPossible( player, MobEffects.DIG_SPEED, TimeConverter.secondsToTicks( 5.0 ), 0 );
 	}
 }
