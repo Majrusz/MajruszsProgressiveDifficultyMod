@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "majruszs_difficulty:bandage"
+            "items": [
+              "majruszs_difficulty:bandage"
+            ]
           }
         ]
       }

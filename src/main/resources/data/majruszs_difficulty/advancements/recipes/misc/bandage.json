@@ -12,7 +12,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:string"
+            "items": [
+              "minecraft:string"
+            ]
           }
         ]
       }

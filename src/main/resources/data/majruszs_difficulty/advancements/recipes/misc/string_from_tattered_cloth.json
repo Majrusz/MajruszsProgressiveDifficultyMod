@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "majruszs_difficulty:tattered_cloth"
+            "items": [
+              "majruszs_difficulty:tattered_cloth"
+            ]
           }
         ]
       }
