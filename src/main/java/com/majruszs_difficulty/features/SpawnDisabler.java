@@ -3,10 +3,12 @@ package com.majruszs_difficulty.features;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.entities.*;
+import com.mlib.LevelHelper;
 import com.mlib.config.AvailabilityConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Illusioner;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -63,7 +65,7 @@ public class SpawnDisabler {
 	 players will have a problem to finish it.
 	 */
 	private static boolean isVillageNearby( Entity entity ) {
-		if( !( entity.level instanceof ServerLevel ) )
+		if( !( entity.level instanceof ServerLevel ) || !LevelHelper.isEntityIn( entity, Level.OVERWORLD ) )
 			return false;
 
 		ServerLevel world = ( ServerLevel )entity.level;
