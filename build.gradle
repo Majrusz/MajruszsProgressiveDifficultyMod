@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.2.1'
+version = '1.2.2'
 group = 'com.majruszs_difficulty'
 archivesBaseName = 'majruszs-difficulty-1.17.1'
 
