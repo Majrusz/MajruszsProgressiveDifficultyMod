@@ -86,7 +86,7 @@ public class UndeadArmyManager extends SavedData {
 
 	 @return Returns whether the Undead Army had spawned.
 	 */
-	public boolean spawn( Player player ) {
+	public boolean tryToSpawn( Player player ) {
 		BlockPos attackPosition = getAttackPosition( player );
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 

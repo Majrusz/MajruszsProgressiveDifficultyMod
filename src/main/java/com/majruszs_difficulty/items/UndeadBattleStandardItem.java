@@ -35,7 +35,7 @@ public class UndeadBattleStandardItem extends Item {
 	public InteractionResultHolder< ItemStack > use( Level world, Player player, InteractionHand hand ) {
 		ItemStack itemStack = player.getItemInHand( hand );
 
-		if( !world.isClientSide && RegistryHandler.UNDEAD_ARMY_MANAGER != null && RegistryHandler.UNDEAD_ARMY_MANAGER.spawn( player ) ) {
+		if( !world.isClientSide && RegistryHandler.UNDEAD_ARMY_MANAGER != null && RegistryHandler.UNDEAD_ARMY_MANAGER.tryToSpawn( player ) ) {
 			if( !player.getAbilities().instabuild )
 				itemStack.shrink( 1 );
 			player.awardStat( Stats.ITEM_USED.get( this ) );
