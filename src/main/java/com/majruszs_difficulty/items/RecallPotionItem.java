@@ -50,14 +50,18 @@ public class RecallPotionItem extends Item {
 			if( !player.getAbilities().instabuild )
 				itemStack.shrink( 1 );
 
-			if( world instanceof ServerLevel && player instanceof ServerPlayer ) {
-				BlockPos spawnPosition = LevelHelper.getSpawnPosition( ( ServerPlayer )player, ( ServerLevel )world );
-				player.randomTeleport( spawnPosition.getX() + 0.5, spawnPosition.getY() + 1.0, spawnPosition.getZ() + 0.5, true );
-				EffectHelper.applyEffectIfPossible( player, MobEffects.CONFUSION, TimeConverter.secondsToTicks( 6.0 ), 0 );
-			}
+			if( world instanceof ServerLevel && player instanceof ServerPlayer )
+				teleportToSpawnPosition( ( ServerPlayer )player, ( ServerLevel )world );
 		}
 
 		return itemStack;
+	}
+
+	/** Teleport player back to their spawn position. */
+	protected void teleportToSpawnPosition( ServerPlayer player, ServerLevel level ) {
+		BlockPos spawnPosition = LevelHelper.getSpawnPosition( player, level );
+		player.randomTeleport( spawnPosition.getX() + 0.5, spawnPosition.getY() + 1.0, spawnPosition.getZ() + 0.5, true );
+		EffectHelper.applyEffectIfPossible( player, MobEffects.CONFUSION, TimeConverter.secondsToTicks( 6.0 ), 0 );
 	}
 
 	@Override
