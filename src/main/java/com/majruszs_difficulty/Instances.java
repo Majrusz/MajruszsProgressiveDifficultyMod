@@ -22,6 +22,7 @@ import com.majruszs_difficulty.features.undead_army.UndeadArmyConfig;
 import com.majruszs_difficulty.features.when_damaged.*;
 import com.majruszs_difficulty.items.*;
 import com.majruszs_difficulty.triggers.*;
+import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.sounds.SoundEvent;
@@ -112,6 +113,7 @@ public class Instances {
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER;
 	public static final UndeadArmyDefeatedTrigger UNDEAD_ARMY_DEFEATED_TRIGGER;
 	public static final BandageTrigger BANDAGE_TRIGGER;
+	public static final BasicTrigger BASIC_TRIGGER;
 
 	static {
 		// Items
@@ -245,6 +247,7 @@ public class Instances {
 		TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 		UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
 		BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
+		BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( MajruszsDifficulty.MOD_ID );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
