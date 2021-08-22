@@ -2,15 +2,26 @@
   "type": "minecraft:gift",
   "pools": [
     {
-      "rolls": {
-        "min": 3.0,
-        "max": 7.0,
-        "type": "minecraft:uniform"
-      },
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszs_difficulty:recall_potion"
+          "name": "majruszs_difficulty:recall_potion",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.33333
+            }
+          ],
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 10,
+                "max": 16
+              }
+            }
+          ]
         }
       ]
     },
