@@ -18,7 +18,7 @@ public class CreeperlingEntity extends Creeper {
 				.toString() );
 	}
 
-	public CreeperlingEntity( EntityType< ? extends Creeper > type, Level world ) {
+	public CreeperlingEntity( EntityType< ? extends CreeperlingEntity > type, Level world ) {
 		super( type, world );
 		this.explosionRadius = 2;
 		this.xpReward = 3;
