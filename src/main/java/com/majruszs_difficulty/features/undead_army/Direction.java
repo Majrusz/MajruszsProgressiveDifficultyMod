@@ -7,13 +7,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
-/** Possible directions where can Undead Army spawn. */
+/** Possible directions where Undead Army can spawn. */
 public enum Direction {
 	WEST( -1, 0 ), EAST( 1, 0 ), NORTH( 0, -1 ), SOUTH( 0, 1 );
 
 	private static final int DISTANCE_MULTIPLIER = 10;
-	public final int x, z;
 	private final int xFactor, zFactor;
+	public final int x, z;
 
 	Direction( int x, int z ) {
 		this.x = x;
@@ -42,7 +42,7 @@ public enum Direction {
 
 		int x = positionToAttack.getX() + this.x * spawnRadius + ( int )offset.x;
 		int z = positionToAttack.getZ() + this.z * spawnRadius + ( int )offset.z;
-		int y = world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) + 1;
+		int y = world.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z ) + 1;
 
 		return new BlockPos( x, y, z );
 	}
