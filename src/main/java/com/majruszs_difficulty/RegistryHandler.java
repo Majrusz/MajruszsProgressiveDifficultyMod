@@ -23,10 +23,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -43,6 +44,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
 
 /** Main class registering most registers like entities, items and sounds. */
 public class RegistryHandler {
@@ -73,7 +76,7 @@ public class RegistryHandler {
 		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->modEventBus.addListener( RegistryHandler::onTextureStitch ) );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
-		forgeEventBus.addListener( RegistryHandler::onLoadingWorld );
+		forgeEventBus.addListener( RegistryHandler::onLoadingLevel );
 		forgeEventBus.addListener( RegistryHandler::onSavingWorld );
 		forgeEventBus.addListener( RegistryHandler::onServerStart );
 		forgeEventBus.addListener( RegistryHandler::registerCommands );
@@ -275,20 +278,20 @@ public class RegistryHandler {
 	/**
 	 *
 	 */
-	public static void onLoadingWorld( WorldEvent.Load event ) {
-		if( !( event.getWorld() instanceof ServerLevel ) )
+	public static void onLoadingLevel( WorldEvent.Load event ) {
+		ServerLevel level = getOverworld( event.getWorld() );
+		if( level == null )
 			return;
 
-		ServerLevel world = ( ServerLevel )event.getWorld();
-		DimensionDataStorage manager = world.getDataStorage();
+		DimensionDataStorage manager = level.getDataStorage();
 
-		UNDEAD_ARMY_MANAGER = manager.get( nbt->UndeadArmyManager.load( nbt, world ), UndeadArmyManager.DATA_NAME );
-		if( UNDEAD_ARMY_MANAGER != null )
-			UNDEAD_ARMY_MANAGER.updateWorld( world );
+		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManager.load( nbt, level ), ()->new UndeadArmyManager( level ),
+			UndeadArmyManager.DATA_NAME
+		);
+		UNDEAD_ARMY_MANAGER.updateWorld( level );
 
-		GAME_DATA_SAVER = manager.get( GameDataSaver::load, GameDataSaver.DATA_NAME );
-		if( GAME_DATA_SAVER != null )
-			GAME_DATA_SAVER.updateGameState();
+		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
+		GAME_DATA_SAVER.updateGameState();
 
 		ReloadUndeadArmyGoals.resetTimer();
 
@@ -313,14 +316,23 @@ public class RegistryHandler {
 	 *
 	 */
 	public static void onSavingWorld( WorldEvent.Save event ) {
-		if( !( event.getWorld() instanceof ServerLevel ) )
+		ServerLevel level = getOverworld( event.getWorld() );
+		if( level == null )
 			return;
 
-		if( GAME_DATA_SAVER != null )
-			GAME_DATA_SAVER.setDirty();
+		GAME_DATA_SAVER.setDirty();
+		UNDEAD_ARMY_MANAGER.setDirty();
+	}
 
-		if( UNDEAD_ARMY_MANAGER != null )
-			UNDEAD_ARMY_MANAGER.setDirty();
+	/** Returns whether given level accessor is server level of overworld. */
+	@Nullable
+	private static ServerLevel getOverworld( LevelAccessor levelAccessor ) {
+		MinecraftServer minecraftServer = levelAccessor.getServer();
+		if( minecraftServer == null )
+			return null;
+
+		ServerLevel overworld = minecraftServer.getLevel( Level.OVERWORLD );
+		return levelAccessor.equals( overworld ) ? overworld : null;
 	}
 
 	/** Adds custom textures to the game. */
