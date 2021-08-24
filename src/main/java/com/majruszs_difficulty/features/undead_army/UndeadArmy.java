@@ -284,7 +284,7 @@ public class UndeadArmy {
 
 	/** Kills all nearby entities from Undead Army. */
 	public void killAllUndeadArmyEntities() {
-		for( Mob monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+		for( Mob monster : getNearbyUndeadArmy( SPAWN_RADIUS + 30 ) )
 			monster.hurt( DamageSource.MAGIC, 9001 );
 
 		this.undeadKilled = this.undeadToKill;
