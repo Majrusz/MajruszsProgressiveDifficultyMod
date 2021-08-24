@@ -77,7 +77,7 @@ public class RegistryHandler {
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( RegistryHandler::onLoadingLevel );
-		forgeEventBus.addListener( RegistryHandler::onSavingWorld );
+		forgeEventBus.addListener( RegistryHandler::onSavingLevel );
 		forgeEventBus.addListener( RegistryHandler::onServerStart );
 		forgeEventBus.addListener( RegistryHandler::registerCommands );
 	}
@@ -275,9 +275,7 @@ public class RegistryHandler {
 		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, Instances.ENDER_DRAGON_TREASURE_BAG, false );
 	}
 
-	/**
-	 *
-	 */
+	/** Called on loading level to load data from it. */
 	public static void onLoadingLevel( WorldEvent.Load event ) {
 		ServerLevel level = getOverworld( event.getWorld() );
 		if( level == null )
@@ -312,10 +310,8 @@ public class RegistryHandler {
 		}*/
 	}
 
-	/**
-	 *
-	 */
-	public static void onSavingWorld( WorldEvent.Save event ) {
+	/** Saves data to the level. */
+	public static void onSavingLevel( WorldEvent.Save event ) {
 		ServerLevel level = getOverworld( event.getWorld() );
 		if( level == null )
 			return;
