@@ -6,9 +6,10 @@ import com.majruszs_difficulty.blocks.InfestedEndStone;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.effects.BleedingImmunityEffect;
 import com.majruszs_difficulty.effects.InfestedEffect;
-import com.majruszs_difficulty.entities.EntitiesConfig;
+import com.majruszs_difficulty.entities.MobsConfig;
 import com.majruszs_difficulty.features.ExperienceBonus;
 import com.majruszs_difficulty.features.IncreaseGameDifficulty;
+import com.majruszs_difficulty.features.SpawnDisabler;
 import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsBleedingOnHurt;
 import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsLevitationOnAttack;
 import com.majruszs_difficulty.features.monster_spawn.*;
@@ -72,9 +73,6 @@ public class Instances {
 	public static final InfestedEndStone INFESTED_END_STONE;
 	public static final InfestedEndStone.InfestedEndStoneItem INFESTED_END_STONE_ITEM;
 
-	// Entities
-	public static final EntitiesConfig ENTITIES_CONFIG;
-
 	// Effects
 	public static final BleedingEffect BLEEDING;
 	public static final BleedingImmunityEffect BLEEDING_IMMUNITY;
@@ -115,6 +113,10 @@ public class Instances {
 	public static final BandageTrigger BANDAGE_TRIGGER;
 	public static final BasicTrigger BASIC_TRIGGER;
 
+	// Configs
+	public static final MobsConfig ENTITIES_CONFIG;
+	public static final SpawnDisabler.Config SPAWN_DISABLER_CONFIG;
+
 	static {
 		// Items
 		BATTLE_STANDARD_ITEM = new UndeadBattleStandardItem();
@@ -153,9 +155,6 @@ public class Instances {
 		END_BLOCK_ITEM = new EndBlock.EndBlockItem();
 		INFESTED_END_STONE = new InfestedEndStone();
 		INFESTED_END_STONE_ITEM = new InfestedEndStone.InfestedEndStoneItem();
-
-		// Entities
-		ENTITIES_CONFIG = new EntitiesConfig();
 
 		// Effects
 		BLEEDING = new BleedingEffect();
@@ -248,6 +247,10 @@ public class Instances {
 		UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
 		BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
 		BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( MajruszsDifficulty.MOD_ID );
+
+		// Configs
+		ENTITIES_CONFIG = new MobsConfig();
+		SPAWN_DISABLER_CONFIG = new SpawnDisabler.Config();
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}

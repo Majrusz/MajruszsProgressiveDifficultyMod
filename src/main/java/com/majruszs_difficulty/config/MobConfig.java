@@ -1,23 +1,17 @@
 package com.majruszs_difficulty.config;
 
-import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.IConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.ENTITIES_GROUP;
 
-/** Config for a entity availability. */
-public class EntityConfig implements IConfig {
+/** Base for all mob configs. */
+public class MobConfig implements IConfig {
 	public final ConfigGroup entityGroup;
-	public final AvailabilityConfig availability;
 
-	public EntityConfig( String entityName ) {
-		String spawn_comment = "Is entity naturally spawning?";
-		this.availability = new AvailabilityConfig( "is_spawning", spawn_comment, false, true );
-
+	public MobConfig( String entityName ) {
 		this.entityGroup = ENTITIES_GROUP.addGroup( new ConfigGroup( entityName, "" ) );
-		this.entityGroup.addConfigs( this.availability );
 	}
 
 	@Override

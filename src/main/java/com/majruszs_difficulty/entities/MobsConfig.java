@@ -1,29 +1,17 @@
 package com.majruszs_difficulty.entities;
 
-import com.majruszs_difficulty.config.EntityConfig;
+import com.majruszs_difficulty.config.MobConfig;
 import com.mlib.config.DoubleConfig;
 
-/** Handling configs for all custom entities. */
-public class EntitiesConfig {
+/** Handling configs for all custom mobs. */
+public class MobsConfig {
 	public final EliteSkeletonConfig eliteSkeleton;
-	public final EntityConfig giant;
-	public final EntityConfig illusioner;
-	public final EntityConfig pillagerWolf;
-	public final EntityConfig skyKeeper;
-	public final EntityConfig creeperling;
-	public final EntityConfig parasite;
 
-	public EntitiesConfig() {
+	public MobsConfig() {
 		this.eliteSkeleton = new EliteSkeletonConfig();
-		this.giant = new EntityConfig( "Giant" );
-		this.illusioner = new EntityConfig( "Illusioner" );
-		this.pillagerWolf = new EntityConfig( "PillagerWolf" );
-		this.skyKeeper = new EntityConfig( "SkyKeeper" );
-		this.creeperling = new EntityConfig( "Creeperling" );
-		this.parasite = new EntityConfig( "Parasite" );
 	}
 
-	public static class EliteSkeletonConfig extends EntityConfig {
+	public static class EliteSkeletonConfig extends MobConfig {
 		public final DoubleConfig tippedArrowChance;
 		public final DoubleConfig quickShotChance;
 		public final DoubleConfig multiShotChance;

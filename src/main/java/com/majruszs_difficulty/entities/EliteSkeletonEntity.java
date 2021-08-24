@@ -52,7 +52,7 @@ public class EliteSkeletonEntity extends Skeleton {
 	/** Overriding basic Skeleton attack method with changes to inaccuracy, velocity and ammo this entity uses. */
 	@Override
 	public void performRangedAttack( LivingEntity target, float distanceFactor ) {
-		EntitiesConfig.EliteSkeletonConfig config = Instances.ENTITIES_CONFIG.eliteSkeleton;
+		MobsConfig.EliteSkeletonConfig config = Instances.ENTITIES_CONFIG.eliteSkeleton;
 		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( this );
 
 		handleQuickShot( config.quickShotChance.get() * clampedRegionalDifficulty );
