@@ -25,10 +25,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -355,13 +352,15 @@ public class UndeadArmy {
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
 
-		for( WaveMember waveMember : WaveMember.values() ) {
-			for( int i = 0; i < ( int )( playersFactor * waveMember.waveCounts[ this.currentWave - 1 ] ); i++ ) {
+		for( WaveMembersConfig.WaveMember waveMember : config.getWaveMembers( this.currentWave ) ) {
+			waveMember.amount = ( int )( waveMember.amount * playersFactor );
+			for( int i = 0; i < waveMember.amount; i++ ) {
 				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.level, this.positionToAttack, SPAWN_RADIUS );
-				Monster monster = waveMember.type.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
-				if( monster == null )
+				Entity entity = waveMember.entityType.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
+				if( !( entity instanceof Monster ) )
 					continue;
 
+				Monster monster = ( Monster )entity;
 				monster.setPersistenceRequired();
 				updateUndeadAIGoal( monster );
 				equipWithDyedLeatherArmor( monster );

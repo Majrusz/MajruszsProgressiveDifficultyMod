@@ -6,6 +6,7 @@ import com.mlib.config.IConfig;
 import com.mlib.config.IConfigType;
 import com.mlib.config.StringListConfig;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.ArrayList;

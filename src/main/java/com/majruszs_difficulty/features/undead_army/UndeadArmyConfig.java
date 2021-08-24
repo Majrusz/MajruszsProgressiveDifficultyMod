@@ -7,6 +7,8 @@ import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.mlib.config.*;
 import net.minecraft.world.entity.EntityType;
 
+import java.util.List;
+
 import static com.majruszs_difficulty.MajruszsDifficulty.CONFIG_HANDLER;
 
 /** Class with all configurable aspects of the Undead Army. */
@@ -21,6 +23,7 @@ public class UndeadArmyConfig {
 	private final GameStateDoubleConfig armorChance;
 	private final DurationConfig durationBetweenWaves;
 	private final DurationConfig maximumInactiveDuration;
+	private final WaveMembersConfig waveMembers;
 
 	public UndeadArmyConfig() {
 		String availabilityComment = "Is the Undead Army enabled?";
@@ -50,9 +53,28 @@ public class UndeadArmyConfig {
 		String inactiveComment = "The maximum duration before Undead Army will end if there is no player. (in seconds) (requires game/world restart!) ";
 		this.maximumInactiveDuration = new DurationConfig( "inactive_duration", inactiveComment, true, 900.0, 300.0, 3200.0 );
 
+		String membersComment = "Amount of enemies in every wave. (format: {minimal_amount}-{maximal_amount} {entity})";
+		this.waveMembers = new WaveMembersConfig( "WaveMembers", membersComment );
+		StringListConfig waveConfig1 = this.waveMembers.createWaveConfig( "4-6 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton",
+			"1-2 minecraft:stray", "0-2 majruszs_difficulty:elite_skeleton"
+		);
+		StringListConfig waveConfig2 = this.waveMembers.createWaveConfig( "3-5 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton",
+			"1-2 minecraft:stray", "1-3 majruszs_difficulty:elite_skeleton"
+		);
+		StringListConfig waveConfig3 = this.waveMembers.createWaveConfig( "2-4 minecraft:zombie", "1-3 minecraft:husk", "1-3 minecraft:skeleton",
+			"1-3 minecraft:stray", "2-4 majruszs_difficulty:elite_skeleton"
+		);
+		StringListConfig waveConfig4 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie", "3-5 minecraft:husk", "1-3 minecraft:skeleton",
+			"2-4 minecraft:stray", "4-6 majruszs_difficulty:elite_skeleton"
+		);
+		StringListConfig waveConfig5 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie", "4-6 minecraft:husk", "1-3 minecraft:skeleton",
+			"3-5 minecraft:stray", "5-7 majruszs_difficulty:elite_skeleton"
+		);
+		this.waveMembers.addWaveConfigs( waveConfig1, waveConfig2, waveConfig3, waveConfig4, waveConfig5 );
+
 		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
 		this.group.addConfigs( this.availability, this.killRequirement, this.sizeMultiplier, this.experienceReward, this.treasureBagReward,
-			this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration
+			this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration, this.waveMembers
 		);
 	}
 
@@ -104,6 +126,11 @@ public class UndeadArmyConfig {
 	/** Returns amount of waves. */
 	public int getWaves() {
 		return GameState.getValueDependingOnCurrentGameState( 3, 4, 5 );
+	}
+
+	/** Returns list of enemies in given wave. */
+	public List< WaveMembersConfig.WaveMember > getWaveMembers( int waveNumber ) {
+		return this.waveMembers.getWaveMembers( waveNumber );
 	}
 
 	/** Returns entity type for monster spawner. */
