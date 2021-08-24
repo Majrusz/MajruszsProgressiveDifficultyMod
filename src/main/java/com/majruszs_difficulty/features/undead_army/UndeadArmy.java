@@ -259,7 +259,7 @@ public class UndeadArmy {
 
 	/** Makes all the units from the Undead Army highlighted. */
 	public void highlightUndeadArmy() {
-		for( Monster monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+		for( Mob monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
 			EffectHelper.applyEffectIfPossible( monster, MobEffects.GLOWING, TimeConverter.secondsToTicks( 15.0 ), 5 );
 	}
 
@@ -270,9 +270,9 @@ public class UndeadArmy {
 
 	/** Updates all nearby undead entities AI goals. Required after world restart. */
 	public void updateNearbyUndeadAIGoals() {
-		List< Monster > monsters = getNearbyUndeadArmy( SPAWN_RADIUS );
+		List< Mob > monsters = getNearbyUndeadArmy( SPAWN_RADIUS );
 
-		for( Monster monster : monsters )
+		for( Mob monster : monsters )
 			updateUndeadAIGoal( monster );
 	}
 
@@ -284,7 +284,7 @@ public class UndeadArmy {
 
 	/** Kills all nearby entities from Undead Army. */
 	public void killAllUndeadArmyEntities() {
-		for( Monster monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+		for( Mob monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
 			monster.hurt( DamageSource.MAGIC, 9001 );
 
 		this.undeadKilled = this.undeadToKill;
@@ -357,10 +357,10 @@ public class UndeadArmy {
 			for( int i = 0; i < waveMember.amount; i++ ) {
 				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.level, this.positionToAttack, SPAWN_RADIUS );
 				Entity entity = waveMember.entityType.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
-				if( !( entity instanceof Monster ) )
+				if( !( entity instanceof Mob ) )
 					continue;
 
-				Monster monster = ( Monster )entity;
+				Mob monster = ( Mob )entity;
 				monster.setPersistenceRequired();
 				updateUndeadAIGoal( monster );
 				equipWithDyedLeatherArmor( monster );
@@ -400,7 +400,7 @@ public class UndeadArmy {
 	}
 
 	/** Tries to enchant weapons and armor for given monster. */
-	private void tryToEnchantEquipment( Monster monster ) {
+	private void tryToEnchantEquipment( Mob monster ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( monster );
 
@@ -416,25 +416,25 @@ public class UndeadArmy {
 	}
 
 	/** Gives a random amount of leather armor to monster. */
-	private void equipWithDyedLeatherArmor( Monster monster ) {
+	private void equipWithDyedLeatherArmor( Mob monster ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		double armorPieceChance = config.getArmorPieceChance();
 
-		equipWithArmorPiece( monster, Items.LEATHER_HELMET, EquipmentSlot.HEAD, "helmet", 1.0 );
-		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, EquipmentSlot.CHEST, "chestplate", armorPieceChance );
-		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, EquipmentSlot.LEGS, "leggings", armorPieceChance );
-		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, EquipmentSlot.FEET, "boots", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_HELMET, "helmet", 1.0 );
+		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, "chestplate", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, "leggings", armorPieceChance );
+		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, "boots", armorPieceChance );
 	}
 
 	/** Creates new armor piece for undead entity. */
-	private void equipWithArmorPiece( Monster monster, Item item, EquipmentSlot equipmentSlotType, String registerName, double chance ) {
+	private void equipWithArmorPiece( Mob monster, Item item, String registerName, double chance ) {
 		if( Random.tryChance( 1.0 - chance ) )
 			return;
 
 		ItemStack armorPiece = new ItemStack( item );
 		setUndeadArmyColorAndName( armorPiece, registerName );
 		ItemHelper.damageItem( armorPiece, 0.75 );
-		monster.setItemSlot( equipmentSlotType, armorPiece );
+		monster.equipItemIfPossible( armorPiece );
 	}
 
 	/** Changes color of leather armor. */
@@ -464,12 +464,12 @@ public class UndeadArmy {
 	}
 
 	/** Saves information about undead army in monster data. */
-	private void markAsUndeadArmyUnit( Monster monster ) {
+	private void markAsUndeadArmyUnit( Mob monster ) {
 		NBTHelper.saveBlockPos( monster.getPersistentData(), UndeadArmyKeys.POSITION, this.positionToAttack );
 	}
 
 	/** Adds Undead Army AI goal for given monster. */
-	private void updateUndeadAIGoal( Monster monster ) {
+	private void updateUndeadAIGoal( Mob monster ) {
 		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackPosition(), 1.25f, 20.0f, 3.0f ) );
 	}
 
@@ -494,13 +494,13 @@ public class UndeadArmy {
 	}
 
 	/** Predicate for checking whether given monster entity is alive and belongs to the Undead Army. */
-	private Predicate< Monster > getUndeadParticipantsPredicate() {
+	private Predicate< Mob > getUndeadParticipantsPredicate() {
 		return monster->( monster.isAlive() && doesEntityBelongToUndeadArmy( monster ) );
 	}
 
 	/** Returns list of nearby Undead Army units. */
-	private List< Monster > getNearbyUndeadArmy( double range ) {
-		return this.level.getEntitiesOfClass( Monster.class, getAxisAligned( range ), getUndeadParticipantsPredicate() );
+	private List< Mob > getNearbyUndeadArmy( double range ) {
+		return this.level.getEntitiesOfClass( Mob.class, getAxisAligned( range ), getUndeadParticipantsPredicate() );
 	}
 
 	/** Returns amount of nearby Undead Army units. */
