@@ -3,6 +3,7 @@ package com.majruszs_difficulty.features.undead_army;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
 import com.mlib.LevelHelper;
+import com.mlib.MajruszLibrary;
 import com.mlib.TimeConverter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -96,6 +97,7 @@ public class UndeadArmyManager extends SavedData {
 
 		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
 		this.level.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundSource.AMBIENT, 0.25f, 1.0f );
+		MajruszLibrary.LOGGER.info( "Undead Army started at " + attackPosition + "!" );
 
 		return true;
 	}
