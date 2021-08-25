@@ -18,6 +18,7 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -49,7 +50,6 @@ public class EndShardOre extends Block {
 
 	public EndShardOre() {
 		super( Properties.of( Material.METAL, MaterialColor.COLOR_YELLOW )
-			.harvestLevel( 4 )
 			.requiresCorrectToolForDrops()
 			.strength( 30.0f, 1200.0f )
 			.sound( SoundType.ANCIENT_DEBRIS ) );

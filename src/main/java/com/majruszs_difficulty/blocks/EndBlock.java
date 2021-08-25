@@ -22,7 +22,6 @@ import java.util.List;
 public class EndBlock extends Block {
 	public EndBlock() {
 		super( Properties.of( Material.METAL, MaterialColor.COLOR_PURPLE )
-			.harvestLevel( 4 )
 			.requiresCorrectToolForDrops()
 			.strength( 5.0f, 6.0f )
 			.sound( SoundType.METAL ) );

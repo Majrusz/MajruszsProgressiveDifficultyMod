@@ -72,7 +72,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.25'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.44'
     implementation fg.deobf( 'com.mlib:majrusz-library-1.17.1:2.3.0' )
 }
 
