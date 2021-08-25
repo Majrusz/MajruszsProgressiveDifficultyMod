@@ -289,7 +289,6 @@ public class RegistryHandler {
 		UNDEAD_ARMY_MANAGER.updateWorld( level );
 
 		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
-		GAME_DATA_SAVER.updateGameState();
 
 		ReloadUndeadArmyGoals.resetTimer();
 

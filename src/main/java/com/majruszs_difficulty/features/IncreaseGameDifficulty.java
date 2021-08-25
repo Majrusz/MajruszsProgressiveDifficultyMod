@@ -2,14 +2,10 @@ package com.majruszs_difficulty.features;
 
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
-import com.mlib.config.AvailabilityConfig;
-import com.mlib.config.ConfigGroup;
-import com.mlib.config.StringListConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.EntityType;
@@ -23,49 +19,17 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-import static com.majruszs_difficulty.MajruszsDifficulty.STATE_GROUP;
-
 /** Increasing game difficulty mode after certain meeting certain criteria. */
 @Mod.EventBusSubscriber
 public class IncreaseGameDifficulty {
-	protected final ConfigGroup configGroup;
-	protected final StringListConfig entitiesStartingExpertMode;
-	protected final StringListConfig entitiesStartingMasterMode;
-	protected final StringListConfig dimensionsStartingExpertMode;
-	protected final StringListConfig dimensionsStartingMasterMode;
-	protected final AvailabilityConfig enteringAnyDimensionStartsExpertMode;
-
-	public IncreaseGameDifficulty() {
-		this.configGroup = new ConfigGroup( "IncreasingDifficulty", "" );
-		STATE_GROUP.addConfig( this.configGroup );
-
-		String entitiesExpertComment = "List of entities starting Expert Mode after killing them.";
-		String entitiesMasterComment = "List of entities starting Master Mode after killing them.";
-		String dimensionsExpertComment = "List of dimensions starting Expert Mode when a player enters it for the first time. (ignored when any_dimension_expert is set to true)";
-		String dimensionsMasterComment = "List of dimensions starting Master Mode when a player enters it for the first time.";
-		String anyDimensionComment = "Should entering any dimension start Expert Mode?";
-		this.entitiesStartingExpertMode = new StringListConfig( "entities_expert", entitiesExpertComment, false, "none" );
-		this.entitiesStartingMasterMode = new StringListConfig( "entities_master", entitiesMasterComment, false, "minecraft:ender_dragon" );
-		this.dimensionsStartingExpertMode = new StringListConfig( "dimensions_expert", dimensionsExpertComment, false, "minecraft:the_nether" );
-		this.dimensionsStartingMasterMode = new StringListConfig( "dimensions_master", dimensionsMasterComment, false, "none" );
-		this.enteringAnyDimensionStartsExpertMode = new AvailabilityConfig( "any_dimension_expert", anyDimensionComment, false, true );
-		this.configGroup.addConfigs( this.entitiesStartingExpertMode, this.entitiesStartingMasterMode, this.dimensionsStartingExpertMode,
-			this.dimensionsStartingMasterMode, this.enteringAnyDimensionStartsExpertMode
-		);
-	}
-
 	@SubscribeEvent
 	public static void onChangingDimension( PlayerEvent.PlayerChangedDimensionEvent event ) {
 		IncreaseGameDifficulty gameDifficulty = Instances.INCREASE_GAME_DIFFICULTY;
 		Player player = event.getPlayer();
 
 		switch( GameState.getCurrentMode() ) {
-			case NORMAL:
-				gameDifficulty.handleDimensionExpertMode( player, event.getTo() );
-				break;
-			case EXPERT:
-				gameDifficulty.handleDimensionMasterMode( player, event.getTo() );
-				break;
+			case NORMAL -> gameDifficulty.handleDimensionExpertMode( player, event.getTo() );
+			case EXPERT -> gameDifficulty.handleDimensionMasterMode( player, event.getTo() );
 		}
 	}
 
@@ -75,67 +39,43 @@ public class IncreaseGameDifficulty {
 		LivingEntity entity = event.getEntityLiving();
 
 		switch( GameState.getCurrentMode() ) {
-			case NORMAL:
-				gameDifficulty.handleKillingEntityExpertMode( entity );
-				break;
-			case EXPERT:
-				gameDifficulty.handleKillingEntityMasterMode( entity );
-				break;
+			case NORMAL -> gameDifficulty.handleKillingEntityExpertMode( entity );
+			case EXPERT -> gameDifficulty.handleKillingEntityMasterMode( entity );
 		}
 	}
 
 	/** Changes current game state to Expert Mode if dimension conditions are met. */
 	protected void handleDimensionExpertMode( Player player, ResourceKey< Level > dimension ) {
-		if( !shouldDimensionStartExpertMode( dimension.location() ) )
+		if( !Instances.GAME_STATE_CONFIG.shouldDimensionStartExpertMode( dimension.location() ) )
 			return;
 
 		startExpertMode( player.getServer() );
 	}
 
-	/** Checks whether entering given dimension should start Expert Mode. */
-	protected boolean shouldDimensionStartExpertMode( ResourceLocation dimensionLocation ) {
-		return this.enteringAnyDimensionStartsExpertMode.isEnabled() || this.dimensionsStartingExpertMode.contains( dimensionLocation.toString() );
-	}
-
 	/** Changes current game state to Master Mode if dimension conditions are met. */
 	protected void handleDimensionMasterMode( Player player, ResourceKey< Level > dimension ) {
-		if( !shouldDimensionStartMasterMode( dimension.location() ) )
+		if( !Instances.GAME_STATE_CONFIG.shouldDimensionStartMasterMode( dimension.location() ) )
 			return;
 
 		startMasterMode( player.getServer() );
 	}
 
-	/** Checks whether entering given dimension should start Master Mode. */
-	protected boolean shouldDimensionStartMasterMode( ResourceLocation dimensionLocation ) {
-		return this.dimensionsStartingMasterMode.contains( dimensionLocation.toString() );
-	}
-
 	/** Changes current game state to Expert Mode if entity conditions are met. */
 	protected void handleKillingEntityExpertMode( LivingEntity entity ) {
 		EntityType< ? > entityType = entity.getType();
-		if( !shouldKillingEntityStartExpertMode( entityType.getRegistryName() ) )
+		if( !Instances.GAME_STATE_CONFIG.shouldKillingEntityStartExpertMode( entityType.getRegistryName() ) )
 			return;
 
 		startExpertMode( entity.getServer() );
 	}
 
-	/** Checks whether killing given entity should start Expert Mode. */
-	protected boolean shouldKillingEntityStartExpertMode( @Nullable ResourceLocation entityLocation ) {
-		return entityLocation != null && this.entitiesStartingExpertMode.contains( entityLocation.toString() );
-	}
-
 	/** Changes current game state to Expert Mode if entity conditions are met. */
 	protected void handleKillingEntityMasterMode( LivingEntity entity ) {
 		EntityType< ? > entityType = entity.getType();
-		if( !shouldKillingEntityStartMasterMode( entityType.getRegistryName() ) )
+		if( !Instances.GAME_STATE_CONFIG.shouldKillingEntityStartMasterMode( entityType.getRegistryName() ) )
 			return;
 
 		startMasterMode( entity.getServer() );
-	}
-
-	/** Checks whether killing given entity should start Master Mode. */
-	protected boolean shouldKillingEntityStartMasterMode( @Nullable ResourceLocation entityLocation ) {
-		return entityLocation != null && this.entitiesStartingMasterMode.contains( entityLocation.toString() );
 	}
 
 	/** Starts Expert Mode and sends message to all players. */

@@ -116,6 +116,7 @@ public class Instances {
 	// Configs
 	public static final MobsConfig ENTITIES_CONFIG;
 	public static final SpawnDisabler.Config SPAWN_DISABLER_CONFIG;
+	public static final GameStateConfig GAME_STATE_CONFIG;
 
 	static {
 		// Items
@@ -251,6 +252,7 @@ public class Instances {
 		// Configs
 		ENTITIES_CONFIG = new MobsConfig();
 		SPAWN_DISABLER_CONFIG = new SpawnDisabler.Config();
+		GAME_STATE_CONFIG = new GameStateConfig();
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
