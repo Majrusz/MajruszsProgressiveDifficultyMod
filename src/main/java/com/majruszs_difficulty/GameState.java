@@ -63,14 +63,11 @@ public class GameState {
 
 	/** Converting integer to game state. */
 	public static State convertIntegerToState( int mode ) {
-		switch( mode ) {
-			default:
-				return State.NORMAL;
-			case 1:
-				return State.EXPERT;
-			case 2:
-				return State.MASTER;
-		}
+		return switch( mode ) {
+			default -> State.NORMAL;
+			case 1 -> State.EXPERT;
+			case 2 -> State.MASTER;
+		};
 	}
 
 	/**
@@ -82,14 +79,11 @@ public class GameState {
 	 @param master Configuration value for Master game state.
 	 */
 	public static < ConfigType > ConfigType getValueDependingOnGameState( State state, ConfigType normal, ConfigType expert, ConfigType master ) {
-		switch( state ) {
-			default:
-				return normal;
-			case EXPERT:
-				return expert;
-			case MASTER:
-				return master;
-		}
+		return switch( state ) {
+			default -> normal;
+			case EXPERT -> expert;
+			case MASTER -> master;
+		};
 	}
 
 	/**

@@ -32,7 +32,7 @@ public class SpawnDisabler {
 	protected static boolean shouldEntitySpawnBeDisabled( Entity entity ) {
 		ResourceLocation entityKey = Registry.ENTITY_TYPE.getKey( entity.getType() );
 		StringListConfig forbiddenMobsConfig = Instances.SPAWN_DISABLER_CONFIG.getCurrentForbiddenList();
-		
+
 		return forbiddenMobsConfig.contains( entityKey.toString() ) || entity instanceof Illusioner && isVillageNearby( entity );
 	}
 
