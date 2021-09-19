@@ -73,7 +73,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.0.44'
-    implementation fg.deobf( 'com.mlib:majrusz-library-1.17.1:2.3.0' )
+    implementation fg.deobf( 'com.mlib:majrusz-library-1.17.1:2.5.0-unfinished' )
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
