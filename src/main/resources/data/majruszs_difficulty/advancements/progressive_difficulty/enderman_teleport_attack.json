@@ -17,9 +17,8 @@
   },
   "criteria": {
     "teleported_player": {
-      "trigger": "majrusz_library:basic_trigger",
+      "trigger": "majruszs_difficulty:basic_trigger",
       "conditions": {
-        "mod_id": "majruszs_difficulty",
         "type": "enderman_teleport_attack"
       }
     }

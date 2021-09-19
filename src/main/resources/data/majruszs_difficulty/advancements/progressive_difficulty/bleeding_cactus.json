@@ -20,9 +20,8 @@
   },
   "criteria": {
     "bleeding_applied": {
-      "trigger": "majrusz_library:basic_trigger",
+      "trigger": "majruszs_difficulty:basic_trigger",
       "conditions": {
-        "mod_id": "majruszs_difficulty",
         "type": "cactus_bleeding"
       }
     }
