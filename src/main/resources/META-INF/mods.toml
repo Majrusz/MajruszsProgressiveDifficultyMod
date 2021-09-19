@@ -5,7 +5,7 @@ issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/iss
 
 [[mods]]
     modId="majruszs_difficulty"
-    version="1.2.3"
+    version="1.3.0-unfinished"
     displayName="Majrusz's Progressive Difficulty"
     updateJSONURL="https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.17.1/update.json"
     displayURL="https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
