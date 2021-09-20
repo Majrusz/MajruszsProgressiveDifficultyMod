@@ -31,6 +31,6 @@ issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/iss
 [[dependencies.majruszs_difficulty]]
     modId="majrusz_library"
     mandatory=true
-    versionRange="[2.5.0,3.0.0)"
+    versionRange="[2.6.0,3.0.0)"
     ordering="NONE"
     side="BOTH"
