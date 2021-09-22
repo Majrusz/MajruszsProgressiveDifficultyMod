@@ -15,7 +15,9 @@ public class GetGameStageCommand extends BaseCommand implements IRegistrableComm
 	public void register( CommandDispatcher< CommandSourceStack > commandDispatcher ) {
 		CommandManager commandManager = new CommandManager( commandDispatcher );
 		commandManager.register( literal( "gamestage" ), literal( "get" ), this::handleCommand );
+		commandManager.register( literal( "gamestage" ), this::handleCommand );
 		commandManager.register( literal( "gamestate" ), literal( "get" ), this::handleCommand );
+		commandManager.register( literal( "gamestate" ), this::handleCommand );
 	}
 
 	/** Changes current game stage and sends information to all players. */
