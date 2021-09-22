@@ -8,6 +8,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 /** Class representing current game state. On this class depends lot of difficulty improvements. */
 public class GameState {
@@ -108,6 +110,14 @@ public class GameState {
 	/** Returns clamped regional difficulty increased by certain value depending on current game state. */
 	public static double getRegionalDifficulty( LivingEntity target ) {
 		double clampedRegionalDifficulty = target != null ? LevelHelper.getClampedRegionalDifficulty( target ) : 0.25;
+		double stateModifier = getStateModifier();
+
+		return Mth.clamp( clampedRegionalDifficulty + stateModifier, 0.0, 1.0 );
+	}
+
+	/** Returns clamped regional difficulty increased by certain value depending on current game state. */
+	public static double getRegionalDifficulty( Level level, Vec3 position ) {
+		double clampedRegionalDifficulty = LevelHelper.getClampedRegionalDifficulty( level, position );
 		double stateModifier = getStateModifier();
 
 		return Mth.clamp( clampedRegionalDifficulty + stateModifier, 0.0, 1.0 );
