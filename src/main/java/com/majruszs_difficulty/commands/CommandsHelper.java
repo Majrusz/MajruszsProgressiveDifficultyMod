@@ -21,28 +21,27 @@ public class CommandsHelper {
 	static {
 		COMMANDS.add( new StopUndeadArmyCommands() );
 		COMMANDS.add( new StartUndeadArmyCommands() );
+		COMMANDS.add( new KillUndeadArmyCommands() );
+		COMMANDS.add( new HighlightUndeadArmyCommands() );
+		COMMANDS.add( new UndeadArmyProgressCommands() );
 		COMMANDS.add( new ChangeGameStageCommand() );
 		COMMANDS.add( new GetGameStageCommand() );
+		COMMANDS.add( new GetClampedRegionalDifficultyCommands() );
 	}
 
 	public static MutableComponent createGameStageMessage( GameState.State state, String translationID ) {
-		MutableComponent feedback = new TranslatableComponent( "commands.gamestage." + translationID );
-		feedback.append( " " );
-		feedback.append( GameState.getGameStateText( state ) );
-		feedback.append( "!" );
-
-		return feedback;
+		return new TranslatableComponent( "commands.gamestage." + translationID, GameState.getGameStateText( state ) );
 	}
 
-	public static MutableComponent createBaseMessage( String translationKey ) {
-		return new TranslatableComponent( translationKey );
+	public static MutableComponent createBaseMessageWithPosition( String translationKey, Vec3 position, Object... objects ) {
+		Object[] copy = new Object[ objects.length + 1 ];
+		copy[ objects.length ] = getPositionFormatted( position );
+		System.arraycopy( objects, 0, copy, 0, objects.length );
+
+		return new TranslatableComponent( translationKey, copy );
 	}
 
-	public static MutableComponent createBaseMessageWithPosition( String translationKey, Vec3 vec3 ) {
-		MutableComponent feedback = new TranslatableComponent( translationKey );
-		feedback.append( ": " );
-		feedback.append( "(x=" + ( int )( vec3.x ) + ", y=" + ( int )( vec3.y ) + ", z=" + ( int )( vec3.z ) + ")" );
-
-		return feedback;
+	public static String getPositionFormatted( Vec3 position ) {
+		return String.format( "(%d, %d, %d)", ( int )( position.x ), ( int )( position.y ), ( int )( position.z ) );
 	}
 }
