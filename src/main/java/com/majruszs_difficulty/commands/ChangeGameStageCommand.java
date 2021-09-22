@@ -11,7 +11,7 @@ import net.minecraft.commands.CommandSourceStack;
 
 /** Command that changes current game stage globally. */
 public class ChangeGameStageCommand extends BaseCommand implements IRegistrableCommand {
-	private static final String ENUM_ARGUMENT_NAME = "game_stage";
+	private static final String ENUM_ARGUMENT_NAME = "gamestage";
 	private static final RequiredArgumentBuilder< CommandSourceStack, ? > ENUM_ARGUMENT = enumArgument( ENUM_ARGUMENT_NAME, GameState.State.class );
 
 	/** Registers this command. */
@@ -26,9 +26,9 @@ public class ChangeGameStageCommand extends BaseCommand implements IRegistrableC
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source ) {
 		GameState.State gameStage = getEnum( context, ENUM_ARGUMENT_NAME, GameState.State.class );
 		if( GameState.changeModeWithAdvancement( gameStage, source.getServer() ) ) {
-			source.sendSuccess( CommandsHelper.createGameStageMessage( gameStage, "change" ), true );
+			source.sendSuccess( CommandsHelper.createGameStageMessage( gameStage, "changed" ), true );
 		} else {
-			source.sendSuccess( CommandsHelper.createGameStageMessage( gameStage, "cannot_change" ), true );
+			source.sendSuccess( CommandsHelper.createGameStageMessage( gameStage, "cannotchange" ), true );
 		}
 
 		return GameState.convertStateToInteger( gameStage );
