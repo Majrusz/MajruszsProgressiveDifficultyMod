@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -88,11 +89,19 @@ public class UndeadArmyManager extends SavedData {
 	 @return Returns whether the Undead Army had spawned.
 	 */
 	public boolean tryToSpawn( Player player ) {
-		BlockPos attackPosition = getAttackPosition( player );
+		return LevelHelper.isEntityIn( player, Level.OVERWORLD ) && tryToSpawn( getAttackPosition( player ) );
+	}
+
+	/**
+	 Spawns the Undead Army at player's position if possible.
+
+	 @return Returns whether the Undead Army had spawned.
+	 */
+	public boolean tryToSpawn( BlockPos attackPosition ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 
 		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere(
-			attackPosition ) || config.isUndeadArmyDisabled() || !LevelHelper.isEntityIn( player, Level.OVERWORLD ) )
+			attackPosition ) || config.isUndeadArmyDisabled() )
 			return false;
 
 		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
