@@ -36,9 +36,9 @@ public class GetClampedRegionalDifficultyCommands extends PositionCommand implem
 	}
 
 	public MutableComponent getMessage( Level level, Vec3 position ) {
-		String clampedRegionalDifficulty = String.format( "%.2f", LevelHelper.getClampedRegionalDifficulty( level, position ) );
+		String clampedRegionalDifficulty = String.format( "%.3f", LevelHelper.getClampedRegionalDifficulty( level, position ) );
 		String stateModifier = String.format( "%.2f", GameState.getStateModifier() );
-		String finalDifficulty = String.format( "%.2f", GameState.getRegionalDifficulty( level, position ) );
+		String finalDifficulty = String.format( "%.3f", GameState.getRegionalDifficulty( level, position ) );
 		MutableComponent formula = new TranslatableComponent( "commands.clampedregionaldifficulty.formula", stateModifier, finalDifficulty );
 		String positionFormatted = CommandsHelper.getPositionFormatted( position );
 

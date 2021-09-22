@@ -18,8 +18,8 @@ public class ChangeGameStageCommand extends BaseCommand implements IRegistrableC
 	@Override
 	public void register( CommandDispatcher< CommandSourceStack > commandDispatcher ) {
 		CommandManager commandManager = new CommandManager( commandDispatcher );
-		commandManager.register( literal( "gamestage" ), literal( "set" ), ENUM_ARGUMENT, hasPermission( 4 ), this::handleCommand );
-		commandManager.register( literal( "gamestate" ), literal( "set" ), ENUM_ARGUMENT, hasPermission( 4 ), this::handleCommand );
+		commandManager.register( literal( "gamestage" ), ENUM_ARGUMENT, hasPermission( 4 ), this::handleCommand );
+		commandManager.register( literal( "gamestate" ), ENUM_ARGUMENT, hasPermission( 4 ), this::handleCommand );
 	}
 
 	/** Changes current game stage and sends information to all players. */
