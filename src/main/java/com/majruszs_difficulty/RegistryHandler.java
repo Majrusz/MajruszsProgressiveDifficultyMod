@@ -1,8 +1,6 @@
 package com.majruszs_difficulty;
 
-import com.majruszs_difficulty.commands.ChangeGameStateCommand;
-import com.majruszs_difficulty.commands.GetDifficultyCommand;
-import com.majruszs_difficulty.commands.UndeadArmyManagerCommand;
+import com.majruszs_difficulty.commands.*;
 import com.majruszs_difficulty.entities.*;
 import com.majruszs_difficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.features.undead_army.ReloadUndeadArmyGoals;
@@ -10,6 +8,7 @@ import com.majruszs_difficulty.features.undead_army.UndeadArmyManager;
 import com.majruszs_difficulty.generation.OreGeneration;
 import com.majruszs_difficulty.items.AttributeArmorItem;
 import com.majruszs_difficulty.items.FakeItem;
+import com.mlib.commands.IRegistrableCommand;
 import com.mlib.items.SpawnEggFactory;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -255,11 +254,8 @@ public class RegistryHandler {
 
 	/** Registration of commands. */
 	private static void registerCommands( RegisterCommandsEvent event ) {
-		CommandDispatcher< CommandSourceStack > dispatcher = event.getDispatcher();
-
-		ChangeGameStateCommand.register( dispatcher );
-		UndeadArmyManagerCommand.register( dispatcher );
-		GetDifficultyCommand.register( dispatcher );
+		for( IRegistrableCommand command : CommandsHelper.COMMANDS )
+			command.register( event.getDispatcher() );
 	}
 
 	/**
