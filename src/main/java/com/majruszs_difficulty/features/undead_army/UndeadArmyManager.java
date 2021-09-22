@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /** Handling all Undead Armies in the world. */
 @Mod.EventBusSubscriber
@@ -93,18 +94,28 @@ public class UndeadArmyManager extends SavedData {
 	}
 
 	/**
-	 Spawns the Undead Army at player's position if possible.
+	 Spawns the Undead Army at given position if possible.
 
 	 @return Returns whether the Undead Army had spawned.
 	 */
 	public boolean tryToSpawn( BlockPos attackPosition ) {
+		return tryToSpawn( attackPosition, Optional.empty() );
+	}
+
+	/**
+	 Spawns the Undead Army at given position and from given direction if possible.
+
+	 @return Returns whether the Undead Army had spawned.
+	 */
+	public boolean tryToSpawn( BlockPos attackPosition, Optional< Direction > optionalDirection ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 
 		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere(
 			attackPosition ) || config.isUndeadArmyDisabled() )
 			return false;
 
-		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, Direction.getRandom() ) );
+		Direction direction = optionalDirection.orElse( Direction.getRandom() );
+		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( TimeConverter.secondsToTicks( 6.5 ), attackPosition, direction ) );
 		this.level.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundSource.AMBIENT, 0.25f, 1.0f );
 		MajruszLibrary.LOGGER.info( "Undead Army started at " + attackPosition + "!" );
 

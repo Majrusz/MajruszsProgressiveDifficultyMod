@@ -3,7 +3,7 @@ package com.majruszs_difficulty.commands;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.features.undead_army.UndeadArmy;
 import com.mlib.commands.IRegistrableCommand;
-import com.mlib.commands.LocationCommand;
+import com.mlib.commands.PositionCommand;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 /** Command that stops the Undead Army at given position. */
-public class StopUndeadArmyCommands extends LocationCommand implements IRegistrableCommand {
+public class StopUndeadArmyCommands extends PositionCommand implements IRegistrableCommand {
 	/** Stops the Undead Army at given position and sends information to the caller. */
 	@Override
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source, Vec3 position ) {
