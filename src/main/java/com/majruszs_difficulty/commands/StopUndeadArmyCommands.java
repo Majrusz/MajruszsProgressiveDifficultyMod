@@ -10,7 +10,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
-/** Command for stopping the Undead Army at given position. */
+/** Command that stops the Undead Army at given position. */
 public class StopUndeadArmyCommands extends LocationCommand implements IRegistrableCommand {
 	/** Stops the Undead Army at given position and sends information to the caller. */
 	@Override
@@ -29,7 +29,7 @@ public class StopUndeadArmyCommands extends LocationCommand implements IRegistra
 	/** Registers this command. */
 	@Override
 	public void register( CommandDispatcher< CommandSourceStack > commandDispatcher ) {
-		Data commandData = new Data( hasPermission( 4 ), UndeadArmyCommands.BASE_ARGUMENT, literal( "stop" ) );
+		Data commandData = new Data( hasPermission( 4 ), CommandsHelper.UNDEAD_ARMY_ARGUMENT, literal( "stop" ) );
 		registerLocationCommand( commandDispatcher, commandData );
 	}
 }
