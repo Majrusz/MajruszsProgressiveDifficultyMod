@@ -47,6 +47,7 @@ import java.util.function.Predicate;
 @Mod.EventBusSubscriber
 public class UndeadArmy {
 	public final static int ARMOR_COLOR = 0x92687b;
+	private final static int SAFE_SPAWN_RADIUS = 90;
 	private final static int SPAWN_RADIUS = 70;
 	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE,
 		BossEvent.BossBarOverlay.NOTCHED_10
@@ -213,7 +214,7 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( SPAWN_RADIUS / 7.0 ) >= this.undeadToKill / 2 ) )
+		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 7.0 ) >= this.undeadToKill / 2 ) )
 			createSpawner();
 
 		if( shouldWaveEndPrematurely() )
@@ -259,18 +260,18 @@ public class UndeadArmy {
 
 	/** Makes all the units from the Undead Army highlighted. */
 	public void highlightUndeadArmy() {
-		for( Mob monster : getNearbyUndeadArmy( SPAWN_RADIUS ) )
+		for( Mob monster : getNearbyUndeadArmy( SAFE_SPAWN_RADIUS ) )
 			EffectHelper.applyEffectIfPossible( monster, MobEffects.GLOWING, TimeConverter.secondsToTicks( 15.0 ), 5 );
 	}
 
 	/** Counts how many entities are left. */
 	public int countUndeadEntitiesLeft() {
-		return countNearbyUndeadArmy( SPAWN_RADIUS );
+		return countNearbyUndeadArmy( SAFE_SPAWN_RADIUS );
 	}
 
 	/** Updates all nearby undead entities AI goals. Required after world restart. */
 	public void updateNearbyUndeadAIGoals() {
-		List< Mob > monsters = getNearbyUndeadArmy( SPAWN_RADIUS );
+		List< Mob > monsters = getNearbyUndeadArmy( SAFE_SPAWN_RADIUS );
 
 		for( Mob monster : monsters )
 			updateUndeadAIGoal( monster );
@@ -284,7 +285,7 @@ public class UndeadArmy {
 
 	/** Kills all nearby entities from Undead Army. */
 	public void killAllUndeadArmyEntities() {
-		for( Mob monster : getNearbyUndeadArmy( SPAWN_RADIUS + 30 ) )
+		for( Mob monster : getNearbyUndeadArmy( SAFE_SPAWN_RADIUS ) )
 			monster.hurt( DamageSource.MAGIC, 9001 );
 
 		this.undeadKilled = this.undeadToKill;
