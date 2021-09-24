@@ -3,6 +3,7 @@ package com.majruszs_difficulty.effects;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.config.GameStateIntegerConfig;
+import com.mlib.CommonHelper;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.DurationConfig;
@@ -45,15 +46,19 @@ public class BleedingEffect extends MobEffect {
 	public BleedingEffect() {
 		super( MobEffectCategory.HARMFUL, 0xffdd5555 );
 
-		String damageComment = "Damage dealt by bleeding every tick.";
-		String cooldownComment = "Cooldown between attacking entity.";
-		String armorComment = "Bleeding chance reduction per armor piece.";
-		String amplifierComment = "Bleeding amplifier.";
-		String blackComment = "List of entities that are immune to Bleeding effect. (only human-like mobs and animals)";
+		String damageComment = "Damage dealt by Bleeding every tick.";
 		this.damage = new DoubleConfig( "damage", damageComment, false, 1.0, 0.0, 20.0 );
+
+		String cooldownComment = "Cooldown between taking damage.";
 		this.baseCooldown = new DurationConfig( "cooldown", cooldownComment, false, 4.0, 0.0, 20.0 );
+
+		String armorComment = "Chance reduction per each armor piece.";
 		this.armorChanceReduction = new DoubleConfig( "armor_reduction", armorComment, false, 0.2, 0.0, 0.25 );
+
+		String amplifierComment = "Bleeding amplifier.";
 		this.amplifier = new GameStateIntegerConfig( "amplifier", amplifierComment, 0, 1, 2, 0, 10 );
+
+		String blackComment = "List of entities who are immune to Bleeding effect. (only human-like mobs and animals)";
 		this.entitiesBlackList = new StringListConfig( "black_list", blackComment, false, "minecraft:skeleton_horse" );
 
 		this.bleedingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Bleeding", "Bleeding potion effect." ) );
@@ -63,18 +68,15 @@ public class BleedingEffect extends MobEffect {
 	/** Called every time when effect 'isDurationEffectTick'. */
 	@Override
 	public void applyEffectTick( LivingEntity entity, int amplifier ) {
-		double damageAmount = this.damage.get();
+		float damageAmount = this.damage.get().floatValue();
+		BleedingMobEffectInstance effectInstance = CommonHelper.castIfPossible( BleedingMobEffectInstance.class, entity.getEffect( this ) );
 
-		if( entity.getEffect( Instances.BLEEDING ) instanceof BleedingMobEffectInstance ) {
-			BleedingMobEffectInstance bleedingMobEffectInstance = ( BleedingMobEffectInstance )entity.getEffect( Instances.BLEEDING );
-
+		if( effectInstance != null ) {
 			Vec3 motion = entity.getDeltaMovement();
-			entity.hurt( bleedingMobEffectInstance != null ? new EntityBleedingDamageSource(
-				bleedingMobEffectInstance.damageSourceEntity ) : Instances.BLEEDING_SOURCE, ( float )damageAmount );
+			entity.hurt( new EntityBleedingDamageSource( effectInstance.damageSourceEntity ), damageAmount );
 			entity.setDeltaMovement( motion ); // sets previous motion to avoid any jumping from bleeding
-
 		} else {
-			entity.hurt( Instances.BLEEDING_SOURCE, ( float )damageAmount );
+			entity.hurt( Instances.BLEEDING_SOURCE, damageAmount );
 		}
 	}
 
@@ -83,7 +85,7 @@ public class BleedingEffect extends MobEffect {
 	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health
 	) {}
 
-	/** Calculating whether effect is ready to deal damage. */
+	/** Calculates whether effect is ready to deal damage. */
 	@Override
 	public boolean isDurationEffectTick( int duration, int amplifier ) {
 		int cooldown = Math.max( 4, this.baseCooldown.getDuration() >> amplifier );
@@ -97,9 +99,9 @@ public class BleedingEffect extends MobEffect {
 		return new ArrayList<>();
 	}
 
-	/** Spawning bleeding particles. */
+	/** Spawns bleeding particles. */
 	@SubscribeEvent
-	public static void sendParticless( TickEvent.PlayerTickEvent event ) {
+	public static void sendParticles( TickEvent.PlayerTickEvent event ) {
 		Player player = event.player;
 
 		if( !( player.level instanceof ServerLevel ) || !( player instanceof ServerPlayer ) )
@@ -117,16 +119,12 @@ public class BleedingEffect extends MobEffect {
 		return this.amplifier.getCurrentGameStateValue();
 	}
 
-	/**
-	 Returns whether entity may be bleeding.
-
-	 @param entity Entity to test.
-	 */
+	/** Returns whether entity may bleed. */
 	public boolean mayBleed( @Nullable Entity entity ) {
 		return ( MajruszsHelper.isAnimal( entity ) || MajruszsHelper.isHuman( entity ) ) && !isBlackListed( entity );
 	}
 
-	/** Returns whether is set that given entity should not bleed. */
+	/** Returns whether given entity should not bleed. */
 	private boolean isBlackListed( @Nullable Entity entity ) {
 		if( entity == null )
 			return false;
@@ -136,14 +134,9 @@ public class BleedingEffect extends MobEffect {
 		return entityLocation != null && this.entitiesBlackList.contains( entityLocation.toString() );
 	}
 
-	/**
-	 Returns multiplier depending on that how many armor pieces entity is currently wearing.
-
-	 @param entity Entity to test.
-	 */
+	/** Returns multiplier that depends on how many armor pieces entity has. */
 	public double getChanceMultiplierDependingOnArmor( LivingEntity entity ) {
 		double chance = 1.0;
-
 		for( ItemStack armorPiece : entity.getArmorSlots() )
 			if( !armorPiece.isEmpty() )
 				chance -= this.armorChanceReduction.get();
@@ -165,14 +158,14 @@ public class BleedingEffect extends MobEffect {
 
 		@Nullable
 		@Override
-		public Entity getEntity() {
-			return this.damageSourceEntity;
+		public Entity getDirectEntity() {
+			return null;
 		}
 
 		@Nullable
 		@Override
-		public Entity getDirectEntity() {
-			return null;
+		public Entity getEntity() {
+			return this.damageSourceEntity;
 		}
 	}
 
