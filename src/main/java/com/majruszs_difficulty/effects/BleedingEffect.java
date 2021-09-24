@@ -8,6 +8,7 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.DurationConfig;
 import com.mlib.config.StringListConfig;
+import com.mlib.time.TimeHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -101,17 +103,11 @@ public class BleedingEffect extends MobEffect {
 
 	/** Spawns bleeding particles. */
 	@SubscribeEvent
-	public static void sendParticles( TickEvent.PlayerTickEvent event ) {
-		Player player = event.player;
-
-		if( !( player.level instanceof ServerLevel ) || !( player instanceof ServerPlayer ) )
-			return;
-
-		CompoundTag data = player.getPersistentData();
-		data.putInt( BLEEDING_TAG_COUNTER, ( data.getInt( BLEEDING_TAG_COUNTER ) + 1 ) % 5 );
-		ServerLevel world = ( ServerLevel )player.level;
-		if( player.hasEffect( Instances.BLEEDING ) && data.getInt( BLEEDING_TAG_COUNTER ) == 0 )
-			world.sendParticles( Instances.BLOOD_PARTICLE, player.getX(), player.getY( 0.5 ), player.getZ(), 1, 0.125, 0.5, 0.125, 0.1 );
+	public static void sendParticles( LivingEvent.LivingUpdateEvent event ) {
+		LivingEntity entity = event.getEntityLiving();
+		ServerLevel level = CommonHelper.castIfPossible( ServerLevel.class, entity.level );
+		if( level != null && TimeHelper.hasServerTicksPassed( 5 ) && entity.hasEffect( Instances.BLEEDING ) )
+			level.sendParticles( Instances.BLOOD_PARTICLE, entity.getX(), entity.getY( 0.5 ), entity.getZ(), 1, 0.125, 0.5, 0.125, 0.1 );
 	}
 
 	/** Returns bleeding amplifier depending on current game state. */
