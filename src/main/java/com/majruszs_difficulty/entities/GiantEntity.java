@@ -29,8 +29,7 @@ public class GiantEntity extends Zombie {
 	static {
 		type = EntityType.Builder.of( GiantEntity::new, MobCategory.MONSTER )
 			.sized( 0.6f * scale, 2.0f * scale )
-			.build( MajruszsDifficulty.getLocation( "giant" )
-				.toString() );
+			.build( MajruszsDifficulty.getLocation( "giant" ).toString() );
 	}
 
 	public GiantEntity( EntityType< ? extends Zombie > type, Level world ) {

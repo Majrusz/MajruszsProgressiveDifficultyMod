@@ -21,8 +21,7 @@ public class PillagerWolfEntity extends Wolf {
 	static {
 		type = EntityType.Builder.of( PillagerWolfEntity::new, MobCategory.MONSTER )
 			.sized( 0.625f, 0.85f )
-			.build( MajruszsDifficulty.getLocation( "pillager_wolf" )
-				.toString() );
+			.build( MajruszsDifficulty.getLocation( "pillager_wolf" ).toString() );
 	}
 
 	public PillagerWolfEntity( EntityType< ? extends Wolf > type, Level world ) {

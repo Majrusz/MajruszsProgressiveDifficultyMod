@@ -38,8 +38,7 @@ public class EliteSkeletonEntity extends Skeleton {
 	static {
 		type = EntityType.Builder.of( EliteSkeletonEntity::new, MobCategory.MONSTER )
 			.sized( 0.6f, 2.0f )
-			.build( MajruszsDifficulty.getLocation( "elite_skeleton" )
-				.toString() );
+			.build( MajruszsDifficulty.getLocation( "elite_skeleton" ).toString() );
 	}
 
 	private int quickShotsLeft = 0;

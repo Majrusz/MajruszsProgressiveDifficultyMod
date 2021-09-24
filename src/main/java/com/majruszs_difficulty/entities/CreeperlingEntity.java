@@ -14,8 +14,7 @@ public class CreeperlingEntity extends Creeper {
 	static {
 		type = EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER )
 			.sized( 0.6f, 0.9f )
-			.build( MajruszsDifficulty.getLocation( "creeperling" )
-				.toString() );
+			.build( MajruszsDifficulty.getLocation( "creeperling" ).toString() );
 	}
 
 	public CreeperlingEntity( EntityType< ? extends CreeperlingEntity > type, Level world ) {
@@ -35,9 +34,6 @@ public class CreeperlingEntity extends Creeper {
 	}
 
 	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes()
-			.add( Attributes.MAX_HEALTH, 6.0 )
-			.add( Attributes.MOVEMENT_SPEED, 0.35 )
-			.build();
+		return Mob.createMobAttributes().add( Attributes.MAX_HEALTH, 6.0 ).add( Attributes.MOVEMENT_SPEED, 0.35 ).build();
 	}
 }

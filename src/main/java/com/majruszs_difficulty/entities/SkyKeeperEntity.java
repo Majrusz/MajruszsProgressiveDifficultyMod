@@ -16,8 +16,7 @@ public class SkyKeeperEntity extends Phantom {
 	static {
 		type = EntityType.Builder.of( SkyKeeperEntity::new, MobCategory.MONSTER )
 			.sized( 0.9f, 0.5f )
-			.build( MajruszsDifficulty.getLocation( "sky_keeper" )
-				.toString() );
+			.build( MajruszsDifficulty.getLocation( "sky_keeper" ).toString() );
 	}
 
 	public SkyKeeperEntity( EntityType< ? extends Phantom > type, Level world ) {
@@ -31,9 +30,6 @@ public class SkyKeeperEntity extends Phantom {
 	}
 
 	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes()
-			.add( Attributes.MAX_HEALTH, 30.0 )
-			.add( Attributes.ATTACK_DAMAGE, 5.0 )
-			.build();
+		return Mob.createMobAttributes().add( Attributes.MAX_HEALTH, 30.0 ).add( Attributes.ATTACK_DAMAGE, 5.0 ).build();
 	}
 }

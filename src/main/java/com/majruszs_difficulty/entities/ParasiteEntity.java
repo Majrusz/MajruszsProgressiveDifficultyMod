@@ -26,8 +26,7 @@ public class ParasiteEntity extends Spider {
 	static {
 		type = EntityType.Builder.of( ParasiteEntity::new, MobCategory.MONSTER )
 			.sized( 0.7f, 0.5f )
-			.build( MajruszsDifficulty.getLocation( "parasite" )
-				.toString() );
+			.build( MajruszsDifficulty.getLocation( "parasite" ).toString() );
 	}
 
 	public ParasiteEntity( EntityType< ? extends Spider > type, Level world ) {
