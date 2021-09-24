@@ -8,6 +8,7 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.DurationConfig;
 import com.mlib.config.StringListConfig;
+import com.mlib.effects.EffectHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -106,8 +107,10 @@ public class BleedingEffect extends MobEffect {
 	public static void sendParticles( LivingEvent.LivingUpdateEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
 		ServerLevel level = CommonHelper.castIfPossible( ServerLevel.class, entity.level );
-		if( level != null && TimeHelper.hasServerTicksPassed( 5 ) && entity.hasEffect( Instances.BLEEDING ) )
-			level.sendParticles( Instances.BLOOD_PARTICLE, entity.getX(), entity.getY( 0.5 ), entity.getZ(), 1, 0.125, 0.5, 0.125, 0.1 );
+		if( level != null && TimeHelper.hasServerTicksPassed( 3 ) && entity.hasEffect( Instances.BLEEDING ) ) {
+			int amountOfParticles = EffectHelper.getEffectAmplifier( entity, Instances.BLEEDING ) + 2;
+			level.sendParticles( Instances.BLOOD_PARTICLE, entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125, 0.05 );
+		}
 	}
 
 	/** Returns bleeding amplifier depending on current game state. */
