@@ -5,10 +5,10 @@ import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.mlib.MajruszLibrary;
 import com.mlib.Random;
+import com.mlib.math.VectorHelper;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,10 +28,11 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 /** Entity that is more powerful version of Skeleton. */
 public class EliteSkeletonEntity extends Skeleton {
-	public static final Potion[] arrowPotions = new Potion[]{ Potions.HARMING, Potions.POISON, Potions.SLOWNESS, Potions.WEAKNESS };
+	public static final Potion[] ARROW_POTIONS = new Potion[]{ Potions.HARMING, Potions.POISON, Potions.SLOWNESS, Potions.WEAKNESS };
 	public static final EntityType< EliteSkeletonEntity > type;
 	private static final float ARROW_VELOCITY = 2.0f, ARROW_INACCURACY = 0.0f;
 
@@ -76,27 +77,22 @@ public class EliteSkeletonEntity extends Skeleton {
 		if( heldItemStack.getItem() instanceof BowItem )
 			arrowEntity = ( ( BowItem )heldItemStack.getItem() ).customArrow( arrowEntity );
 
-		double d0 = target.getX() - this.getX();
-		double d1 = target.getY( 1.0 / 5.0 ) - arrowEntity.getY();
-		double d2 = target.getZ() - this.getZ();
-		double d3 = Mth.sqrt( ( float )( d0 * d0 + d2 * d2 ) );
+		Vec3 offset = VectorHelper.subtract( new Vec3( target.getX(), 0.0, target.getZ() ), new Vec3( getX(), 0.0, getZ() ) );
+		double distance = VectorHelper.length( offset );
+		double y = target.getY( 1.0 / 5.0 ) - arrowEntity.getY();
 
-		arrowEntity.shoot( d0, d1 + d3 * 0.2 + yFactor, d2, ARROW_VELOCITY, ARROW_INACCURACY );
+		arrowEntity.shoot( offset.x, y + distance * 0.2 + yFactor, offset.z, ARROW_VELOCITY, ARROW_INACCURACY );
 		this.level.addFreshEntity( arrowEntity );
 	}
 
-	/**
-	 Generating ammunition the skeleton will use. Skeleton have a chance to use tipped arrow instead of standard one.
-
-	 @param distanceFactor Distance between Skeleton and its target.
-	 */
+	/** Generates ammunition that skeleton will use. Skeleton have a chance to use tipped arrow instead of standard one. */
 	protected AbstractArrow getArrowEntity( float distanceFactor ) {
 		ItemStack ammunition = new ItemStack( Items.ARROW );
 
 		double tippedArrowChance = Instances.ENTITIES_CONFIG.eliteSkeleton.tippedArrowChance.get() * GameState.getRegionalDifficulty( this );
 		if( Random.tryChance( tippedArrowChance ) && ammunition.getItem() instanceof ArrowItem ) {
 			ammunition = new ItemStack( Items.TIPPED_ARROW );
-			PotionUtils.setPotion( ammunition, arrowPotions[ MajruszLibrary.RANDOM.nextInt( arrowPotions.length ) ] );
+			PotionUtils.setPotion( ammunition, ARROW_POTIONS[ MajruszLibrary.RANDOM.nextInt( ARROW_POTIONS.length ) ] );
 		}
 
 		return ProjectileUtil.getMobArrow( this, ammunition, distanceFactor );

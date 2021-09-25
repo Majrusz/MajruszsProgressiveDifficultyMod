@@ -67,7 +67,7 @@ public class InfestedEffect extends MobEffect {
 		damageEntity( amplifier, entity );
 	}
 
-	/** Calculating whether effect is ready to deal damage. */
+	/** Calculates whether effect is ready to deal damage. */
 	@Override
 	public boolean isDurationEffectTick( int duration, int amplifier ) {
 		return duration % this.damageCooldown.getDuration() == 0;

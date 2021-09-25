@@ -41,7 +41,6 @@ public class GiantEntity extends Zombie {
 	/** Registration of the entity's basic goals. */
 	@Override
 	protected void registerGoals() {
-		// super.registerGoals();
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );
 		this.applyEntityAI();
@@ -85,7 +84,7 @@ public class GiantEntity extends Zombie {
 
 	/** Registration of the entity's artificial intelligence goals. */
 	protected void applyEntityAI() {
-		this.goalSelector.addGoal( 2, new GiantAttackGoal( this, 1.0D, false ) );
+		this.goalSelector.addGoal( 2, new GiantAttackGoal( this, 1.0, false ) );
 		this.goalSelector.addGoal( 6, new MoveThroughVillageGoal( this, 1.0, true, 4, this::canBreakDoors ) );
 		this.goalSelector.addGoal( 7, new WaterAvoidingRandomStrollGoal( this, 1.0 ) );
 		this.targetSelector.addGoal( 1, ( new HurtByTargetGoal( this ) ).setAlertOthers( ZombifiedPiglin.class ) );
