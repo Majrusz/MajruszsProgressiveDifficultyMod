@@ -88,6 +88,7 @@ public class RegistryHandler {
 		ENTITIES.register( "elite_skeleton", ()->EliteSkeletonEntity.type );
 		ENTITIES.register( "creeperling", ()->CreeperlingEntity.type );
 		ENTITIES.register( "parasite", ()->ParasiteEntity.type );
+		ENTITIES.register( "tank", ()->TankEntity.type );
 		ENTITIES.register( modEventBus );
 	}
 
@@ -100,6 +101,7 @@ public class RegistryHandler {
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "elite_skeleton_spawn_egg", EliteSkeletonEntity.type, 12698049, 0xFE484D );
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "creeperling_spawn_egg", CreeperlingEntity.type, 0x0DA70B, 0x000000 );
 		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "parasite_spawn_egg", ParasiteEntity.type, 0x161616, 0x946794 );
+		SpawnEggFactory.createRegistrySpawnEgg( ITEMS, "tank_spawn_egg", TankEntity.type, 0xC1C1C1, 0x949494 );
 	}
 
 	/** Registers list of fake items. */
@@ -218,6 +220,7 @@ public class RegistryHandler {
 		event.put( EliteSkeletonEntity.type, EliteSkeletonEntity.getAttributeMap() );
 		event.put( CreeperlingEntity.type, CreeperlingEntity.getAttributeMap() );
 		event.put( ParasiteEntity.type, ParasiteEntity.getAttributeMap() );
+		event.put( TankEntity.type, TankEntity.getAttributeMap() );
 	}
 
 	/** Setting up entities and structures. */
@@ -236,6 +239,9 @@ public class RegistryHandler {
 		);
 		SpawnPlacements.register( ParasiteEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 			ParasiteEntity::checkMonsterSpawnRules
+		);
+		SpawnPlacements.register( TankEntity.type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			TankEntity::checkMonsterSpawnRules
 		);
 
 		/*event.enqueueWork( Instances.FLYING_PHANTOM::setup );

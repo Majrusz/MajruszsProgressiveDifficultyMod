@@ -4,17 +4,14 @@ import com.majruszs_difficulty.entities.*;
 import com.majruszs_difficulty.items.EndShardLocatorItem;
 import com.majruszs_difficulty.models.CreeperlingModel;
 import com.majruszs_difficulty.models.OceanShieldModel;
+import com.majruszs_difficulty.models.TankModel;
 import com.majruszs_difficulty.renderers.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.CreeperModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -29,12 +26,14 @@ public class RegistryHandlerClient {
 	public static void setup() {
 		ForgeHooksClient.registerLayerDefinition( OceanShieldRenderer.LAYER_LOCATION, OceanShieldModel::createLayer );
 		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER_LOCATION, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
+		ForgeHooksClient.registerLayerDefinition( TankRenderer.LAYER_LOCATION, ()->TankModel.createBodyLayer( CubeDeformation.NONE ) );
 
 		EntityRenderers.register( GiantEntity.type, GiantRenderer::new );
 		EntityRenderers.register( PillagerWolfEntity.type, PillagerWolfRenderer::new );
 		EntityRenderers.register( EliteSkeletonEntity.type, EliteSkeletonRenderer::new );
 		EntityRenderers.register( CreeperlingEntity.type, CreeperlingRenderer::new );
 		EntityRenderers.register( ParasiteEntity.type, ParasiteRenderer::new );
+		EntityRenderers.register( TankEntity.type, TankRenderer::new );
 
 		ItemProperties.register( Instances.END_SHARD_LOCATOR_ITEM, new ResourceLocation( "shard_distance" ),
 			EndShardLocatorItem::calculateDistanceToEndShard
