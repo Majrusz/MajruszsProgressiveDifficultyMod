@@ -4,7 +4,9 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.effects.BleedingEffect;
 import com.majruszs_difficulty.effects.BleedingEffect.BleedingMobEffectInstance;
+import com.mlib.CommonHelper;
 import com.mlib.effects.EffectHelper;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -41,6 +43,9 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 		);
 
 		EffectHelper.applyEffectIfPossible( target, effectInstance );
+		ServerPlayer serverPlayer = CommonHelper.castIfPossible( ServerPlayer.class, attacker );
+		if( serverPlayer != null )
+			Instances.BASIC_TRIGGER.trigger( serverPlayer, "bleeding_inflicted" );
 	}
 
 	/** Applying invisible bleeding effect instead of standard one. */

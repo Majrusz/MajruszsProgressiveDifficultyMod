@@ -108,6 +108,8 @@
   "advancements.progressive_difficulty.master_mode.title": "Master Mode",
   "advancements.progressive_difficulty.bleeding.title": "Am I Bleeding?",
   "advancements.progressive_difficulty.bleeding.description": "Bleed for the first time",
+  "advancements.progressive_difficulty.bleeding_inflicted.title": "Make'em Bleed",
+  "advancements.progressive_difficulty.bleeding_inflicted.description": "Make any mob bleed",
   "advancements.progressive_difficulty.bleeding_cactus.title": "Ouch!",
   "advancements.progressive_difficulty.bleeding_cactus.description": "Bleed after touching a cactus",
   "advancements.progressive_difficulty.bleeding_healed.title": "'Tis But a Scratch!",
