@@ -193,7 +193,7 @@ public class Instances {
 
 		// When damaged events
 		WhenDamagedEvent.REGISTRY_LIST.add( new SpiderPoisonOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new SkyKeeperLevitationOnAttack() );
+		WhenDamagedEvent.REGISTRY_LIST.add( new PhantomLevitationOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new DrownedLightningOnAttack() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new NauseaAndWeaknessWhenDrowning() );
 		WhenDamagedEvent.REGISTRY_LIST.add( new WitherSwordOnAttack() );
