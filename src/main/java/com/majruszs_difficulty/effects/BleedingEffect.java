@@ -118,7 +118,7 @@ public class BleedingEffect extends MobEffect {
 	public static void onDeath( LivingDeathEvent event ) {
 		BleedingEffect bleeding = Instances.BLEEDING;
 		LivingEntity entity = event.getEntityLiving();
-		if( isBleedingSource( event.getSource() ) && entity.hasEffect( bleeding ) )
+		if( entity.hasEffect( bleeding ) )
 			bleeding.spawnParticles( event.getEntityLiving(), 100 );
 	}
 
