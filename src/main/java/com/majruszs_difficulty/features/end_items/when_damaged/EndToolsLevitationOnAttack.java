@@ -30,7 +30,7 @@ public class EndToolsLevitationOnAttack extends WhenDamagedApplyStackableEffectB
 			ItemStack heldItemStack = attacker.getMainHandItem();
 			return !attacker.isShiftKeyDown() && EndItems.canInflictLevitation( heldItemStack.getItem() ) && super.shouldBeExecuted( attacker, target,
 				damageSource
-			);
+			) && target.equals( damageSource.getDirectEntity() );
 		}
 
 		return false;
