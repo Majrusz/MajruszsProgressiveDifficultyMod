@@ -107,8 +107,8 @@ public class BleedingEffect extends MobEffect {
 	public static void sendParticles( LivingEvent.LivingUpdateEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
 		ServerLevel level = CommonHelper.castIfPossible( ServerLevel.class, entity.level );
-		if( level != null && TimeHelper.hasServerTicksPassed( 3 ) && entity.hasEffect( Instances.BLEEDING ) ) {
-			int amountOfParticles = EffectHelper.getEffectAmplifier( entity, Instances.BLEEDING ) + 2;
+		if( level != null && TimeHelper.hasServerTicksPassed( 5 ) && entity.hasEffect( Instances.BLEEDING ) ) {
+			int amountOfParticles = EffectHelper.getEffectAmplifier( entity, Instances.BLEEDING ) + 3;
 			level.sendParticles( Instances.BLOOD_PARTICLE, entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125, 0.05 );
 		}
 	}
