@@ -33,7 +33,6 @@ public class RegistryHandlerClient {
 		EntityRenderers.register( GiantEntity.type, GiantRenderer::new );
 		EntityRenderers.register( PillagerWolfEntity.type, PillagerWolfRenderer::new );
 		EntityRenderers.register( EliteSkeletonEntity.type, EliteSkeletonRenderer::new );
-		EntityRenderers.register( SkyKeeperEntity.type, SkyKeeperRenderer::new );
 		EntityRenderers.register( CreeperlingEntity.type, CreeperlingRenderer::new );
 		EntityRenderers.register( ParasiteEntity.type, ParasiteRenderer::new );
 
