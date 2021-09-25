@@ -3,6 +3,7 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.effects.BleedingEffect;
+import com.mlib.CommonHelper;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DurationConfig;
@@ -18,6 +19,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.gossip.GossipType;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -92,8 +95,18 @@ public class BandageItem extends Item {
 		if( !( itemStack.getItem() instanceof BandageItem ) )
 			return;
 		BandageItem bandage = ( BandageItem )itemStack.getItem();
-		if( bandage.useIfPossible( event.getItemStack(), event.getPlayer(), ( LivingEntity )event.getTarget() ) )
+		if( bandage.useIfPossible( event.getItemStack(), event.getPlayer(), ( LivingEntity )event.getTarget() ) ) {
+			Villager villager = CommonHelper.castIfPossible( Villager.class, event.getTarget() );
+			if( villager != null )
+				increaseReputation( event.getPlayer(), villager );
+
 			event.setCancellationResult( InteractionResult.SUCCESS );
+		}
+	}
+
+	/** Increases reputation with given villager. */
+	public static void increaseReputation( Player player, Villager villager ) {
+		villager.getGossips().add( player.getUUID(), GossipType.MINOR_POSITIVE, 5 );
 	}
 
 	/** Checks whether Bandage is always usable. (player can use it even if it does not have a Bleeding effect) */
