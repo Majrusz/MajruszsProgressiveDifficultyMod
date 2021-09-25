@@ -49,9 +49,7 @@ public class GiantEntity extends Zombie {
 	/** Calculating experience points after killing this entity. */
 	@Override
 	protected int getExperienceReward( Player player ) {
-		this.xpReward += MajruszLibrary.RANDOM.nextInt( 15 );
-
-		return super.getExperienceReward( player );
+		return super.getExperienceReward( player ) + MajruszLibrary.RANDOM.nextInt( 15 );
 	}
 
 	@Override
