@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -38,7 +39,6 @@ import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 /** Bleeding effect similar to poison effect. */
 @Mod.EventBusSubscriber
 public class BleedingEffect extends MobEffect {
-	private static final String BLEEDING_TAG_COUNTER = "BleedingCounter";
 	protected final ConfigGroup bleedingGroup;
 	protected final DoubleConfig damage;
 	protected final DurationConfig baseCooldown;
@@ -102,15 +102,36 @@ public class BleedingEffect extends MobEffect {
 		return new ArrayList<>();
 	}
 
-	/** Spawns bleeding particles. */
+	/** Spawns blood particles every few ticks. */
 	@SubscribeEvent
-	public static void sendParticles( LivingEvent.LivingUpdateEvent event ) {
+	public static void onUpdate( LivingEvent.LivingUpdateEvent event ) {
+		BleedingEffect bleeding = Instances.BLEEDING;
 		LivingEntity entity = event.getEntityLiving();
-		ServerLevel level = CommonHelper.castIfPossible( ServerLevel.class, entity.level );
-		if( level != null && TimeHelper.hasServerTicksPassed( 5 ) && entity.hasEffect( Instances.BLEEDING ) ) {
-			int amountOfParticles = EffectHelper.getEffectAmplifier( entity, Instances.BLEEDING ) + 3;
-			level.sendParticles( Instances.BLOOD_PARTICLE, entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125, 0.05 );
+		if( TimeHelper.hasServerTicksPassed( 5 ) && entity.hasEffect( bleeding ) ) {
+			int amountOfParticles = EffectHelper.getEffectAmplifier( entity, bleeding ) + 3;
+			bleeding.spawnParticles( entity, amountOfParticles );
 		}
+	}
+
+	/** Spawns blood particles on death. */
+	@SubscribeEvent
+	public static void onDeath( LivingDeathEvent event ) {
+		BleedingEffect bleeding = Instances.BLEEDING;
+		LivingEntity entity = event.getEntityLiving();
+		if( isBleedingSource( event.getSource() ) && entity.hasEffect( bleeding ) )
+			bleeding.spawnParticles( event.getEntityLiving(), 100 );
+	}
+
+	/** Checks whether given damage source is bleeding. */
+	public static boolean isBleedingSource( DamageSource damageSource ) {
+		return damageSource.msgId.equals( Instances.BLEEDING_SOURCE.msgId );
+	}
+
+	/** Spawns blood particles. */
+	private void spawnParticles( LivingEntity entity, int amountOfParticles ) {
+		ServerLevel level = CommonHelper.castIfPossible( ServerLevel.class, entity.level );
+		if( level != null )
+			level.sendParticles( Instances.BLOOD_PARTICLE, entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125, 0.05 );
 	}
 
 	/** Returns bleeding amplifier depending on current game state. */
