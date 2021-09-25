@@ -1,22 +1,25 @@
 package com.majruszs_difficulty.goals;
 
 import com.majruszs_difficulty.entities.CreeperlingEntity;
+import com.mlib.CommonHelper;
+import com.mlib.entities.EntityHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.function.Predicate;
 
 /** Makes the creeper explode if there is a player behind the wall. */
 public class CreeperExplodeWallsGoal extends Goal {
+	private static final double MAXIMUM_START_DISTANCE = 19.0;
+	private static final double MAXIMUM_EXPLODE_DISTANCE = 49.0;
+	private static final double OFFSET = 16.0;
 	private final Creeper creeper;
-	private final double maximumStartDistance = 19.0;
-	private final double maximumExplodeDistance = 49.0;
-	private final double offset = 10.0;
 	private LivingEntity attackTarget;
 
 	public CreeperExplodeWallsGoal( Creeper creeper ) {
@@ -30,24 +33,13 @@ public class CreeperExplodeWallsGoal extends Goal {
 		LivingEntity target = getNearestPlayer( this.creeper );
 
 		return this.creeper.getSwellDir() > 0 || target != null && this.creeper.distanceToSqr(
-			target ) < this.maximumStartDistance * getDistanceMultiplier();
-	}
-
-	/** Updates state of goal each tick. */
-	@Override
-	public void tick() {
-		if( this.attackTarget == null || this.creeper.distanceToSqr( this.attackTarget ) > this.maximumExplodeDistance * getDistanceMultiplier() ) {
-			this.creeper.setSwellDir( -1 ); // stops creeper's explosion
-		} else {
-			this.creeper.setSwellDir( 1 );
-		}
+			target ) < MAXIMUM_START_DISTANCE * getDistanceMultiplier();
 	}
 
 	/** Executes task at the beginning of goal. */
 	@Override
 	public void start() {
-		this.creeper.getNavigation()
-			.stop();
+		this.creeper.getNavigation().stop();
 		this.attackTarget = getNearestPlayer( this.creeper );
 	}
 
@@ -57,26 +49,37 @@ public class CreeperExplodeWallsGoal extends Goal {
 		this.attackTarget = null;
 	}
 
-	/** Returns distance multiplier depending on entity is Creeper or Creeperling. */
-	private double getDistanceMultiplier() {
-		return this.creeper instanceof CreeperlingEntity ? 0.6 : 1.0;
+	/** Updates state of goal each tick. */
+	@Override
+	public void tick() {
+		if( this.attackTarget == null || this.creeper.distanceToSqr( this.attackTarget ) > MAXIMUM_EXPLODE_DISTANCE * getDistanceMultiplier() ) {
+			this.creeper.setSwellDir( -1 ); // stops creeper's explosion
+		} else {
+			this.creeper.setSwellDir( 1 );
+		}
 	}
 
-	/** Returns nearest player. */
+	/** Returns distance multiplier. */
+	private double getDistanceMultiplier() {
+		double sizeMultiplier = this.creeper instanceof CreeperlingEntity ? 0.6 : 1.0;
+		double chargedMultiplier = this.creeper.isPowered() ? 2.0 : 1.0;
+
+		return sizeMultiplier * chargedMultiplier;
+	}
+
+	/** Returns the nearest player. */
 	@Nullable
 	private Player getNearestPlayer( Creeper creeper ) {
-		if( !( creeper.level instanceof ServerLevel ) )
+		ServerLevel level = CommonHelper.castIfPossible( ServerLevel.class, creeper.level );
+		if( level == null )
 			return null;
 
-		ServerLevel world = ( ServerLevel )creeper.level;
-		double x = creeper.getX(), y = creeper.getY(), z = creeper.getZ();
-		AABB axisAlignedBB = new AABB( x - this.offset, y - this.offset, z - this.offset, x + this.offset, y + this.offset, z + this.offset );
+		Predicate< Player > playerPredicate = player->!EntityHelper.isOnCreativeMode( player );
+		List< Player > nearestPlayers = EntityHelper.getEntitiesInSphere( Player.class, level, creeper, OFFSET, playerPredicate );
 
 		Player nearestPlayer = null;
-		for( Player player : world.getEntitiesOfClass( Player.class, axisAlignedBB ) )
-			if( !player.getAbilities().instabuild && ( nearestPlayer == null || creeper.distanceToSqr( player ) < creeper.distanceToSqr(
-				nearestPlayer )
-			) )
+		for( Player player : nearestPlayers )
+			if( nearestPlayer == null || creeper.distanceToSqr( player ) < creeper.distanceToSqr( nearestPlayer ) )
 				nearestPlayer = player;
 
 		return nearestPlayer;
