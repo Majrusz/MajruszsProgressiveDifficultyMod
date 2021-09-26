@@ -30,11 +30,13 @@ public class TankModel< Type extends Entity > extends HierarchicalModel< Type > 
 	@Override
 	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
 		this.head.yRot = netHeadYaw * ( ( float )Math.PI / 180f );
-		this.head.xRot = headPitch * ( ( float )Math.PI / 180f );
+		this.head.xRot = headPitch * ( ( float )Math.PI / 180f ) + 0.0873F;
+		this.body.yRot = this.head.yRot * 0.4f;
 
-		float limbFactor1 = 2.5f * limbSwing * 0.6662f, limbFactor2 = 1.4f * limbSwingAmount;
+		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
 		this.leftLeg.xRot = Mth.cos( limbFactor1 ) * limbFactor2;
 		this.rightLeg.xRot = Mth.cos( limbFactor1 + ( float )Math.PI ) * limbFactor2;
+		this.body.zRot = Mth.cos( limbFactor1 ) * bodyFactor;
 	}
 
 	@Override
@@ -48,15 +50,15 @@ public class TankModel< Type extends Entity > extends HierarchicalModel< Type > 
 
 		partDefinition.addOrReplaceChild( "body", CubeListBuilder.create()
 			.texOffs( 0, 20 )
-			.addBox( -8.0F, -22.0F, -4.0F, 16.0F, 12.0F, 8.0F, cubeDeformation )
+			.addBox( -8.0F, -22.0F, -5.0F, 16.0F, 12.0F, 8.0F, cubeDeformation )
 			.texOffs( 36, 40 )
-			.addBox( -1.0F, -21.0F, 1.0F, 2.0F, 20.0F, 2.0F, cubeDeformation.extend( -0.1F ) )
+			.addBox( -1.0F, -23.0F, 1.0F, 2.0F, 22.0F, 2.0F, cubeDeformation.extend( -0.1F ) )
 			.texOffs( 0, 40 )
-			.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, cubeDeformation ), PartPose.offset( 0.0F, 12.0F, 0.0F ) );
+			.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, cubeDeformation ), PartPose.offsetAndRotation( 0.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F ) );
 
 		partDefinition.getChild( "body" )
 			.addOrReplaceChild( "head", CubeListBuilder.create().texOffs( 0, 0 ).addBox( -5.0F, -10.0F, -5.0F, 10.0F, 10.0F, 10.0F, cubeDeformation ),
-				PartPose.offset( 0.0F, -22.0F, -1.0F )
+				PartPose.offsetAndRotation( 0.0F, -22.0F, -1.0F, 0.0873F, 0.0F, 0.0F )
 			);
 
 		partDefinition.getChild( "body" ).addOrReplaceChild( "arms", CubeListBuilder.create(), PartPose.offset( 0.0F, -22.0F, 0.0F ) );
@@ -64,39 +66,39 @@ public class TankModel< Type extends Entity > extends HierarchicalModel< Type > 
 		partDefinition.getChild( "body" )
 			.getChild( "arms" )
 			.addOrReplaceChild( "rightArm",
-				CubeListBuilder.create().texOffs( 40, 0 ).addBox( -3.0F, 0.0F, -3.0F, 6.0F, 16.0F, 6.0F, cubeDeformation ),
-				PartPose.offsetAndRotation( -11.0F, 0.0F, 1.0F, 0.1745F, 0.0F, 0.0873F )
+				CubeListBuilder.create().texOffs( 40, 0 ).addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ),
+				PartPose.offsetAndRotation( -9.5F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1745F )
 			);
 
 		partDefinition.getChild( "body" )
 			.getChild( "arms" )
 			.getChild( "rightArm" )
 			.addOrReplaceChild( "rightForearm",
-				CubeListBuilder.create().texOffs( 40, 0 ).addBox( -3.0F, -1.0F, -3.0F, 6.0F, 16.0F, 6.0F, cubeDeformation.extend( -0.4F ) ),
-				PartPose.offsetAndRotation( 0.0F, 16.0F, 0.0F, -0.7854F, 0.0F, 0.0F )
+				CubeListBuilder.create().texOffs( 44, 37 ).addBox( -2.5F, -0.5F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ),
+				PartPose.offsetAndRotation( 0.0F, 14.5F, 0.0F, -0.7854F, 0.0F, 0.0F )
 			);
 
 		partDefinition.getChild( "body" )
 			.getChild( "arms" )
-			.addOrReplaceChild( "leftArm", CubeListBuilder.create().texOffs( 40, 0 ).addBox( -3.0F, 0.0F, -3.0F, 6.0F, 16.0F, 6.0F, cubeDeformation ),
-				PartPose.offsetAndRotation( 11.0F, 0.0F, 1.0F, 0.1745F, 0.0F, -0.0873F )
+			.addOrReplaceChild( "leftArm", CubeListBuilder.create().texOffs( 40, 0 ).addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ),
+				PartPose.offsetAndRotation( 9.5F, 0.0F, -0.5F, 0.0F, 0.0F, -0.1745F )
 			);
 
 		partDefinition.getChild( "body" )
 			.getChild( "arms" )
 			.getChild( "leftArm" )
 			.addOrReplaceChild( "leftForearm",
-				CubeListBuilder.create().texOffs( 40, 0 ).addBox( -3.0F, -1.0F, -3.0F, 6.0F, 16.0F, 6.0F, cubeDeformation.extend( -0.4F ) ),
+				CubeListBuilder.create().texOffs( 44, 37 ).addBox( -2.5F, -2.0F, -3.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ),
 				PartPose.offsetAndRotation( 0.0F, 16.0F, 0.0F, -0.7854F, 0.0F, 0.0F )
 			);
 
 		partDefinition.addOrReplaceChild( "leftLeg",
-			CubeListBuilder.create().texOffs( 48, 22 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
+			CubeListBuilder.create().texOffs( 48, 21 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
 			PartPose.offset( 3.0F, 12.0F, 0.0F )
 		);
 
 		partDefinition.addOrReplaceChild( "rightLeg",
-			CubeListBuilder.create().texOffs( 48, 22 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
+			CubeListBuilder.create().texOffs( 48, 21 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
 			PartPose.offset( -3.0F, 12.0F, 0.0F )
 		);
 
