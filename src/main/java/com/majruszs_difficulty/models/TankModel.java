@@ -1,18 +1,66 @@
 package com.majruszs_difficulty.models;
 
+import com.majruszs_difficulty.entities.TankEntity;
+import com.mlib.MajruszLibrary;
+import com.mlib.animations.Animation;
+import com.mlib.animations.Frame;
+import com.mlib.animations.FrameDegrees;
+import com.mlib.animations.FrameVec3;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /** Model for new Tank enemy. */
 @OnlyIn( Dist.CLIENT )
-public class TankModel< Type extends Entity > extends HierarchicalModel< Type > {
+public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {
+	protected static final Animation< Float > SPECIAL_ATTACK_BODY_X;
+	protected static final Animation< Float > SPECIAL_ATTACK_ARMS_X;
+	protected static final Animation< Float > NORMAL_ATTACK_BODY_Y;
+	protected static final Animation< Vec3 > NORMAL_ATTACK_ARM;
+
+	static {
+		SPECIAL_ATTACK_BODY_X = new Animation<>();
+		SPECIAL_ATTACK_BODY_X.addFrame( new FrameDegrees( 0.0f, 10.0f ) )
+			.addFrame( new FrameDegrees( 0.3f, -30.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 0.4f, -30.0f ) )
+			.addFrame( new FrameDegrees( 0.6f, 45.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 0.7f, 35.0f ) )
+			.addFrame( new FrameDegrees( 0.85f, 0.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 1.0f, 10.0f ) );
+
+		SPECIAL_ATTACK_ARMS_X = new Animation<>();
+		SPECIAL_ATTACK_ARMS_X.addFrame( new FrameDegrees( 0.0f, 0.0f ) )
+			.addFrame( new FrameDegrees( 0.4f, -160.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 0.6f, -40.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 0.7f, -30.0f ) )
+			.addFrame( new FrameDegrees( 0.85f, 10.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 1.0f, 0.0f, Frame.InterpolationType.SQUARE ) );
+
+		NORMAL_ATTACK_BODY_Y = new Animation<>();
+		NORMAL_ATTACK_BODY_Y.addFrame( new FrameDegrees( 0.0f, 10.0f ) )
+			.addFrame( new FrameDegrees( 0.15f, 30.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 0.25f, 30.0f ) )
+			.addFrame( new FrameDegrees( 0.45f, -60.0f, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameDegrees( 0.55f, -50.0f ) )
+			.addFrame( new FrameDegrees( 1.0f, 0.0f, Frame.InterpolationType.SQUARE ) );
+
+		NORMAL_ATTACK_ARM = new Animation<>();
+		NORMAL_ATTACK_ARM.addFrame( new FrameVec3( 0.0f, 0.0, 0.0, 10.0 ) )
+			.addFrame( new FrameVec3( 0.2f, 45.0, 0.0, 45.0, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameVec3( 0.3f, 45.0, 0.0, 45.0 ) )
+			.addFrame( new FrameVec3( 0.5f, -90.0, -30.0, 60.0, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameVec3( 0.6f, -80.0, -25.0, 50.0, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameVec3( 1.0f, 0.0, 0.0, 10.0, Frame.InterpolationType.SQUARE ) );
+	}
+
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;
+	protected float specialAttackDurationRatio = 0.0f;
+	protected float normalAttackDurationRatio = 0.0f;
 
 	public TankModel( ModelPart modelPart ) {
 		this.root = modelPart;
@@ -31,12 +79,24 @@ public class TankModel< Type extends Entity > extends HierarchicalModel< Type > 
 	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
 		this.head.yRot = netHeadYaw * ( ( float )Math.PI / 180f );
 		this.head.xRot = headPitch * ( ( float )Math.PI / 180f ) + 0.0873F;
-		this.body.yRot = this.head.yRot * 0.4f;
 
 		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
 		this.leftLeg.xRot = Mth.cos( limbFactor1 ) * limbFactor2;
 		this.rightLeg.xRot = Mth.cos( limbFactor1 + ( float )Math.PI ) * limbFactor2;
 		this.body.zRot = Mth.cos( limbFactor1 ) * bodyFactor;
+
+		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.specialAttackDurationRatio );
+		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.specialAttackDurationRatio );
+
+		this.body.yRot = this.head.yRot * 0.4f + NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatio );
+		Animation.applyRotationInDegrees( NORMAL_ATTACK_ARM.apply( this.normalAttackDurationRatio ), this.rightArm );
+	}
+
+	@Override
+	public void prepareMobModel( Type tank, float p_102862_, float p_102863_, float packedLight ) {
+		this.specialAttackDurationRatio = tank.getSpecialAttackDurationRatio();
+		this.normalAttackDurationRatio = tank.getNormalAttackDurationRatio();
+		super.prepareMobModel( tank, p_102862_, p_102863_, packedLight );
 	}
 
 	@Override
@@ -49,12 +109,14 @@ public class TankModel< Type extends Entity > extends HierarchicalModel< Type > 
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
 		partDefinition.addOrReplaceChild( "body", CubeListBuilder.create()
-			.texOffs( 0, 20 )
-			.addBox( -8.0F, -22.0F, -5.0F, 16.0F, 12.0F, 8.0F, cubeDeformation )
-			.texOffs( 36, 40 )
-			.addBox( -1.0F, -23.0F, 1.0F, 2.0F, 22.0F, 2.0F, cubeDeformation.extend( -0.1F ) )
-			.texOffs( 0, 40 )
-			.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, cubeDeformation ), PartPose.offsetAndRotation( 0.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F ) );
+				.texOffs( 0, 20 )
+				.addBox( -8.0F, -22.0F, -5.0F, 16.0F, 12.0F, 8.0F, cubeDeformation )
+				.texOffs( 36, 40 )
+				.addBox( -1.0F, -23.0F, 1.0F, 2.0F, 22.0F, 2.0F, cubeDeformation.extend( -0.1F ) )
+				.texOffs( 0, 40 )
+				.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F )
+		);
 
 		partDefinition.getChild( "body" )
 			.addOrReplaceChild( "head", CubeListBuilder.create().texOffs( 0, 0 ).addBox( -5.0F, -10.0F, -5.0F, 10.0F, 10.0F, 10.0F, cubeDeformation ),

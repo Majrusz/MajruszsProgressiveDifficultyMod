@@ -72,6 +72,7 @@ public class RegistryHandler {
 		modEventBus.addListener( RegistryHandler::setup );
 		modEventBus.addListener( RegistryHandler::setupClient );
 		modEventBus.addListener( RegistryHandler::setupEntities );
+		modEventBus.addListener( PacketHandler::registerPacket );
 		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->modEventBus.addListener( RegistryHandler::onTextureStitch ) );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
