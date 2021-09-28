@@ -14,8 +14,8 @@ public class PacketHandler {
 		CHANNEL = NetworkRegistry.newSimpleChannel( MajruszsDifficulty.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals,
 			PROTOCOL_VERSION::equals
 		);
-		CHANNEL.registerMessage( 0, TankEntity.SpecialAttackMessage.class, TankEntity.SpecialAttackMessage::encode,
-			TankEntity.SpecialAttackMessage::new, TankEntity.SpecialAttackMessage::handle
+		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode,
+			TankEntity.TankAttackMessage::new, TankEntity.TankAttackMessage::handle
 		);
 		// CHANNEL.registerMessage( 1, VelocityMessage.class, VelocityMessage::encode, VelocityMessage::new, VelocityMessage::handle );
 	}

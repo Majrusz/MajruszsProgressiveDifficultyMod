@@ -27,14 +27,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import org.spongepowered.asm.mixin.injection.At;
 
 /** New undead huge skeleton. */
 @Mod.EventBusSubscriber
 public class TankEntity extends Monster {
 	public static final EntityType< TankEntity > type;
-	protected static final int SPECIAL_ATTACK_DURATION = TimeConverter.secondsToTicks( 1.75 );
-	protected static final int NORMAL_ATTACK_DURATION = TimeConverter.secondsToTicks( 1.0 );
+	protected static final int SPECIAL_ATTACK_DURATION = TimeConverter.secondsToTicks( 0.9 );
+	protected static final int NORMAL_ATTACK_DURATION = TimeConverter.secondsToTicks( 0.6 );
 
 	static {
 		type = EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER )
@@ -44,6 +43,7 @@ public class TankEntity extends Monster {
 
 	private int specialAttackTicksLeft;
 	private int normalAttackTicksLeft;
+	public boolean isLeftHandAttack;
 
 	public TankEntity( EntityType< ? extends TankEntity > type, Level world ) {
 		super( type, world );
@@ -73,12 +73,12 @@ public class TankEntity extends Monster {
 
 	public static AttributeSupplier getAttributeMap() {
 		return Mob.createMobAttributes()
-			.add( Attributes.MAX_HEALTH, 100.0 )
-			.add( Attributes.MOVEMENT_SPEED, 0.25 )
+			.add( Attributes.MAX_HEALTH, 140.0 )
+			.add( Attributes.MOVEMENT_SPEED, 0.2 )
 			.add( Attributes.ATTACK_DAMAGE, 8.0 )
 			.add( Attributes.FOLLOW_RANGE, 40.0 )
-			.add( Attributes.ATTACK_KNOCKBACK, 2.0 )
-			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
+			.add( Attributes.ATTACK_KNOCKBACK, 3.0 )
+			.add( Attributes.KNOCKBACK_RESISTANCE, 0.75 )
 			.build();
 	}
 
@@ -97,14 +97,22 @@ public class TankEntity extends Monster {
 			case SPECIAL -> this.specialAttackTicksLeft = SPECIAL_ATTACK_DURATION;
 		}
 
+		this.isLeftHandAttack = MajruszLibrary.RANDOM.nextBoolean();
 		if( this.level instanceof ServerLevel )
 			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ),
-				new SpecialAttackMessage( this, this.specialAttackTicksLeft, attackType )
+				new TankAttackMessage( this, this.specialAttackTicksLeft, attackType )
 			);
 	}
 
 	public boolean isAttacking() {
-		return this.specialAttackTicksLeft > 0 || this.normalAttackTicksLeft > 0;
+		return isAttacking( AttackType.NORMAL ) || isAttacking( AttackType.SPECIAL );
+	}
+
+	public boolean isAttacking( AttackType attackType ) {
+		return switch( attackType ) {
+			case NORMAL -> this.normalAttackTicksLeft > 0;
+			case SPECIAL -> this.specialAttackTicksLeft > 0;
+		};
 	}
 
 	public boolean isAttackLastTick() {
@@ -125,15 +133,15 @@ public class TankEntity extends Monster {
 		return 1.0f - Mth.clamp( ( float )this.normalAttackTicksLeft / NORMAL_ATTACK_DURATION, 0.0f, 1.0f );
 	}
 
-	public static class SpecialAttackMessage extends EntityFloatMessage {
+	public static class TankAttackMessage extends EntityFloatMessage {
 		protected final AttackType attackType;
 
-		public SpecialAttackMessage( Entity entity, float value, AttackType attackType ) {
+		public TankAttackMessage( Entity entity, float value, AttackType attackType ) {
 			super( entity, value );
 			this.attackType = attackType;
 		}
 
-		public SpecialAttackMessage( FriendlyByteBuf buffer ) {
+		public TankAttackMessage( FriendlyByteBuf buffer ) {
 			super( buffer );
 			this.attackType = buffer.readEnum( AttackType.class );
 		}

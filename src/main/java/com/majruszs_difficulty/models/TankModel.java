@@ -1,11 +1,11 @@
 package com.majruszs_difficulty.models;
 
 import com.majruszs_difficulty.entities.TankEntity;
-import com.mlib.MajruszLibrary;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
 import com.mlib.animations.FrameDegrees;
 import com.mlib.animations.FrameVec3;
+import com.mlib.math.VectorHelper;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -42,7 +42,7 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 			.addFrame( new FrameDegrees( 1.0f, 0.0f, Frame.InterpolationType.SQUARE ) );
 
 		NORMAL_ATTACK_BODY_Y = new Animation<>();
-		NORMAL_ATTACK_BODY_Y.addFrame( new FrameDegrees( 0.0f, 10.0f ) )
+		NORMAL_ATTACK_BODY_Y.addFrame( new FrameDegrees( 0.0f, 0.0f ) )
 			.addFrame( new FrameDegrees( 0.15f, 30.0f, Frame.InterpolationType.SQUARE ) )
 			.addFrame( new FrameDegrees( 0.25f, 30.0f ) )
 			.addFrame( new FrameDegrees( 0.45f, -60.0f, Frame.InterpolationType.SQUARE ) )
@@ -61,6 +61,7 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;
 	protected float specialAttackDurationRatio = 0.0f;
 	protected float normalAttackDurationRatio = 0.0f;
+	protected boolean isLeftHandAttack = false;
 
 	public TankModel( ModelPart modelPart ) {
 		this.root = modelPart;
@@ -88,14 +89,20 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.specialAttackDurationRatio );
 		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.specialAttackDurationRatio );
 
-		this.body.yRot = this.head.yRot * 0.4f + NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatio );
-		Animation.applyRotationInDegrees( NORMAL_ATTACK_ARM.apply( this.normalAttackDurationRatio ), this.rightArm );
+		float attackHandMultiplier = this.isLeftHandAttack ? -1.0f : 1.0f;
+		this.body.yRot = this.head.yRot * 0.4f + attackHandMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatio );
+
+		Vec3 armRotation = VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( this.normalAttackDurationRatio ),
+			new Vec3( 1.0f, attackHandMultiplier, attackHandMultiplier )
+		);
+		Animation.applyRotationInDegrees( armRotation, this.isLeftHandAttack ? this.leftArm : this.rightArm );
 	}
 
 	@Override
 	public void prepareMobModel( Type tank, float p_102862_, float p_102863_, float packedLight ) {
 		this.specialAttackDurationRatio = tank.getSpecialAttackDurationRatio();
 		this.normalAttackDurationRatio = tank.getNormalAttackDurationRatio();
+		this.isLeftHandAttack = tank.isLeftHandAttack;
 		super.prepareMobModel( tank, p_102862_, p_102863_, packedLight );
 	}
 
