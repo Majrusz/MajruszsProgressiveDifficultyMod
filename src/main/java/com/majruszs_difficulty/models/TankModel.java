@@ -59,8 +59,7 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 	}
 
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;
-	protected float specialAttackDurationRatio = 0.0f;
-	protected float normalAttackDurationRatio = 0.0f;
+	protected float attackDurationRatioLeft = 0.0f;
 	protected boolean isLeftHandAttack = false;
 
 	public TankModel( ModelPart modelPart ) {
@@ -78,31 +77,34 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 
 	@Override
 	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
+		float handMultiplier = this.isLeftHandAttack ? -1.0f : 1.0f;
+		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
+		Vec3 vectorHandMultiplier = new Vec3( 1.0f, handMultiplier, handMultiplier );
+
+		// head rotation when looking around
 		this.head.yRot = netHeadYaw * ( ( float )Math.PI / 180f );
 		this.head.xRot = headPitch * ( ( float )Math.PI / 180f ) + 0.0873F;
 
-		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
+		// leg and body rotation while moving
 		this.leftLeg.xRot = Mth.cos( limbFactor1 ) * limbFactor2;
 		this.rightLeg.xRot = Mth.cos( limbFactor1 + ( float )Math.PI ) * limbFactor2;
 		this.body.zRot = Mth.cos( limbFactor1 ) * bodyFactor;
 
-		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.specialAttackDurationRatio );
-		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.specialAttackDurationRatio );
+		// body and arms animations when Tank is using special attack
+		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.attackDurationRatioLeft );
+		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.attackDurationRatioLeft );
 
-		float attackHandMultiplier = this.isLeftHandAttack ? -1.0f : 1.0f;
-		this.body.yRot = this.head.yRot * 0.4f + attackHandMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatio );
-
-		Vec3 armRotation = VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( this.normalAttackDurationRatio ),
-			new Vec3( 1.0f, attackHandMultiplier, attackHandMultiplier )
-		);
+		// body and arms animations when Tank is using standard attack
+		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.attackDurationRatioLeft );
+		Vec3 armRotation = VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( this.attackDurationRatioLeft ), vectorHandMultiplier );
 		Animation.applyRotationInDegrees( armRotation, this.isLeftHandAttack ? this.leftArm : this.rightArm );
 	}
 
 	@Override
 	public void prepareMobModel( Type tank, float p_102862_, float p_102863_, float packedLight ) {
-		this.specialAttackDurationRatio = tank.getSpecialAttackDurationRatio();
-		this.normalAttackDurationRatio = tank.getNormalAttackDurationRatio();
+		this.attackDurationRatioLeft = tank.getAttackDurationRatioLeft();
 		this.isLeftHandAttack = tank.isLeftHandAttack;
+
 		super.prepareMobModel( tank, p_102862_, p_102863_, packedLight );
 	}
 

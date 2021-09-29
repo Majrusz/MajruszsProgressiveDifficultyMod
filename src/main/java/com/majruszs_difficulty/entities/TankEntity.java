@@ -7,6 +7,7 @@ import com.mlib.CommonHelper;
 import com.mlib.MajruszLibrary;
 import com.mlib.TimeConverter;
 import com.mlib.network.message.EntityFloatMessage;
+import com.mlib.network.message.EntityMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -100,7 +101,7 @@ public class TankEntity extends Monster {
 		this.isLeftHandAttack = MajruszLibrary.RANDOM.nextBoolean();
 		if( this.level instanceof ServerLevel )
 			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ),
-				new TankAttackMessage( this, this.specialAttackTicksLeft, attackType )
+				new TankAttackMessage( this, attackType )
 			);
 	}
 
@@ -125,19 +126,22 @@ public class TankEntity extends Monster {
 			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume * 1.25f, pitch * 0.75f );
 	}*/
 
-	public float getSpecialAttackDurationRatio() {
-		return 1.0f - Mth.clamp( ( float )this.specialAttackTicksLeft / SPECIAL_ATTACK_DURATION, 0.0f, 1.0f );
+	public float getAttackDurationRatioLeft() {
+		float ratio;
+		if( this.specialAttackTicksLeft > this.normalAttackTicksLeft ) {
+			ratio = ( float )this.specialAttackTicksLeft / SPECIAL_ATTACK_DURATION;
+		} else {
+			ratio = ( float )this.normalAttackTicksLeft / NORMAL_ATTACK_DURATION;
+		}
+
+		return 1.0f - Mth.clamp( ratio, 0.0f, 1.0f );
 	}
 
-	public float getNormalAttackDurationRatio() {
-		return 1.0f - Mth.clamp( ( float )this.normalAttackTicksLeft / NORMAL_ATTACK_DURATION, 0.0f, 1.0f );
-	}
-
-	public static class TankAttackMessage extends EntityFloatMessage {
+	public static class TankAttackMessage extends EntityMessage {
 		protected final AttackType attackType;
 
-		public TankAttackMessage( Entity entity, float value, AttackType attackType ) {
-			super( entity, value );
+		public TankAttackMessage( Entity entity, AttackType attackType ) {
+			super( entity );
 			this.attackType = attackType;
 		}
 

@@ -42,11 +42,11 @@ public class TankAttackGoal extends MeleeAttackGoal {
 		if( distance <= getAttackReachSqr( entity ) && isTimeToAttack() && !this.tank.isAttacking() ) {
 			this.tank.useAttack( Random.tryChance( 0.25 ) ? TankEntity.AttackType.SPECIAL : TankEntity.AttackType.NORMAL );
 		} else if( !this.hasAttacked ) {
-			if( this.tank.isAttacking( TankEntity.AttackType.NORMAL ) && this.tank.getNormalAttackDurationRatio() > 0.45f ) {
+			if( this.tank.isAttacking( TankEntity.AttackType.NORMAL ) && this.tank.getAttackDurationRatioLeft() > 0.45f ) {
 				if( distance <= getAttackReachSqr( entity ) )
 					this.tank.doHurtTarget( entity );
 				this.hasAttacked = true;
-			} else if( this.tank.isAttacking( TankEntity.AttackType.SPECIAL ) && this.tank.getSpecialAttackDurationRatio() > 0.55f ) {
+			} else if( this.tank.isAttacking( TankEntity.AttackType.SPECIAL ) && this.tank.getAttackDurationRatioLeft() > 0.55f ) {
 				hurtAllEntitiesInRange( entity );
 				this.hasAttacked = true;
 			}
