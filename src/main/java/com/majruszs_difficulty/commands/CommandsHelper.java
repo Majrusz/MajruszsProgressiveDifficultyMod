@@ -4,9 +4,7 @@ import com.majruszs_difficulty.GameState;
 import com.mlib.commands.BaseCommand;
 import com.mlib.commands.IRegistrableCommand;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.phys.Vec3;
@@ -23,7 +21,7 @@ public class CommandsHelper {
 		COMMANDS.add( new StartUndeadArmyCommands() );
 		COMMANDS.add( new KillUndeadArmyCommands() );
 		COMMANDS.add( new HighlightUndeadArmyCommands() );
-		COMMANDS.add( new UndeadArmyProgressCommands() );
+		COMMANDS.add( new UndeadArmyUndeadLeftCommands() );
 		COMMANDS.add( new ChangeGameStageCommand() );
 		COMMANDS.add( new GetGameStageCommand() );
 		COMMANDS.add( new GetClampedRegionalDifficultyCommands() );

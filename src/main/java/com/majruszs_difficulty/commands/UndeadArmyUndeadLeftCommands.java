@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 /** Command that sends information about the Undead Army progress at given position. */
-public class UndeadArmyProgressCommands extends PositionCommand implements IRegistrableCommand {
+public class UndeadArmyUndeadLeftCommands extends PositionCommand implements IRegistrableCommand {
 	/** Sends information about the Undead Army progress at given position and sends information to the caller. */
 	@Override
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source, Vec3 position ) {
@@ -29,7 +29,7 @@ public class UndeadArmyProgressCommands extends PositionCommand implements IRegi
 	/** Registers this command. */
 	@Override
 	public void register( CommandDispatcher< CommandSourceStack > commandDispatcher ) {
-		Data commandData = new Data( hasPermission( 4 ), CommandsHelper.UNDEAD_ARMY_ARGUMENT, literal( "progress" ) );
+		Data commandData = new Data( hasPermission( 4 ), CommandsHelper.UNDEAD_ARMY_ARGUMENT, literal( "undeadleft" ) );
 		registerLocationCommand( commandDispatcher, commandData );
 	}
 }
