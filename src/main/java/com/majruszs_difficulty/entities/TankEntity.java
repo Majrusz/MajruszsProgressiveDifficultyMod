@@ -6,12 +6,15 @@ import com.majruszs_difficulty.goals.TankAttackGoal;
 import com.mlib.CommonHelper;
 import com.mlib.MajruszLibrary;
 import com.mlib.TimeConverter;
-import com.mlib.network.message.EntityFloatMessage;
 import com.mlib.network.message.EntityMessage;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,9 +46,9 @@ public class TankEntity extends Monster {
 			.build( MajruszsDifficulty.getLocation( "tank" ).toString() );
 	}
 
+	public boolean isLeftHandAttack;
 	private int specialAttackTicksLeft;
 	private int normalAttackTicksLeft;
-	public boolean isLeftHandAttack;
 
 	public TankEntity( EntityType< ? extends TankEntity > type, Level world ) {
 		super( type, world );
@@ -100,9 +104,7 @@ public class TankEntity extends Monster {
 
 		this.isLeftHandAttack = MajruszLibrary.RANDOM.nextBoolean();
 		if( this.level instanceof ServerLevel )
-			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ),
-				new TankAttackMessage( this, attackType )
-			);
+			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new TankAttackMessage( this, attackType ) );
 	}
 
 	public boolean isAttacking() {
@@ -120,11 +122,31 @@ public class TankEntity extends Monster {
 		return this.specialAttackTicksLeft == 1 || this.normalAttackTicksLeft == 1;
 	}
 
-	/*@Override
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.SKELETON_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound( DamageSource damageSource ) {
+		return SoundEvents.SKELETON_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.SKELETON_DEATH;
+	}
+
+	@Override
+	protected void playStepSound( BlockPos blockPos, BlockState blockState ) {
+		this.playSound( SoundEvents.SKELETON_STEP, 0.15f, 1.0f );
+	}
+
+	@Override
 	public void playSound( SoundEvent sound, float volume, float pitch ) {
 		if( !this.isSilent() )
 			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume * 1.25f, pitch * 0.75f );
-	}*/
+	}
 
 	public float getAttackDurationRatioLeft() {
 		float ratio;
@@ -135,6 +157,10 @@ public class TankEntity extends Monster {
 		}
 
 		return 1.0f - Mth.clamp( ratio, 0.0f, 1.0f );
+	}
+
+	public enum AttackType {
+		NORMAL, SPECIAL
 	}
 
 	public static class TankAttackMessage extends EntityMessage {
@@ -165,9 +191,5 @@ public class TankEntity extends Monster {
 					tank.useAttack( this.attackType );
 			}
 		}
-	}
-
-	public enum AttackType {
-		NORMAL, SPECIAL
 	}
 }

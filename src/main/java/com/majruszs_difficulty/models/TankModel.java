@@ -59,7 +59,8 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 	}
 
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;
-	protected float attackDurationRatioLeft = 0.0f;
+	protected float normalAttackDurationRatioLeft = 0.0f;
+	protected float specialAttackDurationRatioLeft = 0.0f;
 	protected boolean isLeftHandAttack = false;
 
 	public TankModel( ModelPart modelPart ) {
@@ -90,19 +91,20 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		this.rightLeg.xRot = Mth.cos( limbFactor1 + ( float )Math.PI ) * limbFactor2;
 		this.body.zRot = Mth.cos( limbFactor1 ) * bodyFactor;
 
-		// body and arms animations when Tank is using special attack
-		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.attackDurationRatioLeft );
-		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.attackDurationRatioLeft );
-
 		// body and arms animations when Tank is using standard attack
-		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.attackDurationRatioLeft );
-		Vec3 armRotation = VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( this.attackDurationRatioLeft ), vectorHandMultiplier );
+		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatioLeft );
+		Vec3 armRotation = VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( this.normalAttackDurationRatioLeft ), vectorHandMultiplier );
 		Animation.applyRotationInDegrees( armRotation, this.isLeftHandAttack ? this.leftArm : this.rightArm );
+
+		// body and arms animations when Tank is using special attack
+		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.specialAttackDurationRatioLeft );
+		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.specialAttackDurationRatioLeft );
 	}
 
 	@Override
 	public void prepareMobModel( Type tank, float p_102862_, float p_102863_, float packedLight ) {
-		this.attackDurationRatioLeft = tank.getAttackDurationRatioLeft();
+		this.normalAttackDurationRatioLeft = tank.isAttacking( TankEntity.AttackType.NORMAL ) ? tank.getAttackDurationRatioLeft() : 1.0f;
+		this.specialAttackDurationRatioLeft = tank.isAttacking( TankEntity.AttackType.SPECIAL ) ? tank.getAttackDurationRatioLeft() : 1.0f;
 		this.isLeftHandAttack = tank.isLeftHandAttack;
 
 		super.prepareMobModel( tank, p_102862_, p_102863_, packedLight );

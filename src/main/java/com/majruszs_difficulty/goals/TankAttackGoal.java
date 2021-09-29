@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.level.block.Blocks;
@@ -43,13 +44,18 @@ public class TankAttackGoal extends MeleeAttackGoal {
 			this.tank.useAttack( Random.tryChance( 0.25 ) ? TankEntity.AttackType.SPECIAL : TankEntity.AttackType.NORMAL );
 		} else if( !this.hasAttacked ) {
 			if( this.tank.isAttacking( TankEntity.AttackType.NORMAL ) && this.tank.getAttackDurationRatioLeft() > 0.45f ) {
-				if( distance <= getAttackReachSqr( entity ) )
+				if( distance <= getAttackReachSqr( entity ) ) {
 					this.tank.doHurtTarget( entity );
-				this.hasAttacked = true;
+					this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f,  0.9f );
+				}
 			} else if( this.tank.isAttacking( TankEntity.AttackType.SPECIAL ) && this.tank.getAttackDurationRatioLeft() > 0.55f ) {
 				hurtAllEntitiesInRange( entity );
-				this.hasAttacked = true;
+				this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f,  0.9f );
+			} else {
+				return;
 			}
+
+			this.hasAttacked = true;
 		} else if( this.tank.isAttackLastTick() ) {
 			this.resetAttackCooldown();
 			this.hasAttacked = false;
