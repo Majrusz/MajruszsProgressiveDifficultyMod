@@ -26,7 +26,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -421,14 +420,14 @@ public class UndeadArmy {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		double armorPieceChance = config.getArmorPieceChance();
 
-		equipWithArmorPiece( monster, Items.LEATHER_HELMET, "helmet", 1.0 );
-		equipWithArmorPiece( monster, Items.LEATHER_CHESTPLATE, "chestplate", armorPieceChance );
-		equipWithArmorPiece( monster, Items.LEATHER_LEGGINGS, "leggings", armorPieceChance );
-		equipWithArmorPiece( monster, Items.LEATHER_BOOTS, "boots", armorPieceChance );
+		equipWithArmorPieceIfPossible( monster, Items.LEATHER_HELMET, "helmet", 1.0 );
+		equipWithArmorPieceIfPossible( monster, Items.LEATHER_CHESTPLATE, "chestplate", armorPieceChance );
+		equipWithArmorPieceIfPossible( monster, Items.LEATHER_LEGGINGS, "leggings", armorPieceChance );
+		equipWithArmorPieceIfPossible( monster, Items.LEATHER_BOOTS, "boots", armorPieceChance );
 	}
 
 	/** Creates new armor piece for undead entity. */
-	private void equipWithArmorPiece( Mob monster, Item item, String registerName, double chance ) {
+	private void equipWithArmorPieceIfPossible( Mob monster, Item item, String registerName, double chance ) {
 		if( Random.tryChance( 1.0 - chance ) )
 			return;
 

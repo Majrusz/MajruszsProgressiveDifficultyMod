@@ -18,12 +18,13 @@ public class CountKilledUndead {
 	@SubscribeEvent
 	public static void onUndeadKill( LivingDeathEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
-		Player player = DamageHelper.getPlayerFromDamageSource( event.getSource() );
+		Player player = DamageHelper.castEntityIfPossible( Player.class, event.getSource() );
 		UndeadArmyManager undeadArmyManager = RegistryHandler.UNDEAD_ARMY_MANAGER;
 		if( player == null || undeadArmyManager == null || !isValidEntity( entity ) || undeadArmyManager.doesEntityBelongToUndeadArmy( entity ) )
 			return;
 
-		NBTHelper.setNBTInteger( player, UndeadArmyKeys.KILLED, kills->kills + 1 );
+		NBTHelper.IntegerData killedUndeadData = new NBTHelper.IntegerData( player, UndeadArmyKeys.KILLED );
+		killedUndeadData.set( kills->kills + 1 );
 		spawnArmyIfPossible( player );
 	}
 
@@ -36,9 +37,10 @@ public class CountKilledUndead {
 	private static void spawnArmyIfPossible( Player player ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		UndeadArmyManager undeadArmyManager = RegistryHandler.UNDEAD_ARMY_MANAGER;
+		NBTHelper.IntegerData killedUndeadData = new NBTHelper.IntegerData( player, UndeadArmyKeys.KILLED );
 
-		if( NBTHelper.getNBTInteger( player, UndeadArmyKeys.KILLED ) >= config.getRequiredKills() && player.level instanceof ServerLevel )
+		if( killedUndeadData.get() >= config.getRequiredKills() && player.level instanceof ServerLevel )
 			if( undeadArmyManager != null && undeadArmyManager.tryToSpawn( player ) )
-				NBTHelper.setNBTInteger( player, UndeadArmyKeys.KILLED, 0 );
+				killedUndeadData.set( 0 );
 	}
 }
