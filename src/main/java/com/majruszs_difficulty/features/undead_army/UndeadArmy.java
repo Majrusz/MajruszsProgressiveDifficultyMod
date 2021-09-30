@@ -470,7 +470,8 @@ public class UndeadArmy {
 
 	/** Adds Undead Army AI goal for given monster. */
 	private void updateUndeadAIGoal( Mob monster ) {
-		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackPosition(), 1.25f, 20.0f, 3.0f ) );
+		float speedModifier = monster instanceof TankEntity ? 2.0f : 1.25f;
+		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackPosition(), speedModifier, 20.0f, 3.0f ) );
 	}
 
 	/** Updates visibility of Undead Army progress bar for nearby players. */
