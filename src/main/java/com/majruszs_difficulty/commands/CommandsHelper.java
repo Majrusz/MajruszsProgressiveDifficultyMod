@@ -22,6 +22,7 @@ public class CommandsHelper {
 		COMMANDS.add( new KillUndeadArmyCommands() );
 		COMMANDS.add( new HighlightUndeadArmyCommands() );
 		COMMANDS.add( new UndeadArmyUndeadLeftCommands() );
+		COMMANDS.add( new UndeadArmyProgressCommands() );
 		COMMANDS.add( new ChangeGameStageCommand() );
 		COMMANDS.add( new GetGameStageCommand() );
 		COMMANDS.add( new GetClampedRegionalDifficultyCommands() );
