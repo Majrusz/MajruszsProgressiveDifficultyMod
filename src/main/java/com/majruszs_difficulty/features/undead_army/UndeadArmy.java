@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
+import com.majruszs_difficulty.entities.TankEntity;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
 import com.mlib.MajruszLibrary;
 import com.mlib.Random;
