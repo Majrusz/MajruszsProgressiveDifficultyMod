@@ -72,8 +72,39 @@ public class TankEntity extends Monster {
 	}
 
 	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.SKELETON_AMBIENT;
+	}
+
+	@Override
+	public MobType getMobType() {
+		return MobType.UNDEAD;
+	}
+
+	@Override
 	protected float getStandingEyeHeight( Pose poseIn, EntityDimensions sizeIn ) {
 		return 2.35f;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound( DamageSource damageSource ) {
+		return SoundEvents.SKELETON_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.SKELETON_DEATH;
+	}
+
+	@Override
+	protected void playStepSound( BlockPos blockPos, BlockState blockState ) {
+		this.playSound( SoundEvents.SKELETON_STEP, 0.15f, 1.0f );
+	}
+
+	@Override
+	public void playSound( SoundEvent sound, float volume, float pitch ) {
+		if( !this.isSilent() )
+			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume * 1.25f, pitch * 0.75f );
 	}
 
 	public static AttributeSupplier getAttributeMap() {
@@ -81,7 +112,7 @@ public class TankEntity extends Monster {
 			.add( Attributes.MAX_HEALTH, 140.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.2 )
 			.add( Attributes.ATTACK_DAMAGE, 8.0 )
-			.add( Attributes.FOLLOW_RANGE, 40.0 )
+			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.ATTACK_KNOCKBACK, 3.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.75 )
 			.build();
@@ -120,32 +151,6 @@ public class TankEntity extends Monster {
 
 	public boolean isAttackLastTick() {
 		return this.specialAttackTicksLeft == 1 || this.normalAttackTicksLeft == 1;
-	}
-
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return SoundEvents.SKELETON_AMBIENT;
-	}
-
-	@Override
-	protected SoundEvent getHurtSound( DamageSource damageSource ) {
-		return SoundEvents.SKELETON_HURT;
-	}
-
-	@Override
-	protected SoundEvent getDeathSound() {
-		return SoundEvents.SKELETON_DEATH;
-	}
-
-	@Override
-	protected void playStepSound( BlockPos blockPos, BlockState blockState ) {
-		this.playSound( SoundEvents.SKELETON_STEP, 0.15f, 1.0f );
-	}
-
-	@Override
-	public void playSound( SoundEvent sound, float volume, float pitch ) {
-		if( !this.isSilent() )
-			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume * 1.25f, pitch * 0.75f );
 	}
 
 	public float getAttackDurationRatioLeft() {
