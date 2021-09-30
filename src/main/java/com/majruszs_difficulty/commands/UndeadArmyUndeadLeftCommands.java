@@ -18,7 +18,7 @@ public class UndeadArmyUndeadLeftCommands extends PositionCommand implements IRe
 		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			int unitsLeft = undeadArmy.countUndeadEntitiesLeft();
-			source.sendSuccess( CommandsHelper.createBaseMessageWithPosition( "commands.undeadarmy.progress", position, unitsLeft ), true );
+			source.sendSuccess( CommandsHelper.createBaseMessageWithPosition( "commands.undeadarmy.undeadleft", position, unitsLeft ), true );
 			return 0;
 		}
 
