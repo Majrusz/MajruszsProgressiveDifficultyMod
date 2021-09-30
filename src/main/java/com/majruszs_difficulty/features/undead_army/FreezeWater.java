@@ -12,10 +12,8 @@ import net.minecraftforge.fml.common.Mod;
 public class FreezeWater {
 	@SubscribeEvent
 	public static void freezeNearby( LivingEvent.LivingUpdateEvent event ) {
-		if( !isEntityValid( event.getEntityLiving() ) )
-			return;
-
-		LevelHelper.freezeWater( event.getEntityLiving(), 4.0, 10, 20 );
+		if( isEntityValid( event.getEntityLiving() ) )
+			LevelHelper.freezeWater( event.getEntityLiving(), 4.0, 10, 20, false );
 	}
 
 	/** Checks whether entity belongs to Undead Army. */
