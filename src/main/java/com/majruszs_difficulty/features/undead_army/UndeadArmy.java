@@ -5,7 +5,9 @@ import com.majruszs_difficulty.GameState;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.entities.TankEntity;
+import com.majruszs_difficulty.goals.ForgiveUndeadArmyTargetGoal;
 import com.majruszs_difficulty.goals.UndeadAttackPositionGoal;
+import com.mlib.CommonHelper;
 import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.TimeConverter;
@@ -27,6 +29,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +42,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.common.Mod;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -429,7 +433,7 @@ public class UndeadArmy {
 
 	/** Creates new armor piece for undead entity. */
 	private void equipWithArmorPieceIfPossible( Mob monster, Item item, String registerName, double chance ) {
-		if( Random.tryChance( 1.0 - chance ) )
+		if( Random.tryChance( 1.0 - chance ) || monster instanceof TankEntity )
 			return;
 
 		ItemStack armorPiece = new ItemStack( item );
@@ -471,8 +475,14 @@ public class UndeadArmy {
 
 	/** Adds Undead Army AI goal for given monster. */
 	private void updateUndeadAIGoal( Mob monster ) {
-		float speedModifier = monster instanceof TankEntity ? 2.0f : 1.25f;
+		float speedModifier = monster instanceof TankEntity ? 1.8f : 1.25f;
 		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackPosition(), speedModifier, 20.0f, 3.0f ) );
+
+		PathfinderMob pathfinderMob = CommonHelper.castIfPossible( PathfinderMob.class, monster );
+		if( pathfinderMob != null ) {
+			monster.targetSelector.getAvailableGoals().removeIf( wrappedGoal -> wrappedGoal.getGoal() instanceof HurtByTargetGoal );
+			monster.targetSelector.addGoal( 1, new ForgiveUndeadArmyTargetGoal( pathfinderMob ) );
+		}
 	}
 
 	/** Updates visibility of Undead Army progress bar for nearby players. */
