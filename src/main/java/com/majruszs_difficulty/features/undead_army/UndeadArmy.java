@@ -218,7 +218,7 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && ( countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 7.0 ) >= this.undeadToKill / 2 ) )
+		if( !this.spawnerWasCreated && countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 9.0 ) >= this.undeadToKill / 2 && countNearbyPlayers( SAFE_SPAWN_RADIUS / 9.0 ) == 0 )
 			createSpawner();
 
 		if( shouldWaveEndPrematurely() )
@@ -526,9 +526,19 @@ public class UndeadArmy {
 		);
 	}
 
+	/** Returns list of nearby players. */
+	private List< ServerPlayer > getNearbyPlayers( double range ) {
+		return this.level.getEntitiesOfClass( ServerPlayer.class, getAxisAligned( range ), getParticipantsPredicate() );
+	}
+
 	/** Returns list of nearby players participating in the raid. */
 	private List< ServerPlayer > getNearbyPlayers() {
 		return this.level.getPlayers( getParticipantsPredicate() );
+	}
+
+	/** Returns amount of nearby players participating in the raid. */
+	private int countNearbyPlayers( double range ) {
+		return getNearbyPlayers( range ).size();
 	}
 
 	/** Returns amount of nearby players participating in the raid. */
