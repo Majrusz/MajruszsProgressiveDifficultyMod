@@ -429,15 +429,17 @@ public class UndeadArmy {
 	private void equipWithDyedLeatherArmor( Mob monster ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		double armorPieceChance = config.getArmorPieceChance();
+		float armorPieceDropChance = 0.05f;
 
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_HELMET, "helmet", 1.0 );
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_CHESTPLATE, "chestplate", armorPieceChance );
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_LEGGINGS, "leggings", armorPieceChance );
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_BOOTS, "boots", armorPieceChance );
 
-		for( ItemStack armor : monster.getArmorSlots() )
-			if( armor.getEquipmentSlot() != null )
-				monster.setDropChance( armor.getEquipmentSlot(), 0.1f );
+		monster.setDropChance( EquipmentSlot.FEET, armorPieceDropChance );
+		monster.setDropChance( EquipmentSlot.LEGS, armorPieceDropChance );
+		monster.setDropChance( EquipmentSlot.CHEST, armorPieceDropChance );
+		monster.setDropChance( EquipmentSlot.HEAD, armorPieceDropChance );
 	}
 
 	/** Creates new armor piece for undead entity. */
