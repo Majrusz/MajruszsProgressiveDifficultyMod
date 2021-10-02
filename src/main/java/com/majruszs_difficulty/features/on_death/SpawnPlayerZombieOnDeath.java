@@ -56,7 +56,7 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 		}
 
 		zombie.setCustomName( player.getName() );
-		zombie.setCanPickUpLoot( true );
+		zombie.setCanPickUpLoot( false );
 		zombie.setPersistenceRequired();
 	}
 
