@@ -3,6 +3,7 @@ package com.majruszs_difficulty.features;
 import com.majruszs_difficulty.entities.EliteSkeletonEntity;
 import com.majruszs_difficulty.entities.GiantEntity;
 import com.majruszs_difficulty.entities.ParasiteEntity;
+import com.majruszs_difficulty.entities.TankEntity;
 import com.majruszs_difficulty.generation.OreGeneration;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -45,6 +46,7 @@ public class BiomeLoading {
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EntityType.ILLUSIONER, 20, 1, 2 );
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, GiantEntity.type, 3, 1, 1 );
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EliteSkeletonEntity.type, 20, 1, 1 );
+		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, TankEntity.type, 3, 1, 1 );
 	}
 
 	/** Adding natural generating for overworld structures. */
