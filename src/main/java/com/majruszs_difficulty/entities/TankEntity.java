@@ -29,6 +29,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -198,6 +200,7 @@ public class TankEntity extends Monster {
 		}
 
 		@Override
+		@OnlyIn( Dist.CLIENT )
 		public void receiveMessage( NetworkEvent.Context context ) {
 			Level level = Minecraft.getInstance().level;
 			if( level != null ) {

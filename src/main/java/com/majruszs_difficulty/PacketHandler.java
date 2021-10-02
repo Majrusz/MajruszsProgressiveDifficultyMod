@@ -16,12 +16,6 @@ public class PacketHandler {
 		CHANNEL = NetworkRegistry.newSimpleChannel( MajruszsDifficulty.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals,
 			PROTOCOL_VERSION::equals
 		);
-		if( Dist.DEDICATED_SERVER.isClient() )
-			registerClientPackets();
-	}
-
-	@OnlyIn( Dist.CLIENT )
-	public static void registerClientPackets() {
 		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode,
 			TankEntity.TankAttackMessage::new, TankEntity.TankAttackMessage::handle
 		);
