@@ -377,7 +377,7 @@ public class UndeadArmy {
 				if( monster instanceof Skeleton && Random.tryChance( config.getSkeletonHorseChance() ) )
 					spawnOnSkeletonHorse( monster );
 				monster.setCanPickUpLoot( false );
-				
+
 				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(),
 					randomPosition.getZ(), null, MobSpawnType.EVENT
 				) )
@@ -501,7 +501,7 @@ public class UndeadArmy {
 
 	/** Adds Undead Army AI goal for given monster. */
 	private void updateUndeadAIGoal( Mob monster ) {
-		float speedModifier = monster instanceof TankEntity ? 1.8f : 1.25f;
+		float speedModifier = monster instanceof TankEntity ? 1.5f : 1.25f;
 		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackPosition(), speedModifier, 20.0f, 3.0f ) );
 
 		PathfinderMob pathfinderMob = CommonHelper.castIfPossible( PathfinderMob.class, monster );
