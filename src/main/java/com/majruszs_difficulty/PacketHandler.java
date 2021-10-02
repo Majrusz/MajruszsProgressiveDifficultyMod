@@ -1,6 +1,8 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.entities.TankEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fmllegacy.network.NetworkRegistry;
 import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
@@ -14,9 +16,14 @@ public class PacketHandler {
 		CHANNEL = NetworkRegistry.newSimpleChannel( MajruszsDifficulty.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals,
 			PROTOCOL_VERSION::equals
 		);
+		if( Dist.DEDICATED_SERVER.isClient() )
+			registerClientPackets();
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	public static void registerClientPackets() {
 		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode,
 			TankEntity.TankAttackMessage::new, TankEntity.TankAttackMessage::handle
 		);
-		// CHANNEL.registerMessage( 1, VelocityMessage.class, VelocityMessage::encode, VelocityMessage::new, VelocityMessage::handle );
 	}
 }
