@@ -30,10 +30,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
@@ -371,6 +374,8 @@ public class UndeadArmy {
 				equipWithDyedLeatherArmor( monster );
 				tryToEnchantEquipment( monster );
 				markAsUndeadArmyUnit( monster );
+				if( monster instanceof Skeleton && Random.tryChance( config.getSkeletonHorseChance() ) )
+					spawnOnSkeletonHorse( monster );
 
 				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(),
 					randomPosition.getZ(), null, MobSpawnType.EVENT
@@ -471,6 +476,20 @@ public class UndeadArmy {
 	/** Saves information about undead army in monster data. */
 	private void markAsUndeadArmyUnit( Mob monster ) {
 		NBTHelper.saveBlockPos( monster.getPersistentData(), UndeadArmyKeys.POSITION, this.positionToAttack );
+	}
+
+	/** Spawns Skeleton Horse and place given monster on them. */
+	private void spawnOnSkeletonHorse( Mob monster ) {
+		Level level = monster.level;
+		SkeletonHorse skeletonHorse = EntityType.SKELETON_HORSE.create( level );
+		if( skeletonHorse == null )
+			return;
+
+		skeletonHorse.setAge( 0 );
+		skeletonHorse.setPos( monster.getX(), monster.getY(), monster.getZ() );
+		level.addFreshEntity( skeletonHorse );
+
+		monster.startRiding( skeletonHorse );
 	}
 
 	/** Adds Undead Army AI goal for given monster. */

@@ -17,6 +17,7 @@ public class UndeadArmyConfig {
 	private final AvailabilityConfig availability;
 	private final IntegerConfig killRequirement;
 	private final DoubleConfig sizeMultiplier;
+	private final DoubleConfig skeletonHorseChance;
 	private final GameStateIntegerConfig experienceReward;
 	private final GameStateIntegerConfig treasureBagReward;
 	private final GameStateDoubleConfig enchantedItemsChance;
@@ -34,6 +35,9 @@ public class UndeadArmyConfig {
 
 		String sizeComment = "Extra size multiplier for each extra player participating in the Undead Army.";
 		this.sizeMultiplier = new DoubleConfig( "player_scale", sizeComment, false, 0.5, 0.1, 1.0 );
+
+		String horseComment = "Chance for all skeletons to spawn on Skeleton Horse.";
+		this.skeletonHorseChance = new DoubleConfig( "horse_chance", horseComment, false, 0.15, 0.1, 1.0 );
 
 		String expComment = "Experience for each player after defeating the Undead Army.";
 		this.experienceReward = new GameStateIntegerConfig( "Experience", expComment, 40, 80, 120, 4, 1000 );
@@ -73,8 +77,9 @@ public class UndeadArmyConfig {
 		this.waveMembers.addWaveConfigs( waveConfig1, waveConfig2, waveConfig3, waveConfig4, waveConfig5 );
 
 		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
-		this.group.addConfigs( this.availability, this.killRequirement, this.sizeMultiplier, this.experienceReward, this.treasureBagReward,
-			this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration, this.waveMembers
+		this.group.addConfigs( this.availability, this.killRequirement, this.sizeMultiplier, this.skeletonHorseChance, this.experienceReward,
+			this.treasureBagReward, this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration,
+			this.waveMembers
 		);
 	}
 
@@ -91,6 +96,11 @@ public class UndeadArmyConfig {
 	/** Returns size multiplier depending on amount of players participating in. */
 	public double getSizeMultiplier( int amountOfPlayers ) {
 		return 1.0 + this.sizeMultiplier.get() * ( Math.max( 1, amountOfPlayers ) - 1 );
+	}
+
+	/** Returns chance that Skeleton has to spawn on a Skeleton Horse. */
+	public double getSkeletonHorseChance() {
+		return this.skeletonHorseChance.get();
 	}
 
 	/** Returns amount of experience as a reward for completing the Undead Army. */
