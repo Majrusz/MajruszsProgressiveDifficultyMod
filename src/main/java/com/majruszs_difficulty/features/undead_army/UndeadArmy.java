@@ -376,7 +376,8 @@ public class UndeadArmy {
 				markAsUndeadArmyUnit( monster );
 				if( monster instanceof Skeleton && Random.tryChance( config.getSkeletonHorseChance() ) )
 					spawnOnSkeletonHorse( monster );
-
+				monster.setCanPickUpLoot( false );
+				
 				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(),
 					randomPosition.getZ(), null, MobSpawnType.EVENT
 				) )
