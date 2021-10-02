@@ -434,6 +434,10 @@ public class UndeadArmy {
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_CHESTPLATE, "chestplate", armorPieceChance );
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_LEGGINGS, "leggings", armorPieceChance );
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_BOOTS, "boots", armorPieceChance );
+
+		for( ItemStack armor : monster.getArmorSlots() )
+			if( armor.getEquipmentSlot() != null )
+				monster.setDropChance( armor.getEquipmentSlot(), 0.1f );
 	}
 
 	/** Creates new armor piece for undead entity. */
