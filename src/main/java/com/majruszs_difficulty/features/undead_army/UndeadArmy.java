@@ -106,8 +106,7 @@ public class UndeadArmy {
 
 	/** Checks whether entity belongs to the Undead Army. */
 	public static boolean doesEntityBelongToUndeadArmy( LivingEntity entity ) {
-		return entity.getPersistentData()
-			.contains( UndeadArmyKeys.POSITION + "X" );
+		return entity.getPersistentData().contains( UndeadArmyKeys.POSITION + "X" ) && !( entity instanceof SkeletonHorse );
 	}
 
 	/** Sets the value of variables that depends on config values. */
@@ -339,12 +338,11 @@ public class UndeadArmy {
 				this.level.setBlockAndUpdate( position, Blocks.SPAWNER.defaultBlockState() );
 				this.spawnerWasCreated = true;
 
-				BlockEntity tileEntity = this.level.getBlockEntity( position );
-				if( !( tileEntity instanceof SpawnerBlockEntity ) )
+				SpawnerBlockEntity spawnerEntity = CommonHelper.castIfPossible( SpawnerBlockEntity.class, this.level.getBlockEntity( position ) );
+				if( spawnerEntity == null )
 					continue;
 
-				( ( SpawnerBlockEntity )tileEntity ).getSpawner()
-					.setEntityId( config.getEntityTypeForMonsterSpawner() );
+				spawnerEntity.getSpawner().setEntityId( config.getEntityTypeForMonsterSpawner() );
 
 				this.level.sendParticles( ParticleTypes.SMOKE, x, y, z, 40, 0.5, 0.5, 0.5, 0.01 );
 			}
@@ -481,8 +479,8 @@ public class UndeadArmy {
 	}
 
 	/** Saves information about undead army in monster data. */
-	private void markAsUndeadArmyUnit( Mob monster ) {
-		NBTHelper.saveBlockPos( monster.getPersistentData(), UndeadArmyKeys.POSITION, this.positionToAttack );
+	private void markAsUndeadArmyUnit( LivingEntity entity ) {
+		NBTHelper.saveBlockPos( entity.getPersistentData(), UndeadArmyKeys.POSITION, this.positionToAttack );
 	}
 
 	/** Spawns Skeleton Horse and place given monster on them. */
@@ -497,6 +495,8 @@ public class UndeadArmy {
 		level.addFreshEntity( skeletonHorse );
 
 		monster.startRiding( skeletonHorse );
+		skeletonHorse.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( skeletonHorse, getAttackPosition(), 1.5f, 20.0f, 3.0f ) );
+		markAsUndeadArmyUnit( skeletonHorse );
 	}
 
 	/** Adds Undead Army AI goal for given monster. */
