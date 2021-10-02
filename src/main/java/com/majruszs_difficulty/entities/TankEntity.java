@@ -2,6 +2,7 @@ package com.majruszs_difficulty.entities;
 
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.PacketHandler;
+import com.majruszs_difficulty.features.undead_army.UndeadArmy;
 import com.majruszs_difficulty.goals.TankAttackGoal;
 import com.mlib.CommonHelper;
 import com.mlib.MajruszLibrary;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -105,6 +107,14 @@ public class TankEntity extends Monster {
 	public void playSound( SoundEvent sound, float volume, float pitch ) {
 		if( !this.isSilent() )
 			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume * 1.25f, pitch * 0.75f );
+	}
+
+	@Override
+	public void aiStep() {
+		if( this.isSunBurnTick() && UndeadArmy.doesEntityBelongToUndeadArmy( this ) )
+			this.setSecondsOnFire( 8 );
+
+		super.aiStep();
 	}
 
 	public static AttributeSupplier getAttributeMap() {
