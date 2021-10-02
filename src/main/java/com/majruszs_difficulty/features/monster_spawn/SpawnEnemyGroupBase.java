@@ -1,6 +1,7 @@
 package com.majruszs_difficulty.features.monster_spawn;
 
 import com.majruszs_difficulty.GameState;
+import com.majruszs_difficulty.features.undead_army.UndeadArmy;
 import com.majruszs_difficulty.goals.FollowGroupLeaderGoal;
 import com.majruszs_difficulty.goals.TargetAsLeaderGoal;
 import com.mlib.MajruszLibrary;
@@ -120,6 +121,10 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 			world.addFreshEntity( child );
 		}
+	}
+
+	protected static boolean notUndeadArmyMob( LivingEntity entity ) {
+		return !UndeadArmy.doesEntityBelongToUndeadArmy( entity );
 	}
 
 	protected static class Armors {
