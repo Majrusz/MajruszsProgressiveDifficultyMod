@@ -5,9 +5,16 @@ import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.TreasureBagOpenedEvent;
+import com.majruszs_difficulty.features.treasure_bag.LootProgress;
+import com.majruszs_difficulty.features.treasure_bag.LootProgressClient;
+import com.mlib.CommonHelper;
+import com.mlib.MajruszLibrary;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,19 +38,29 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.majruszs_difficulty.MajruszsDifficulty.FEATURES_GROUP;
 
 /** Class representing treasure bag. */
+@Mod.EventBusSubscriber
 public class TreasureBagItem extends Item {
+	public final static List< TreasureBagItem > TREASURE_BAGS = new ArrayList<>();
 	protected final static ConfigGroup CONFIG_GROUP;
-	private final static String TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.item_tooltip";
+	private final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.item_tooltip";
+	private final static String HINT_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.hint_tooltip";
+	private final static String LIST_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.list_tooltip";
+	private static boolean isShiftDown = false;
 
 	static {
 		CONFIG_GROUP = new ConfigGroup( "TreasureBag", "Configuration for treasure bags." );
@@ -55,14 +72,14 @@ public class TreasureBagItem extends Item {
 	private final AvailabilityConfig availability;
 
 	public TreasureBagItem( String id, String entityNameForConfiguration ) {
-		super( ( new Item.Properties() ).stacksTo( 16 )
-			.tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.UNCOMMON ) );
+		super( ( new Item.Properties() ).stacksTo( 16 ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
 		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
 		this.id = id;
 		this.availability = new AvailabilityConfig( id, getComment( entityNameForConfiguration ), false, true );
 		CONFIG_GROUP.addConfig( this.availability );
+
+		TREASURE_BAGS.add( this );
 	}
 
 	/** Opening treasure bag on right click. */
@@ -81,10 +98,10 @@ public class TreasureBagItem extends Item {
 			if( this.availability.isEnabled() ) {
 				List< ItemStack > loot = generateLoot( player );
 				MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) );
+				LootProgress.updateProgress( this, player, loot );
 				for( ItemStack reward : loot ) {
 					if( player.canTakeItem( reward ) )
-						player.getInventory()
-							.add( reward );
+						player.getInventory().add( reward );
 					else
 						world.addFreshEntity( new ItemEntity( world, player.getX(), player.getY() + 1, player.getZ(), reward ) );
 				}
@@ -99,11 +116,27 @@ public class TreasureBagItem extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, this.availability.isEnabled() );
-		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
+		MajruszsHelper.addAdvancedTooltip( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY );
+
+		tooltip.add( new TextComponent( " " ) );
+		if( isShiftDown ) {
+			tooltip.add( new TranslatableComponent( LIST_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY )  );
+			String bagID = CommonHelper.getRegistryNameString( this );
+			if( bagID != null && flag.isAdvanced() && LootProgressClient.TREASURE_BAG_COMPONENTS.containsKey( bagID ) )
+				tooltip.addAll( LootProgressClient.TREASURE_BAG_COMPONENTS.get( bagID ) );
+		} else {
+			tooltip.add( new TranslatableComponent( HINT_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY )  );
+		}
+	}
+
+	@SubscribeEvent
+	public static void onKeyPressed( InputEvent.KeyInputEvent event ) {
+		if( event.getKey() == 340 ) // shift key code
+			isShiftDown = event.getAction() > 0;
 	}
 
 	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
-	protected static LootContext generateLootContext( Player player ) {
+	public static LootContext generateLootContext( Player player ) {
 		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerLevel )player.level );
 		lootContextBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
 		lootContextBuilder.withParameter( LootContextParams.THIS_ENTITY, player );
@@ -138,10 +171,8 @@ public class TreasureBagItem extends Item {
 	}
 
 	/** Returning loot table for current treasure bag. (possible loot) */
-	protected LootTable getLootTable() {
-		return ServerLifecycleHooks.getCurrentServer()
-			.getLootTables()
-			.get( this.lootTableLocation );
+	public LootTable getLootTable() {
+		return ServerLifecycleHooks.getCurrentServer().getLootTables().get( this.lootTableLocation );
 	}
 
 	/** Handles statistics and advancements for a Treasure Bag. */

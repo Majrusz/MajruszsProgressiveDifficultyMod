@@ -1,6 +1,7 @@
 package com.majruszs_difficulty;
 
 import com.majruszs_difficulty.entities.TankEntity;
+import com.majruszs_difficulty.features.treasure_bag.LootProgress;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -18,6 +19,9 @@ public class PacketHandler {
 		);
 		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode,
 			TankEntity.TankAttackMessage::new, TankEntity.TankAttackMessage::handle
+		);
+		CHANNEL.registerMessage( 1, LootProgress.ProgressMessage.class, LootProgress.ProgressMessage::encode,
+			LootProgress.ProgressMessage::new, LootProgress.ProgressMessage::handle
 		);
 	}
 }
