@@ -430,7 +430,7 @@ public class UndeadArmy {
 	private void equipWithDyedLeatherArmor( Mob monster ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 		double armorPieceChance = config.getArmorPieceChance();
-		float armorPieceDropChance = 0.05f;
+		float armorPieceDropChance = 0.1f;
 
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_HELMET, "helmet", 1.0 );
 		equipWithArmorPieceIfPossible( monster, Items.LEATHER_CHESTPLATE, "chestplate", armorPieceChance );
