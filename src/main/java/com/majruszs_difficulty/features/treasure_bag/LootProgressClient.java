@@ -79,10 +79,10 @@ public class LootProgressClient {
 
 	protected static ChatFormatting getLockedItemFormat( int quality ) {
 		return switch( quality ) {
-			case 4 -> ChatFormatting.YELLOW;
-			case 3 -> ChatFormatting.LIGHT_PURPLE;
+			case 4 -> ChatFormatting.GOLD;
+			case 3 -> ChatFormatting.DARK_PURPLE;
 			case 2 -> ChatFormatting.BLUE;
-			case 1 -> ChatFormatting.GREEN;
+			case 1 -> ChatFormatting.DARK_GREEN;
 			default -> ChatFormatting.DARK_GRAY;
 		};
 	}
