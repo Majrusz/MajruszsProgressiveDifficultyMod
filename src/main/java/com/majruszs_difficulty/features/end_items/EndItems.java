@@ -25,7 +25,7 @@ public class EndItems {
 			}
 		} );
 	}
-	
+
 	/** Returns whether item is either end tool or end sword. */
 	public static boolean isEndItem( Item item ) {
 		return item instanceof EndHoeItem || item instanceof EndAxeItem || item instanceof EndPickaxeItem || item instanceof EndShovelItem || item instanceof EndSwordItem;

@@ -28,8 +28,6 @@ public class EndAxeItem extends AxeItem {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
-
-		MajruszsHelper.addEmptyLine( tooltip );
 		if( ClientHelper.isShiftDown() ) {
 			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP );
 		} else {
