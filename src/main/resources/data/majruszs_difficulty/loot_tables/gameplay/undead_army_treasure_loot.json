@@ -16,7 +16,8 @@
           ]
         }
       ]
-    },{
+    },
+    {
       "rolls": {
         "min": 6.0,
         "max": 12.0,
@@ -27,6 +28,31 @@
           "type": "minecraft:item",
           "name": "majruszs_difficulty:bandage",
           "quality": 1
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszs_difficulty:golden_bandage",
+          "quality": 2,
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.125
+            }
+          ],
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 6,
+                "max": 12
+              }
+            }
+          ]
         }
       ]
     },
