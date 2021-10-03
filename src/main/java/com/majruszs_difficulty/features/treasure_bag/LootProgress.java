@@ -3,7 +3,6 @@ package com.majruszs_difficulty.features.treasure_bag;
 import com.majruszs_difficulty.PacketHandler;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.mlib.CommonHelper;
-import com.mlib.MajruszLibrary;
 import com.mlib.network.message.EntityMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -54,7 +53,9 @@ public class LootProgress {
 							CompoundTag compoundTag = player.getPersistentData();
 							CompoundTag treasureBagTag = compoundTag.contains( bagID ) ? compoundTag.getCompound( bagID ) : new CompoundTag();
 							if( !treasureBagTag.contains( itemID ) ) {
-								treasureBagTag.putBoolean( itemID, false );
+								LootData lootData = new LootData( itemID, false, lootItem.quality );
+								lootData.write( treasureBagTag );
+
 								compoundTag.put( bagID, treasureBagTag );
 							}
 						}, context );
@@ -80,7 +81,10 @@ public class LootProgress {
 
 			CompoundTag treasureBagTag = compoundTag.getCompound( bagID );
 			if( treasureBagTag.contains( itemID ) ) {
-				treasureBagTag.putBoolean( itemID, true );
+				LootData lootData = LootData.read( treasureBagTag, itemID );
+				lootData.isUnlocked = true;
+				lootData.write( treasureBagTag );
+
 				compoundTag.put( bagID, treasureBagTag );
 			}
 		}
@@ -97,17 +101,16 @@ public class LootProgress {
 		if( bagID == null )
 			return;
 
-		List< String > items = new ArrayList<>();
+		List< LootData > lootDataList = new ArrayList<>();
 		CompoundTag compoundTag = player.getPersistentData();
 		if( !compoundTag.contains( bagID ) )
 			return;
 
 		CompoundTag treasureBagTag = compoundTag.getCompound( bagID );
-		for( String itemID : treasureBagTag.getAllKeys() ) {
-			boolean wasObtained = treasureBagTag.getBoolean( itemID );
-			items.add( wasObtained ? itemID : "???" );
-		}
-		PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), new ProgressMessage( serverPlayer, bagID, items ) );
+		for( String itemID : treasureBagTag.getAllKeys() )
+			lootDataList.add( LootData.read( treasureBagTag, itemID ) );
+
+		PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), new ProgressMessage( serverPlayer, bagID, lootDataList ) );
 	}
 
 	protected static void notifyPlayerAboutChanges( Player player ) {
@@ -117,25 +120,29 @@ public class LootProgress {
 
 	public static class ProgressMessage extends EntityMessage {
 		private final String treasureBagID;
-		private final List< String > items;
+		private final List< LootData > lootDataList;
 
-		public ProgressMessage( Entity entity, String treasureBagID, List< String > items ) {
+		public ProgressMessage( Entity entity, String treasureBagID, List< LootData > lootDataList ) {
 			super( entity );
 			this.treasureBagID = treasureBagID;
-			this.items = items;
+			this.lootDataList = lootDataList;
 		}
 
 		public ProgressMessage( FriendlyByteBuf buffer ) {
 			super( buffer );
 			this.treasureBagID = buffer.readUtf();
-			this.items = buffer.readList( FriendlyByteBuf::readUtf );
+			this.lootDataList = buffer.readList( byteBuffer->new LootData( byteBuffer.readUtf(), byteBuffer.readBoolean(), byteBuffer.readInt() ) );
 		}
 
 		@Override
 		public void encode( FriendlyByteBuf buffer ) {
 			super.encode( buffer );
 			buffer.writeUtf( this.treasureBagID );
-			buffer.writeCollection( this.items, FriendlyByteBuf::writeUtf );
+			buffer.writeCollection( this.lootDataList, ( byteBuffer, lootData )->{
+				byteBuffer.writeUtf( lootData.itemID );
+				byteBuffer.writeBoolean( lootData.isUnlocked );
+				byteBuffer.writeInt( lootData.quality );
+			} );
 		}
 
 		@Override
@@ -143,7 +150,7 @@ public class LootProgress {
 		public void receiveMessage( NetworkEvent.Context context ) {
 			Level level = Minecraft.getInstance().level;
 			if( level != null )
-				LootProgressClient.generateComponents( this.treasureBagID, this.items );
+				LootProgressClient.generateComponents( this.treasureBagID, this.lootDataList );
 		}
 	}
 }

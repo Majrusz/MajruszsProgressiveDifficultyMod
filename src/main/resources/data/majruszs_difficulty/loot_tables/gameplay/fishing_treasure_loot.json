@@ -7,6 +7,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:fishing_rod",
+          "quality": 2,
           "conditions": [
             {
               "condition": "minecraft:random_chance",

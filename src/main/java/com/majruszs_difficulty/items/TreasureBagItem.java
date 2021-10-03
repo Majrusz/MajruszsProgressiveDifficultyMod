@@ -9,6 +9,7 @@ import com.majruszs_difficulty.features.treasure_bag.LootProgress;
 import com.majruszs_difficulty.features.treasure_bag.LootProgressClient;
 import com.mlib.CommonHelper;
 import com.mlib.MajruszLibrary;
+import com.mlib.client.ClientHelper;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import net.minecraft.ChatFormatting;
@@ -58,9 +59,6 @@ public class TreasureBagItem extends Item {
 	public final static List< TreasureBagItem > TREASURE_BAGS = new ArrayList<>();
 	protected final static ConfigGroup CONFIG_GROUP;
 	private final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.item_tooltip";
-	private final static String HINT_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.hint_tooltip";
-	private final static String LIST_TOOLTIP_TRANSLATION_KEY = "majruszs_difficulty.treasure_bag.list_tooltip";
-	private static boolean isShiftDown = false;
 
 	static {
 		CONFIG_GROUP = new ConfigGroup( "TreasureBag", "Configuration for treasure bags." );
@@ -119,20 +117,7 @@ public class TreasureBagItem extends Item {
 		MajruszsHelper.addAdvancedTooltip( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY );
 
 		tooltip.add( new TextComponent( " " ) );
-		if( isShiftDown ) {
-			tooltip.add( new TranslatableComponent( LIST_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY )  );
-			String bagID = CommonHelper.getRegistryNameString( this );
-			if( bagID != null && flag.isAdvanced() && LootProgressClient.TREASURE_BAG_COMPONENTS.containsKey( bagID ) )
-				tooltip.addAll( LootProgressClient.TREASURE_BAG_COMPONENTS.get( bagID ) );
-		} else {
-			tooltip.add( new TranslatableComponent( HINT_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY )  );
-		}
-	}
-
-	@SubscribeEvent
-	public static void onKeyPressed( InputEvent.KeyInputEvent event ) {
-		if( event.getKey() == 340 ) // shift key code
-			isShiftDown = event.getAction() > 0;
+		LootProgressClient.addDropList( this, tooltip );
 	}
 
 	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */

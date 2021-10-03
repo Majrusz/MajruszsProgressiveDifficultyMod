@@ -80,7 +80,7 @@
   "majruszs_difficulty.on_master_mode_start": "Impending doom approaches...",
   "majruszs_difficulty.treasure_bag.item_tooltip": "Right click while holding it to open the bag.",
   "majruszs_difficulty.treasure_bag.hint_tooltip": "Press SHIFT to display possible drops...",
-  "majruszs_difficulty.treasure_bag.list_tooltip": "Possible drops:",
+  "majruszs_difficulty.treasure_bag.list_tooltip": "Possible drops (%d/%d)",
   "majruszs_difficulty.undead_army.title": "Undead Army",
   "majruszs_difficulty.undead_army.wave": "Wave",
   "majruszs_difficulty.undead_army.victory": "Victory!",
