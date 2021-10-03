@@ -3,6 +3,7 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.features.end_items.EndItems;
+import com.mlib.client.ClientHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -22,8 +23,14 @@ public class EndSwordItem extends SwordItem {
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
-	public void appendHoverText( ItemStack stack, @Nullable Level world, List< Component > toolTip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTooltipIfDisabled( toolTip, Instances.END_SHARD_ORE.isEnabled() );
-		MajruszsHelper.addAdvancedTooltips( toolTip, flag, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP );
+	public void appendHoverText( ItemStack stack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
+		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+
+		MajruszsHelper.addEmptyLine( tooltip );
+		if( ClientHelper.isShiftDown() ) {
+			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP );
+		} else {
+			MajruszsHelper.addMoreDetailsText( tooltip );
+		}
 	}
 }

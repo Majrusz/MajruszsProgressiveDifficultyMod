@@ -3,6 +3,7 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.features.end_items.EndItems;
+import com.mlib.client.ClientHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -26,7 +27,13 @@ public class EndPickaxeItem extends PickaxeItem {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
-		MajruszsHelper.addAdvancedTooltips( tooltip, flag, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP );
+		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+
+		MajruszsHelper.addEmptyLine( tooltip );
+		if( ClientHelper.isShiftDown() ) {
+			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP );
+		} else {
+			MajruszsHelper.addMoreDetailsText( tooltip );
+		}
 	}
 }

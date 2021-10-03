@@ -39,8 +39,8 @@ public class EndShardLocatorItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
-		MajruszsHelper.addAdvancedTooltip( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
+		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+		MajruszsHelper.addAdvancedTranslatableText( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Calculates distance to the nearest End Shard. */

@@ -7,15 +7,10 @@ import com.majruszs_difficulty.RegistryHandler;
 import com.majruszs_difficulty.events.TreasureBagOpenedEvent;
 import com.majruszs_difficulty.features.treasure_bag.LootProgress;
 import com.majruszs_difficulty.features.treasure_bag.LootProgressClient;
-import com.mlib.CommonHelper;
-import com.mlib.MajruszLibrary;
-import com.mlib.client.ClientHelper;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,10 +34,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
@@ -113,8 +105,8 @@ public class TreasureBagItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTooltipIfDisabled( tooltip, this.availability.isEnabled() );
-		MajruszsHelper.addAdvancedTooltip( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY );
+		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, this.availability.isEnabled() );
+		MajruszsHelper.addAdvancedTranslatableText( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY );
 
 		tooltip.add( new TextComponent( " " ) );
 		LootProgressClient.addDropList( this, tooltip );

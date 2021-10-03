@@ -4,6 +4,7 @@ import com.mlib.Random;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,28 +50,53 @@ public class MajruszsHelper {
 		return entity instanceof Animal;
 	}
 
+	public static void addTranslatableText( List< Component > tooltip, String translationKey ) {
+		tooltip.add( new TranslatableComponent( translationKey ).withStyle( ChatFormatting.GRAY ) );
+	}
+
+	public static void addTranslatableTexts( List< Component > tooltip, String... translationKeys ) {
+		for( String translationKey : translationKeys )
+			addTranslatableText( tooltip, translationKey );
+	}
+
 	/** Adds tooltip to list if advanced tooltips are enabled. */
-	public static void addAdvancedTooltip( List< Component > tooltip, TooltipFlag flag, String translationKey ) {
+	public static void addAdvancedTranslatableText( List< Component > tooltip, TooltipFlag flag, String translationKey ) {
 		if( flag.isAdvanced() )
-			tooltip.add( new TranslatableComponent( translationKey ).withStyle( ChatFormatting.GRAY ) );
+			addTranslatableText( tooltip, translationKey );
 	}
 
 	/** Adds multiple tooltips to list if advanced tooltips are enabled. */
-	public static void addAdvancedTooltips( List< Component > tooltip, TooltipFlag flag, String... translationKeys ) {
+	public static void addAdvancedTranslatableTexts( List< Component > tooltip, TooltipFlag flag, String... translationKeys ) {
 		if( flag.isAdvanced() )
 			for( String translationKey : translationKeys )
-				addAdvancedTooltip( tooltip, flag, translationKey );
+				addAdvancedTranslatableText( tooltip, flag, translationKey );
 	}
 
 	/** Returns formatted text with information that item is disabled. */
-	public static MutableComponent getDisabledItemTooltip() {
+	public static MutableComponent getDisabledItemComponent() {
 		return new TranslatableComponent( "majruszs_difficulty.items.disabled_tooltip" ).withStyle( ChatFormatting.RED, ChatFormatting.BOLD );
 	}
 
 	/** Adds information that item is disabled if certain conditions are met. */
-	public static void addExtraTooltipIfDisabled( List< Component > toolTip, boolean isEnabled ) {
+	public static void addExtraTextIfItemIsDisabled( List< Component > tooltip, boolean isEnabled ) {
 		if( !isEnabled )
-			toolTip.add( getDisabledItemTooltip() );
+			tooltip.add( getDisabledItemComponent() );
+	}
+
+	public static MutableComponent getMoreDetailsComponent() {
+		return new TranslatableComponent( "majruszs_difficulty.items.advanced_tooltip" ).withStyle( ChatFormatting.GRAY );
+	}
+
+	public static void addMoreDetailsText( List< Component > tooltip ) {
+		tooltip.add( getMoreDetailsComponent() );
+	}
+
+	public static MutableComponent getEmptyLine() {
+		return new TextComponent( " " );
+	}
+
+	public static void addEmptyLine( List< Component > tooltip ) {
+		tooltip.add( getEmptyLine() );
 	}
 
 	/** Teleports the target somewhere nearby. */
