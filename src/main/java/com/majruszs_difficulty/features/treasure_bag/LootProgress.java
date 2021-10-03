@@ -4,7 +4,6 @@ import com.majruszs_difficulty.PacketHandler;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.mlib.CommonHelper;
 import com.mlib.network.message.EntityMessage;
-import it.unimi.dsi.fastutil.ints.IntComparator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -111,6 +110,7 @@ public class LootProgress {
 					}, context );
 			}
 	}
+
 	protected static void notifyPlayerAboutChanges( Player player, TreasureBagItem treasureBagItem ) {
 		ServerPlayer serverPlayer = CommonHelper.castIfPossible( ServerPlayer.class, player );
 		if( serverPlayer == null )
