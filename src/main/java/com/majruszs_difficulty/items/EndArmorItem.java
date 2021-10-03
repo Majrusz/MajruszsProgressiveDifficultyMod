@@ -3,6 +3,8 @@ package com.majruszs_difficulty.items;
 import com.majruszs_difficulty.Instances;
 import com.majruszs_difficulty.MajruszsDifficulty;
 import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.features.end_items.EndItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +32,9 @@ public class EndArmorItem extends ArmorItem {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+
+		if( Minecraft.getInstance().player != null )
+			EndItems.addEndArmorTooltip( Minecraft.getInstance().player, tooltip );
 	}
 
 	/** Returns path to End Armor texture. */

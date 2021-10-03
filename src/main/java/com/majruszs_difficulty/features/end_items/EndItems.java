@@ -1,12 +1,26 @@
 package com.majruszs_difficulty.features.end_items;
 
+import com.majruszs_difficulty.Instances;
+import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.items.*;
+import com.mlib.CommonHelper;
+import com.mlib.client.ClientHelper;
 import com.mlib.features.FarmlandTiller;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 /** Class with common functions/variables for end items special functionalities. */
 public class EndItems {
@@ -15,6 +29,12 @@ public class EndItems {
 		public static final String BLEED_TOOLTIP = "majruszs_difficulty.end_items.bleed_tooltip";
 		public static final String LEVITATION_TOOLTIP = "majruszs_difficulty.end_items.levitation_tooltip";
 		public static final String TILL_TOOLTIP = "majruszs_difficulty.end_items.till_tooltip";
+		public static final String SET_TOOLTIP = "majruszs_difficulty.items.set_list_tooltip";
+		public static final String BONUS_TOOLTIP = "majruszs_difficulty.items.set_bonus_tooltip";
+		public static final String END_SET_TOOLTIP = "majruszs_difficulty.end_items.armor_set";
+		public static final String END_BONUS_2_TOOLTIP = "majruszs_difficulty.end_items.armor_set_bonus_2";
+		public static final String END_BONUS_3_TOOLTIP = "majruszs_difficulty.end_items.armor_set_bonus_3";
+		public static final String END_BONUS_4_TOOLTIP = "majruszs_difficulty.end_items.armor_set_bonus_4";
 	}
 
 	static {
@@ -39,5 +59,71 @@ public class EndItems {
 	/** Returns whether item can inflicts Levitation effect. */
 	public static boolean canInflictLevitation( Item item ) {
 		return item instanceof EndHoeItem || item instanceof EndPickaxeItem || item instanceof EndShovelItem;
+	}
+
+	public static int getAmountOfEndArmorPieces( Player player ) {
+		return ( hasEndHelmet( player ) ? 1 : 0 ) + ( hasEndChestplate( player ) ? 1 : 0 ) + ( hasEndLeggings( player ) ? 1 : 0 ) + ( hasEndBoots( player ) ? 1 : 0 );
+	}
+
+	public static boolean hasEndHelmet( Player player ) {
+		return hasItem( player, EquipmentSlot.HEAD, EndHelmetItem.class );
+	}
+
+	public static boolean hasEndChestplate( Player player ) {
+		return hasItem( player, EquipmentSlot.CHEST, EndChestplateItem.class );
+	}
+
+	public static boolean hasEndLeggings( Player player ) {
+		return hasItem( player, EquipmentSlot.LEGS, EndLeggingsItem.class );
+	}
+
+	public static boolean hasEndBoots( Player player ) {
+		return hasItem( player, EquipmentSlot.FEET, EndBootsItem.class );
+	}
+
+	protected static < Type > boolean hasItem( Player player, EquipmentSlot equipmentSlot, Class< Type > itemType ) {
+		return itemType.isInstance( player.getItemBySlot( equipmentSlot ).getItem() );
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	public static void addEndArmorTooltip( Player player, List< Component > tooltip ) {
+		if( ClientHelper.isShiftDown() ) {
+			int equippedItems = getAmountOfEndArmorPieces( player );
+			String endSetText = new TranslatableComponent( Keys.END_SET_TOOLTIP ).getString();
+
+			tooltip.add( new TranslatableComponent( Keys.SET_TOOLTIP, endSetText, equippedItems, 4 ).withStyle( ChatFormatting.GRAY ) );
+			tooltip.add( getFormattedItemName( player, Instances.END_HELMET_ITEM, EndItems::hasEndHelmet ) );
+			tooltip.add( getFormattedItemName( player, Instances.END_CHESTPLATE_ITEM, EndItems::hasEndChestplate ) );
+			tooltip.add( getFormattedItemName( player, Instances.END_LEGGINGS_ITEM, EndItems::hasEndLeggings ) );
+			tooltip.add( getFormattedItemName( player, Instances.END_BOOTS_ITEM, EndItems::hasEndBoots ) );
+
+			MajruszsHelper.addEmptyLine( tooltip );
+			tooltip.add( new TranslatableComponent( Keys.BONUS_TOOLTIP ).withStyle( ChatFormatting.GRAY ) );
+			tooltip.add( getFormattedBonus( player, Keys.END_BONUS_2_TOOLTIP, 2 ) );
+			tooltip.add( getFormattedBonus( player, Keys.END_BONUS_3_TOOLTIP, 3 ) );
+			tooltip.add( getFormattedBonus( player, Keys.END_BONUS_4_TOOLTIP, 4 ) );
+		} else {
+			MajruszsHelper.addMoreDetailsText( tooltip );
+		}
+	}
+
+	protected static MutableComponent getItemNameCopy( Item item ) {
+		return item.getDescription().copy();
+	}
+
+	protected static MutableComponent getFormattedItemName( Player player, Item item, IItemChecker itemChecker ) {
+		MutableComponent component = new TextComponent( "  " );
+
+		return component.append( getItemNameCopy( item ).withStyle( itemChecker.check( player ) ? ChatFormatting.DARK_PURPLE : ChatFormatting.DARK_GRAY ) );
+	}
+
+	protected static MutableComponent getFormattedBonus( Player player, String translationKey, int amountRequired ) {
+		ChatFormatting textFormat = getAmountOfEndArmorPieces( player ) >= amountRequired ? ChatFormatting.DARK_PURPLE : ChatFormatting.DARK_GRAY;
+
+		return new TranslatableComponent( translationKey, amountRequired, 4 ).withStyle( textFormat );
+	}
+
+	protected interface IItemChecker {
+		boolean check( Player player );
 	}
 }
