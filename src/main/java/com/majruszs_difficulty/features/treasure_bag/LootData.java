@@ -27,7 +27,7 @@ public class LootData {
 	public static LootData read( CompoundTag treasureBagTag, String itemID ) {
 		CompoundTag itemTag = treasureBagTag.getCompound( itemID );
 		boolean isUnlocked = itemTag.getBoolean( LootData.UNLOCKED_TAG );
-		int quality = itemTag.getInt( LootData.UNLOCKED_TAG );
+		int quality = itemTag.getInt( LootData.QUALITY_TAG );
 
 		return new LootData( itemID, isUnlocked, quality );
 	}

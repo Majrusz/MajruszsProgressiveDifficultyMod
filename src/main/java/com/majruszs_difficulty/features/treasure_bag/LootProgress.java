@@ -4,6 +4,7 @@ import com.majruszs_difficulty.PacketHandler;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.mlib.CommonHelper;
 import com.mlib.network.message.EntityMessage;
+import it.unimi.dsi.fastutil.ints.IntComparator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,6 +26,7 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Mod.EventBusSubscriber
@@ -32,34 +34,23 @@ public class LootProgress {
 	@SubscribeEvent
 	public static void onSpawn( PlayerEvent.PlayerLoggedInEvent event ) {
 		Player player = event.getPlayer();
-		LootContext context = TreasureBagItem.generateLootContext( player );
+		for( TreasureBagItem treasureBagItem : TreasureBagItem.TREASURE_BAGS )
+			createDefaultProgressIfPossible( player, treasureBagItem );
 
+		notifyPlayerAboutChanges( player );
+	}
+
+	public static void cleanProgress( Player player ) {
 		for( TreasureBagItem treasureBagItem : TreasureBagItem.TREASURE_BAGS ) {
 			String bagID = CommonHelper.getRegistryNameString( treasureBagItem );
 			if( bagID == null )
 				continue;
 
-			for( LootPool lootPool : treasureBagItem.getLootTable().pools )
-				for( LootPoolEntryContainer entryContainer : lootPool.entries ) {
-					LootItem lootItem = CommonHelper.castIfPossible( LootItem.class, entryContainer );
-					if( lootItem != null )
-						lootItem.createItemStack( itemStack->{
-							String itemID = CommonHelper.getRegistryNameString( itemStack.getItem() );
-							if( itemID == null )
-								return;
-							if( itemID.equals( "minecraft:book" ) )
-								itemID = "minecraft:enchanted_book";
+			CompoundTag compoundTag = player.getPersistentData();
+			if( compoundTag.contains( bagID ) )
+				compoundTag.remove( bagID );
 
-							CompoundTag compoundTag = player.getPersistentData();
-							CompoundTag treasureBagTag = compoundTag.contains( bagID ) ? compoundTag.getCompound( bagID ) : new CompoundTag();
-							if( !treasureBagTag.contains( itemID ) ) {
-								LootData lootData = new LootData( itemID, false, lootItem.quality );
-								lootData.write( treasureBagTag );
-
-								compoundTag.put( bagID, treasureBagTag );
-							}
-						}, context );
-				}
+			createDefaultProgressIfPossible( player, treasureBagItem );
 		}
 
 		notifyPlayerAboutChanges( player );
@@ -92,6 +83,34 @@ public class LootProgress {
 		notifyPlayerAboutChanges( player, treasureBagItem );
 	}
 
+	protected static void createDefaultProgressIfPossible( Player player, TreasureBagItem treasureBagItem ) {
+		String bagID = CommonHelper.getRegistryNameString( treasureBagItem );
+		if( bagID == null )
+			return;
+
+		LootContext context = TreasureBagItem.generateLootContext( player );
+		for( LootPool lootPool : treasureBagItem.getLootTable().pools )
+			for( LootPoolEntryContainer entryContainer : lootPool.entries ) {
+				LootItem lootItem = CommonHelper.castIfPossible( LootItem.class, entryContainer );
+				if( lootItem != null )
+					lootItem.createItemStack( itemStack->{
+						String itemID = CommonHelper.getRegistryNameString( itemStack.getItem() );
+						if( itemID == null )
+							return;
+						if( itemID.equals( "minecraft:book" ) )
+							itemID = "minecraft:enchanted_book";
+
+						CompoundTag compoundTag = player.getPersistentData();
+						CompoundTag treasureBagTag = compoundTag.contains( bagID ) ? compoundTag.getCompound( bagID ) : new CompoundTag();
+						if( !treasureBagTag.contains( itemID ) ) {
+							LootData lootData = new LootData( itemID, false, lootItem.quality );
+							lootData.write( treasureBagTag );
+						}
+
+						compoundTag.put( bagID, treasureBagTag );
+					}, context );
+			}
+	}
 	protected static void notifyPlayerAboutChanges( Player player, TreasureBagItem treasureBagItem ) {
 		ServerPlayer serverPlayer = CommonHelper.castIfPossible( ServerPlayer.class, player );
 		if( serverPlayer == null )
@@ -110,6 +129,7 @@ public class LootProgress {
 		for( String itemID : treasureBagTag.getAllKeys() )
 			lootDataList.add( LootData.read( treasureBagTag, itemID ) );
 
+		lootDataList.sort( Comparator.comparingInt( a->-a.quality ) );
 		PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), new ProgressMessage( serverPlayer, bagID, lootDataList ) );
 	}
 

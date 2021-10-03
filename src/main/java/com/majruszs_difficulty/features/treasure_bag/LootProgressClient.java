@@ -11,7 +11,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -64,7 +63,7 @@ public class LootProgressClient {
 			if( LootProgressClient.TREASURE_BAG_COMPONENTS.containsKey( bagID ) )
 				tooltip.addAll( LootProgressClient.TREASURE_BAG_COMPONENTS.get( bagID ) );
 		} else {
-			tooltip.add( new TranslatableComponent( HINT_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY )  );
+			tooltip.add( new TranslatableComponent( HINT_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY ) );
 		}
 	}
 
@@ -74,16 +73,16 @@ public class LootProgressClient {
 			case 3 -> ChatFormatting.LIGHT_PURPLE;
 			case 2 -> ChatFormatting.BLUE;
 			case 1 -> ChatFormatting.GREEN;
-			default -> ChatFormatting.WHITE;
+			default -> ChatFormatting.GRAY;
 		};
 	}
 
 	protected static ChatFormatting getLockedItemFormat( int quality ) {
 		return switch( quality ) {
 			case 4 -> ChatFormatting.YELLOW;
-			case 3 -> ChatFormatting.DARK_PURPLE;
-			case 2 -> ChatFormatting.DARK_BLUE;
-			case 1 -> ChatFormatting.DARK_GREEN;
+			case 3 -> ChatFormatting.LIGHT_PURPLE;
+			case 2 -> ChatFormatting.BLUE;
+			case 1 -> ChatFormatting.GREEN;
 			default -> ChatFormatting.DARK_GRAY;
 		};
 	}

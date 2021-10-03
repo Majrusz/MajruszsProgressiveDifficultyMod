@@ -16,6 +16,7 @@ import java.util.List;
 public class CommandsHelper {
 	public static final List< IRegistrableCommand > COMMANDS = new ArrayList<>();
 	public final static LiteralArgumentBuilder< CommandSourceStack > UNDEAD_ARMY_ARGUMENT = BaseCommand.literal( "undeadarmy" );
+	public final static LiteralArgumentBuilder< CommandSourceStack > TREASURE_BAG_ARGUMENT = BaseCommand.literal( "treasurebag" );
 	static {
 		COMMANDS.add( new StopUndeadArmyCommands() );
 		COMMANDS.add( new StartUndeadArmyCommands() );
@@ -26,6 +27,7 @@ public class CommandsHelper {
 		COMMANDS.add( new ChangeGameStageCommand() );
 		COMMANDS.add( new GetGameStageCommand() );
 		COMMANDS.add( new GetClampedRegionalDifficultyCommands() );
+		COMMANDS.add( new TreasureBagResetProgressCommands() );
 	}
 
 	public static MutableComponent createGameStageMessage( GameState.State state, String translationID ) {
