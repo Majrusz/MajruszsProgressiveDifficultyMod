@@ -7,6 +7,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszs_difficulty:hermes_boots",
+          "quality": 4,
           "conditions": [
             {
               "condition": "minecraft:random_chance",
@@ -24,7 +25,8 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszs_difficulty:bandage"
+          "name": "majruszs_difficulty:bandage",
+          "quality": 1
         }
       ]
     },
@@ -37,43 +39,50 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "minecraft:bone",
           "weight": 25,
-          "name": "minecraft:bone"
+          "quality": 0
         },
         {
           "type": "minecraft:item",
+          "name": "minecraft:rotten_flesh",
           "weight": 25,
-          "name": "minecraft:rotten_flesh"
+          "quality": 0
         },
         {
           "type": "minecraft:item",
+          "name": "minecraft:emerald",
           "weight": 20,
-          "name": "minecraft:arrow"
+          "quality": 0
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
-          "name": "minecraft:emerald"
+          "name": "minecraft:arrow",
+          "weight": 15,
+          "quality": 0
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
+          "name": "majruszs_difficulty:tattered_cloth",
+          "weight": 10,
+          "quality": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 4,
+          "quality": 2,
           "functions": [
             {
               "function": "minecraft:enchant_randomly"
             }
-          ],
-          "name": "minecraft:book"
+          ]
         },
         {
           "type": "minecraft:item",
-          "weight": 4,
-          "name": "majruszs_difficulty:tattered_cloth"
-        },
-        {
-          "type": "minecraft:item",
+          "name": "minecraft:enchanted_golden_apple",
           "weight": 1,
-          "name": "minecraft:enchanted_golden_apple"
+          "quality": 3
         }
       ]
     }

@@ -7,6 +7,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszs_difficulty:end_shard_locator",
+          "quality": 4,
           "conditions": [
             {
               "condition": "minecraft:random_chance",
@@ -25,23 +26,39 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 35,
-          "name": "minecraft:experience_bottle"
+          "name": "minecraft:experience_bottle",
+          "weight": 350,
+          "quality": 0
         },
         {
           "type": "minecraft:item",
-          "weight": 30,
-          "name": "minecraft:dragon_breath"
+          "name": "minecraft:dragon_breath",
+          "weight": 300,
+          "quality": 0
         },
         {
           "type": "minecraft:item",
-          "weight": 30,
-          "name": "minecraft:ender_pearl"
+          "name": "minecraft:ender_pearl",
+          "weight": 300,
+          "quality": 0
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
-          "name": "minecraft:end_crystal"
+          "name": "minecraft:end_crystal",
+          "weight": 40,
+          "quality": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "majruszs_difficulty:end_shard",
+          "weight": 8,
+          "quality": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "majruszs_difficulty:end_ingot",
+          "weight": 2,
+          "quality": 3
         }
       ]
     }

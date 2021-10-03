@@ -7,6 +7,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszs_difficulty:recall_potion",
+          "quality": 4,
           "conditions": [
             {
               "condition": "minecraft:random_chance",
@@ -31,6 +32,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:iron_axe",
+          "quality": 2,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -47,6 +49,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:crossbow",
+          "quality": 2,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -71,18 +74,21 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "minecraft:emerald",
           "weight": 90,
-          "name": "minecraft:emerald"
+          "quality": 0
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
-          "name": "minecraft:totem_of_undying"
+          "name": "minecraft:saddle",
+          "weight": 6,
+          "quality": 1
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
-          "name": "minecraft:saddle"
+          "name": "minecraft:totem_of_undying",
+          "weight": 4,
+          "quality": 2
         }
       ]
     }
