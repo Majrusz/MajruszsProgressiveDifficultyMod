@@ -97,7 +97,7 @@
   "majruszs_difficulty.end_items.levitation_tooltip": "Has a chance to inflict Levitation effect on hit.",
   "majruszs_difficulty.end_items.till_tooltip": "Tills the ground in a 3x1x3 area.",
   "majruszs_difficulty.end_items.armor_set": "Set of the End",
-  "majruszs_difficulty.end_items.armor_set_bonus_2": "  [%d/%d] All Endermans are less hostile.",
+  "majruszs_difficulty.end_items.armor_set_bonus_2": "  [%d/%d] Your Helmet of the End makes all Endermans less hostile.",
   "majruszs_difficulty.end_items.armor_set_bonus_3": "  [%d/%d] Whenever you take damage you get Speed effect for few seconds.",
   "majruszs_difficulty.end_items.armor_set_bonus_4": "  [%d/%d] Increases your health by 2 hearts.",
   "majruszs_difficulty.items.undead_helmet": "Helmet of the Undead Army",

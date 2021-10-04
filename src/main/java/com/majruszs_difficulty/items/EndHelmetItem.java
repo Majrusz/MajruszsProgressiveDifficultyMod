@@ -1,5 +1,7 @@
 package com.majruszs_difficulty.items;
 
+import com.majruszs_difficulty.features.end_items.EndItems;
+import com.mlib.MajruszLibrary;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +15,6 @@ public class EndHelmetItem extends EndArmorItem {
 
 	@Override
 	public boolean isEnderMask( ItemStack stack, Player player, EnderMan endermanEntity ) {
-		return true;
+		return EndItems.getAmountOfEndArmorPieces( player ) >= 2;
 	}
 }
