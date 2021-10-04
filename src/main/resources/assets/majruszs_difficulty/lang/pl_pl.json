@@ -52,7 +52,7 @@
   "item.majruszs_difficulty.end_shard_locator.item_tooltip": "Informuje gracza jak daleko znajduje się od rudy kryształu kresu.",
   "item.majruszs_difficulty.golden_bandage": "Złoty bandaż",
   "item.majruszs_difficulty.recall_potion": "Mikstura powrotu",
-  "item.majruszs_difficulty.recall_potion.item_tooltip": "Teleportuje do domu po wypiciu jej.",
+  "item.majruszs_difficulty.recall_potion.item_tooltip": "Teleportuje do domu po wypiciu.",
   "item.majruszs_difficulty.ocean_shield": "Oceaniczna tarcza",
   "block.majruszs_difficulty.end_shard_ore": "Ruda kryształu kresu",
   "block.majruszs_difficulty.end_shard_ore.warning": "Po zniszczeniu tej rudy wszystkie Enderman'y Cię zaatakują!",
