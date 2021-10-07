@@ -106,9 +106,8 @@ public class TreasureBagItem extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, this.availability.isEnabled() );
-		MajruszsHelper.addAdvancedTranslatableText( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY );
+		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY, " " );
 
-		tooltip.add( new TextComponent( " " ) );
 		LootProgressClient.addDropList( this, tooltip );
 	}
 
