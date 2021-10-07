@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,6 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
@@ -87,9 +89,17 @@ public class LootProgress {
 		if( bagID == null )
 			return;
 
+		List< LootPool > pools = ObfuscationReflectionHelper.getPrivateValue( LootTable.class, treasureBagItem.getLootTable(), "pools" );
+		if( pools == null )
+			return;
+
 		LootContext context = TreasureBagItem.generateLootContext( player );
-		for( LootPool lootPool : treasureBagItem.getLootTable().pools )
-			for( LootPoolEntryContainer entryContainer : lootPool.entries ) {
+		for( LootPool lootPool : pools ) {
+			List< LootPoolEntryContainer > entries = ObfuscationReflectionHelper.getPrivateValue( LootPool.class, lootPool, "entries" );
+			if( entries == null )
+				return;
+
+			for( LootPoolEntryContainer entryContainer : entries ) {
 				LootItem lootItem = CommonHelper.castIfPossible( LootItem.class, entryContainer );
 				if( lootItem != null )
 					lootItem.createItemStack( itemStack->{
@@ -109,6 +119,7 @@ public class LootProgress {
 						compoundTag.put( bagID, treasureBagTag );
 					}, context );
 			}
+		}
 	}
 
 	protected static void notifyPlayerAboutChanges( Player player, TreasureBagItem treasureBagItem ) {
