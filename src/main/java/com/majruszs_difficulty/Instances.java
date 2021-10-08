@@ -12,6 +12,7 @@ import com.majruszs_difficulty.features.IncreaseGameDifficulty;
 import com.majruszs_difficulty.features.SpawnDisabler;
 import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsBleedingOnHurt;
 import com.majruszs_difficulty.features.end_items.when_damaged.EndToolsLevitationOnAttack;
+import com.majruszs_difficulty.features.item_sets.EndSet;
 import com.majruszs_difficulty.features.monster_spawn.*;
 import com.majruszs_difficulty.features.on_death.OnDeathEventHandler;
 import com.majruszs_difficulty.features.on_death.SpawnParasitesOnDeath;
@@ -56,6 +57,9 @@ public class Instances {
 	public static final GoldenBandageItem GOLDEN_BANDAGE_ITEM;
 	public static final RecallPotionItem RECALL_POTION_ITEM;
 	public static final OceanShieldItem OCEAN_SHIELD_ITEM;
+
+	// Items Sets
+	public static final EndSet END_SET;
 
 	// Treasure Bags
 	public static final TreasureBagItem UNDEAD_ARMY_TREASURE_BAG;
@@ -140,6 +144,9 @@ public class Instances {
 		GOLDEN_BANDAGE_ITEM = new GoldenBandageItem();
 		RECALL_POTION_ITEM = new RecallPotionItem();
 		OCEAN_SHIELD_ITEM = new OceanShieldItem();
+
+		// Items Sets
+		END_SET = new EndSet();
 
 		// Treasure Bags
 		UNDEAD_ARMY_TREASURE_BAG = new TreasureBagItem( "undead_army", "Undead Army" );
