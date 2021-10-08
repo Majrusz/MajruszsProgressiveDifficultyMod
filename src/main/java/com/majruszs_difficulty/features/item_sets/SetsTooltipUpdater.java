@@ -18,8 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
-@OnlyIn( Dist.CLIENT )
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber( value = Dist.CLIENT )
 public class SetsTooltipUpdater {
 	private static final ChatFormatting DISABLED_FORMAT = ChatFormatting.DARK_GRAY;
 	private static final ChatFormatting HINT_FORMAT = ChatFormatting.GRAY;
