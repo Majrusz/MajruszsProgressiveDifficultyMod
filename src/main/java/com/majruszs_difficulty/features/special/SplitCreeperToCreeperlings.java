@@ -56,7 +56,8 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 	/** Returns position nearby given Creeper. */
 	private static BlockPos getNearbyPosition( Creeper creeper ) {
 		BlockPos position = creeper.blockPosition();
-		double x = position.getX() + MajruszLibrary.RANDOM.nextDouble() - 0.5, y = position.getY() + MajruszLibrary.RANDOM.nextDouble() - 0.5, z = position.getZ() + MajruszLibrary.RANDOM.nextDouble() - 0.5;
+		double x = position.getX() + MajruszLibrary.RANDOM.nextDouble() - 0.5, y = position.getY() + MajruszLibrary.RANDOM.nextDouble() - 0.5, z = position
+			.getZ() + MajruszLibrary.RANDOM.nextDouble() - 0.5;
 
 		return new BlockPos( x, y, z );
 	}

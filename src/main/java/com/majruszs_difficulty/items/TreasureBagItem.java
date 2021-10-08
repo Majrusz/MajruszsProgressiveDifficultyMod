@@ -10,7 +10,6 @@ import com.majruszs_difficulty.features.treasure_bag.LootProgressClient;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

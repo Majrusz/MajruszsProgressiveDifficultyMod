@@ -5,9 +5,7 @@ import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
 public class TargetAsLeaderGoal extends TargetGoal {
-	private static final TargetingConditions predicate = TargetingConditions.forCombat()
-		.ignoreLineOfSight()
-		.ignoreInvisibilityTesting();
+	private static final TargetingConditions predicate = TargetingConditions.forCombat().ignoreLineOfSight().ignoreInvisibilityTesting();
 	protected final PathfinderMob leader;
 
 	public TargetAsLeaderGoal( PathfinderMob follower, PathfinderMob leader ) {

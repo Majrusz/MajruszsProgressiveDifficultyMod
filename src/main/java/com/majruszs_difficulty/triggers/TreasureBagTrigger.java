@@ -50,9 +50,7 @@ public class TreasureBagTrigger extends SimpleCriterionTrigger< TreasureBagTrigg
 		}
 
 		public boolean test( TreasureBagItem item, int amountOfBags ) {
-			return item.getRegistryName() != null && amountOfBags >= this.amountOfBags && item.getRegistryName()
-				.toString()
-				.equals( this.bagID );
+			return item.getRegistryName() != null && amountOfBags >= this.amountOfBags && item.getRegistryName().toString().equals( this.bagID );
 		}
 	}
 }

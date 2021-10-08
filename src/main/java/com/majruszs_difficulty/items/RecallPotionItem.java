@@ -29,9 +29,7 @@ public class RecallPotionItem extends Item {
 	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszs_difficulty.recall_potion.item_tooltip";
 
 	public RecallPotionItem() {
-		super( new Item.Properties().tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.UNCOMMON )
-			.stacksTo( 16 ) );
+		super( new Item.Properties().tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
 
 	@Override

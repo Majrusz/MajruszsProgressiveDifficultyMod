@@ -25,8 +25,7 @@ public class HermesBootsItem extends AttributeArmorItem {
 	protected final ConfigGroup configGroup;
 
 	public HermesBootsItem() {
-		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, ( new Properties() ).tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.UNCOMMON ) );
+		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, ( new Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
 		String comment = "Movement speed extra multiplier. (requires game/world restart!)";
 		this.movementSpeedBonus = new DoubleConfig( "movement_speed_bonus", comment, true, 0.25, 0.0, 5.0 );

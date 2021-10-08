@@ -21,9 +21,7 @@ import net.minecraft.world.level.material.MaterialColor;
 /** New end block which works like End Stone block but spawns Endermite when destroyed. */
 public class InfestedEndStone extends Block {
 	public InfestedEndStone() {
-		super( Properties.of( Material.CLAY, MaterialColor.COLOR_YELLOW )
-			.strength( 0.0f, 0.75f )
-			.sound( SoundType.STONE ) );
+		super( Properties.of( Material.CLAY, MaterialColor.COLOR_YELLOW ).strength( 0.0f, 0.75f ).sound( SoundType.STONE ) );
 	}
 
 	@Override
@@ -54,8 +52,7 @@ public class InfestedEndStone extends Block {
 
 	public static class InfestedEndStoneItem extends BlockItem {
 		public InfestedEndStoneItem() {
-			super( Instances.INFESTED_END_STONE, ( new Properties() ).stacksTo( 64 )
-				.tab( Instances.ITEM_GROUP ) );
+			super( Instances.INFESTED_END_STONE, ( new Properties() ).stacksTo( 64 ).tab( Instances.ITEM_GROUP ) );
 		}
 	}
 }

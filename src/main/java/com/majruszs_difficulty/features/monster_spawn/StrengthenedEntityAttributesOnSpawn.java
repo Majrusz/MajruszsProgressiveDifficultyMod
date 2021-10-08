@@ -39,10 +39,8 @@ public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase 
 	public void onExecute( LivingEntity entity, ServerLevel world ) {
 		double bonusMultiplier = getAttributeMultiplier( world );
 
-		MAX_HEALTH_ATTRIBUTE.setValue( this.healthBonuses.getCurrentGameStateValue() * bonusMultiplier )
-			.apply( entity );
-		DAMAGE_ATTRIBUTE.setValue( this.damageBonuses.getCurrentGameStateValue() * bonusMultiplier )
-			.apply( entity );
+		MAX_HEALTH_ATTRIBUTE.setValue( this.healthBonuses.getCurrentGameStateValue() * bonusMultiplier ).apply( entity );
+		DAMAGE_ATTRIBUTE.setValue( this.damageBonuses.getCurrentGameStateValue() * bonusMultiplier ).apply( entity );
 
 		entity.setHealth( entity.getMaxHealth() );
 	}

@@ -50,9 +50,7 @@ public class UpdatePlayerList {
 		String uuid = getPlayerUUID( player );
 
 		for( int i = 0; i < listNBT.size(); i++ )
-			if( listNBT.getCompound( i )
-				.getString( TreasureBagManager.PLAYER_TAG )
-				.equals( uuid ) )
+			if( listNBT.getCompound( i ).getString( TreasureBagManager.PLAYER_TAG ).equals( uuid ) )
 				return true;
 
 		return false;

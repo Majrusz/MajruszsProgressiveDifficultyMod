@@ -29,9 +29,7 @@ public class EndBlock extends Block {
 
 	public static class EndBlockItem extends BlockItem {
 		public EndBlockItem() {
-			super( Instances.END_BLOCK, ( new Properties() ).stacksTo( 64 )
-				.rarity( Rarity.UNCOMMON )
-				.tab( Instances.ITEM_GROUP ) );
+			super( Instances.END_BLOCK, ( new Properties() ).stacksTo( 64 ).rarity( Rarity.UNCOMMON ).tab( Instances.ITEM_GROUP ) );
 		}
 
 		@Override

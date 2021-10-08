@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -110,8 +109,7 @@ public class UndeadArmyManager extends SavedData {
 	public boolean tryToSpawn( BlockPos attackPosition, Optional< Direction > optionalDirection ) {
 		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
 
-		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere(
-			attackPosition ) || config.isUndeadArmyDisabled() )
+		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) || config.isUndeadArmyDisabled() )
 			return false;
 
 		Direction direction = optionalDirection.orElse( Direction.getRandom() );
@@ -144,8 +142,7 @@ public class UndeadArmyManager extends SavedData {
 		double minimumDistance = MAXIMUM_DISTANCE_TO_ARMY;
 
 		for( UndeadArmy undeadArmy : this.undeadArmies ) {
-			double distanceToUndeadArmy = undeadArmy.getAttackPosition()
-				.distSqr( position );
+			double distanceToUndeadArmy = undeadArmy.getAttackPosition().distSqr( position );
 
 			if( undeadArmy.isActive() && distanceToUndeadArmy < minimumDistance ) {
 				nearestArmy = undeadArmy;

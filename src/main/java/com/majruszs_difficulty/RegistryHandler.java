@@ -1,6 +1,6 @@
 package com.majruszs_difficulty;
 
-import com.majruszs_difficulty.commands.*;
+import com.majruszs_difficulty.commands.CommandsHelper;
 import com.majruszs_difficulty.entities.*;
 import com.majruszs_difficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszs_difficulty.features.undead_army.ReloadUndeadArmyGoals;
@@ -10,9 +10,7 @@ import com.majruszs_difficulty.items.AttributeArmorItem;
 import com.majruszs_difficulty.items.FakeItem;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.items.SpawnEggFactory;
-import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;

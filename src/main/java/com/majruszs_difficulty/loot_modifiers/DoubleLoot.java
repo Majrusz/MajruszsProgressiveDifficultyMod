@@ -94,11 +94,9 @@ public class DoubleLoot extends LootModifier {
 
 			List< Item > forbiddenItemsToDuplicate = new ArrayList<>();
 			for( int i = 0; i < items.size(); i++ ) {
-				JsonObject item = items.get( i )
-					.getAsJsonObject();
+				JsonObject item = items.get( i ).getAsJsonObject();
 
-				forbiddenItemsToDuplicate.add( ForgeRegistries.ITEMS.getValue( new ResourceLocation( item.get( "name" )
-					.getAsString() ) ) );
+				forbiddenItemsToDuplicate.add( ForgeRegistries.ITEMS.getValue( new ResourceLocation( item.get( "name" ).getAsString() ) ) );
 			}
 
 			return new DoubleLoot( conditions, normalModeChance, expertModeChance, masterModeChance, forbiddenItemsToDuplicate );

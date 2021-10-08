@@ -31,9 +31,7 @@ public class EndShardLocatorItem extends Item {
 	private static final float INVALID_DISTANCE = 9001.0f;
 
 	public EndShardLocatorItem() {
-		super( ( new Item.Properties() ).tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.UNCOMMON )
-			.stacksTo( 1 ) );
+		super( ( new Item.Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
 	}
 
 	@Override

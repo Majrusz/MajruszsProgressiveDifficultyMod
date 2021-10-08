@@ -17,6 +17,7 @@ public class CommandsHelper {
 	public static final List< IRegistrableCommand > COMMANDS = new ArrayList<>();
 	public final static LiteralArgumentBuilder< CommandSourceStack > UNDEAD_ARMY_ARGUMENT = BaseCommand.literal( "undeadarmy" );
 	public final static LiteralArgumentBuilder< CommandSourceStack > TREASURE_BAG_ARGUMENT = BaseCommand.literal( "treasurebag" );
+
 	static {
 		COMMANDS.add( new StopUndeadArmyCommands() );
 		COMMANDS.add( new StartUndeadArmyCommands() );

@@ -19,9 +19,7 @@ import java.util.List;
 /** New late game shovel. */
 public class EndShovelItem extends ShovelItem {
 	public EndShovelItem() {
-		super( CustomItemTier.END, 1.5f, -3.0f, ( new Properties() ).tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.UNCOMMON )
-			.fireResistant() );
+		super( CustomItemTier.END, 1.5f, -3.0f, ( new Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	@Override

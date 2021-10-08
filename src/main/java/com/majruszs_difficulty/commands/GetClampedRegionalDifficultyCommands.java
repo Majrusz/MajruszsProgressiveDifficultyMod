@@ -1,8 +1,6 @@
 package com.majruszs_difficulty.commands;
 
 import com.majruszs_difficulty.GameState;
-import com.majruszs_difficulty.RegistryHandler;
-import com.majruszs_difficulty.features.undead_army.UndeadArmy;
 import com.mlib.LevelHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
@@ -10,7 +8,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;

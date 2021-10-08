@@ -38,9 +38,7 @@ public class GameState {
 
 	/** Triggers game state advancement for all players if possible. */
 	public static void triggerAdvancement( MinecraftServer minecraftServer ) {
-		minecraftServer.getPlayerList()
-			.getPlayers()
-			.forEach( GameState::triggerAdvancement );
+		minecraftServer.getPlayerList().getPlayers().forEach( GameState::triggerAdvancement );
 	}
 
 	/** Triggers game state advancement for player if possible. */

@@ -53,9 +53,7 @@ public class BandageItem extends Item {
 	}
 
 	public BandageItem( String name, int defaultAmplifier, Rarity rarity ) {
-		super( ( new Properties() ).stacksTo( 16 )
-			.tab( Instances.ITEM_GROUP )
-			.rarity( rarity ) );
+		super( ( new Properties() ).stacksTo( 16 ).tab( Instances.ITEM_GROUP ).rarity( rarity ) );
 
 		this.configGroup = new ConfigGroup( name, "Configuration for " + name + " item." );
 		FEATURES_GROUP.addGroup( this.configGroup );

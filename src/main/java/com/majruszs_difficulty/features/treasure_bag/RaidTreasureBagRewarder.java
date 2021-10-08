@@ -40,8 +40,7 @@ public class RaidTreasureBagRewarder {
 
 	/** Returns ID of last raid that rewarded the player with a Treasure Bag. */
 	private static int getLastRaidID( Player player ) {
-		return player.getPersistentData()
-			.getInt( RAID_TAG );
+		return player.getPersistentData().getInt( RAID_TAG );
 	}
 
 	/** Updates ID of last raid that rewarded the player with a Treasure Bag. */

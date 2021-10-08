@@ -18,7 +18,7 @@ public class GameStateEnumConfig extends BaseConfig< GameState.State > {
 		return this.enumValue.get();
 	}
 
-	public void build( ForgeConfigSpec.Builder builder) {
+	public void build( ForgeConfigSpec.Builder builder ) {
 		super.build( builder );
 		this.enumValue = builder.defineEnum( this.name, this.defaultValue );
 	}

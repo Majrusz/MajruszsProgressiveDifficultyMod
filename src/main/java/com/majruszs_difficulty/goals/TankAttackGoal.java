@@ -46,11 +46,11 @@ public class TankAttackGoal extends MeleeAttackGoal {
 			if( this.tank.isAttacking( TankEntity.AttackType.NORMAL ) && this.tank.getAttackDurationRatioLeft() > 0.45f ) {
 				if( distance <= getAttackReachSqr( entity ) ) {
 					this.tank.doHurtTarget( entity );
-					this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f,  0.9f );
+					this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f, 0.9f );
 				}
 			} else if( this.tank.isAttacking( TankEntity.AttackType.SPECIAL ) && this.tank.getAttackDurationRatioLeft() > 0.55f ) {
 				hurtAllEntitiesInRange( entity );
-				this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f,  0.9f );
+				this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f, 0.9f );
 			} else {
 				return;
 			}

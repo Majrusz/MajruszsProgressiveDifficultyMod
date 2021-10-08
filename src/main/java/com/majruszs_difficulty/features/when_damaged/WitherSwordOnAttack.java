@@ -21,8 +21,7 @@ public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
 	/** Checks if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		boolean isHoldingWitherSword = attacker != null && attacker.getMainHandItem()
-			.getItem() instanceof WitherSwordItem;
+		boolean isHoldingWitherSword = attacker != null && attacker.getMainHandItem().getItem() instanceof WitherSwordItem;
 
 		return isHoldingWitherSword && super.shouldBeExecuted( attacker, target, damageSource );
 	}

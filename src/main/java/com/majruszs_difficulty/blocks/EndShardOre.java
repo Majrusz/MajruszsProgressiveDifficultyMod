@@ -111,8 +111,7 @@ public class EndShardOre extends Block {
 
 	public static class EndShardOreItem extends BlockItem {
 		public EndShardOreItem() {
-			super( Instances.END_SHARD_ORE, ( new Properties() ).stacksTo( 64 )
-				.tab( Instances.ITEM_GROUP ) );
+			super( Instances.END_SHARD_ORE, ( new Properties() ).stacksTo( 64 ).tab( Instances.ITEM_GROUP ) );
 		}
 
 		@Override

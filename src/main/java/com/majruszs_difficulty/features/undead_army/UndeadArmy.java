@@ -38,14 +38,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.common.Mod;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -220,7 +218,8 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 9.0 ) >= this.undeadToKill / 2 && countNearbyPlayers( SAFE_SPAWN_RADIUS / 9.0 ) == 0 )
+		if( !this.spawnerWasCreated && countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 9.0 ) >= this.undeadToKill / 2 && countNearbyPlayers(
+			SAFE_SPAWN_RADIUS / 9.0 ) == 0 )
 			createSpawner();
 
 		if( shouldWaveEndPrematurely() )
@@ -506,7 +505,7 @@ public class UndeadArmy {
 
 		PathfinderMob pathfinderMob = CommonHelper.castIfPossible( PathfinderMob.class, monster );
 		if( pathfinderMob != null ) {
-			monster.targetSelector.getAvailableGoals().removeIf( wrappedGoal -> wrappedGoal.getGoal() instanceof HurtByTargetGoal );
+			monster.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
 			monster.targetSelector.addGoal( 1, new ForgiveUndeadArmyTargetGoal( pathfinderMob ) );
 		}
 	}
@@ -548,7 +547,8 @@ public class UndeadArmy {
 
 	/** Predicate for checking whether given player is alive and is participating in the raid. */
 	private Predicate< ServerPlayer > getParticipantsPredicate() {
-		return player->player.isAlive() && RegistryHandler.UNDEAD_ARMY_MANAGER != null && ( RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( player.position() ) ) == this
+		return player->player.isAlive() && RegistryHandler.UNDEAD_ARMY_MANAGER != null && ( RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy(
+			new BlockPos( player.position() ) ) == this
 		);
 	}
 

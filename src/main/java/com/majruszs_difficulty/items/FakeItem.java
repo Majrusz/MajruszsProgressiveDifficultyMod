@@ -10,9 +10,7 @@ import net.minecraft.world.item.Rarity;
 /** Advancements require icons as items, so this class is just a fake item to have a custom icons. */
 public class FakeItem extends Item {
 	public FakeItem() {
-		super( ( new Properties() ).stacksTo( 1 )
-			.tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.EPIC ) );
+		super( ( new Properties() ).stacksTo( 1 ).tab( Instances.ITEM_GROUP ).rarity( Rarity.EPIC ) );
 	}
 
 	@Override

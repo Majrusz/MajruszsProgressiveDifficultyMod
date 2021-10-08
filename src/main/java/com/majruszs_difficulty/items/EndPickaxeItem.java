@@ -19,9 +19,7 @@ import java.util.List;
 /** New late game pickaxe. */
 public class EndPickaxeItem extends PickaxeItem {
 	public EndPickaxeItem() {
-		super( CustomItemTier.END, 1, -2.8f, ( new Properties() ).tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.UNCOMMON )
-			.fireResistant() );
+		super( CustomItemTier.END, 1, -2.8f, ( new Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	@Override

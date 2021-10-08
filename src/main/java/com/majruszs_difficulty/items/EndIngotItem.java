@@ -17,8 +17,7 @@ import java.util.List;
 /** New strong end-game ingot. */
 public class EndIngotItem extends Item {
 	public EndIngotItem() {
-		super( new Properties().tab( Instances.ITEM_GROUP )
-			.rarity( Rarity.UNCOMMON ) );
+		super( new Properties().tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override
