@@ -1,5 +1,6 @@
 package com.majruszs_difficulty.features.treasure_bag;
 
+import com.majruszs_difficulty.MajruszsHelper;
 import com.majruszs_difficulty.PacketHandler;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.mlib.CommonHelper;
@@ -22,7 +23,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
@@ -89,13 +89,13 @@ public class LootProgress {
 		if( bagID == null )
 			return;
 
-		List< LootPool > pools = ObfuscationReflectionHelper.getPrivateValue( LootTable.class, treasureBagItem.getLootTable(), "pools" );
+		List< LootPool > pools = MajruszsHelper.getPrivateValue( LootTable.class, treasureBagItem.getLootTable(), "pools", "f_79109_" );
 		if( pools == null )
 			return;
 
 		LootContext context = TreasureBagItem.generateLootContext( player );
 		for( LootPool lootPool : pools ) {
-			List< LootPoolEntryContainer > entries = ObfuscationReflectionHelper.getPrivateValue( LootPool.class, lootPool, "entries" );
+			List< LootPoolEntryContainer > entries = MajruszsHelper.getPrivateValue( LootPool.class, lootPool, "entries", "f_79023_" );
 			if( entries == null )
 				return;
 

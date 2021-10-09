@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -110,5 +111,18 @@ public class MajruszsHelper {
 		double y = world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ( int )newPosition.x, ( int )newPosition.z ) + 1;
 
 		return !( y < 5 ) && target.randomTeleport( newPosition.x, target.yOld + 8 > y ? y : newPosition.y, newPosition.z, true );
+	}
+
+	@Nullable
+	public static < ReturnType, Type > ReturnType getPrivateValue( Class< ? super Type > classToAccess, Type instance, String fieldName, String mcpName ) {
+		try {
+			return ObfuscationReflectionHelper.getPrivateValue( classToAccess, instance, fieldName );
+		} catch( ObfuscationReflectionHelper.UnableToFindFieldException exception ) {
+			try {
+				return ObfuscationReflectionHelper.getPrivateValue( classToAccess, instance, mcpName );
+			} catch( ObfuscationReflectionHelper.UnableToFindFieldException exception2 ) {
+				return null;
+			}
+		}
 	}
 }
