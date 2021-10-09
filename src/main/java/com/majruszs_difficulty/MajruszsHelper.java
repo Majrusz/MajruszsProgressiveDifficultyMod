@@ -112,17 +112,4 @@ public class MajruszsHelper {
 
 		return !( y < 5 ) && target.randomTeleport( newPosition.x, target.yOld + 8 > y ? y : newPosition.y, newPosition.z, true );
 	}
-
-	@Nullable
-	public static < ReturnType, Type > ReturnType getPrivateValue( Class< ? super Type > classToAccess, Type instance, String fieldName, String mcpName ) {
-		try {
-			return ObfuscationReflectionHelper.getPrivateValue( classToAccess, instance, fieldName );
-		} catch( ObfuscationReflectionHelper.UnableToFindFieldException exception ) {
-			try {
-				return ObfuscationReflectionHelper.getPrivateValue( classToAccess, instance, mcpName );
-			} catch( ObfuscationReflectionHelper.UnableToFindFieldException exception2 ) {
-				return null;
-			}
-		}
-	}
 }

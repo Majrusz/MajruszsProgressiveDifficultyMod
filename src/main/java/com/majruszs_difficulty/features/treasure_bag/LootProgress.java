@@ -1,6 +1,6 @@
 package com.majruszs_difficulty.features.treasure_bag;
 
-import com.majruszs_difficulty.MajruszsHelper;
+import com.majruszs_difficulty.ObfuscationGetter;
 import com.majruszs_difficulty.PacketHandler;
 import com.majruszs_difficulty.items.TreasureBagItem;
 import com.mlib.CommonHelper;
@@ -32,6 +32,11 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public class LootProgress {
+	public static ObfuscationGetter< LootTable, List< LootPool > > POOLS_GETTER = new ObfuscationGetter<>( LootTable.class, "pools", "f_79109_" );
+	public static ObfuscationGetter< LootPool, List< LootPoolEntryContainer > > ENTRIES_GETTER = new ObfuscationGetter<>( LootPool.class, "entries",
+		"f_79023_"
+	);
+
 	@SubscribeEvent
 	public static void onSpawn( PlayerEvent.PlayerLoggedInEvent event ) {
 		Player player = event.getPlayer();
@@ -89,13 +94,13 @@ public class LootProgress {
 		if( bagID == null )
 			return;
 
-		List< LootPool > pools = MajruszsHelper.getPrivateValue( LootTable.class, treasureBagItem.getLootTable(), "pools", "f_79109_" );
+		List< LootPool > pools = POOLS_GETTER.get( treasureBagItem.getLootTable() );
 		if( pools == null )
 			return;
 
 		LootContext context = TreasureBagItem.generateLootContext( player );
 		for( LootPool lootPool : pools ) {
-			List< LootPoolEntryContainer > entries = MajruszsHelper.getPrivateValue( LootPool.class, lootPool, "entries", "f_79023_" );
+			List< LootPoolEntryContainer > entries = ENTRIES_GETTER.get( lootPool );
 			if( entries == null )
 				return;
 
