@@ -33,7 +33,7 @@ import java.util.List;
 @Mod.EventBusSubscriber
 public class LootProgress {
 	public static ObfuscationGetter< LootTable, List< LootPool > > POOLS_GETTER = new ObfuscationGetter<>( LootTable.class, "pools", "f_79109_" );
-	public static ObfuscationGetter< LootPool, List< LootPoolEntryContainer > > ENTRIES_GETTER = new ObfuscationGetter<>( LootPool.class, "entries",
+	public static ObfuscationGetter< LootPool, LootPoolEntryContainer[] > ENTRIES_GETTER = new ObfuscationGetter<>( LootPool.class, "entries",
 		"f_79023_"
 	);
 
@@ -100,7 +100,7 @@ public class LootProgress {
 
 		LootContext context = TreasureBagItem.generateLootContext( player );
 		for( LootPool lootPool : pools ) {
-			List< LootPoolEntryContainer > entries = ENTRIES_GETTER.get( lootPool );
+			LootPoolEntryContainer[] entries = ENTRIES_GETTER.get( lootPool );
 			if( entries == null )
 				return;
 
