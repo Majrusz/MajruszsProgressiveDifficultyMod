@@ -3,8 +3,8 @@ package com.majruszs_difficulty;
 import com.majruszs_difficulty.entities.TankEntity;
 import com.majruszs_difficulty.features.treasure_bag.LootProgress;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 /** Handling connection between server and client. */
 public class PacketHandler {

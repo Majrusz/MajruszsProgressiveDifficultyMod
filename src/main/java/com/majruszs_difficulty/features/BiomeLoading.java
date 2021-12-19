@@ -11,8 +11,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.common.world.MobSpawnInfoBuilder;
+import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +27,7 @@ public class BiomeLoading {
 	@SubscribeEvent( priority = EventPriority.HIGH )
 	public static void onLoad( BiomeLoadingEvent event ) {
 		Biome.BiomeCategory category = event.getCategory();
-		MobSpawnInfoBuilder spawnInfoBuilder = event.getSpawns();
+		MobSpawnSettingsBuilder spawnInfoBuilder = event.getSpawns();
 		BiomeGenerationSettingsBuilder generationSettingsBuilder = event.getGeneration();
 
 		if( doBiomeCategoryBelongsToOverworld( category ) ) {
@@ -42,7 +43,7 @@ public class BiomeLoading {
 	}
 
 	/** Adding natural spawning for overworld entities. */
-	protected static void addOverworldEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
+	protected static void addOverworldEntities( MobSpawnSettingsBuilder spawnInfoBuilder ) {
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EntityType.ILLUSIONER, 20, 1, 2 );
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, GiantEntity.type, 3, 1, 1 );
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EliteSkeletonEntity.type, 20, 1, 1 );
@@ -55,14 +56,14 @@ public class BiomeLoading {
 	}
 
 	/** Adding natural spawning for nether entities. */
-	protected static void addNetherEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
+	protected static void addNetherEntities( MobSpawnSettingsBuilder spawnInfoBuilder ) {
 		Set< EntityType< ? > > entityTypes = spawnInfoBuilder.getEntityTypes();
 		if( entityTypes.contains( EntityType.SKELETON ) || entityTypes.contains( EntityType.WITHER_SKELETON ) )
 			addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EliteSkeletonEntity.type, 5, 1, 1 );
 	}
 
 	/** Adding natural spawning for end entities. */
-	protected static void addEndEntities( MobSpawnInfoBuilder spawnInfoBuilder ) {
+	protected static void addEndEntities( MobSpawnSettingsBuilder spawnInfoBuilder ) {
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, ParasiteEntity.type, 1, 2, 6 );
 	}
 
@@ -75,8 +76,8 @@ public class BiomeLoading {
 
 	/** Adding natural generation for ores. */
 	protected static void addEndOres( BiomeGenerationSettingsBuilder generationSettingsBuilder ) {
-		for( ConfiguredFeature< ?, ? > ore : OreGeneration.END_ORES )
-			generationSettingsBuilder.addFeature( GenerationStep.Decoration.UNDERGROUND_ORES, ore );
+		for( PlacedFeature feature : OreGeneration.END_ORES )
+			generationSettingsBuilder.addFeature( GenerationStep.Decoration.UNDERGROUND_ORES, feature );
 	}
 
 	/** Checking whether given biome category belongs to overworld. */
@@ -119,7 +120,7 @@ public class BiomeLoading {
 	 @param minimumCount     Minimum amount of entities to spawn.
 	 @param maximumCount     Maximum amount of entities to spawn.
 	 */
-	private static void addFreshEntity( MobSpawnInfoBuilder spawnInfoBuilder, MobCategory classification, EntityType< ? > entityType, int weight,
+	private static void addFreshEntity( MobSpawnSettingsBuilder spawnInfoBuilder, MobCategory classification, EntityType< ? > entityType, int weight,
 		int minimumCount, int maximumCount
 	) {
 		MobSpawnSettings.SpawnerData spawners = new MobSpawnSettings.SpawnerData( entityType, weight, minimumCount, maximumCount );

@@ -12,6 +12,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,8 +31,8 @@ public class OceanShieldItem extends ShieldItem {
 	}
 
 	@Override
-	public boolean isShield( ItemStack itemStack, LivingEntity entity ) {
-		return true;
+	public boolean canPerformAction( ItemStack stack, ToolAction toolAction ) {
+		return toolAction.equals( ToolActions.SHIELD_BLOCK );
 	}
 
 	@SubscribeEvent

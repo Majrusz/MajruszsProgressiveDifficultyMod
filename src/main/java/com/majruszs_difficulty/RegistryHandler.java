@@ -38,7 +38,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.event.server.ServerLifecycleEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -260,7 +260,7 @@ public class RegistryHandler {
 	/**
 	 *
 	 */
-	private static void onServerStart( FMLServerStartingEvent event ) {
+	private static void onServerStart( ServerLifecycleEvent event ) {
 		MinecraftServer server = event.getServer();
 		if( UNDEAD_ARMY_MANAGER != null )
 			UNDEAD_ARMY_MANAGER.updateWorld( server.getLevel( ServerLevel.OVERWORLD ) );
@@ -328,7 +328,7 @@ public class RegistryHandler {
 	/** Adds custom textures to the game. */
 	@OnlyIn( Dist.CLIENT )
 	private static void onTextureStitch( TextureStitchEvent.Pre event ) {
-		final TextureAtlas map = event.getMap();
+		final TextureAtlas map = event.getAtlas();
 		if( InventoryMenu.BLOCK_ATLAS.equals( map.location() ) )
 			event.addSprite( RegistryHandlerClient.OCEAN_SHIELD_MATERIAL.texture() );
 	}
