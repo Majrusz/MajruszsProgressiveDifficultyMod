@@ -1,6 +1,6 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.blocks.EndBlock;
+import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.EndShardOre;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.commands.CommandsHelper;
@@ -125,7 +125,7 @@ public class Registries {
 
 	// Item Blocks
 	public static final RegistryObject< EndShardOre.EndShardOreItem > END_SHARD_ORE_ITEM = ITEMS.register( "end_shard_ore", EndShardOre.EndShardOreItem::new );
-	public static final RegistryObject< EndBlock.EndBlockItem > END_BLOCK_ITEM = ITEMS.register( "end_block", EndBlock.EndBlockItem::new );
+	public static final RegistryObject< EnderiumBlock.EndBlockItem > END_BLOCK_ITEM = ITEMS.register( "end_block", EnderiumBlock.EndBlockItem::new );
 	public static final RegistryObject< InfestedEndStone.InfestedEndStoneItem > INFESTED_END_STONE_ITEM = ITEMS.register( "infested_end_stone", InfestedEndStone.InfestedEndStoneItem::new );
 
 	// Spawn Eggs
@@ -162,7 +162,7 @@ public class Registries {
 
 	// Blocks
 	public static final RegistryObject< EndShardOre > END_SHARD_ORE = BLOCKS.register( "end_shard_ore", EndShardOre::new );
-	public static final RegistryObject< EndBlock > END_BLOCK = BLOCKS.register( "end_block", EndBlock::new );
+	public static final RegistryObject< EnderiumBlock > END_BLOCK = BLOCKS.register( "end_block", EnderiumBlock::new );
 	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.register( "infested_end_stone", InfestedEndStone::new );
 
 	// Effects

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
-/** New end block which works like End Stone block but spawns Endermite when destroyed. */
+/** New end block which works and looks like End Stone but spawns the Endermite when destroyed. */
 public class InfestedEndStone extends Block {
 	public InfestedEndStone() {
 		super( Properties.of( Material.CLAY, MaterialColor.COLOR_YELLOW ).strength( 0.0f, 0.75f ).sound( SoundType.STONE ) );
@@ -39,7 +39,6 @@ public class InfestedEndStone extends Block {
 			this.spawnEndermite( ( ServerLevel )world, position );
 	}
 
-	/** Spawns a Endermite at given position. */
 	private void spawnEndermite( ServerLevel world, BlockPos position ) {
 		Endermite endermite = EntityType.ENDERMITE.create( world );
 		if( endermite == null )
