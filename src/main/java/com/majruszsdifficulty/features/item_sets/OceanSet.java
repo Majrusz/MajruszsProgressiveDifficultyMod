@@ -15,10 +15,14 @@ public class OceanSet extends BaseSet {
 	private ItemData ITEM_2 = new ItemData( Registries.OCEAN_SHIELD.get(), EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND );
 	private static final BonusData BONUS_1 = new BonusData( 2, "majruszsdifficulty.sets.ocean.bonus_2_1" );
 	private static final BonusData BONUS_2 = new BonusData( 2, "majruszsdifficulty.sets.ocean.bonus_2_2" );
-	private static final AttributeHandler DAMAGE_BONUS = new AttributeHandler( "d7f6c4ae-7cb0-4d5b-87a1-7e9a7a4af154", "OceanSetDamageBonus", Attributes.ATTACK_DAMAGE,
+	private static final AttributeHandler DAMAGE_BONUS = new AttributeHandler( "d7f6c4ae-7cb0-4d5b-87a1-7e9a7a4af154",
+		"OceanSetDamageBonus",
+		Attributes.ATTACK_DAMAGE,
 		AttributeModifier.Operation.MULTIPLY_TOTAL
 	);
-	private static final AttributeHandler MOVEMENT_BONUS = new AttributeHandler( "c588a4c0-bf17-4e3b-bdb6-1de3211efeab", "OceanSetMovementBonus", Attributes.MOVEMENT_SPEED,
+	private static final AttributeHandler MOVEMENT_BONUS = new AttributeHandler( "c588a4c0-bf17-4e3b-bdb6-1de3211efeab",
+		"OceanSetMovementBonus",
+		Attributes.MOVEMENT_SPEED,
 		AttributeModifier.Operation.MULTIPLY_TOTAL
 	);
 

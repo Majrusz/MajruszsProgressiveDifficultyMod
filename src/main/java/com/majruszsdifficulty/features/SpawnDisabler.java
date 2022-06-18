@@ -58,8 +58,14 @@ public class SpawnDisabler {
 
 		public Config() {
 			String normalComment = "List of entities that cannot spawn in Normal Mode.";
-			this.forbiddenInNormal = new StringListConfig( "forbidden_normal", normalComment, false, "majruszsdifficulty:giant", "minecraft:illusioner", "majruszsdifficulty:elite_skeleton",
-				"majruszsdifficulty:parasite", "majruszsdifficulty:tank"
+			this.forbiddenInNormal = new StringListConfig( "forbidden_normal",
+				normalComment,
+				false,
+				"majruszsdifficulty:giant",
+				"minecraft:illusioner",
+				"majruszsdifficulty:elite_skeleton",
+				"majruszsdifficulty:parasite",
+				"majruszsdifficulty:tank"
 			);
 
 			String expertComment = "List of entities that cannot spawn in Expert Mode.";

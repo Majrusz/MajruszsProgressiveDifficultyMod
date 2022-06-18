@@ -13,7 +13,8 @@ public class GameStateIntegerConfig implements IConfigType< Integer > {
 	protected final IntegerConfig expert;
 	protected final IntegerConfig master;
 
-	public GameStateIntegerConfig( String name, String comment, int defaultValueNormal, int defaultValueExpert, int defaultValueMaster, int minimumValue, int maximumValue
+	public GameStateIntegerConfig( String name, String comment, int defaultValueNormal, int defaultValueExpert, int defaultValueMaster,
+		int minimumValue, int maximumValue
 	) {
 		this.group = new ConfigGroup( name, comment );
 		this.normal = new IntegerConfig( "normal", "Normal Mode", false, defaultValueNormal, minimumValue, maximumValue );

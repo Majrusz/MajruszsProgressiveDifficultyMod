@@ -18,7 +18,18 @@ public class EndToolsLevitationOnAttack extends WhenDamagedApplyStackableEffectB
 	private static final String CONFIG_COMMENT = "Makes End Pickaxe and End Shovel have a chance to inflict Levitation effect.";
 
 	public EndToolsLevitationOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.75, 4.0, GameState.State.NORMAL, false, MobEffects.LEVITATION, false, true, 0, Utility.secondsToTicks( 60.0 ) );
+		super( CONFIG_NAME,
+			CONFIG_COMMENT,
+			0.75,
+			4.0,
+			GameState.State.NORMAL,
+			false,
+			MobEffects.LEVITATION,
+			false,
+			true,
+			0,
+			Utility.secondsToTicks( 60.0 )
+		);
 	}
 
 	/** Checking if all conditions were met. */
@@ -26,8 +37,10 @@ public class EndToolsLevitationOnAttack extends WhenDamagedApplyStackableEffectB
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		if( attacker != null ) {
 			ItemStack heldItemStack = attacker.getMainHandItem();
-			return !attacker.isShiftKeyDown() && EndItems.canInflictLevitation( heldItemStack.getItem() ) && super.shouldBeExecuted( attacker, target, damageSource ) && attacker.equals(
-				damageSource.getDirectEntity() );
+			return !attacker.isShiftKeyDown() && EndItems.canInflictLevitation( heldItemStack.getItem() ) && super.shouldBeExecuted( attacker,
+				target,
+				damageSource
+			) && attacker.equals( damageSource.getDirectEntity() );
 		}
 
 		return false;

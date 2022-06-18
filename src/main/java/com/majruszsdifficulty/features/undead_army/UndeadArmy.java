@@ -52,7 +52,10 @@ public class UndeadArmy {
 	public final static int ARMOR_COLOR = 0x92687b;
 	private final static int SAFE_SPAWN_RADIUS = 90;
 	private final static int SPAWN_RADIUS = 70;
-	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
+	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE,
+		BossEvent.BossBarColor.WHITE,
+		BossEvent.BossBarOverlay.NOTCHED_10
+	);
 	private final BlockPos positionToAttack;
 	private final Direction direction;
 	private Status status;
@@ -214,7 +217,8 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 9.0 ) >= this.undeadToKill / 2 && countNearbyPlayers( SAFE_SPAWN_RADIUS / 9.0 ) == 0 )
+		if( !this.spawnerWasCreated && countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 9.0 ) >= this.undeadToKill / 2 && countNearbyPlayers(
+			SAFE_SPAWN_RADIUS / 9.0 ) == 0 )
 			createSpawner();
 
 		if( shouldWaveEndPrematurely() )
@@ -370,7 +374,14 @@ public class UndeadArmy {
 					spawnOnSkeletonHorse( monster );
 				monster.setCanPickUpLoot( false );
 
-				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(), randomPosition.getZ(), null, MobSpawnType.EVENT ) )
+				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster,
+					this.level,
+					randomPosition.getX(),
+					randomPosition.getY(),
+					randomPosition.getZ(),
+					null,
+					MobSpawnType.EVENT
+				) )
 					continue;
 				this.level.addFreshEntity( monster ); // adds monster to the world
 
@@ -382,7 +393,15 @@ public class UndeadArmy {
 		int z = this.positionToAttack.getZ() + this.direction.z * SPAWN_RADIUS;
 
 		for( ServerPlayer player : getNearbyPlayers() )
-			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
+			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.get(),
+				SoundSource.NEUTRAL,
+				x,
+				player.getY(),
+				z,
+				64.0f,
+				1.0f,
+				Random.nextInt()
+			) );
 
 		this.undeadToKill = Math.max( this.undeadToKill, 1 );
 	}
@@ -538,7 +557,8 @@ public class UndeadArmy {
 
 	/** Predicate for checking whether given player is alive and is participating in the raid. */
 	private Predicate< ServerPlayer > getParticipantsPredicate() {
-		return player->player.isAlive() && Registries.UNDEAD_ARMY_MANAGER != null && ( Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( player.position() ) ) == this
+		return player->player.isAlive() && Registries.UNDEAD_ARMY_MANAGER != null && ( Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos(
+			player.position() ) ) == this
 		);
 	}
 

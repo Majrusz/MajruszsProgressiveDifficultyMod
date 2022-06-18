@@ -15,8 +15,9 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	protected final int maximumAmplifier;
 	protected final int maximumDurationInTicks;
 
-	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds, GameState.State minimumState,
-		boolean shouldBeMultipliedByCRD, MobEffect[] effects, boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
+	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect[] effects, boolean isAmplifierStackable, boolean isDurationStackable,
+		int maximumAmplifier, int maximumDurationInTicks
 	) {
 		super( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, effects );
 
@@ -26,11 +27,21 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 		this.maximumDurationInTicks = maximumDurationInTicks;
 	}
 
-	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds, GameState.State minimumState,
-		boolean shouldBeMultipliedByCRD, MobEffect effect, boolean isAmplifierStackable, boolean isDurationStackable, int maximumAmplifier, int maximumDurationInTicks
+	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect effect, boolean isAmplifierStackable, boolean isDurationStackable,
+		int maximumAmplifier, int maximumDurationInTicks
 	) {
-		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new MobEffect[]{ effect }, isAmplifierStackable, isDurationStackable,
-			maximumAmplifier, maximumDurationInTicks
+		this( configName,
+			configComment,
+			defaultChance,
+			defaultDurationInSeconds,
+			minimumState,
+			shouldBeMultipliedByCRD,
+			new MobEffect[]{ effect },
+			isAmplifierStackable,
+			isDurationStackable,
+			maximumAmplifier,
+			maximumDurationInTicks
 		);
 	}
 

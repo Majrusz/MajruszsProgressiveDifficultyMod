@@ -42,7 +42,8 @@ public class EndShardLocatorItem extends Item {
 
 	/** Calculates distance to the nearest End Shard. */
 	@OnlyIn( Dist.CLIENT )
-	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int p_174668_
+	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity,
+		int p_174668_
 	) {
 		if( entity == null )
 			return INVALID_DISTANCE;

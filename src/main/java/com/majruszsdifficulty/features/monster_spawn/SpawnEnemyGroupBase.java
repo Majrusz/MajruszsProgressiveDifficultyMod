@@ -26,8 +26,8 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	protected final int maximumAmountOfChildren;
 	protected final Item[] leaderArmor;
 
-	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, int minimumAmountOfChildren, int maximumAmountOfChildren,
-		Item[] leaderArmor
+	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD,
+		int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor
 	) {
 		super( configName, configComment, 0.25, minimumState, shouldChanceBeMultipliedByCRD );
 		this.minimumAmountOfChildren = minimumAmountOfChildren;

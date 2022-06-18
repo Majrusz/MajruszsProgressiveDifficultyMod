@@ -51,7 +51,12 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 
 		NORMAL_ATTACK_ARM = new Animation<>();
 		NORMAL_ATTACK_ARM.addFrame( new FrameVec3( 0.0f, 0.0, 0.0, 10.0 ) )
-			.addFrame( new FrameVec3( 0.2f, 45.0, 0.0, 45.0, Frame.InterpolationType.SQUARE ) )
+			.addFrame( new FrameVec3( 0.2f,
+				45.0,
+				0.0,
+				45.0,
+				Frame.InterpolationType.SQUARE
+			) )
 			.addFrame( new FrameVec3( 0.3f, 45.0, 0.0, 45.0 ) )
 			.addFrame( new FrameVec3( 0.5f, -90.0, -30.0, 60.0, Frame.InterpolationType.SQUARE ) )
 			.addFrame( new FrameVec3( 0.6f, -80.0, -25.0, 50.0, Frame.InterpolationType.SQUARE ) )
@@ -119,52 +124,58 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
-		partDefinition.addOrReplaceChild( "body", CubeListBuilder.create()
-			.texOffs( 0, 20 )
-			.addBox( -8.0F, -22.0F, -5.0F, 16.0F, 12.0F, 8.0F, cubeDeformation )
-			.texOffs( 36, 40 )
-			.addBox( -1.0F, -23.0F, 1.0F, 2.0F, 22.0F, 2.0F, cubeDeformation.extend( -0.1F ) )
-			.texOffs( 0, 40 )
-			.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, cubeDeformation ), PartPose.offsetAndRotation( 0.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F ) );
+		partDefinition.addOrReplaceChild( "body",
+			CubeListBuilder.create()
+				.texOffs( 0, 20 )
+				.addBox( -8.0F,
+					-22.0F,
+					-5.0F,
+					16.0F,
+					12.0F,
+					8.0F,
+					cubeDeformation
+				)
+				.texOffs( 36, 40 )
+				.addBox( -1.0F, -23.0F, 1.0F, 2.0F, 22.0F, 2.0F, cubeDeformation.extend( -0.1F ) )
+				.texOffs( 0, 40 )
+				.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F )
+		);
 
-		partDefinition.getChild( "body" )
-			.addOrReplaceChild( "head", CubeListBuilder.create().texOffs( 0, 0 ).addBox( -5.0F, -10.0F, -5.0F, 10.0F, 10.0F, 10.0F, cubeDeformation ),
-				PartPose.offsetAndRotation( 0.0F, -22.0F, -1.0F, 0.0873F, 0.0F, 0.0F )
-			);
+		partDefinition.getChild( "body" ).addOrReplaceChild( "head",
+			CubeListBuilder.create().texOffs( 0, 0 ).addBox( -5.0F, -10.0F, -5.0F, 10.0F, 10.0F, 10.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 0.0F, -22.0F, -1.0F, 0.0873F, 0.0F, 0.0F )
+		);
 
 		partDefinition.getChild( "body" ).addOrReplaceChild( "arms", CubeListBuilder.create(), PartPose.offset( 0.0F, -22.0F, 0.0F ) );
 
-		partDefinition.getChild( "body" )
-			.getChild( "arms" )
-			.addOrReplaceChild( "rightArm", CubeListBuilder.create().texOffs( 40, 0 ).addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ),
-				PartPose.offsetAndRotation( -9.5F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1745F )
-			);
+		partDefinition.getChild( "body" ).getChild( "arms" ).addOrReplaceChild( "rightArm",
+			CubeListBuilder.create().texOffs( 40, 0 ).addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( -9.5F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1745F )
+		);
 
-		partDefinition.getChild( "body" )
-			.getChild( "arms" )
-			.getChild( "rightArm" )
-			.addOrReplaceChild( "rightForearm", CubeListBuilder.create().texOffs( 44, 37 ).addBox( -2.5F, -0.5F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ),
-				PartPose.offsetAndRotation( 0.0F, 14.5F, 0.0F, -0.7854F, 0.0F, 0.0F )
-			);
+		partDefinition.getChild( "body" ).getChild( "arms" ).getChild( "rightArm" ).addOrReplaceChild( "rightForearm",
+			CubeListBuilder.create().texOffs( 44, 37 ).addBox( -2.5F, -0.5F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ),
+			PartPose.offsetAndRotation( 0.0F, 14.5F, 0.0F, -0.7854F, 0.0F, 0.0F )
+		);
 
-		partDefinition.getChild( "body" )
-			.getChild( "arms" )
-			.addOrReplaceChild( "leftArm", CubeListBuilder.create().texOffs( 40, 0 ).addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ),
-				PartPose.offsetAndRotation( 9.5F, 0.0F, -0.5F, 0.0F, 0.0F, -0.1745F )
-			);
+		partDefinition.getChild( "body" ).getChild( "arms" ).addOrReplaceChild( "leftArm",
+			CubeListBuilder.create().texOffs( 40, 0 ).addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ),
+			PartPose.offsetAndRotation( 9.5F, 0.0F, -0.5F, 0.0F, 0.0F, -0.1745F )
+		);
 
-		partDefinition.getChild( "body" )
-			.getChild( "arms" )
-			.getChild( "leftArm" )
-			.addOrReplaceChild( "leftForearm", CubeListBuilder.create().texOffs( 44, 37 ).addBox( -2.5F, -2.0F, -3.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ),
-				PartPose.offsetAndRotation( 0.0F, 16.0F, 0.0F, -0.7854F, 0.0F, 0.0F )
-			);
+		partDefinition.getChild( "body" ).getChild( "arms" ).getChild( "leftArm" ).addOrReplaceChild( "leftForearm",
+			CubeListBuilder.create().texOffs( 44, 37 ).addBox( -2.5F, -2.0F, -3.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ),
+			PartPose.offsetAndRotation( 0.0F, 16.0F, 0.0F, -0.7854F, 0.0F, 0.0F )
+		);
 
-		partDefinition.addOrReplaceChild( "leftLeg", CubeListBuilder.create().texOffs( 48, 21 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
+		partDefinition.addOrReplaceChild( "leftLeg",
+			CubeListBuilder.create().texOffs( 48, 21 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
 			PartPose.offset( 3.0F, 12.0F, 0.0F )
 		);
 
-		partDefinition.addOrReplaceChild( "rightLeg", CubeListBuilder.create().texOffs( 48, 21 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
+		partDefinition.addOrReplaceChild( "rightLeg",
+			CubeListBuilder.create().texOffs( 48, 21 ).addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ),
 			PartPose.offset( -3.0F, 12.0F, 0.0F )
 		);
 

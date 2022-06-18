@@ -10,7 +10,8 @@ import javax.annotation.Nullable;
 
 /** Class with common code of all 'OnDeath' classes. */
 public abstract class OnDeathBase extends ChanceFeatureBase implements IOnDeath {
-	public OnDeathBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD
+	public OnDeathBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+		boolean shouldChanceBeMultipliedByCRD
 	) {
 		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 	}
