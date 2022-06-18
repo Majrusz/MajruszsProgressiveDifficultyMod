@@ -1,11 +1,13 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.entities.*;
 import com.majruszsdifficulty.items.EndShardLocatorItem;
 import com.majruszsdifficulty.models.CreeperlingModel;
 import com.majruszsdifficulty.models.OceanShieldModel;
 import com.majruszsdifficulty.models.TankModel;
-import com.majruszsdifficulty.renderers.*;
+import com.majruszsdifficulty.renderers.CreeperlingRenderer;
+import com.majruszsdifficulty.renderers.GiantRenderer;
+import com.majruszsdifficulty.renderers.OceanShieldRenderer;
+import com.majruszsdifficulty.renderers.TankRenderer;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;

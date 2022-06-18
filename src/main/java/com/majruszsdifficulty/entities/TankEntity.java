@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.features.undead_army.UndeadArmy;
 import com.majruszsdifficulty.goals.TankAttackGoal;
@@ -44,7 +43,7 @@ public class TankEntity extends Monster {
 	protected static final int NORMAL_ATTACK_DURATION = Utility.secondsToTicks( 0.6 );
 
 	public static Supplier< EntityType< TankEntity > > createSupplier() {
-		return () -> EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 1.1f, 2.7f ).build("tank" );
+		return ()->EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 1.1f, 2.7f ).build( "tank" );
 	}
 
 	public boolean isLeftHandAttack;

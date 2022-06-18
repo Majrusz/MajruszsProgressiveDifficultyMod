@@ -1,17 +1,12 @@
 package com.majruszsdifficulty.features.item_sets;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.LevelHelper;
 import com.mlib.attributes.AttributeHandler;
-import com.mlib.time.TimeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber

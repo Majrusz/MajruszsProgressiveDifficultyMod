@@ -1,18 +1,11 @@
 package com.majruszsdifficulty.features.item_sets;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.Utility;
 import com.mlib.attributes.AttributeHandler;
-import com.mlib.effects.EffectHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber

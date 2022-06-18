@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -12,7 +11,7 @@ import java.util.function.Supplier;
 /** Entity that is smaller version of Creeper. */
 public class CreeperlingEntity extends Creeper {
 	public static Supplier< EntityType< CreeperlingEntity > > createSupplier() {
-		return () -> EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER ).sized( 0.6f, 0.9f ).build("creeperling" );
+		return ()->EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER ).sized( 0.6f, 0.9f ).build( "creeperling" );
 	}
 
 	public CreeperlingEntity( EntityType< ? extends CreeperlingEntity > type, Level world ) {
