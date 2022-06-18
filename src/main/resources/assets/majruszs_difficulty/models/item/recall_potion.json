@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "majruszs_difficulty:item/recall_potion"
+    "layer0": "majruszsdifficulty:item/recall_potion"
   }
 }

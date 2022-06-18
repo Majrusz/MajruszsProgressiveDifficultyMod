@@ -1,0 +1,35 @@
+{
+  "parent": "majruszsdifficulty:progressive_difficulty/bleeding_healed",
+  "display": {
+    "icon": {
+      "item": "majruszsdifficulty:golden_bandage"
+    },
+    "title": {
+      "translate": "advancements.progressive_difficulty.bleeding_healed_other.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_difficulty.bleeding_healed_other.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "rewards": {
+    "experience": 50
+  },
+  "criteria": {
+    "bleeding_healed": {
+      "trigger": "majruszsdifficulty:bandage_used",
+      "conditions": {
+        "bandage_id": "majruszsdifficulty:golden_bandage",
+        "used_on_oneself": false
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bleeding_healed"
+    ]
+  ]
+}

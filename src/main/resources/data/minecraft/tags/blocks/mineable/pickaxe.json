@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "majruszs_difficulty:end_block",
-    "majruszs_difficulty:end_shard_ore"
+    "majruszsdifficulty:end_block",
+    "majruszsdifficulty:end_shard_ore"
   ]
 }

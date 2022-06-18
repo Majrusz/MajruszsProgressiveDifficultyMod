@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszsdifficulty:undead_army_boots",
+      "majruszsdifficulty:undead_army_chestplate",
+      "majruszsdifficulty:undead_army_helmet",
+      "majruszsdifficulty:undead_army_leggings"
+    ]
+  },
+  "criteria": {
+    "has_cloth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "majruszsdifficulty:tattered_cloth"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "majruszsdifficulty:undead_army_boots"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cloth",
+      "has_the_recipe"
+    ]
+  ]
+}

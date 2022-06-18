@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "majruszs_difficulty:block/end_shard_ore"
+    "all": "majruszsdifficulty:block/end_shard_ore"
   }
 }

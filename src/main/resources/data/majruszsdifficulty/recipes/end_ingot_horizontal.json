@@ -1,0 +1,30 @@
+{ 
+	"type": "minecraft:crafting_shaped",
+	"group": "end_ingot",
+	"pattern":
+	[ 
+		"ccc",
+		"eie",
+		"ccc"
+	],
+	"key":
+	{
+		"c":
+		{ 
+			"item": "majruszsdifficulty:end_shard"
+		},
+		"i":
+		{
+			"item": "minecraft:iron_ingot"
+		},
+		"e":
+		{
+			"item": "minecraft:ender_eye"
+		}
+	},
+	"result":
+	{ 
+		"item": "majruszsdifficulty:end_ingot",
+		"count": 1
+	}
+}

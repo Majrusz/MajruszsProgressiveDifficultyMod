@@ -1,0 +1,35 @@
+{
+  "parent": "majruszsdifficulty:progressive_difficulty/ender_dragon_treasure_bag",
+  "display": {
+    "icon": {
+      "item": "majruszsdifficulty:ender_dragon_treasure_bag"
+    },
+    "title": {
+      "translate": "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 900
+  },
+  "criteria": {
+    "bag_opened": {
+      "trigger": "majruszsdifficulty:treasure_bag_opened",
+      "conditions": {
+        "bag_id": "majruszsdifficulty:ender_dragon_treasure_bag",
+        "amount": 16
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bag_opened"
+    ]
+  ]
+}

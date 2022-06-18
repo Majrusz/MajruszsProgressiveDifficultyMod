@@ -1,15 +1,15 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "majruszs_difficulty:item/end_shard_locator_0"
+    "layer0": "majruszsdifficulty:item/end_shard_locator_0"
   },
   "overrides": [
-    { "predicate": { "shard_distance": 0.0 }, "model": "majruszs_difficulty:item/end_shard_locator_0" },
-    { "predicate": { "shard_distance": 9.0 }, "model": "majruszs_difficulty:item/end_shard_locator_1" },
-    { "predicate": { "shard_distance": 36.0 }, "model": "majruszs_difficulty:item/end_shard_locator_2" },
-    { "predicate": { "shard_distance": 100.0 }, "model": "majruszs_difficulty:item/end_shard_locator_3" },
-    { "predicate": { "shard_distance": 256.0 }, "model": "majruszs_difficulty:item/end_shard_locator_4" },
-    { "predicate": { "shard_distance": 529.0 }, "model": "majruszs_difficulty:item/end_shard_locator_5" },
-    { "predicate": { "shard_distance": 900.0 }, "model": "majruszs_difficulty:item/end_shard_locator_6" }
+    { "predicate": { "shard_distance": 0.0 }, "model": "majruszsdifficulty:item/end_shard_locator_0" },
+    { "predicate": { "shard_distance": 9.0 }, "model": "majruszsdifficulty:item/end_shard_locator_1" },
+    { "predicate": { "shard_distance": 36.0 }, "model": "majruszsdifficulty:item/end_shard_locator_2" },
+    { "predicate": { "shard_distance": 100.0 }, "model": "majruszsdifficulty:item/end_shard_locator_3" },
+    { "predicate": { "shard_distance": 256.0 }, "model": "majruszsdifficulty:item/end_shard_locator_4" },
+    { "predicate": { "shard_distance": 529.0 }, "model": "majruszsdifficulty:item/end_shard_locator_5" },
+    { "predicate": { "shard_distance": 900.0 }, "model": "majruszsdifficulty:item/end_shard_locator_6" }
   ]
 }

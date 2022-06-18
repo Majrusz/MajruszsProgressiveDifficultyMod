@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "majruszs_difficulty:block/infested_end_stone"
+      "model": "majruszsdifficulty:block/infested_end_stone"
     }
   }
 }

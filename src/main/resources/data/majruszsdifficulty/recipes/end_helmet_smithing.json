@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:netherite_helmet"
+  },
+  "addition": {
+    "item": "majruszsdifficulty:end_ingot"
+  },
+  "result": {
+    "item": "majruszsdifficulty:end_helmet"
+  }
+}

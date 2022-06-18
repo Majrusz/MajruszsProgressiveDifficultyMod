@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:story/root",
+  "display": {
+    "icon": {
+      "item": "majruszsdifficulty:advancement_normal"
+    },
+    "title": {
+      "translate": "advancements.progressive_difficulty.root.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_difficulty.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "game_state": {
+      "trigger": "majruszsdifficulty:game_state",
+      "conditions": {
+        "state_id": 0
+      }
+    }
+  },
+  "requirements": [
+    [
+      "game_state"
+    ]
+  ]
+}

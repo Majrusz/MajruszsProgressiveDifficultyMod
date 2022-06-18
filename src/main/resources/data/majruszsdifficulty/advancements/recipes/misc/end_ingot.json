@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszsdifficulty:end_ingot_horizontal",
+      "majruszsdifficulty:end_ingot_vertical"
+    ]
+  },
+  "criteria": {
+    "has_end_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "majruszsdifficulty:end_shard"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "majruszsdifficulty:end_ingot_horizontal"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_end_shard",
+      "has_the_recipe"
+    ]
+  ]
+}

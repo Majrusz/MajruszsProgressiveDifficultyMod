@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "majruszs_difficulty:item/bandage"
+    "layer0": "majruszsdifficulty:item/bandage"
   }
 }

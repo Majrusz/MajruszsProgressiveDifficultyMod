@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "majruszs_difficulty:item/end_pickaxe"
+    "layer0": "majruszsdifficulty:item/end_pickaxe"
   }
 }
