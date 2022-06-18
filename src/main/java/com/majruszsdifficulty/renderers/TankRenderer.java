@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.renderers;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.models.TankModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,8 +14,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
 public class TankRenderer extends MobRenderer< TankEntity, TankModel< TankEntity > > {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( MajruszsDifficulty.getLocation( "tank" ), "main" );
-	private static final ResourceLocation TEXTURE_LOCATION = MajruszsDifficulty.getLocation( "textures/entity/tank.png" );
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( Registries.getLocation( "tank" ), "main" );
+	private static final ResourceLocation TEXTURE_LOCATION = Registries.getLocation( "textures/entity/tank.png" );
 
 	public TankRenderer( EntityRendererProvider.Context context ) {
 		super( context, new TankModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.5f );

@@ -19,12 +19,10 @@ import java.util.UUID;
 public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	private static final List< Data > dataList = new ArrayList<>();
 
-	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
-		boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
+	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD,
+		EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
-		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted,
-			shouldBeDamaged
-		);
+		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );
 	}
 
 	/** Called when all requirements were met. */

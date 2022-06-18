@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.when_damaged;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingEffect.BleedingMobEffectInstance;
 import com.mlib.Utility;
@@ -17,16 +17,13 @@ import javax.annotation.Nullable;
 /** Base class representing event on which enemies will receive bleeding after being attacked. */
 public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffectBase {
 	public WhenDamagedApplyBleedingBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds ) {
-		super( configName, configComment, defaultChance, defaultDurationInSeconds, GameState.State.NORMAL, false, Instances.BLEEDING );
+		super( configName, configComment, defaultChance, defaultDurationInSeconds, GameState.State.NORMAL, false, Registries.BLEEDING.get() );
 	}
 
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return Instances.BLEEDING.mayBleed(
-			target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target,
-			damageSource
-		);
+		return Registries.BLEEDING.get().mayBleed( target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	/**
@@ -38,26 +35,24 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	 */
 	@Override
 	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, MobEffect effect, Difficulty difficulty ) {
-		BleedingMobEffectInstance effectInstance = new BleedingMobEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false,
-			true, attacker
-		);
+		BleedingMobEffectInstance effectInstance = new BleedingMobEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false, true, attacker );
 
 		EffectHelper.applyEffectIfPossible( target, effectInstance );
 		ServerPlayer serverPlayer = Utility.castIfPossible( ServerPlayer.class, attacker );
 		if( serverPlayer != null )
-			Instances.BASIC_TRIGGER.trigger( serverPlayer, "bleeding_inflicted" );
+			Registries.BASIC_TRIGGER.trigger( serverPlayer, "bleeding_inflicted" );
 	}
 
 	/** Applying invisible bleeding effect instead of standard one. */
 
 	@Override
 	protected int getAmplifier( Difficulty difficulty ) {
-		return Instances.BLEEDING.getAmplifier();
+		return Registries.BLEEDING.get().getAmplifier();
 	}
 
 	/** Calculating final chance. (after applying clamped regional difficulty and armor multipliers) */
 	@Override
 	public double calculateChance( LivingEntity target ) {
-		return Instances.BLEEDING.getChanceMultiplierDependingOnArmor( target ) * super.calculateChance( target );
+		return Registries.BLEEDING.get().getChanceMultiplierDependingOnArmor( target ) * super.calculateChance( target );
 	}
 }

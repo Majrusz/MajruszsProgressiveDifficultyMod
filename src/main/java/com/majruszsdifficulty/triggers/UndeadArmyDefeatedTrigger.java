@@ -2,14 +2,14 @@ package com.majruszsdifficulty.triggers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 /** Trigger called when player defeats a Undead Army. */
 public class UndeadArmyDefeatedTrigger extends SimpleCriterionTrigger< UndeadArmyDefeatedTrigger.Instance > {
-	private static final ResourceLocation ID = MajruszsDifficulty.getLocation( "undead_army_defeated" );
+	private static final ResourceLocation ID = Registries.getLocation( "undead_army_defeated" );
 
 	@Override
 	public ResourceLocation getId() {
@@ -17,8 +17,7 @@ public class UndeadArmyDefeatedTrigger extends SimpleCriterionTrigger< UndeadArm
 	}
 
 	@Override
-	public UndeadArmyDefeatedTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate,
-		DeserializationContext conditions
+	public UndeadArmyDefeatedTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate, DeserializationContext conditions
 	) {
 		JsonElement amountOfBags = jsonObject.get( "wave" );
 

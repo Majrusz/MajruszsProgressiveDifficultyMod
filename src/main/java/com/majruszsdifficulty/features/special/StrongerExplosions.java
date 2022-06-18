@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-import static com.majruszsdifficulty.Instances.STRONGER_EXPLOSIONS;
+import static com.majruszsdifficulty.Registries.STRONGER_EXPLOSIONS;
 
 /** Increases explosion size and makes the explosion always spawn fire after reaching certain game state. */
 @Mod.EventBusSubscriber
@@ -39,8 +39,7 @@ public class StrongerExplosions {
 		if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
 			event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
 
-		if( !( causer instanceof CreeperlingEntity ) && STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance(
-			STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
+		if( !( causer instanceof CreeperlingEntity ) && STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
 			event.causesFire = true;
 	}
 
@@ -49,9 +48,7 @@ public class StrongerExplosions {
 	LivingEntity getNearestEntity( Explosion explosion, Level world ) {
 		Vec3 position = explosion.getPosition();
 		double offset = 50.0;
-		AABB axisAlignedBB = new AABB( position.x - offset, position.y - offset, position.z - offset, position.x + offset, position.y + offset,
-			position.z + offset
-		);
+		AABB axisAlignedBB = new AABB( position.x - offset, position.y - offset, position.z - offset, position.x + offset, position.y + offset, position.z + offset );
 		for( LivingEntity entity : world.getEntitiesOfClass( LivingEntity.class, axisAlignedBB ) )
 			return entity;
 

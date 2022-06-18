@@ -2,7 +2,7 @@ package com.majruszsdifficulty.triggers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
 import net.minecraft.advancements.critereon.*;
@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 /** Trigger called when player opens a treasure bag. */
 public class TreasureBagTrigger extends SimpleCriterionTrigger< TreasureBagTrigger.Instance > {
-	private static final ResourceLocation ID = MajruszsDifficulty.getLocation( "treasure_bag_opened" );
+	private static final ResourceLocation ID = Registries.getLocation( "treasure_bag_opened" );
 
 	@Override
 	public ResourceLocation getId() {

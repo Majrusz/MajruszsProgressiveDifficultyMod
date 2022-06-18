@@ -1,11 +1,11 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.features.undead_army.UndeadArmy;
 import com.majruszsdifficulty.goals.TankAttackGoal;
-import com.mlib.Utility;
 import com.mlib.MajruszLibrary;
+import com.mlib.Utility;
 import com.mlib.network.message.EntityMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -35,17 +35,16 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.function.Supplier;
+
 /** New undead huge skeleton. */
 @Mod.EventBusSubscriber
 public class TankEntity extends Monster {
-	public static final EntityType< TankEntity > type;
 	protected static final int SPECIAL_ATTACK_DURATION = Utility.secondsToTicks( 0.9 );
 	protected static final int NORMAL_ATTACK_DURATION = Utility.secondsToTicks( 0.6 );
 
-	static {
-		type = EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER )
-			.sized( 1.1f, 2.7f )
-			.build( MajruszsDifficulty.getLocation( "tank" ).toString() );
+	public static Supplier< EntityType< TankEntity > > createSupplier() {
+		return () -> EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 1.1f, 2.7f ).build("tank" );
 	}
 
 	public boolean isLeftHandAttack;

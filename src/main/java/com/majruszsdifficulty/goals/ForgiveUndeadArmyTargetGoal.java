@@ -11,8 +11,7 @@ public class ForgiveUndeadArmyTargetGoal extends HurtByTargetGoal {
 	}
 
 	public boolean canUse() {
-		return this.mob.getLastHurtByMob() != null && !( UndeadArmy.doesEntityBelongToUndeadArmy(
-			this.mob ) && UndeadArmy.doesEntityBelongToUndeadArmy( this.mob.getLastHurtByMob() )
+		return this.mob.getLastHurtByMob() != null && !( UndeadArmy.doesEntityBelongToUndeadArmy( this.mob ) && UndeadArmy.doesEntityBelongToUndeadArmy( this.mob.getLastHurtByMob() )
 		) && super.canUse();
 	}
 }

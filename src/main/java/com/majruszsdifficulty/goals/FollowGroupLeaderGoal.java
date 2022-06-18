@@ -62,8 +62,7 @@ public class FollowGroupLeaderGoal extends Goal {
 	protected void recalculatePath( double distance ) {
 		this.navigation.stop();
 		LookControl lookcontroller = this.leader.getLookControl();
-		if( distance <= ( double )this.maxDistanceFromLeader || lookcontroller.getWantedX() == this.follower.getX() && lookcontroller.getWantedY() == this.follower
-			.getY() && lookcontroller.getWantedZ() == this.follower.getZ() ) {
+		if( distance <= ( double )this.maxDistanceFromLeader || lookcontroller.getWantedX() == this.follower.getX() && lookcontroller.getWantedY() == this.follower.getY() && lookcontroller.getWantedZ() == this.follower.getZ() ) {
 			double d4 = this.follower.getX() - this.leader.getX();
 			double d5 = this.follower.getZ() - this.leader.getZ();
 			this.navigation.moveTo( this.follower.getX() - d4, this.follower.getY(), this.follower.getZ() - d5, this.speedModifier );

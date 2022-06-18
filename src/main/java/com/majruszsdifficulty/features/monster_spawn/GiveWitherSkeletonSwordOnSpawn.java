@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -23,6 +23,6 @@ public class GiveWitherSkeletonSwordOnSpawn extends GiveItemAfterSpawningBase {
 
 	@Override
 	public ItemStack getItemStack() {
-		return new ItemStack( Instances.WITHER_SWORD );
+		return new ItemStack( Registries.WITHER_SWORD.get() );
 	}
 }

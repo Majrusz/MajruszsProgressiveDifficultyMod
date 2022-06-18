@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,12 +17,6 @@ import java.util.List;
 /** New strong end-game ingot. */
 public class EndIngotItem extends Item {
 	public EndIngotItem() {
-		super( new Properties().tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
-	}
-
-	@Override
-	@OnlyIn( Dist.CLIENT )
-	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 	}
 }

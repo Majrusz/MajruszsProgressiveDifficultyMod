@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStateDoubleConfig;
 import com.mlib.Random;
 import com.mlib.config.ConfigGroup;
@@ -29,7 +29,7 @@ public class ExperienceBonus {
 
 	@SubscribeEvent
 	public static void onXPPickUp( PlayerXpEvent.PickupXp event ) {
-		int bonusExperience = Instances.EXPERIENCE_BONUS.getExtraExperience( event.getOrb() );
+		int bonusExperience = Registries.EXPERIENCE_BONUS.getExtraExperience( event.getOrb() );
 		if( bonusExperience <= 0 )
 			return;
 

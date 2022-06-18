@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.features.end_items.EndItems;
 import com.mlib.client.ClientHelper;
 import net.minecraft.network.chat.Component;
@@ -19,13 +19,12 @@ import java.util.List;
 /** New late game axe. */
 public class EndAxeItem extends AxeItem {
 	public EndAxeItem() {
-		super( CustomItemTier.END, 7.0f, -3.1f, ( new Properties() ).rarity( Rarity.UNCOMMON ).tab( Instances.ITEM_GROUP ).fireResistant() );
+		super( CustomItemTier.END, 7.0f, -3.1f, ( new Properties() ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ).fireResistant() );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
 		if( ClientHelper.isShiftDown() ) {
 			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP );
 		} else {

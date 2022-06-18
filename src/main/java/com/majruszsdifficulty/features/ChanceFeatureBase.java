@@ -12,8 +12,7 @@ public abstract class ChanceFeatureBase extends FeatureBase {
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
 	protected final DoubleConfig chance;
 
-	public ChanceFeatureBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
-		boolean shouldChanceBeMultipliedByCRD
+	public ChanceFeatureBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD
 	) {
 		super( configName, configComment, minimumState );
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;

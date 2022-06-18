@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -31,20 +31,18 @@ public class EndShardLocatorItem extends Item {
 	private static final float INVALID_DISTANCE = 9001.0f;
 
 	public EndShardLocatorItem() {
-		super( ( new Item.Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
+		super( ( new Item.Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
 		MajruszsHelper.addAdvancedTranslatableText( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	/** Calculates distance to the nearest End Shard. */
 	@OnlyIn( Dist.CLIENT )
-	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity,
-		int p_174668_
+	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int p_174668_
 	) {
 		if( entity == null )
 			return INVALID_DISTANCE;
@@ -56,7 +54,7 @@ public class EndShardLocatorItem extends Item {
 		int counter = data.getInt( COUNTER_TAG );
 		BlockPos nearestEndShard = new BlockPos( data.getInt( POSITION_X_TAG ), data.getInt( POSITION_Y_TAG ), data.getInt( POSITION_Z_TAG ) );
 		BlockState currentBlockState = world.getBlockState( nearestEndShard );
-		boolean isValid = currentBlockState.getBlock() == Instances.END_SHARD_ORE;
+		boolean isValid = currentBlockState.getBlock() == Registries.END_SHARD_ORE.get();
 
 		double closestDistance = entityPosition.distanceToSqr( Vec3.atCenterOf( nearestEndShard ) );
 		BlockPos endShardOre = findNearestEndShard( world, entityPosition, counter - COORDINATE_FACTOR );
@@ -94,7 +92,7 @@ public class EndShardLocatorItem extends Item {
 			for( int z = ( int )( entityPosition.z() - COORDINATE_FACTOR ); z < entityPosition.z() + COORDINATE_FACTOR; z++ ) {
 				BlockPos testPosition = new BlockPos( x, y, z );
 				BlockState testBlockState = world.getBlockState( testPosition );
-				if( testBlockState.getBlock() == Instances.END_SHARD_ORE ) {
+				if( testBlockState.getBlock() == Registries.END_SHARD_ORE.get() ) {
 					double distance = entityPosition.distanceToSqr( Vec3.atCenterOf( testPosition ) );
 					if( distance < closestDistance ) {
 						closestDistance = distance;

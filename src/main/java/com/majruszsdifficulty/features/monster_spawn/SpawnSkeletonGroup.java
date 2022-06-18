@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.entities.EliteSkeletonEntity;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.server.level.ServerLevel;
@@ -31,8 +30,7 @@ public class SpawnSkeletonGroup extends SpawnEnemyGroupBase {
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof Skeleton && !( entity instanceof EliteSkeletonEntity ) && notUndeadArmyMob( entity ) && super.shouldBeExecuted(
-			entity );
+		return entity instanceof Skeleton && notUndeadArmyMob( entity ) && super.shouldBeExecuted( entity );
 	}
 
 	@Override

@@ -12,7 +12,10 @@ import net.minecraft.world.entity.monster.Creeper;
 
 /** Applying some negative effects on creeper. */
 public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
-	protected static final MobEffect[] EFFECTS = new MobEffect[]{ MobEffects.WEAKNESS, MobEffects.MOVEMENT_SLOWDOWN, MobEffects.DIG_SLOWDOWN,
+	protected static final MobEffect[] EFFECTS = new MobEffect[]{
+		MobEffects.WEAKNESS,
+		MobEffects.MOVEMENT_SLOWDOWN,
+		MobEffects.DIG_SLOWDOWN,
 		MobEffects.SATURATION
 	};
 	private static final String CONFIG_NAME = "CreeperEffects";

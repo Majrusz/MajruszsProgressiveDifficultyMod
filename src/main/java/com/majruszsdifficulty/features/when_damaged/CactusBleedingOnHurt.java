@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,6 +29,6 @@ public class CactusBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 		super.applyEffect( attacker, target, effect, difficulty );
 
 		if( target instanceof ServerPlayer )
-			Instances.BASIC_TRIGGER.trigger( ( ServerPlayer )target, "cactus_bleeding" );
+			Registries.BASIC_TRIGGER.trigger( ( ServerPlayer )target, "cactus_bleeding" );
 	}
 }

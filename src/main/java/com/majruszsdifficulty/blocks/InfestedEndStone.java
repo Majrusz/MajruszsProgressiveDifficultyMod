@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.blocks;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -52,7 +52,7 @@ public class InfestedEndStone extends Block {
 
 	public static class InfestedEndStoneItem extends BlockItem {
 		public InfestedEndStoneItem() {
-			super( Instances.INFESTED_END_STONE, ( new Properties() ).stacksTo( 64 ).tab( Instances.ITEM_GROUP ) );
+			super( Registries.INFESTED_END_STONE.get(), ( new Properties() ).stacksTo( 64 ).tab( Registries.ITEM_GROUP ) );
 		}
 	}
 }

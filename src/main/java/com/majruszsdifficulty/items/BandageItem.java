@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.Utility;
 import com.mlib.config.AvailabilityConfig;
@@ -53,7 +53,7 @@ public class BandageItem extends Item {
 	}
 
 	public BandageItem( String name, int defaultAmplifier, Rarity rarity ) {
-		super( ( new Properties() ).stacksTo( 16 ).tab( Instances.ITEM_GROUP ).rarity( rarity ) );
+		super( ( new Properties() ).stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( rarity ) );
 
 		this.configGroup = new ConfigGroup( name, "Configuration for " + name + " item." );
 		FEATURES_GROUP.addGroup( this.configGroup );
@@ -156,15 +156,15 @@ public class BandageItem extends Item {
 		boolean isBandage = bandage.getItem() instanceof BandageItem;
 		boolean targetHasRegeneration = target.hasEffect( MobEffects.REGENERATION );
 
-		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.hasEffect( Instances.BLEEDING ) );
+		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.hasEffect( Registries.BLEEDING.get() ) );
 	}
 
 	/** Removes Bleeding effect from the target. */
 	private void removeBleeding( LivingEntity target, Player causer ) {
-		BleedingEffect bleeding = Instances.BLEEDING;
+		BleedingEffect bleeding = Registries.BLEEDING.get();
 
 		if( target.hasEffect( bleeding ) && causer instanceof ServerPlayer )
-			Instances.BANDAGE_TRIGGER.trigger( ( ServerPlayer )causer, this, target.equals( causer ) );
+			Registries.BANDAGE_TRIGGER.trigger( ( ServerPlayer )causer, this, target.equals( causer ) );
 
 		target.removeEffect( bleeding );
 		target.removeEffectNoUpdate( bleeding );

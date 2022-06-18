@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.entities.ParasiteEntity;
 import com.mlib.Utility;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,19 +22,16 @@ public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return attacker instanceof Spider && !( attacker instanceof ParasiteEntity ) && super.shouldBeExecuted( attacker, target, damageSource );
+		return attacker instanceof Spider && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	@Override
 	protected int getDurationInTicks( Difficulty difficulty ) {
-		switch( difficulty ) {
-			default:
-				return Utility.secondsToTicks( 0.0 );
-			case NORMAL:
-				return Utility.secondsToTicks( 7.0 );
-			case HARD:
-				return Utility.secondsToTicks( 15.0 );
-		}
+		return switch( difficulty ) {
+			default -> Utility.secondsToTicks( 0.0 );
+			case NORMAL -> Utility.secondsToTicks( 7.0 );
+			case HARD -> Utility.secondsToTicks( 15.0 );
+		};
 	}
 
 	@Override

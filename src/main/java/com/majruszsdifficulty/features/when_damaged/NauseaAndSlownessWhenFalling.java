@@ -11,6 +11,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 
@@ -22,9 +23,10 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
 	protected final AvailabilityConfig slownessAvailability;
 
 	public NauseaAndSlownessWhenFalling() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 10.0, GameState.State.NORMAL, false,
-			new MobEffect[]{ MobEffects.CONFUSION, MobEffects.MOVEMENT_SLOWDOWN }
-		);
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 10.0, GameState.State.NORMAL, false, new MobEffect[]{
+			MobEffects.CONFUSION,
+			MobEffects.MOVEMENT_SLOWDOWN
+		} );
 
 		String nauseaComment = "Is applying Nausea enabled?";
 		String slownessComment = "Is applying Slowness enabled?";
@@ -52,9 +54,7 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
 				continue;
 
 			if( effect == MobEffects.MOVEMENT_SLOWDOWN && this.slownessAvailability.isEnabled() ) {
-				EffectHelper.applyEffectIfPossible( target, effect,
-					getDurationInTicks( world.getDifficulty() ) + Utility.secondsToTicks( damage * 0.5 ), ( int )( damage / 8.0 )
-				);
+				EffectHelper.applyEffectIfPossible( target, effect, getDurationInTicks( world.getDifficulty() ) + Utility.secondsToTicks( damage * 0.5 ), ( int )( damage / 8.0 ) );
 			} else if( effect == MobEffects.CONFUSION && this.nauseaAvailability.isEnabled() ) {
 				EffectHelper.applyEffectIfPossible( target, effect, Utility.secondsToTicks( 6.0 ), ( int )( damage / 6.0 ) );
 			}

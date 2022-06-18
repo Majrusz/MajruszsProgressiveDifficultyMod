@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.goals.GiantAttackGoal;
 import com.mlib.MajruszLibrary;
 import net.minecraft.sounds.SoundEvent;
@@ -21,15 +21,14 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.util.function.Supplier;
+
 /** Entity that adds a Giant again to the game. */
 public class GiantEntity extends Zombie {
 	public static final float scale = 5.0f; // by default minecraft giants have 6.0f scale but I want to make it a little bit smaller
-	public static final EntityType< GiantEntity > type;
 
-	static {
-		type = EntityType.Builder.of( GiantEntity::new, MobCategory.MONSTER )
-			.sized( 0.6f * scale, 2.0f * scale )
-			.build( MajruszsDifficulty.getLocation( "giant" ).toString() );
+	public static Supplier< EntityType< GiantEntity > > createSupplier() {
+		return () -> EntityType.Builder.of( GiantEntity::new, MobCategory.MONSTER ).sized( 0.6f * scale, 2.0f * scale ).build("giant" );
 	}
 
 	public GiantEntity( EntityType< ? extends Zombie > type, Level world ) {

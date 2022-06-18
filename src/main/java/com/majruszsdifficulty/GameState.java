@@ -2,8 +2,8 @@ package com.majruszsdifficulty;
 
 import com.mlib.LevelHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -43,7 +43,7 @@ public class GameState {
 
 	/** Triggers game state advancement for player if possible. */
 	public static void triggerAdvancement( ServerPlayer player ) {
-		Instances.GAME_STATE_TRIGGER.trigger( player, CURRENT );
+		Registries.GAME_STATE_TRIGGER.trigger( player, CURRENT );
 	}
 
 	/** Returning current server game state. */

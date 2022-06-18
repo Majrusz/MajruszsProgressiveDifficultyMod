@@ -8,6 +8,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 
@@ -16,8 +17,8 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 	protected final MobEffect[] effects;
 	protected final DurationConfig effectDuration;
 
-	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect[] effects
+	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds, GameState.State minimumState, boolean shouldBeMultipliedByCRD,
+		MobEffect[] effects
 	) {
 		super( configName, configComment, defaultChance, minimumState, shouldBeMultipliedByCRD );
 		this.effects = effects;
@@ -29,8 +30,8 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 			this.featureGroup.addConfig( this.effectDuration );
 	}
 
-	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect effect
+	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds, GameState.State minimumState, boolean shouldBeMultipliedByCRD,
+		MobEffect effect
 	) {
 		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new MobEffect[]{ effect } );
 	}

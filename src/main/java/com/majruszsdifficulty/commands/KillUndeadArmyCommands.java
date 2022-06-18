@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.RegistryHandler;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.features.undead_army.UndeadArmy;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
@@ -15,7 +15,7 @@ public class KillUndeadArmyCommands extends PositionCommand implements IRegistra
 	/** Kills all mobs from the Undead Army at given position and sends information to the caller. */
 	@Override
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source, Vec3 position ) {
-		UndeadArmy undeadArmy = RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
+		UndeadArmy undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			undeadArmy.killAllUndeadArmyEntities();
 			source.sendSuccess( CommandsHelper.createBaseMessageWithPosition( "commands.undeadarmy.killed", position ), true );

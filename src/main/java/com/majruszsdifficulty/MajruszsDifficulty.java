@@ -2,7 +2,6 @@ package com.majruszsdifficulty;
 
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.ConfigHandler;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -18,13 +17,8 @@ public class MajruszsDifficulty {
 	public static final ConfigGroup STATE_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "GameState", "" ) );
 
 	public MajruszsDifficulty() {
-		RegistryHandler.init();
+		Registries.initialize();
 
 		MinecraftForge.EVENT_BUS.register( this );
-	}
-
-	/** Returns resource location for register in current modification files. */
-	public static ResourceLocation getLocation( String register ) {
-		return new ResourceLocation( MOD_ID, register );
 	}
 }

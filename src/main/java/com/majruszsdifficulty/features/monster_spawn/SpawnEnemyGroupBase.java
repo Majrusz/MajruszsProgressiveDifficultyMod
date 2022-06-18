@@ -26,8 +26,8 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	protected final int maximumAmountOfChildren;
 	protected final Item[] leaderArmor;
 
-	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD,
-		int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor
+	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, int minimumAmountOfChildren, int maximumAmountOfChildren,
+		Item[] leaderArmor
 	) {
 		super( configName, configComment, 0.25, minimumState, shouldChanceBeMultipliedByCRD );
 		this.minimumAmountOfChildren = minimumAmountOfChildren;
@@ -38,8 +38,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerLevel world ) {
-		int childrenAmount = this.minimumAmountOfChildren + MajruszLibrary.RANDOM.nextInt(
-			this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1 );
+		int childrenAmount = this.minimumAmountOfChildren + MajruszLibrary.RANDOM.nextInt( this.maximumAmountOfChildren - this.minimumAmountOfChildren + 1 );
 
 		if( isSidekick( entity ) )
 			return;
@@ -128,8 +127,23 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	}
 
 	protected static class Armors {
-		public static Item[] leather = new Item[]{ Items.LEATHER_BOOTS, Items.LEATHER_LEGGINGS, Items.LEATHER_CHESTPLATE, Items.LEATHER_HELMET };
-		public static Item[] iron = new Item[]{ Items.IRON_BOOTS, Items.IRON_LEGGINGS, Items.IRON_CHESTPLATE, Items.IRON_HELMET };
-		public static Item[] golden = new Item[]{ Items.GOLDEN_BOOTS, Items.GOLDEN_LEGGINGS, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_HELMET };
+		public static Item[] leather = new Item[]{
+			Items.LEATHER_BOOTS,
+			Items.LEATHER_LEGGINGS,
+			Items.LEATHER_CHESTPLATE,
+			Items.LEATHER_HELMET
+		};
+		public static Item[] iron = new Item[]{
+			Items.IRON_BOOTS,
+			Items.IRON_LEGGINGS,
+			Items.IRON_CHESTPLATE,
+			Items.IRON_HELMET
+		};
+		public static Item[] golden = new Item[]{
+			Items.GOLDEN_BOOTS,
+			Items.GOLDEN_LEGGINGS,
+			Items.GOLDEN_CHESTPLATE,
+			Items.GOLDEN_HELMET
+		};
 	}
 }

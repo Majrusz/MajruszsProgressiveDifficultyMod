@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.mlib.LevelHelper;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.StringListConfig;
@@ -31,7 +31,7 @@ public class SpawnDisabler {
 	/** Checks whether given entity should not spawn. */
 	protected static boolean shouldEntitySpawnBeDisabled( Entity entity ) {
 		ResourceLocation entityKey = Registry.ENTITY_TYPE.getKey( entity.getType() );
-		StringListConfig forbiddenMobsConfig = Instances.SPAWN_DISABLER_CONFIG.getCurrentForbiddenList();
+		StringListConfig forbiddenMobsConfig = Registries.SPAWN_DISABLER_CONFIG.getCurrentForbiddenList();
 
 		return forbiddenMobsConfig.contains( entityKey.toString() ) || entity instanceof Illusioner && isVillageNearby( entity );
 	}
@@ -58,8 +58,8 @@ public class SpawnDisabler {
 
 		public Config() {
 			String normalComment = "List of entities that cannot spawn in Normal Mode.";
-			this.forbiddenInNormal = new StringListConfig( "forbidden_normal", normalComment, false, "majruszsdifficulty:giant",
-				"minecraft:illusioner", "majruszsdifficulty:elite_skeleton", "majruszsdifficulty:parasite", "majruszsdifficulty:tank"
+			this.forbiddenInNormal = new StringListConfig( "forbidden_normal", normalComment, false, "majruszsdifficulty:giant", "minecraft:illusioner", "majruszsdifficulty:elite_skeleton",
+				"majruszsdifficulty:parasite", "majruszsdifficulty:tank"
 			);
 
 			String expertComment = "List of entities that cannot spawn in Expert Mode.";

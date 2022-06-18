@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.undead_army;
 
-import com.majruszsdifficulty.RegistryHandler;
+import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,8 +18,8 @@ public class ReloadUndeadArmyGoals {
 
 		COUNTER++;
 
-		if( RegistryHandler.UNDEAD_ARMY_MANAGER != null && COUNTER % Utility.secondsToTicks( 25.0 ) == 0L ) {
-			RegistryHandler.UNDEAD_ARMY_MANAGER.updateUndeadAIGoals();
+		if( Registries.UNDEAD_ARMY_MANAGER != null && COUNTER % Utility.secondsToTicks( 25.0 ) == 0L ) {
+			Registries.UNDEAD_ARMY_MANAGER.updateUndeadAIGoals();
 			COUNTER = -1L;
 		}
 	}

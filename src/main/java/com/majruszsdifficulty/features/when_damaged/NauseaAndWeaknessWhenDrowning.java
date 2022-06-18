@@ -16,9 +16,10 @@ public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffe
 	private static final String CONFIG_COMMENT = "Drowning inflicts Nausea and Drowning.";
 
 	public NauseaAndWeaknessWhenDrowning() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 5.0, GameState.State.NORMAL, false, new MobEffect[]{ MobEffects.CONFUSION, MobEffects.WEAKNESS },
-			false, true, 0, Utility.secondsToTicks( 10.0 )
-		);
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 5.0, GameState.State.NORMAL, false, new MobEffect[]{
+			MobEffects.CONFUSION,
+			MobEffects.WEAKNESS
+		}, false, true, 0, Utility.secondsToTicks( 10.0 ) );
 	}
 
 	/** Checking if all conditions were met. */

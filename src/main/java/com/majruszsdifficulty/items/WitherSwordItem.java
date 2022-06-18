@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -16,7 +16,7 @@ public class WitherSwordItem extends SwordItem {
 	private final static String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.wither_sword.tooltip";
 
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 3, -2.4f, ( new Item.Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( CustomItemTier.WITHER, 3, -2.4f, ( new Item.Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.mlib.config.DurationConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +24,7 @@ public class GoldenBandageItem extends BandageItem {
 	@Override
 	protected void applyEffects( LivingEntity target ) {
 		super.applyEffects( target );
-		EffectHelper.applyEffectIfPossible( target, Instances.BLEEDING_IMMUNITY, getImmunityDuration(), 0 );
+		EffectHelper.applyEffectIfPossible( target, Registries.BLEEDING_IMMUNITY.get(), getImmunityDuration(), 0 );
 	}
 
 	/** Returns duration in ticks of Bleeding immunity effect. */

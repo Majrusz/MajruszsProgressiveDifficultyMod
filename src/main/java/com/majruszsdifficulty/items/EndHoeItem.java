@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.features.end_items.EndItems;
 import com.mlib.client.ClientHelper;
 import net.minecraft.network.chat.Component;
@@ -19,17 +19,14 @@ import java.util.List;
 /** New late game hoe. */
 public class EndHoeItem extends HoeItem {
 	public EndHoeItem() {
-		super( CustomItemTier.END, -5, 0.0f, ( new Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
+		super( CustomItemTier.END, -5, 0.0f, ( new Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
 		if( ClientHelper.isShiftDown() ) {
-			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP,
-				EndItems.Keys.TILL_TOOLTIP
-			);
+			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP, EndItems.Keys.TILL_TOOLTIP );
 		} else {
 			MajruszsHelper.addMoreDetailsText( tooltip );
 		}

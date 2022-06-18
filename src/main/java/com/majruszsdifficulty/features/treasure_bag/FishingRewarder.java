@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.treasure_bag;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStateIntegerConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.items.ItemHelper;
@@ -41,16 +41,16 @@ public class FishingRewarder {
 		int fishedItemsCounter = data.getInt( FISHING_TAG ) + 1;
 		data.putInt( FISHING_TAG, fishedItemsCounter );
 
-		if( fishedItemsCounter >= Instances.FISHING_REWARDER.getRequiredItems() ) {
-			data.putInt( FISHING_TAG, fishedItemsCounter - Instances.FISHING_REWARDER.getRequiredItems() );
-			if( Instances.FISHING_TREASURE_BAG.isAvailable() )
+		if( fishedItemsCounter >= Registries.FISHING_REWARDER.getRequiredItems() ) {
+			data.putInt( FISHING_TAG, fishedItemsCounter - Registries.FISHING_REWARDER.getRequiredItems() );
+			if( Registries.FISHING_TREASURE_BAG.get().isAvailable() )
 				giveTreasureBagTo( player );
 		}
 	}
 
 	/** Gives a treasure bag to specified player. */
 	protected static void giveTreasureBagTo( Player player ) {
-		ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.FISHING_TREASURE_BAG ), player, ( ServerLevel )player.level );
+		ItemHelper.giveItemStackToPlayer( new ItemStack( Registries.FISHING_TREASURE_BAG.get() ), player, ( ServerLevel )player.level );
 	}
 
 	/** Returns how many fish player must fished to get treasure bag. */

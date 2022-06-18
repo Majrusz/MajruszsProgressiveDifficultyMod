@@ -12,7 +12,7 @@ public class GameDataSaver extends SavedData {
 
 	public GameDataSaver( boolean loadDefaultStateFromConfig ) {
 		if( loadDefaultStateFromConfig )
-			GameState.changeMode( Instances.GAME_STATE_CONFIG.getDefaultState() );
+			GameState.changeMode( Registries.GAME_STATE_CONFIG.getDefaultState() );
 	}
 
 	public GameDataSaver() {

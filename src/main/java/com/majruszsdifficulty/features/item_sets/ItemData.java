@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ItemData {
 	public final Item item;
@@ -23,6 +24,6 @@ public class ItemData {
 	}
 
 	public boolean isValidItem( ItemStack itemStack ) {
-		return this.item.equals( itemStack.getItem() );
+		return  this.item.equals( itemStack.getItem() );
 	}
 }

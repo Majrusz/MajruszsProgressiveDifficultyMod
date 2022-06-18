@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 /** Adding custom item tiers to the game. */
 public enum CustomItemTier implements Tier {
-	WITHER( 360, 3, 15, 5.0f, 3.0f, ()->Ingredient.of( Items.BONE ) ), END( 2137, 4, 15, 10.0f, 5.0f, ()->Ingredient.of( Instances.END_INGOT_ITEM ) );
+	WITHER( 360, 3, 15, 5.0f, 3.0f, ()->Ingredient.of( Items.BONE ) ), END( 2137, 4, 15, 10.0f, 5.0f, ()->Ingredient.of( Registries.END_INGOT.get() ) );
 
 	protected final int maxUses, harvestLevel, enchantability;
 	protected final float efficiency, attackDamage;

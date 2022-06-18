@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.features.undead_army;
 
-import com.majruszsdifficulty.Instances;
-import com.majruszsdifficulty.RegistryHandler;
+import com.majruszsdifficulty.Registries;
 import com.mlib.LevelHelper;
 import com.mlib.MajruszLibrary;
 import com.mlib.Utility;
@@ -71,8 +70,8 @@ public class UndeadArmyManager extends SavedData {
 		if( event.side.isClient() || event.phase == TickEvent.Phase.END )
 			return;
 
-		if( RegistryHandler.UNDEAD_ARMY_MANAGER != null )
-			RegistryHandler.UNDEAD_ARMY_MANAGER.tick();
+		if( Registries.UNDEAD_ARMY_MANAGER != null )
+			Registries.UNDEAD_ARMY_MANAGER.tick();
 	}
 
 	/* ?????????????? */
@@ -107,14 +106,14 @@ public class UndeadArmyManager extends SavedData {
 	 @return Returns whether the Undead Army had spawned.
 	 */
 	public boolean tryToSpawn( BlockPos attackPosition, Optional< Direction > optionalDirection ) {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 
 		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) || config.isUndeadArmyDisabled() )
 			return false;
 
 		Direction direction = optionalDirection.orElse( Direction.getRandom() );
 		this.undeadArmiesToBeSpawned.add( new UndeadArmyToBeSpawned( Utility.secondsToTicks( 6.5 ), attackPosition, direction ) );
-		this.level.playSound( null, attackPosition, Instances.Sounds.UNDEAD_ARMY_APPROACHING, SoundSource.AMBIENT, 0.25f, 1.0f );
+		this.level.playSound( null, attackPosition, Registries.UNDEAD_ARMY_APPROACHING.get(), SoundSource.AMBIENT, 0.25f, 1.0f );
 		MajruszLibrary.LOGGER.info( "Undead Army started at " + attackPosition + "!" );
 
 		return true;

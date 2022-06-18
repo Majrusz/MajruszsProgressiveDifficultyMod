@@ -1,20 +1,18 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 
+import java.util.function.Supplier;
+
 /** Entity that is smaller version of Creeper. */
 public class CreeperlingEntity extends Creeper {
-	public static final EntityType< CreeperlingEntity > type;
-
-	static {
-		type = EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER )
-			.sized( 0.6f, 0.9f )
-			.build( MajruszsDifficulty.getLocation( "creeperling" ).toString() );
+	public static Supplier< EntityType< CreeperlingEntity > > createSupplier() {
+		return () -> EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER ).sized( 0.6f, 0.9f ).build("creeperling" );
 	}
 
 	public CreeperlingEntity( EntityType< ? extends CreeperlingEntity > type, Level world ) {

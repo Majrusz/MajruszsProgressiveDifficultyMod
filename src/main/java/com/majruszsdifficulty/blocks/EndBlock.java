@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.blocks;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -21,21 +21,12 @@ import java.util.List;
 /** New late game end block made from End Ingots. */
 public class EndBlock extends Block {
 	public EndBlock() {
-		super( Properties.of( Material.METAL, MaterialColor.COLOR_PURPLE )
-			.requiresCorrectToolForDrops()
-			.strength( 5.0f, 6.0f )
-			.sound( SoundType.METAL ) );
+		super( Properties.of( Material.METAL, MaterialColor.COLOR_PURPLE ).requiresCorrectToolForDrops().strength( 5.0f, 6.0f ).sound( SoundType.METAL ) );
 	}
 
 	public static class EndBlockItem extends BlockItem {
 		public EndBlockItem() {
-			super( Instances.END_BLOCK, ( new Properties() ).stacksTo( 64 ).rarity( Rarity.UNCOMMON ).tab( Instances.ITEM_GROUP ) );
-		}
-
-		@Override
-		@OnlyIn( Dist.CLIENT )
-		public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-			MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+			super( Registries.END_BLOCK.get(), ( new Properties() ).stacksTo( 64 ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ) );
 		}
 	}
 }

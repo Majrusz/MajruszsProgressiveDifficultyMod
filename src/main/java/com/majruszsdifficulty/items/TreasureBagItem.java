@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.MajruszsHelper;
-import com.majruszsdifficulty.RegistryHandler;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
 import com.majruszsdifficulty.features.treasure_bag.LootProgress;
 import com.majruszsdifficulty.features.treasure_bag.LootProgressClient;
@@ -61,7 +61,7 @@ public class TreasureBagItem extends Item {
 	private final AvailabilityConfig availability;
 
 	public TreasureBagItem( String id, String entityNameForConfiguration ) {
-		super( ( new Item.Properties() ).stacksTo( 16 ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( ( new Item.Properties() ).stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
 		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
 		this.id = id;
@@ -104,7 +104,6 @@ public class TreasureBagItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, this.availability.isEnabled() );
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY, " " );
 
 		LootProgressClient.addDropList( this, tooltip );
@@ -122,11 +121,6 @@ public class TreasureBagItem extends Item {
 	/** Creates comment for configuration. */
 	private static String getComment( String treasureBagSourceName ) {
 		return "Is treasure bag from " + treasureBagSourceName + " available in survival mode?";
-	}
-
-	/** Registers given treasure bag. */
-	public RegistryObject< TreasureBagItem > register() {
-		return RegistryHandler.ITEMS.register( this.id + "_treasure_bag", ()->this );
 	}
 
 	/** Checks whether treasure bag is not disabled in configuration file? */
@@ -156,6 +150,42 @@ public class TreasureBagItem extends Item {
 		ServerStatsCounter statisticsManager = player.getStats();
 
 		player.awardStat( statistic );
-		Instances.TREASURE_BAG_TRIGGER.trigger( player, this, statisticsManager.getValue( statistic ) );
+		Registries.TREASURE_BAG_TRIGGER.trigger( player, this, statisticsManager.getValue( statistic ) );
+	}
+
+	public static class UndeadArmy extends TreasureBagItem {
+		public UndeadArmy() {
+			super( "undead_army", "Undead Army" );
+		}
+	}
+
+	public static class ElderGuardian extends TreasureBagItem {
+		public ElderGuardian() {
+			super( "elder_guardian", "Elder Guardian" );
+		}
+	}
+
+	public static class Wither extends TreasureBagItem {
+		public Wither() {
+			super( "wither", "Wither" );
+		}
+	}
+
+	public static class EnderDragon extends TreasureBagItem {
+		public EnderDragon() {
+			super( "ender_dragon", "Ender Dragon" );
+		}
+	}
+
+	public static class Fishing extends TreasureBagItem {
+		public Fishing() {
+			super( "fishing", "Fishing" );
+		}
+	}
+
+	public static class Pillager extends TreasureBagItem {
+		public Pillager() {
+			super( "pillager", "Pillager Raid" );
+		}
 	}
 }

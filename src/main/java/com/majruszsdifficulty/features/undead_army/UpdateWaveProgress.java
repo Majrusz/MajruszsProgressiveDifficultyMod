@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.undead_army;
 
-import com.majruszsdifficulty.RegistryHandler;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,7 +12,7 @@ public class UpdateWaveProgress {
 	@SubscribeEvent
 	public static void onUndeadKill( LivingDeathEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
-		UndeadArmyManager undeadArmyManager = RegistryHandler.UNDEAD_ARMY_MANAGER;
+		UndeadArmyManager undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
 		if( undeadArmyManager != null && undeadArmyManager.doesEntityBelongToUndeadArmy( entity ) ) {
 			UndeadArmy undeadArmy = undeadArmyManager.findNearestUndeadArmy( entity.blockPosition() );
 			if( undeadArmy != null )

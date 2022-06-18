@@ -13,8 +13,8 @@ public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
 	protected final boolean shouldBeEnchanted;
 	protected final boolean shouldBeDamaged;
 
-	public GiveItemOnSpawnBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
-		boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
+	public GiveItemOnSpawnBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType,
+		boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
 		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 		this.equipmentSlotType = equipmentSlotType;

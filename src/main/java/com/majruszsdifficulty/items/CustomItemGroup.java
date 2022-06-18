@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,6 +12,6 @@ public class CustomItemGroup extends CreativeModeTab {
 
 	@Override
 	public ItemStack makeIcon() {
-		return new ItemStack( Instances.BATTLE_STANDARD_ITEM );
+		return new ItemStack( Registries.BATTLE_STANDARD.get() );
 	}
 }

@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.effects;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,7 +26,7 @@ public class BleedingImmunityEffect extends MobEffect {
 	@Override
 	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health
 	) {
-		entity.removeEffect( Instances.BLEEDING );
+		entity.removeEffect( Registries.BLEEDING.get() );
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class BleedingImmunityEffect extends MobEffect {
 	public static void onEffectApplied( PotionEvent.PotionApplicableEvent event ) {
 		MobEffectInstance effectInstance = event.getPotionEffect();
 		LivingEntity entity = event.getEntityLiving();
-		if( effectInstance.getEffect() instanceof BleedingEffect && entity.hasEffect( Instances.BLEEDING_IMMUNITY ) )
+		if( effectInstance.getEffect() instanceof BleedingEffect && entity.hasEffect( Registries.BLEEDING_IMMUNITY.get() ) )
 			event.setResult( Event.Result.DENY );
 	}
 }

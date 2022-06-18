@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.treasure_bag;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.items.ItemHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +32,7 @@ public class RaidTreasureBagRewarder {
 		if( pillagerRaid.getId() != getLastRaidID( player ) ) {
 			setLastRaidID( player, pillagerRaid.getId() );
 
-			TreasureBagItem treasureBagItem = Instances.PILLAGER_TREASURE_BAG;
+			TreasureBagItem treasureBagItem = Registries.PILLAGER_TREASURE_BAG.get();
 			if( treasureBagItem.isAvailable() )
 				ItemHelper.giveItemStackToPlayer( new ItemStack( treasureBagItem ), player, ( ServerLevel )player.level );
 		}

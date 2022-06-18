@@ -11,8 +11,7 @@ import net.minecraft.world.entity.Mob;
 public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implements IOnSpawn {
 	protected boolean shouldBeCancelled = false;
 
-	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
-		boolean shouldChanceBeMultipliedByCRD
+	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD
 	) {
 		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 	}

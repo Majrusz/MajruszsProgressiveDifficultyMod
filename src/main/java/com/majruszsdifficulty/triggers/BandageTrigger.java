@@ -2,7 +2,7 @@ package com.majruszsdifficulty.triggers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.BandageItem;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Registry;
@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 /** Trigger called when player uses any Bandage on himself or on someone else. */
 public class BandageTrigger extends SimpleCriterionTrigger< BandageTrigger.Instance > {
-	private static final ResourceLocation ID = MajruszsDifficulty.getLocation( "bandage_used" );
+	private static final ResourceLocation ID = Registries.getLocation( "bandage_used" );
 
 	@Override
 	public ResourceLocation getId() {
@@ -52,9 +52,7 @@ public class BandageTrigger extends SimpleCriterionTrigger< BandageTrigger.Insta
 		}
 
 		public boolean test( BandageItem item, boolean usedOnOneself ) {
-			return usedOnOneself == this.usedOnOneself && Registry.ITEM.getKey( item )
-				.toString()
-				.equals( this.bandageID );
+			return usedOnOneself == this.usedOnOneself && Registry.ITEM.getKey( item ).toString().equals( this.bandageID );
 		}
 	}
 }

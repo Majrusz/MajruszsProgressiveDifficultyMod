@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.items;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ public class HermesBootsItem extends AttributeArmorItem {
 	protected final ConfigGroup configGroup;
 
 	public HermesBootsItem() {
-		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, ( new Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, ( new Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
 		String comment = "Movement speed extra multiplier. (requires game/world restart!)";
 		this.movementSpeedBonus = new DoubleConfig( "movement_speed_bonus", comment, true, 0.25, 0.0, 5.0 );
@@ -39,7 +39,7 @@ public class HermesBootsItem extends AttributeArmorItem {
 	@Nullable
 	@Override
 	public String getArmorTexture( ItemStack stack, Entity entity, EquipmentSlot slot, String type ) {
-		ResourceLocation textureLocation = MajruszsDifficulty.getLocation( "textures/models/armor/hermes_layer.png" );
+		ResourceLocation textureLocation = Registries.getLocation( "textures/models/armor/hermes_layer.png" );
 		return textureLocation.toString();
 	}
 
@@ -72,10 +72,8 @@ public class HermesBootsItem extends AttributeArmorItem {
 	/** Called whenever attributes should be updated. */
 	@Override
 	protected void updateAttributes( ImmutableMultimap.Builder< Attribute, AttributeModifier > builder ) {
-		builder.put( Attributes.MOVEMENT_SPEED,
-			new AttributeModifier( UUID.fromString( "dbe472cb-df52-44ab-ab38-01b00e24f649" ), "HermesBootsMovementSpeedBonus",
-				this.movementSpeedBonus.get(), AttributeModifier.Operation.MULTIPLY_BASE
-			)
-		);
+		builder.put( Attributes.MOVEMENT_SPEED, new AttributeModifier( UUID.fromString( "dbe472cb-df52-44ab-ab38-01b00e24f649" ), "HermesBootsMovementSpeedBonus", this.movementSpeedBonus.get(),
+			AttributeModifier.Operation.MULTIPLY_BASE
+		) );
 	}
 }

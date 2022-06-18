@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.blocks;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
@@ -47,10 +47,7 @@ public class EndShardOre extends Block {
 	protected final DoubleConfig triggerDistance;
 
 	public EndShardOre() {
-		super( Properties.of( Material.METAL, MaterialColor.COLOR_YELLOW )
-			.requiresCorrectToolForDrops()
-			.strength( 30.0f, 1200.0f )
-			.sound( SoundType.ANCIENT_DEBRIS ) );
+		super( Properties.of( Material.METAL, MaterialColor.COLOR_YELLOW ).requiresCorrectToolForDrops().strength( 30.0f, 1200.0f ).sound( SoundType.ANCIENT_DEBRIS ) );
 
 		String availabilityComment = "Should this ore be available in survival mode? (ore generation, loot tables etc.) (requires game restart!)";
 		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, true, true );
@@ -84,7 +81,7 @@ public class EndShardOre extends Block {
 		BlockState blockState = event.getState();
 
 		if( blockState.getBlock() instanceof EndShardOre )
-			targetEndermansOnEntity( event.getPlayer(), Instances.END_SHARD_ORE.triggerDistance.get() );
+			targetEndermansOnEntity( event.getPlayer(), Registries.END_SHARD_ORE.get().triggerDistance.get() );
 	}
 
 	/**
@@ -113,13 +110,7 @@ public class EndShardOre extends Block {
 
 	public static class EndShardOreItem extends BlockItem {
 		public EndShardOreItem() {
-			super( Instances.END_SHARD_ORE, ( new Properties() ).stacksTo( 64 ).tab( Instances.ITEM_GROUP ) );
-		}
-
-		@Override
-		@OnlyIn( Dist.CLIENT )
-		public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-			MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+			super( Registries.END_SHARD_ORE.get(), ( new Properties() ).stacksTo( 64 ).tab( Registries.ITEM_GROUP ) );
 		}
 	}
 }

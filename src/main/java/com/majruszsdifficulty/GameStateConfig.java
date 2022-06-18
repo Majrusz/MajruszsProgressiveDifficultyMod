@@ -37,8 +37,8 @@ public class GameStateConfig {
 		String defaultComment = "Game state that is always set at the beginning of the game.";
 		this.defaultGameState = new GameStateEnumConfig( "default_game_state", defaultComment, false, GameState.State.NORMAL );
 
-		STATE_GROUP.addConfigs( this.entitiesStartingExpertMode, this.entitiesStartingMasterMode, this.dimensionsStartingExpertMode,
-			this.dimensionsStartingMasterMode, this.enteringAnyDimensionStartsExpertMode, this.defaultGameState
+		STATE_GROUP.addConfigs( this.entitiesStartingExpertMode, this.entitiesStartingMasterMode, this.dimensionsStartingExpertMode, this.dimensionsStartingMasterMode,
+			this.enteringAnyDimensionStartsExpertMode, this.defaultGameState
 		);
 	}
 

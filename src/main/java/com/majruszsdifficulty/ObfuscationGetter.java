@@ -21,17 +21,22 @@ public class ObfuscationGetter< Type, ReturnType > {
 	public ReturnType get( Type instance ) {
 		if( this.isMCPName ) {
 			try {
-				return ( ReturnType )( ObfuscationReflectionHelper.findField( this.classToAccess, this.mcpName ).get( instance ) );
+				return find( instance, this.mcpName );
 			} catch( Exception exception ) {
 				return null;
 			}
 		} else {
 			try {
-				return ( ReturnType )( ObfuscationReflectionHelper.findField( this.classToAccess, this.fieldName ).get( instance ) );
+				return find( instance, this.fieldName );
 			} catch( Exception exception ) {
 				this.isMCPName = true;
 				return get( instance );
 			}
 		}
+	}
+
+	@Nullable
+	private ReturnType find( Type instance, String name ) throws IllegalAccessException {
+		return ( ReturnType )( ObfuscationReflectionHelper.findField( this.classToAccess, name ).get( instance ) );
 	}
 }

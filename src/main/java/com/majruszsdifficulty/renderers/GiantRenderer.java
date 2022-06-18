@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.renderers;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.entities.GiantEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 /** Renderer for Giant entity. */
 @OnlyIn( Dist.CLIENT )
 public class GiantRenderer extends ZombieRenderer {
-	private static final ResourceLocation TEXTURE = MajruszsDifficulty.getLocation( "textures/entity/giant.png" );
+	private static final ResourceLocation TEXTURE = Registries.getLocation( "textures/entity/giant.png" );
 
 	public GiantRenderer( EntityRendererProvider.Context context ) {
 		super( context );

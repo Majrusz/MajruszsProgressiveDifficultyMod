@@ -16,9 +16,7 @@ public class PhantomLevitationOnAttack extends WhenDamagedApplyStackableEffectBa
 	private static final String CONFIG_COMMENT = "Phantom inflicts levitation.";
 
 	public PhantomLevitationOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 6.0, GameState.State.MASTER, true, MobEffects.LEVITATION, false, true, 1,
-			Utility.secondsToTicks( 60.0 )
-		);
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 6.0, GameState.State.MASTER, true, MobEffects.LEVITATION, false, true, 1, Utility.secondsToTicks( 60.0 ) );
 	}
 
 	/** Checking if all conditions were met. */

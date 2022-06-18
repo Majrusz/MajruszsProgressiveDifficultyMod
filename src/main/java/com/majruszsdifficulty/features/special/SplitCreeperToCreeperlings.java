@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.special;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStateIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.features.ChanceFeatureBase;
@@ -36,7 +36,7 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 		if( !isValid( event.getExplosion(), event.getWorld() ) )
 			return;
 
-		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Instances.SPLIT_CREEPER_TO_CREEPERLINGS;
+		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Registries.SPLIT_CREEPER_TO_CREEPERLINGS;
 		Explosion explosion = event.getExplosion();
 		Creeper creeper = ( Creeper )explosion.getExploder();
 		ServerLevel world = ( ServerLevel )event.getWorld();
@@ -47,7 +47,7 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 		for( int i = 0; i < amountOfCreeperlings; ++i ) {
 			BlockPos position = getNearbyPosition( creeper );
 
-			CreeperlingEntity creeperling = CreeperlingEntity.type.spawn( world, null, null, null, position, MobSpawnType.SPAWNER, true, true );
+			CreeperlingEntity creeperling = Registries.CREEPERLING.get().spawn( world, null, null, null, position, MobSpawnType.SPAWNER, true, true );
 			if( creeperling != null )
 				creeperling.setTarget( creeper.getTarget() );
 		}
@@ -56,15 +56,14 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 	/** Returns position nearby given Creeper. */
 	private static BlockPos getNearbyPosition( Creeper creeper ) {
 		BlockPos position = creeper.blockPosition();
-		double x = position.getX() + MajruszLibrary.RANDOM.nextDouble() - 0.5, y = position.getY() + MajruszLibrary.RANDOM.nextDouble() - 0.5, z = position
-			.getZ() + MajruszLibrary.RANDOM.nextDouble() - 0.5;
+		double x = position.getX() + MajruszLibrary.RANDOM.nextDouble() - 0.5, y = position.getY() + MajruszLibrary.RANDOM.nextDouble() - 0.5, z = position.getZ() + MajruszLibrary.RANDOM.nextDouble() - 0.5;
 
 		return new BlockPos( x, y, z );
 	}
 
 	/** Checks whether feature should be called. */
 	private static boolean isValid( Explosion explosion, Level world ) {
-		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Instances.SPLIT_CREEPER_TO_CREEPERLINGS;
+		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Registries.SPLIT_CREEPER_TO_CREEPERLINGS;
 		boolean isCausedByCreeper = explosion.getExploder() instanceof Creeper && !( explosion.getExploder() instanceof CreeperlingEntity );
 		boolean isServerLevel = world instanceof ServerLevel;
 

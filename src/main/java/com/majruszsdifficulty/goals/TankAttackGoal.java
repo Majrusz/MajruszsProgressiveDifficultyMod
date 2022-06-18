@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.goals;
 
 import com.majruszsdifficulty.entities.TankEntity;
-import com.mlib.Utility;
 import com.mlib.Random;
+import com.mlib.Utility;
 import com.mlib.entities.EntityHelper;
 import com.mlib.math.VectorHelper;
 import net.minecraft.core.BlockPos;
@@ -89,8 +89,7 @@ public class TankAttackGoal extends MeleeAttackGoal {
 
 	protected void spawnSpecialAttackEffects( ServerLevel level, Vec3 position ) {
 		Optional< BlockState > blockState = Optional.ofNullable( getBlockStateBelowPosition( level, position ) );
-		BlockParticleOption blockParticleOption = new BlockParticleOption( ParticleTypes.BLOCK, blockState.orElse( Blocks.DIRT.defaultBlockState() ) )
-			.setPos( new BlockPos( position ) );
+		BlockParticleOption blockParticleOption = new BlockParticleOption( ParticleTypes.BLOCK, blockState.orElse( Blocks.DIRT.defaultBlockState() ) ).setPos( new BlockPos( position ) );
 
 		level.sendParticles( blockParticleOption, position.x, position.y + 0.25, position.z, 120, 1.0, 0.25, 1.0, 0.5 );
 	}

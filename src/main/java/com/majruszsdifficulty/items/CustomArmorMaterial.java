@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
@@ -15,13 +15,28 @@ import java.util.function.Supplier;
 
 /** Mod custom armor materials. */
 public enum CustomArmorMaterial implements ArmorMaterial {
-	HERMES( "hermes", 10, new int[]{ 2, 5, 6, 2 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
+	HERMES( "hermes", 10, new int[]{
+		2,
+		5,
+		6,
+		2
+	}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->{
 		return Ingredient.of( Items.FEATHER );
-	} ), END( "end", 39, new int[]{ 4, 6, 8, 4 }, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->{
-		return Ingredient.of( Instances.END_INGOT_ITEM );
+	} ), END( "end", 39, new int[]{
+		4,
+		6,
+		8,
+		4
+	}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->{
+		return Ingredient.of( Registries.END_INGOT.get() );
 	} );
 
-	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };
+	private static final int[] MAX_DAMAGE_ARRAY = new int[]{
+		13,
+		15,
+		16,
+		11
+	};
 	private final String name;
 	private final int maxDamageFactor;
 	private final int[] damageReductionAmountArray;
@@ -31,8 +46,8 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 	private final float knockbackResistance;
 	private final LazyLoadedValue< Ingredient > repairMaterial;
 
-	CustomArmorMaterial( String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent,
-		float toughness, float knockbackResistance, Supplier< Ingredient > repairMaterial
+	CustomArmorMaterial( String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent, float toughness, float knockbackResistance,
+		Supplier< Ingredient > repairMaterial
 	) {
 		this.name = name;
 		this.maxDamageFactor = maxDamageFactor;

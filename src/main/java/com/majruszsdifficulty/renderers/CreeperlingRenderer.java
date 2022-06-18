@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.renderers;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.models.CreeperlingModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,8 +15,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 /** Renderer for new Creeperling entity. */
 @OnlyIn( Dist.CLIENT )
 public class CreeperlingRenderer extends MobRenderer< CreeperlingEntity, CreeperlingModel< CreeperlingEntity > > {
-	private static final ResourceLocation CREEPERLING_TEXTURES = MajruszsDifficulty.getLocation( "textures/entity/creeperling.png" );
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( MajruszsDifficulty.getLocation( "creeperling" ), "main" );
+	private static final ResourceLocation CREEPERLING_TEXTURES = Registries.getLocation( "textures/entity/creeperling.png" );
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( Registries.getLocation( "creeperling" ), "main" );
 
 	public CreeperlingRenderer( EntityRendererProvider.Context context ) {
 		super( context, new CreeperlingModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.25f );

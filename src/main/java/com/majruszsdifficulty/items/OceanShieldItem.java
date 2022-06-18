@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.renderers.OceanShieldRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class OceanShieldItem extends ShieldItem {
 	public OceanShieldItem() {
-		super( ( new Properties() ).durability( 555 ).rarity( Rarity.UNCOMMON ).tab( Instances.ITEM_GROUP ) );
+		super( ( new Properties() ).durability( 555 ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ) );
 	}
 
 	@Override
@@ -38,9 +38,8 @@ public class OceanShieldItem extends ShieldItem {
 	@SubscribeEvent
 	public static void onHurt( LivingHurtEvent event ) {
 		LivingEntity target = event.getEntityLiving();
-		OceanShieldItem oceanShieldItem = Instances.OCEAN_SHIELD_ITEM;
-		ItemStack mainHandItemStack = target.getItemInHand( InteractionHand.MAIN_HAND ), offHandItemStack = target.getItemInHand(
-			InteractionHand.OFF_HAND );
+		OceanShieldItem oceanShieldItem = Registries.OCEAN_SHIELD.get();
+		ItemStack mainHandItemStack = target.getItemInHand( InteractionHand.MAIN_HAND ), offHandItemStack = target.getItemInHand( InteractionHand.OFF_HAND );
 		boolean isBlockingWithShield = target.isBlocking();
 
 		if( oceanShieldItem.equals( mainHandItemStack.getItem() ) ) {

@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.features.undead_army;
 
-import com.majruszsdifficulty.Instances;
-import com.majruszsdifficulty.RegistryHandler;
+import com.majruszsdifficulty.Registries;
 import com.mlib.damage.DamageHelper;
 import com.mlib.nbt.NBTHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +18,7 @@ public class CountKilledUndead {
 	public static void onUndeadKill( LivingDeathEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
 		Player player = DamageHelper.castEntityIfPossible( Player.class, event.getSource() );
-		UndeadArmyManager undeadArmyManager = RegistryHandler.UNDEAD_ARMY_MANAGER;
+		UndeadArmyManager undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
 		if( player == null || undeadArmyManager == null || !isValidEntity( entity ) || undeadArmyManager.doesEntityBelongToUndeadArmy( entity ) )
 			return;
 
@@ -35,8 +34,8 @@ public class CountKilledUndead {
 
 	/** Spawns Undead Army at player's position if player met all the requirements. */
 	private static void spawnArmyIfPossible( Player player ) {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
-		UndeadArmyManager undeadArmyManager = RegistryHandler.UNDEAD_ARMY_MANAGER;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
+		UndeadArmyManager undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
 		NBTHelper.IntegerData killedUndeadData = new NBTHelper.IntegerData( player, UndeadArmyKeys.KILLED );
 
 		if( killedUndeadData.get() >= config.getRequiredKills() && player.level instanceof ServerLevel )

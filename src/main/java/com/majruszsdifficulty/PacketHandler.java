@@ -12,14 +12,8 @@ public class PacketHandler {
 	public static SimpleChannel CHANNEL;
 
 	public static void registerPacket( final FMLCommonSetupEvent event ) {
-		CHANNEL = NetworkRegistry.newSimpleChannel( MajruszsDifficulty.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals,
-			PROTOCOL_VERSION::equals
-		);
-		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode, TankEntity.TankAttackMessage::new,
-			TankEntity.TankAttackMessage::handle
-		);
-		CHANNEL.registerMessage( 1, LootProgress.ProgressMessage.class, LootProgress.ProgressMessage::encode, LootProgress.ProgressMessage::new,
-			LootProgress.ProgressMessage::handle
-		);
+		CHANNEL = NetworkRegistry.newSimpleChannel( Registries.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals );
+		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode, TankEntity.TankAttackMessage::new, TankEntity.TankAttackMessage::handle );
+		CHANNEL.registerMessage( 1, LootProgress.ProgressMessage.class, LootProgress.ProgressMessage::encode, LootProgress.ProgressMessage::new, LootProgress.ProgressMessage::handle );
 	}
 }

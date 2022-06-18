@@ -45,35 +45,25 @@ public class CreeperlingModel< Type extends Entity > extends HierarchicalModel< 
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
-		partDefinition.addOrReplaceChild( "body",
-			CubeListBuilder.create().texOffs( 8, 14 ).addBox( -2.0F, 0.0F, -1.0F, 4.0F, 6.0F, 2.0F, cubeDeformation ),
-			PartPose.offset( 0.0F, 15.0F, 0.0F )
-		);
+		partDefinition.addOrReplaceChild( "body", CubeListBuilder.create().texOffs( 8, 14 ).addBox( -2.0F, 0.0F, -1.0F, 4.0F, 6.0F, 2.0F, cubeDeformation ), PartPose.offset( 0.0F, 15.0F, 0.0F ) );
 
-		partDefinition.addOrReplaceChild( "leftBackFoot",
-			CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
+		partDefinition.addOrReplaceChild( "leftBackFoot", CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
 			PartPose.offset( 1.0F, 21.0F, -2.0F )
 		);
 
-		partDefinition.addOrReplaceChild( "leftFrontFoot",
-			CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
+		partDefinition.addOrReplaceChild( "leftFrontFoot", CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
 			PartPose.offset( 1.0F, 21.0F, 2.0F )
 		);
 
-		partDefinition.addOrReplaceChild( "rightFrontFoot",
-			CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
+		partDefinition.addOrReplaceChild( "rightFrontFoot", CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
 			PartPose.offset( -1.0F, 21.0F, -2.0F )
 		);
 
-		partDefinition.addOrReplaceChild( "rightBackFoot",
-			CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
+		partDefinition.addOrReplaceChild( "rightBackFoot", CubeListBuilder.create().texOffs( 0, 14 ).addBox( -1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, cubeDeformation ),
 			PartPose.offset( -1.0F, 21.0F, 2.0F )
 		);
 
-		partDefinition.addOrReplaceChild( "head",
-			CubeListBuilder.create().texOffs( 0, 0 ).addBox( -3.5F, -7.0F, -3.5F, 7.0F, 7.0F, 7.0F, cubeDeformation ),
-			PartPose.offset( 0.0F, 15.0F, 0.0F )
-		);
+		partDefinition.addOrReplaceChild( "head", CubeListBuilder.create().texOffs( 0, 0 ).addBox( -3.5F, -7.0F, -3.5F, 7.0F, 7.0F, 7.0F, cubeDeformation ), PartPose.offset( 0.0F, 15.0F, 0.0F ) );
 
 		return LayerDefinition.create( meshDefinition, 32, 32 );
 	}

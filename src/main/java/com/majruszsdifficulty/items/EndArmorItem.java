@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Instances;
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.MajruszsHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,13 +20,7 @@ public class EndArmorItem extends ArmorItem {
 	private static final String ARMOR_TICK_TAG = "EndArmorTickCounter";
 
 	public EndArmorItem( EquipmentSlot slot ) {
-		super( CustomArmorMaterial.END, slot, ( new Item.Properties() ).tab( Instances.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
-	}
-
-	@Override
-	@OnlyIn( Dist.CLIENT )
-	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addExtraTextIfItemIsDisabled( tooltip, Instances.END_SHARD_ORE.isEnabled() );
+		super( CustomArmorMaterial.END, slot, ( new Item.Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	/** Returns path to End Armor texture. */
@@ -40,7 +33,7 @@ public class EndArmorItem extends ArmorItem {
 		register += ( slot == EquipmentSlot.LEGS ? "2" : "1" ) + "_";
 		register += ( "" + ( 1 + data.getInt( ARMOR_TICK_TAG ) / 80 ) ) + ".png";
 
-		ResourceLocation textureLocation = MajruszsDifficulty.getLocation( register );
+		ResourceLocation textureLocation = Registries.getLocation( register );
 		return textureLocation.toString();
 	}
 }

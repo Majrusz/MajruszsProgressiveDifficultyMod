@@ -38,25 +38,20 @@ public class OceanShieldModel extends Model {
 	}
 
 	@Override
-	public void renderToBuffer( PoseStack poseStack, VertexConsumer consumer, int packedLight, int overlay, float red, float green, float blue,
-		float alpha
+	public void renderToBuffer( PoseStack poseStack, VertexConsumer consumer, int packedLight, int overlay, float red, float green, float blue, float alpha
 	) {
 		this.root.render( poseStack, consumer, packedLight, overlay, red, green, blue, alpha );
 	}
 
 	public ImmutableList< ModelPart > getModels() {
-		return ImmutableList.of( this.plate, this.handle, this.spike1, this.spike2, this.spike3, this.spike4, this.spike5, this.spike6, this.spike7,
-			this.spike8
-		);
+		return ImmutableList.of( this.plate, this.handle, this.spike1, this.spike2, this.spike3, this.spike4, this.spike5, this.spike6, this.spike7, this.spike8 );
 	}
 
 	public static LayerDefinition createLayer() {
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
-		partDefinition.addOrReplaceChild( "handle", CubeListBuilder.create().texOffs( 30, 0 ).addBox( -1.0F, -3.0F, -1.0F, 2.0F, 6.0F, 6.0F ),
-			PartPose.ZERO
-		);
+		partDefinition.addOrReplaceChild( "handle", CubeListBuilder.create().texOffs( 30, 0 ).addBox( -1.0F, -3.0F, -1.0F, 2.0F, 6.0F, 6.0F ), PartPose.ZERO );
 
 		partDefinition.addOrReplaceChild( "plate", CubeListBuilder.create()
 			.texOffs( 0, 0 )
@@ -90,17 +85,11 @@ public class OceanShieldModel extends Model {
 			PartPose.offsetAndRotation( 0.0f, 0.0f, 0.0f, 0.12217304763960307F, 0.0F, 0.0F )
 		);
 
-		partDefinition.addOrReplaceChild( "spike6", CubeListBuilder.create().texOffs( 47, 1 ).addBox( -2.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F ),
-			PartPose.ZERO
-		);
+		partDefinition.addOrReplaceChild( "spike6", CubeListBuilder.create().texOffs( 47, 1 ).addBox( -2.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F ), PartPose.ZERO );
 
-		partDefinition.addOrReplaceChild( "spike7", CubeListBuilder.create().texOffs( 47, 1 ).addBox( 1.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F ),
-			PartPose.ZERO
-		);
+		partDefinition.addOrReplaceChild( "spike7", CubeListBuilder.create().texOffs( 47, 1 ).addBox( 1.5F, -4.5F, -3.0F, 1.0F, 1.0F, 1.0F ), PartPose.ZERO );
 
-		partDefinition.addOrReplaceChild( "spike8", CubeListBuilder.create().texOffs( 47, 1 ).addBox( -0.5F, 2.0F, -3.0F, 1.0F, 1.0F, 1.0F ),
-			PartPose.ZERO
-		);
+		partDefinition.addOrReplaceChild( "spike8", CubeListBuilder.create().texOffs( 47, 1 ).addBox( -0.5F, 2.0F, -3.0F, 1.0F, 1.0F, 1.0F ), PartPose.ZERO );
 
 		return LayerDefinition.create( meshDefinition, 64, 64 );
 	}

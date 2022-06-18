@@ -5,8 +5,8 @@ import com.mlib.commands.BaseCommand;
 import com.mlib.commands.IRegistrableCommand;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;

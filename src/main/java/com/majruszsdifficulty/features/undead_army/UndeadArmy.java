@@ -2,14 +2,13 @@ package com.majruszsdifficulty.features.undead_army;
 
 import com.google.common.collect.Sets;
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.Instances;
-import com.majruszsdifficulty.RegistryHandler;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.goals.ForgiveUndeadArmyTargetGoal;
 import com.majruszsdifficulty.goals.UndeadAttackPositionGoal;
-import com.mlib.Utility;
 import com.mlib.MajruszLibrary;
 import com.mlib.Random;
+import com.mlib.Utility;
 import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
 import com.mlib.nbt.NBTHelper;
@@ -53,9 +52,7 @@ public class UndeadArmy {
 	public final static int ARMOR_COLOR = 0x92687b;
 	private final static int SAFE_SPAWN_RADIUS = 90;
 	private final static int SPAWN_RADIUS = 70;
-	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE,
-		BossEvent.BossBarOverlay.NOTCHED_10
-	);
+	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
 	private final BlockPos positionToAttack;
 	private final Direction direction;
 	private Status status;
@@ -108,7 +105,7 @@ public class UndeadArmy {
 
 	/** Sets the value of variables that depends on config values. */
 	private void setConfigurationValues() {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 
 		this.ticksBetweenWaves = this.ticksBetweenWavesMaximum = config.getAmountOfTicksBetweenWaves();
 		this.ticksInactiveMaximum = config.getAmountOfInactivityTicks();
@@ -217,8 +214,7 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( !this.spawnerWasCreated && countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 9.0 ) >= this.undeadToKill / 2 && countNearbyPlayers(
-			SAFE_SPAWN_RADIUS / 9.0 ) == 0 )
+		if( !this.spawnerWasCreated && countNearbyUndeadArmy( SAFE_SPAWN_RADIUS / 9.0 ) >= this.undeadToKill / 2 && countNearbyPlayers( SAFE_SPAWN_RADIUS / 9.0 ) == 0 )
 			createSpawner();
 
 		if( shouldWaveEndPrematurely() )
@@ -306,7 +302,7 @@ public class UndeadArmy {
 
 	/** Ends current wave and changes status depending on wave. */
 	private void endWave() {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 
 		if( this.currentWave >= config.getWaves() ) {
 			this.status = Status.VICTORY;
@@ -323,7 +319,7 @@ public class UndeadArmy {
 
 	/** Creates monster spawner near attacked position. */
 	private void createSpawner() {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 		int spawnerRange = 5;
 
 		for( int i = 0; i < 50 && !this.spawnerWasCreated; i++ ) {
@@ -351,7 +347,7 @@ public class UndeadArmy {
 
 	/** Spawns monsters depending on current wave. */
 	private void spawnWaveEnemies() {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 		double playersFactor = config.getSizeMultiplier( countNearbyPlayers() );
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
@@ -374,9 +370,7 @@ public class UndeadArmy {
 					spawnOnSkeletonHorse( monster );
 				monster.setCanPickUpLoot( false );
 
-				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(),
-					randomPosition.getZ(), null, MobSpawnType.EVENT
-				) )
+				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(), randomPosition.getZ(), null, MobSpawnType.EVENT ) )
 					continue;
 				this.level.addFreshEntity( monster ); // adds monster to the world
 
@@ -388,15 +382,14 @@ public class UndeadArmy {
 		int z = this.positionToAttack.getZ() + this.direction.z * SPAWN_RADIUS;
 
 		for( ServerPlayer player : getNearbyPlayers() )
-			player.connection.send( new ClientboundSoundPacket( Instances.Sounds.UNDEAD_ARMY_WAVE_STARTED, SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
+			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
 
 		this.undeadToKill = Math.max( this.undeadToKill, 1 );
 	}
 
 	/** Checks whether Undead Army should be highlighted. */
 	private boolean shouldEntitiesBeHighlighted() {
-		return this.ticksWaveActive >= Utility.minutesToTicks(
-			1.5 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill / 2;
+		return this.ticksWaveActive >= Utility.minutesToTicks( 1.5 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill / 2;
 	}
 
 	/** Checks whether wave should be ended earlier. */
@@ -407,7 +400,7 @@ public class UndeadArmy {
 
 	/** Tries to enchant weapons and armor for given monster. */
 	private void tryToEnchantEquipment( Mob monster ) {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( monster );
 
 		if( monster.hasItemInSlot( EquipmentSlot.MAINHAND ) && Random.tryChance( config.getEnchantedItemChance() ) )
@@ -423,7 +416,7 @@ public class UndeadArmy {
 
 	/** Gives a random amount of leather armor to monster. */
 	private void equipWithDyedLeatherArmor( Mob monster ) {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 		double armorPieceChance = config.getArmorPieceChance();
 		float armorPieceDropChance = 0.1f;
 
@@ -459,7 +452,7 @@ public class UndeadArmy {
 
 	/** Rewards all player participating in the raid. */
 	private void rewardPlayers() {
-		UndeadArmyConfig config = Instances.UNDEAD_ARMY_CONFIG;
+		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
 
 		for( Player player : this.level.getPlayers( getParticipantsPredicate() ) ) {
 			Vec3 position = player.position();
@@ -467,11 +460,11 @@ public class UndeadArmy {
 				this.level.addFreshEntity( new ExperienceOrb( this.level, position.x, position.y + 1, position.z, 4 ) );
 
 			if( player instanceof ServerPlayer )
-				Instances.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( ( ServerPlayer )player, this.currentWave );
+				Registries.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( ( ServerPlayer )player, this.currentWave );
 
-			if( Instances.UNDEAD_ARMY_TREASURE_BAG.isAvailable() )
+			if( Registries.UNDEAD_ARMY_TREASURE_BAG.get().isAvailable() )
 				for( int i = 0; i < config.getAmountOfVictoryTreasureBags(); i++ )
-					ItemHelper.giveItemStackToPlayer( new ItemStack( Instances.UNDEAD_ARMY_TREASURE_BAG ), player, this.level );
+					ItemHelper.giveItemStackToPlayer( new ItemStack( Registries.UNDEAD_ARMY_TREASURE_BAG.get() ), player, this.level );
 		}
 	}
 
@@ -545,8 +538,7 @@ public class UndeadArmy {
 
 	/** Predicate for checking whether given player is alive and is participating in the raid. */
 	private Predicate< ServerPlayer > getParticipantsPredicate() {
-		return player->player.isAlive() && RegistryHandler.UNDEAD_ARMY_MANAGER != null && ( RegistryHandler.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy(
-			new BlockPos( player.position() ) ) == this
+		return player->player.isAlive() && Registries.UNDEAD_ARMY_MANAGER != null && ( Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( player.position() ) ) == this
 		);
 	}
 

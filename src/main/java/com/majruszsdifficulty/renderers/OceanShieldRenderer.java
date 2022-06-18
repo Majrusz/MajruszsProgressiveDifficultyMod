@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.renderers;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.RegistryHandlerClient;
 import com.majruszsdifficulty.models.OceanShieldModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
 public class OceanShieldRenderer extends BlockEntityWithoutLevelRenderer {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( MajruszsDifficulty.getLocation( "ocean_shield" ), "main" );
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( Registries.getLocation( "ocean_shield" ), "main" );
 	private final OceanShieldModel oceanShield;
 
 	public OceanShieldRenderer( BlockEntityRenderDispatcher p_172550_, EntityModelSet entityModelSet ) {
@@ -30,16 +30,12 @@ public class OceanShieldRenderer extends BlockEntityWithoutLevelRenderer {
 	}
 
 	@Override
-	public void renderByItem( ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource,
-		int combinedLight, int combinedOverlay
+	public void renderByItem( ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay
 	) {
 		poseStack.pushPose();
 		poseStack.scale( 1.0F, -1.0F, -1.0F );
 		Material material = RegistryHandlerClient.OCEAN_SHIELD_MATERIAL;
-		VertexConsumer vertexconsumer = material.sprite()
-			.wrap( ItemRenderer.getFoilBufferDirect( bufferSource, this.oceanShield.renderType( material.atlasLocation() ), true,
-				itemStack.hasFoil()
-			) );
+		VertexConsumer vertexconsumer = material.sprite().wrap( ItemRenderer.getFoilBufferDirect( bufferSource, this.oceanShield.renderType( material.atlasLocation() ), true, itemStack.hasFoil() ) );
 		for( ModelPart modelPart : this.oceanShield.getModels() )
 			modelPart.render( poseStack, vertexconsumer, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F );
 

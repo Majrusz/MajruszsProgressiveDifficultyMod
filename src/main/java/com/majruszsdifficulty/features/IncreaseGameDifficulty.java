@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.features;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.Instances;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.PlayerList;
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 public class IncreaseGameDifficulty {
 	@SubscribeEvent
 	public static void onChangingDimension( PlayerEvent.PlayerChangedDimensionEvent event ) {
-		IncreaseGameDifficulty gameDifficulty = Instances.INCREASE_GAME_DIFFICULTY;
+		IncreaseGameDifficulty gameDifficulty = Registries.INCREASE_GAME_DIFFICULTY;
 		Player player = event.getPlayer();
 
 		switch( GameState.getCurrentMode() ) {
@@ -35,7 +35,7 @@ public class IncreaseGameDifficulty {
 
 	@SubscribeEvent
 	public static void onKillingEntity( LivingDeathEvent event ) {
-		IncreaseGameDifficulty gameDifficulty = Instances.INCREASE_GAME_DIFFICULTY;
+		IncreaseGameDifficulty gameDifficulty = Registries.INCREASE_GAME_DIFFICULTY;
 		LivingEntity entity = event.getEntityLiving();
 
 		switch( GameState.getCurrentMode() ) {
@@ -46,7 +46,7 @@ public class IncreaseGameDifficulty {
 
 	/** Changes current game state to Expert Mode if dimension conditions are met. */
 	protected void handleDimensionExpertMode( Player player, ResourceKey< Level > dimension ) {
-		if( !Instances.GAME_STATE_CONFIG.shouldDimensionStartExpertMode( dimension.location() ) )
+		if( !Registries.GAME_STATE_CONFIG.shouldDimensionStartExpertMode( dimension.location() ) )
 			return;
 
 		startExpertMode( player.getServer() );
@@ -54,7 +54,7 @@ public class IncreaseGameDifficulty {
 
 	/** Changes current game state to Master Mode if dimension conditions are met. */
 	protected void handleDimensionMasterMode( Player player, ResourceKey< Level > dimension ) {
-		if( !Instances.GAME_STATE_CONFIG.shouldDimensionStartMasterMode( dimension.location() ) )
+		if( !Registries.GAME_STATE_CONFIG.shouldDimensionStartMasterMode( dimension.location() ) )
 			return;
 
 		startMasterMode( player.getServer() );
@@ -63,7 +63,7 @@ public class IncreaseGameDifficulty {
 	/** Changes current game state to Expert Mode if entity conditions are met. */
 	protected void handleKillingEntityExpertMode( LivingEntity entity ) {
 		EntityType< ? > entityType = entity.getType();
-		if( !Instances.GAME_STATE_CONFIG.shouldKillingEntityStartExpertMode( EntityType.getKey( entityType ) ) )
+		if( !Registries.GAME_STATE_CONFIG.shouldKillingEntityStartExpertMode( EntityType.getKey( entityType ) ) )
 			return;
 
 		startExpertMode( entity.getServer() );
@@ -72,7 +72,7 @@ public class IncreaseGameDifficulty {
 	/** Changes current game state to Expert Mode if entity conditions are met. */
 	protected void handleKillingEntityMasterMode( LivingEntity entity ) {
 		EntityType< ? > entityType = entity.getType();
-		if( !Instances.GAME_STATE_CONFIG.shouldKillingEntityStartMasterMode( EntityType.getKey( entityType ) ) )
+		if( !Registries.GAME_STATE_CONFIG.shouldKillingEntityStartMasterMode( EntityType.getKey( entityType ) ) )
 			return;
 
 		startMasterMode( entity.getServer() );

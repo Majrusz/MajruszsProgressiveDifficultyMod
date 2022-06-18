@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.entities.ParasiteEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +31,6 @@ public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
 
 	@Override
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		return entity instanceof Spider && !( entity instanceof CaveSpider ) && !( entity instanceof ParasiteEntity ) && super.shouldBeExecuted(
-			entity );
+		return entity instanceof Spider && !( entity instanceof CaveSpider ) && super.shouldBeExecuted( entity );
 	}
 }

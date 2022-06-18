@@ -32,8 +32,7 @@ public class CreeperExplodeWallsGoal extends Goal {
 	public boolean canUse() {
 		LivingEntity target = getNearestPlayer( this.creeper );
 
-		return this.creeper.getSwellDir() > 0 || target != null && this.creeper.distanceToSqr(
-			target ) < MAXIMUM_START_DISTANCE * getDistanceMultiplier();
+		return this.creeper.getSwellDir() > 0 || target != null && this.creeper.distanceToSqr( target ) < MAXIMUM_START_DISTANCE * getDistanceMultiplier();
 	}
 
 	/** Executes task at the beginning of goal. */

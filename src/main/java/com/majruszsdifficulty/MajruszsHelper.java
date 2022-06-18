@@ -75,12 +75,6 @@ public class MajruszsHelper {
 		return Component.translatable( "majruszsdifficulty.items.disabled_tooltip" ).withStyle( ChatFormatting.RED, ChatFormatting.BOLD );
 	}
 
-	/** Adds information that item is disabled if certain conditions are met. */
-	public static void addExtraTextIfItemIsDisabled( List< Component > tooltip, boolean isEnabled ) {
-		if( !isEnabled )
-			tooltip.add( getDisabledItemComponent() );
-	}
-
 	public static MutableComponent getMoreDetailsComponent() {
 		return Component.translatable( "majruszsdifficulty.items.advanced_tooltip" ).withStyle( ChatFormatting.GRAY );
 	}
@@ -103,8 +97,7 @@ public class MajruszsHelper {
 		if( target.yOld + 8 > world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ( int )target.xOld, ( int )target.zOld ) )
 			distanceFactor = outsideOffset;
 
-		Vec3 newPosition = Random.getRandomVector3d( -distanceFactor, distanceFactor, -1.0, 1.0, -distanceFactor, distanceFactor )
-			.add( target.position() );
+		Vec3 newPosition = Random.getRandomVector3d( -distanceFactor, distanceFactor, -1.0, 1.0, -distanceFactor, distanceFactor ).add( target.position() );
 		double y = world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ( int )newPosition.x, ( int )newPosition.z ) + 1;
 
 		return !( y < 5 ) && target.randomTeleport( newPosition.x, target.yOld + 8 > y ? y : newPosition.y, newPosition.z, true );

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.effects;
 
-import com.majruszsdifficulty.Instances;
 import com.majruszsdifficulty.MajruszsHelper;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStateIntegerConfig;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
@@ -75,7 +75,7 @@ public class BleedingEffect extends MobEffect {
 			entity.hurt( new EntityBleedingDamageSource( effectInstance.damageSourceEntity ), damageAmount );
 			entity.setDeltaMovement( motion ); // sets previous motion to avoid any jumping from bleeding
 		} else {
-			entity.hurt( Instances.BLEEDING_SOURCE, damageAmount );
+			entity.hurt( Registries.BLEEDING_SOURCE, damageAmount );
 		}
 	}
 
@@ -101,7 +101,7 @@ public class BleedingEffect extends MobEffect {
 	/** Spawns blood particles every few ticks. */
 	@SubscribeEvent
 	public static void onUpdate( LivingEvent.LivingUpdateEvent event ) {
-		BleedingEffect bleeding = Instances.BLEEDING;
+		BleedingEffect bleeding = Registries.BLEEDING.get();
 		LivingEntity entity = event.getEntityLiving();
 		if( TimeHelper.hasServerTicksPassed( 5 ) && entity.hasEffect( bleeding ) ) {
 			int amountOfParticles = EffectHelper.getEffectAmplifier( entity, bleeding ) + 3;
@@ -112,7 +112,7 @@ public class BleedingEffect extends MobEffect {
 	/** Spawns blood particles on death. */
 	@SubscribeEvent
 	public static void onDeath( LivingDeathEvent event ) {
-		BleedingEffect bleeding = Instances.BLEEDING;
+		BleedingEffect bleeding = Registries.BLEEDING.get();
 		LivingEntity entity = event.getEntityLiving();
 		if( entity.hasEffect( bleeding ) )
 			bleeding.spawnParticles( event.getEntityLiving(), 100 );
@@ -120,16 +120,14 @@ public class BleedingEffect extends MobEffect {
 
 	/** Checks whether given damage source is bleeding. */
 	public static boolean isBleedingSource( DamageSource damageSource ) {
-		return damageSource.msgId.equals( Instances.BLEEDING_SOURCE.msgId );
+		return damageSource.msgId.equals( Registries.BLEEDING_SOURCE.msgId );
 	}
 
 	/** Spawns blood particles. */
 	private void spawnParticles( LivingEntity entity, int amountOfParticles ) {
 		ServerLevel level = Utility.castIfPossible( ServerLevel.class, entity.level );
 		if( level != null )
-			level.sendParticles( Instances.BLOOD_PARTICLE, entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125,
-				0.05
-			);
+			level.sendParticles( Registries.BLOOD.get(), entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125, 0.05 );
 	}
 
 	/** Returns bleeding amplifier depending on current game state. */
@@ -168,7 +166,7 @@ public class BleedingEffect extends MobEffect {
 		protected final Entity damageSourceEntity;
 
 		public EntityBleedingDamageSource( @Nullable Entity damageSourceEntity ) {
-			super( Instances.BLEEDING_SOURCE.msgId );
+			super( Registries.BLEEDING_SOURCE.msgId );
 			bypassArmor();
 
 			this.damageSourceEntity = damageSourceEntity;
@@ -193,7 +191,7 @@ public class BleedingEffect extends MobEffect {
 		protected final Entity damageSourceEntity;
 
 		public BleedingMobEffectInstance( int duration, int amplifier, boolean ambient, boolean showParticles, @Nullable LivingEntity attacker ) {
-			super( Instances.BLEEDING, duration, amplifier, ambient, showParticles );
+			super( Registries.BLEEDING.get(), duration, amplifier, ambient, showParticles );
 			this.damageSourceEntity = attacker;
 		}
 	}

@@ -3,7 +3,7 @@ package com.majruszsdifficulty.triggers;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 /** Trigger called when given game state is enabled. */
 @Mod.EventBusSubscriber
 public class GameStateTrigger extends SimpleCriterionTrigger< GameStateTrigger.Instance > {
-	private static final ResourceLocation ID = MajruszsDifficulty.getLocation( "game_state" );
+	private static final ResourceLocation ID = Registries.getLocation( "game_state" );
 
 	@Override
 	public ResourceLocation getId() {
