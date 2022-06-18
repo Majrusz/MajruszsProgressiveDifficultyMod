@@ -88,6 +88,11 @@ public class Registries {
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
 	static final DeferredRegister< GlobalLootModifierSerializer< ? > > LOOT_MODIFIERS = HELPER.create( ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS );
 
+	// Entities
+	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.register( "giant", GiantEntity.createSupplier() );
+	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
+	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
+
 	// Items
 	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
@@ -126,8 +131,8 @@ public class Registries {
 	// Spawn Eggs
 	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.register( "giant_spawn_egg", createEggSupplier( ()->EntityType.GIANT, 44975, 7969893 ) );
 	public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.register( "illusioner_spawn_egg", createEggSupplier( ()->EntityType.ILLUSIONER, 0x135a97, 9804699 ) );
-	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.register( "creeperling_spawn_egg", createEggSupplier( ()->EntityType.ZOMBIE, 0x0da70b, 0x000000 ) );
-	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( ()->EntityType.ZOMBIE, 0xc1c1c1, 0x949494 ) );
+	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.register( "creeperling_spawn_egg", createEggSupplier( CREEPERLING, 0x0da70b, 0x000000 ) );
+	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( TANK, 0xc1c1c1, 0x949494 ) );
 
 	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor, int highlightColor ) {
 		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties().tab( ITEM_GROUP ) );
@@ -211,11 +216,6 @@ public class Registries {
 		LOOT_MODIFIERS.register( "double_loot", DoubleLoot.Serializer::new );
 		LOOT_MODIFIERS.register( "add_treasure_bag_to_loot", AddTreasureBagsToLoot.Serializer::new );
 	}
-
-	// Entities
-	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.register( "giant", GiantEntity.createSupplier() );
-	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
-	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
 
 	public static ResourceLocation getLocation( String register ) {
 		return HELPER.getLocation( register );
