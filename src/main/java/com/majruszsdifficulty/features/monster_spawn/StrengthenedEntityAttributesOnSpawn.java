@@ -11,10 +11,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 /** Increases damage and health of spawning hostile entities. */
 public class StrengthenedEntityAttributesOnSpawn extends OnEnemyToBeSpawnedBase {
-	protected static final AttributeHandler MAX_HEALTH_ATTRIBUTE = new AttributeHandler( "ba9de909-4a9e-43da-9d14-fbcbc2403316", "MonsterSpawnHealthBonus", Attributes.MAX_HEALTH,
+	protected static final AttributeHandler MAX_HEALTH_ATTRIBUTE = new AttributeHandler( "ba9de909-4a9e-43da-9d14-fbcbc2403316",
+		"MonsterSpawnHealthBonus",
+		Attributes.MAX_HEALTH,
 		AttributeModifier.Operation.MULTIPLY_BASE
 	);
-	protected static final AttributeHandler DAMAGE_ATTRIBUTE = new AttributeHandler( "053d92c8-ccb5-4b95-9add-c31aca144177", "MonsterSpawnDamageBonus", Attributes.ATTACK_DAMAGE,
+	protected static final AttributeHandler DAMAGE_ATTRIBUTE = new AttributeHandler( "053d92c8-ccb5-4b95-9add-c31aca144177",
+		"MonsterSpawnDamageBonus",
+		Attributes.ATTACK_DAMAGE,
 		AttributeModifier.Operation.MULTIPLY_BASE
 	);
 	private static final String CONFIG_NAME = "SpawnBonuses";

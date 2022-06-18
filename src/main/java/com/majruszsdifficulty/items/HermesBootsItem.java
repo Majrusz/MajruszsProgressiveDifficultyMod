@@ -72,8 +72,12 @@ public class HermesBootsItem extends AttributeArmorItem {
 	/** Called whenever attributes should be updated. */
 	@Override
 	protected void updateAttributes( ImmutableMultimap.Builder< Attribute, AttributeModifier > builder ) {
-		builder.put( Attributes.MOVEMENT_SPEED, new AttributeModifier( UUID.fromString( "dbe472cb-df52-44ab-ab38-01b00e24f649" ), "HermesBootsMovementSpeedBonus", this.movementSpeedBonus.get(),
-			AttributeModifier.Operation.MULTIPLY_BASE
-		) );
+		builder.put( Attributes.MOVEMENT_SPEED,
+			new AttributeModifier( UUID.fromString( "dbe472cb-df52-44ab-ab38-01b00e24f649" ),
+				"HermesBootsMovementSpeedBonus",
+				this.movementSpeedBonus.get(),
+				AttributeModifier.Operation.MULTIPLY_BASE
+			)
+		);
 	}
 }

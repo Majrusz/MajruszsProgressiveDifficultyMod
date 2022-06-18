@@ -26,7 +26,12 @@ public class EndHoeItem extends HoeItem {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		if( ClientHelper.isShiftDown() ) {
-			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP, EndItems.Keys.TILL_TOOLTIP );
+			MajruszsHelper.addTranslatableTexts( tooltip,
+				EndItems.Keys.BLEED_TOOLTIP,
+				EndItems.Keys.HASTE_TOOLTIP,
+				EndItems.Keys.LEVITATION_TOOLTIP,
+				EndItems.Keys.TILL_TOOLTIP
+			);
 		} else {
 			MajruszsHelper.addMoreDetailsText( tooltip );
 		}

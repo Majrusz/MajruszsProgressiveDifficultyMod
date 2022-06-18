@@ -127,7 +127,16 @@ public class BleedingEffect extends MobEffect {
 	private void spawnParticles( LivingEntity entity, int amountOfParticles ) {
 		ServerLevel level = Utility.castIfPossible( ServerLevel.class, entity.level );
 		if( level != null )
-			level.sendParticles( Registries.BLOOD.get(), entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125, 0.05 );
+			level.sendParticles( Registries.BLOOD.get(),
+				entity.getX(),
+				entity.getY( 0.5 ),
+				entity.getZ(),
+				amountOfParticles,
+				0.125,
+				0.5,
+				0.125,
+				0.05
+			);
 	}
 
 	/** Returns bleeding amplifier depending on current game state. */

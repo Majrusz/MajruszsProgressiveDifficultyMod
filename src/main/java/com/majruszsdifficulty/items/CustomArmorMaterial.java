@@ -46,8 +46,8 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 	private final float knockbackResistance;
 	private final LazyLoadedValue< Ingredient > repairMaterial;
 
-	CustomArmorMaterial( String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent, float toughness, float knockbackResistance,
-		Supplier< Ingredient > repairMaterial
+	CustomArmorMaterial( String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent,
+		float toughness, float knockbackResistance, Supplier< Ingredient > repairMaterial
 	) {
 		this.name = name;
 		this.maxDamageFactor = maxDamageFactor;

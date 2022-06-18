@@ -15,7 +15,9 @@ public class TargetAsLeaderGoal extends TargetGoal {
 
 	@Override
 	public boolean canUse() {
-		return this.leader != null && this.leader.isAlive() && this.canAttack( this.leader.getTarget(), predicate ) && ( this.leader.getTarget() != this.mob.getTarget() );
+		return this.leader != null && this.leader.isAlive() && this.canAttack( this.leader.getTarget(),
+			predicate
+		) && ( this.leader.getTarget() != this.mob.getTarget() );
 	}
 
 	@Override

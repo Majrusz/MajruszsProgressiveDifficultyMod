@@ -70,7 +70,9 @@ public class GiantEntity extends Zombie {
 		return Mob.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 120.0D )
 			.add( Attributes.MOVEMENT_SPEED, 0.25D )
-			.add( Attributes.ATTACK_DAMAGE, 10.0D )
+			.add( Attributes.ATTACK_DAMAGE,
+				10.0D
+			)
 			.add( Attributes.FOLLOW_RANGE, 40.0D )
 			.add( Attributes.ATTACK_KNOCKBACK, 2.0D )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5D )

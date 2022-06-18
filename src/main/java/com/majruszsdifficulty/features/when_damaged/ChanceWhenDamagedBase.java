@@ -10,7 +10,8 @@ import javax.annotation.Nullable;
 
 /** Base class representing event on which entity was damaged that has certain chance to happen. */
 public abstract class ChanceWhenDamagedBase extends ChanceFeatureBase implements IWhenDamaged {
-	public ChanceWhenDamagedBase( String configName, String configComment, double defaultChance, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD
+	public ChanceWhenDamagedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+		boolean shouldChanceBeMultipliedByCRD
 	) {
 		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
 	}

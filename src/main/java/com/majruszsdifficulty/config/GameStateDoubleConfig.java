@@ -13,7 +13,8 @@ public class GameStateDoubleConfig implements IConfigType< Double > {
 	protected final DoubleConfig expert;
 	protected final DoubleConfig master;
 
-	public GameStateDoubleConfig( String name, String comment, double defaultValueNormal, double defaultValueExpert, double defaultValueMaster, double minimumValue, double maximumValue
+	public GameStateDoubleConfig( String name, String comment, double defaultValueNormal, double defaultValueExpert, double defaultValueMaster,
+		double minimumValue, double maximumValue
 	) {
 		this.group = new ConfigGroup( name, comment );
 		this.normal = new DoubleConfig( "normal", "Normal Mode", false, defaultValueNormal, minimumValue, maximumValue );

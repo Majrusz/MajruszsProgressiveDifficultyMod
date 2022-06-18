@@ -53,7 +53,11 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
 				continue;
 
 			if( effect == MobEffects.MOVEMENT_SLOWDOWN && this.slownessAvailability.isEnabled() ) {
-				EffectHelper.applyEffectIfPossible( target, effect, getDurationInTicks( world.getDifficulty() ) + Utility.secondsToTicks( damage * 0.5 ), ( int )( damage / 8.0 ) );
+				EffectHelper.applyEffectIfPossible( target,
+					effect,
+					getDurationInTicks( world.getDifficulty() ) + Utility.secondsToTicks( damage * 0.5 ),
+					( int )( damage / 8.0 )
+				);
 			} else if( effect == MobEffects.CONFUSION && this.nauseaAvailability.isEnabled() ) {
 				EffectHelper.applyEffectIfPossible( target, effect, Utility.secondsToTicks( 6.0 ), ( int )( damage / 6.0 ) );
 			}

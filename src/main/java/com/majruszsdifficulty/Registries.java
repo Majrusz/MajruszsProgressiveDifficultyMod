@@ -1,7 +1,7 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.EndShardOre;
+import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.commands.CommandsHelper;
 import com.majruszsdifficulty.effects.BleedingEffect;
@@ -90,11 +90,15 @@ public class Registries {
 
 	// Entities
 	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.register( "giant", GiantEntity.createSupplier() );
-	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
+	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling",
+		CreeperlingEntity.createSupplier()
+	);
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
 
 	// Items
-	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
+	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard",
+		UndeadBattleStandardItem::new
+	);
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
 	public static final RegistryObject< HermesBootsItem > HERMES_BOOTS = ITEMS.register( "hermes_boots", HermesBootsItem::new );
@@ -116,25 +120,49 @@ public class Registries {
 	public static final RegistryObject< OceanShieldItem > OCEAN_SHIELD = ITEMS.register( "ocean_shield", OceanShieldItem::new );
 
 	// Treasure Bags
-	public static final RegistryObject< TreasureBagItem > UNDEAD_ARMY_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", TreasureBagItem.UndeadArmy::new );
-	public static final RegistryObject< TreasureBagItem > ELDER_GUARDIAN_TREASURE_BAG = ITEMS.register( "elder_guardian_treasure_bag", TreasureBagItem.ElderGuardian::new );
+	public static final RegistryObject< TreasureBagItem > UNDEAD_ARMY_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag",
+		TreasureBagItem.UndeadArmy::new
+	);
+	public static final RegistryObject< TreasureBagItem > ELDER_GUARDIAN_TREASURE_BAG = ITEMS.register( "elder_guardian_treasure_bag",
+		TreasureBagItem.ElderGuardian::new
+	);
 	public static final RegistryObject< TreasureBagItem > WITHER_TREASURE_BAG = ITEMS.register( "wither_treasure_bag", TreasureBagItem.Wither::new );
-	public static final RegistryObject< TreasureBagItem > ENDER_DRAGON_TREASURE_BAG = ITEMS.register( "ender_dragon_treasure_bag", TreasureBagItem.EnderDragon::new );
-	public static final RegistryObject< TreasureBagItem > FISHING_TREASURE_BAG = ITEMS.register( "fishing_treasure_bag", TreasureBagItem.Fishing::new );
-	public static final RegistryObject< TreasureBagItem > PILLAGER_TREASURE_BAG = ITEMS.register( "pillager_treasure_bag", TreasureBagItem.Pillager::new );
+	public static final RegistryObject< TreasureBagItem > ENDER_DRAGON_TREASURE_BAG = ITEMS.register( "ender_dragon_treasure_bag",
+		TreasureBagItem.EnderDragon::new
+	);
+	public static final RegistryObject< TreasureBagItem > FISHING_TREASURE_BAG = ITEMS.register( "fishing_treasure_bag",
+		TreasureBagItem.Fishing::new
+	);
+	public static final RegistryObject< TreasureBagItem > PILLAGER_TREASURE_BAG = ITEMS.register( "pillager_treasure_bag",
+		TreasureBagItem.Pillager::new
+	);
 
 	// Item Blocks
-	public static final RegistryObject< EndShardOre.EndShardOreItem > END_SHARD_ORE_ITEM = ITEMS.register( "end_shard_ore", EndShardOre.EndShardOreItem::new );
+	public static final RegistryObject< EndShardOre.EndShardOreItem > END_SHARD_ORE_ITEM = ITEMS.register( "end_shard_ore",
+		EndShardOre.EndShardOreItem::new
+	);
 	public static final RegistryObject< EnderiumBlock.EndBlockItem > END_BLOCK_ITEM = ITEMS.register( "end_block", EnderiumBlock.EndBlockItem::new );
-	public static final RegistryObject< InfestedEndStone.InfestedEndStoneItem > INFESTED_END_STONE_ITEM = ITEMS.register( "infested_end_stone", InfestedEndStone.InfestedEndStoneItem::new );
+	public static final RegistryObject< InfestedEndStone.InfestedEndStoneItem > INFESTED_END_STONE_ITEM = ITEMS.register( "infested_end_stone",
+		InfestedEndStone.InfestedEndStoneItem::new
+	);
 
 	// Spawn Eggs
-	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.register( "giant_spawn_egg", createEggSupplier( ()->EntityType.GIANT, 44975, 7969893 ) );
-	public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.register( "illusioner_spawn_egg", createEggSupplier( ()->EntityType.ILLUSIONER, 0x135a97, 9804699 ) );
-	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.register( "creeperling_spawn_egg", createEggSupplier( CREEPERLING, 0x0da70b, 0x000000 ) );
-	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( TANK, 0xc1c1c1, 0x949494 ) );
+	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.register( "giant_spawn_egg",
+		createEggSupplier( ()->EntityType.GIANT, 44975, 7969893 )
+	);
+	public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.register( "illusioner_spawn_egg",
+		createEggSupplier( ()->EntityType.ILLUSIONER, 0x135a97, 9804699 )
+	);
+	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.register( "creeperling_spawn_egg",
+		createEggSupplier( CREEPERLING, 0x0da70b, 0x000000 )
+	);
+	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg",
+		createEggSupplier( TANK, 0xc1c1c1, 0x949494 )
+	);
 
-	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor, int highlightColor ) {
+	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor,
+		int highlightColor
+	) {
 		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties().tab( ITEM_GROUP ) );
 	}
 
@@ -167,7 +195,9 @@ public class Registries {
 
 	// Effects
 	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.register( "bleeding", BleedingEffect::new );
-	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.register( "bleeding_immunity", BleedingImmunityEffect::new );
+	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.register( "bleeding_immunity",
+		BleedingImmunityEffect::new
+	);
 
 	// Damage Sources
 	public static final DamageSource BLEEDING_SOURCE = new DamageSource( "bleeding" ).bypassArmor();
@@ -251,9 +281,21 @@ public class Registries {
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
-		SpawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
-		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
-		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
+		SpawnPlacements.register( GIANT.get(),
+			SpawnPlacements.Type.ON_GROUND,
+			Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			GiantEntity::checkMonsterSpawnRules
+		);
+		SpawnPlacements.register( CREEPERLING.get(),
+			SpawnPlacements.Type.ON_GROUND,
+			Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			CreeperlingEntity::checkMobSpawnRules
+		);
+		SpawnPlacements.register( TANK.get(),
+			SpawnPlacements.Type.ON_GROUND,
+			Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			TankEntity::checkMonsterSpawnRules
+		);
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 		AttributeArmorItem.updateAllItemsAttributes();
@@ -320,7 +362,10 @@ public class Registries {
 
 		DimensionDataStorage manager = level.getDataStorage();
 
-		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManager.load( nbt, level ), ()->new UndeadArmyManager( level ), UndeadArmyManager.DATA_NAME );
+		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManager.load( nbt, level ),
+			()->new UndeadArmyManager( level ),
+			UndeadArmyManager.DATA_NAME
+		);
 		UNDEAD_ARMY_MANAGER.updateWorld( level );
 
 		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
