@@ -56,8 +56,7 @@ public class RecallPotionItem extends Item {
 	}
 
 	protected void teleportToSpawnPosition( ServerPlayer player, ServerLevel level ) {
-		BlockPos spawnPosition = LevelHelper.getSpawnPosition( player, level );
-		player.randomTeleport( spawnPosition.getX() + 0.5, spawnPosition.getY() + 1.0, spawnPosition.getZ() + 0.5, true );
+		LevelHelper.teleportToSpawnPosition( player );
 		EffectHelper.applyEffectIfPossible( player, MobEffects.CONFUSION, Utility.secondsToTicks( 6.0 ), 0 );
 	}
 
