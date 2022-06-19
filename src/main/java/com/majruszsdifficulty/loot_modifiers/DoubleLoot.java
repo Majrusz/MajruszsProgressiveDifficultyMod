@@ -41,12 +41,12 @@ public class DoubleLoot extends LootModifier {
 	@Nonnull
 	@Override
 	public ObjectArrayList< ItemStack > doApply( ObjectArrayList< ItemStack > generatedLoot, LootContext context ) {
-		double chance = GameState.getValueDependingOnCurrentGameState( this.normalModeChance, this.expertModeChance, this.masterModeChance );
+		double chance = GameState.getCurrentGameStateValue( this.normalModeChance, this.expertModeChance, this.masterModeChance );
 
 		if( Random.tryChance( chance ) ) {
 			Entity entity = LootHelper.getParameter( context, ( LootContextParams.THIS_ENTITY ) );
 			if( generatedLoot.size() > 0 && entity != null )
-				sendParticless( entity );
+				sendParticles( entity );
 
 			return doubleLoot( generatedLoot );
 		}
@@ -54,14 +54,12 @@ public class DoubleLoot extends LootModifier {
 		return generatedLoot;
 	}
 
-	/** Spawning particles to let the player know that the loot was doubled. */
-	protected void sendParticless( Entity entity ) {
-		if( !( entity.level instanceof ServerLevel ) )
+	protected void sendParticles( Entity entity ) {
+		if( !( entity.level instanceof ServerLevel serverLevel ) )
 			return;
 
-		ServerLevel world = ( ServerLevel )entity.level;
 		for( int i = 0; i < 8; i++ )
-			world.sendParticles( ParticleTypes.HAPPY_VILLAGER, entity.getX(), entity.getY( 0.5 ), entity.getZ(), 1, 0.5, 0.5, 0.5, 0.5 );
+			serverLevel.sendParticles( ParticleTypes.HAPPY_VILLAGER, entity.getX(), entity.getY( 0.5 ), entity.getZ(), 1, 0.5, 0.5, 0.5, 0.5 );
 	}
 
 	/** Doubles given generated loot. Does not duplicate items from forbidden items list. */

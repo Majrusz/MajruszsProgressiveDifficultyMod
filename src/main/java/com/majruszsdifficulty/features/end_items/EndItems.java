@@ -23,17 +23,17 @@ public class EndItems {
 
 	/** Returns whether item is either end tool or end sword. */
 	public static boolean isEndItem( Item item ) {
-		return item instanceof EndHoeItem || item instanceof EndAxeItem || item instanceof EndPickaxeItem || item instanceof EndShovelItem || item instanceof EndSwordItem;
+		return item instanceof EnderiumHoeItem || item instanceof EnderiumAxeItem || item instanceof EnderiumPickaxeItem || item instanceof EnderiumShovelItem || item instanceof EnderiumSwordItem;
 	}
 
 	/** Returns whether item is should have increased chance for inflicting Bleeding effect. */
 	public static boolean haveExtraBleedingChance( Item item ) {
-		return item instanceof EndHoeItem || item instanceof EndAxeItem || item instanceof EndSwordItem;
+		return item instanceof EnderiumHoeItem || item instanceof EnderiumAxeItem || item instanceof EnderiumSwordItem;
 	}
 
 	/** Returns whether item can inflicts Levitation effect. */
 	public static boolean canInflictLevitation( Item item ) {
-		return item instanceof EndHoeItem || item instanceof EndPickaxeItem || item instanceof EndShovelItem;
+		return item instanceof EnderiumHoeItem || item instanceof EnderiumPickaxeItem || item instanceof EnderiumShovelItem;
 	}
 
 	public static class Keys {

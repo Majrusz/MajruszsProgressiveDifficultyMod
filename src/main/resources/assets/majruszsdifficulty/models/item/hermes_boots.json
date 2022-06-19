@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "majruszsdifficulty:item/hermes_boots"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "majruszsdifficulty:item/hermes_boots"
+  }
 }

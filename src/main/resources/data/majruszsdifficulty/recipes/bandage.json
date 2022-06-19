@@ -1,22 +1,18 @@
-{ 
-	"type": "minecraft:crafting_shaped",
-	"group": "bandage",
-	"pattern":
-	[ 
-		"ss ",
-		"sss",
-		" ss"
-	],
-	"key":
-	{
-		"s":
-		{ 
-			"item": "minecraft:string"
-		}
-	},
-	"result":
-	{ 
-		"item": "majruszsdifficulty:bandage",
-		"count": 4
-	}
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bandage",
+  "pattern": [
+    "ss ",
+    "sss",
+    " ss"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "majruszsdifficulty:bandage",
+    "count": 4
+  }
 }

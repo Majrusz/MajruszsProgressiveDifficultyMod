@@ -43,12 +43,12 @@ public class TankAttackGoal extends MeleeAttackGoal {
 		if( distance <= getAttackReachSqr( entity ) && isTimeToAttack() && !this.tank.isAttacking() ) {
 			this.tank.useAttack( Random.tryChance( 0.25 ) ? TankEntity.AttackType.SPECIAL : TankEntity.AttackType.NORMAL );
 		} else if( !this.hasAttacked ) {
-			if( this.tank.isAttacking( TankEntity.AttackType.NORMAL ) && this.tank.getAttackDurationRatioLeft() > 0.45f ) {
+			if( this.tank.isAttacking( TankEntity.AttackType.NORMAL ) && this.tank.calculateAttackDurationRatioLeft() > 0.45f ) {
 				if( distance <= getAttackReachSqr( entity ) ) {
 					this.tank.doHurtTarget( entity );
 					this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f, 0.9f );
 				}
-			} else if( this.tank.isAttacking( TankEntity.AttackType.SPECIAL ) && this.tank.getAttackDurationRatioLeft() > 0.55f ) {
+			} else if( this.tank.isAttacking( TankEntity.AttackType.SPECIAL ) && this.tank.calculateAttackDurationRatioLeft() > 0.55f ) {
 				hurtAllEntitiesInRange( entity );
 				this.tank.playSound( SoundEvents.SKELETON_HURT, 0.75f, 0.9f );
 			} else {
@@ -89,9 +89,7 @@ public class TankAttackGoal extends MeleeAttackGoal {
 
 	protected void spawnSpecialAttackEffects( ServerLevel level, Vec3 position ) {
 		Optional< BlockState > blockState = Optional.ofNullable( getBlockStateBelowPosition( level, position ) );
-		BlockParticleOption blockParticleOption = new BlockParticleOption( ParticleTypes.BLOCK,
-			blockState.orElse( Blocks.DIRT.defaultBlockState() )
-		).setPos( new BlockPos( position ) );
+		BlockParticleOption blockParticleOption = new BlockParticleOption( ParticleTypes.BLOCK, blockState.orElse( Blocks.DIRT.defaultBlockState() ) ).setPos( new BlockPos( position ) );
 
 		level.sendParticles( blockParticleOption, position.x, position.y + 0.25, position.z, 120, 1.0, 0.25, 1.0, 0.5 );
 	}

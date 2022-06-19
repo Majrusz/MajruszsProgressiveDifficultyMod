@@ -6,8 +6,8 @@ import com.majruszsdifficulty.features.end_items.EndItems;
 import com.mlib.client.ClientHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,10 +16,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/** New late game pickaxe. */
-public class EndPickaxeItem extends PickaxeItem {
-	public EndPickaxeItem() {
-		super( CustomItemTier.END, 1, -2.8f, ( new Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
+public class EnderiumShovelItem extends ShovelItem {
+	public EnderiumShovelItem() {
+		super( CustomItemTier.END, 1.5f, -3.0f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	@Override

@@ -1,26 +1,21 @@
-{ 
-	"type": "minecraft:crafting_shaped",
-	"group": "golden_bandage",
-	"pattern":
-	[ 
-		"ggg",
-		"gbg",
-		"ggg"
-	],
-	"key":
-	{
-		"g":
-		{ 
-			"item": "minecraft:gold_nugget"
-		},
-		"b":
-		{
-			"item": "majruszsdifficulty:bandage"
-		}
-	},
-	"result":
-	{ 
-		"item": "majruszsdifficulty:golden_bandage",
-		"count": 1
-	}
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "golden_bandage",
+  "pattern": [
+    "ggg",
+    "gbg",
+    "ggg"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:gold_nugget"
+    },
+    "b": {
+      "item": "majruszsdifficulty:bandage"
+    }
+  },
+  "result": {
+    "item": "majruszsdifficulty:golden_bandage",
+    "count": 1
+  }
 }

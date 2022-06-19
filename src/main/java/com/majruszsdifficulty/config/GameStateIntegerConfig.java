@@ -6,37 +6,33 @@ import com.mlib.config.IConfigType;
 import com.mlib.config.IntegerConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-/** Config with integer value depending on current game state. */
+/** Config with integer values for each game state. */
 public class GameStateIntegerConfig implements IConfigType< Integer > {
 	protected final ConfigGroup group;
 	protected final IntegerConfig normal;
 	protected final IntegerConfig expert;
 	protected final IntegerConfig master;
 
-	public GameStateIntegerConfig( String name, String comment, int defaultValueNormal, int defaultValueExpert, int defaultValueMaster,
-		int minimumValue, int maximumValue
+	public GameStateIntegerConfig( String name, String comment, int defaultValueNormal, int defaultValueExpert, int defaultValueMaster, int minimumValue,
+		int maximumValue
 	) {
-		this.group = new ConfigGroup( name, comment );
 		this.normal = new IntegerConfig( "normal", "Normal Mode", false, defaultValueNormal, minimumValue, maximumValue );
 		this.expert = new IntegerConfig( "expert", "Expert Mode", false, defaultValueExpert, minimumValue, maximumValue );
 		this.master = new IntegerConfig( "master", "Master Mode", false, defaultValueMaster, minimumValue, maximumValue );
-		this.group.addConfigs( this.normal, this.expert, this.master );
+		this.group = new ConfigGroup( name, comment, this.normal, this.expert, this.master );
 	}
 
-	/** Builds current config. */
+	public int getCurrentGameStateValue() {
+		return GameState.getCurrentGameStateValue( this.normal.get(), this.expert.get(), this.master.get() );
+	}
+
 	@Override
 	public void build( ForgeConfigSpec.Builder builder ) {
 		this.group.build( builder );
 	}
 
-	/** Returns value directly stored in a config. */
 	@Override
 	public Integer get() {
-		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
-	}
-
-	/** Returns integer value depending on current game state. */
-	public int getCurrentGameStateValue() {
-		return GameState.getValueDependingOnCurrentGameState( this.normal.get(), this.expert.get(), this.master.get() );
+		return getCurrentGameStateValue();
 	}
 }

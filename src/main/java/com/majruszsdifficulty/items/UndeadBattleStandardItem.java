@@ -2,6 +2,7 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
+import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +25,7 @@ public class UndeadBattleStandardItem extends Item {
 	private final static String TOOLTIP_TRANSLATION_KEY_3 = "item.majruszsdifficulty.undead_battle_standard.item_tooltip3";
 
 	public UndeadBattleStandardItem() {
-		super( ( new Item.Properties() ).stacksTo( 1 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().stacksTo( 1 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override
@@ -32,9 +33,7 @@ public class UndeadBattleStandardItem extends Item {
 		ItemStack itemStack = player.getItemInHand( hand );
 
 		if( !world.isClientSide && Registries.UNDEAD_ARMY_MANAGER != null && Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( player ) ) {
-			if( !player.getAbilities().instabuild )
-				itemStack.shrink( 1 );
-			player.awardStat( Stats.ITEM_USED.get( this ) );
+			ItemHelper.consumeItemOnUse( itemStack, player );
 		}
 
 		return InteractionResultHolder.sidedSuccess( itemStack, world.isClientSide() );

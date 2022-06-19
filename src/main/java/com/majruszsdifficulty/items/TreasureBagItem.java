@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
@@ -8,14 +7,13 @@ import com.majruszsdifficulty.features.treasure_bag.LootProgress;
 import com.majruszsdifficulty.features.treasure_bag.LootProgressClient;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.ConfigGroup;
+import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.ServerStatsCounter;
-import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -42,63 +40,49 @@ import java.util.List;
 
 import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
 
-/** Class representing treasure bag. */
+/** Common code for all treasure bags. */
 @Mod.EventBusSubscriber
 public class TreasureBagItem extends Item {
 	public final static List< TreasureBagItem > TREASURE_BAGS = new ArrayList<>();
-	protected final static ConfigGroup CONFIG_GROUP;
+	protected final static ConfigGroup CONFIG_GROUP = FEATURES_GROUP.addGroup( new ConfigGroup( "TreasureBag", "Configuration for treasure bags." ) );
 	private final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.item_tooltip";
 
-	static {
-		CONFIG_GROUP = new ConfigGroup( "TreasureBag", "Configuration for treasure bags." );
-		FEATURES_GROUP.addGroup( CONFIG_GROUP );
-	}
-
 	private final ResourceLocation lootTableLocation;
-	private final String id;
 	private final AvailabilityConfig availability;
 
 	public TreasureBagItem( String id, String entityNameForConfiguration ) {
-		super( ( new Item.Properties() ).stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
-		this.lootTableLocation = new ResourceLocation( MajruszsDifficulty.MOD_ID, "gameplay/" + id + "_treasure_loot" );
-		this.id = id;
-		this.availability = new AvailabilityConfig( id, getComment( entityNameForConfiguration ), false, true );
+		this.lootTableLocation = Registries.getLocation( "gameplay/" + id + "_treasure_loot" );
+		this.availability = new AvailabilityConfig( id, createConfigComment( entityNameForConfiguration ), false, true );
 		CONFIG_GROUP.addConfig( this.availability );
 
 		TREASURE_BAGS.add( this );
 	}
 
-	/** Opening treasure bag on right click. */
 	@Override
-	public InteractionResultHolder< ItemStack > use( Level world, Player player, InteractionHand hand ) {
+	public InteractionResultHolder< ItemStack > use( Level level, Player player, InteractionHand hand ) {
 		ItemStack itemStack = player.getItemInHand( hand );
 
-		if( !world.isClientSide ) {
-			if( !player.getAbilities().instabuild )
-				itemStack.shrink( 1 );
-			if( player instanceof ServerPlayer )
-				handleStatistics( ( ServerPlayer )player );
+		if( !level.isClientSide ) {
+			ItemHelper.consumeItemOnUse( itemStack, player );
+			if( player instanceof ServerPlayer serverPlayer )
+				triggerTreasureBagAdvancement( serverPlayer );
 
-			world.playSound( null, player.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 0.9f );
+			level.playSound( null, player.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 0.9f );
 
 			if( this.availability.isEnabled() ) {
 				List< ItemStack > loot = generateLoot( player );
 				MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) );
 				LootProgress.updateProgress( this, player, loot );
-				for( ItemStack reward : loot ) {
-					if( player.canTakeItem( reward ) )
-						player.getInventory().add( reward );
-					else
-						world.addFreshEntity( new ItemEntity( world, player.getX(), player.getY() + 1, player.getZ(), reward ) );
-				}
+				if( level instanceof ServerLevel serverLevel )
+					loot.forEach( reward -> ItemHelper.giveItemStackToPlayer( reward, player, serverLevel ) );
 			}
 		}
 
-		return InteractionResultHolder.sidedSuccess( itemStack, world.isClientSide() );
+		return InteractionResultHolder.sidedSuccess( itemStack, level.isClientSide() );
 	}
 
-	/** Adding simple tooltip to treasure bag. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
@@ -107,7 +91,7 @@ public class TreasureBagItem extends Item {
 		LootProgressClient.addDropList( this, tooltip );
 	}
 
-	/** Generating loot context of current treasure bag. (who opened the bag, where, etc.) */
+	/** Generates loot context of current treasure bag. (who opened the bag, where, etc.) */
 	public static LootContext generateLootContext( Player player ) {
 		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerLevel )player.level );
 		lootContextBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
@@ -116,39 +100,27 @@ public class TreasureBagItem extends Item {
 		return lootContextBuilder.create( LootContextParamSets.GIFT );
 	}
 
-	/** Creates comment for configuration. */
-	private static String getComment( String treasureBagSourceName ) {
+	private static String createConfigComment( String treasureBagSourceName ) {
 		return "Is treasure bag from " + treasureBagSourceName + " available in survival mode?";
 	}
 
-	/** Checks whether treasure bag is not disabled in configuration file? */
+	/** Checks whether the treasure bag is not disabled in configuration file. */
 	public boolean isAvailable() {
 		return this.availability.isEnabled();
 	}
 
-	/**
-	 Generating random loot from loot table.
-
-	 @param player Player required to generate loot context.
-	 */
 	protected List< ItemStack > generateLoot( Player player ) {
 		LootTable lootTable = getLootTable();
 
 		return lootTable.getRandomItems( generateLootContext( player ) );
 	}
 
-	/** Returning loot table for current treasure bag. (possible loot) */
 	public LootTable getLootTable() {
 		return ServerLifecycleHooks.getCurrentServer().getLootTables().get( this.lootTableLocation );
 	}
 
-	/** Handles statistics and advancements for a Treasure Bag. */
-	protected void handleStatistics( ServerPlayer player ) {
-		Stat< ? > statistic = Stats.ITEM_USED.get( this );
-		ServerStatsCounter statisticsManager = player.getStats();
-
-		player.awardStat( statistic );
-		Registries.TREASURE_BAG_TRIGGER.trigger( player, this, statisticsManager.getValue( statistic ) );
+	protected void triggerTreasureBagAdvancement( ServerPlayer player ) {
+		Registries.TREASURE_BAG_TRIGGER.trigger( player, this, player.getStats().getValue( Stats.ITEM_USED.get( this ) ) );
 	}
 
 	public static class UndeadArmy extends TreasureBagItem {

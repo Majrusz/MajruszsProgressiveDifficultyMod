@@ -58,54 +58,15 @@ public class UndeadArmyConfig {
 
 		String membersComment = "Amount of enemies in every wave. (format: {minimal_amount}-{maximal_amount} {entity})";
 		this.waveMembers = new WaveMembersConfig( "WaveMembers", membersComment );
-		StringListConfig waveConfig1 = this.waveMembers.createWaveConfig( "4-6 minecraft:zombie",
-			"1-2 minecraft:husk",
-			"2-4 minecraft:skeleton",
-			"1-2 minecraft:stray",
-			"0-2 majruszsdifficulty:elite_skeleton"
-		);
-		StringListConfig waveConfig2 = this.waveMembers.createWaveConfig( "3-5 minecraft:zombie",
-			"1-2 minecraft:husk",
-			"2-4 minecraft:skeleton",
-			"1-2 minecraft:stray",
-			"1-3 majruszsdifficulty:elite_skeleton"
-		);
-		StringListConfig waveConfig3 = this.waveMembers.createWaveConfig( "2-4 minecraft:zombie",
-			"1-3 minecraft:husk",
-			"1-3 minecraft:skeleton",
-			"1-3 minecraft:stray",
-			"2-4 majruszsdifficulty:elite_skeleton",
-			"1-1 majruszsdifficulty:tank"
-		);
-		StringListConfig waveConfig4 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie",
-			"3-5 minecraft:husk",
-			"1-3 minecraft:skeleton",
-			"2-4 minecraft:stray",
-			"4-6 majruszsdifficulty:elite_skeleton",
-			"2-2 majruszsdifficulty:tank"
-		);
-		StringListConfig waveConfig5 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie",
-			"4-6 minecraft:husk",
-			"1-3 minecraft:skeleton",
-			"3-5 minecraft:stray",
-			"5-7 majruszsdifficulty:elite_skeleton",
-			"3-3 majruszsdifficulty:tank"
-		);
+		StringListConfig waveConfig1 = this.waveMembers.createWaveConfig( "4-6 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray", "0-2 majruszsdifficulty:elite_skeleton" );
+		StringListConfig waveConfig2 = this.waveMembers.createWaveConfig( "3-5 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray", "1-3 majruszsdifficulty:elite_skeleton" );
+		StringListConfig waveConfig3 = this.waveMembers.createWaveConfig( "2-4 minecraft:zombie", "1-3 minecraft:husk", "1-3 minecraft:skeleton", "1-3 minecraft:stray", "2-4 majruszsdifficulty:elite_skeleton", "1-1 majruszsdifficulty:tank" );
+		StringListConfig waveConfig4 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie", "3-5 minecraft:husk", "1-3 minecraft:skeleton", "2-4 minecraft:stray", "4-6 majruszsdifficulty:elite_skeleton", "2-2 majruszsdifficulty:tank" );
+		StringListConfig waveConfig5 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie", "4-6 minecraft:husk", "1-3 minecraft:skeleton", "3-5 minecraft:stray", "5-7 majruszsdifficulty:elite_skeleton", "3-3 majruszsdifficulty:tank" );
 		this.waveMembers.addWaveConfigs( waveConfig1, waveConfig2, waveConfig3, waveConfig4, waveConfig5 );
 
 		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
-		this.group.addConfigs( this.availability,
-			this.killRequirement,
-			this.sizeMultiplier,
-			this.skeletonHorseChance,
-			this.experienceReward,
-			this.treasureBagReward,
-			this.enchantedItemsChance,
-			this.armorChance,
-			this.durationBetweenWaves,
-			this.maximumInactiveDuration,
-			this.waveMembers
-		);
+		this.group.addConfigs( this.availability, this.killRequirement, this.sizeMultiplier, this.skeletonHorseChance, this.experienceReward, this.treasureBagReward, this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration, this.waveMembers );
 	}
 
 	/** Returns whether Undead Army is disabled. */
@@ -160,7 +121,7 @@ public class UndeadArmyConfig {
 
 	/** Returns amount of waves. */
 	public int getWaves() {
-		return GameState.getValueDependingOnCurrentGameState( 3, 4, 5 );
+		return GameState.getCurrentGameStateValue( 3, 4, 5 );
 	}
 
 	/** Returns list of enemies in given wave. */
@@ -170,6 +131,6 @@ public class UndeadArmyConfig {
 
 	/** Returns entity type for monster spawner. */
 	public EntityType< ? > getEntityTypeForMonsterSpawner() {
-		return GameState.getValueDependingOnCurrentGameState( EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SKELETON );
+		return GameState.getCurrentGameStateValue( EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SKELETON );
 	}
 }

@@ -17,11 +17,7 @@ public class EndSet extends BaseSet {
 	private final BonusData BONUS_1 = new BonusData( 2, "majruszsdifficulty.sets.end.bonus_2", ITEM_1::hasItemEquipped );
 	private final BonusData BONUS_2 = new BonusData( 3, "majruszsdifficulty.sets.end.bonus_3" );
 	private final BonusData BONUS_3 = new BonusData( 4, "majruszsdifficulty.sets.end.bonus_4" );
-	private static final AttributeHandler ATTRIBUTE_HANDLER = new AttributeHandler( "e8242b56-b5a6-4ad9-9159-f9089ecf3165",
-		"EndSetHealthBonus",
-		Attributes.MAX_HEALTH,
-		AttributeModifier.Operation.ADDITION
-	);
+	private static final AttributeHandler ATTRIBUTE_HANDLER = new AttributeHandler( "e8242b56-b5a6-4ad9-9159-f9089ecf3165", "EndSetHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.ADDITION );
 
 	public EndSet() {
 		this.itemData = new ItemData[]{

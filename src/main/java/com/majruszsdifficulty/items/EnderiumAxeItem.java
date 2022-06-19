@@ -16,10 +16,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/** New late game axe. */
-public class EndAxeItem extends AxeItem {
-	public EndAxeItem() {
-		super( CustomItemTier.END, 7.0f, -3.1f, ( new Properties() ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ).fireResistant() );
+public class EnderiumAxeItem extends AxeItem {
+	public EnderiumAxeItem() {
+		super( CustomItemTier.END, 7.0f, -3.1f, new Properties().rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ).fireResistant() );
 	}
 
 	@Override

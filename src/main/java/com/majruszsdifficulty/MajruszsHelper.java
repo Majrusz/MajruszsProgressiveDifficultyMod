@@ -6,12 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Pillager;
-import net.minecraft.world.entity.monster.Witch;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -28,24 +23,6 @@ public class MajruszsHelper {
 	@Nullable
 	public static Player getPlayerFromDamageSource( DamageSource damageSource ) {
 		return damageSource.getEntity() instanceof Player ? ( Player )damageSource.getEntity() : null;
-	}
-
-	/**
-	 Checking if given entity is human.
-
-	 @param entity Entity to test.
-	 */
-	public static boolean isHuman( @Nullable Entity entity ) {
-		return entity instanceof Player || entity instanceof Villager || entity instanceof Pillager || entity instanceof Witch;
-	}
-
-	/**
-	 Checking if given entity is animal.
-
-	 @param entity Entity to test.
-	 */
-	public static boolean isAnimal( @Nullable Entity entity ) {
-		return entity instanceof Animal;
 	}
 
 	public static void addTranslatableText( List< Component > tooltip, String translationKey ) {

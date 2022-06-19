@@ -36,11 +36,8 @@ public class OceanShieldRenderer extends BlockEntityWithoutLevelRenderer {
 		poseStack.pushPose();
 		poseStack.scale( 1.0F, -1.0F, -1.0F );
 		Material material = RegistryHandlerClient.OCEAN_SHIELD_MATERIAL;
-		VertexConsumer vertexconsumer = material.sprite().wrap( ItemRenderer.getFoilBufferDirect( bufferSource,
-			this.oceanShield.renderType( material.atlasLocation() ),
-			true,
-			itemStack.hasFoil()
-		) );
+		VertexConsumer vertexconsumer = material.sprite()
+			.wrap( ItemRenderer.getFoilBufferDirect( bufferSource, this.oceanShield.renderType( material.atlasLocation() ), true, itemStack.hasFoil() ) );
 		for( ModelPart modelPart : this.oceanShield.getModels() )
 			modelPart.render( poseStack, vertexconsumer, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F );
 

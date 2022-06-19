@@ -10,10 +10,7 @@ import net.minecraft.world.level.material.MaterialColor;
 
 public class EnderiumBlock extends Block {
 	public EnderiumBlock() {
-		super( Properties.of( Material.METAL, MaterialColor.COLOR_PURPLE )
-			.requiresCorrectToolForDrops()
-			.strength( 5.0f, 6.0f )
-			.sound( SoundType.METAL ) );
+		super( Properties.of( Material.METAL, MaterialColor.COLOR_PURPLE ).requiresCorrectToolForDrops().strength( 5.0f, 6.0f ).sound( SoundType.METAL ) );
 	}
 
 	public static class EndBlockItem extends BlockItem {

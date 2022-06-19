@@ -1,36 +1,36 @@
-modLoader="javafml"
-loaderVersion="[41,)"
-license="MIT License"
-issueTrackerURL="https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
+modLoader = "javafml"
+loaderVersion = "[41,)"
+license = "MIT License"
+issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
 [[mods]]
-    modId="majruszsdifficulty"
-    version="1.5.0"
-    displayName="Majrusz's Progressive Difficulty"
-    updateJSONURL="https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.18.1/update.json"
-    displayURL="https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
-    logoFile="logo.png"
-    credits="Thanks for all your support!"
-    authors="Majrusz"
-    description='''Mod which increases the game difficulty of Minecraft after certain events.'''
+modId = "majruszsdifficulty"
+version = "1.5.0"
+displayName = "Majrusz's Progressive Difficulty"
+updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.18.1/update.json"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
+logoFile = "logo.png"
+credits = "Thanks for all your support!"
+authors = "Majrusz"
+description = '''Mod which increases the game difficulty of Minecraft after certain events.'''
 
 [[dependencies.majruszsdifficulty]]
-    modId="forge"
-    mandatory=true
-    versionRange="[41,)"
-    ordering="NONE"
-    side="BOTH"
+modId = "forge"
+mandatory = true
+versionRange = "[41,)"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.19,1.20)"
-    ordering="NONE"
-    side="BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,1.20)"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
-    modId="majrusz_library"
-    mandatory=true
-    versionRange="[2.8.0,3.0.0)"
-    ordering="NONE"
-    side="BOTH"
+modId = "majrusz_library"
+mandatory = true
+versionRange = "[2.8.0,3.0.0)"
+ordering = "NONE"
+side = "BOTH"

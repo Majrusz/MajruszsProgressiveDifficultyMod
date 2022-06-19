@@ -5,6 +5,8 @@ import com.majruszsdifficulty.Registries;
 import com.mlib.LevelHelper;
 import com.mlib.Utility;
 import com.mlib.effects.EffectHelper;
+import com.mlib.entities.EntityHelper;
+import com.mlib.items.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -29,7 +31,7 @@ public class RecallPotionItem extends Item {
 	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.recall_potion.item_tooltip";
 
 	public RecallPotionItem() {
-		super( new Item.Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
 
 	@Override
@@ -38,24 +40,21 @@ public class RecallPotionItem extends Item {
 	}
 
 	@Override
-	public ItemStack finishUsingItem( ItemStack itemStack, Level world, LivingEntity livingEntity ) {
-		Player player = livingEntity instanceof Player ? ( Player )livingEntity : null;
-		if( player instanceof ServerPlayer )
-			CriteriaTriggers.CONSUME_ITEM.trigger( ( ServerPlayer )player, itemStack );
+	public ItemStack finishUsingItem( ItemStack itemStack, Level level, LivingEntity livingEntity ) {
+		if( livingEntity instanceof Player player )
+		{
+			ItemHelper.consumeItemOnUse( itemStack, player );
 
-		if( player != null ) {
-			player.awardStat( Stats.ITEM_USED.get( this ) );
-			if( !player.getAbilities().instabuild )
-				itemStack.shrink( 1 );
-
-			if( world instanceof ServerLevel && player instanceof ServerPlayer )
-				teleportToSpawnPosition( ( ServerPlayer )player, ( ServerLevel )world );
+			if( player instanceof ServerPlayer serverPlayer ) {
+				CriteriaTriggers.CONSUME_ITEM.trigger( serverPlayer, itemStack );
+				if( level instanceof ServerLevel serverLevel )
+					teleportToSpawnPosition( serverPlayer, serverLevel );
+			}
 		}
 
 		return itemStack;
 	}
 
-	/** Teleport player back to their spawn position. */
 	protected void teleportToSpawnPosition( ServerPlayer player, ServerLevel level ) {
 		BlockPos spawnPosition = LevelHelper.getSpawnPosition( player, level );
 		player.randomTeleport( spawnPosition.getX() + 0.5, spawnPosition.getY() + 1.0, spawnPosition.getZ() + 0.5, true );
@@ -72,7 +71,6 @@ public class RecallPotionItem extends Item {
 		return 32;
 	}
 
-	/** Adding tooltip for what this item does. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {

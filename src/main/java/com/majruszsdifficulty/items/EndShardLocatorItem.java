@@ -31,7 +31,7 @@ public class EndShardLocatorItem extends Item {
 	private static final float INVALID_DISTANCE = 9001.0f;
 
 	public EndShardLocatorItem() {
-		super( ( new Item.Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
 	}
 
 	@Override
@@ -42,8 +42,7 @@ public class EndShardLocatorItem extends Item {
 
 	/** Calculates distance to the nearest End Shard. */
 	@OnlyIn( Dist.CLIENT )
-	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity,
-		int p_174668_
+	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int p_174668_
 	) {
 		if( entity == null )
 			return INVALID_DISTANCE;
@@ -78,10 +77,11 @@ public class EndShardLocatorItem extends Item {
 	}
 
 	/**
-	 Finds nearest End Shard Ore in certain distance. This function looks for End Shard Ore in this area:
+	 Finds the nearest End Shard Ore in certain distance. This function looks for End Shard Ore in this area:
 	 x -> entity position +- factor
 	 y -> function parameter
 	 z -> entity position +- factor
+	 It only checks one 'y' coordinate to reduce time complexity.
 	 */
 	@Nullable
 	private static BlockPos findNearestEndShard( Level world, Vec3 entityPosition, int yFactor ) {
@@ -92,8 +92,7 @@ public class EndShardLocatorItem extends Item {
 		for( int x = ( int )( entityPosition.x() - COORDINATE_FACTOR ); x < entityPosition.x() + COORDINATE_FACTOR; x++ )
 			for( int z = ( int )( entityPosition.z() - COORDINATE_FACTOR ); z < entityPosition.z() + COORDINATE_FACTOR; z++ ) {
 				BlockPos testPosition = new BlockPos( x, y, z );
-				BlockState testBlockState = world.getBlockState( testPosition );
-				if( testBlockState.getBlock() == Registries.END_SHARD_ORE.get() ) {
+				if( world.getBlockState( testPosition ).getBlock() == Registries.END_SHARD_ORE.get() ) {
 					double distance = entityPosition.distanceToSqr( Vec3.atCenterOf( testPosition ) );
 					if( distance < closestDistance ) {
 						closestDistance = distance;

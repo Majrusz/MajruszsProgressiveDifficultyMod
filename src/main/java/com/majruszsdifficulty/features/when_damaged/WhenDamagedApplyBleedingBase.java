@@ -24,10 +24,7 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
 		return Registries.BLEEDING.get()
-			.mayBleed( target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker,
-			target,
-			damageSource
-		);
+			.mayBleed( target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	/**
@@ -39,12 +36,7 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	 */
 	@Override
 	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, MobEffect effect, Difficulty difficulty ) {
-		BleedingMobEffectInstance effectInstance = new BleedingMobEffectInstance( getDurationInTicks( difficulty ),
-			getAmplifier( difficulty ),
-			false,
-			true,
-			attacker
-		);
+		BleedingMobEffectInstance effectInstance = new BleedingMobEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false, true, attacker );
 
 		EffectHelper.applyEffectIfPossible( target, effectInstance );
 		ServerPlayer serverPlayer = Utility.castIfPossible( ServerPlayer.class, attacker );
@@ -62,6 +54,6 @@ public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffec
 	/** Calculating final chance. (after applying clamped regional difficulty and armor multipliers) */
 	@Override
 	public double calculateChance( LivingEntity target ) {
-		return Registries.BLEEDING.get().getChanceMultiplierDependingOnArmor( target ) * super.calculateChance( target );
+		return Registries.BLEEDING.get().calculateBleedChanceMultiplier( target ) * super.calculateChance( target );
 	}
 }

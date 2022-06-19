@@ -19,9 +19,7 @@ public class EndToolsBleedingOnHurt extends WhenDamagedApplyBleedingBase {
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return attacker != null && EndItems.haveExtraBleedingChance( attacker.getMainHandItem().getItem() ) && super.shouldBeExecuted( attacker,
-			target,
-			damageSource
-		);
+		return attacker != null && EndItems.haveExtraBleedingChance( attacker.getMainHandItem()
+			.getItem() ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 }

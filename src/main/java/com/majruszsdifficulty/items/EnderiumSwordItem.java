@@ -13,10 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/** New late game sword. */
-public class EndSwordItem extends SwordItem {
-	public EndSwordItem() {
-		super( CustomItemTier.END, 3, -2.4f, ( new Item.Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
+public class EnderiumSwordItem extends SwordItem {
+	public EnderiumSwordItem() {
+		super( CustomItemTier.END, 3, -2.4f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	@Override

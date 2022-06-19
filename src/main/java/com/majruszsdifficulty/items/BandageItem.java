@@ -9,6 +9,7 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.DurationConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.effects.EffectHelper;
+import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -38,7 +39,7 @@ import java.util.List;
 
 import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
 
-/** Simple bandage item that removes bleeding effect and gives regeneration for few seconds. */
+/** A bandage item that removes the bleeding and gives regeneration for a few seconds. */
 @Mod.EventBusSubscriber
 public class BandageItem extends Item {
 	private static final String TOOLTIP_TRANSLATION_KEY_1 = "item.majruszsdifficulty.bandage.item_tooltip1";
@@ -53,97 +54,72 @@ public class BandageItem extends Item {
 	}
 
 	public BandageItem( String name, int defaultAmplifier, Rarity rarity ) {
-		super( ( new Properties() ).stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( rarity ) );
+		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( rarity ) );
 
-		this.configGroup = new ConfigGroup( name, "Configuration for " + name + " item." );
-		FEATURES_GROUP.addGroup( this.configGroup );
-
-		String usableComment = "Is " + name + " always usable? If not player can only use " + name + " when it is bleeding.";
-		String durationComment = "Duration in seconds of Regeneration effect.";
-		String amplifierComment = "Level/amplifier of Regeneration effect.";
-		this.isAlwaysUsable = new AvailabilityConfig( "is_always_usable", usableComment, false, true );
-		this.effectDuration = new DurationConfig( "regeneration_duration", durationComment, false, 4.0, 1.0, 120.0 );
-		this.effectAmplifier = new IntegerConfig( "regeneration_amplifier", amplifierComment, false, defaultAmplifier, 0, 10 );
-		this.configGroup.addConfigs( this.isAlwaysUsable, this.effectDuration, this.effectAmplifier );
+		this.isAlwaysUsable = new AvailabilityConfig( "is_always_usable", "Is " + name + " always usable? If not player can only use " + name + " when it is bleeding.", false, true );
+		this.effectDuration = new DurationConfig( "regeneration_duration", "Duration in seconds of Regeneration effect.", false, 4.0, 1.0, 120.0 );
+		this.effectAmplifier = new IntegerConfig( "regeneration_amplifier", "Level/amplifier of Regeneration effect.", false, defaultAmplifier, 0, 10 );
+		this.configGroup = FEATURES_GROUP.addGroup( new ConfigGroup( name, "Configuration for " + name + " item.", this.isAlwaysUsable, this.effectDuration, this.effectAmplifier ) );
 	}
 
-	/** Using bandage on right click. (self healing) */
 	@Override
 	public InteractionResultHolder< ItemStack > use( Level world, Player player, InteractionHand hand ) {
 		ItemStack itemStack = player.getItemInHand( hand );
-		useIfPossible( itemStack, player, player );
+		useIfPossible( itemStack, player, player ); // self-healing
 
 		return InteractionResultHolder.sidedSuccess( itemStack, world.isClientSide() );
 	}
 
-	/** Adding tooltip with information for what bandage is used. */
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, TOOLTIP_TRANSLATION_KEY_1, TOOLTIP_TRANSLATION_KEY_2 );
 	}
 
-	/** Using bandage on right click. (other entity healing) */
 	@SubscribeEvent
 	public static void onRightClick( PlayerInteractEvent.EntityInteract event ) {
-		if( !( event.getTarget() instanceof LivingEntity ) )
+		if( !( event.getTarget() instanceof LivingEntity target ) )
 			return;
 
-		ItemStack itemStack = event.getItemStack();
-		if( !( itemStack.getItem() instanceof BandageItem ) )
+		if( !( event.getItemStack().getItem() instanceof BandageItem bandage ) )
 			return;
-		BandageItem bandage = ( BandageItem )itemStack.getItem();
-		if( bandage.useIfPossible( event.getItemStack(), event.getPlayer(), ( LivingEntity )event.getTarget() ) ) {
-			Villager villager = Utility.castIfPossible( Villager.class, event.getTarget() );
-			if( villager != null )
-				increaseReputation( event.getPlayer(), villager );
 
-			event.setCancellationResult( InteractionResult.SUCCESS );
-		}
+		if( !bandage.useIfPossible( event.getItemStack(), event.getPlayer(), target ) ) // healing other entities
+			return;
+
+		Villager villager = Utility.castIfPossible( Villager.class, event.getTarget() );
+		if( villager != null )
+			increaseReputation( event.getPlayer(), villager );
+
+		event.setCancellationResult( InteractionResult.SUCCESS );
 	}
 
-	/** Increases reputation with given villager. */
 	public static void increaseReputation( Player player, Villager villager ) {
 		villager.getGossips().add( player.getUUID(), GossipType.MINOR_POSITIVE, 5 );
 	}
 
-	/** Checks whether Bandage is always usable. (player can use it even if it does not have a Bleeding effect) */
 	public boolean isAlwaysUsable() {
 		return this.isAlwaysUsable.isEnabled();
 	}
 
-	/** Returns duration in ticks of Regeneration effect. */
 	public int getRegenerationDuration() {
 		return this.effectDuration.getDuration();
 	}
 
-	/** Returns amplifier of Regeneration effect. */
 	public int getRegenerationAmplifier() {
 		return this.effectAmplifier.get();
 	}
 
-	/** Applies Regeneration on target depending on current mod settings. */
 	protected void applyEffects( LivingEntity target ) {
 		EffectHelper.applyEffectIfPossible( target, MobEffects.REGENERATION, getRegenerationDuration(), getRegenerationAmplifier() );
 	}
 
-	/**
-	 Removes bleeding from the target or applies regeneration if it is possible.
-
-	 @param bandage Bandage item.
-	 @param player  Player that is right clicking.
-	 @param target  Target that will be healed. (may be the same player)
-
-	 @return Returns information (boolean) if bleeding was removed or regeneration was applied.
-	 */
+	/** Removes the bleeding from the target or applies regeneration if it is possible. */
 	private boolean useIfPossible( ItemStack bandage, Player player, LivingEntity target ) {
 		if( !couldBeUsedOn( target, bandage ) )
 			return false;
 
-		if( !player.getAbilities().instabuild )
-			bandage.shrink( 1 );
-
-		player.awardStat( Stats.ITEM_USED.get( bandage.getItem() ) );
+		ItemHelper.consumeItemOnUse( bandage, player );
 		removeBleeding( target, player );
 		applyEffects( target );
 		target.level.playSound( null, target.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 1.0f );
@@ -151,7 +127,6 @@ public class BandageItem extends Item {
 		return true;
 	}
 
-	/** Checks whether item could be used on target. */
 	private boolean couldBeUsedOn( LivingEntity target, ItemStack bandage ) {
 		boolean isBandage = bandage.getItem() instanceof BandageItem;
 		boolean targetHasRegeneration = target.hasEffect( MobEffects.REGENERATION );
@@ -159,12 +134,11 @@ public class BandageItem extends Item {
 		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.hasEffect( Registries.BLEEDING.get() ) );
 	}
 
-	/** Removes Bleeding effect from the target. */
 	private void removeBleeding( LivingEntity target, Player causer ) {
 		BleedingEffect bleeding = Registries.BLEEDING.get();
 
-		if( target.hasEffect( bleeding ) && causer instanceof ServerPlayer )
-			Registries.BANDAGE_TRIGGER.trigger( ( ServerPlayer )causer, this, target.equals( causer ) );
+		if( target.hasEffect( bleeding ) && causer instanceof ServerPlayer serverCauser )
+			Registries.BANDAGE_TRIGGER.trigger( serverCauser, this, target.equals( serverCauser ) );
 
 		target.removeEffect( bleeding );
 		target.removeEffectNoUpdate( bleeding );

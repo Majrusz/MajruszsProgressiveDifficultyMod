@@ -31,18 +31,7 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect effect, boolean isAmplifierStackable, boolean isDurationStackable,
 		int maximumAmplifier, int maximumDurationInTicks
 	) {
-		this( configName,
-			configComment,
-			defaultChance,
-			defaultDurationInSeconds,
-			minimumState,
-			shouldBeMultipliedByCRD,
-			new MobEffect[]{ effect },
-			isAmplifierStackable,
-			isDurationStackable,
-			maximumAmplifier,
-			maximumDurationInTicks
-		);
+		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new MobEffect[]{ effect }, isAmplifierStackable, isDurationStackable, maximumAmplifier, maximumDurationInTicks );
 	}
 
 	/**

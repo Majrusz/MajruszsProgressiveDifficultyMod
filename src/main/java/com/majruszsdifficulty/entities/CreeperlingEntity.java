@@ -8,10 +8,14 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
-/** Entity that is smaller version of Creeper. */
+/** Tiny version of the Creeper (but still deadly!). */
 public class CreeperlingEntity extends Creeper {
 	public static Supplier< EntityType< CreeperlingEntity > > createSupplier() {
 		return ()->EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER ).sized( 0.6f, 0.9f ).build( "creeperling" );
+	}
+
+	public static AttributeSupplier getAttributeMap() {
+		return Mob.createMobAttributes().add( Attributes.MAX_HEALTH, 6.0 ).add( Attributes.MOVEMENT_SPEED, 0.35 ).build();
 	}
 
 	public CreeperlingEntity( EntityType< ? extends CreeperlingEntity > type, Level world ) {
@@ -22,15 +26,11 @@ public class CreeperlingEntity extends Creeper {
 
 	@Override
 	public boolean isPowered() {
-		return false; // creeperling can not be charged
+		return false; // creeperling will not be charged
 	}
 
 	@Override
 	protected float getStandingEyeHeight( Pose poseIn, EntityDimensions sizeIn ) {
 		return 0.75f;
-	}
-
-	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes().add( Attributes.MAX_HEALTH, 6.0 ).add( Attributes.MOVEMENT_SPEED, 0.35 ).build();
 	}
 }

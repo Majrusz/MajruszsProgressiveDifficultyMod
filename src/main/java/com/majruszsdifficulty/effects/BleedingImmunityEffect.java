@@ -3,7 +3,6 @@ package com.majruszsdifficulty.effects;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.PotionEvent;
@@ -13,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-/** Effect which makes entity immune to Bleeding effect. */
+/** An effect that makes the entity immune to bleeding. */
 @Mod.EventBusSubscriber
 public class BleedingImmunityEffect extends MobEffect {
 	public BleedingImmunityEffect() {
@@ -24,8 +23,7 @@ public class BleedingImmunityEffect extends MobEffect {
 	public void applyEffectTick( LivingEntity entity, int amplifier ) {}
 
 	@Override
-	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health
-	) {
+	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health ) {
 		entity.removeEffect( Registries.BLEEDING.get() );
 	}
 
@@ -36,9 +34,7 @@ public class BleedingImmunityEffect extends MobEffect {
 
 	@SubscribeEvent
 	public static void onEffectApplied( PotionEvent.PotionApplicableEvent event ) {
-		MobEffectInstance effectInstance = event.getPotionEffect();
-		LivingEntity entity = event.getEntityLiving();
-		if( effectInstance.getEffect() instanceof BleedingEffect && entity.hasEffect( Registries.BLEEDING_IMMUNITY.get() ) )
+		if( event.getPotionEffect().getEffect() instanceof BleedingEffect && event.getEntityLiving().hasEffect( Registries.BLEEDING_IMMUNITY.get() ) )
 			event.setResult( Event.Result.DENY );
 	}
 }

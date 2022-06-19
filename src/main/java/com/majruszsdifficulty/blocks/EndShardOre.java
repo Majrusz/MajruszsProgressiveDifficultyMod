@@ -39,14 +39,8 @@ public class EndShardOre extends Block {
 			.strength( 30.0f, 1200.0f )
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 
-		this.triggerDistance = new DoubleConfig( "trigger_distance",
-			"Maximum distance within which all nearby Endermans will start to attack the player once the block is mined.",
-			false,
-			450.0,
-			0.0,
-			1e+6
-		);
-		this.configGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "EndShardOre", "Configuration for new late game ore." ), this.triggerDistance );
+		this.triggerDistance = new DoubleConfig( "trigger_distance", "Maximum distance within which all nearby Endermans will start to attack the player once the block is mined.", false, 450.0, 0.0, 1e+6 );
+		this.configGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "EndShardOre", "Configuration for new late game ore.", this.triggerDistance ) );
 	}
 
 	@Override

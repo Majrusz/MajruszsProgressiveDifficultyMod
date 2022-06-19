@@ -93,7 +93,7 @@ public class GameState {
 	 @param expert Configuration value for Expert game state.
 	 @param master Configuration value for Master game state.
 	 */
-	public static < ConfigType > ConfigType getValueDependingOnCurrentGameState( ConfigType normal, ConfigType expert, ConfigType master ) {
+	public static < ConfigType > ConfigType getCurrentGameStateValue( ConfigType normal, ConfigType expert, ConfigType master ) {
 		return getValueDependingOnGameState( CURRENT, normal, expert, master );
 	}
 
@@ -123,7 +123,7 @@ public class GameState {
 
 	/** Returns clamped regional difficulty modifier depending on current game state. */
 	public static double getStateModifier() {
-		return getValueDependingOnCurrentGameState( 0.0, 0.15, 0.3 );
+		return getCurrentGameStateValue( 0.0, 0.15, 0.3 );
 	}
 
 	/** Returns formatted game state text. */

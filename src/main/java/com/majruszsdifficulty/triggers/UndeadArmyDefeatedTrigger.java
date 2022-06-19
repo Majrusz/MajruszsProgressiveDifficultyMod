@@ -17,8 +17,7 @@ public class UndeadArmyDefeatedTrigger extends SimpleCriterionTrigger< UndeadArm
 	}
 
 	@Override
-	public UndeadArmyDefeatedTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate,
-		DeserializationContext conditions
+	public UndeadArmyDefeatedTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate, DeserializationContext conditions
 	) {
 		JsonElement amountOfBags = jsonObject.get( "wave" );
 

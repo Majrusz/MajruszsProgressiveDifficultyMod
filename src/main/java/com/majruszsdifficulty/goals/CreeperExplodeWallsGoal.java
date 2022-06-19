@@ -27,7 +27,6 @@ public class CreeperExplodeWallsGoal extends Goal {
 		this.setFlags( EnumSet.of( Goal.Flag.MOVE ) );
 	}
 
-	/** Returns whether execution should begin. */
 	@Override
 	public boolean canUse() {
 		LivingEntity target = getNearestPlayer( this.creeper );
@@ -35,20 +34,17 @@ public class CreeperExplodeWallsGoal extends Goal {
 		return this.creeper.getSwellDir() > 0 || target != null && this.creeper.distanceToSqr( target ) < MAXIMUM_START_DISTANCE * getDistanceMultiplier();
 	}
 
-	/** Executes task at the beginning of goal. */
 	@Override
 	public void start() {
 		this.creeper.getNavigation().stop();
 		this.attackTarget = getNearestPlayer( this.creeper );
 	}
 
-	/** Resets the task's internal state. */
 	@Override
 	public void stop() {
 		this.attackTarget = null;
 	}
 
-	/** Updates state of goal each tick. */
 	@Override
 	public void tick() {
 		if( this.attackTarget == null || this.creeper.distanceToSqr( this.attackTarget ) > MAXIMUM_EXPLODE_DISTANCE * getDistanceMultiplier() ) {
@@ -58,7 +54,6 @@ public class CreeperExplodeWallsGoal extends Goal {
 		}
 	}
 
-	/** Returns distance multiplier. */
 	private double getDistanceMultiplier() {
 		double sizeMultiplier = this.creeper instanceof CreeperlingEntity ? 0.6 : 1.0;
 		double chargedMultiplier = this.creeper.isPowered() ? 2.0 : 1.0;
@@ -66,7 +61,6 @@ public class CreeperExplodeWallsGoal extends Goal {
 		return sizeMultiplier * chargedMultiplier;
 	}
 
-	/** Returns the nearest player. */
 	@Nullable
 	private Player getNearestPlayer( Creeper creeper ) {
 		ServerLevel level = Utility.castIfPossible( ServerLevel.class, creeper.level );
@@ -75,7 +69,6 @@ public class CreeperExplodeWallsGoal extends Goal {
 
 		Predicate< Player > playerPredicate = player->!EntityHelper.isOnCreativeMode( player );
 		List< Player > nearestPlayers = EntityHelper.getEntitiesInSphere( Player.class, level, creeper, OFFSET, playerPredicate );
-
 		Player nearestPlayer = null;
 		for( Player player : nearestPlayers )
 			if( nearestPlayer == null || creeper.distanceToSqr( player ) < creeper.distanceToSqr( nearestPlayer ) )

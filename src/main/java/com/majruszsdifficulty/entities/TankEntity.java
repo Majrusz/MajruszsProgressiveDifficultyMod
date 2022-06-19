@@ -3,7 +3,7 @@ package com.majruszsdifficulty.entities;
 import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.features.undead_army.UndeadArmy;
 import com.majruszsdifficulty.goals.TankAttackGoal;
-import com.mlib.MajruszLibrary;
+import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.network.message.EntityMessage;
 import net.minecraft.client.Minecraft;
@@ -36,7 +36,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
-/** New undead huge skeleton. */
+/** A new tough undead similar to the Iron Golem. */
 @Mod.EventBusSubscriber
 public class TankEntity extends Monster {
 	protected static final int SPECIAL_ATTACK_DURATION = Utility.secondsToTicks( 0.9 );
@@ -44,6 +44,17 @@ public class TankEntity extends Monster {
 
 	public static Supplier< EntityType< TankEntity > > createSupplier() {
 		return ()->EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 1.1f, 2.7f ).build( "tank" );
+	}
+
+	public static AttributeSupplier getAttributeMap() {
+		return Mob.createMobAttributes()
+			.add( Attributes.MAX_HEALTH, 140.0 )
+			.add( Attributes.MOVEMENT_SPEED, 0.25 )
+			.add( Attributes.ATTACK_DAMAGE, 8.0 )
+			.add( Attributes.FOLLOW_RANGE, 30.0 )
+			.add( Attributes.ATTACK_KNOCKBACK, 3.0 )
+			.add( Attributes.KNOCKBACK_RESISTANCE, 0.75 )
+			.build();
 	}
 
 	public boolean isLeftHandAttack;
@@ -68,7 +79,7 @@ public class TankEntity extends Monster {
 
 	@Override
 	public int getExperienceReward() {
-		return MajruszLibrary.RANDOM.nextInt( 17 );
+		return Random.nextInt( 17 );
 	}
 
 	@Override
@@ -115,12 +126,6 @@ public class TankEntity extends Monster {
 		super.aiStep();
 	}
 
-	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes().add( Attributes.MAX_HEALTH, 140.0 ).add( Attributes.MOVEMENT_SPEED, 0.25 ).add( Attributes.ATTACK_DAMAGE,
-			8.0
-		).add( Attributes.FOLLOW_RANGE, 30.0 ).add( Attributes.ATTACK_KNOCKBACK, 3.0 ).add( Attributes.KNOCKBACK_RESISTANCE, 0.75 ).build();
-	}
-
 	@SubscribeEvent
 	public static void onTick( LivingEvent.LivingUpdateEvent event ) {
 		TankEntity tank = Utility.castIfPossible( TankEntity.class, event.getEntityLiving() );
@@ -136,13 +141,13 @@ public class TankEntity extends Monster {
 			case SPECIAL -> this.specialAttackTicksLeft = SPECIAL_ATTACK_DURATION;
 		}
 
-		this.isLeftHandAttack = MajruszLibrary.RANDOM.nextBoolean();
+		this.isLeftHandAttack = Random.nextBoolean();
 		if( this.level instanceof ServerLevel )
 			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new TankAttackMessage( this, attackType ) );
 	}
 
 	public boolean isAttacking() {
-		return isAttacking( AttackType.NORMAL ) || isAttacking( AttackType.SPECIAL );
+		return ( this.normalAttackTicksLeft + this.specialAttackTicksLeft ) > 0;
 	}
 
 	public boolean isAttacking( AttackType attackType ) {
@@ -156,7 +161,7 @@ public class TankEntity extends Monster {
 		return this.specialAttackTicksLeft == 1 || this.normalAttackTicksLeft == 1;
 	}
 
-	public float getAttackDurationRatioLeft() {
+	public float calculateAttackDurationRatioLeft() {
 		float ratio;
 		if( this.specialAttackTicksLeft > this.normalAttackTicksLeft ) {
 			ratio = ( float )this.specialAttackTicksLeft / SPECIAL_ATTACK_DURATION;
@@ -194,11 +199,12 @@ public class TankEntity extends Monster {
 		@OnlyIn( Dist.CLIENT )
 		public void receiveMessage( NetworkEvent.Context context ) {
 			Level level = Minecraft.getInstance().level;
-			if( level != null ) {
-				TankEntity tank = Utility.castIfPossible( TankEntity.class, level.getEntity( this.id ) );
-				if( tank != null )
-					tank.useAttack( this.attackType );
-			}
+			if( level == null )
+				return;
+
+			TankEntity tank = Utility.castIfPossible( TankEntity.class, level.getEntity( this.id ) );
+			if( tank != null )
+				tank.useAttack( this.attackType );
 		}
 	}
 }

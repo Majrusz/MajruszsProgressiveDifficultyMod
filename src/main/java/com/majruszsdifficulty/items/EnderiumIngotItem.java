@@ -4,9 +4,8 @@ import com.majruszsdifficulty.Registries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 
-/** New strong end-game ingot. */
-public class EndIngotItem extends Item {
-	public EndIngotItem() {
+public class EnderiumIngotItem extends Item {
+	public EnderiumIngotItem() {
 		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 	}
 }

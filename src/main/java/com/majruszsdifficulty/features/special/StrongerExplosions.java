@@ -39,8 +39,7 @@ public class StrongerExplosions {
 		if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
 			event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
 
-		if( !( causer instanceof CreeperlingEntity ) && STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance(
-			causer ) ) )
+		if( !( causer instanceof CreeperlingEntity ) && STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
 			event.causesFire = true;
 	}
 
@@ -49,13 +48,7 @@ public class StrongerExplosions {
 	LivingEntity getNearestEntity( Explosion explosion, Level world ) {
 		Vec3 position = explosion.getPosition();
 		double offset = 50.0;
-		AABB axisAlignedBB = new AABB( position.x - offset,
-			position.y - offset,
-			position.z - offset,
-			position.x + offset,
-			position.y + offset,
-			position.z + offset
-		);
+		AABB axisAlignedBB = new AABB( position.x - offset, position.y - offset, position.z - offset, position.x + offset, position.y + offset, position.z + offset );
 		for( LivingEntity entity : world.getEntitiesOfClass( LivingEntity.class, axisAlignedBB ) )
 			return entity;
 

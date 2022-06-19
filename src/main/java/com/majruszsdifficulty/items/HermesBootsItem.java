@@ -5,14 +5,16 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.Registries;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import net.minecraft.resources.ResourceLocation;
+import com.mlib.events.ConfigsLoadedEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
@@ -20,27 +22,21 @@ import java.util.UUID;
 
 /** Boots that increases movement speed. */
 @Mod.EventBusSubscriber
-public class HermesBootsItem extends AttributeArmorItem {
+public class HermesBootsItem extends ArmorItem {
 	protected final DoubleConfig movementSpeedBonus;
 	protected final ConfigGroup configGroup;
 
 	public HermesBootsItem() {
-		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, ( new Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
-		String comment = "Movement speed extra multiplier. (requires game/world restart!)";
-		this.movementSpeedBonus = new DoubleConfig( "movement_speed_bonus", comment, true, 0.25, 0.0, 5.0 );
-
-		this.configGroup = new ConfigGroup( "HermesBoots", "Hermes Boots item configuration." );
-		MajruszsDifficulty.FEATURES_GROUP.addGroup( this.configGroup );
-		this.configGroup.addConfig( this.movementSpeedBonus );
+		this.movementSpeedBonus = new DoubleConfig( "movement_speed_bonus", "Extra movement speed multiplier. (requires game/world restart!)", true, 0.25, 0.0, 5.0 );
+		this.configGroup = MajruszsDifficulty.FEATURES_GROUP.addGroup( new ConfigGroup( "HermesBoots", "Hermes Boots item configuration.", this.movementSpeedBonus ) );
 	}
 
-	/** Returns path to Hermes Boots texture. */
 	@Nullable
 	@Override
 	public String getArmorTexture( ItemStack stack, Entity entity, EquipmentSlot slot, String type ) {
-		ResourceLocation textureLocation = Registries.getLocation( "textures/models/armor/hermes_layer.png" );
-		return textureLocation.toString();
+		return Registries.getLocationString( "textures/models/armor/hermes_layer.png" );
 	}
 
 	/** Returns model used to render armor. */
@@ -68,16 +64,15 @@ public class HermesBootsItem extends AttributeArmorItem {
 
 		return ( ArmorModel )model;
 	}*/
+	@SubscribeEvent
+	public static void applySpeedModifier( ConfigsLoadedEvent event ) {
+		if( event.configHandler != MajruszsDifficulty.CONFIG_HANDLER )
+			return;
 
-	/** Called whenever attributes should be updated. */
-	@Override
-	protected void updateAttributes( ImmutableMultimap.Builder< Attribute, AttributeModifier > builder ) {
-		builder.put( Attributes.MOVEMENT_SPEED,
-			new AttributeModifier( UUID.fromString( "dbe472cb-df52-44ab-ab38-01b00e24f649" ),
-				"HermesBootsMovementSpeedBonus",
-				this.movementSpeedBonus.get(),
-				AttributeModifier.Operation.MULTIPLY_BASE
-			)
-		);
+		HermesBootsItem item = Registries.HERMES_BOOTS.get();
+		ImmutableMultimap.Builder< Attribute, AttributeModifier > builder = ImmutableMultimap.builder();
+		item.defaultModifiers = builder.putAll( item.defaultModifiers )
+			.put( Attributes.MOVEMENT_SPEED, new AttributeModifier( UUID.fromString( "dbe472cb-df52-44ab-ab38-01b00e24f649" ), "HermesBootsMovementSpeedBonus", item.movementSpeedBonus.get(), AttributeModifier.Operation.MULTIPLY_BASE ) )
+			.build();
 	}
 }
