@@ -1,26 +1,33 @@
 package com.majruszsdifficulty.features.item_sets;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BaseSet {
 	public static final List< BaseSet > SET_LIST = new ArrayList<>();
-	protected ItemData[] itemData;
-	protected BonusData[] bonusData;
-	protected ChatFormatting chatFormatting;
-	protected String setTranslationKey;
+	protected final ItemData[] itemData;
+	protected final BonusData[] bonusData;
+	protected final ChatFormatting chatFormatting;
+	protected final String translationKey;
+
+	public BaseSet( ItemData[] itemData, BonusData[] bonusData, ChatFormatting chatFormatting, String translationKey ) {
+		this.itemData = itemData;
+		this.bonusData = bonusData;
+		this.chatFormatting = chatFormatting;
+		this.translationKey = translationKey;
+
+		SET_LIST.add( this );
+	}
 
 	public static boolean isFromAnySet( ItemStack itemStack ) {
-		for( BaseSet set : SET_LIST )
-			for( ItemData itemData : set.itemData )
-				if( itemData.isValidItem( itemStack ) )
-					return true;
-
-		return false;
+		return SET_LIST.stream().anyMatch( set -> set.isSetItem( itemStack ) );
 	}
 
 	public int countSetItems( Player player ) {
@@ -33,10 +40,22 @@ public class BaseSet {
 	}
 
 	public boolean isSetItem( ItemStack itemStack ) {
-		for( ItemData itemData : this.itemData )
-			if( itemData.isValidItem( itemStack ) )
-				return true;
+		return Arrays.stream( this.itemData ).anyMatch( itemData -> itemData.isSetItemStack( itemStack ) );
+	}
 
-		return false;
+	public boolean areRequirementsMet( Player player, BonusData bonusData ) {
+		return bonusData.condition.validate( this, player );
+	}
+
+	public MutableComponent getTranslatedName() {
+		return Component.translatable( this.translationKey );
+	}
+
+	public MutableComponent getTranslatedBonusInfo( BonusData bonusData ) {
+		return Component.translatable( bonusData.translationKey, bonusData.requiredItems, this.itemData.length );
+	}
+
+	public ChatFormatting getChatFormatting() {
+		return this.chatFormatting;
 	}
 }

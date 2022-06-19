@@ -18,7 +18,7 @@ import java.util.List;
 
 public class EnderiumHoeItem extends HoeItem {
 	public EnderiumHoeItem() {
-		super( CustomItemTier.END, -5, 0.0f, ( new Properties() ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
+		super( CustomItemTier.END, -5, 0.0f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	@Override

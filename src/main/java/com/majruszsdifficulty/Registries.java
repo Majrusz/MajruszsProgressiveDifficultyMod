@@ -12,6 +12,8 @@ import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.features.ExperienceBonus;
 import com.majruszsdifficulty.features.IncreaseGameDifficulty;
 import com.majruszsdifficulty.features.SpawnDisabler;
+import com.majruszsdifficulty.features.item_sets.EnderiumSet;
+import com.majruszsdifficulty.features.item_sets.OceanSet;
 import com.majruszsdifficulty.features.special.SplitCreeperToCreeperlings;
 import com.majruszsdifficulty.features.special.StrongerExplosions;
 import com.majruszsdifficulty.features.treasure_bag.FishingRewarder;
@@ -150,15 +152,9 @@ public class Registries {
 			ITEMS.register( "advancement_" + name, FakeItem::new );
 	}
 
-	/*public static class ItemSets {
-		public static final EndSet END;
-		public static final OceanSet OCEAN;
-
-		static {
-			END = new EndSet();
-			OCEAN = new OceanSet();
-		}
-	}*/
+	// Item Sets
+	public static final EnderiumSet ENDERIUM_SET = new EnderiumSet();
+	public static final OceanSet OCEAN_SET = new OceanSet();
 
 	// Blocks
 	public static final RegistryObject< EndShardOre > ENDERIUM_SHARD_ORE = BLOCKS.register( "enderium_shard_ore", EndShardOre::new );

@@ -4,9 +4,7 @@ import com.majruszsdifficulty.MajruszsHelper;
 import com.mlib.client.ClientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,33 +42,29 @@ public class SetsTooltipUpdater {
 			if( !set.isSetItem( itemStack ) )
 				continue;
 
-			int equippedSetItems = set.countSetItems( player );
-			String setText = Component.translatable( set.setTranslationKey ).getString();
+			MajruszsHelper.addEmptyLine( tooltip );
+			addItemList( tooltip, set, player );
 
 			MajruszsHelper.addEmptyLine( tooltip );
-			tooltip.add( Component.translatable( SET_TOOLTIP, setText, equippedSetItems, set.itemData.length ).withStyle( HINT_FORMAT ) );
-			for( ItemData itemData : set.itemData ) {
-				ChatFormatting chatFormatting = itemData.hasItemEquipped( player ) ? set.chatFormatting : DISABLED_FORMAT;
-
-				tooltip.add( getFormattedItemName( itemData.item, chatFormatting ) );
-			}
-
-			MajruszsHelper.addEmptyLine( tooltip );
-			tooltip.add( Component.translatable( BONUS_TOOLTIP ).withStyle( HINT_FORMAT ) );
-			for( BonusData bonusData : set.bonusData ) {
-				boolean isEnabled = equippedSetItems >= bonusData.requiredItems && bonusData.extraValidator.validate( player );
-				ChatFormatting chatFormatting = isEnabled ? set.chatFormatting : DISABLED_FORMAT;
-
-				tooltip.add( getFormattedBonus( bonusData.translationKey, bonusData.requiredItems, set.itemData.length, chatFormatting ) );
-			}
+			addBonusList( tooltip, set, player );
 		}
 	}
 
-	protected static MutableComponent getFormattedItemName( Item item, ChatFormatting chatFormatting ) {
-		return Component.literal( " " ).append( item.getDescription().copy().withStyle( chatFormatting ) );
+	protected static void addItemList( List< Component > tooltip, BaseSet set, Player player ) {
+		tooltip.add( Component.translatable( SET_TOOLTIP, set.getTranslatedName(), set.countSetItems( player ), set.itemData.length ).withStyle( HINT_FORMAT ) );
+		for( ItemData itemData : set.itemData ) {
+			ChatFormatting chatFormatting = itemData.hasItemEquipped( player ) ? set.getChatFormatting() : DISABLED_FORMAT;
+
+			tooltip.add( Component.literal( " " ).append( itemData.getTranslatedName() ).withStyle( chatFormatting ) );
+		}
 	}
 
-	protected static MutableComponent getFormattedBonus( String translationKey, int amountRequired, int totalAmount, ChatFormatting chatFormatting ) {
-		return Component.translatable( translationKey, amountRequired, totalAmount ).withStyle( chatFormatting );
+	protected static void addBonusList( List< Component > tooltip, BaseSet set, Player player ) {
+		tooltip.add( Component.translatable( BONUS_TOOLTIP ).withStyle( HINT_FORMAT ) );
+		for( BonusData bonusData : set.bonusData ) {
+			ChatFormatting chatFormatting = set.areRequirementsMet( player, bonusData ) ? set.chatFormatting : DISABLED_FORMAT;
+
+			tooltip.add( Component.literal( " " ).append( set.getTranslatedBonusInfo( bonusData ) ).withStyle( chatFormatting ) );
+		}
 	}
 }
