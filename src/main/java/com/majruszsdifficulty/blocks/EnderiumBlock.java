@@ -15,7 +15,7 @@ public class EnderiumBlock extends Block {
 
 	public static class EndBlockItem extends BlockItem {
 		public EndBlockItem() {
-			super( Registries.END_BLOCK.get(), new Properties().stacksTo( 64 ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ) );
+			super( Registries.ENDERIUM_BLOCK.get(), new Properties().stacksTo( 64 ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ) );
 		}
 	}
 }

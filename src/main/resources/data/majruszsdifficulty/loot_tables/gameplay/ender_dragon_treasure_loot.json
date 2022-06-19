@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:end_shard_locator",
+          "name": "majruszsdifficulty:enderium_shard_locator",
           "quality": 4,
           "conditions": [
             {
@@ -50,13 +50,13 @@
         },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:end_shard",
+          "name": "majruszsdifficulty:enderium_shard",
           "weight": 10,
           "quality": 2
         },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:end_ingot",
+          "name": "majruszsdifficulty:enderium_ingot",
           "weight": 4,
           "quality": 3
         }

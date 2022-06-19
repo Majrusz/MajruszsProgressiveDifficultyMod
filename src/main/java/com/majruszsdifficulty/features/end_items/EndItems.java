@@ -37,9 +37,9 @@ public class EndItems {
 	}
 
 	public static class Keys {
-		public static final String HASTE_TOOLTIP = "majruszsdifficulty.end_items.haste_tooltip";
-		public static final String BLEED_TOOLTIP = "majruszsdifficulty.end_items.bleed_tooltip";
-		public static final String LEVITATION_TOOLTIP = "majruszsdifficulty.end_items.levitation_tooltip";
-		public static final String TILL_TOOLTIP = "majruszsdifficulty.end_items.till_tooltip";
+		public static final String HASTE_TOOLTIP = "majruszsdifficulty.enderium_items.haste_tooltip";
+		public static final String BLEED_TOOLTIP = "majruszsdifficulty.enderium_items.bleed_tooltip";
+		public static final String LEVITATION_TOOLTIP = "majruszsdifficulty.enderium_items.levitation_tooltip";
+		public static final String TILL_TOOLTIP = "majruszsdifficulty.enderium_items.till_tooltip";
 	}
 }

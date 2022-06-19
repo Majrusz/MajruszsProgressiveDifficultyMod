@@ -23,7 +23,7 @@ public class EnderiumArmorItem extends ArmorItem {
 	public String getArmorTexture( ItemStack stack, Entity entity, EquipmentSlot slot, String type ) {
 		CompoundTag data = entity.getPersistentData();
 		data.putInt( ARMOR_TICK_TAG, ( data.getInt( ARMOR_TICK_TAG ) + 1 ) % ( 80 * 4 ) );
-		String register = "textures/models/armor/end_layer_";
+		String register = "textures/models/armor/enderium_layer_";
 		register += ( slot == EquipmentSlot.LEGS ? "2" : "1" ) + "_";
 		register += ( "" + ( 1 + data.getInt( ARMOR_TICK_TAG ) / 80 ) ) + ".png";
 

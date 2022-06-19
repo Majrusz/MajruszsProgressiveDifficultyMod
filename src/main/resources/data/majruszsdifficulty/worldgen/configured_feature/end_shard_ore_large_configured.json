@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "majruszsdifficulty:end_shard_ore"
+          "Name": "majruszsdifficulty:enderium_shard_ore"
         },
         "target": {
           "predicate_type": "minecraft:block_match",

@@ -98,19 +98,19 @@ public class Registries {
 	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
 	public static final RegistryObject< HermesBootsItem > HERMES_BOOTS = ITEMS.register( "hermes_boots", HermesBootsItem::new );
-	public static final RegistryObject< EndShardItem > END_SHARD = ITEMS.register( "end_shard", EndShardItem::new );
-	public static final RegistryObject< EnderiumIngotItem > END_INGOT = ITEMS.register( "end_ingot", EnderiumIngotItem::new );
-	public static final RegistryObject< EnderiumSwordItem > END_SWORD = ITEMS.register( "end_sword", EnderiumSwordItem::new );
-	public static final RegistryObject< EnderiumShovelItem > END_SHOVEL = ITEMS.register( "end_shovel", EnderiumShovelItem::new );
-	public static final RegistryObject< EnderiumPickaxeItem > END_PICKAXE = ITEMS.register( "end_pickaxe", EnderiumPickaxeItem::new );
-	public static final RegistryObject< EnderiumAxeItem > END_AXE = ITEMS.register( "end_axe", EnderiumAxeItem::new );
-	public static final RegistryObject< EnderiumHoeItem > END_HOE = ITEMS.register( "end_hoe", EnderiumHoeItem::new );
-	public static final RegistryObject< TatteredClothItem > TATTERED_CLOTH = ITEMS.register( "tattered_cloth", TatteredClothItem::new );
-	public static final RegistryObject< EnderiumArmorItem > END_HELMET = ITEMS.register( "end_helmet", EnderiumArmorItem.Helmet::new );
-	public static final RegistryObject< EnderiumArmorItem > END_CHESTPLATE = ITEMS.register( "end_chestplate", EnderiumArmorItem.Chestplate::new );
-	public static final RegistryObject< EnderiumArmorItem > END_LEGGINGS = ITEMS.register( "end_leggings", EnderiumArmorItem.Leggings::new );
-	public static final RegistryObject< EnderiumArmorItem > END_BOOTS = ITEMS.register( "end_boots", EnderiumArmorItem.Boots::new );
-	public static final RegistryObject< EndShardLocatorItem > END_SHARD_LOCATOR = ITEMS.register( "end_shard_locator", EndShardLocatorItem::new );
+	public static final RegistryObject< EndShardItem > ENDERIUM_SHARD = ITEMS.register( "enderium_shard", EndShardItem::new );
+	public static final RegistryObject< EnderiumIngotItem > ENDERIUM_INGOT = ITEMS.register( "enderium_ingot", EnderiumIngotItem::new );
+	public static final RegistryObject< EnderiumSwordItem > ENDERIUM_SWORD = ITEMS.register( "enderium_sword", EnderiumSwordItem::new );
+	public static final RegistryObject< EnderiumShovelItem > ENDERIUM_SHOVEL = ITEMS.register( "enderium_shovel", EnderiumShovelItem::new );
+	public static final RegistryObject< EnderiumPickaxeItem > ENDERIUM_PICKAXE = ITEMS.register( "enderium_pickaxe", EnderiumPickaxeItem::new );
+	public static final RegistryObject< EnderiumAxeItem > ENDERIUM_AXE = ITEMS.register( "enderium_axe", EnderiumAxeItem::new );
+	public static final RegistryObject< EnderiumHoeItem > ENDERIUM_HOE = ITEMS.register( "enderium_hoe", EnderiumHoeItem::new );
+	public static final RegistryObject< ClothItem > CLOTH = ITEMS.register( "cloth", ClothItem::new );
+	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_HELMET = ITEMS.register( "enderium_helmet", EnderiumArmorItem.Helmet::new );
+	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_CHESTPLATE = ITEMS.register( "enderium_chestplate", EnderiumArmorItem.Chestplate::new );
+	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_LEGGINGS = ITEMS.register( "enderium_leggings", EnderiumArmorItem.Leggings::new );
+	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_BOOTS = ITEMS.register( "enderium_boots", EnderiumArmorItem.Boots::new );
+	public static final RegistryObject< EndShardLocatorItem > ENDERIUM_SHARD_LOCATOR = ITEMS.register( "enderium_shard_locator", EndShardLocatorItem::new );
 	public static final RegistryObject< GoldenBandageItem > GOLDEN_BANDAGE = ITEMS.register( "golden_bandage", GoldenBandageItem::new );
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 	public static final RegistryObject< OceanShieldItem > OCEAN_SHIELD = ITEMS.register( "ocean_shield", OceanShieldItem::new );
@@ -124,8 +124,8 @@ public class Registries {
 	public static final RegistryObject< TreasureBagItem > PILLAGER_TREASURE_BAG = ITEMS.register( "pillager_treasure_bag", TreasureBagItem.Pillager::new );
 
 	// Item Blocks
-	public static final RegistryObject< EndShardOre.EndShardOreItem > END_SHARD_ORE_ITEM = ITEMS.register( "end_shard_ore", EndShardOre.EndShardOreItem::new );
-	public static final RegistryObject< EnderiumBlock.EndBlockItem > END_BLOCK_ITEM = ITEMS.register( "end_block", EnderiumBlock.EndBlockItem::new );
+	public static final RegistryObject< EndShardOre.EndShardOreItem > ENDERIUM_SHARD_ORE_ITEM = ITEMS.register( "enderium_shard_ore", EndShardOre.EndShardOreItem::new );
+	public static final RegistryObject< EnderiumBlock.EndBlockItem > ENDERIUM_BLOCK_ITEM = ITEMS.register( "enderium_block", EnderiumBlock.EndBlockItem::new );
 	public static final RegistryObject< InfestedEndStone.InfestedEndStoneItem > INFESTED_END_STONE_ITEM = ITEMS.register( "infested_end_stone", InfestedEndStone.InfestedEndStoneItem::new );
 
 	// Spawn Eggs
@@ -134,8 +134,7 @@ public class Registries {
 	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.register( "creeperling_spawn_egg", createEggSupplier( CREEPERLING, 0x0da70b, 0x000000 ) );
 	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( TANK, 0xc1c1c1, 0x949494 ) );
 
-	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor, int highlightColor
-	) {
+	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor, int highlightColor ) {
 		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties().tab( ITEM_GROUP ) );
 	}
 
@@ -162,8 +161,8 @@ public class Registries {
 	}*/
 
 	// Blocks
-	public static final RegistryObject< EndShardOre > END_SHARD_ORE = BLOCKS.register( "end_shard_ore", EndShardOre::new );
-	public static final RegistryObject< EnderiumBlock > END_BLOCK = BLOCKS.register( "end_block", EnderiumBlock::new );
+	public static final RegistryObject< EndShardOre > ENDERIUM_SHARD_ORE = BLOCKS.register( "enderium_shard_ore", EndShardOre::new );
+	public static final RegistryObject< EnderiumBlock > ENDERIUM_BLOCK = BLOCKS.register( "enderium_block", EnderiumBlock::new );
 	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.register( "infested_end_stone", InfestedEndStone::new );
 
 	// Effects

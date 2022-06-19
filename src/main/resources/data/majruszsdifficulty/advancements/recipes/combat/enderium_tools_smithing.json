@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszsdifficulty:enderium_axe_smithing",
+      "majruszsdifficulty:enderium_hoe_smithing",
+      "majruszsdifficulty:enderium_pickaxe_smithing",
+      "majruszsdifficulty:enderium_sword_smithing"
+    ]
+  },
+  "criteria": {
+    "has_enderium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "majruszsdifficulty:enderium_ingot"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_enderium_ingot"
+    ]
+  ]
+}

@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "tattered_cloth",
+  "group": "cloth",
   "pattern": [
     "ccc",
     "c c"
   ],
   "key": {
     "c": {
-      "item": "majruszsdifficulty:tattered_cloth"
+      "item": "majruszsdifficulty:cloth"
     }
   },
   "result": {

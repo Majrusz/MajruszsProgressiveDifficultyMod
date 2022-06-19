@@ -60,7 +60,7 @@
               "treasure": true
             }
           ],
-          "name": "majruszsdifficulty:end_hoe"
+          "name": "majruszsdifficulty:enderium_hoe"
         }
       ]
     },
@@ -73,7 +73,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:end_shard"
+          "name": "majruszsdifficulty:enderium_shard"
         }
       ]
     },

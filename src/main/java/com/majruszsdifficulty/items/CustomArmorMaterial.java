@@ -23,7 +23,7 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 		6,
 		8,
 		4
-	}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->Ingredient.of( Registries.END_INGOT.get() ) );
+	}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->Ingredient.of( Registries.ENDERIUM_INGOT.get() ) );
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };
 	private final String name;

@@ -89,7 +89,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:tattered_cloth",
+          "name": "majruszsdifficulty:cloth",
           "weight": 10,
           "quality": 1
         },

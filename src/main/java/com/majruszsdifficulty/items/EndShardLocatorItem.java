@@ -22,7 +22,7 @@ import java.util.List;
 
 /** Item for locating End Shards. */
 public class EndShardLocatorItem extends Item {
-	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.end_shard_locator.item_tooltip";
+	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.enderium_shard_locator.item_tooltip";
 	private static final String COUNTER_TAG = "EndShardLocatorCounter";
 	private static final String POSITION_X_TAG = "EndShardLocatorX";
 	private static final String POSITION_Y_TAG = "EndShardLocatorY";
@@ -54,7 +54,7 @@ public class EndShardLocatorItem extends Item {
 		int counter = data.getInt( COUNTER_TAG );
 		BlockPos nearestEndShard = new BlockPos( data.getInt( POSITION_X_TAG ), data.getInt( POSITION_Y_TAG ), data.getInt( POSITION_Z_TAG ) );
 		BlockState currentBlockState = world.getBlockState( nearestEndShard );
-		boolean isValid = currentBlockState.getBlock() == Registries.END_SHARD_ORE.get();
+		boolean isValid = currentBlockState.getBlock() == Registries.ENDERIUM_SHARD_ORE.get();
 
 		double closestDistance = entityPosition.distanceToSqr( Vec3.atCenterOf( nearestEndShard ) );
 		BlockPos endShardOre = findNearestEndShard( world, entityPosition, counter - COORDINATE_FACTOR );
@@ -92,7 +92,7 @@ public class EndShardLocatorItem extends Item {
 		for( int x = ( int )( entityPosition.x() - COORDINATE_FACTOR ); x < entityPosition.x() + COORDINATE_FACTOR; x++ )
 			for( int z = ( int )( entityPosition.z() - COORDINATE_FACTOR ); z < entityPosition.z() + COORDINATE_FACTOR; z++ ) {
 				BlockPos testPosition = new BlockPos( x, y, z );
-				if( world.getBlockState( testPosition ).getBlock() == Registries.END_SHARD_ORE.get() ) {
+				if( world.getBlockState( testPosition ).getBlock() == Registries.ENDERIUM_SHARD_ORE.get() ) {
 					double distance = entityPosition.distanceToSqr( Vec3.atCenterOf( testPosition ) );
 					if( distance < closestDistance ) {
 						closestDistance = distance;

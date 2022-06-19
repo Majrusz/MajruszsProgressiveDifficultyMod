@@ -29,7 +29,7 @@ import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
 
 @Mod.EventBusSubscriber
 public class EndShardOre extends Block {
-	private static final String WARNING_TRANSLATION_KEY = "block.majruszsdifficulty.end_shard_ore.warning";
+	private static final String WARNING_TRANSLATION_KEY = "block.majruszsdifficulty.enderium_shard_ore.warning";
 	protected final ConfigGroup configGroup;
 	protected final DoubleConfig triggerDistance;
 
@@ -63,7 +63,7 @@ public class EndShardOre extends Block {
 		if( !( event.getState().getBlock() instanceof EndShardOre ) )
 			return;
 
-		focusNearbyEndermansOnEntity( event.getPlayer(), Registries.END_SHARD_ORE.get().triggerDistance.get() );
+		focusNearbyEndermansOnEntity( event.getPlayer(), Registries.ENDERIUM_SHARD_ORE.get().triggerDistance.get() );
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class EndShardOre extends Block {
 
 	public static class EndShardOreItem extends BlockItem {
 		public EndShardOreItem() {
-			super( Registries.END_SHARD_ORE.get(), new Properties().stacksTo( 64 ).tab( Registries.ITEM_GROUP ) );
+			super( Registries.ENDERIUM_SHARD_ORE.get(), new Properties().stacksTo( 64 ).tab( Registries.ITEM_GROUP ) );
 		}
 	}
 }

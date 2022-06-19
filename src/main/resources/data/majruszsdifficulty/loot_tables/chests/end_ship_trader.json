@@ -39,7 +39,7 @@
         {
           "type": "minecraft:item",
           "weight": 20,
-          "name": "majruszsdifficulty:end_shard",
+          "name": "majruszsdifficulty:enderium_shard",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -114,12 +114,12 @@
         {
           "type": "minecraft:item",
           "weight": 20,
-          "name": "majruszsdifficulty:end_ingot"
+          "name": "majruszsdifficulty:enderium_ingot"
         },
         {
           "type": "minecraft:item",
           "weight": 80,
-          "name": "majruszsdifficulty:end_shard",
+          "name": "majruszsdifficulty:enderium_shard",
           "functions": [
             {
               "function": "minecraft:set_count",
