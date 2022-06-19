@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.renderers;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.RegistryHandlerClient;
+import com.majruszsdifficulty.RegistriesClient;
 import com.majruszsdifficulty.models.OceanShieldModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -35,7 +35,7 @@ public class OceanShieldRenderer extends BlockEntityWithoutLevelRenderer {
 	) {
 		poseStack.pushPose();
 		poseStack.scale( 1.0F, -1.0F, -1.0F );
-		Material material = RegistryHandlerClient.OCEAN_SHIELD_MATERIAL;
+		Material material = RegistriesClient.OCEAN_SHIELD_MATERIAL;
 		VertexConsumer vertexconsumer = material.sprite()
 			.wrap( ItemRenderer.getFoilBufferDirect( bufferSource, this.oceanShield.renderType( material.atlasLocation() ), true, itemStack.hasFoil() ) );
 		for( ModelPart modelPart : this.oceanShield.getModels() )

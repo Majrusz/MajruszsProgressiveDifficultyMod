@@ -246,7 +246,7 @@ public class Registries {
 	}
 
 	private static void setupClient( final FMLClientSetupEvent event ) {
-		RegistryHandlerClient.setup(); // sets up client models etc.
+		RegistriesClient.setup(); // sets up client models etc.
 	}
 
 	public static void setupEntities( EntityAttributeCreationEvent event ) {
@@ -355,6 +355,6 @@ public class Registries {
 	private static void onTextureStitch( TextureStitchEvent.Pre event ) {
 		final TextureAtlas map = event.getAtlas();
 		if( InventoryMenu.BLOCK_ATLAS.equals( map.location() ) )
-			event.addSprite( RegistryHandlerClient.OCEAN_SHIELD_MATERIAL.texture() );
+			event.addSprite( RegistriesClient.OCEAN_SHIELD_MATERIAL.texture() );
 	}
 }

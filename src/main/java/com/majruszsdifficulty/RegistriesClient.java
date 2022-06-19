@@ -19,9 +19,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
 
-/** Class registering things only on the client side. */
 @OnlyIn( Dist.CLIENT )
-public class RegistryHandlerClient {
+public class RegistriesClient {
 	public static final Material OCEAN_SHIELD_MATERIAL = new Material( InventoryMenu.BLOCK_ATLAS, Registries.getLocation( "entity/ocean_shield" ) );
 
 	public static void setup() {
