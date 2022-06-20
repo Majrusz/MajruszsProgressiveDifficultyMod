@@ -5,14 +5,10 @@ import com.majruszsdifficulty.Registries;
 import com.mlib.LevelHelper;
 import com.mlib.Utility;
 import com.mlib.effects.EffectHelper;
-import com.mlib.entities.EntityHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
@@ -41,23 +37,16 @@ public class RecallPotionItem extends Item {
 
 	@Override
 	public ItemStack finishUsingItem( ItemStack itemStack, Level level, LivingEntity livingEntity ) {
-		if( livingEntity instanceof Player player )
-		{
+		if( livingEntity instanceof Player player ) {
 			ItemHelper.consumeItemOnUse( itemStack, player );
-
-			if( player instanceof ServerPlayer serverPlayer ) {
-				CriteriaTriggers.CONSUME_ITEM.trigger( serverPlayer, itemStack );
-				if( level instanceof ServerLevel serverLevel )
-					teleportToSpawnPosition( serverPlayer, serverLevel );
-			}
+		}
+		if( livingEntity instanceof ServerPlayer serverPlayer ) {
+			CriteriaTriggers.CONSUME_ITEM.trigger( serverPlayer, itemStack );
+			LevelHelper.teleportToSpawnPosition( serverPlayer );
+			EffectHelper.applyEffectIfPossible( serverPlayer, MobEffects.CONFUSION, Utility.secondsToTicks( 9.0 ), 0 );
 		}
 
 		return itemStack;
-	}
-
-	protected void teleportToSpawnPosition( ServerPlayer player, ServerLevel level ) {
-		LevelHelper.teleportToSpawnPosition( player );
-		EffectHelper.applyEffectIfPossible( player, MobEffects.CONFUSION, Utility.secondsToTicks( 6.0 ), 0 );
 	}
 
 	@Override
