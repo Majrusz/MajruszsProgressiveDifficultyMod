@@ -43,7 +43,7 @@ public class RecallPotionItem extends Item {
 		if( livingEntity instanceof ServerPlayer serverPlayer ) {
 			CriteriaTriggers.CONSUME_ITEM.trigger( serverPlayer, itemStack );
 			LevelHelper.teleportToSpawnPosition( serverPlayer );
-			EffectHelper.applyEffectIfPossible( serverPlayer, MobEffects.CONFUSION, Utility.secondsToTicks( 9.0 ), 0 );
+			EffectHelper.applyEffectIfPossible( serverPlayer, MobEffects.CONFUSION, Utility.secondsToTicks( 7.0 ), 1 );
 		}
 
 		return itemStack;
