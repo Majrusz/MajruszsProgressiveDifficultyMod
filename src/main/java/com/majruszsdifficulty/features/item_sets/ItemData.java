@@ -7,12 +7,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Predicate;
+
 public class ItemData {
-	public final ICondition condition;
+	public final Predicate< ItemStack > condition;
 	public final INameGetter nameGetter;
 	public final EquipmentSlot[] equipmentSlots;
 
-	public ItemData( ICondition condition, INameGetter nameGetter, EquipmentSlot... equipmentSlots ) {
+	public ItemData( Predicate< ItemStack > condition, INameGetter nameGetter, EquipmentSlot... equipmentSlots ) {
 		this.condition = condition;
 		this.nameGetter = nameGetter;
 		this.equipmentSlots = equipmentSlots;
@@ -35,15 +37,11 @@ public class ItemData {
 	}
 
 	public boolean isSetItemStack( ItemStack itemStack ) {
-		return this.condition.check( itemStack );
+		return this.condition.test( itemStack );
 	}
 
 	public MutableComponent getTranslatedName() {
 		return this.nameGetter.getName();
-	}
-
-	public interface ICondition {
-		boolean check( ItemStack itemStack );
 	}
 
 	public interface INameGetter {

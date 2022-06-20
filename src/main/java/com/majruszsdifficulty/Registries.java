@@ -14,6 +14,7 @@ import com.majruszsdifficulty.features.IncreaseGameDifficulty;
 import com.majruszsdifficulty.features.SpawnDisabler;
 import com.majruszsdifficulty.features.item_sets.EnderiumSet;
 import com.majruszsdifficulty.features.item_sets.OceanSet;
+import com.majruszsdifficulty.features.item_sets.UndeadSet;
 import com.majruszsdifficulty.features.special.SplitCreeperToCreeperlings;
 import com.majruszsdifficulty.features.special.StrongerExplosions;
 import com.majruszsdifficulty.features.treasure_bag.FishingRewarder;
@@ -155,6 +156,7 @@ public class Registries {
 	// Item Sets
 	public static final EnderiumSet ENDERIUM_SET = new EnderiumSet();
 	public static final OceanSet OCEAN_SET = new OceanSet();
+	public static final UndeadSet UNDEAD_SET = new UndeadSet();
 
 	// Blocks
 	public static final RegistryObject< EndShardOre > ENDERIUM_SHARD_ORE = BLOCKS.register( "enderium_shard_ore", EndShardOre::new );

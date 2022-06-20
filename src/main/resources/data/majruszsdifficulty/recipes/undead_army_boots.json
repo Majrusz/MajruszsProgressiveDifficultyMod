@@ -17,7 +17,8 @@
       "display": {
         "color": 9595003,
         "Name": "{\"translate\":\"majruszsdifficulty.items.undead_boots\",\"italic\":false}"
-      }
+      },
+      "UndeadArmySet": true
     }
   }
 }

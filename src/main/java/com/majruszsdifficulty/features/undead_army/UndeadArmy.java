@@ -6,6 +6,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.goals.ForgiveUndeadArmyTargetGoal;
 import com.majruszsdifficulty.goals.UndeadAttackPositionGoal;
+import com.majruszsdifficulty.items.UndeadArmorItem;
 import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.Utility;
@@ -31,9 +32,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
@@ -49,7 +48,6 @@ import java.util.function.Predicate;
 /** Class representing Undead Army raid. (new raid that starts after killing certain amount of undead) */
 @Mod.EventBusSubscriber
 public class UndeadArmy {
-	public final static int ARMOR_COLOR = 0x92687b;
 	private final static int SAFE_SPAWN_RADIUS = 90;
 	private final static int SPAWN_RADIUS = 70;
 	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
@@ -147,20 +145,11 @@ public class UndeadArmy {
 	/** Updates progression bar text depending on current status. */
 	public void updateBarText() {
 		switch( this.status ) {
-			case ONGOING:
-				this.bossInfo.setName( this.currentWave == 0 ? UndeadArmyText.TITLE : UndeadArmyText.getWaveMessage( this.currentWave ) );
-				break;
-			case BETWEEN_WAVES:
-				this.bossInfo.setName( UndeadArmyText.BETWEEN_WAVES );
-				break;
-			case VICTORY:
-				this.bossInfo.setName( UndeadArmyText.VICTORY );
-				break;
-			case FAILED:
-				this.bossInfo.setName( UndeadArmyText.FAILED );
-				break;
-			default:
-				break;
+			case ONGOING -> this.bossInfo.setName( this.currentWave == 0 ? UndeadArmyText.TITLE : UndeadArmyText.getWaveMessage( this.currentWave ) );
+			case BETWEEN_WAVES -> this.bossInfo.setName( UndeadArmyText.BETWEEN_WAVES );
+			case VICTORY -> this.bossInfo.setName( UndeadArmyText.VICTORY );
+			case FAILED -> this.bossInfo.setName( UndeadArmyText.FAILED );
+			default -> {}
 		}
 	}
 
@@ -182,19 +171,10 @@ public class UndeadArmy {
 	/** Function called each tick for handling current status. */
 	public void tickCurrentStatus() {
 		switch( this.status ) {
-			case BETWEEN_WAVES:
-				tickBetweenWaves();
-				break;
-			case ONGOING:
-				tickOngoing();
-				break;
-			case VICTORY:
-			case FAILED:
-				tickFinished();
-				break;
-			case STOPPED:
-				tickStopped();
-				break;
+			case BETWEEN_WAVES -> tickBetweenWaves();
+			case ONGOING -> tickOngoing();
+			case VICTORY, FAILED -> tickFinished();
+			case STOPPED -> tickStopped();
 		}
 	}
 
@@ -357,10 +337,9 @@ public class UndeadArmy {
 			for( int i = 0; i < waveMember.amount; i++ ) {
 				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.level, this.positionToAttack, SPAWN_RADIUS );
 				Entity entity = waveMember.entityType.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
-				if( !( entity instanceof Mob ) )
+				if( !( entity instanceof Mob monster ) )
 					continue;
 
-				Mob monster = ( Mob )entity;
 				monster.setPersistenceRequired();
 				updateUndeadAIGoal( monster );
 				equipWithDyedLeatherArmor( monster );
@@ -416,38 +395,25 @@ public class UndeadArmy {
 
 	/** Gives a random amount of leather armor to monster. */
 	private void equipWithDyedLeatherArmor( Mob monster ) {
-		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
-		double armorPieceChance = config.getArmorPieceChance();
-		float armorPieceDropChance = 0.1f;
+		float chanceToEquip = ( float )Registries.UNDEAD_ARMY_CONFIG.getArmorPieceChance();
+		float chanceToDrop = 0.015f;
 
-		equipWithArmorPieceIfPossible( monster, Items.LEATHER_HELMET, "helmet", 1.0 );
-		equipWithArmorPieceIfPossible( monster, Items.LEATHER_CHESTPLATE, "chestplate", armorPieceChance );
-		equipWithArmorPieceIfPossible( monster, Items.LEATHER_LEGGINGS, "leggings", armorPieceChance );
-		equipWithArmorPieceIfPossible( monster, Items.LEATHER_BOOTS, "boots", armorPieceChance );
-
-		monster.setDropChance( EquipmentSlot.FEET, armorPieceDropChance );
-		monster.setDropChance( EquipmentSlot.LEGS, armorPieceDropChance );
-		monster.setDropChance( EquipmentSlot.CHEST, armorPieceDropChance );
-		monster.setDropChance( EquipmentSlot.HEAD, armorPieceDropChance );
+		tryToEquipItem( monster, UndeadArmorItem.HELMET_ID, 1.0f, chanceToDrop );
+		tryToEquipItem( monster, UndeadArmorItem.CHESTPLATE_ID, chanceToEquip, chanceToDrop );
+		tryToEquipItem( monster, UndeadArmorItem.LEGGINGS_ID, chanceToEquip, chanceToDrop );
+		tryToEquipItem( monster, UndeadArmorItem.BOOTS_ID, chanceToEquip, chanceToDrop );
 	}
 
 	/** Creates new armor piece for undead entity. */
-	private void equipWithArmorPieceIfPossible( Mob monster, Item item, String registerName, double chance ) {
-		if( Random.tryChance( 1.0 - chance ) || monster instanceof TankEntity )
+	private void tryToEquipItem( Mob monster, String itemId, float chanceToCreate, float chanceToDrop ) {
+		if( Random.tryChance( 1.0 - chanceToCreate ) || monster instanceof TankEntity )
 			return;
 
-		ItemStack armorPiece = new ItemStack( item );
-		setUndeadArmyColorAndName( armorPiece, registerName );
+		UndeadArmorItem.ItemData itemData = UndeadArmorItem.getData( itemId );
+		ItemStack armorPiece = UndeadArmorItem.constructItem( itemId );
 		ItemHelper.damageItem( armorPiece, 0.75 );
 		monster.equipItemIfPossible( armorPiece );
-	}
-
-	/** Changes color of leather armor. */
-	private void setUndeadArmyColorAndName( ItemStack armor, String registerName ) {
-		CompoundTag nbt = armor.getOrCreateTagElement( "display" );
-		nbt.putInt( "color", ARMOR_COLOR );
-		nbt.putString( "Name", "{\"translate\":\"majruszsdifficulty.items.undead_" + registerName + "\",\"italic\":false}" );
-		armor.addTagElement( "display", nbt );
+		monster.setDropChance( itemData.slot(), chanceToDrop );
 	}
 
 	/** Rewards all player participating in the raid. */

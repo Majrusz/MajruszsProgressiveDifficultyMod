@@ -18,7 +18,8 @@
       "display": {
         "color": 9595003,
         "Name": "{\"translate\":\"majruszsdifficulty.items.undead_chestplate\",\"italic\":false}"
-      }
+      },
+      "UndeadArmySet": true
     }
   }
 }
