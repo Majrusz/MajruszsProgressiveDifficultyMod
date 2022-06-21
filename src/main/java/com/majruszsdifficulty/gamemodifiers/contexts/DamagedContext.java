@@ -27,7 +27,7 @@ public class DamagedContext extends Context {
 		DamageSource source = event.getSource();
 		LivingEntity attacker = source.getEntity() instanceof LivingEntity ? ( LivingEntity )source.getEntity() : null;
 		LivingEntity target = event.getEntityLiving();
-		Data data = new Data( attacker, target, source );
+		Data data = new Data( event, attacker, target, source );
 
 		for( DamagedContext context : CONTEXTS ) {
 			if( context.check( data ) ) {
@@ -42,13 +42,15 @@ public class DamagedContext extends Context {
 	}
 
 	public static class Data extends Context.Data {
+		public final LivingHurtEvent event;
 		@Nullable
 		public LivingEntity attacker;
 		public LivingEntity target;
 		public DamageSource source;
 
-		public Data( @Nullable LivingEntity attacker, LivingEntity target, DamageSource source ) {
+		public Data( LivingHurtEvent event, @Nullable LivingEntity attacker, LivingEntity target, DamageSource source ) {
 			super( attacker );
+			this.event = event;
 			this.attacker = attacker;
 			this.target = target;
 			this.source = source;

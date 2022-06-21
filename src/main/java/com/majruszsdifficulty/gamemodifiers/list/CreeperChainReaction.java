@@ -13,7 +13,7 @@ public class CreeperChainReaction extends GameModifier {
 	static final DamagedContext ON_DAMAGED = new DamagedContext( EXCLUDABLE, GAME_STAGE, ARE_CREEPERS );
 
 	public CreeperChainReaction() {
-		super( "CreeperChainReaction", "Makes the Creeper ignite once any nearby Creeper explode.", ON_DAMAGED );
+		super( "CreeperChainReaction", "Makes a Creeper ignite once any other Creeper explode nearby.", ON_DAMAGED );
 	}
 
 	@Override

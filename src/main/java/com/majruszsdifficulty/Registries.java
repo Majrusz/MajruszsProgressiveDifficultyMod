@@ -21,7 +21,7 @@ import com.majruszsdifficulty.features.undead_army.ReloadUndeadArmyGoals;
 import com.majruszsdifficulty.features.undead_army.UndeadArmyConfig;
 import com.majruszsdifficulty.features.undead_army.UndeadArmyManager;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
-import com.majruszsdifficulty.gamemodifiers.list.CreeperChainReaction;
+import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.lootmodifiers.AddTreasureBagsToLoot;
 import com.majruszsdifficulty.lootmodifiers.DoubleLoot;
@@ -221,6 +221,7 @@ public class Registries {
 	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
 	static {
 		GAME_MODIFIERS.add( new CreeperChainReaction() );
+		GAME_MODIFIERS.add( new CreeperExplosionImmunity() );
 	}
 
 	public static ResourceLocation getLocation( String register ) {
