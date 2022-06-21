@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Making Wither Sword attacks inflict Wither II. */
-public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
+public class WitherSwordOnAttack extends WhenDamagedApplyEffectBaseOld {
 	private static final String CONFIG_NAME = "WitherSword";
 	private static final String CONFIG_COMMENT = "Wither Sword inflicts Wither II.";
 

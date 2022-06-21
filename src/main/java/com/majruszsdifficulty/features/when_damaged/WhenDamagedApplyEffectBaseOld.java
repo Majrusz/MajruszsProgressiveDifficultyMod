@@ -12,11 +12,11 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Base class representing event on which enemies will receive some effects after being attacked. */
-public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
+public abstract class WhenDamagedApplyEffectBaseOld extends ChanceWhenDamagedBaseOld {
 	protected final MobEffect[] effects;
 	protected final DurationConfig effectDuration;
 
-	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+	public WhenDamagedApplyEffectBaseOld( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
 		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect[] effects
 	) {
 		super( configName, configComment, defaultChance, minimumStage, shouldBeMultipliedByCRD );
@@ -29,7 +29,7 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 			this.featureGroup.addConfig( this.effectDuration );
 	}
 
-	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+	public WhenDamagedApplyEffectBaseOld( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
 		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect effect
 	) {
 		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumStage, shouldBeMultipliedByCRD, new MobEffect[]{ effect } );

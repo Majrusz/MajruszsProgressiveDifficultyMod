@@ -2,7 +2,7 @@ package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
-import com.majruszsdifficulty.features.ChanceFeatureBase;
+import com.majruszsdifficulty.features.ChanceFeatureBaseOld;
 import com.mlib.MajruszLibrary;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 
 /** Whenever Creeper dies there is a chance it will spawn few Creeperlings. */
 @Mod.EventBusSubscriber
-public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
+public class SplitCreeperToCreeperlings extends ChanceFeatureBaseOld {
 	private static final String CONFIG_NAME = "SplitCreeper";
 	private static final String CONFIG_COMMENT = "Creepers after the explosion have a chance to spawn Creeperlings.";
 	protected final GameStageIntegerConfig creeperlingsAmount;

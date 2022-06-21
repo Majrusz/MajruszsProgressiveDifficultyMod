@@ -12,17 +12,19 @@ import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.features.ExperienceBonus;
 import com.majruszsdifficulty.features.IncreaseGameDifficulty;
 import com.majruszsdifficulty.features.SpawnDisabler;
-import com.majruszsdifficulty.features.item_sets.EnderiumSet;
-import com.majruszsdifficulty.features.item_sets.OceanSet;
-import com.majruszsdifficulty.features.item_sets.UndeadSet;
+import com.majruszsdifficulty.features.itemsets.EnderiumSet;
+import com.majruszsdifficulty.features.itemsets.OceanSet;
+import com.majruszsdifficulty.features.itemsets.UndeadSet;
 import com.majruszsdifficulty.features.treasure_bag.FishingRewarder;
 import com.majruszsdifficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszsdifficulty.features.undead_army.ReloadUndeadArmyGoals;
 import com.majruszsdifficulty.features.undead_army.UndeadArmyConfig;
 import com.majruszsdifficulty.features.undead_army.UndeadArmyManager;
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.list.CreeperChainReaction;
 import com.majruszsdifficulty.items.*;
-import com.majruszsdifficulty.loot_modifiers.AddTreasureBagsToLoot;
-import com.majruszsdifficulty.loot_modifiers.DoubleLoot;
+import com.majruszsdifficulty.lootmodifiers.AddTreasureBagsToLoot;
+import com.majruszsdifficulty.lootmodifiers.DoubleLoot;
 import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
@@ -74,6 +76,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class Registries {
@@ -213,6 +217,12 @@ public class Registries {
 		LOOT_MODIFIERS.register( "add_treasure_bag_to_loot", AddTreasureBagsToLoot.Serializer::new );
 	}
 
+	// Game Modifiers
+	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
+	static {
+		GAME_MODIFIERS.add( new CreeperChainReaction() );
+	}
+
 	public static ResourceLocation getLocation( String register ) {
 		return HELPER.getLocation( register );
 	}
@@ -238,6 +248,8 @@ public class Registries {
 		forgeEventBus.addListener( Registries::onSavingLevel );
 		forgeEventBus.addListener( Registries::onServerStart );
 		forgeEventBus.addListener( Registries::registerCommands );
+
+		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
 
 	private static void setupClient( final FMLClientSetupEvent event ) {
@@ -254,8 +266,6 @@ public class Registries {
 		SpawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
-
-		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
 
 	private static void setupEvents() {

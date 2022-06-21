@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Making Cactus inflict bleeding on enemies. */
-public class CactusBleedingOnHurt extends WhenDamagedApplyBleedingBase {
+public class CactusBleedingOnHurt extends WhenDamagedApplyBleedingBaseOld {
 	private static final String CONFIG_NAME = "CactusBleeding";
 	private static final String CONFIG_COMMENT = "Touching cactus inflict bleeding.";
 

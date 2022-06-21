@@ -14,7 +14,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Making Drowned trident attacks have a chance to spawn lightning. */
-public class DrownedLightningOnAttack extends ChanceWhenDamagedBase {
+public class DrownedLightningOnAttack extends ChanceWhenDamagedBaseOld {
 	private static final String CONFIG_NAME = "DrownedLightning";
 	private static final String CONFIG_COMMENT = "Drowned attacks with trident spawn lightning bolt.";
 

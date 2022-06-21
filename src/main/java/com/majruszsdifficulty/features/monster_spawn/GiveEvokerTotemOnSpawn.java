@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /** Gives Totem for Evoker on spawn. */
-public class GiveEvokerTotemOnSpawn extends GiveItemAfterSpawningBase {
+public class GiveEvokerTotemOnSpawn extends GiveItemAfterSpawningBaseOld {
 	private static final String CONFIG_NAME = "EvokerTotem";
 	private static final String CONFIG_COMMENT = "Evoker spawns with Totem of Undying.";
 

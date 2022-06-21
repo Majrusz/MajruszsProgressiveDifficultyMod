@@ -9,7 +9,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Makes all Creepers ignite every nearby Creeper when exploding. */
-public class IgniteCreeperOnHurt extends WhenDamagedBase {
+public class IgniteCreeperOnHurt extends WhenDamagedBaseOld {
 	private static final String CONFIG_NAME = "CreeperIgnite";
 	private static final String CONFIG_COMMENT = "Makes all Creepers ignite every nearby Creeper when exploding.";
 

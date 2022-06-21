@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.loot_modifiers;
+package com.majruszsdifficulty.lootmodifiers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

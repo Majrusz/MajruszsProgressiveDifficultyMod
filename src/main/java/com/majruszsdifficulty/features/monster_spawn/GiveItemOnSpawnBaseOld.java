@@ -8,12 +8,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 /** Class for giving an item for entity on spawn. */
-public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
+public abstract class GiveItemOnSpawnBaseOld extends OnEnemyToBeSpawnedBaseOld {
 	protected final EquipmentSlot equipmentSlotType;
 	protected final boolean shouldBeEnchanted;
 	protected final boolean shouldBeDamaged;
 
-	public GiveItemOnSpawnBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
+	public GiveItemOnSpawnBaseOld( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
 		super( configName, configComment, defaultChance, minimumStage, shouldChanceBeMultipliedByCRD );

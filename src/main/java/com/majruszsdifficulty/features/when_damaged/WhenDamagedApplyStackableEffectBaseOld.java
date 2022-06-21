@@ -9,13 +9,13 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Base class representing event on which enemies will receive some stackable effects after being attacked. */
-public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApplyEffectBase {
+public abstract class WhenDamagedApplyStackableEffectBaseOld extends WhenDamagedApplyEffectBaseOld {
 	protected final boolean isAmplifierStackable;
 	protected final boolean isDurationStackable;
 	protected final int maximumAmplifier;
 	protected final int maximumDurationInTicks;
 
-	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+	public WhenDamagedApplyStackableEffectBaseOld( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
 		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect[] effects, boolean isAmplifierStackable, boolean isDurationStackable,
 		int maximumAmplifier, int maximumDurationInTicks
 	) {
@@ -27,7 +27,7 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 		this.maximumDurationInTicks = maximumDurationInTicks;
 	}
 
-	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
+	public WhenDamagedApplyStackableEffectBaseOld( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
 		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect effect, boolean isAmplifierStackable, boolean isDurationStackable,
 		int maximumAmplifier, int maximumDurationInTicks
 	) {

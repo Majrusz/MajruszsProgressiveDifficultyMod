@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.Shulker;
 import javax.annotation.Nullable;
 
 /** Makes Shulker attacks have a chance to blind enemies. */
-public class ShulkerBlindnessOnAttack extends WhenDamagedApplyEffectBase {
+public class ShulkerBlindnessOnAttack extends WhenDamagedApplyEffectBaseOld {
 	private static final String CONFIG_NAME = "ShulkerBlindness";
 	private static final String CONFIG_COMMENT = "Shulker inflict Blindness.";
 

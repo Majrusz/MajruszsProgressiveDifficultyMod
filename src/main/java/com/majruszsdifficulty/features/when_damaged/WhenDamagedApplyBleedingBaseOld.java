@@ -15,8 +15,8 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Base class representing event on which enemies will receive bleeding after being attacked. */
-public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffectBase {
-	public WhenDamagedApplyBleedingBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds ) {
+public abstract class WhenDamagedApplyBleedingBaseOld extends WhenDamagedApplyEffectBaseOld {
+	public WhenDamagedApplyBleedingBaseOld( String configName, String configComment, double defaultChance, double defaultDurationInSeconds ) {
 		super( configName, configComment, defaultChance, defaultDurationInSeconds, GameStage.Stage.NORMAL, false, Registries.BLEEDING.get() );
 	}
 

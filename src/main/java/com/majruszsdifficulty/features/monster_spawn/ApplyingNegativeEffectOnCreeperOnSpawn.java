@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Creeper;
 
 /** Applying some negative effects on creeper. */
-public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
+public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBaseOld {
 	protected static final MobEffect[] EFFECTS = new MobEffect[]{ MobEffects.WEAKNESS,
 		MobEffects.MOVEMENT_SLOWDOWN,
 		MobEffects.DIG_SLOWDOWN,

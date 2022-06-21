@@ -30,7 +30,7 @@ public class HermesBootsItem extends ArmorItem {
 		super( CustomArmorMaterial.HERMES, EquipmentSlot.FEET, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
 		this.movementSpeedBonus = new DoubleConfig( "movement_speed_bonus", "Extra movement speed multiplier. (requires game/world restart!)", true, 0.25, 0.0, 5.0 );
-		this.configGroup = MajruszsDifficulty.FEATURES_GROUP.addGroup( new ConfigGroup( "HermesBoots", "Hermes Boots item configuration.", this.movementSpeedBonus ) );
+		this.configGroup = MajruszsDifficulty.GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "HermesBoots", "Hermes Boots item configuration.", this.movementSpeedBonus ) );
 	}
 
 	@Nullable

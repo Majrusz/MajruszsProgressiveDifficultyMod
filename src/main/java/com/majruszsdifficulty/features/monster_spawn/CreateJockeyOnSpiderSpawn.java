@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 
 /** Spawns extra skeleton and makes him ride the spider. */
-public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
+public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBaseOld {
 	private static final String CONFIG_NAME = "Jockey";
 	private static final String CONFIG_COMMENT = "Extra chance for jockey to spawn.";
 

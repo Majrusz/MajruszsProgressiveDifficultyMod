@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.item_sets;
+package com.majruszsdifficulty.features.itemsets;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.UndeadArmorItem;

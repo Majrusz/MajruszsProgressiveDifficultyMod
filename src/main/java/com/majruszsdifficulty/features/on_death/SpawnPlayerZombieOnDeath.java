@@ -19,7 +19,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import javax.annotation.Nullable;
 
 /** Whenever player dies from Zombie or Bleeding there will be Zombie spawned. */
-public class SpawnPlayerZombieOnDeath extends OnDeathBase {
+public class SpawnPlayerZombieOnDeath extends OnDeathBaseOld {
 	private static final String CONFIG_NAME = "PlayerZombie";
 	private static final String CONFIG_COMMENT = "Spawns special Zombie whenever player dies from Bleeding or Zombie.";
 	protected final DoubleConfig playerHeadChance;

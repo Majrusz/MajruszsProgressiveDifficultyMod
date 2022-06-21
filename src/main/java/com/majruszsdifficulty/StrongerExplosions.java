@@ -1,8 +1,8 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.entities.CreeperlingEntity;
-import com.majruszsdifficulty.features.ChanceFeatureBase;
-import com.majruszsdifficulty.features.FeatureBase;
+import com.majruszsdifficulty.features.ChanceFeatureBaseOld;
+import com.majruszsdifficulty.features.FeatureBaseOld;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.events.ExplosionSizeEvent;
@@ -54,7 +54,7 @@ public class StrongerExplosions {
 		return null;
 	}
 
-	public static class BiggerSize extends FeatureBase {
+	public static class BiggerSize extends FeatureBaseOld {
 		private static final String CONFIG_NAME = "BiggerExplosionSize";
 		private static final String CONFIG_COMMENT = "Increases size of all explosions. (creeper, tnt, ghast ball etc.)";
 		protected final DoubleConfig maximumMultiplier;
@@ -77,7 +77,7 @@ public class StrongerExplosions {
 		}
 	}
 
-	public static class CausingFire extends ChanceFeatureBase {
+	public static class CausingFire extends ChanceFeatureBaseOld {
 		private static final String CONFIG_NAME = "ExplosionCausingFire";
 		private static final String CONFIG_COMMENT = "Makes all explosions leave fire.";
 

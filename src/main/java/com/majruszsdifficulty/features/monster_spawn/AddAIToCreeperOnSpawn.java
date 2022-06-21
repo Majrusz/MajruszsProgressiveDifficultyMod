@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Creeper;
 
 /** Adds new AI goals creeper on spawn. (makes the creeper destroy walls when near the player) */
-public class AddAIToCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
+public class AddAIToCreeperOnSpawn extends OnEnemyToBeSpawnedBaseOld {
 	private static final String CONFIG_NAME = "CreeperDestroyingWalls";
 	private static final String CONFIG_COMMENT = "Creepers exploding when near the player behind the wall.";
 

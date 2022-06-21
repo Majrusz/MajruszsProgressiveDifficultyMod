@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Makes all Creepers take less damage from other Creepers. */
-public class CreeperDamageReductionOnHurt extends WhenDamagedBase {
+public class CreeperDamageReductionOnHurt extends WhenDamagedBaseOld {
 	private static final String CONFIG_NAME = "CreeperExplosionReduction";
 	private static final String CONFIG_COMMENT = "Makes all Creepers take less damage from other Creepers.";
 	protected final DoubleConfig damageMultiplier;

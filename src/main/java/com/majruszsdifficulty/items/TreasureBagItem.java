@@ -17,7 +17,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,13 +37,13 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
+import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 /** Common code for all treasure bags. */
 @Mod.EventBusSubscriber
 public class TreasureBagItem extends Item {
 	public final static List< TreasureBagItem > TREASURE_BAGS = new ArrayList<>();
-	protected final static ConfigGroup CONFIG_GROUP = FEATURES_GROUP.addGroup( new ConfigGroup( "TreasureBag", "Configuration for treasure bags." ) );
+	protected final static ConfigGroup CONFIG_GROUP = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "TreasureBag", "Configuration for treasure bags." ) );
 	private final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.item_tooltip";
 
 	private final ResourceLocation lootTableLocation;

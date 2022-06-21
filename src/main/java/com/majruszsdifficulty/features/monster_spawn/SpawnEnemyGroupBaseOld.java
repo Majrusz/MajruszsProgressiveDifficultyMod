@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Spawning enemies in groups with leader and followers. */
-public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
+public abstract class SpawnEnemyGroupBaseOld extends OnEnemyToBeSpawnedBaseOld {
 	private static final String SIDEKICK_TAG = "MajruszsDifficultySidekick";
 	protected final int minimumAmountOfChildren;
 	protected final int maximumAmountOfChildren;
 	protected final Item[] leaderArmor;
 
-	public SpawnEnemyGroupBase( String configName, String configComment, GameStage.Stage minimumStage, boolean shouldChanceBeMultipliedByCRD,
+	public SpawnEnemyGroupBaseOld( String configName, String configComment, GameStage.Stage minimumStage, boolean shouldChanceBeMultipliedByCRD,
 		int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor
 	) {
 		super( configName, configComment, 0.25, minimumStage, shouldChanceBeMultipliedByCRD );

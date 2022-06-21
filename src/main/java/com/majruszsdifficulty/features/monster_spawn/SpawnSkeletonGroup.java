@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /** Spawns skeletons in group. */
-public class SpawnSkeletonGroup extends SpawnEnemyGroupBase {
+public class SpawnSkeletonGroup extends SpawnEnemyGroupBaseOld {
 	private static final String CONFIG_NAME = "SkeletonGroup";
 	private static final String CONFIG_COMMENT = "Skeleton spawns in groups.";
 	protected final DoubleConfig woodenSwordChance;

@@ -8,11 +8,11 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Class representing base feature that depends on chance and can be disabled. */
-public abstract class ChanceFeatureBase extends FeatureBase {
+public abstract class ChanceFeatureBaseOld extends FeatureBaseOld {
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
 	protected final DoubleConfig chance;
 
-	public ChanceFeatureBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
+	public ChanceFeatureBaseOld( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD
 	) {
 		super( configName, configComment, minimumStage );

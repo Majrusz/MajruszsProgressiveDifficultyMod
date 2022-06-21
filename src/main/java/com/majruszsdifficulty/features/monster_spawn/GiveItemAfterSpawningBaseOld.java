@@ -16,10 +16,10 @@ import java.util.UUID;
 
 /** Class for giving an item for entity after entity was spawned. */
 @Mod.EventBusSubscriber
-public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
+public abstract class GiveItemAfterSpawningBaseOld extends GiveItemOnSpawnBaseOld {
 	private static final List< Data > dataList = new ArrayList<>();
 
-	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
+	public GiveItemAfterSpawningBaseOld( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
 		super( configName, configComment, defaultChance, minimumStage, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );

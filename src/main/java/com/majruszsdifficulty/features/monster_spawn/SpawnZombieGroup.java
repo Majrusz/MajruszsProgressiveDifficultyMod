@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /** Spawns zombies in group. */
-public class SpawnZombieGroup extends SpawnEnemyGroupBase {
+public class SpawnZombieGroup extends SpawnEnemyGroupBaseOld {
 	private static final String CONFIG_NAME = "ZombieGroup";
 	private static final String CONFIG_COMMENT = "Zombies spawns in groups.";
 	protected final DoubleConfig stoneSwordChance;

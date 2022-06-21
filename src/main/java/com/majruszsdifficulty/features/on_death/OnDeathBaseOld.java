@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.on_death;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.features.ChanceFeatureBase;
+import com.majruszsdifficulty.features.ChanceFeatureBaseOld;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,8 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Class with common code of all 'OnDeath' classes. */
-public abstract class OnDeathBase extends ChanceFeatureBase implements IOnDeath {
-	public OnDeathBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage, boolean shouldChanceBeMultipliedByCRD
+public abstract class OnDeathBaseOld extends ChanceFeatureBaseOld implements IOnDeath {
+	public OnDeathBaseOld( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage, boolean shouldChanceBeMultipliedByCRD
 	) {
 		super( configName, configComment, defaultChance, minimumStage, shouldChanceBeMultipliedByCRD );
 	}

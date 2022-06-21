@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Making all nearby endermans to attack player when it hits any enderman. */
-public class TriggerAllEndermansOnAttack extends WhenDamagedBase {
+public class TriggerAllEndermansOnAttack extends WhenDamagedBaseOld {
 	private static final String CONFIG_NAME = "EndermanAttack";
 	private static final String CONFIG_COMMENT = "Makes all nearby enderman target player when it hits any of them.";
 

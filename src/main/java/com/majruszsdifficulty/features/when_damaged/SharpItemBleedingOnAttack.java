@@ -7,7 +7,7 @@ import net.minecraft.world.item.*;
 import javax.annotation.Nullable;
 
 /** Making attack with tools inflict bleeding on enemies. */
-public class SharpItemBleedingOnAttack extends WhenDamagedApplyBleedingBase {
+public class SharpItemBleedingOnAttack extends WhenDamagedApplyBleedingBaseOld {
 	private static final String CONFIG_NAME = "SharpItemBleeding";
 	private static final String CONFIG_COMMENT = "All sharp items inflict bleeding. (tools, weapons, shears etc.)";
 

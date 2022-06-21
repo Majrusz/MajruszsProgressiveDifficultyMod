@@ -16,7 +16,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Makes Enderman attacks have a chance to teleport entity. */
-public class EndermanTeleportOnAttack extends ChanceWhenDamagedBase {
+public class EndermanTeleportOnAttack extends ChanceWhenDamagedBaseOld {
 	private static final String CONFIG_NAME = "EndermanTeleport";
 	private static final String CONFIG_COMMENT = "Enderman attack teleports the player somewhere nearby.";
 

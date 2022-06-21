@@ -11,7 +11,7 @@ import net.minecraft.world.entity.monster.Phantom;
 import javax.annotation.Nullable;
 
 /** Makes Phantom attacks have a chance to set levitation on enemies. */
-public class PhantomLevitationOnAttack extends WhenDamagedApplyStackableEffectBase {
+public class PhantomLevitationOnAttack extends WhenDamagedApplyStackableEffectBaseOld {
 	private static final String CONFIG_NAME = "PhantomLevitation";
 	private static final String CONFIG_COMMENT = "Phantom inflicts levitation.";
 

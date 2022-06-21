@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -37,7 +36,7 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
+import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 /** A bandage item that removes the bleeding and gives regeneration for a few seconds. */
 @Mod.EventBusSubscriber
@@ -59,7 +58,7 @@ public class BandageItem extends Item {
 		this.isAlwaysUsable = new AvailabilityConfig( "is_always_usable", "Is " + name + " always usable? If not player can only use " + name + " when it is bleeding.", false, true );
 		this.effectDuration = new DurationConfig( "regeneration_duration", "Duration in seconds of Regeneration effect.", false, 4.0, 1.0, 120.0 );
 		this.effectAmplifier = new IntegerConfig( "regeneration_amplifier", "Level/amplifier of Regeneration effect.", false, defaultAmplifier, 0, 10 );
-		this.configGroup = FEATURES_GROUP.addGroup( new ConfigGroup( name, "Configuration for " + name + " item.", this.isAlwaysUsable, this.effectDuration, this.effectAmplifier ) );
+		this.configGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( name, "Configuration for " + name + " item.", this.isAlwaysUsable, this.effectDuration, this.effectAmplifier ) );
 	}
 
 	@Override

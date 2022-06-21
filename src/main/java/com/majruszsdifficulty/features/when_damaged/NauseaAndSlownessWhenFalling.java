@@ -15,7 +15,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import javax.annotation.Nullable;
 
 /** Inflicts Nausea and Slowness when player takes damage from falling. */
-public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
+public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBaseOld {
 	private static final String CONFIG_NAME = "FallEffects";
 	private static final String CONFIG_COMMENT = "Applies Nausea and Slowness on fall.";
 	protected final AvailabilityConfig nauseaAvailability;

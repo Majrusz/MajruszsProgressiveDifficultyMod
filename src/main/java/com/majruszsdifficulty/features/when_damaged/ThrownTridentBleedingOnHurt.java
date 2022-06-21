@@ -7,7 +7,7 @@ import net.minecraft.world.entity.projectile.ThrownTrident;
 import javax.annotation.Nullable;
 
 /** Making thrown trident inflict bleeding on enemies. */
-public class ThrownTridentBleedingOnHurt extends WhenDamagedApplyBleedingBase {
+public class ThrownTridentBleedingOnHurt extends WhenDamagedApplyBleedingBaseOld {
 	private static final String CONFIG_NAME = "TridentBleeding";
 	private static final String CONFIG_COMMENT = "Thrown trident cause bleeding on target.";
 

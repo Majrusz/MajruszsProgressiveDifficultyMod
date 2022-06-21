@@ -11,7 +11,7 @@ import net.minecraft.world.entity.monster.Spider;
 import javax.annotation.Nullable;
 
 /** Making Spider attacks have a chance to poison enemies. */
-public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
+public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBaseOld {
 	private static final String CONFIG_NAME = "SpiderPoison";
 	private static final String CONFIG_COMMENT = "Spider inflicts poison.";
 

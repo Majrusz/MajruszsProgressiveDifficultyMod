@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import javax.annotation.Nullable;
 
 /** Making entities who are able to 'bite' inflict bleeding on enemies. */
-public class BiteBleedingOnAttack extends WhenDamagedApplyBleedingBase {
+public class BiteBleedingOnAttack extends WhenDamagedApplyBleedingBaseOld {
 	private static final String CONFIG_NAME = "BiteBleeding";
 	private static final String CONFIG_COMMENT = "Animals, zombies and spiders inflict bleeding.";
 

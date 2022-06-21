@@ -8,7 +8,7 @@ import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.item.ItemStack;
 
 /** Gives Wither Sword for Wither Skeleton on spawn. */
-public class GiveWitherSkeletonSwordOnSpawn extends GiveItemAfterSpawningBase {
+public class GiveWitherSkeletonSwordOnSpawn extends GiveItemAfterSpawningBaseOld {
 	private static final String CONFIG_NAME = "WitherSkeletonSword";
 	private static final String CONFIG_COMMENT = "Wither Skeleton spawns with Wither Sword.";
 

@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Creeper;
 
 /** Charges creeper on spawn. (emulates attacking creeper with lightning bolt) */
-public class ChargeCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
+public class ChargeCreeperOnSpawn extends OnEnemyToBeSpawnedBaseOld {
 	private static final String CONFIG_NAME = "CreeperCharged";
 	private static final String CONFIG_COMMENT = "Creepers spawning charged.";
 

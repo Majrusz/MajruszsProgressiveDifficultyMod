@@ -12,7 +12,7 @@ import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
+import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 /** Awarding player with fisherman treasure bag after certain amount of fished items. */
 @Mod.EventBusSubscriber
@@ -26,7 +26,7 @@ public class FishingRewarder {
 		String groupComment = "Everything related to fishing.";
 		this.treasureBagRequirement = new GameStageIntegerConfig( "RequiredItems", requirementComment, 20, 15, 10, 3, 100 );
 
-		this.fishingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Fishing", groupComment ) );
+		this.fishingGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "Fishing", groupComment ) );
 		this.fishingGroup.addConfig( this.treasureBagRequirement );
 	}
 

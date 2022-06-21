@@ -11,8 +11,8 @@ import net.minecraftforge.fml.config.ModConfig;
 public class MajruszsDifficulty {
 	public static final String MOD_ID = "majruszsdifficulty";
 	public static final String NAME = "Majrusz's Progressive Difficulty";
-	public static final ConfigHandler CONFIG_HANDLER = new ConfigHandler( ModConfig.Type.COMMON, "majruszs-difficulty-common.toml" );
-	public static final ConfigGroup FEATURES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Features", "" ) );
+	public static final ConfigHandler CONFIG_HANDLER = new ConfigHandler( ModConfig.Type.COMMON, MOD_ID + "-common.toml" );
+	public static final ConfigGroup GAME_MODIFIERS_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "GameModifiers", "" ) );
 	public static final ConfigGroup ENTITIES_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "Entities", "" ) );
 	public static final ConfigGroup STATE_GROUP = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "GameStage", "" ) );
 

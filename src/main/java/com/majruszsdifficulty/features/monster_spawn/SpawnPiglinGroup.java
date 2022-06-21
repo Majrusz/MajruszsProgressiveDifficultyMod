@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /** Spawns piglins in group. */
-public class SpawnPiglinGroup extends SpawnEnemyGroupBase {
+public class SpawnPiglinGroup extends SpawnEnemyGroupBaseOld {
 	private static final String CONFIG_NAME = "PiglingGroup";
 	private static final String CONFIG_COMMENT = "Piglin spawns in groups.";
 	protected final DoubleConfig goldenSwordChance;

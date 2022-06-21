@@ -25,7 +25,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
+import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 @Mod.EventBusSubscriber
 public class EndShardOre extends Block {
@@ -40,7 +40,7 @@ public class EndShardOre extends Block {
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 
 		this.triggerDistance = new DoubleConfig( "trigger_distance", "Maximum distance within which all nearby Endermans will start to attack the player once the block is mined.", false, 450.0, 0.0, 1e+6 );
-		this.configGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "EndShardOre", "Configuration for new late game ore.", this.triggerDistance ) );
+		this.configGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "EndShardOre", "Configuration for new late game ore.", this.triggerDistance ) );
 	}
 
 	@Override

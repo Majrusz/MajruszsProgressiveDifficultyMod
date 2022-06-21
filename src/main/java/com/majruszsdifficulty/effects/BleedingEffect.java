@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
+import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 /** A bleeding effect similar to the poison effect. */
 @Mod.EventBusSubscriber
@@ -48,7 +48,7 @@ public class BleedingEffect extends MobEffect {
 		this.armorChanceReduction = new DoubleConfig( "armor_reduction", "Chance reduction to apply the effect per each armor piece.", false, 0.2, 0.0, 0.25 );
 		this.amplifier = new GameStageIntegerConfig( "amplifier", "Level of the effect.", 0, 1, 2, 0, 10 );
 		this.entitiesBlackList = new StringListConfig( "black_list", "List of entities who are immune to the effect. (all entities except human-like mobs and animals are immune by default)", false, "minecraft:skeleton_horse" );
-		this.bleedingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Bleeding", "Bleeding potion effect.", this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier, this.entitiesBlackList ) );
+		this.bleedingGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "Bleeding", "Bleeding potion effect.", this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier, this.entitiesBlackList ) );
 	}
 
 	@Override

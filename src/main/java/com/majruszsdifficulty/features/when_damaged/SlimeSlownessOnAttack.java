@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.Slime;
 import javax.annotation.Nullable;
 
 /** Makes Slime attacks have a chance to slow enemies. */
-public class SlimeSlownessOnAttack extends WhenDamagedApplyEffectBase {
+public class SlimeSlownessOnAttack extends WhenDamagedApplyEffectBaseOld {
 	private static final String CONFIG_NAME = "SlimeSlowness";
 	private static final String CONFIG_COMMENT = "Slime inflicts Slowness.";
 

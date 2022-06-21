@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
+import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 /** Increasing experience from any source. */
 @Mod.EventBusSubscriber
@@ -23,7 +23,7 @@ public class ExperienceBonus {
 		String groupComment = "Experience bonuses.";
 		this.bonusMultiplier = new GameStageDoubleConfig( "BonusMultiplier", expComment, 0.0, 0.25, 0.5, 0.0, 10.0 );
 
-		this.experienceGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Experience", groupComment ) );
+		this.experienceGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "Experience", groupComment ) );
 		this.experienceGroup.addConfig( this.bonusMultiplier );
 	}
 

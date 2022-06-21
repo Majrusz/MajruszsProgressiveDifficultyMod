@@ -1,17 +1,17 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.features.ChanceFeatureBase;
+import com.majruszsdifficulty.features.ChanceFeatureBaseOld;
 import com.mlib.Random;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 
 /** Base class for handling enemy spawn events. */
-public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implements IOnSpawn {
+public abstract class OnEnemyToBeSpawnedBaseOld extends ChanceFeatureBaseOld implements IOnSpawn {
 	protected boolean shouldBeCancelled = false;
 
-	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
+	public OnEnemyToBeSpawnedBaseOld( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD
 	) {
 		super( configName, configComment, defaultChance, minimumStage, shouldChanceBeMultipliedByCRD );

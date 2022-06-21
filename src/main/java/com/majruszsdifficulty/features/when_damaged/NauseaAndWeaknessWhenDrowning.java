@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Applying blindness when player is drowning. */
-public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffectBase {
+public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffectBaseOld {
 	private static final String CONFIG_NAME = "NauseaAndWeaknessWhenDrowning";
 	private static final String CONFIG_COMMENT = "Drowning inflicts Nausea and Drowning.";
 

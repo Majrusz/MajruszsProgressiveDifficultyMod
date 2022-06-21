@@ -17,7 +17,7 @@ import java.util.List;
 /** Handling all 'OnEnemySpawn' events. */
 @Mod.EventBusSubscriber
 public class OnEnemyToBeSpawnedEvent {
-	public static final List< OnEnemyToBeSpawnedBase > REGISTRY_LIST = new ArrayList<>();
+	public static final List< OnEnemyToBeSpawnedBaseOld > REGISTRY_LIST = new ArrayList<>();
 	private static final String MARK_TAG = "MajruszDifficultyEntityMarked";
 	private static final int cooldown = Utility.secondsToTicks( 10.0 );
 	private static int counter = 0;
@@ -27,7 +27,7 @@ public class OnEnemyToBeSpawnedEvent {
 		LivingEntity entity = event.getEntityLiving();
 
 		markEntity( entity );
-		for( OnEnemyToBeSpawnedBase register : REGISTRY_LIST )
+		for( OnEnemyToBeSpawnedBaseOld register : REGISTRY_LIST )
 			if( register.shouldBeExecuted( entity ) ) {
 				register.onExecute( entity, ( ServerLevel )entity.level );
 
@@ -52,7 +52,7 @@ public class OnEnemyToBeSpawnedEvent {
 				LivingEntity livingEntity = ( LivingEntity )entity;
 
 				markEntity( livingEntity );
-				for( OnEnemyToBeSpawnedBase register : REGISTRY_LIST )
+				for( OnEnemyToBeSpawnedBaseOld register : REGISTRY_LIST )
 					if( register.shouldBeExecuted( livingEntity ) )
 						register.onExecute( livingEntity, world );
 			}

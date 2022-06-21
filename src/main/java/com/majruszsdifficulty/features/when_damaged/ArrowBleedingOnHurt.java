@@ -7,7 +7,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import javax.annotation.Nullable;
 
 /** Making arrows inflict bleeding on enemies. */
-public class ArrowBleedingOnHurt extends WhenDamagedApplyBleedingBase {
+public class ArrowBleedingOnHurt extends WhenDamagedApplyBleedingBaseOld {
 	private static final String CONFIG_NAME = "ArrowBleeding";
 	private static final String CONFIG_COMMENT = "Arrow inflicts bleeding.";
 
