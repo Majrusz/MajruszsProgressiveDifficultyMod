@@ -14,9 +14,10 @@ public class ClothItem extends Item {
 
 	@Override
 	public void fillItemCategory( CreativeModeTab itemGroup, NonNullList< ItemStack > itemStacks ) {
-		if( itemGroup != Registries.ITEM_GROUP )
+		if( !this.allowedIn( itemGroup ) )
 			return;
 
+		itemStacks.add( new ItemStack( this ) );
 		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.HELMET_ID ) );
 		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.CHESTPLATE_ID ) );
 		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.LEGGINGS_ID ) );
