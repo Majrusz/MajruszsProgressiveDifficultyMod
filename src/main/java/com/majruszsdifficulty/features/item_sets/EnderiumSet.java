@@ -22,8 +22,8 @@ public class EnderiumSet extends BaseSet {
 	private static final ItemData ITEM_3 = new ItemData( Registries.ENDERIUM_LEGGINGS, EquipmentSlot.LEGS );
 	private static final ItemData ITEM_4 = new ItemData( Registries.ENDERIUM_BOOTS, EquipmentSlot.FEET );
 	private static final BonusData BONUS_1 = new BonusData( 2, "majruszsdifficulty.sets.enderium.bonus_2", ( set, player ) -> ITEM_1.hasItemEquipped( player ) );
-	private static final BonusData BONUS_2 = new BonusData( 3, "majruszsdifficulty.sets.enderium.bonus_3" );
-	private static final BonusData BONUS_3 = new BonusData( 4, "majruszsdifficulty.sets.enderium.bonus_4" );
+	private static final BonusData BONUS_2 = new BonusData( 3, "majruszsdifficulty.sets.enderium.bonus_3", Parameter.asSeconds( 12.0f ) );
+	private static final BonusData BONUS_3 = new BonusData( 4, "majruszsdifficulty.sets.enderium.bonus_4", Parameter.asFloat( 2.0f ) );
 	private static final AttributeHandler ATTRIBUTE_HANDLER = new AttributeHandler( "e8242b56-b5a6-4ad9-9159-f9089ecf3165", "EndSetHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.ADDITION );
 
 	public EnderiumSet() {
@@ -33,12 +33,12 @@ public class EnderiumSet extends BaseSet {
 	@SubscribeEvent
 	public static void onHurt( LivingHurtEvent event ) {
 		if( event.getEntityLiving() instanceof Player player && event.getAmount() >= 1 && Registries.ENDERIUM_SET.countSetItems( player ) >= 3 )
-			EffectHelper.applyEffectIfPossible( player, MobEffects.MOVEMENT_SPEED, Utility.secondsToTicks( 12.0 ), 0 );
+			EffectHelper.applyEffectIfPossible( player, MobEffects.MOVEMENT_SPEED, BONUS_2.asTicks( 0 ), 0 );
 	}
 
 	@SubscribeEvent
 	public static void onEquipmentChange( LivingEquipmentChangeEvent event ) {
 		if( event.getEntityLiving() instanceof Player player )
-			ATTRIBUTE_HANDLER.setValueAndApply( player, Registries.ENDERIUM_SET.countSetItems( player ) >= 4 ? 4.0 : 0.0 );
+			ATTRIBUTE_HANDLER.setValueAndApply( player, Registries.ENDERIUM_SET.countSetItems( player ) >= 4 ? BONUS_3.asFloat( 0 ) * 2.0f : 0.0 );
 	}
 }

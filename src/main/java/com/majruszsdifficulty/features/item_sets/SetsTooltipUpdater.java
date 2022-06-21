@@ -4,6 +4,7 @@ import com.majruszsdifficulty.MajruszsHelper;
 import com.mlib.client.ClientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SetsTooltipUpdater {
 	private static final ChatFormatting DISABLED_FORMAT = ChatFormatting.DARK_GRAY;
 	private static final ChatFormatting HINT_FORMAT = ChatFormatting.GRAY;
+	private static final String ITEM_PROGRESS_TOOLTIP = "majruszsdifficulty.items.set_item_progress";
 	private static final String SET_TOOLTIP = "majruszsdifficulty.items.set_list_tooltip";
 	private static final String BONUS_TOOLTIP = "majruszsdifficulty.items.set_bonus_tooltip";
 
@@ -63,9 +65,14 @@ public class SetsTooltipUpdater {
 	protected static void addBonusList( List< Component > tooltip, BaseSet set, Player player ) {
 		tooltip.add( Component.translatable( BONUS_TOOLTIP ).withStyle( HINT_FORMAT ) );
 		for( BonusData bonusData : set.bonusData ) {
-			ChatFormatting chatFormatting = set.areRequirementsMet( player, bonusData ) ? set.chatFormatting : DISABLED_FORMAT;
+			boolean metRequirements = set.areRequirementsMet( player, bonusData );
+			ChatFormatting chatFormatting = metRequirements ? set.chatFormatting : DISABLED_FORMAT;
 
-			tooltip.add( Component.literal( " " ).append( set.getTranslatedBonusInfo( bonusData ) ).withStyle( chatFormatting ) );
+			MutableComponent component = Component.literal( " " )
+				.append( Component.translatable( ITEM_PROGRESS_TOOLTIP, bonusData.requiredItems, set.itemData.length ).withStyle( chatFormatting ) )
+				.append( Component.literal( " " ) )
+				.append( bonusData.createTranslatedText( metRequirements ? HINT_FORMAT : DISABLED_FORMAT, metRequirements ? set.chatFormatting : DISABLED_FORMAT ) );
+			tooltip.add( component );
 		}
 	}
 }

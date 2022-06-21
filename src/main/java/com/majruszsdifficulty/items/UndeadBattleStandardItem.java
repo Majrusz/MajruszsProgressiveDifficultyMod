@@ -3,15 +3,13 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.mlib.items.ItemHelper;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,5 +42,17 @@ public class UndeadBattleStandardItem extends Item {
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY_1 ) );
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, TOOLTIP_TRANSLATION_KEY_2, TOOLTIP_TRANSLATION_KEY_3 );
+	}
+
+	@Override
+	public void fillItemCategory( CreativeModeTab itemGroup, NonNullList< ItemStack > itemStacks ) {
+		if( !this.allowedIn( itemGroup ) )
+			return;
+
+		itemStacks.add( new ItemStack( this ) );
+		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.HELMET_ID ) );
+		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.CHESTPLATE_ID ) );
+		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.LEGGINGS_ID ) );
+		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.BOOTS_ID ) );
 	}
 }

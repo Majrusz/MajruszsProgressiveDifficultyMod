@@ -11,16 +11,4 @@ public class ClothItem extends Item {
 	public ClothItem() {
 		super( new Properties().tab( Registries.ITEM_GROUP ) );
 	}
-
-	@Override
-	public void fillItemCategory( CreativeModeTab itemGroup, NonNullList< ItemStack > itemStacks ) {
-		if( !this.allowedIn( itemGroup ) )
-			return;
-
-		itemStacks.add( new ItemStack( this ) );
-		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.HELMET_ID ) );
-		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.CHESTPLATE_ID ) );
-		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.LEGGINGS_ID ) );
-		itemStacks.add( UndeadArmorItem.constructItem( UndeadArmorItem.BOOTS_ID ) );
-	}
 }

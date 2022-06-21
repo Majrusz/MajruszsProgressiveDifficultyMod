@@ -51,10 +51,6 @@ public class BaseSet {
 		return Component.translatable( this.translationKey );
 	}
 
-	public MutableComponent getTranslatedBonusInfo( BonusData bonusData ) {
-		return Component.translatable( bonusData.translationKey, bonusData.requiredItems, this.itemData.length );
-	}
-
 	public ChatFormatting getChatFormatting() {
 		return this.chatFormatting;
 	}
