@@ -2,7 +2,7 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.features.end_items.EndItems;
+import com.majruszsdifficulty.features.EnderiumItems;
 import com.mlib.client.ClientHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.HoeItem;
@@ -17,6 +17,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class EnderiumHoeItem extends HoeItem {
+	static final EnderiumItems.Tooltip ENDERIUM_TOOLTIP = new EnderiumItems.Tooltip( EnderiumItems.Keys.HASTE_TOOLTIP, EnderiumItems.Keys.TILL_TOOLTIP  );
+
 	public EnderiumHoeItem() {
 		super( CustomItemTier.END, -5, 0.0f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
@@ -24,10 +26,6 @@ public class EnderiumHoeItem extends HoeItem {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		if( ClientHelper.isShiftDown() ) {
-			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP, EndItems.Keys.LEVITATION_TOOLTIP, EndItems.Keys.TILL_TOOLTIP );
-		} else {
-			MajruszsHelper.addMoreDetailsText( tooltip );
-		}
+		ENDERIUM_TOOLTIP.apply( tooltip );
 	}
 }

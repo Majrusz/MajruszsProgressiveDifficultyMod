@@ -2,7 +2,7 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.features.end_items.EndItems;
+import com.majruszsdifficulty.features.EnderiumItems;
 import com.mlib.client.ClientHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.AxeItem;
@@ -25,7 +25,7 @@ public class EnderiumAxeItem extends AxeItem {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		if( ClientHelper.isShiftDown() ) {
-			MajruszsHelper.addTranslatableTexts( tooltip, EndItems.Keys.BLEED_TOOLTIP, EndItems.Keys.HASTE_TOOLTIP );
+			MajruszsHelper.addTranslatableTexts( tooltip, EnderiumItems.Keys.HASTE_TOOLTIP );
 		} else {
 			MajruszsHelper.addMoreDetailsText( tooltip );
 		}
