@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.special;
+package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.GameState;
 import com.majruszsdifficulty.entities.CreeperlingEntity;

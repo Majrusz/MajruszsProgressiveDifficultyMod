@@ -1,7 +1,5 @@
-package com.majruszsdifficulty.features.special;
+package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStateIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.features.ChanceFeatureBase;
