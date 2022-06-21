@@ -15,8 +15,6 @@ import com.majruszsdifficulty.features.SpawnDisabler;
 import com.majruszsdifficulty.features.item_sets.EnderiumSet;
 import com.majruszsdifficulty.features.item_sets.OceanSet;
 import com.majruszsdifficulty.features.item_sets.UndeadSet;
-import com.majruszsdifficulty.features.special.SplitCreeperToCreeperlings;
-import com.majruszsdifficulty.features.special.StrongerExplosions;
 import com.majruszsdifficulty.features.treasure_bag.FishingRewarder;
 import com.majruszsdifficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszsdifficulty.features.undead_army.ReloadUndeadArmyGoals;

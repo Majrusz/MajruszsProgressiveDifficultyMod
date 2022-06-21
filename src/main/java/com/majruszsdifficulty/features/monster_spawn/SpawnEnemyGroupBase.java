@@ -127,23 +127,11 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	}
 
 	protected static class Armors {
-		public static Item[] leather = new Item[]{
-			Items.LEATHER_BOOTS,
-			Items.LEATHER_LEGGINGS,
-			Items.LEATHER_CHESTPLATE,
-			Items.LEATHER_HELMET
+		public static Item[] leather = new Item[]{ Items.LEATHER_BOOTS, Items.LEATHER_LEGGINGS, Items.LEATHER_CHESTPLATE, Items.LEATHER_HELMET
 		};
-		public static Item[] iron = new Item[]{
-			Items.IRON_BOOTS,
-			Items.IRON_LEGGINGS,
-			Items.IRON_CHESTPLATE,
-			Items.IRON_HELMET
+		public static Item[] iron = new Item[]{ Items.IRON_BOOTS, Items.IRON_LEGGINGS, Items.IRON_CHESTPLATE, Items.IRON_HELMET
 		};
-		public static Item[] golden = new Item[]{
-			Items.GOLDEN_BOOTS,
-			Items.GOLDEN_LEGGINGS,
-			Items.GOLDEN_CHESTPLATE,
-			Items.GOLDEN_HELMET
+		public static Item[] golden = new Item[]{ Items.GOLDEN_BOOTS, Items.GOLDEN_LEGGINGS, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_HELMET
 		};
 	}
 }

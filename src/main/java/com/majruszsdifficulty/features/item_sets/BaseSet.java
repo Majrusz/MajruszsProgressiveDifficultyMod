@@ -27,7 +27,7 @@ public class BaseSet {
 	}
 
 	public static boolean isFromAnySet( ItemStack itemStack ) {
-		return SET_LIST.stream().anyMatch( set -> set.isSetItem( itemStack ) );
+		return SET_LIST.stream().anyMatch( set->set.isSetItem( itemStack ) );
 	}
 
 	public int countSetItems( Player player ) {
@@ -40,7 +40,7 @@ public class BaseSet {
 	}
 
 	public boolean isSetItem( ItemStack itemStack ) {
-		return Arrays.stream( this.itemData ).anyMatch( itemData -> itemData.isSetItemStack( itemStack ) );
+		return Arrays.stream( this.itemData ).anyMatch( itemData->itemData.isSetItemStack( itemStack ) );
 	}
 
 	public boolean areRequirementsMet( Player player, BonusData bonusData ) {

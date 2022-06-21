@@ -21,11 +21,11 @@ public class ItemData {
 	}
 
 	public ItemData( Item item, EquipmentSlot... equipmentSlots ) {
-		this( itemStack -> item.equals( itemStack.getItem() ), () -> item.getDescription().copy(), equipmentSlots );
+		this( itemStack->item.equals( itemStack.getItem() ), ()->item.getDescription().copy(), equipmentSlots );
 	}
 
 	public ItemData( RegistryObject< ? extends Item > item, EquipmentSlot... equipmentSlots ) {
-		this( itemStack -> item.get().equals( itemStack.getItem() ), () -> item.get().getDescription().copy(), equipmentSlots );
+		this( itemStack->item.get().equals( itemStack.getItem() ), ()->item.get().getDescription().copy(), equipmentSlots );
 	}
 
 	public boolean hasItemEquipped( Player player ) {

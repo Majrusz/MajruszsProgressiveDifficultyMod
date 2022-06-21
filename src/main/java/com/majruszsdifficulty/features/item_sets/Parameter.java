@@ -1,7 +1,5 @@
 package com.majruszsdifficulty.features.item_sets;
 
-import com.mlib.Utility;
-
 public class Parameter {
 	final IValueProvider value;
 	final IFormat format;
@@ -12,7 +10,7 @@ public class Parameter {
 	}
 
 	public static Parameter asFloat( IValueProvider valueProvider ) {
-		return new Parameter( valueProvider, param ->{
+		return new Parameter( valueProvider, param->{
 			float value = param.asFloat();
 			if( Math.round( value ) == value ) {
 				return String.format( "%.0f", value );
@@ -33,7 +31,7 @@ public class Parameter {
 	}
 
 	public static Parameter asPercent( IValueProvider valueProvider ) {
-		return new Parameter( valueProvider, param ->{
+		return new Parameter( valueProvider, param->{
 			float value = param.asFloat() * 100.0f;
 			if( Math.round( value ) == value ) {
 				return String.format( "%.0f%%", value );
@@ -50,7 +48,7 @@ public class Parameter {
 	}
 
 	public static Parameter asInteger( IValueProvider valueProvider ) {
-		return new Parameter( valueProvider, param -> String.format( "%d", param.asInt() ) );
+		return new Parameter( valueProvider, param->String.format( "%d", param.asInt() ) );
 	}
 
 	public static Parameter asInteger( int value ) {

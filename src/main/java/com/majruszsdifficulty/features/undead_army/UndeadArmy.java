@@ -149,7 +149,8 @@ public class UndeadArmy {
 			case BETWEEN_WAVES -> this.bossInfo.setName( UndeadArmyText.BETWEEN_WAVES );
 			case VICTORY -> this.bossInfo.setName( UndeadArmyText.VICTORY );
 			case FAILED -> this.bossInfo.setName( UndeadArmyText.FAILED );
-			default -> {}
+			default -> {
+			}
 		}
 	}
 

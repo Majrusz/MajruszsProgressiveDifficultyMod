@@ -17,14 +17,4 @@ public class EnderiumSwordItem extends SwordItem {
 	public EnderiumSwordItem() {
 		super( CustomItemTier.END, 4, -2.6f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
-
-	@Override
-	@OnlyIn( Dist.CLIENT )
-	public void appendHoverText( ItemStack stack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		if( ClientHelper.isShiftDown() ) {
-			MajruszsHelper.addTranslatableTexts( tooltip, EnderiumItems.Keys.HASTE_TOOLTIP );
-		} else {
-			MajruszsHelper.addMoreDetailsText( tooltip );
-		}
-	}
 }

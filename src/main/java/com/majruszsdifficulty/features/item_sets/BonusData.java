@@ -21,19 +21,19 @@ public class BonusData {
 	public final ICondition condition;
 	public final Parameter[] parameters;
 
-	public BonusData( int requiredItems, String translationKey, ICondition condition, Parameter ...parameters ) {
+	public BonusData( int requiredItems, String translationKey, ICondition condition, Parameter... parameters ) {
 		this.requiredItems = requiredItems;
 		this.translationKey = translationKey;
-		this.condition = condition.and( ( set, player ) -> set.countSetItems( player ) >= requiredItems );
+		this.condition = condition.and( ( set, player )->set.countSetItems( player ) >= requiredItems );
 		this.parameters = parameters;
 	}
 
-	public BonusData( int requiredItems, String translationKey, Parameter ...parameters ) {
-		this( requiredItems, translationKey, ( set, player ) -> set.countSetItems( player ) >= requiredItems, parameters );
+	public BonusData( int requiredItems, String translationKey, Parameter... parameters ) {
+		this( requiredItems, translationKey, ( set, player )->set.countSetItems( player ) >= requiredItems, parameters );
 	}
 
 	public BonusData( int requiredItems, String translationKey ) {
-		this( requiredItems, translationKey, ( set, player ) -> set.countSetItems( player ) >= requiredItems );
+		this( requiredItems, translationKey, ( set, player )->set.countSetItems( player ) >= requiredItems );
 	}
 
 	public MutableComponent createTranslatedText( ChatFormatting defaultFormatting, ChatFormatting valueFormatting ) {
