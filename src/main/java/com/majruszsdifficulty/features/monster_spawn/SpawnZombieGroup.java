@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.server.level.ServerLevel;
@@ -20,7 +20,7 @@ public class SpawnZombieGroup extends SpawnEnemyGroupBase {
 	protected final DoubleConfig woodenAxeChance;
 
 	public SpawnZombieGroup() {
-		super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.EXPERT, true, 1, 3, Armors.leather );
+		super( CONFIG_NAME, CONFIG_COMMENT, GameStage.Stage.EXPERT, true, 1, 3, Armors.leather );
 
 		String stone_comment = "Chance for followers to have a Stone Sword.";
 		String wooden_comment = "Chance for followers to have a Wooden Axe.";

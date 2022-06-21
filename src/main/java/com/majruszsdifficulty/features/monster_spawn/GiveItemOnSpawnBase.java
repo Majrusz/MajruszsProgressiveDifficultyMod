@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.items.ItemHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -13,10 +13,10 @@ public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
 	protected final boolean shouldBeEnchanted;
 	protected final boolean shouldBeDamaged;
 
-	public GiveItemOnSpawnBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+	public GiveItemOnSpawnBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
-		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
+		super( configName, configComment, defaultChance, minimumStage, shouldChanceBeMultipliedByCRD );
 		this.equipmentSlotType = equipmentSlotType;
 		this.shouldBeEnchanted = shouldBeEnchanted;
 		this.shouldBeDamaged = shouldBeDamaged;
@@ -25,7 +25,7 @@ public abstract class GiveItemOnSpawnBase extends OnEnemyToBeSpawnedBase {
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerLevel world ) {
-		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( entity );
+		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( entity );
 
 		entity.setItemSlot( this.equipmentSlotType, getFinalItemStack( clampedRegionalDifficulty ) );
 	}

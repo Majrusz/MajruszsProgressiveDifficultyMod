@@ -1,19 +1,19 @@
 package com.majruszsdifficulty.config;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IConfigType;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-/** Config with double values for each game state. */
-public class GameStateDoubleConfig implements IConfigType< Double > {
+/** Config with double values for each game stage. */
+public class GameStageDoubleConfig implements IConfigType< Double > {
 	protected final ConfigGroup group;
 	protected final DoubleConfig normal;
 	protected final DoubleConfig expert;
 	protected final DoubleConfig master;
 
-	public GameStateDoubleConfig( String name, String comment, double defaultValueNormal, double defaultValueExpert, double defaultValueMaster,
+	public GameStageDoubleConfig( String name, String comment, double defaultValueNormal, double defaultValueExpert, double defaultValueMaster,
 		double minimumValue, double maximumValue
 	) {
 		this.normal = new DoubleConfig( "normal", "Normal Mode", false, defaultValueNormal, minimumValue, maximumValue );
@@ -22,8 +22,8 @@ public class GameStateDoubleConfig implements IConfigType< Double > {
 		this.group = new ConfigGroup( name, comment, this.normal, this.expert, this.master );
 	}
 
-	public double getCurrentGameStateValue() {
-		return GameState.getCurrentGameStateValue( this.normal.get(), this.expert.get(), this.master.get() );
+	public double getCurrentGameStageValue() {
+		return GameStage.getCurrentGameStageDependentValue( this.normal.get(), this.expert.get(), this.master.get() );
 	}
 
 	@Override
@@ -33,6 +33,6 @@ public class GameStateDoubleConfig implements IConfigType< Double > {
 
 	@Override
 	public Double get() {
-		return getCurrentGameStateValue();
+		return getCurrentGameStageValue();
 	}
 }

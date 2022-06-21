@@ -3,7 +3,7 @@ package com.majruszsdifficulty;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 
-/** Stores information about current game state in level. */
+/** Stores information about current game stage in level. */
 public class GameDataSaver extends SavedData {
 	public static final String DATA_NAME = MajruszsDifficulty.MOD_ID;
 	private static final String COMPOUND_STATE_TAG = "MajruszsDifficultyCompound";
@@ -12,7 +12,7 @@ public class GameDataSaver extends SavedData {
 
 	public GameDataSaver( boolean loadDefaultStateFromConfig ) {
 		if( loadDefaultStateFromConfig )
-			GameState.changeMode( Registries.GAME_STATE_CONFIG.getDefaultState() );
+			GameStage.changeMode( Registries.GAME_STATE_CONFIG.getDefaultState() );
 	}
 
 	public GameDataSaver() {
@@ -21,7 +21,7 @@ public class GameDataSaver extends SavedData {
 
 	@Override
 	public CompoundTag save( CompoundTag nbt ) {
-		this.DATA.putInt( DIFFICULTY_STATE_TAG, GameState.convertStateToInteger( GameState.getCurrentMode() ) );
+		this.DATA.putInt( DIFFICULTY_STATE_TAG, GameStage.convertStageToInteger( GameStage.getCurrentStage() ) );
 
 		nbt.put( COMPOUND_STATE_TAG, this.DATA );
 		return nbt;
@@ -30,12 +30,12 @@ public class GameDataSaver extends SavedData {
 	public static GameDataSaver load( CompoundTag nbt ) {
 		GameDataSaver gameData = new GameDataSaver( false );
 		gameData.DATA = nbt.getCompound( COMPOUND_STATE_TAG );
-		gameData.updateGameState();
+		gameData.updateGameStage();
 
 		return gameData;
 	}
 
-	public void updateGameState() {
-		GameState.changeMode( GameState.convertIntegerToState( this.DATA.getInt( DIFFICULTY_STATE_TAG ) ) );
+	public void updateGameStage() {
+		GameStage.changeMode( GameStage.convertIntegerToStage( this.DATA.getInt( DIFFICULTY_STATE_TAG ) ) );
 	}
 }

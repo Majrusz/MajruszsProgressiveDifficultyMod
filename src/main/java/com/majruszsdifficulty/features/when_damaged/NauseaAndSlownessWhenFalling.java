@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.Utility;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.effects.EffectHelper;
@@ -22,7 +22,7 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBase {
 	protected final AvailabilityConfig slownessAvailability;
 
 	public NauseaAndSlownessWhenFalling() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 10.0, GameState.State.NORMAL, false, new MobEffect[]{ MobEffects.CONFUSION, MobEffects.MOVEMENT_SLOWDOWN
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 10.0, GameStage.Stage.NORMAL, false, new MobEffect[]{ MobEffects.CONFUSION, MobEffects.MOVEMENT_SLOWDOWN
 		} );
 
 		String nauseaComment = "Is applying Nausea enabled?";

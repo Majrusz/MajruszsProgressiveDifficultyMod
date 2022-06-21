@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingEffect.BleedingMobEffectInstance;
@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 /** Base class representing event on which enemies will receive bleeding after being attacked. */
 public abstract class WhenDamagedApplyBleedingBase extends WhenDamagedApplyEffectBase {
 	public WhenDamagedApplyBleedingBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds ) {
-		super( configName, configComment, defaultChance, defaultDurationInSeconds, GameState.State.NORMAL, false, Registries.BLEEDING.get() );
+		super( configName, configComment, defaultChance, defaultDurationInSeconds, GameStage.Stage.NORMAL, false, Registries.BLEEDING.get() );
 	}
 
 	/** Checking if all conditions were met. */

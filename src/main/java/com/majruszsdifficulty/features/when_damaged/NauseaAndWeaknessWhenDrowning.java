@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.Utility;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,7 +16,7 @@ public class NauseaAndWeaknessWhenDrowning extends WhenDamagedApplyStackableEffe
 	private static final String CONFIG_COMMENT = "Drowning inflicts Nausea and Drowning.";
 
 	public NauseaAndWeaknessWhenDrowning() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 5.0, GameState.State.NORMAL, false, new MobEffect[]{ MobEffects.CONFUSION, MobEffects.WEAKNESS
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 5.0, GameStage.Stage.NORMAL, false, new MobEffect[]{ MobEffects.CONFUSION, MobEffects.WEAKNESS
 		}, false, true, 0, Utility.secondsToTicks( 10.0 ) );
 	}
 

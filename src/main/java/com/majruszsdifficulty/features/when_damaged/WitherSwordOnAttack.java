@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.items.WitherSwordItem;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -15,7 +15,7 @@ public class WitherSwordOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_COMMENT = "Wither Sword inflicts Wither II.";
 
 	public WitherSwordOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 6.0, GameState.State.NORMAL, false, MobEffects.WITHER );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 6.0, GameStage.Stage.NORMAL, false, MobEffects.WITHER );
 	}
 
 	/** Checks if all conditions were met. */

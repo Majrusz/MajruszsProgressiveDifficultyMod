@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.commands.BaseCommand;
 import com.mlib.commands.CommandManager;
 import com.mlib.commands.IRegistrableCommand;
@@ -20,8 +20,8 @@ public class GetGameStageCommand extends BaseCommand implements IRegistrableComm
 
 	/** Changes current game stage and sends information to all players. */
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source ) {
-		source.sendSuccess( CommandsHelper.createGameStageMessage( GameState.getCurrentMode(), "current" ), true );
+		source.sendSuccess( CommandsHelper.createGameStageMessage( GameStage.getCurrentStage(), "current" ), true );
 
-		return GameState.convertStateToInteger( GameState.getCurrentMode() );
+		return GameStage.convertStageToInteger( GameStage.getCurrentStage() );
 	}
 }

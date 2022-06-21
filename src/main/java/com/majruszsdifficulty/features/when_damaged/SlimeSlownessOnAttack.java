@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
@@ -15,7 +15,7 @@ public class SlimeSlownessOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_COMMENT = "Slime inflicts Slowness.";
 
 	public SlimeSlownessOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 6.0, GameState.State.EXPERT, true, MobEffects.MOVEMENT_SLOWDOWN );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 6.0, GameStage.Stage.EXPERT, true, MobEffects.MOVEMENT_SLOWDOWN );
 	}
 
 	/** Checking if all conditions were met. */

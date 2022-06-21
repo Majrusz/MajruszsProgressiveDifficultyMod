@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.features.undead_army;
 
-import com.majruszsdifficulty.GameState;
-import com.majruszsdifficulty.config.GameStateDoubleConfig;
-import com.majruszsdifficulty.config.GameStateIntegerConfig;
+import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.config.GameStageDoubleConfig;
+import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.config.*;
 import net.minecraft.world.entity.EntityType;
 
@@ -17,10 +17,10 @@ public class UndeadArmyConfig {
 	private final IntegerConfig killRequirement;
 	private final DoubleConfig sizeMultiplier;
 	private final DoubleConfig skeletonHorseChance;
-	private final GameStateIntegerConfig experienceReward;
-	private final GameStateIntegerConfig treasureBagReward;
-	private final GameStateDoubleConfig enchantedItemsChance;
-	private final GameStateDoubleConfig armorChance;
+	private final GameStageIntegerConfig experienceReward;
+	private final GameStageIntegerConfig treasureBagReward;
+	private final GameStageDoubleConfig enchantedItemsChance;
+	private final GameStageDoubleConfig armorChance;
 	private final DurationConfig durationBetweenWaves;
 	private final DurationConfig maximumInactiveDuration;
 	private final WaveMembersConfig waveMembers;
@@ -39,16 +39,16 @@ public class UndeadArmyConfig {
 		this.skeletonHorseChance = new DoubleConfig( "horse_chance", horseComment, false, 0.15, 0.1, 1.0 );
 
 		String expComment = "Experience for each player after defeating the Undead Army.";
-		this.experienceReward = new GameStateIntegerConfig( "Experience", expComment, 40, 80, 120, 4, 1000 );
+		this.experienceReward = new GameStageIntegerConfig( "Experience", expComment, 40, 80, 120, 4, 1000 );
 
 		String bagComment = "Treasure Bags for each player after defeating the Undead Army.";
-		this.treasureBagReward = new GameStateIntegerConfig( "TreasureBags", bagComment, 1, 1, 2, 1, 5 );
+		this.treasureBagReward = new GameStageIntegerConfig( "TreasureBags", bagComment, 1, 1, 2, 1, 5 );
 
 		String enchantComment = "Chance of the undead to have enchanted items. (separate for each item)";
-		this.enchantedItemsChance = new GameStateDoubleConfig( "EnchantedItems", enchantComment, 0.125, 0.25, 0.5, 0.0, 1.0 );
+		this.enchantedItemsChance = new GameStageDoubleConfig( "EnchantedItems", enchantComment, 0.125, 0.25, 0.5, 0.0, 1.0 );
 
 		String armorComment = "Chance of the undead to have armor piece. (separate for each armor piece)";
-		this.armorChance = new GameStateDoubleConfig( "ArmorChance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
+		this.armorChance = new GameStageDoubleConfig( "ArmorChance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
 
 		String waveComment = "Time between waves. (in seconds) (requires game/world restart!) ";
 		this.durationBetweenWaves = new DurationConfig( "time_between_waves", waveComment, true, 10.0, 3.0, 60.0 );
@@ -91,22 +91,22 @@ public class UndeadArmyConfig {
 
 	/** Returns amount of experience as a reward for completing the Undead Army. */
 	public int getAmountOfVictoryExperience() {
-		return this.experienceReward.getCurrentGameStateValue();
+		return this.experienceReward.getCurrentGameStageValue();
 	}
 
 	/** Returns amount of Treasure Bags every player should get after victory. */
 	public int getAmountOfVictoryTreasureBags() {
-		return this.treasureBagReward.getCurrentGameStateValue();
+		return this.treasureBagReward.getCurrentGameStageValue();
 	}
 
 	/** Returns chance for undead to have a enchanted items instead of standard ones. (separately for each item) */
 	public double getEnchantedItemChance() {
-		return this.enchantedItemsChance.getCurrentGameStateValue();
+		return this.enchantedItemsChance.getCurrentGameStageValue();
 	}
 
 	/** Returns a chance for undead to have a armor piece. (separately for each armor piece) */
 	public double getArmorPieceChance() {
-		return this.armorChance.getCurrentGameStateValue();
+		return this.armorChance.getCurrentGameStageValue();
 	}
 
 	/** Returns amount of ticks between waves. */
@@ -121,7 +121,7 @@ public class UndeadArmyConfig {
 
 	/** Returns amount of waves. */
 	public int getWaves() {
-		return GameState.getCurrentGameStateValue( 3, 4, 5 );
+		return GameStage.getCurrentGameStageDependentValue( 3, 4, 5 );
 	}
 
 	/** Returns list of enemies in given wave. */
@@ -131,6 +131,6 @@ public class UndeadArmyConfig {
 
 	/** Returns entity type for monster spawner. */
 	public EntityType< ? > getEntityTypeForMonsterSpawner() {
-		return GameState.getCurrentGameStateValue( EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SKELETON );
+		return GameStage.getCurrentGameStageDependentValue( EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SKELETON );
 	}
 }

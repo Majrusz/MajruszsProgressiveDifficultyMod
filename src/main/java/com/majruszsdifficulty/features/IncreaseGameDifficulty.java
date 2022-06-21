@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -27,7 +27,7 @@ public class IncreaseGameDifficulty {
 		IncreaseGameDifficulty gameDifficulty = Registries.INCREASE_GAME_DIFFICULTY;
 		Player player = event.getPlayer();
 
-		switch( GameState.getCurrentMode() ) {
+		switch( GameStage.getCurrentStage() ) {
 			case NORMAL -> gameDifficulty.handleDimensionExpertMode( player, event.getTo() );
 			case EXPERT -> gameDifficulty.handleDimensionMasterMode( player, event.getTo() );
 		}
@@ -38,13 +38,13 @@ public class IncreaseGameDifficulty {
 		IncreaseGameDifficulty gameDifficulty = Registries.INCREASE_GAME_DIFFICULTY;
 		LivingEntity entity = event.getEntityLiving();
 
-		switch( GameState.getCurrentMode() ) {
+		switch( GameStage.getCurrentStage() ) {
 			case NORMAL -> gameDifficulty.handleKillingEntityExpertMode( entity );
 			case EXPERT -> gameDifficulty.handleKillingEntityMasterMode( entity );
 		}
 	}
 
-	/** Changes current game state to Expert Mode if dimension conditions are met. */
+	/** Changes current game stage to Expert Mode if dimension conditions are met. */
 	protected void handleDimensionExpertMode( Player player, ResourceKey< Level > dimension ) {
 		if( !Registries.GAME_STATE_CONFIG.shouldDimensionStartExpertMode( dimension.location() ) )
 			return;
@@ -52,7 +52,7 @@ public class IncreaseGameDifficulty {
 		startExpertMode( player.getServer() );
 	}
 
-	/** Changes current game state to Master Mode if dimension conditions are met. */
+	/** Changes current game stage to Master Mode if dimension conditions are met. */
 	protected void handleDimensionMasterMode( Player player, ResourceKey< Level > dimension ) {
 		if( !Registries.GAME_STATE_CONFIG.shouldDimensionStartMasterMode( dimension.location() ) )
 			return;
@@ -60,7 +60,7 @@ public class IncreaseGameDifficulty {
 		startMasterMode( player.getServer() );
 	}
 
-	/** Changes current game state to Expert Mode if entity conditions are met. */
+	/** Changes current game stage to Expert Mode if entity conditions are met. */
 	protected void handleKillingEntityExpertMode( LivingEntity entity ) {
 		EntityType< ? > entityType = entity.getType();
 		if( !Registries.GAME_STATE_CONFIG.shouldKillingEntityStartExpertMode( EntityType.getKey( entityType ) ) )
@@ -69,7 +69,7 @@ public class IncreaseGameDifficulty {
 		startExpertMode( entity.getServer() );
 	}
 
-	/** Changes current game state to Expert Mode if entity conditions are met. */
+	/** Changes current game stage to Expert Mode if entity conditions are met. */
 	protected void handleKillingEntityMasterMode( LivingEntity entity ) {
 		EntityType< ? > entityType = entity.getType();
 		if( !Registries.GAME_STATE_CONFIG.shouldKillingEntityStartMasterMode( EntityType.getKey( entityType ) ) )
@@ -83,8 +83,8 @@ public class IncreaseGameDifficulty {
 		if( minecraftServer == null )
 			return;
 
-		GameState.changeModeWithAdvancement( GameState.State.EXPERT, minecraftServer );
-		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszsdifficulty.on_expert_mode_start", GameState.EXPERT_MODE_COLOR );
+		GameStage.changeModeWithAdvancement( GameStage.Stage.EXPERT, minecraftServer );
+		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszsdifficulty.on_expert_mode_start", GameStage.EXPERT_MODE_COLOR );
 	}
 
 	/** Starts Master Mode and sends message to all players. */
@@ -92,8 +92,8 @@ public class IncreaseGameDifficulty {
 		if( minecraftServer == null )
 			return;
 
-		GameState.changeModeWithAdvancement( GameState.State.MASTER, minecraftServer );
-		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszsdifficulty.on_master_mode_start", GameState.MASTER_MODE_COLOR );
+		GameStage.changeModeWithAdvancement( GameStage.Stage.MASTER, minecraftServer );
+		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszsdifficulty.on_master_mode_start", GameStage.MASTER_MODE_COLOR );
 	}
 
 	/** Sends message to all players depending on current language. */

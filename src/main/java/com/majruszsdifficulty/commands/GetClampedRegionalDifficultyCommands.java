@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.LevelHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
@@ -34,18 +34,18 @@ public class GetClampedRegionalDifficultyCommands extends PositionCommand implem
 
 	public MutableComponent getMessage( Level level, Vec3 position ) {
 		String clampedRegionalDifficulty = String.format( "%.3f", LevelHelper.getClampedRegionalDifficulty( level, position ) );
-		String stateModifier = String.format( "%.2f", GameState.getStateModifier() );
-		String finalDifficulty = String.format( "%.3f", GameState.getRegionalDifficulty( level, position ) );
+		String stateModifier = String.format( "%.2f", GameStage.getStageModifier() );
+		String finalDifficulty = String.format( "%.3f", GameStage.getRegionalDifficulty( level, position ) );
 		MutableComponent formula = Component.translatable( "commands.clampedregionaldifficulty.formula", stateModifier, finalDifficulty );
 		String positionFormatted = CommandsHelper.getPositionFormatted( position );
 
-		switch( GameState.getCurrentMode() ) {
+		switch( GameStage.getCurrentStage() ) {
 			case MASTER:
-				formula.withStyle( GameState.MASTER_MODE_COLOR, ChatFormatting.BOLD );
+				formula.withStyle( GameStage.MASTER_MODE_COLOR, ChatFormatting.BOLD );
 
 				return Component.translatable( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, formula, positionFormatted );
 			case EXPERT:
-				formula.withStyle( GameState.EXPERT_MODE_COLOR, ChatFormatting.BOLD );
+				formula.withStyle( GameStage.EXPERT_MODE_COLOR, ChatFormatting.BOLD );
 
 				return Component.translatable( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, formula, positionFormatted );
 			default:

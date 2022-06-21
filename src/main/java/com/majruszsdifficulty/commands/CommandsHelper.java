@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.commands.BaseCommand;
 import com.mlib.commands.IRegistrableCommand;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -31,8 +31,8 @@ public class CommandsHelper {
 		COMMANDS.add( new TreasureBagResetProgressCommands() );
 	}
 
-	public static MutableComponent createGameStageMessage( GameState.State state, String translationID ) {
-		return Component.translatable( "commands.gamestage." + translationID, GameState.getGameStateText( state ) );
+	public static MutableComponent createGameStageMessage( GameStage.Stage stage, String translationID ) {
+		return Component.translatable( "commands.gamestage." + translationID, GameStage.getGameStageText( stage ) );
 	}
 
 	public static MutableComponent createBaseMessageWithPosition( String translationKey, Vec3 position, Object... objects ) {

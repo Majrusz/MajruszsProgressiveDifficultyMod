@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.config.DurationConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -17,9 +17,9 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 	protected final DurationConfig effectDuration;
 
 	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect[] effects
+		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect[] effects
 	) {
-		super( configName, configComment, defaultChance, minimumState, shouldBeMultipliedByCRD );
+		super( configName, configComment, defaultChance, minimumStage, shouldBeMultipliedByCRD );
 		this.effects = effects;
 
 		String comment = "Effect" + ( effects.length > 1 ? "s" : "" ) + " duration in seconds.";
@@ -30,9 +30,9 @@ public abstract class WhenDamagedApplyEffectBase extends ChanceWhenDamagedBase {
 	}
 
 	public WhenDamagedApplyEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect effect
+		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect effect
 	) {
-		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new MobEffect[]{ effect } );
+		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumStage, shouldBeMultipliedByCRD, new MobEffect[]{ effect } );
 	}
 
 	/**

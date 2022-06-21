@@ -1,6 +1,6 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.config.GameStateIntegerConfig;
+import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.features.ChanceFeatureBase;
 import com.mlib.MajruszLibrary;
@@ -19,13 +19,13 @@ import net.minecraftforge.fml.common.Mod;
 public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 	private static final String CONFIG_NAME = "SplitCreeper";
 	private static final String CONFIG_COMMENT = "Creepers after the explosion have a chance to spawn Creeperlings.";
-	protected final GameStateIntegerConfig creeperlingsAmount;
+	protected final GameStageIntegerConfig creeperlingsAmount;
 
 	public SplitCreeperToCreeperlings() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.666, GameState.State.NORMAL, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.666, GameStage.Stage.NORMAL, false );
 
 		String creeperlingComment = "Maximum amount of Creeperlings.";
-		this.creeperlingsAmount = new GameStateIntegerConfig( "maximum_creeperlings", creeperlingComment, 1, 3, 5, 0, 10 );
+		this.creeperlingsAmount = new GameStageIntegerConfig( "maximum_creeperlings", creeperlingComment, 1, 3, 5, 0, 10 );
 		this.featureGroup.addConfig( this.creeperlingsAmount );
 	}
 
@@ -70,6 +70,6 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBase {
 
 	/** Returns random amount of Creeperlings from range [0; maximum]. */
 	protected int getRandomAmountOfCreeperlings() {
-		return MajruszLibrary.RANDOM.nextInt( this.creeperlingsAmount.getCurrentGameStateValue() + 1 );
+		return MajruszLibrary.RANDOM.nextInt( this.creeperlingsAmount.getCurrentGameStageValue() + 1 );
 	}
 }

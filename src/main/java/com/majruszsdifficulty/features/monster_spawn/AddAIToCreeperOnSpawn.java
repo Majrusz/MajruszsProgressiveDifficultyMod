@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,7 +12,7 @@ public class AddAIToCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
 	private static final String CONFIG_COMMENT = "Creepers exploding when near the player behind the wall.";
 
 	public AddAIToCreeperOnSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.NORMAL, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameStage.Stage.NORMAL, false );
 	}
 
 	@Override

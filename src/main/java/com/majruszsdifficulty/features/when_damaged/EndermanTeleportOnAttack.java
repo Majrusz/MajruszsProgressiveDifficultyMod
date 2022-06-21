@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,7 +21,7 @@ public class EndermanTeleportOnAttack extends ChanceWhenDamagedBase {
 	private static final String CONFIG_COMMENT = "Enderman attack teleports the player somewhere nearby.";
 
 	public EndermanTeleportOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, GameState.State.MASTER, true );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, GameStage.Stage.MASTER, true );
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +18,7 @@ public class SpawnPiglinGroup extends SpawnEnemyGroupBase {
 	protected final DoubleConfig goldenSwordChance;
 
 	public SpawnPiglinGroup() {
-		super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.EXPERT, true, 1, 3, Armors.golden );
+		super( CONFIG_NAME, CONFIG_COMMENT, GameStage.Stage.EXPERT, true, 1, 3, Armors.golden );
 
 		String comment = "Chance for followers to have a Golden Sword.";
 		this.goldenSwordChance = new DoubleConfig( "golden_sword_chance", comment, false, 0.25, 0.0, 0.5 );

@@ -1,19 +1,19 @@
 package com.majruszsdifficulty.config;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.IConfigType;
 import com.mlib.config.IntegerConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-/** Config with integer values for each game state. */
-public class GameStateIntegerConfig implements IConfigType< Integer > {
+/** Config with integer values for each game stage. */
+public class GameStageIntegerConfig implements IConfigType< Integer > {
 	protected final ConfigGroup group;
 	protected final IntegerConfig normal;
 	protected final IntegerConfig expert;
 	protected final IntegerConfig master;
 
-	public GameStateIntegerConfig( String name, String comment, int defaultValueNormal, int defaultValueExpert, int defaultValueMaster, int minimumValue,
+	public GameStageIntegerConfig( String name, String comment, int defaultValueNormal, int defaultValueExpert, int defaultValueMaster, int minimumValue,
 		int maximumValue
 	) {
 		this.normal = new IntegerConfig( "normal", "Normal Mode", false, defaultValueNormal, minimumValue, maximumValue );
@@ -22,8 +22,8 @@ public class GameStateIntegerConfig implements IConfigType< Integer > {
 		this.group = new ConfigGroup( name, comment, this.normal, this.expert, this.master );
 	}
 
-	public int getCurrentGameStateValue() {
-		return GameState.getCurrentGameStateValue( this.normal.get(), this.expert.get(), this.master.get() );
+	public int getCurrentGameStageValue() {
+		return GameStage.getCurrentGameStageDependentValue( this.normal.get(), this.expert.get(), this.master.get() );
 	}
 
 	@Override
@@ -33,6 +33,6 @@ public class GameStateIntegerConfig implements IConfigType< Integer > {
 
 	@Override
 	public Integer get() {
-		return getCurrentGameStateValue();
+		return getCurrentGameStageValue();
 	}
 }

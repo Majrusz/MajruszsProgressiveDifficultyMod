@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.on_death;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
@@ -26,7 +26,7 @@ public class SpawnPlayerZombieOnDeath extends OnDeathBase {
 	protected final DoubleConfig playerHeadDropChance;
 
 	public SpawnPlayerZombieOnDeath() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.EXPERT, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameStage.Stage.EXPERT, false );
 
 		String headComment = "Chance for spawned Zombie to have a player's head.";
 		this.playerHeadChance = new DoubleConfig( "head_chance", headComment, false, 1.0, 0.0, 1.0 );

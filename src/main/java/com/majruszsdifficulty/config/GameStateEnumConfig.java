@@ -1,20 +1,20 @@
 package com.majruszsdifficulty.config;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.config.BaseConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-/** Basic config that stores game state enum. */
-public class GameStateEnumConfig extends BaseConfig< GameState.State > {
-	public ForgeConfigSpec.EnumValue< GameState.State > enumValue;
-	protected final GameState.State defaultValue;
+/** Basic config that stores game stage enum. */
+public class GameStageEnumConfig extends BaseConfig< GameStage.Stage > {
+	public ForgeConfigSpec.EnumValue< GameStage.Stage > enumValue;
+	protected final GameStage.Stage defaultValue;
 
-	public GameStateEnumConfig( String name, String comment, boolean requiresWorldRestart, GameState.State defaultValue ) {
+	public GameStageEnumConfig( String name, String comment, boolean requiresWorldRestart, GameStage.Stage defaultValue ) {
 		super( name, comment, requiresWorldRestart );
 		this.defaultValue = defaultValue;
 	}
 
-	public GameState.State get() {
+	public GameStage.Stage get() {
 		return this.enumValue.get();
 	}
 

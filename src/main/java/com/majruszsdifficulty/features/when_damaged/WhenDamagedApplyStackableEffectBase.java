@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -16,10 +16,10 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	protected final int maximumDurationInTicks;
 
 	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect[] effects, boolean isAmplifierStackable, boolean isDurationStackable,
+		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect[] effects, boolean isAmplifierStackable, boolean isDurationStackable,
 		int maximumAmplifier, int maximumDurationInTicks
 	) {
-		super( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, effects );
+		super( configName, configComment, defaultChance, defaultDurationInSeconds, minimumStage, shouldBeMultipliedByCRD, effects );
 
 		this.isAmplifierStackable = isAmplifierStackable;
 		this.isDurationStackable = isDurationStackable;
@@ -28,10 +28,10 @@ public abstract class WhenDamagedApplyStackableEffectBase extends WhenDamagedApp
 	}
 
 	public WhenDamagedApplyStackableEffectBase( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
-		GameState.State minimumState, boolean shouldBeMultipliedByCRD, MobEffect effect, boolean isAmplifierStackable, boolean isDurationStackable,
+		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect effect, boolean isAmplifierStackable, boolean isDurationStackable,
 		int maximumAmplifier, int maximumDurationInTicks
 	) {
-		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumState, shouldBeMultipliedByCRD, new MobEffect[]{ effect }, isAmplifierStackable, isDurationStackable, maximumAmplifier, maximumDurationInTicks );
+		this( configName, configComment, defaultChance, defaultDurationInSeconds, minimumStage, shouldBeMultipliedByCRD, new MobEffect[]{ effect }, isAmplifierStackable, isDurationStackable, maximumAmplifier, maximumDurationInTicks );
 	}
 
 	/**

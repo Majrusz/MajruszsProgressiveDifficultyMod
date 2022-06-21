@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +15,7 @@ public class CreateJockeyOnSpiderSpawn extends OnEnemyToBeSpawnedBase {
 	private static final String CONFIG_COMMENT = "Extra chance for jockey to spawn.";
 
 	public CreateJockeyOnSpiderSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.125, GameState.State.EXPERT, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.125, GameStage.Stage.EXPERT, false );
 	}
 
 	@Override

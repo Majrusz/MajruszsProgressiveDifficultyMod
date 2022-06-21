@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Creeper;
@@ -14,7 +14,7 @@ public class IgniteCreeperOnHurt extends WhenDamagedBase {
 	private static final String CONFIG_COMMENT = "Makes all Creepers ignite every nearby Creeper when exploding.";
 
 	public IgniteCreeperOnHurt() {
-		super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.EXPERT );
+		super( CONFIG_NAME, CONFIG_COMMENT, GameStage.Stage.EXPERT );
 	}
 
 	@Override

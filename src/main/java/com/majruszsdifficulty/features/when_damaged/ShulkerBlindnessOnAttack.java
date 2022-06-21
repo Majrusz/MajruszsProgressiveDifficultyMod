@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
@@ -15,7 +15,7 @@ public class ShulkerBlindnessOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_COMMENT = "Shulker inflict Blindness.";
 
 	public ShulkerBlindnessOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 5.0, GameState.State.MASTER, true, MobEffects.BLINDNESS );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.5, 5.0, GameStage.Stage.MASTER, true, MobEffects.BLINDNESS );
 	}
 
 	/** Checking if all conditions were met. */

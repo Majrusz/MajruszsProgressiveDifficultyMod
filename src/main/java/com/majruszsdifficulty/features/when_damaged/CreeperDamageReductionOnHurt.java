@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +16,7 @@ public class CreeperDamageReductionOnHurt extends WhenDamagedBase {
 	protected final DoubleConfig damageMultiplier;
 
 	public CreeperDamageReductionOnHurt() {
-		super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.EXPERT );
+		super( CONFIG_NAME, CONFIG_COMMENT, GameStage.Stage.EXPERT );
 
 		String multiplierComment = "Damage multiplier when Creepers attack Creeper.";
 		this.damageMultiplier = new DoubleConfig( "damage_multiplier", multiplierComment, false, 0.1, 0.0, 1.0 );

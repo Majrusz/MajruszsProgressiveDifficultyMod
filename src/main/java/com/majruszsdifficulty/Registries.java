@@ -24,7 +24,7 @@ import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot_modifiers.AddTreasureBagsToLoot;
 import com.majruszsdifficulty.loot_modifiers.DoubleLoot;
 import com.majruszsdifficulty.triggers.BandageTrigger;
-import com.majruszsdifficulty.triggers.GameStateTrigger;
+import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.mlib.commands.IRegistrableCommand;
@@ -184,7 +184,7 @@ public class Registries {
 	public static GameDataSaver GAME_DATA_SAVER;
 
 	// Triggers
-	public static final GameStateTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStateTrigger() );
+	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 	public static final UndeadArmyDefeatedTrigger UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
 	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
@@ -192,7 +192,7 @@ public class Registries {
 
 	// Configs
 	public static final SpawnDisabler.Config SPAWN_DISABLER_CONFIG = new SpawnDisabler.Config();
-	public static final GameStateConfig GAME_STATE_CONFIG = new GameStateConfig();
+	public static final GameStageConfig GAME_STATE_CONFIG = new GameStageConfig();
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;

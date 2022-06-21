@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.commands.BaseCommand;
 import com.mlib.commands.CommandManager;
 import com.mlib.commands.IRegistrableCommand;
@@ -12,7 +12,7 @@ import net.minecraft.commands.CommandSourceStack;
 /** Command that changes current game stage globally. */
 public class ChangeGameStageCommand extends BaseCommand implements IRegistrableCommand {
 	private static final String ENUM_ARGUMENT_NAME = "gamestage";
-	private static final RequiredArgumentBuilder< CommandSourceStack, ? > ENUM_ARGUMENT = enumArgument( ENUM_ARGUMENT_NAME, GameState.State.class );
+	private static final RequiredArgumentBuilder< CommandSourceStack, ? > ENUM_ARGUMENT = enumArgument( ENUM_ARGUMENT_NAME, GameStage.Stage.class );
 
 	/** Registers this command. */
 	@Override
@@ -24,13 +24,13 @@ public class ChangeGameStageCommand extends BaseCommand implements IRegistrableC
 
 	/** Changes current game stage and sends information to all players. */
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source ) {
-		GameState.State gameStage = getEnum( context, ENUM_ARGUMENT_NAME, GameState.State.class );
-		if( GameState.changeModeWithAdvancement( gameStage, source.getServer() ) ) {
+		GameStage.Stage gameStage = getEnum( context, ENUM_ARGUMENT_NAME, GameStage.Stage.class );
+		if( GameStage.changeModeWithAdvancement( gameStage, source.getServer() ) ) {
 			source.sendSuccess( CommandsHelper.createGameStageMessage( gameStage, "changed" ), true );
 		} else {
 			source.sendSuccess( CommandsHelper.createGameStageMessage( gameStage, "cannotchange" ), true );
 		}
 
-		return GameState.convertStateToInteger( gameStage );
+		return GameStage.convertStageToInteger( gameStage );
 	}
 }

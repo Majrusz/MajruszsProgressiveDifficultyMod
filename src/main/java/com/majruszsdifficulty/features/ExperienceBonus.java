@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.config.GameStateDoubleConfig;
+import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.mlib.Random;
 import com.mlib.config.ConfigGroup;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -16,12 +16,12 @@ import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
 @Mod.EventBusSubscriber
 public class ExperienceBonus {
 	protected final ConfigGroup experienceGroup;
-	protected final GameStateDoubleConfig bonusMultiplier;
+	protected final GameStageDoubleConfig bonusMultiplier;
 
 	public ExperienceBonus() {
 		String expComment = "Extra experience multiplier.";
 		String groupComment = "Experience bonuses.";
-		this.bonusMultiplier = new GameStateDoubleConfig( "BonusMultiplier", expComment, 0.0, 0.25, 0.5, 0.0, 10.0 );
+		this.bonusMultiplier = new GameStageDoubleConfig( "BonusMultiplier", expComment, 0.0, 0.25, 0.5, 0.0, 10.0 );
 
 		this.experienceGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Experience", groupComment ) );
 		this.experienceGroup.addConfig( this.bonusMultiplier );
@@ -37,13 +37,13 @@ public class ExperienceBonus {
 		player.giveExperiencePoints( bonusExperience );
 	}
 
-	/** Returns final experience amount after applying game state bonus. */
+	/** Returns final experience amount after applying game stage bonus. */
 	private int getExtraExperience( ExperienceOrb experienceOrb ) {
 		return Random.roundRandomly( getExperienceMultiplier() * experienceOrb.getValue() );
 	}
 
-	/** Returns extra experience depending on current game state. */
+	/** Returns extra experience depending on current game stage. */
 	private double getExperienceMultiplier() {
-		return this.bonusMultiplier.getCurrentGameStateValue();
+		return this.bonusMultiplier.getCurrentGameStageValue();
 	}
 }

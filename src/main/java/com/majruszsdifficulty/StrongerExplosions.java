@@ -1,6 +1,5 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.GameState;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.features.ChanceFeatureBase;
 import com.majruszsdifficulty.features.FeatureBase;
@@ -19,7 +18,7 @@ import javax.annotation.Nullable;
 
 import static com.majruszsdifficulty.Registries.STRONGER_EXPLOSIONS;
 
-/** Increases explosion size and makes the explosion always spawn fire after reaching certain game state. */
+/** Increases explosion size and makes the explosion always spawn fire after reaching certain game stage. */
 @Mod.EventBusSubscriber
 public class StrongerExplosions {
 	private final BiggerSize biggerSize;
@@ -61,7 +60,7 @@ public class StrongerExplosions {
 		protected final DoubleConfig maximumMultiplier;
 
 		public BiggerSize() {
-			super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.NORMAL );
+			super( CONFIG_NAME, CONFIG_COMMENT, GameStage.Stage.NORMAL );
 
 			String multiplierComment = "Explosion radius multiplier. (this value is scaled by Clamped Regional Difficulty)";
 			this.maximumMultiplier = new DoubleConfig( "maximum_multiplier", multiplierComment, false, 1.2599, 1.0, 10.0 );
@@ -72,7 +71,7 @@ public class StrongerExplosions {
 		/** Returns current radius multiplier depending on Clamped Regional Difficulty. */
 		public float getRadius( LivingEntity entity ) {
 			double factor = this.maximumMultiplier.get() - 1.0;
-			double difficultyFactor = entity != null ? GameState.getRegionalDifficulty( entity ) : 0.5;
+			double difficultyFactor = entity != null ? GameStage.getRegionalDifficulty( entity ) : 0.5;
 
 			return ( float )( 1.0 + factor * difficultyFactor );
 		}
@@ -83,7 +82,7 @@ public class StrongerExplosions {
 		private static final String CONFIG_COMMENT = "Makes all explosions leave fire.";
 
 		public CausingFire() {
-			super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.EXPERT, true );
+			super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameStage.Stage.EXPERT, true );
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,16 +19,16 @@ import java.util.UUID;
 public abstract class GiveItemAfterSpawningBase extends GiveItemOnSpawnBase {
 	private static final List< Data > dataList = new ArrayList<>();
 
-	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+	public GiveItemAfterSpawningBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD, EquipmentSlot equipmentSlotType, boolean shouldBeEnchanted, boolean shouldBeDamaged
 	) {
-		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );
+		super( configName, configComment, defaultChance, minimumStage, shouldChanceBeMultipliedByCRD, equipmentSlotType, shouldBeEnchanted, shouldBeDamaged );
 	}
 
 	/** Called when all requirements were met. */
 	@Override
 	public void onExecute( LivingEntity entity, ServerLevel world ) {
-		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( entity );
+		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( entity );
 
 		Data data = new Data();
 		data.uuid = entity.getUUID();

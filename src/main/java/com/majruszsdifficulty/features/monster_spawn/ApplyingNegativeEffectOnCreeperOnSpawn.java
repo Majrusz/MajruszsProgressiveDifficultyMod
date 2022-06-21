@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.MajruszLibrary;
 import com.mlib.config.DurationConfig;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +22,7 @@ public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBa
 	protected final DurationConfig duration;
 
 	public ApplyingNegativeEffectOnCreeperOnSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.375, GameState.State.NORMAL, true );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.375, GameStage.Stage.NORMAL, true );
 
 		String comment = "Duration of effects applied to creeper.";
 		this.duration = new DurationConfig( "duration", comment, false, 6.0, 1.0, 60.0 );

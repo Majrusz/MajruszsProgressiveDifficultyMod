@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -13,7 +13,7 @@ public class ChargeCreeperOnSpawn extends OnEnemyToBeSpawnedBase {
 	private static final String CONFIG_COMMENT = "Creepers spawning charged.";
 
 	public ChargeCreeperOnSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.125, GameState.State.NORMAL, true );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.125, GameStage.Stage.NORMAL, true );
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.undead_army;
 
 import com.google.common.collect.Sets;
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.goals.ForgiveUndeadArmyTargetGoal;
@@ -381,7 +381,7 @@ public class UndeadArmy {
 	/** Tries to enchant weapons and armor for given monster. */
 	private void tryToEnchantEquipment( Mob monster ) {
 		UndeadArmyConfig config = Registries.UNDEAD_ARMY_CONFIG;
-		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( monster );
+		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( monster );
 
 		if( monster.hasItemInSlot( EquipmentSlot.MAINHAND ) && Random.tryChance( config.getEnchantedItemChance() ) )
 			monster.setItemInHand( InteractionHand.MAIN_HAND, ItemHelper.enchantItem( monster.getMainHandItem(), clampedRegionalDifficulty, false ) );

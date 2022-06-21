@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,10 +12,10 @@ public abstract class ChanceFeatureBase extends FeatureBase {
 	protected final boolean shouldChanceBeMultipliedByCRD; // CRD = Clamped Regional Difficulty
 	protected final DoubleConfig chance;
 
-	public ChanceFeatureBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+	public ChanceFeatureBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD
 	) {
-		super( configName, configComment, minimumState );
+		super( configName, configComment, minimumStage );
 		this.shouldChanceBeMultipliedByCRD = shouldChanceBeMultipliedByCRD;
 
 		String crd = "(this value is scaled by Clamped Regional Difficulty)";
@@ -32,7 +32,7 @@ public abstract class ChanceFeatureBase extends FeatureBase {
 
 	/** Calculating final chance. (after applying clamped regional difficulty if needed) */
 	public double calculateChance( @Nullable LivingEntity target ) {
-		double clampedRegionalDifficulty = target != null ? GameState.getRegionalDifficulty( target ) : 0.25;
+		double clampedRegionalDifficulty = target != null ? GameStage.getRegionalDifficulty( target ) : 0.25;
 
 		return getChance() * ( this.shouldChanceBeMultipliedByCRD ? clampedRegionalDifficulty : 1.0 );
 	}

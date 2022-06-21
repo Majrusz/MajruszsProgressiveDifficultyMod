@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.features.undead_army.UndeadArmy;
 import com.majruszsdifficulty.goals.FollowGroupLeaderGoal;
 import com.majruszsdifficulty.goals.TargetAsLeaderGoal;
@@ -26,10 +26,10 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	protected final int maximumAmountOfChildren;
 	protected final Item[] leaderArmor;
 
-	public SpawnEnemyGroupBase( String configName, String configComment, GameState.State minimumState, boolean shouldChanceBeMultipliedByCRD,
+	public SpawnEnemyGroupBase( String configName, String configComment, GameStage.Stage minimumStage, boolean shouldChanceBeMultipliedByCRD,
 		int minimumAmountOfChildren, int maximumAmountOfChildren, Item[] leaderArmor
 	) {
-		super( configName, configComment, 0.25, minimumState, shouldChanceBeMultipliedByCRD );
+		super( configName, configComment, 0.25, minimumStage, shouldChanceBeMultipliedByCRD );
 		this.minimumAmountOfChildren = minimumAmountOfChildren;
 		this.maximumAmountOfChildren = maximumAmountOfChildren;
 		this.leaderArmor = leaderArmor;
@@ -74,7 +74,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 	 @param leader Entity to give an armor.
 	 */
 	private void giveArmorToLeader( LivingEntity leader ) {
-		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( leader );
+		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( leader );
 
 		List< ItemStack > itemStacks = new ArrayList<>();
 		for( Item item : this.leaderArmor )
@@ -88,7 +88,7 @@ public abstract class SpawnEnemyGroupBase extends OnEnemyToBeSpawnedBase {
 
 	/** Gives weapon from generateWeapon method to given entity. */
 	private void giveWeaponTo( LivingEntity child ) {
-		double clampedRegionalDifficulty = GameState.getRegionalDifficulty( child );
+		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( child );
 
 		ItemStack weapon = generateWeaponForChild();
 		if( weapon != null )

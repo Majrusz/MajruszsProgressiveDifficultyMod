@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -19,7 +19,7 @@ public class DrownedLightningOnAttack extends ChanceWhenDamagedBase {
 	private static final String CONFIG_COMMENT = "Drowned attacks with trident spawn lightning bolt.";
 
 	public DrownedLightningOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, GameState.State.EXPERT, true );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, GameStage.Stage.EXPERT, true );
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Evoker;
@@ -13,7 +13,7 @@ public class GiveEvokerTotemOnSpawn extends GiveItemAfterSpawningBase {
 	private static final String CONFIG_COMMENT = "Evoker spawns with Totem of Undying.";
 
 	public GiveEvokerTotemOnSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameState.State.NORMAL, false, EquipmentSlot.MAINHAND, false, false );
+		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, GameStage.Stage.NORMAL, false, EquipmentSlot.MAINHAND, false, false );
 	}
 
 	@Override

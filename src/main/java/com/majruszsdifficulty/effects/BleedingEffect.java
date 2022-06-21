@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.config.GameStateIntegerConfig;
+import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
@@ -37,7 +37,7 @@ public class BleedingEffect extends MobEffect {
 	protected final DoubleConfig damage;
 	protected final DurationConfig baseCooldown;
 	protected final DoubleConfig armorChanceReduction;
-	protected final GameStateIntegerConfig amplifier;
+	protected final GameStageIntegerConfig amplifier;
 	protected final StringListConfig entitiesBlackList;
 
 	public BleedingEffect() {
@@ -46,7 +46,7 @@ public class BleedingEffect extends MobEffect {
 		this.damage = new DoubleConfig( "damage", "Damage dealt by the effect every tick.", false, 1.0, 0.0, 20.0 );
 		this.baseCooldown = new DurationConfig( "cooldown", "Cooldown between next tick.", false, 4.0, 0.0, 20.0 );
 		this.armorChanceReduction = new DoubleConfig( "armor_reduction", "Chance reduction to apply the effect per each armor piece.", false, 0.2, 0.0, 0.25 );
-		this.amplifier = new GameStateIntegerConfig( "amplifier", "Level of the effect.", 0, 1, 2, 0, 10 );
+		this.amplifier = new GameStageIntegerConfig( "amplifier", "Level of the effect.", 0, 1, 2, 0, 10 );
 		this.entitiesBlackList = new StringListConfig( "black_list", "List of entities who are immune to the effect. (all entities except human-like mobs and animals are immune by default)", false, "minecraft:skeleton_horse" );
 		this.bleedingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Bleeding", "Bleeding potion effect.", this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier, this.entitiesBlackList ) );
 	}
@@ -106,7 +106,7 @@ public class BleedingEffect extends MobEffect {
 	}
 
 	public int getAmplifier() {
-		return this.amplifier.getCurrentGameStateValue();
+		return this.amplifier.getCurrentGameStageValue();
 	}
 
 	public boolean mayBleed( @Nullable Entity entity ) {

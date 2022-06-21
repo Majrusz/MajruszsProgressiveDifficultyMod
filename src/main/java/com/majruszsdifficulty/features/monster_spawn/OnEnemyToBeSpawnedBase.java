@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.features.ChanceFeatureBase;
 import com.mlib.Random;
 import net.minecraft.server.level.ServerLevel;
@@ -11,10 +11,10 @@ import net.minecraft.world.entity.Mob;
 public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implements IOnSpawn {
 	protected boolean shouldBeCancelled = false;
 
-	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameState.State minimumState,
+	public OnEnemyToBeSpawnedBase( String configName, String configComment, double defaultChance, GameStage.Stage minimumStage,
 		boolean shouldChanceBeMultipliedByCRD
 	) {
-		super( configName, configComment, defaultChance, minimumState, shouldChanceBeMultipliedByCRD );
+		super( configName, configComment, defaultChance, minimumStage, shouldChanceBeMultipliedByCRD );
 	}
 
 	/** Called when all requirements were met. */
@@ -27,7 +27,7 @@ public abstract class OnEnemyToBeSpawnedBase extends ChanceFeatureBase implement
 
 	/** Checking if all conditions were met. */
 	public boolean shouldBeExecuted( LivingEntity entity ) {
-		if( !GameState.atLeast( this.minimumState ) || !( entity.level instanceof ServerLevel ) || !isEnabled() || !( entity instanceof Mob ) )
+		if( !GameStage.atLeast( this.minimumStage ) || !( entity.level instanceof ServerLevel ) || !isEnabled() || !( entity instanceof Mob ) )
 			return false;
 
 		return Random.tryChance( calculateChance( entity ) );

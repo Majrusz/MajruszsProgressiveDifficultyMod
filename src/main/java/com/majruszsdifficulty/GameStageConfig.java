@@ -1,6 +1,6 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.config.GameStateEnumConfig;
+import com.majruszsdifficulty.config.GameStageEnumConfig;
 import com.mlib.config.AvailabilityConfig;
 import com.mlib.config.StringListConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -9,16 +9,15 @@ import javax.annotation.Nullable;
 
 import static com.majruszsdifficulty.MajruszsDifficulty.STATE_GROUP;
 
-/** Config for everything related to game state. */
-public class GameStateConfig {
+public class GameStageConfig {
 	protected final StringListConfig entitiesStartingExpertMode;
 	protected final StringListConfig entitiesStartingMasterMode;
 	protected final StringListConfig dimensionsStartingExpertMode;
 	protected final StringListConfig dimensionsStartingMasterMode;
 	protected final AvailabilityConfig enteringAnyDimensionStartsExpertMode;
-	protected final GameStateEnumConfig defaultGameState;
+	protected final GameStageEnumConfig defaultGameStage;
 
-	public GameStateConfig() {
+	public GameStageConfig() {
 		String entitiesExpertComment = "List of entities which start Expert Mode after killing them. (at least one)";
 		this.entitiesStartingExpertMode = new StringListConfig( "entities_expert", entitiesExpertComment, false, "none" );
 
@@ -34,10 +33,10 @@ public class GameStateConfig {
 		String anyDimensionComment = "Should entering any dimension start Expert Mode?";
 		this.enteringAnyDimensionStartsExpertMode = new AvailabilityConfig( "any_dimension_expert", anyDimensionComment, false, true );
 
-		String defaultComment = "Game state that is always set at the beginning of the game.";
-		this.defaultGameState = new GameStateEnumConfig( "default_game_state", defaultComment, false, GameState.State.NORMAL );
+		String defaultComment = "game stage that is always set at the beginning of the game.";
+		this.defaultGameStage = new GameStageEnumConfig( "default_game_state", defaultComment, false, GameStage.Stage.NORMAL );
 
-		STATE_GROUP.addConfigs( this.entitiesStartingExpertMode, this.entitiesStartingMasterMode, this.dimensionsStartingExpertMode, this.dimensionsStartingMasterMode, this.enteringAnyDimensionStartsExpertMode, this.defaultGameState );
+		STATE_GROUP.addConfigs( this.entitiesStartingExpertMode, this.entitiesStartingMasterMode, this.dimensionsStartingExpertMode, this.dimensionsStartingMasterMode, this.enteringAnyDimensionStartsExpertMode, this.defaultGameStage );
 	}
 
 	/** Checks whether entering given dimension should start Expert Mode. */
@@ -60,8 +59,8 @@ public class GameStateConfig {
 		return entityLocation != null && this.entitiesStartingMasterMode.contains( entityLocation.toString() );
 	}
 
-	/** Returns default game state after world is loaded for the first time. */
-	public GameState.State getDefaultState() {
-		return this.defaultGameState.get();
+	/** Returns default game stage after world is loaded for the first time. */
+	public GameStage.Stage getDefaultState() {
+		return this.defaultGameStage.get();
 	}
 }

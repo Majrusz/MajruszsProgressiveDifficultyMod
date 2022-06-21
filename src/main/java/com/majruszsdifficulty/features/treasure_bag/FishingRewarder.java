@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.treasure_bag;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.config.GameStateIntegerConfig;
+import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.items.ItemHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -19,12 +19,12 @@ import static com.majruszsdifficulty.MajruszsDifficulty.FEATURES_GROUP;
 public class FishingRewarder {
 	protected static final String FISHING_TAG = "FishermanTreasureBagCounter";
 	protected final ConfigGroup fishingGroup;
-	protected final GameStateIntegerConfig treasureBagRequirement;
+	protected final GameStageIntegerConfig treasureBagRequirement;
 
 	public FishingRewarder() {
 		String requirementComment = "Required amount of items fished to get Treasure Bag.";
 		String groupComment = "Everything related to fishing.";
-		this.treasureBagRequirement = new GameStateIntegerConfig( "RequiredItems", requirementComment, 20, 15, 10, 3, 100 );
+		this.treasureBagRequirement = new GameStageIntegerConfig( "RequiredItems", requirementComment, 20, 15, 10, 3, 100 );
 
 		this.fishingGroup = FEATURES_GROUP.addGroup( new ConfigGroup( "Fishing", groupComment ) );
 		this.fishingGroup.addConfig( this.treasureBagRequirement );
@@ -55,6 +55,6 @@ public class FishingRewarder {
 
 	/** Returns how many fish player must fished to get treasure bag. */
 	protected int getRequiredItems() {
-		return this.treasureBagRequirement.getCurrentGameStateValue();
+		return this.treasureBagRequirement.getCurrentGameStageValue();
 	}
 }

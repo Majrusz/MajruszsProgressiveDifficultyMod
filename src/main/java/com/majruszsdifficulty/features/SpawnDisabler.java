@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.mlib.LevelHelper;
 import com.mlib.config.ConfigGroup;
@@ -71,9 +71,9 @@ public class SpawnDisabler {
 			this.configGroup.addConfigs( this.forbiddenInNormal, this.forbiddenInExpert, this.forbiddenInMaster );
 		}
 
-		/** Returns forbidden list depending on current game state. */
+		/** Returns forbidden list depending on current game stage. */
 		public StringListConfig getCurrentForbiddenList() {
-			return GameState.getCurrentGameStateValue( this.forbiddenInNormal, this.forbiddenInExpert, this.forbiddenInMaster );
+			return GameStage.getCurrentGameStageDependentValue( this.forbiddenInNormal, this.forbiddenInExpert, this.forbiddenInMaster );
 		}
 	}
 }

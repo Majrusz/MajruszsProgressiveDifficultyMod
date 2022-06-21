@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.blocks.EndShardOre;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +15,7 @@ public class TriggerAllEndermansOnAttack extends WhenDamagedBase {
 	private static final String CONFIG_COMMENT = "Makes all nearby enderman target player when it hits any of them.";
 
 	public TriggerAllEndermansOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, GameState.State.MASTER );
+		super( CONFIG_NAME, CONFIG_COMMENT, GameStage.Stage.MASTER );
 	}
 
 	@Override

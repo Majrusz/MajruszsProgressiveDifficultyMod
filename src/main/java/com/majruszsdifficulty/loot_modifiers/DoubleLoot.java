@@ -2,7 +2,7 @@ package com.majruszsdifficulty.loot_modifiers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.Random;
 import com.mlib.loot_modifiers.LootHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -41,7 +41,7 @@ public class DoubleLoot extends LootModifier {
 	@Nonnull
 	@Override
 	public ObjectArrayList< ItemStack > doApply( ObjectArrayList< ItemStack > generatedLoot, LootContext context ) {
-		double chance = GameState.getCurrentGameStateValue( this.normalModeChance, this.expertModeChance, this.masterModeChance );
+		double chance = GameStage.getCurrentGameStageDependentValue( this.normalModeChance, this.expertModeChance, this.masterModeChance );
 
 		if( Random.tryChance( chance ) ) {
 			Entity entity = LootHelper.getParameter( context, ( LootContextParams.THIS_ENTITY ) );

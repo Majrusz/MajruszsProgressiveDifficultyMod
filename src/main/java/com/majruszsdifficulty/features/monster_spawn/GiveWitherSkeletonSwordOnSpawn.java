@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.monster_spawn;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +13,7 @@ public class GiveWitherSkeletonSwordOnSpawn extends GiveItemAfterSpawningBase {
 	private static final String CONFIG_COMMENT = "Wither Skeleton spawns with Wither Sword.";
 
 	public GiveWitherSkeletonSwordOnSpawn() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.75, GameState.State.EXPERT, true, EquipmentSlot.MAINHAND, true, true );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.75, GameStage.Stage.EXPERT, true, EquipmentSlot.MAINHAND, true, true );
 	}
 
 	@Override

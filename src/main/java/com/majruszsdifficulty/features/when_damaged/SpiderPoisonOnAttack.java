@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.when_damaged;
 
-import com.majruszsdifficulty.GameState;
+import com.majruszsdifficulty.GameStage;
 import com.mlib.Utility;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,7 +16,7 @@ public class SpiderPoisonOnAttack extends WhenDamagedApplyEffectBase {
 	private static final String CONFIG_COMMENT = "Spider inflicts poison.";
 
 	public SpiderPoisonOnAttack() {
-		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, -1.0, GameState.State.EXPERT, true, MobEffects.POISON );
+		super( CONFIG_NAME, CONFIG_COMMENT, 0.25, -1.0, GameStage.Stage.EXPERT, true, MobEffects.POISON );
 	}
 
 	/** Checking if all conditions were met. */
