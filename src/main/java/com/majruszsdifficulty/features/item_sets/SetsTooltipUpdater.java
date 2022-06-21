@@ -51,7 +51,8 @@ public class SetsTooltipUpdater {
 	}
 
 	protected static void addItemList( List< Component > tooltip, BaseSet set, Player player ) {
-		tooltip.add( Component.translatable( SET_TOOLTIP, set.getTranslatedName(), set.countSetItems( player ), set.itemData.length ).withStyle( HINT_FORMAT ) );
+		tooltip.add( Component.translatable( SET_TOOLTIP, set.getTranslatedName(), set.countSetItems( player ), set.itemData.length )
+			.withStyle( HINT_FORMAT ) );
 		for( ItemData itemData : set.itemData ) {
 			ChatFormatting chatFormatting = itemData.hasItemEquipped( player ) ? set.getChatFormatting() : DISABLED_FORMAT;
 
