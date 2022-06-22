@@ -225,6 +225,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new DrownedLightningAttack() );
 		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
 		GAME_MODIFIERS.add( new SharpToolsBleeding() );
+		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
 	}
 
 	public static ResourceLocation getLocation( String register ) {
