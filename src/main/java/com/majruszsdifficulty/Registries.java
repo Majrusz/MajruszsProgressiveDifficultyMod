@@ -222,6 +222,9 @@ public class Registries {
 	static {
 		GAME_MODIFIERS.add( new CreeperChainReaction() );
 		GAME_MODIFIERS.add( new CreeperExplosionImmunity() );
+		GAME_MODIFIERS.add( new DrownedLightningAttack() );
+		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
+		GAME_MODIFIERS.add( new SharpToolsBleeding() );
 	}
 
 	public static ResourceLocation getLocation( String register ) {

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.GameStage;
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
 import com.mojang.brigadier.CommandDispatcher;

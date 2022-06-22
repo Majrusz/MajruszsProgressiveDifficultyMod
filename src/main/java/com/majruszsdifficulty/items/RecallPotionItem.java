@@ -2,7 +2,7 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import com.mlib.Utility;
 import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;

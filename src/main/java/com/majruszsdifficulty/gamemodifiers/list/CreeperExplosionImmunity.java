@@ -8,11 +8,14 @@ import com.mlib.config.DoubleConfig;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperExplosionImmunity extends GameModifier {
-	static final ICondition.Excludable EXCLUDABLE = new ICondition.Excludable();
-	static final ICondition.GameStage GAME_STAGE = new ICondition.GameStage( GameStage.Stage.EXPERT );
-	static final ICondition.Context< ? > IS_CREEPER_TARGET = new ICondition.Context<>( DamagedContext.Data.class, data->data.target instanceof Creeper );
-	static final ICondition.Context< ? > IS_EXPLOSION_SOURCE = new ICondition.Context<>( DamagedContext.Data.class, data->data.source.isExplosion() );
-	static final DamagedContext ON_DAMAGED = new DamagedContext( EXCLUDABLE, GAME_STAGE, IS_CREEPER_TARGET, IS_EXPLOSION_SOURCE );
+	static final DamagedContext ON_DAMAGED = new DamagedContext();
+
+	static {
+		ON_DAMAGED.addCondition( new ICondition.Excludable() );
+		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.target instanceof Creeper ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.source.isExplosion() ) );
+	}
 
 	final DoubleConfig damageMultiplier;
 

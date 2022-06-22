@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.treasure_bag;
 
 import com.majruszsdifficulty.items.TreasureBagItem;
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

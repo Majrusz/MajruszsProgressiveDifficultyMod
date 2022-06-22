@@ -7,10 +7,13 @@ import com.majruszsdifficulty.gamemodifiers.contexts.DamagedContext;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperChainReaction extends GameModifier {
-	static final ICondition.Excludable EXCLUDABLE = new ICondition.Excludable();
-	static final ICondition.GameStage GAME_STAGE = new ICondition.GameStage( GameStage.Stage.EXPERT );
-	static final ICondition.Context< ? > ARE_CREEPERS = new ICondition.Context<>( DamagedContext.Data.class, data->data.target instanceof Creeper && data.attacker instanceof Creeper );
-	static final DamagedContext ON_DAMAGED = new DamagedContext( EXCLUDABLE, GAME_STAGE, ARE_CREEPERS );
+	static final DamagedContext ON_DAMAGED = new DamagedContext();
+
+	static {
+		ON_DAMAGED.addCondition( new ICondition.Excludable() );
+		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.target instanceof Creeper && data.attacker instanceof Creeper ) );
+	}
 
 	public CreeperChainReaction() {
 		super( "CreeperChainReaction", "Makes a Creeper ignite once any other Creeper explode nearby.", ON_DAMAGED );

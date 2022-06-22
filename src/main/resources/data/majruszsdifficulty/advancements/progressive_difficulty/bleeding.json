@@ -17,11 +17,9 @@
   },
   "criteria": {
     "bleeding_applied": {
-      "trigger": "minecraft:effects_changed",
+      "trigger": "majruszsdifficulty:basic_trigger",
       "conditions": {
-        "effects": {
-          "majruszsdifficulty:bleeding": {}
-        }
+        "type": "bleeding_received"
       }
     }
   },

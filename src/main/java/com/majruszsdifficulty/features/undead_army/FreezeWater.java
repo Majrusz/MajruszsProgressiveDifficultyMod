@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.features.undead_army;
 
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraftforge.event.entity.living.LivingEvent;

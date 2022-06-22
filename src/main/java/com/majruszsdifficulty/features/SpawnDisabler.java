@@ -2,7 +2,7 @@ package com.majruszsdifficulty.features;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.StringListConfig;
 import net.minecraft.core.Registry;
@@ -67,7 +67,7 @@ public class SpawnDisabler {
 			this.forbiddenInMaster = new StringListConfig( "forbidden_master", masterComment, false );
 
 			String groupComment = "Disables natural spawning of given entities depending on current game progress. (entities can still spawn in structures though!)";
-			this.configGroup = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "SpawnDisabler", groupComment ) );
+			this.configGroup = CONFIG_HANDLER.addNewGroup( "SpawnDisabler", groupComment );
 			this.configGroup.addConfigs( this.forbiddenInNormal, this.forbiddenInExpert, this.forbiddenInMaster );
 		}
 

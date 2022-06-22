@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.undead_army;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import com.mlib.MajruszLibrary;
 import com.mlib.Utility;
 import net.minecraft.core.BlockPos;

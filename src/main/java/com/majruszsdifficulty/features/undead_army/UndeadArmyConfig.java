@@ -13,7 +13,7 @@ import static com.majruszsdifficulty.MajruszsDifficulty.CONFIG_HANDLER;
 /** Class with all configurable aspects of the Undead Army. */
 public class UndeadArmyConfig {
 	private final ConfigGroup group;
-	private final AvailabilityConfig availability;
+	private final BooleanConfig availability;
 	private final IntegerConfig killRequirement;
 	private final DoubleConfig sizeMultiplier;
 	private final DoubleConfig skeletonHorseChance;
@@ -21,13 +21,13 @@ public class UndeadArmyConfig {
 	private final GameStageIntegerConfig treasureBagReward;
 	private final GameStageDoubleConfig enchantedItemsChance;
 	private final GameStageDoubleConfig armorChance;
-	private final DurationConfig durationBetweenWaves;
-	private final DurationConfig maximumInactiveDuration;
+	private final DoubleConfig durationBetweenWaves;
+	private final DoubleConfig maximumInactiveDuration;
 	private final WaveMembersConfig waveMembers;
 
 	public UndeadArmyConfig() {
 		String availabilityComment = "Is the Undead Army enabled?";
-		this.availability = new AvailabilityConfig( "is_enabled", availabilityComment, false, true );
+		this.availability = new BooleanConfig( "is_enabled", availabilityComment, false, true );
 
 		String killComment = "Required amount of killed undead to start the Undead Army.";
 		this.killRequirement = new IntegerConfig( "kill_requirement", killComment, false, 100, 10, 1000 );
@@ -51,10 +51,10 @@ public class UndeadArmyConfig {
 		this.armorChance = new GameStageDoubleConfig( "ArmorChance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
 
 		String waveComment = "Time between waves. (in seconds) (requires game/world restart!) ";
-		this.durationBetweenWaves = new DurationConfig( "time_between_waves", waveComment, true, 10.0, 3.0, 60.0 );
+		this.durationBetweenWaves = new DoubleConfig( "time_between_waves", waveComment, true, 10.0, 3.0, 60.0 );
 
 		String inactiveComment = "The maximum duration before Undead Army will end if there is no player. (in seconds) (requires game/world restart!) ";
-		this.maximumInactiveDuration = new DurationConfig( "inactive_duration", inactiveComment, true, 900.0, 300.0, 3200.0 );
+		this.maximumInactiveDuration = new DoubleConfig( "inactive_duration", inactiveComment, true, 900.0, 300.0, 3200.0 );
 
 		String membersComment = "Amount of enemies in every wave. (format: {minimal_amount}-{maximal_amount} {entity})";
 		this.waveMembers = new WaveMembersConfig( "WaveMembers", membersComment );
@@ -65,7 +65,7 @@ public class UndeadArmyConfig {
 		StringListConfig waveConfig5 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie", "4-6 minecraft:husk", "1-3 minecraft:skeleton", "3-5 minecraft:stray", "5-7 majruszsdifficulty:elite_skeleton", "3-3 majruszsdifficulty:tank" );
 		this.waveMembers.addWaveConfigs( waveConfig1, waveConfig2, waveConfig3, waveConfig4, waveConfig5 );
 
-		this.group = CONFIG_HANDLER.addConfigGroup( new ConfigGroup( "UndeadArmy", "" ) );
+		this.group = CONFIG_HANDLER.addNewGroup( "UndeadArmy", "" );
 		this.group.addConfigs( this.availability, this.killRequirement, this.sizeMultiplier, this.skeletonHorseChance, this.experienceReward, this.treasureBagReward, this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration, this.waveMembers );
 	}
 
@@ -111,12 +111,12 @@ public class UndeadArmyConfig {
 
 	/** Returns amount of ticks between waves. */
 	public int getAmountOfTicksBetweenWaves() {
-		return this.durationBetweenWaves.getDuration();
+		return this.durationBetweenWaves.asTicks();
 	}
 
 	/** Returns amount of ticks when the Undead Army will end if there is not any player nearby. */
 	public int getAmountOfInactivityTicks() {
-		return this.maximumInactiveDuration.getDuration();
+		return this.maximumInactiveDuration.asTicks();
 	}
 
 	/** Returns amount of waves. */

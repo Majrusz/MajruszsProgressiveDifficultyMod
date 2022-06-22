@@ -3,7 +3,7 @@ package com.majruszsdifficulty.features.when_damaged;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
-import com.majruszsdifficulty.effects.BleedingEffect.BleedingMobEffectInstance;
+import com.majruszsdifficulty.effects.BleedingEffect.MobEffectInstance;
 import com.mlib.Utility;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,7 +36,7 @@ public abstract class WhenDamagedApplyBleedingBaseOld extends WhenDamagedApplyEf
 	 */
 	@Override
 	protected void applyEffect( @Nullable LivingEntity attacker, LivingEntity target, MobEffect effect, Difficulty difficulty ) {
-		BleedingMobEffectInstance effectInstance = new BleedingMobEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false, true, attacker );
+		MobEffectInstance effectInstance = new MobEffectInstance( getDurationInTicks( difficulty ), getAmplifier( difficulty ), false, true, attacker );
 
 		EffectHelper.applyEffectIfPossible( target, effectInstance );
 		ServerPlayer serverPlayer = Utility.castIfPossible( ServerPlayer.class, attacker );

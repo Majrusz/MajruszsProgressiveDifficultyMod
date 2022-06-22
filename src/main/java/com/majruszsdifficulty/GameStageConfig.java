@@ -1,7 +1,7 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.config.GameStageEnumConfig;
-import com.mlib.config.AvailabilityConfig;
+import com.mlib.config.BooleanConfig;
 import com.mlib.config.StringListConfig;
 import net.minecraft.resources.ResourceLocation;
 
@@ -14,7 +14,7 @@ public class GameStageConfig {
 	protected final StringListConfig entitiesStartingMasterMode;
 	protected final StringListConfig dimensionsStartingExpertMode;
 	protected final StringListConfig dimensionsStartingMasterMode;
-	protected final AvailabilityConfig enteringAnyDimensionStartsExpertMode;
+	protected final BooleanConfig enteringAnyDimensionStartsExpertMode;
 	protected final GameStageEnumConfig defaultGameStage;
 
 	public GameStageConfig() {
@@ -31,7 +31,7 @@ public class GameStageConfig {
 		this.dimensionsStartingMasterMode = new StringListConfig( "dimensions_master", dimensionsMasterComment, false, "none" );
 
 		String anyDimensionComment = "Should entering any dimension start Expert Mode?";
-		this.enteringAnyDimensionStartsExpertMode = new AvailabilityConfig( "any_dimension_expert", anyDimensionComment, false, true );
+		this.enteringAnyDimensionStartsExpertMode = new BooleanConfig( "any_dimension_expert", anyDimensionComment, false, true );
 
 		String defaultComment = "game stage that is always set at the beginning of the game.";
 		this.defaultGameStage = new GameStageEnumConfig( "default_game_state", defaultComment, false, GameStage.Stage.NORMAL );

@@ -5,7 +5,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
 import com.majruszsdifficulty.features.treasure_bag.LootProgress;
 import com.majruszsdifficulty.features.treasure_bag.LootProgressClient;
-import com.mlib.config.AvailabilityConfig;
+import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
@@ -47,13 +47,13 @@ public class TreasureBagItem extends Item {
 	private final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.item_tooltip";
 
 	private final ResourceLocation lootTableLocation;
-	private final AvailabilityConfig availability;
+	private final BooleanConfig availability;
 
 	public TreasureBagItem( String id, String entityNameForConfiguration ) {
 		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 
 		this.lootTableLocation = Registries.getLocation( "gameplay/" + id + "_treasure_loot" );
-		this.availability = new AvailabilityConfig( id, createConfigComment( entityNameForConfiguration ), false, true );
+		this.availability = new BooleanConfig( id, createConfigComment( entityNameForConfiguration ), false, true );
 		CONFIG_GROUP.addConfig( this.availability );
 
 		TREASURE_BAGS.add( this );

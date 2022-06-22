@@ -3,22 +3,20 @@ package com.majruszsdifficulty.config;
 import com.majruszsdifficulty.GameStage;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.config.IConfigType;
+import com.mlib.config.UserConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-/** Config with double values for each game stage. */
-public class GameStageDoubleConfig implements IConfigType< Double > {
+public class GameStageDoubleConfig extends UserConfig {
 	protected final ConfigGroup group;
 	protected final DoubleConfig normal;
 	protected final DoubleConfig expert;
 	protected final DoubleConfig master;
 
-	public GameStageDoubleConfig( String name, String comment, double defaultValueNormal, double defaultValueExpert, double defaultValueMaster,
-		double minimumValue, double maximumValue
-	) {
-		this.normal = new DoubleConfig( "normal", "Normal Mode", false, defaultValueNormal, minimumValue, maximumValue );
-		this.expert = new DoubleConfig( "expert", "Expert Mode", false, defaultValueExpert, minimumValue, maximumValue );
-		this.master = new DoubleConfig( "master", "Master Mode", false, defaultValueMaster, minimumValue, maximumValue );
+	public GameStageDoubleConfig( String name, String comment, double defaultNormal, double defaultExpert, double defaultMaster, double min, double max ) {
+		super( name, comment );
+		this.normal = new DoubleConfig( "normal", "Normal Mode", false, defaultNormal, min, max );
+		this.expert = new DoubleConfig( "expert", "Expert Mode", false, defaultExpert, min, max );
+		this.master = new DoubleConfig( "master", "Master Mode", false, defaultMaster, min, max );
 		this.group = new ConfigGroup( name, comment, this.normal, this.expert, this.master );
 	}
 
@@ -31,7 +29,6 @@ public class GameStageDoubleConfig implements IConfigType< Double > {
 		this.group.build( builder );
 	}
 
-	@Override
 	public Double get() {
 		return getCurrentGameStageValue();
 	}

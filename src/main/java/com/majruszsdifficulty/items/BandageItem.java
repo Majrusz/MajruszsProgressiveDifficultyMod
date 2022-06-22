@@ -4,9 +4,9 @@ import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.Utility;
-import com.mlib.config.AvailabilityConfig;
+import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
-import com.mlib.config.DurationConfig;
+import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
@@ -44,8 +44,8 @@ public class BandageItem extends Item {
 	private static final String TOOLTIP_TRANSLATION_KEY_1 = "item.majruszsdifficulty.bandage.item_tooltip1";
 	private static final String TOOLTIP_TRANSLATION_KEY_2 = "item.majruszsdifficulty.bandage.item_tooltip2";
 	protected final ConfigGroup configGroup;
-	protected final AvailabilityConfig isAlwaysUsable;
-	protected final DurationConfig effectDuration;
+	protected final BooleanConfig isAlwaysUsable;
+	protected final DoubleConfig effectDuration;
 	protected final IntegerConfig effectAmplifier;
 
 	public BandageItem() {
@@ -55,8 +55,8 @@ public class BandageItem extends Item {
 	public BandageItem( String name, int defaultAmplifier, Rarity rarity ) {
 		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( rarity ) );
 
-		this.isAlwaysUsable = new AvailabilityConfig( "is_always_usable", "Is " + name + " always usable? If not player can only use " + name + " when it is bleeding.", false, true );
-		this.effectDuration = new DurationConfig( "regeneration_duration", "Duration in seconds of Regeneration effect.", false, 4.0, 1.0, 120.0 );
+		this.isAlwaysUsable = new BooleanConfig( "is_always_usable", "Is " + name + " always usable? If not player can only use " + name + " when it is bleeding.", false, true );
+		this.effectDuration = new DoubleConfig( "regeneration_duration", "Duration in seconds of Regeneration effect.", false, 4.0, 1.0, 120.0 );
 		this.effectAmplifier = new IntegerConfig( "regeneration_amplifier", "Level/amplifier of Regeneration effect.", false, defaultAmplifier, 0, 10 );
 		this.configGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( name, "Configuration for " + name + " item.", this.isAlwaysUsable, this.effectDuration, this.effectAmplifier ) );
 	}
@@ -102,7 +102,7 @@ public class BandageItem extends Item {
 	}
 
 	public int getRegenerationDuration() {
-		return this.effectDuration.getDuration();
+		return this.effectDuration.asTicks();
 	}
 
 	public int getRegenerationAmplifier() {

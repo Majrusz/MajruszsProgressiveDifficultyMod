@@ -2,7 +2,7 @@ package com.majruszsdifficulty.features.monster_spawn;
 
 import com.majruszsdifficulty.GameStage;
 import com.mlib.MajruszLibrary;
-import com.mlib.config.DurationConfig;
+import com.mlib.config.DoubleConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,13 +19,13 @@ public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBa
 	};
 	private static final String CONFIG_NAME = "CreeperEffects";
 	private static final String CONFIG_COMMENT = "Creeper spawns with negative effects applied.";
-	protected final DurationConfig duration;
+	protected final DoubleConfig duration;
 
 	public ApplyingNegativeEffectOnCreeperOnSpawn() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 0.375, GameStage.Stage.NORMAL, true );
 
 		String comment = "Duration of effects applied to creeper.";
-		this.duration = new DurationConfig( "duration", comment, false, 6.0, 1.0, 60.0 );
+		this.duration = new DoubleConfig( "duration", comment, false, 6.0, 1.0, 60.0 );
 		this.featureGroup.addConfig( this.duration );
 	}
 
@@ -34,7 +34,7 @@ public class ApplyingNegativeEffectOnCreeperOnSpawn extends OnEnemyToBeSpawnedBa
 		Creeper creeper = ( Creeper )entity;
 
 		MobEffect randomEffect = EFFECTS[ MajruszLibrary.RANDOM.nextInt( EFFECTS.length ) ];
-		creeper.addEffect( new MobEffectInstance( randomEffect, this.duration.getDuration(), 0 ) );
+		creeper.addEffect( new MobEffectInstance( randomEffect, this.duration.asTicks(), 0 ) );
 	}
 
 	@Override

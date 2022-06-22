@@ -1,31 +1,47 @@
 package com.majruszsdifficulty.gamemodifiers;
 
 import com.mlib.config.ConfigGroup;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Context {
-	final ICondition[] conditions;
+	final List< ICondition > conditions = new ArrayList<>();
+	final List< Config > configs = new ArrayList<>();
+	final String configName;
+	final String configComment;
 	protected GameModifier gameModifier = null;
 
-	public Context( ICondition... conditions ) {
-		this.conditions = conditions;
+	public Context( String configName, String configComment ) {
+		this.configName = configName;
+		this.configComment = configComment;
 	}
 
 	public void setup( GameModifier gameModifier ) {
 		this.gameModifier = gameModifier;
-	}
 
-	public void setupConfig( ConfigGroup config ) {
+		ConfigGroup parentGroup = getParentConfigGroup();
 		for( ICondition condition : this.conditions ) {
-			condition.setupConfig( config );
+			condition.setup( parentGroup );
+		}
+		for( Config config : this.configs ) {
+			config.setup( this.configs.size() > 1 ? config.addNewGroup( parentGroup ) : parentGroup );
 		}
 	}
 
-	abstract public ConfigGroup createConfigGroup();
+	public void addCondition( ICondition condition ) {
+		assert this.gameModifier == null : "context was already set up";
+		this.conditions.add( condition );
+	}
 
-	public boolean check( Object data ) {
+	public void addConfig( Config config ) {
+		assert this.gameModifier == null : "context was already set up";
+		this.configs.add( config );
+	}
+
+	public boolean check( Context.Data data ) {
 		for( ICondition condition : this.conditions ) {
 			if( !condition.check( this.gameModifier, data ) ) {
 				return false;
@@ -35,11 +51,20 @@ public abstract class Context {
 		return true;
 	}
 
+	private ConfigGroup getParentConfigGroup() {
+		ConfigGroup parentGroup = this.gameModifier.getConfigGroup();
+		if( this.gameModifier.getContextsLength() == 1 ) {
+			return parentGroup;
+		} else {
+			return parentGroup.addNewGroup( this.configName, this.configComment );
+		}
+	}
+
 	public static abstract class Data {
 		@Nullable
-		final Entity entity;
+		final LivingEntity entity;
 
-		public Data( @Nullable Entity entity ) {
+		public Data( @Nullable LivingEntity entity ) {
 			this.entity = entity;
 		}
 	}

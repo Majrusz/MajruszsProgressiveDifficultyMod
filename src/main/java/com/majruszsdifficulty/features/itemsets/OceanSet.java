@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.itemsets;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.time.TimeHelper;
 import net.minecraft.ChatFormatting;

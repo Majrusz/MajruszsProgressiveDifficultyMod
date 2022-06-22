@@ -5,16 +5,13 @@ import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.config.DurationConfig;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.EffectHelper;
-import com.mlib.entities.EntityHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -33,35 +30,18 @@ import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 /** A bleeding effect similar to the poison effect. */
 @Mod.EventBusSubscriber
 public class BleedingEffect extends MobEffect {
-	protected final ConfigGroup bleedingGroup;
-	protected final DoubleConfig damage;
-	protected final DurationConfig baseCooldown;
-	protected final DoubleConfig armorChanceReduction;
-	protected final GameStageIntegerConfig amplifier;
-	protected final StringListConfig entitiesBlackList;
-
 	public BleedingEffect() {
 		super( MobEffectCategory.HARMFUL, 0xffdd5555 );
-
-		this.damage = new DoubleConfig( "damage", "Damage dealt by the effect every tick.", false, 1.0, 0.0, 20.0 );
-		this.baseCooldown = new DurationConfig( "cooldown", "Cooldown between next tick.", false, 4.0, 0.0, 20.0 );
-		this.armorChanceReduction = new DoubleConfig( "armor_reduction", "Chance reduction to apply the effect per each armor piece.", false, 0.2, 0.0, 0.25 );
-		this.amplifier = new GameStageIntegerConfig( "amplifier", "Level of the effect.", 0, 1, 2, 0, 10 );
-		this.entitiesBlackList = new StringListConfig( "black_list", "List of entities who are immune to the effect. (all entities except human-like mobs and animals are immune by default)", false, "minecraft:skeleton_horse" );
-		this.bleedingGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "Bleeding", "Bleeding potion effect.", this.damage, this.baseCooldown, this.armorChanceReduction, this.amplifier, this.entitiesBlackList ) );
 	}
 
 	@Override
 	public void applyEffectTick( LivingEntity entity, int amplifier ) {
-		float damageAmount = this.damage.get().floatValue();
-		BleedingMobEffectInstance effectInstance = Utility.castIfPossible( BleedingMobEffectInstance.class, entity.getEffect( this ) );
-
-		if( effectInstance != null ) {
+		if( entity.getEffect( this ) instanceof MobEffectInstance effectInstance ) {
 			Vec3 motion = entity.getDeltaMovement();
-			entity.hurt( new EntityBleedingDamageSource( effectInstance.damageSourceEntity ), damageAmount );
+			entity.hurt( new EntityBleedingDamageSource( effectInstance.damageSourceEntity ), 1.0f );
 			entity.setDeltaMovement( motion ); // sets previous motion to avoid any jumping from bleeding
 		} else {
-			entity.hurt( Registries.BLEEDING_SOURCE, damageAmount );
+			entity.hurt( Registries.BLEEDING_SOURCE, 1.0f );
 		}
 	}
 
@@ -70,7 +50,7 @@ public class BleedingEffect extends MobEffect {
 
 	@Override
 	public boolean isDurationEffectTick( int duration, int amplifier ) {
-		int cooldown = Math.max( 4, this.baseCooldown.getDuration() >> amplifier );
+		int cooldown = Math.max( 4, Utility.secondsToTicks( 4.0 ) >> amplifier );
 
 		return duration % cooldown == 0;
 	}
@@ -90,8 +70,7 @@ public class BleedingEffect extends MobEffect {
 
 	@SubscribeEvent
 	public static void onDeath( LivingDeathEvent event ) {
-		BleedingEffect bleeding = Registries.BLEEDING.get();
-		if( event.getEntityLiving().hasEffect( bleeding ) )
+		if( event.getEntityLiving().hasEffect( Registries.BLEEDING.get() ) )
 			spawnParticles( event.getEntityLiving(), 100 );
 	}
 
@@ -100,30 +79,8 @@ public class BleedingEffect extends MobEffect {
 	}
 
 	private static void spawnParticles( LivingEntity entity, int amountOfParticles ) {
-		ServerLevel level = Utility.castIfPossible( ServerLevel.class, entity.level );
-		if( level != null )
+		if( entity.level instanceof ServerLevel level )
 			level.sendParticles( Registries.BLOOD.get(), entity.getX(), entity.getY( 0.5 ), entity.getZ(), amountOfParticles, 0.125, 0.5, 0.125, 0.05 );
-	}
-
-	public int getAmplifier() {
-		return this.amplifier.getCurrentGameStageValue();
-	}
-
-	public boolean mayBleed( @Nullable Entity entity ) {
-		return ( EntityHelper.isAnimal( entity ) || EntityHelper.isHuman( entity ) ) && !isBlackListed( entity );
-	}
-
-	private boolean isBlackListed( @Nullable Entity entity ) {
-		return entity != null && this.entitiesBlackList.contains( Utility.getRegistryString( entity.getType() ) );
-	}
-
-	public double calculateBleedChanceMultiplier( LivingEntity entity ) {
-		double chance = 1.0;
-		for( ItemStack armorPiece : entity.getArmorSlots() )
-			if( !armorPiece.isEmpty() )
-				chance -= this.armorChanceReduction.get();
-
-		return chance;
 	}
 
 	/** Bleeding damage source that stores information about the causer of bleeding. (required for converting villager to zombie villager etc.) */
@@ -152,12 +109,11 @@ public class BleedingEffect extends MobEffect {
 	}
 
 	/** Bleeding effect instance that stores information about the causer of bleeding. (required for converting villager to zombie villager etc.) */
-	public static class BleedingMobEffectInstance extends MobEffectInstance {
+	public static class MobEffectInstance extends net.minecraft.world.effect.MobEffectInstance {
 		@Nullable
 		protected final Entity damageSourceEntity;
 
-		public BleedingMobEffectInstance( int duration, int amplifier, boolean ambient, boolean showParticles, @Nullable LivingEntity attacker
-		) {
+		public MobEffectInstance( int duration, int amplifier, boolean ambient, boolean showParticles, @Nullable LivingEntity attacker ) {
 			super( Registries.BLEEDING.get(), duration, amplifier, ambient, showParticles );
 			this.damageSourceEntity = attacker;
 		}

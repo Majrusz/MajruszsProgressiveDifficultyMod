@@ -2,7 +2,7 @@ package com.majruszsdifficulty.features.when_damaged;
 
 import com.majruszsdifficulty.GameStage;
 import com.mlib.Utility;
-import com.mlib.config.AvailabilityConfig;
+import com.mlib.config.BooleanConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -18,8 +18,8 @@ import javax.annotation.Nullable;
 public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBaseOld {
 	private static final String CONFIG_NAME = "FallEffects";
 	private static final String CONFIG_COMMENT = "Applies Nausea and Slowness on fall.";
-	protected final AvailabilityConfig nauseaAvailability;
-	protected final AvailabilityConfig slownessAvailability;
+	protected final BooleanConfig nauseaAvailability;
+	protected final BooleanConfig slownessAvailability;
 
 	public NauseaAndSlownessWhenFalling() {
 		super( CONFIG_NAME, CONFIG_COMMENT, 1.0, 10.0, GameStage.Stage.NORMAL, false, new MobEffect[]{ MobEffects.CONFUSION, MobEffects.MOVEMENT_SLOWDOWN
@@ -27,8 +27,8 @@ public class NauseaAndSlownessWhenFalling extends WhenDamagedApplyEffectBaseOld 
 
 		String nauseaComment = "Is applying Nausea enabled?";
 		String slownessComment = "Is applying Slowness enabled?";
-		this.nauseaAvailability = new AvailabilityConfig( "nausea", nauseaComment, false, true );
-		this.slownessAvailability = new AvailabilityConfig( "slowness", slownessComment, false, true );
+		this.nauseaAvailability = new BooleanConfig( "nausea", nauseaComment, false, true );
+		this.slownessAvailability = new BooleanConfig( "slowness", slownessComment, false, true );
 		this.featureGroup.addConfigs( this.nauseaAvailability, this.slownessAvailability );
 	}
 

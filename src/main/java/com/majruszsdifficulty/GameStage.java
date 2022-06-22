@@ -1,6 +1,6 @@
 package com.majruszsdifficulty;
 
-import com.mlib.LevelHelper;
+import com.mlib.levels.LevelHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -108,4 +108,7 @@ public class GameStage {
 	public enum Stage {
 		NORMAL, EXPERT, MASTER
 	}
+
+	public record Integer( int normal, int expert, int master ) {}
+	public record Double( double normal, double expert, double master ) {}
 }

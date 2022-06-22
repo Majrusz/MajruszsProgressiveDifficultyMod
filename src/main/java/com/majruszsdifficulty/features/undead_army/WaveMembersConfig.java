@@ -32,7 +32,7 @@ public class WaveMembersConfig extends ConfigGroup {
 	}
 
 	public void addWaveConfigs( StringListConfig... waveConfigs ) {
-		this.configTypeList = new ArrayList<>( Arrays.asList( waveConfigs ) );
+		this.configs = new ArrayList<>( Arrays.asList( waveConfigs ) );
 		this.listConfigs.addAll( Arrays.asList( waveConfigs ) );
 	}
 

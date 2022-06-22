@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features.when_damaged;
 
 import com.majruszsdifficulty.GameStage;
-import com.mlib.config.DurationConfig;
+import com.mlib.config.DoubleConfig;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 /** Base class representing event on which enemies will receive some effects after being attacked. */
 public abstract class WhenDamagedApplyEffectBaseOld extends ChanceWhenDamagedBaseOld {
 	protected final MobEffect[] effects;
-	protected final DurationConfig effectDuration;
+	protected final DoubleConfig effectDuration;
 
 	public WhenDamagedApplyEffectBaseOld( String configName, String configComment, double defaultChance, double defaultDurationInSeconds,
 		GameStage.Stage minimumStage, boolean shouldBeMultipliedByCRD, MobEffect[] effects
@@ -23,7 +23,7 @@ public abstract class WhenDamagedApplyEffectBaseOld extends ChanceWhenDamagedBas
 		this.effects = effects;
 
 		String comment = "Effect" + ( effects.length > 1 ? "s" : "" ) + " duration in seconds.";
-		this.effectDuration = new DurationConfig( "duration", comment, false, defaultDurationInSeconds, 1.0, 600.0 );
+		this.effectDuration = new DoubleConfig( "duration", comment, false, defaultDurationInSeconds, 1.0, 600.0 );
 
 		if( defaultDurationInSeconds != -1.0 )
 			this.featureGroup.addConfig( this.effectDuration );
@@ -70,7 +70,7 @@ public abstract class WhenDamagedApplyEffectBaseOld extends ChanceWhenDamagedBas
 	 @param difficulty Current game difficulty. (peaceful, easy, normal, hard)
 	 */
 	protected int getDurationInTicks( Difficulty difficulty ) {
-		return this.effectDuration.getDuration();
+		return this.effectDuration.asTicks();
 	}
 
 	/**
