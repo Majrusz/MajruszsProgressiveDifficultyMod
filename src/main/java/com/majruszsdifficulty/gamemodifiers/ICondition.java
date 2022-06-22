@@ -95,7 +95,7 @@ public interface ICondition {
 		}
 	}
 
-	class MayBleed implements ICondition {
+	class IsLivingBeing implements ICondition {
 		@Override
 		public boolean check( GameModifier feature, com.majruszsdifficulty.gamemodifiers.Context.Data data ) {
 			return EntityHelper.isAnimal( data.entity ) || EntityHelper.isHuman( data.entity );

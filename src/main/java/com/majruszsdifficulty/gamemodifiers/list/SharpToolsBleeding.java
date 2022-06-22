@@ -19,9 +19,10 @@ public class SharpToolsBleeding extends GameModifier {
 		ON_DAMAGED.addCondition( new ICondition.Excludable() );
 		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.NORMAL ) );
 		ON_DAMAGED.addCondition( new ICondition.Chance( 0.25, false ) );
-		ON_DAMAGED.addCondition( new ICondition.MayBleed() );
+		ON_DAMAGED.addCondition( new ICondition.IsLivingBeing() );
 		ON_DAMAGED.addCondition( new ICondition.ArmorDependentChance() );
 		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) ) );
+		ON_DAMAGED.addCondition( new DamagedContext.DirectDamage() );
 		ON_DAMAGED.addConfig( BLEEDING );
 	}
 

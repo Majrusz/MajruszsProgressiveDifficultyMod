@@ -1,6 +1,8 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
+import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.gamemodifiers.Context;
+import com.majruszsdifficulty.gamemodifiers.ICondition;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,6 +52,18 @@ public class DamagedContext extends Context {
 			this.target = target;
 			this.level = ( ServerLevel )this.target.level;
 			this.source = source;
+		}
+	}
+
+	public static class DirectDamage extends ICondition.Context< DamagedContext.Data > {
+		public DirectDamage() {
+			super( DamagedContext.Data.class, data -> data.source.getDirectEntity() == data.attacker );
+		}
+	}
+
+	public static class NotBleeding extends ICondition.Context< DamagedContext.Data > {
+		public NotBleeding() {
+			super( DamagedContext.Data.class, data -> !( data.source instanceof BleedingEffect.EntityBleedingDamageSource ) );
 		}
 	}
 }

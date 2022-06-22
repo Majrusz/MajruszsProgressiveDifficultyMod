@@ -4,12 +4,11 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.ICondition;
 import com.majruszsdifficulty.gamemodifiers.contexts.DamagedContext;
-import com.mlib.items.ItemHelper;
 import com.mlib.levels.LevelHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Drowned;
-import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 
 public class DrownedLightningAttack extends GameModifier {
 	static final DamagedContext ON_DAMAGED = new DamagedContext();
@@ -19,7 +18,7 @@ public class DrownedLightningAttack extends GameModifier {
 		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
 		ON_DAMAGED.addCondition( new ICondition.Chance( 0.6, true ) );
 		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.attacker instanceof Drowned ) );
-		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->ItemHelper.hasInMainHand( data.attacker, TridentItem.class ) ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.source.getEntity() instanceof ThrownTrident ) );
 		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) ) );
 	}
 
