@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /** Base class representing event on which enemies will receive bleeding after being attacked. */
-public abstract class WhenDamagedApplyBleedingBaseOld extends WhenDamagedApplyEffectBaseOld {
+public  class WhenDamagedApplyBleedingBaseOld extends WhenDamagedApplyEffectBaseOld {
 	public WhenDamagedApplyBleedingBaseOld( String configName, String configComment, double defaultChance, double defaultDurationInSeconds ) {
 		super( configName, configComment, defaultChance, defaultDurationInSeconds, GameStage.Stage.NORMAL, false, Registries.BLEEDING.get() );
 	}
@@ -23,8 +23,7 @@ public abstract class WhenDamagedApplyBleedingBaseOld extends WhenDamagedApplyEf
 	/** Checking if all conditions were met. */
 	@Override
 	public boolean shouldBeExecuted( @Nullable LivingEntity attacker, LivingEntity target, DamageSource damageSource ) {
-		return Registries.BLEEDING.get()
-			.mayBleed( target ) && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target, damageSource );
+		return true && !( damageSource instanceof BleedingEffect.EntityBleedingDamageSource ) && super.shouldBeExecuted( attacker, target, damageSource );
 	}
 
 	/**
@@ -44,16 +43,10 @@ public abstract class WhenDamagedApplyBleedingBaseOld extends WhenDamagedApplyEf
 			Registries.BASIC_TRIGGER.trigger( serverPlayer, "bleeding_inflicted" );
 	}
 
-	/** Applying invisible bleeding effect instead of standard one. */
-
 	@Override
 	protected int getAmplifier( Difficulty difficulty ) {
-		return Registries.BLEEDING.get().getAmplifier();
+		return 0;
 	}
 
-	/** Calculating final chance. (after applying clamped regional difficulty and armor multipliers) */
-	@Override
-	public double calculateChance( LivingEntity target ) {
-		return Registries.BLEEDING.get().calculateBleedChanceMultiplier( target ) * super.calculateChance( target );
-	}
+	/** Applying invisible bleeding effect instead of standard one. */
 }
