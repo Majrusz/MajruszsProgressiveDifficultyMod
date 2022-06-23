@@ -224,6 +224,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new CactusBleeding() );
 		GAME_MODIFIERS.add( new CreeperChainReaction() );
 		GAME_MODIFIERS.add( new CreeperExplosionImmunity() );
+		GAME_MODIFIERS.add( new CreeperSpawnCharged() );
 		GAME_MODIFIERS.add( new DrownDebuffs() );
 		GAME_MODIFIERS.add( new DrownedLightningAttack() );
 		GAME_MODIFIERS.add( new EndermanTeleportAttack() );

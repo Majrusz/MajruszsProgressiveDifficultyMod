@@ -16,7 +16,6 @@ public class DrownedLightningAttack extends GameModifier {
 	static {
 		ON_DAMAGED.addCondition( new ICondition.Excludable() );
 		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
-		ON_DAMAGED.addCondition( new ICondition.Chance( 0.6, true ) );
 		ON_DAMAGED.addCondition( new ICondition.Context<>( OnDamagedContext.Data.class, data->data.attacker instanceof Drowned ) );
 		ON_DAMAGED.addCondition( new ICondition.Context<>( OnDamagedContext.Data.class, data->data.source.getDirectEntity() instanceof ThrownTrident ) );
 		ON_DAMAGED.addCondition( new ICondition.Context<>( OnDamagedContext.Data.class, data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) ) );

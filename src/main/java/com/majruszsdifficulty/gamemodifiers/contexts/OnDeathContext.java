@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
 import com.majruszsdifficulty.gamemodifiers.Context;
+import com.mlib.Utility;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,7 +50,7 @@ public class OnDeathContext extends Context {
 			this.event = event;
 			this.attacker = attacker;
 			this.target = target;
-			this.level = this.target.level instanceof ServerLevel ? ( ServerLevel )this.target.level : null;
+			this.level = Utility.castIfPossible( ServerLevel.class, this.target.level );
 			this.source = source;
 		}
 	}
