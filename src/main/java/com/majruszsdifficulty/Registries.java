@@ -20,7 +20,6 @@ import com.majruszsdifficulty.features.treasure_bag.TreasureBagManager;
 import com.majruszsdifficulty.features.undead_army.ReloadUndeadArmyGoals;
 import com.majruszsdifficulty.features.undead_army.UndeadArmyConfig;
 import com.majruszsdifficulty.features.undead_army.UndeadArmyManager;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.lootmodifiers.AddTreasureBagsToLoot;
@@ -30,6 +29,7 @@ import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.mlib.commands.IRegistrableCommand;
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -176,8 +176,8 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Events
-	public static final StrongerExplosions STRONGER_EXPLOSIONS = new StrongerExplosions();
-	public static final SplitCreeperToCreeperlings SPLIT_CREEPER_TO_CREEPERLINGS = new SplitCreeperToCreeperlings();
+	// public static final StrongerExplosions STRONGER_EXPLOSIONS = new StrongerExplosions();
+	// public static final SplitCreeperToCreeperlings SPLIT_CREEPER_TO_CREEPERLINGS = new SplitCreeperToCreeperlings();
 
 	// Misc
 	public static final IncreaseGameDifficulty INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
@@ -229,6 +229,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new DrownedLightningAttack() );
 		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
 		GAME_MODIFIERS.add( new FallDebuffs() );
+		GAME_MODIFIERS.add( new JockeySpawn() );
 		GAME_MODIFIERS.add( new PhantomLevitationAttack() );
 		GAME_MODIFIERS.add( new SharpToolsBleeding() );
 		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );

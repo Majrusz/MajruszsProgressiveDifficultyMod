@@ -1,13 +1,14 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.effects.BleedingEffect;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
-import com.majruszsdifficulty.gamemodifiers.ICondition;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnDeathContext;
+import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.contexts.OnDeathContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,18 +27,18 @@ public class SpawnPlayerZombie extends GameModifier {
 	static final OnDeathContext ON_DEATH = new OnDeathContext();
 
 	static {
-		ON_DEATH.addCondition( new ICondition.Excludable() );
-		ON_DEATH.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
-		ON_DEATH.addCondition( new ICondition.Chance( 1.0, false ) );
-		ON_DEATH.addCondition( new ICondition.Context<>( OnDeathContext.Data.class, data->data.target instanceof Player ) );
-		ON_DEATH.addCondition( new ICondition.Context<>( OnDeathContext.Data.class, data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie ) );
+		ON_DEATH.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
+		ON_DEATH.addCondition( new Condition.Chance( 1.0 ) );
+		ON_DEATH.addCondition( new Condition.Excludable() );
+		ON_DEATH.addCondition( new Condition.Context<>( OnDeathContext.Data.class, data->data.target instanceof Player ) );
+		ON_DEATH.addCondition( new Condition.Context<>( OnDeathContext.Data.class, data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie ) );
 	}
 
 	final DoubleConfig headChance;
 	final DoubleConfig headDropChance;
 
 	public SpawnPlayerZombie() {
-		super( "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place.", ON_DEATH );
+		super( GameModifier.DEFAULT, "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place.", ON_DEATH );
 
 		this.headChance = new DoubleConfig( "head_chance", "Chance for a zombie to have player's head.", false, 1.0, 0.0, 1.0 );
 		this.headDropChance = new DoubleConfig( "head_drop_chance", "Chance for a zombie to drop player's head.", false, 0.1, 0.0, 1.0 );

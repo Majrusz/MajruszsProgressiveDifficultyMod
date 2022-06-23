@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-import static com.majruszsdifficulty.Registries.STRONGER_EXPLOSIONS;
+// import static com.majruszsdifficulty.Registries.STRONGER_EXPLOSIONS;
 
 /** Increases explosion size and makes the explosion always spawn fire after reaching certain game stage. */
 @Mod.EventBusSubscriber
@@ -35,11 +35,11 @@ public class StrongerExplosions {
 		if( causer == null )
 			causer = getNearestEntity( event.explosion, event.level );
 
-		if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
+		/*if( STRONGER_EXPLOSIONS.biggerSize.isEnabled() )
 			event.size *= STRONGER_EXPLOSIONS.biggerSize.getRadius( causer );
 
 		if( !( causer instanceof CreeperlingEntity ) && STRONGER_EXPLOSIONS.causingFire.isEnabled() && Random.tryChance( STRONGER_EXPLOSIONS.causingFire.calculateChance( causer ) ) )
-			event.causesFire = true;
+			event.causesFire = true;*/
 	}
 
 	/** Returns nearest entity to given explosion. (required to calculating regional difficulty) */

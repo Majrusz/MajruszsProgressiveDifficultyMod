@@ -34,7 +34,7 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBaseOld {
 		if( !isValid( event.getExplosion(), event.getWorld() ) )
 			return;
 
-		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Registries.SPLIT_CREEPER_TO_CREEPERLINGS;
+		/*SplitCreeperToCreeperlings splitCreeperToCreeperlings = Registries.SPLIT_CREEPER_TO_CREEPERLINGS;
 		Explosion explosion = event.getExplosion();
 		Creeper creeper = ( Creeper )explosion.getExploder();
 		ServerLevel world = ( ServerLevel )event.getWorld();
@@ -48,7 +48,7 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBaseOld {
 			CreeperlingEntity creeperling = Registries.CREEPERLING.get().spawn( world, null, null, null, position, MobSpawnType.SPAWNER, true, true );
 			if( creeperling != null )
 				creeperling.setTarget( creeper.getTarget() );
-		}
+		}*/
 	}
 
 	/** Returns position nearby given Creeper. */
@@ -61,11 +61,12 @@ public class SplitCreeperToCreeperlings extends ChanceFeatureBaseOld {
 
 	/** Checks whether feature should be called. */
 	private static boolean isValid( Explosion explosion, Level world ) {
-		SplitCreeperToCreeperlings splitCreeperToCreeperlings = Registries.SPLIT_CREEPER_TO_CREEPERLINGS;
+		/*SplitCreeperToCreeperlings splitCreeperToCreeperlings = Registries.SPLIT_CREEPER_TO_CREEPERLINGS;
 		boolean isCausedByCreeper = explosion.getExploder() instanceof Creeper && !( explosion.getExploder() instanceof CreeperlingEntity );
 		boolean isServerLevel = world instanceof ServerLevel;
 
-		return isCausedByCreeper && isServerLevel && splitCreeperToCreeperlings.isEnabled() && splitCreeperToCreeperlings.tryChance( null );
+		return isCausedByCreeper && isServerLevel && splitCreeperToCreeperlings.isEnabled() && splitCreeperToCreeperlings.tryChance( null );*/
+		return true;
 	}
 
 	/** Returns random amount of Creeperlings from range [0; maximum]. */

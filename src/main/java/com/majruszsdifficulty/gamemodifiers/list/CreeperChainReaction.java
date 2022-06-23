@@ -1,22 +1,24 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
-import com.majruszsdifficulty.gamemodifiers.ICondition;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperChainReaction extends GameModifier {
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
-		ON_DAMAGED.addCondition( new ICondition.Excludable() );
-		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
-		ON_DAMAGED.addCondition( new ICondition.Context<>( OnDamagedContext.Data.class, data->data.target instanceof Creeper && data.attacker instanceof Creeper ) );
+		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
+		ON_DAMAGED.addCondition( new Condition.Excludable() );
+		ON_DAMAGED.addCondition( new Condition.Context<>( OnDamagedContext.Data.class, data->data.target instanceof Creeper && data.attacker instanceof Creeper ) );
 	}
 
 	public CreeperChainReaction() {
-		super( "CreeperChainReaction", "Makes a Creeper ignite once any other Creeper explode nearby.", ON_DAMAGED );
+		super( GameModifier.DEFAULT, "CreeperChainReaction", "Makes a Creeper ignite once any other Creeper explode nearby.", ON_DAMAGED );
 	}
 
 	@Override
