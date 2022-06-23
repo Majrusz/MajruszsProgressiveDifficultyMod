@@ -232,6 +232,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new SharpToolsBleeding() );
 		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );
 		GAME_MODIFIERS.add( new SlimeSlownessAttack() );
+		GAME_MODIFIERS.add( new SpawnPlayerZombie() );
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
 		GAME_MODIFIERS.add( new WitherSwordEffect() );

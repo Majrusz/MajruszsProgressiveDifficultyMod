@@ -42,6 +42,7 @@ public class OnDamagedContext extends Context {
 		@Nullable
 		public final LivingEntity attacker;
 		public final LivingEntity target;
+		@Nullable
 		public final ServerLevel level;
 		public final DamageSource source;
 
@@ -50,7 +51,7 @@ public class OnDamagedContext extends Context {
 			this.event = event;
 			this.attacker = attacker;
 			this.target = target;
-			this.level = ( ServerLevel )this.target.level;
+			this.level = this.target.level instanceof ServerLevel ? ( ServerLevel )this.target.level : null;
 			this.source = source;
 		}
 	}
@@ -58,12 +59,6 @@ public class OnDamagedContext extends Context {
 	public static class DirectDamage extends ICondition.Context< OnDamagedContext.Data > {
 		public DirectDamage() {
 			super( OnDamagedContext.Data.class, data->data.source.getDirectEntity() == data.attacker );
-		}
-	}
-
-	public static class NotBleeding extends ICondition.Context< OnDamagedContext.Data > {
-		public NotBleeding() {
-			super( OnDamagedContext.Data.class, data->!( data.source instanceof BleedingEffect.EntityBleedingDamageSource ) );
 		}
 	}
 }
