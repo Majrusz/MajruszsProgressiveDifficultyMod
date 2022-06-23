@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber
-public class DamagedContext extends Context {
-	static final List< DamagedContext > CONTEXTS = new ArrayList<>();
+public class OnDamagedContext extends Context {
+	static final List< OnDamagedContext > CONTEXTS = new ArrayList<>();
 
-	public DamagedContext() {
+	public OnDamagedContext() {
 		super( "OnDamaged", "" );
 		CONTEXTS.add( this );
 	}
@@ -30,7 +30,7 @@ public class DamagedContext extends Context {
 		LivingEntity target = event.getEntityLiving();
 		Data data = new Data( event, attacker, target, source );
 
-		for( DamagedContext context : CONTEXTS ) {
+		for( OnDamagedContext context : CONTEXTS ) {
 			if( context.check( data ) ) {
 				context.gameModifier.execute( data );
 			}
@@ -55,15 +55,15 @@ public class DamagedContext extends Context {
 		}
 	}
 
-	public static class DirectDamage extends ICondition.Context< DamagedContext.Data > {
+	public static class DirectDamage extends ICondition.Context< OnDamagedContext.Data > {
 		public DirectDamage() {
-			super( DamagedContext.Data.class, data->data.source.getDirectEntity() == data.attacker );
+			super( OnDamagedContext.Data.class, data->data.source.getDirectEntity() == data.attacker );
 		}
 	}
 
-	public static class NotBleeding extends ICondition.Context< DamagedContext.Data > {
+	public static class NotBleeding extends ICondition.Context< OnDamagedContext.Data > {
 		public NotBleeding() {
-			super( DamagedContext.Data.class, data->!( data.source instanceof BleedingEffect.EntityBleedingDamageSource ) );
+			super( OnDamagedContext.Data.class, data->!( data.source instanceof BleedingEffect.EntityBleedingDamageSource ) );
 		}
 	}
 }

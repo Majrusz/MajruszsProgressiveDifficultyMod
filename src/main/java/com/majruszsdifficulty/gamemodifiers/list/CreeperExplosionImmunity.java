@@ -3,18 +3,18 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.ICondition;
-import com.majruszsdifficulty.gamemodifiers.contexts.DamagedContext;
+import com.majruszsdifficulty.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.config.DoubleConfig;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperExplosionImmunity extends GameModifier {
-	static final DamagedContext ON_DAMAGED = new DamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
 		ON_DAMAGED.addCondition( new ICondition.Excludable() );
 		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
-		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.target instanceof Creeper ) );
-		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.source.isExplosion() ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( OnDamagedContext.Data.class, data->data.target instanceof Creeper ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( OnDamagedContext.Data.class, data->data.source.isExplosion() ) );
 	}
 
 	final DoubleConfig damageMultiplier;
@@ -27,7 +27,7 @@ public class CreeperExplosionImmunity extends GameModifier {
 
 	@Override
 	public void execute( Object data ) {
-		if( data instanceof DamagedContext.Data damagedData ) {
+		if( data instanceof OnDamagedContext.Data damagedData ) {
 			damagedData.event.setAmount( ( float )( damagedData.event.getAmount() * this.damageMultiplier.get() ) );
 		}
 	}

@@ -3,16 +3,16 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.ICondition;
-import com.majruszsdifficulty.gamemodifiers.contexts.DamagedContext;
+import com.majruszsdifficulty.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperChainReaction extends GameModifier {
-	static final DamagedContext ON_DAMAGED = new DamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
 		ON_DAMAGED.addCondition( new ICondition.Excludable() );
 		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.EXPERT ) );
-		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.target instanceof Creeper && data.attacker instanceof Creeper ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( OnDamagedContext.Data.class, data->data.target instanceof Creeper && data.attacker instanceof Creeper ) );
 	}
 
 	public CreeperChainReaction() {
@@ -21,7 +21,7 @@ public class CreeperChainReaction extends GameModifier {
 
 	@Override
 	public void execute( Object data ) {
-		if( data instanceof DamagedContext.Data damagedData ) {
+		if( data instanceof OnDamagedContext.Data damagedData ) {
 			Creeper creeper = ( Creeper )damagedData.target;
 			creeper.ignite();
 		}

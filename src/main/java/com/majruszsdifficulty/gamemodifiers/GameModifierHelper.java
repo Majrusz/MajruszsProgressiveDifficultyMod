@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
-import com.majruszsdifficulty.gamemodifiers.contexts.DamagedContext;
+import com.majruszsdifficulty.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.effects.EffectHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 public class GameModifierHelper {
-	public static void applyBleeding( DamagedContext.Data data, Config.Bleeding config ) {
+	public static void applyBleeding( OnDamagedContext.Data data, Config.Bleeding config ) {
 		LivingEntity target = data.target;
 		@Nullable LivingEntity attacker = data.attacker;
 		BleedingEffect.MobEffectInstance effectInstance = new BleedingEffect.MobEffectInstance( config.getDuration(), config.getAmplifier(), false, true, attacker );
