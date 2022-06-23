@@ -6,28 +6,25 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.GameModifierHelper;
 import com.majruszsdifficulty.gamemodifiers.ICondition;
 import com.majruszsdifficulty.gamemodifiers.contexts.DamagedContext;
-import com.mlib.items.ItemHelper;
-import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.damagesource.DamageSource;
 
-public class SharpToolsBleeding extends GameModifier {
+public class CactusBleeding extends GameModifier {
 	static final Config.Bleeding BLEEDING = new Config.Bleeding();
 	static final DamagedContext ON_DAMAGED = new DamagedContext();
 
 	static {
 		ON_DAMAGED.addCondition( new ICondition.Excludable() );
 		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.NORMAL ) );
-		ON_DAMAGED.addCondition( new ICondition.Chance( 0.25, false ) );
+		ON_DAMAGED.addCondition( new ICondition.Chance( 0.5, false ) );
 		ON_DAMAGED.addCondition( new ICondition.IsLivingBeing() );
 		ON_DAMAGED.addCondition( new ICondition.ArmorDependentChance() );
-		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->data.source.equals( DamageSource.CACTUS ) ) );
 		ON_DAMAGED.addCondition( new DamagedContext.DirectDamage() );
 		ON_DAMAGED.addConfig( BLEEDING );
 	}
 
-	public SharpToolsBleeding() {
-		super( "SharpToolsBleeding", "All sharp items (tools, shears etc.) may inflict bleeding.", ON_DAMAGED );
+	public CactusBleeding() {
+		super( "CactusBleeding", "Cactus damage may inflict bleeding.", ON_DAMAGED );
 	}
 
 	@Override

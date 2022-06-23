@@ -10,7 +10,7 @@
   "item.majruszsdifficulty.creeperling_spawn_egg": "Creeperling Spawn Egg",
   "item.majruszsdifficulty.tank_spawn_egg": "Tank Spawn Egg",
   "item.majruszsdifficulty.wither_sword": "Wither Sword",
-  "item.majruszsdifficulty.wither_sword.tooltip": "Inflicts Wither II for few seconds on hit.",
+  "item.majruszsdifficulty.wither_sword.tooltip": "Inflicts Wither %s for %d seconds on hit.",
   "item.majruszsdifficulty.undead_battle_standard": "Undead Battle Standard",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip1": "Summons the Undead Army.",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip2": "Undead Army may be summoned",

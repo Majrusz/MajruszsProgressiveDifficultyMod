@@ -30,7 +30,7 @@ public class ThrowableWeaponsBleeding extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof DamagedContext.Data damagedData ) {
-			GameModifierHelper.applyBleeding( damagedData.target, damagedData.attacker, BLEEDING );
+			GameModifierHelper.applyBleeding( damagedData, BLEEDING );
 		}
 	}
 }

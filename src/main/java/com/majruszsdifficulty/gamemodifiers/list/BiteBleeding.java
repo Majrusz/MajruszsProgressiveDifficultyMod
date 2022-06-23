@@ -6,28 +6,32 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.GameModifierHelper;
 import com.majruszsdifficulty.gamemodifiers.ICondition;
 import com.majruszsdifficulty.gamemodifiers.contexts.DamagedContext;
-import com.mlib.items.ItemHelper;
-import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.horse.Llama;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.Zombie;
 
-public class SharpToolsBleeding extends GameModifier {
+import javax.annotation.Nullable;
+
+public class BiteBleeding extends GameModifier {
 	static final Config.Bleeding BLEEDING = new Config.Bleeding();
 	static final DamagedContext ON_DAMAGED = new DamagedContext();
 
 	static {
 		ON_DAMAGED.addCondition( new ICondition.Excludable() );
 		ON_DAMAGED.addCondition( new ICondition.GameStage( GameStage.Stage.NORMAL ) );
-		ON_DAMAGED.addCondition( new ICondition.Chance( 0.25, false ) );
+		ON_DAMAGED.addCondition( new ICondition.Chance( 0.5, false ) );
 		ON_DAMAGED.addCondition( new ICondition.IsLivingBeing() );
 		ON_DAMAGED.addCondition( new ICondition.ArmorDependentChance() );
-		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) ) );
+		ON_DAMAGED.addCondition( new ICondition.Context<>( DamagedContext.Data.class, data->canBite( data.attacker ) ) );
 		ON_DAMAGED.addCondition( new DamagedContext.DirectDamage() );
 		ON_DAMAGED.addConfig( BLEEDING );
 	}
 
-	public SharpToolsBleeding() {
-		super( "SharpToolsBleeding", "All sharp items (tools, shears etc.) may inflict bleeding.", ON_DAMAGED );
+	public BiteBleeding() {
+		super( "BiteBleeding", "Animals (wolfs and from other mods), zombies and spiders may inflict bleeding.", ON_DAMAGED );
 	}
 
 	@Override
@@ -35,5 +39,9 @@ public class SharpToolsBleeding extends GameModifier {
 		if( data instanceof DamagedContext.Data damagedData ) {
 			GameModifierHelper.applyBleeding( damagedData, BLEEDING );
 		}
+	}
+
+	private static boolean canBite( @Nullable LivingEntity attacker ) {
+		return ( attacker instanceof Animal || attacker instanceof Zombie || attacker instanceof Spider ) && !( attacker instanceof Llama );
 	}
 }

@@ -57,13 +57,13 @@ public class DamagedContext extends Context {
 
 	public static class DirectDamage extends ICondition.Context< DamagedContext.Data > {
 		public DirectDamage() {
-			super( DamagedContext.Data.class, data -> data.source.getDirectEntity() == data.attacker );
+			super( DamagedContext.Data.class, data->data.source.getDirectEntity() == data.attacker );
 		}
 	}
 
 	public static class NotBleeding extends ICondition.Context< DamagedContext.Data > {
 		public NotBleeding() {
-			super( DamagedContext.Data.class, data -> !( data.source instanceof BleedingEffect.EntityBleedingDamageSource ) );
+			super( DamagedContext.Data.class, data->!( data.source instanceof BleedingEffect.EntityBleedingDamageSource ) );
 		}
 	}
 }

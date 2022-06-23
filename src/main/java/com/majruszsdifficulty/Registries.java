@@ -220,13 +220,21 @@ public class Registries {
 	// Game Modifiers
 	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
 	static {
+		GAME_MODIFIERS.add( new BiteBleeding() );
+		GAME_MODIFIERS.add( new CactusBleeding() );
 		GAME_MODIFIERS.add( new CreeperChainReaction() );
 		GAME_MODIFIERS.add( new CreeperExplosionImmunity() );
+		GAME_MODIFIERS.add( new DrownDebuffs() );
 		GAME_MODIFIERS.add( new DrownedLightningAttack() );
 		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
 		GAME_MODIFIERS.add( new FallDebuffs() );
+		GAME_MODIFIERS.add( new PhantomLevitationAttack() );
 		GAME_MODIFIERS.add( new SharpToolsBleeding() );
+		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );
+		GAME_MODIFIERS.add( new SlimeSlownessAttack() );
+		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
+		GAME_MODIFIERS.add( new WitherSwordEffect() );
 	}
 
 	public static ResourceLocation getLocation( String register ) {
