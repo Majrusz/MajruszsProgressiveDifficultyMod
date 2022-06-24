@@ -26,11 +26,11 @@ public class CreeperSpawnCharged extends GameModifier {
 
 	@Override
 	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data damagedData && damagedData.level != null ) {
-			Creeper creeper = ( Creeper )damagedData.target;
-			LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( damagedData.level );
+		if( data instanceof OnSpawnedContext.Data spawnedData && spawnedData.level != null ) {
+			Creeper creeper = ( Creeper )spawnedData.target;
+			LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( spawnedData.level );
 			if( lightningBolt != null ) {
-				creeper.thunderHit( damagedData.level, lightningBolt );
+				creeper.thunderHit( spawnedData.level, lightningBolt );
 				creeper.clearFire();
 			}
 		}

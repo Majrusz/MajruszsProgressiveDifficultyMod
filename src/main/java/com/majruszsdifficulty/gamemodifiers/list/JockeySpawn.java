@@ -28,14 +28,14 @@ public class JockeySpawn extends GameModifier {
 
 	@Override
 	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data damagedData && damagedData.level != null ) {
-			Skeleton skeleton = EntityType.SKELETON.create( damagedData.level );
+		if( data instanceof OnSpawnedContext.Data spawnedData && spawnedData.level != null ) {
+			Skeleton skeleton = EntityType.SKELETON.create( spawnedData.level );
 			if( skeleton == null )
 				return;
 
-			skeleton.moveTo( damagedData.target.getX(), damagedData.target.getY(), damagedData.target.getZ(), damagedData.target.yBodyRot, 0.0f );
-			skeleton.finalizeSpawn( damagedData.level, damagedData.level.getCurrentDifficultyAt( damagedData.target.blockPosition() ), MobSpawnType.JOCKEY, null, null );
-			skeleton.startRiding( damagedData.target );
+			skeleton.moveTo( spawnedData.target.getX(), spawnedData.target.getY(), spawnedData.target.getZ(), spawnedData.target.yBodyRot, 0.0f );
+			skeleton.finalizeSpawn( spawnedData.level, spawnedData.level.getCurrentDifficultyAt( spawnedData.target.blockPosition() ), MobSpawnType.JOCKEY, null, null );
+			skeleton.startRiding( spawnedData.target );
 		}
 	}
 }

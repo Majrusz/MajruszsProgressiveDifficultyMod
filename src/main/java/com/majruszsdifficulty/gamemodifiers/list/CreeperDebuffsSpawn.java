@@ -38,8 +38,8 @@ public class CreeperDebuffsSpawn extends GameModifier {
 
 	@Override
 	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data damagedData ) {
-			Random.nextRandom( EFFECTS ).apply( damagedData.target );
+		if( data instanceof OnSpawnedContext.Data spawnedData ) {
+			Random.nextRandom( EFFECTS ).apply( spawnedData.target );
 		}
 	}
 }
