@@ -76,9 +76,9 @@ public class CustomConfigs {
 
 		public void apply( LivingEntity entity ) {
 			if( this.maxDuration.isPresent() ) {
-				EffectHelper.stackEffectIfPossible( entity, getEffect(), getAmplifier(), getDuration(), getMaxDuration() );
+				EffectHelper.stackEffectIfPossible( entity, getEffect(), getDuration(), getAmplifier(), getMaxDuration() );
 			} else {
-				EffectHelper.applyEffectIfPossible( entity, getEffect(), getAmplifier(), getDuration() );
+				EffectHelper.applyEffectIfPossible( entity, getEffect(), getDuration(), getAmplifier() );
 			}
 		}
 
