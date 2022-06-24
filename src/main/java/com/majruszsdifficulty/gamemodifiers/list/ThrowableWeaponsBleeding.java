@@ -1,10 +1,8 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
-import com.majruszsdifficulty.gamemodifiers.GameModifierHelper;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
@@ -32,7 +30,7 @@ public class ThrowableWeaponsBleeding extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnDamagedContext.Data damagedData ) {
-			GameModifierHelper.applyBleeding( damagedData, BLEEDING );
+			BLEEDING.apply( damagedData );
 		}
 	}
 }

@@ -14,8 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Shulker;
 
 public class ShulkerBlindnessAttack extends GameModifier {
-	static final int MAX_TICKS = Utility.secondsToTicks( 60.0 );
-	static final CustomConfigs.ProgressiveEffect BLINDNESS = new CustomConfigs.ProgressiveEffect( "Blindness", 0, 5.0 );
+	static final CustomConfigs.ProgressiveEffect BLINDNESS = new CustomConfigs.ProgressiveEffect( "Blindness", ()->MobEffects.BLINDNESS, 0, 5.0, 60.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
@@ -33,7 +32,7 @@ public class ShulkerBlindnessAttack extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnDamagedContext.Data damagedData ) {
-			EffectHelper.stackEffectIfPossible( damagedData.target, MobEffects.BLINDNESS, BLINDNESS.getDuration(), BLINDNESS.getAmplifier(), MAX_TICKS );
+			BLINDNESS.apply( damagedData.target );
 		}
 	}
 }

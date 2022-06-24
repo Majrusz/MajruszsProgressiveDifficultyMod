@@ -13,8 +13,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
 public class FallDebuffs extends GameModifier {
-	static final CustomConfigs.ProgressiveEffect NAUSEA = new CustomConfigs.ProgressiveEffect( "Nausea", 0, 8.0 );
-	static final CustomConfigs.ProgressiveEffect SLOWNESS = new CustomConfigs.ProgressiveEffect( "Slowness", 0, 6.0 );
+	static final CustomConfigs.ProgressiveEffect NAUSEA = new CustomConfigs.ProgressiveEffect( "Nausea", ()->MobEffects.CONFUSION, 0, 8.0 );
+	static final CustomConfigs.ProgressiveEffect SLOWNESS = new CustomConfigs.ProgressiveEffect( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
@@ -33,8 +33,8 @@ public class FallDebuffs extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnDamagedContext.Data damagedData ) {
-			EffectHelper.applyEffectIfPossible( damagedData.target, MobEffects.CONFUSION, NAUSEA.getDuration(), NAUSEA.getAmplifier() );
-			EffectHelper.applyEffectIfPossible( damagedData.target, MobEffects.MOVEMENT_SLOWDOWN, SLOWNESS.getDuration(), SLOWNESS.getAmplifier() );
+			NAUSEA.apply( damagedData.target );
+			SLOWNESS.apply( damagedData.target );
 		}
 	}
 }

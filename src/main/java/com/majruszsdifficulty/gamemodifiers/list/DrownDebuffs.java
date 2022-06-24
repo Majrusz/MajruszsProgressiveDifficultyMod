@@ -14,9 +14,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
 public class DrownDebuffs extends GameModifier {
-	static final int MAX_TICKS = Utility.secondsToTicks( 60.0 );
-	static final CustomConfigs.ProgressiveEffect NAUSEA = new CustomConfigs.ProgressiveEffect( "Nausea", 0, 2.0 );
-	static final CustomConfigs.ProgressiveEffect WEAKNESS = new CustomConfigs.ProgressiveEffect( "Weakness", 0, 10.0 );
+	static final CustomConfigs.ProgressiveEffect NAUSEA = new CustomConfigs.ProgressiveEffect( "Nausea", ()->MobEffects.CONFUSION, 0, 2.0, 60.0 );
+	static final CustomConfigs.ProgressiveEffect WEAKNESS = new CustomConfigs.ProgressiveEffect( "Weakness", ()->MobEffects.WEAKNESS, 0, 10.0, 60.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
@@ -35,8 +34,8 @@ public class DrownDebuffs extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnDamagedContext.Data damagedData ) {
-			EffectHelper.stackEffectIfPossible( damagedData.target, MobEffects.CONFUSION, NAUSEA.getDuration(), NAUSEA.getAmplifier(), MAX_TICKS );
-			EffectHelper.stackEffectIfPossible( damagedData.target, MobEffects.WEAKNESS, WEAKNESS.getDuration(), WEAKNESS.getAmplifier(), MAX_TICKS );
+			NAUSEA.apply( damagedData.target );
+			WEAKNESS.apply( damagedData.target );
 		}
 	}
 }

@@ -223,6 +223,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new BiteBleeding() );
 		GAME_MODIFIERS.add( new CactusBleeding() );
 		GAME_MODIFIERS.add( new CreeperChainReaction() );
+		GAME_MODIFIERS.add( new CreeperDebuffsSpawn() );
 		GAME_MODIFIERS.add( new CreeperExplosionImmunity() );
 		GAME_MODIFIERS.add( new CreeperSpawnCharged() );
 		GAME_MODIFIERS.add( new DrownDebuffs() );
@@ -237,7 +238,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new SpawnPlayerZombie() );
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
-		GAME_MODIFIERS.add( new WitherSwordEffect() );
+		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 	}
 
 	public static ResourceLocation getLocation( String register ) {

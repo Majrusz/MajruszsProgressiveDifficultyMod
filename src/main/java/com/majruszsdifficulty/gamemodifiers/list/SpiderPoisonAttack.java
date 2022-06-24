@@ -13,7 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Spider;
 
 public class SpiderPoisonAttack extends GameModifier {
-	static final CustomConfigs.ProgressiveEffect POISON = new CustomConfigs.ProgressiveEffect( "Poison", 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
+	static final CustomConfigs.ProgressiveEffect POISON = new CustomConfigs.ProgressiveEffect( "Poison", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
@@ -32,7 +32,7 @@ public class SpiderPoisonAttack extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnDamagedContext.Data damagedData ) {
-			EffectHelper.applyEffectIfPossible( damagedData.target, MobEffects.POISON, POISON.getDuration(), POISON.getAmplifier() );
+			POISON.apply( damagedData.target );
 		}
 	}
 }

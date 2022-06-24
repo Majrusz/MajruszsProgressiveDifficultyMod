@@ -14,18 +14,22 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperDebuffsSpawn extends GameModifier {
-	static final MobEffect[] EFFECTS = new MobEffect[]{
-		MobEffects.WEAKNESS, MobEffects.MOVEMENT_SLOWDOWN, MobEffects.DIG_SLOWDOWN, MobEffects.SATURATION
-	};
+	static final Config.Effect[] EFFECTS;
 	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
-	static final Config.Effect EFFECT = new Config.Effect( "Effect", 0, 60.0 );
 
 	static {
+		EFFECTS = new Config.Effect[]{
+			new Config.Effect( "Weakness", ()->MobEffects.WEAKNESS, 0, 60.0 ),
+			new Config.Effect( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 60.0 ),
+			new Config.Effect( "MiningFatigue", ()->MobEffects.DIG_SLOWDOWN, 0, 60.0 ),
+			new Config.Effect( "Saturation", ()->MobEffects.SATURATION, 0, 60.0 )
+		};
+
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
 		ON_SPAWNED.addCondition( new CustomConditions.CRDChance( 0.375 ) );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
 		ON_SPAWNED.addCondition( new Condition.Context<>( OnSpawnedContext.Data.class, data->data.target instanceof Creeper ) );
-		ON_SPAWNED.addConfig( EFFECT );
+		ON_SPAWNED.addConfigs( EFFECTS );
 	}
 
 	public CreeperDebuffsSpawn() {
@@ -35,7 +39,7 @@ public class CreeperDebuffsSpawn extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnSpawnedContext.Data damagedData ) {
-			damagedData.target.addEffect( new MobEffectInstance( Random.nextRandom( EFFECTS ), 1, 1 ) );
+			Random.nextRandom( EFFECTS ).apply( damagedData.target );
 		}
 	}
 }

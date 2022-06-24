@@ -14,8 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Phantom;
 
 public class PhantomLevitationAttack extends GameModifier {
-	static final int MAX_TICKS = Utility.secondsToTicks( 60.0 );
-	static final CustomConfigs.ProgressiveEffect LEVITATION = new CustomConfigs.ProgressiveEffect( "Levitation", 0, 5.0 );
+	static final CustomConfigs.ProgressiveEffect LEVITATION = new CustomConfigs.ProgressiveEffect( "Levitation", ()->MobEffects.LEVITATION, 0, 5.0, 60.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
@@ -34,7 +33,7 @@ public class PhantomLevitationAttack extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnDamagedContext.Data damagedData ) {
-			EffectHelper.stackEffectIfPossible( damagedData.target, MobEffects.LEVITATION, LEVITATION.getDuration(), LEVITATION.getAmplifier(), MAX_TICKS );
+			LEVITATION.apply( damagedData.target );
 		}
 	}
 }

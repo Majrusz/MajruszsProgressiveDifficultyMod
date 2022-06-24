@@ -13,7 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Slime;
 
 public class SlimeSlownessAttack extends GameModifier {
-	static final CustomConfigs.ProgressiveEffect SLOWNESS = new CustomConfigs.ProgressiveEffect( "Slowness", 0, 6.0 );
+	static final CustomConfigs.ProgressiveEffect SLOWNESS = new CustomConfigs.ProgressiveEffect( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {
@@ -32,7 +32,7 @@ public class SlimeSlownessAttack extends GameModifier {
 	@Override
 	public void execute( Object data ) {
 		if( data instanceof OnDamagedContext.Data damagedData ) {
-			EffectHelper.applyEffectIfPossible( damagedData.target, MobEffects.MOVEMENT_SLOWDOWN, SLOWNESS.getDuration(), SLOWNESS.getAmplifier() );
+			SLOWNESS.apply( damagedData.target );
 		}
 	}
 }
