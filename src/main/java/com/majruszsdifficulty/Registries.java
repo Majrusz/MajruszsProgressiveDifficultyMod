@@ -240,6 +240,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new SpawnPlayerZombie() );
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
+		GAME_MODIFIERS.add( new WitherSkeletonWithSword() );
 		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 	}
 
