@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 public class CustomConfigs {
 	public static class ProgressiveEffect extends Config {
-		static final int MIN_AMPLIFIER = 0, MAX_AMPLIFIER = 10;
+		static final int MIN_AMPLIFIER = 0, MAX_AMPLIFIER = 9;
 		static final double MIN_DURATION = 1.0, MAX_DURATION = 99.0;
 		static final double MIN_LIMIT = 5.0, MAX_LIMIT = 999.0;
 		final Supplier< MobEffect > effect;
