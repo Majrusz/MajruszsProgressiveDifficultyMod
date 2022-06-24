@@ -17,7 +17,7 @@ public class CreeperSpawnCharged extends GameModifier {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
 		ON_SPAWNED.addCondition( new CustomConditions.CRDChance( 0.125 ) );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.Context<>( OnSpawnedContext.Data.class, data->data.target instanceof Creeper ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Creeper ) );
 	}
 
 	public CreeperSpawnCharged() {

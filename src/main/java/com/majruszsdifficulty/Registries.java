@@ -223,14 +223,16 @@ public class Registries {
 		GAME_MODIFIERS.add( new BiteBleeding() );
 		GAME_MODIFIERS.add( new CactusBleeding() );
 		GAME_MODIFIERS.add( new CreeperChainReaction() );
-		GAME_MODIFIERS.add( new CreeperDebuffsSpawn() );
+		GAME_MODIFIERS.add( new CreeperExplodeBehindWall() );
 		GAME_MODIFIERS.add( new CreeperExplosionImmunity() );
 		GAME_MODIFIERS.add( new CreeperSpawnCharged() );
+		GAME_MODIFIERS.add( new CreeperSpawnDebuffed() );
 		GAME_MODIFIERS.add( new DrownDebuffs() );
 		GAME_MODIFIERS.add( new DrownedLightningAttack() );
 		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
 		GAME_MODIFIERS.add( new FallDebuffs() );
 		GAME_MODIFIERS.add( new JockeySpawn() );
+		GAME_MODIFIERS.add( new MobsSpawnStronger() );
 		GAME_MODIFIERS.add( new PhantomLevitationAttack() );
 		GAME_MODIFIERS.add( new SharpToolsBleeding() );
 		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );

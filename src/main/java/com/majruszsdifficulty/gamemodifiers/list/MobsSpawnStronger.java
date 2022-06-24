@@ -19,7 +19,7 @@ public class MobsSpawnStronger extends GameModifier {
 
 	static {
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.OnSpawnedContext( data->AttributeHandler.hasAttribute( data.target, Attributes.ATTACK_DAMAGE ) ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->AttributeHandler.hasAttribute( data.target, Attributes.ATTACK_DAMAGE ) ) );
 	}
 
 	final GameStageDoubleConfig healthBonus;

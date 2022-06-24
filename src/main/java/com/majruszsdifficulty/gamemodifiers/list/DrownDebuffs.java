@@ -22,7 +22,7 @@ public class DrownDebuffs extends GameModifier {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
 		ON_DAMAGED.addCondition( new Condition.Chance( 1.0 ) );
 		ON_DAMAGED.addCondition( new Condition.Excludable() );
-		ON_DAMAGED.addCondition( new Condition.Context<>( OnDamagedContext.Data.class, data->data.source.equals( DamageSource.DROWN ) ) );
+		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.source.equals( DamageSource.DROWN ) ) );
 		ON_DAMAGED.addConfig( NAUSEA );
 		ON_DAMAGED.addConfig( WEAKNESS );
 	}

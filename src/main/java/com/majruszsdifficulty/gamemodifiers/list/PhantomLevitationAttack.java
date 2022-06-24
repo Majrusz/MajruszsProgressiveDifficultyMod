@@ -21,7 +21,7 @@ public class PhantomLevitationAttack extends GameModifier {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) );
 		ON_DAMAGED.addCondition( new CustomConditions.CRDChance( 0.75 ) );
 		ON_DAMAGED.addCondition( new Condition.Excludable() );
-		ON_DAMAGED.addCondition( new Condition.Context<>( OnDamagedContext.Data.class, data->data.attacker instanceof Phantom ) );
+		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Phantom ) );
 		ON_DAMAGED.addCondition( new OnDamagedContext.DirectDamage() );
 		ON_DAMAGED.addConfig( LEVITATION );
 	}

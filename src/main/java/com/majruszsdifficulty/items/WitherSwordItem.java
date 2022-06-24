@@ -44,7 +44,7 @@ public class WitherSwordItem extends SwordItem {
 		static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 		static {
-			ON_DAMAGED.addCondition( new Condition.Context<>( OnDamagedContext.Data.class, data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) ) );
+			ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) ) );
 			ON_DAMAGED.addCondition( new OnDamagedContext.DirectDamage() );
 			ON_DAMAGED.addConfig( WITHER );
 		}

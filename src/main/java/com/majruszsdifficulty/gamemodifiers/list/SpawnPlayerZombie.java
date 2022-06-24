@@ -30,8 +30,8 @@ public class SpawnPlayerZombie extends GameModifier {
 		ON_DEATH.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
 		ON_DEATH.addCondition( new Condition.Chance( 1.0 ) );
 		ON_DEATH.addCondition( new Condition.Excludable() );
-		ON_DEATH.addCondition( new Condition.Context<>( OnDeathContext.Data.class, data->data.target instanceof Player ) );
-		ON_DEATH.addCondition( new Condition.Context<>( OnDeathContext.Data.class, data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie ) );
+		ON_DEATH.addCondition( new Condition.ContextOnDeath( data->data.target instanceof Player ) );
+		ON_DEATH.addCondition( new Condition.ContextOnDeath( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie ) );
 	}
 
 	final DoubleConfig headChance;
