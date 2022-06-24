@@ -10,7 +10,7 @@
   "item.majruszsdifficulty.creeperling_spawn_egg": "Jajo przywołujące creeperlinga",
   "item.majruszsdifficulty.tank_spawn_egg": "Jajo przywołujące tanka",
   "item.majruszsdifficulty.wither_sword": "Witherowy miecz",
-  "item.majruszsdifficulty.wither_sword.tooltip": "Nakłada Wither %s na %d sekund(y) po uderzeniu kogoś.",
+  "item.majruszsdifficulty.wither_sword.tooltip": "Nakłada Wither %s na %s sekund(y) po uderzeniu kogoś.",
   "item.majruszsdifficulty.undead_battle_standard": "Bitewny sztandar nieumarłych",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip1": "Przywołuje armię nieumarłych.",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip2": "Armia nieumarłych może zostać",

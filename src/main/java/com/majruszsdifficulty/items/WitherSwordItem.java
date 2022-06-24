@@ -35,8 +35,9 @@ public class WitherSwordItem extends SwordItem {
 		if( !flag.isAdvanced() )
 			return;
 
-		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY, Utility.toRoman( Effect.WITHER.getAmplifier() ), Utility.ticksToSeconds( Effect.WITHER.getDuration() ) )
-			.withStyle( ChatFormatting.GRAY ) );
+		String amplifier = Utility.toRoman( Effect.WITHER.getAmplifier() + 1 );
+		String duration = Utility.minPrecision( Utility.ticksToSeconds( Effect.WITHER.getDuration() ) );
+		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY, amplifier, duration ).withStyle( ChatFormatting.GRAY ) );
 	}
 
 	public static class Effect extends GameModifier {
