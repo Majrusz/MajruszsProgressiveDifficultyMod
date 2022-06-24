@@ -1,19 +1,16 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
 import com.mlib.gamemodifiers.Config;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
-public class CreeperDebuffsSpawn extends GameModifier {
+public class CreeperSpawnDebuffed extends GameModifier {
 	static final Config.Effect[] EFFECTS;
 	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
 
@@ -32,8 +29,8 @@ public class CreeperDebuffsSpawn extends GameModifier {
 		ON_SPAWNED.addConfigs( EFFECTS );
 	}
 
-	public CreeperDebuffsSpawn() {
-		super( GameModifier.DEFAULT, "CreeperDebuffsSpawn", "Creeper may spawn with negative effects applied.", ON_SPAWNED );
+	public CreeperSpawnDebuffed() {
+		super( GameModifier.DEFAULT, "CreeperSpawnDebuffed", "Creeper may spawn with negative effects applied.", ON_SPAWNED );
 	}
 
 	@Override
