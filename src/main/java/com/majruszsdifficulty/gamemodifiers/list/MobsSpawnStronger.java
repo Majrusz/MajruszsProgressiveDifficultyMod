@@ -8,6 +8,7 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
@@ -19,7 +20,7 @@ public class MobsSpawnStronger extends GameModifier {
 
 	static {
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->AttributeHandler.hasAttribute( data.target, Attributes.ATTACK_DAMAGE ) ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Mob && AttributeHandler.hasAttribute( data.target, Attributes.ATTACK_DAMAGE ) ) );
 	}
 
 	final GameStageDoubleConfig healthBonus;

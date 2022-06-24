@@ -103,6 +103,7 @@ public class CustomConfigs {
 		@Override
 		public void setup( ConfigGroup group ) {
 			group.addConfigs( this.amplifier, this.duration );
+			this.maxDuration.ifPresent( group::addConfig );
 		}
 	}
 
