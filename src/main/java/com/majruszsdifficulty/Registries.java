@@ -9,8 +9,6 @@ import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.GiantEntity;
 import com.majruszsdifficulty.entities.TankEntity;
-import com.majruszsdifficulty.features.ExperienceBonus;
-import com.majruszsdifficulty.features.IncreaseGameDifficulty;
 import com.majruszsdifficulty.features.SpawnDisabler;
 import com.majruszsdifficulty.features.itemsets.EnderiumSet;
 import com.majruszsdifficulty.features.itemsets.OceanSet;
@@ -176,9 +174,7 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Misc
-	public static final IncreaseGameDifficulty INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
-	public static final ExperienceBonus EXPERIENCE_BONUS = new ExperienceBonus();
 	public static final FishingRewarder FISHING_REWARDER = new FishingRewarder();
 	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
@@ -192,7 +188,6 @@ public class Registries {
 
 	// Configs
 	public static final SpawnDisabler.Config SPAWN_DISABLER_CONFIG = new SpawnDisabler.Config();
-	public static final GameStageConfig GAME_STATE_CONFIG = new GameStageConfig();
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;
@@ -230,7 +225,9 @@ public class Registries {
 		GAME_MODIFIERS.add( new DrownedLightningAttack() );
 		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
 		GAME_MODIFIERS.add( new EvokerWithTotem() );
+		GAME_MODIFIERS.add( new ExperienceBonus() );
 		GAME_MODIFIERS.add( new FallDebuffs() );
+		GAME_MODIFIERS.add( new IncreaseGameStage() );
 		GAME_MODIFIERS.add( new JockeySpawn() );
 		GAME_MODIFIERS.add( new MobsSpawnStronger() );
 		GAME_MODIFIERS.add( new PhantomLevitationAttack() );

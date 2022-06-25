@@ -1,5 +1,6 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.gamemodifiers.list.IncreaseGameStage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 
@@ -12,7 +13,7 @@ public class GameDataSaver extends SavedData {
 
 	public GameDataSaver( boolean loadDefaultStateFromConfig ) {
 		if( loadDefaultStateFromConfig )
-			GameStage.changeMode( Registries.GAME_STATE_CONFIG.getDefaultState() );
+			GameStage.changeMode( IncreaseGameStage.getDefaultGameStage() );
 	}
 
 	public GameDataSaver() {

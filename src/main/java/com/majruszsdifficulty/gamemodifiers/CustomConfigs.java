@@ -12,18 +12,17 @@ import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
+import com.mlib.config.StringListConfig;
 import com.mlib.effects.EffectHelper;
 import com.mlib.gamemodifiers.Config;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.items.ItemHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -31,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+
 
 public class CustomConfigs {
 	public static class ProgressiveEffect extends Config {
@@ -224,6 +224,30 @@ public class CustomConfigs {
 					config.tryToEquip( sidekick, clampedRegionalDifficulty );
 				}
 			}
+		}
+	}
+
+	public static class StageProgress extends Config {
+		final StringListConfig triggeringEntities;
+		final StringListConfig triggeringDimensions;
+
+		public StageProgress( String groupName, String groupComment, String defaultEntity, String defaultDimension ) {
+			super( groupName, groupComment );
+			this.triggeringEntities = new StringListConfig( "triggering_entities", "List of entities which start the game stage after killing them.", false, defaultEntity );
+			this.triggeringDimensions = new StringListConfig( "triggering_dimensions", "List of dimensions which start the game stage after entering them.", false, defaultDimension );
+		}
+
+		public boolean entityTriggersChange( ResourceLocation entityLocation ) {
+			return this.triggeringEntities.contains( entityLocation.toString() );
+		}
+
+		public boolean dimensionTriggersChange( ResourceLocation dimensionLocation ) {
+			return this.triggeringDimensions.contains( dimensionLocation.toString() );
+		}
+
+		@Override
+		public void setup( ConfigGroup group ) {
+			group.addConfigs( this.triggeringEntities, this.triggeringDimensions );
 		}
 	}
 }

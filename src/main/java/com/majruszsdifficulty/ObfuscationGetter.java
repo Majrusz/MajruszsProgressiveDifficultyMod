@@ -4,6 +4,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
 
+@Deprecated
 public class ObfuscationGetter< Type, ReturnType > {
 	private final Class< ? super Type > classToAccess;
 	private final String fieldName;
