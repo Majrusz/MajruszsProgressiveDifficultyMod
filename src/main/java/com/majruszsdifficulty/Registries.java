@@ -235,6 +235,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new JockeySpawn() );
 		GAME_MODIFIERS.add( new MobsSpawnStronger() );
 		GAME_MODIFIERS.add( new PhantomLevitationAttack() );
+		GAME_MODIFIERS.add( new PiglinsInGroup() );
 		GAME_MODIFIERS.add( new SharpToolsBleeding() );
 		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );
 		GAME_MODIFIERS.add( new SlimeSlownessAttack() );

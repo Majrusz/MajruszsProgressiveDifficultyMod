@@ -6,6 +6,9 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
+import net.minecraft.world.entity.PathfinderMob;
+
+import static com.majruszsdifficulty.gamemodifiers.CustomConfigs.MobGroups.SIDEKICK_TAG;
 
 public class CustomConditions {
 	public static class CRDChance extends Condition {
@@ -42,6 +45,17 @@ public class CustomConditions {
 		@Override
 		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
 			return com.majruszsdifficulty.GameStage.atLeast( this.minimumStage.get() );
+		}
+	}
+
+	public static class IsNotSidekick extends Condition {
+		public IsNotSidekick() {
+			super( Priority.HIGH );
+		}
+
+		@Override
+		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
+			return data.entity instanceof PathfinderMob && !data.entity.getPersistentData().getBoolean( SIDEKICK_TAG );
 		}
 	}
 }

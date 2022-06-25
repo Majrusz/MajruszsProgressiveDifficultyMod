@@ -5,18 +5,30 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.effects.BleedingEffect;
+import com.majruszsdifficulty.goals.FollowGroupLeaderGoal;
+import com.majruszsdifficulty.goals.TargetAsLeaderGoal;
+import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
+import com.mlib.config.IntegerConfig;
 import com.mlib.effects.EffectHelper;
 import com.mlib.gamemodifiers.Config;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.items.ItemHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -134,6 +146,83 @@ public class CustomConfigs {
 			}
 			if( attacker instanceof ServerPlayer attackerPlayer ) {
 				Registries.BASIC_TRIGGER.trigger( attackerPlayer, "bleeding_inflicted" );
+			}
+		}
+	}
+
+	public static class MobGroups extends Config {
+		static final String SIDEKICK_TAG = "MajruszsDifficultySidekick";
+		static final int MIN_COUNT = 1, MAX_COUNT = 9;
+		final List< Config.ItemStack > leaderConfigs = new ArrayList<>();
+		final List< Config.ItemStack > sidekickConfigs = new ArrayList<>();
+		final Supplier< EntityType< ? extends PathfinderMob > > mob;
+		final IntegerConfig min;
+		final IntegerConfig max;
+
+		public MobGroups( String groupName, Supplier< EntityType< ? extends PathfinderMob > > mob, int min, int max ) {
+			super( groupName, "" );
+			this.mob = mob;
+			this.min = new IntegerConfig( "min_count", "Minimum amount of mobs to spawn (leader is not considered).", false, min, MIN_COUNT, MAX_COUNT );
+			this.max = new IntegerConfig( "max_count", "Maximum amount of mobs to spawn (leader is not considered).", false, max, MIN_COUNT, MAX_COUNT );
+		}
+
+		public void addLeaderConfigs( Config.ItemStack... configs ) {
+			this.leaderConfigs.addAll( List.of( configs ) );
+		}
+
+		public void addSidekickConfigs( Config.ItemStack... configs ) {
+			this.sidekickConfigs.addAll( List.of( configs ) );
+		}
+
+		public List< PathfinderMob > spawn( PathfinderMob leader ) {
+			int sidekickAmount = Random.nextInt( getMinCount(), getMaxCount() + 1 );
+			Vec3 spawnPosition = leader.position();
+
+			List< PathfinderMob > sidekicks = new ArrayList<>();
+			for( int sidekickIdx = 0; sidekickIdx < sidekickAmount; sidekickIdx++ ) {
+				PathfinderMob sidekick = this.getMob().create( leader.level );
+				if( sidekick == null )
+					continue;
+
+				sidekick.setPos( spawnPosition.x + Random.nextInt( -3, 4 ), spawnPosition.y + 0.5, spawnPosition.z + Random.nextInt( -3, 4 ) );
+				sidekick.goalSelector.addGoal( 9, new FollowGroupLeaderGoal( sidekick, leader, 1.0, 6.0f, 5.0f ) );
+				sidekick.targetSelector.addGoal( 9, new TargetAsLeaderGoal( sidekick, leader ) );
+				sidekick.getPersistentData().putBoolean( SIDEKICK_TAG, true );
+
+				leader.level.addFreshEntity( sidekick );
+				sidekicks.add( sidekick );
+			}
+			applyConfigs( leader, sidekicks );
+
+			return sidekicks;
+		}
+
+		public EntityType< ? extends PathfinderMob > getMob() {
+			return this.mob.get();
+		}
+
+		public int getMinCount() {
+			return Math.min( this.min.get(), this.max.get() );
+		}
+
+		public int getMaxCount() {
+			return Math.max( this.min.get(), this.max.get() );
+		}
+
+		@Override
+		public void setup( ConfigGroup group ) {
+			group.addConfigs( this.min, this.max );
+		}
+
+		private void applyConfigs( PathfinderMob leader, List< PathfinderMob > sidekicks ) {
+			double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( leader );
+			for( Config.ItemStack config : this.leaderConfigs ) {
+				config.tryToEquip( leader, clampedRegionalDifficulty );
+			}
+			for( Config.ItemStack config : this.sidekickConfigs ) {
+				for( PathfinderMob sidekick : sidekicks ) {
+					config.tryToEquip( sidekick, clampedRegionalDifficulty );
+				}
 			}
 		}
 	}
