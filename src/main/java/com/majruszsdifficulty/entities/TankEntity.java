@@ -20,9 +20,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,8 +41,8 @@ import java.util.function.Supplier;
 /** A new tough undead similar to the Iron Golem. */
 @Mod.EventBusSubscriber
 public class TankEntity extends Monster {
-	protected static final int SPECIAL_ATTACK_DURATION = Utility.secondsToTicks( 0.9 );
-	protected static final int NORMAL_ATTACK_DURATION = Utility.secondsToTicks( 0.6 );
+	public static final int SPECIAL_ATTACK_DURATION = Utility.secondsToTicks( 0.9 );
+	public static final int NORMAL_ATTACK_DURATION = Utility.secondsToTicks( 0.6 );
 
 	public static Supplier< EntityType< TankEntity > > createSupplier() {
 		return ()->EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 1.1f, 2.7f ).build( "tank" );
@@ -73,8 +75,10 @@ public class TankEntity extends Monster {
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );
 
+		this.targetSelector.addGoal( 1, new HurtByTargetGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
+		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, Warden.class, true ) );
 	}
 
 	@Override
@@ -126,13 +130,10 @@ public class TankEntity extends Monster {
 		super.aiStep();
 	}
 
-	@SubscribeEvent
-	public static void onTick( LivingEvent.LivingUpdateEvent event ) {
-		TankEntity tank = Utility.castIfPossible( TankEntity.class, event.getEntityLiving() );
-		if( tank != null ) {
-			tank.specialAttackTicksLeft = Math.max( tank.specialAttackTicksLeft - 1, 0 );
-			tank.normalAttackTicksLeft = Math.max( tank.normalAttackTicksLeft - 1, 0 );
-		}
+	public void tick() {
+		super.tick();
+		this.specialAttackTicksLeft = Math.max( this.specialAttackTicksLeft - 1, 0 );
+		this.normalAttackTicksLeft = Math.max( this.normalAttackTicksLeft - 1, 0 );
 	}
 
 	public void useAttack( AttackType attackType ) {

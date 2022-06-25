@@ -1,11 +1,11 @@
 package com.majruszsdifficulty.models;
 
 import com.majruszsdifficulty.entities.TankEntity;
+import com.mlib.MajruszLibrary;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
-import com.mlib.animations.FrameDegrees;
-import com.mlib.animations.FrameVec3;
 import com.mlib.math.VectorHelper;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,44 +18,40 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 /** Model for new Tank enemy. */
 @OnlyIn( Dist.CLIENT )
 public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {
-	protected static final Animation< Float > SPECIAL_ATTACK_BODY_X;
-	protected static final Animation< Float > SPECIAL_ATTACK_ARMS_X;
-	protected static final Animation< Float > NORMAL_ATTACK_BODY_Y;
-	protected static final Animation< Vec3 > NORMAL_ATTACK_ARM;
+	static final Animation.Degrees SPECIAL_ATTACK_BODY_X = new Animation.Degrees( TankEntity.SPECIAL_ATTACK_DURATION );
+	static final Animation.Degrees SPECIAL_ATTACK_ARMS_X = new Animation.Degrees( TankEntity.SPECIAL_ATTACK_DURATION );
+	static final Animation.Degrees NORMAL_ATTACK_BODY_Y = new Animation.Degrees( TankEntity.NORMAL_ATTACK_DURATION );
+	static final Animation.Vector NORMAL_ATTACK_ARM = new Animation.Vector( TankEntity.NORMAL_ATTACK_DURATION );
 
 	static {
-		SPECIAL_ATTACK_BODY_X = new Animation<>();
-		SPECIAL_ATTACK_BODY_X.addFrame( new FrameDegrees( 0.0f, 10.0f ) )
-			.addFrame( new FrameDegrees( 0.3f, -30.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 0.4f, -30.0f ) )
-			.addFrame( new FrameDegrees( 0.6f, 45.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 0.7f, 35.0f ) )
-			.addFrame( new FrameDegrees( 0.85f, 0.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 1.0f, 10.0f ) );
+		SPECIAL_ATTACK_BODY_X.addNewFloatFrame( 0.0f, 10.0f )
+			.addNewFloatFrame( 0.3f, -30.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 0.4f, -30.0f )
+			.addNewFloatFrame( 0.6f, 45.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 0.7f, 35.0f )
+			.addNewFloatFrame( 0.85f, 0.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 1.0f, 10.0f );
 
-		SPECIAL_ATTACK_ARMS_X = new Animation<>();
-		SPECIAL_ATTACK_ARMS_X.addFrame( new FrameDegrees( 0.0f, 0.0f ) )
-			.addFrame( new FrameDegrees( 0.4f, -160.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 0.6f, -40.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 0.7f, -30.0f ) )
-			.addFrame( new FrameDegrees( 0.85f, 10.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 1.0f, 0.0f, Frame.InterpolationType.SQUARE ) );
+		SPECIAL_ATTACK_ARMS_X.addNewFloatFrame( 0.0f, 0.0f )
+			.addNewFloatFrame( 0.4f, -160.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 0.6f, -40.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 0.7f, -30.0f )
+			.addNewFloatFrame( 0.85f, 10.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 1.0f, 0.0f, Frame.InterpolationType.SQUARE );
 
-		NORMAL_ATTACK_BODY_Y = new Animation<>();
-		NORMAL_ATTACK_BODY_Y.addFrame( new FrameDegrees( 0.0f, 0.0f ) )
-			.addFrame( new FrameDegrees( 0.15f, 30.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 0.25f, 30.0f ) )
-			.addFrame( new FrameDegrees( 0.45f, -60.0f, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameDegrees( 0.55f, -50.0f ) )
-			.addFrame( new FrameDegrees( 1.0f, 0.0f, Frame.InterpolationType.SQUARE ) );
+		NORMAL_ATTACK_BODY_Y.addNewFloatFrame( 0.0f, 0.0f )
+			.addNewFloatFrame( 0.15f, 30.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 0.25f, 30.0f )
+			.addNewFloatFrame( 0.45f, -60.0f, Frame.InterpolationType.SQUARE )
+			.addNewFloatFrame( 0.55f, -50.0f )
+			.addNewFloatFrame( 1.0f, 0.0f, Frame.InterpolationType.SQUARE );
 
-		NORMAL_ATTACK_ARM = new Animation<>();
-		NORMAL_ATTACK_ARM.addFrame( new FrameVec3( 0.0f, 0.0, 0.0, 10.0 ) )
-			.addFrame( new FrameVec3( 0.2f, 45.0, 0.0, 45.0, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameVec3( 0.3f, 45.0, 0.0, 45.0 ) )
-			.addFrame( new FrameVec3( 0.5f, -90.0, -30.0, 60.0, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameVec3( 0.6f, -80.0, -25.0, 50.0, Frame.InterpolationType.SQUARE ) )
-			.addFrame( new FrameVec3( 1.0f, 0.0, 0.0, 10.0, Frame.InterpolationType.SQUARE ) );
+		NORMAL_ATTACK_ARM.addNewVectorFrame( 0.0f, new Vector3f( 0.0f, 0.0f, 10.0f ) )
+			.addNewVectorFrame( 0.2f, new Vector3f( 45.0f, 0.0f, 45.0f ), Frame.InterpolationType.SQUARE )
+			.addNewVectorFrame( 0.3f, new Vector3f( 45.0f, 0.0f, 45.0f ) )
+			.addNewVectorFrame( 0.5f, new Vector3f( -90.0f, -30.0f, 60.0f ), Frame.InterpolationType.SQUARE )
+			.addNewVectorFrame( 0.6f, new Vector3f( -80.0f, -25.0f, 50.0f ), Frame.InterpolationType.SQUARE )
+			.addNewVectorFrame( 1.0f, new Vector3f( 0.0f, 0.0f, 10.0f ), Frame.InterpolationType.SQUARE );
 	}
 
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;
@@ -78,9 +74,7 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 
 	@Override
 	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
-		float handMultiplier = this.isLeftHandAttack ? -1.0f : 1.0f;
 		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
-		Vec3 vectorHandMultiplier = new Vec3( 1.0f, handMultiplier, handMultiplier );
 
 		// head rotation when looking around
 		this.head.yRot = netHeadYaw * ( ( float )Math.PI / 180f );
@@ -91,14 +85,22 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		this.rightLeg.xRot = Mth.cos( limbFactor1 + ( float )Math.PI ) * limbFactor2;
 		this.body.zRot = Mth.cos( limbFactor1 ) * bodyFactor;
 
-		// body and arms animations when Tank is using standard attack
-		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatioLeft );
-		Vec3 armRotation = VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( this.normalAttackDurationRatioLeft ), vectorHandMultiplier );
-		Animation.applyRotationInDegrees( armRotation, this.isLeftHandAttack ? this.leftArm : this.rightArm );
+		// body animations when the Tank is using standard attack
+		float handMultiplier = this.isLeftHandAttack ? -1.0f : 1.0f;
+		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatioLeft, ageInTicks );
+
+		// arms animations when the Tank is using standard attack (we need to update both hands because model parts share reference between all instances)
+		if( this.isLeftHandAttack ) {
+			rotateArm( this.leftArm, ageInTicks, this.normalAttackDurationRatioLeft );
+			rotateArm( this.rightArm, ageInTicks, 1.0f );
+		} else {
+			rotateArm( this.leftArm, ageInTicks, 1.0f );
+			rotateArm( this.rightArm, ageInTicks, this.normalAttackDurationRatioLeft );
+		}
 
 		// body and arms animations when Tank is using special attack
-		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.specialAttackDurationRatioLeft );
-		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.specialAttackDurationRatioLeft );
+		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.specialAttackDurationRatioLeft, ageInTicks );
+		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.specialAttackDurationRatioLeft, ageInTicks );
 	}
 
 	@Override
@@ -158,5 +160,11 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ), PartPose.offset( -3.0F, 12.0F, 0.0F ) );
 
 		return LayerDefinition.create( meshDefinition, 64, 64 );
+	}
+
+	private void rotateArm( ModelPart arm, float ageInTicks, float duration ) {
+		float multiplier = arm == this.leftArm ? -1.0f : 1.0f;
+		Vector3f vectorHandMultiplier = new Vector3f( 1.0f, multiplier, multiplier );
+		Animation.applyRotationInDegrees( VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( duration, ageInTicks ), vectorHandMultiplier ), arm );
 	}
 }

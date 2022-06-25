@@ -73,7 +73,7 @@ public class TankAttackGoal extends MeleeAttackGoal {
 			return;
 
 		Vec3 position = getSpecialAttackPosition( this.tank.position(), target.position() );
-		Predicate< LivingEntity > notTankPredicate = entity->!entity.equals( this.tank );
+		Predicate< LivingEntity > notTankPredicate = entity->!( entity instanceof TankEntity );
 		List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 7.0, notTankPredicate );
 		for( LivingEntity entity : entities )
 			this.tank.doHurtTarget( entity );
