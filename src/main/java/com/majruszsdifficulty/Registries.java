@@ -175,10 +175,6 @@ public class Registries {
 	// Particles
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
-	// Events
-	// public static final StrongerExplosions STRONGER_EXPLOSIONS = new StrongerExplosions();
-	// public static final SplitCreeperToCreeperlings SPLIT_CREEPER_TO_CREEPERLINGS = new SplitCreeperToCreeperlings();
-
 	// Misc
 	public static final IncreaseGameDifficulty INCREASE_GAME_DIFFICULTY = new IncreaseGameDifficulty();
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
@@ -220,6 +216,7 @@ public class Registries {
 	// Game Modifiers
 	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
 	static {
+		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
 		GAME_MODIFIERS.add( new CactusBleeding() );
 		GAME_MODIFIERS.add( new CreeperChainReaction() );

@@ -64,7 +64,7 @@
   "majruszsdifficulty.stages.normal": "Normal Mode",
   "majruszsdifficulty.stages.expert": "Expert Mode",
   "majruszsdifficulty.stages.master": "Master Mode",
-  "majruszsdifficulty.on_expert_mode_start": "The ancient spirits of light and dark have been released.",
+  "majruszsdifficulty.on_expert_mode_start": "The ancient spirits of light and dark have been released",
   "majruszsdifficulty.on_master_mode_start": "Impending doom approaches...",
   "majruszsdifficulty.treasure_bag.item_tooltip": "Right click while holding it to open the bag.",
   "majruszsdifficulty.treasure_bag.hint_tooltip": "Press SHIFT to display possible drops...",
