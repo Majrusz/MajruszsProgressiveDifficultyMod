@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraftforge.event.world.ExplosionEvent;
 
 public class CreeperSplitIntoCreeperlings extends GameModifier {
 	static final OnExplosionContext ON_EXPLOSION = new OnExplosionContext();
@@ -22,13 +23,14 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 		ON_EXPLOSION.addCondition( new Condition.Chance( 0.666 ) );
 		ON_EXPLOSION.addCondition( new Condition.Excludable() );
 		ON_EXPLOSION.addCondition( new Condition.ContextOnExplosion( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) ) );
+		ON_EXPLOSION.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Detonate ) );
 	}
 
 	final GameStageIntegerConfig creeperlingsAmount;
 
 	public CreeperSplitIntoCreeperlings() {
 		super( GameModifier.DEFAULT, "CreeperSplitIntoCreeperlings", "When the Creeper explode it may spawn a few Creeperlings.", ON_EXPLOSION );
-		this.creeperlingsAmount = new GameStageIntegerConfig( "max_creeperlings", "Maximum amount of Creeperlings to spawn.", 1, 3, 5, 1, 10 );
+		this.creeperlingsAmount = new GameStageIntegerConfig( "max_creeperlings", "Maximum amount of Creeperlings to spawn.", 2, 4, 6, 1, 10 );
 		this.configGroup.addConfig( this.creeperlingsAmount );
 	}
 
