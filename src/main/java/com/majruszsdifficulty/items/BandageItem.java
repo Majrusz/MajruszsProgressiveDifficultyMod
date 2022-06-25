@@ -3,18 +3,15 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
-import com.mlib.Utility;
-import com.mlib.config.BooleanConfig;
-import com.mlib.config.ConfigGroup;
-import com.mlib.config.DoubleConfig;
-import com.mlib.config.IntegerConfig;
-import com.mlib.effects.EffectHelper;
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.Config;
+import com.mlib.gamemodifiers.contexts.OnPlayerInteractContext;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
@@ -30,43 +27,23 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
-import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 /** A bandage item that removes the bleeding and gives regeneration for a few seconds. */
 @Mod.EventBusSubscriber
 public class BandageItem extends Item {
 	private static final String TOOLTIP_TRANSLATION_KEY_1 = "item.majruszsdifficulty.bandage.item_tooltip1";
 	private static final String TOOLTIP_TRANSLATION_KEY_2 = "item.majruszsdifficulty.bandage.item_tooltip2";
-	protected final ConfigGroup configGroup;
-	protected final BooleanConfig isAlwaysUsable;
-	protected final DoubleConfig effectDuration;
-	protected final IntegerConfig effectAmplifier;
+
+	public BandageItem( Rarity rarity ) {
+		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( rarity ) );
+	}
 
 	public BandageItem() {
-		this( "Bandage", 0, Rarity.COMMON );
-	}
-
-	public BandageItem( String name, int defaultAmplifier, Rarity rarity ) {
-		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( rarity ) );
-
-		this.isAlwaysUsable = new BooleanConfig( "is_always_usable", "Is " + name + " always usable? If not player can only use " + name + " when it is bleeding.", false, true );
-		this.effectDuration = new DoubleConfig( "regeneration_duration", "Duration in seconds of Regeneration effect.", false, 4.0, 1.0, 120.0 );
-		this.effectAmplifier = new IntegerConfig( "regeneration_amplifier", "Level/amplifier of Regeneration effect.", false, defaultAmplifier, 0, 10 );
-		this.configGroup = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( name, "Configuration for " + name + " item.", this.isAlwaysUsable, this.effectDuration, this.effectAmplifier ) );
-	}
-
-	@Override
-	public InteractionResultHolder< ItemStack > use( Level world, Player player, InteractionHand hand ) {
-		ItemStack itemStack = player.getItemInHand( hand );
-		useIfPossible( itemStack, player, player ); // self-healing
-
-		return InteractionResultHolder.sidedSuccess( itemStack, world.isClientSide() );
+		this( Rarity.COMMON );
 	}
 
 	@Override
@@ -75,71 +52,71 @@ public class BandageItem extends Item {
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, TOOLTIP_TRANSLATION_KEY_1, TOOLTIP_TRANSLATION_KEY_2 );
 	}
 
-	@SubscribeEvent
-	public static void onRightClick( PlayerInteractEvent.EntityInteract event ) {
-		if( !( event.getTarget() instanceof LivingEntity target ) )
-			return;
+	public static class BandageUse extends GameModifier {
+		static final Config.Effect REGENERATION = new Config.Effect( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
+		static final Config.Effect GOLDEN_REGENERATION = new Config.Effect( "GoldenBandageRegeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
+		static final Config.Effect GOLDEN_IMMUNITY = new Config.Effect( "GoldenBandageImmunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
+		static final OnPlayerInteractContext ON_INTERACTION = new OnPlayerInteractContext();
 
-		if( !( event.getItemStack().getItem() instanceof BandageItem bandage ) )
-			return;
+		static {
+			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->data.itemStack.getItem() instanceof BandageItem ) );
+			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->data.target != null ) );
+			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->!data.player.swinging ) );
+			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) ) );
+			ON_INTERACTION.addConfigs( REGENERATION, GOLDEN_REGENERATION, GOLDEN_IMMUNITY );
+		}
 
-		if( !bandage.useIfPossible( event.getItemStack(), event.getPlayer(), target ) ) // healing other entities
-			return;
+		public BandageUse() {
+			super( GameModifier.DEFAULT, "Bandage", "Config for bandages.", ON_INTERACTION );
+		}
 
-		Villager villager = Utility.castIfPossible( Villager.class, event.getTarget() );
-		if( villager != null )
-			increaseReputation( event.getPlayer(), villager );
+		@Override
+		public void execute( Object data ) {
+			if( data instanceof OnPlayerInteractContext.Data interactData ) {
+				useBandage( interactData, interactData.event );
+				interactData.event.setCancellationResult( InteractionResult.SUCCESS );
+			}
+		}
 
-		event.setCancellationResult( InteractionResult.SUCCESS );
-	}
+		public static void useBandage( OnPlayerInteractContext.Data data, PlayerInteractEvent event ) {
+			Player player = data.player;
+			LivingEntity target = data.target;
+			ItemStack itemStack = event.getItemStack();
 
-	public static void increaseReputation( Player player, Villager villager ) {
-		villager.getGossips().add( player.getUUID(), GossipType.MINOR_POSITIVE, 5 );
-	}
+			assert target != null;
+			ItemHelper.consumeItemOnUse( itemStack, player );
+			player.swing( event.getHand(), true );
+			removeBleeding( itemStack, player, target );
+			if( target instanceof Villager villager && villager.hasEffect( Registries.BLEEDING.get() ) ) {
+				increaseReputation( villager, player );
+			}
+			applyEffects( itemStack, target );
+			playSfx( target );
+		}
 
-	public boolean isAlwaysUsable() {
-		return this.isAlwaysUsable.isEnabled();
-	}
+		private static void applyEffects( ItemStack itemStack, LivingEntity target ) {
+			if( itemStack.getItem() instanceof GoldenBandageItem ) {
+				GOLDEN_REGENERATION.apply( target );
+				GOLDEN_IMMUNITY.apply( target );
+			} else {
+				REGENERATION.apply( target );
+			}
+		}
 
-	public int getRegenerationDuration() {
-		return this.effectDuration.asTicks();
-	}
+		private static void increaseReputation( Villager villager, Player player ) {
+			villager.getGossips().add( player.getUUID(), GossipType.MINOR_POSITIVE, 5 );
+		}
 
-	public int getRegenerationAmplifier() {
-		return this.effectAmplifier.get();
-	}
+		private static void removeBleeding( ItemStack itemStack, Player player, LivingEntity target ) {
+			BleedingEffect bleeding = Registries.BLEEDING.get();
+			if( target.hasEffect( bleeding ) && player instanceof ServerPlayer serverPlayer ) {
+				Registries.BANDAGE_TRIGGER.trigger( serverPlayer, ( BandageItem )itemStack.getItem(), target.equals( serverPlayer ) );
+			}
+			target.removeEffect( bleeding );
+		}
 
-	protected void applyEffects( LivingEntity target ) {
-		EffectHelper.applyEffectIfPossible( target, MobEffects.REGENERATION, getRegenerationDuration(), getRegenerationAmplifier() );
-	}
-
-	/** Removes the bleeding from the target or applies regeneration if it is possible. */
-	private boolean useIfPossible( ItemStack bandage, Player player, LivingEntity target ) {
-		if( !couldBeUsedOn( target, bandage ) )
-			return false;
-
-		ItemHelper.consumeItemOnUse( bandage, player );
-		removeBleeding( target, player );
-		applyEffects( target );
-		target.level.playSound( null, target.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 1.0f );
-
-		return true;
-	}
-
-	private boolean couldBeUsedOn( LivingEntity target, ItemStack bandage ) {
-		boolean isBandage = bandage.getItem() instanceof BandageItem;
-		boolean targetHasRegeneration = target.hasEffect( MobEffects.REGENERATION );
-
-		return isBandage && ( ( isAlwaysUsable() && !targetHasRegeneration ) || target.hasEffect( Registries.BLEEDING.get() ) );
-	}
-
-	private void removeBleeding( LivingEntity target, Player causer ) {
-		BleedingEffect bleeding = Registries.BLEEDING.get();
-
-		if( target.hasEffect( bleeding ) && causer instanceof ServerPlayer serverCauser )
-			Registries.BANDAGE_TRIGGER.trigger( serverCauser, this, target.equals( serverCauser ) );
-
-		target.removeEffect( bleeding );
-		target.removeEffectNoUpdate( bleeding );
+		private static void playSfx( LivingEntity target ) {
+			target.level.playSound( null, target.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 1.0f );
+		}
 	}
 }
