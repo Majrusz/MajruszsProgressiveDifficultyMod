@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class WitherSwordItem extends SwordItem {
-	private final static String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.wither_sword.tooltip";
+	final static String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.wither_sword.tooltip";
 
 	public WitherSwordItem() {
 		super( CustomItemTier.WITHER, 3, -2.4f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
