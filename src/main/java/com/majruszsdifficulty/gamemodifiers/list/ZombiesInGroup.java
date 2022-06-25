@@ -7,6 +7,7 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.Config;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
+import com.mlib.levels.LevelHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
@@ -38,6 +39,7 @@ public class ZombiesInGroup extends GameModifier {
 		ON_SPAWNED.addCondition( new CustomConditions.IsNotUndeadArmy() );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
 		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f ) );
 		ON_SPAWNED.addConfigs( TORCH, WOODEN_PICKAXE, STONE_PICKAXE, IRON_PICKAXE, COAL, IRON_INGOT, GOLD_INGOT, DIAMOND, IRON_HELMET, IRON_CHESTPLATE, IRON_LEGGINGS, IRON_BOOTS, MOB_GROUPS );
 
 		MOB_GROUPS.addLeaderConfigs( WOODEN_PICKAXE, STONE_PICKAXE, IRON_PICKAXE, IRON_HELMET, IRON_CHESTPLATE, IRON_LEGGINGS, IRON_BOOTS );
@@ -45,7 +47,7 @@ public class ZombiesInGroup extends GameModifier {
 	}
 
 	public ZombiesInGroup() {
-		super( GameModifier.DEFAULT, "ZombiesInGroup", "Zombies may spawn in groups.", ON_SPAWNED );
+		super( GameModifier.DEFAULT, "ZombiesInGroup", "Zombies may spawn in groups as miners (only underground).", ON_SPAWNED );
 	}
 
 	@Override

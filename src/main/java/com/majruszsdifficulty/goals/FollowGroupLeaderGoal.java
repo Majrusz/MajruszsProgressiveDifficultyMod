@@ -40,13 +40,8 @@ public class FollowGroupLeaderGoal extends Goal {
 			return;
 
 		this.follower.getLookControl().setLookAt( this.leader, 10.0F, ( float )this.follower.getHeadRotSpeed() );
-		this.ticksToRecalculatePath = 10;
-		double distance = this.follower.distanceTo( this.leader );
-
-		if( distance <= ( double )( this.maxDistanceFromLeader ) )
-			recalculatePath( distance );
-		else
-			this.navigation.moveTo( this.leader, this.speedModifier );
+		this.ticksToRecalculatePath = 20;
+		this.navigation.moveTo( this.leader, this.speedModifier );
 	}
 
 	@Override
@@ -57,15 +52,5 @@ public class FollowGroupLeaderGoal extends Goal {
 	@Override
 	public void start() {
 		this.ticksToRecalculatePath = 0;
-	}
-
-	protected void recalculatePath( double distance ) {
-		this.navigation.stop();
-		LookControl lookControl = this.leader.getLookControl();
-		if( distance <= ( double )this.maxDistanceFromLeader || lookControl.getWantedX() == this.follower.getX() && lookControl.getWantedY() == this.follower.getY() && lookControl.getWantedZ() == this.follower.getZ() ) {
-			double d4 = this.follower.getX() - this.leader.getX();
-			double d5 = this.follower.getZ() - this.leader.getZ();
-			this.navigation.moveTo( this.follower.getX() - d4, this.follower.getY(), this.follower.getZ() - d5, this.speedModifier );
-		}
 	}
 }
