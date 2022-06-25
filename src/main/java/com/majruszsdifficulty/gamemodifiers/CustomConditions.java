@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers;
 
 import com.majruszsdifficulty.config.GameStageEnumConfig;
+import com.majruszsdifficulty.features.undead_army.UndeadArmy;
 import com.mlib.Random;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
@@ -56,6 +57,17 @@ public class CustomConditions {
 		@Override
 		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
 			return data.entity instanceof PathfinderMob && !data.entity.getPersistentData().getBoolean( SIDEKICK_TAG );
+		}
+	}
+
+	public static class IsNotUndeadArmy extends Condition {
+		public IsNotUndeadArmy() {
+			super( Priority.HIGH );
+		}
+
+		@Override
+		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
+			return !UndeadArmy.doesEntityBelongToUndeadArmy( data.entity );
 		}
 	}
 }

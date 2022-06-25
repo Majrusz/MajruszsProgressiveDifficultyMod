@@ -41,6 +41,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -97,8 +98,8 @@ public class UndeadArmy {
 	}
 
 	/** Checks whether entity belongs to the Undead Army. */
-	public static boolean doesEntityBelongToUndeadArmy( LivingEntity entity ) {
-		return entity.getPersistentData().contains( UndeadArmyKeys.POSITION + "X" ) && !( entity instanceof SkeletonHorse );
+	public static boolean doesEntityBelongToUndeadArmy( @Nullable LivingEntity entity ) {
+		return entity != null && !( entity instanceof SkeletonHorse ) && entity.getPersistentData().contains( UndeadArmyKeys.POSITION + "X" );
 	}
 
 	/** Sets the value of variables that depends on config values. */

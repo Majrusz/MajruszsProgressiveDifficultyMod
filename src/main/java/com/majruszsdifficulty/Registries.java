@@ -238,12 +238,14 @@ public class Registries {
 		GAME_MODIFIERS.add( new PiglinsInGroup() );
 		GAME_MODIFIERS.add( new SharpToolsBleeding() );
 		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );
+		GAME_MODIFIERS.add( new SkeletonsInGroup() );
 		GAME_MODIFIERS.add( new SlimeSlownessAttack() );
 		GAME_MODIFIERS.add( new SpawnPlayerZombie() );
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
 		GAME_MODIFIERS.add( new WitherSkeletonWithSword() );
 		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
+		GAME_MODIFIERS.add( new ZombiesInGroup() );
 	}
 
 	public static ResourceLocation getLocation( String register ) {
@@ -259,7 +261,6 @@ public class Registries {
 		final IEventBus modEventBus = loadingContext.getModEventBus();
 
 		HELPER.registerAll();
-		setupEvents();
 		modEventBus.addListener( Registries::setup );
 		modEventBus.addListener( Registries::setupClient );
 		modEventBus.addListener( Registries::setupEntities );
@@ -289,45 +290,6 @@ public class Registries {
 		SpawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
-	}
-
-	private static void setupEvents() {
-		// When damaged events
-		/*
-		WhenDamagedEvent.REGISTRY_LIST.add( new SpiderPoisonOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new PhantomLevitationOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new DrownedLightningOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new NauseaAndWeaknessWhenDrowning() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new WitherSwordOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new CactusBleedingOnHurt() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new SharpItemBleedingOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new ArrowBleedingOnHurt() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new ThrownTridentBleedingOnHurt() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new BiteBleedingOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new EndermanTeleportOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new TriggerAllEndermansOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new ShulkerBlindnessOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new NauseaAndSlownessWhenFalling() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new CreeperDamageReductionOnHurt() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new IgniteCreeperOnHurt() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new SlimeSlownessOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new EndToolsLevitationOnAttack() );
-		WhenDamagedEvent.REGISTRY_LIST.add( new EndToolsBleedingOnHurt() );
-
-		// On enemy to be spawned
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new StrengthenedEntityAttributesOnSpawn() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new GiveWitherSkeletonSwordOnSpawn() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new GiveEvokerTotemOnSpawn() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new ChargeCreeperOnSpawn() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new ApplyingNegativeEffectOnCreeperOnSpawn() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnPiglinGroup() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnSkeletonGroup() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new SpawnZombieGroup() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new CreateJockeyOnSpiderSpawn() );
-		OnEnemyToBeSpawnedEvent.REGISTRY_LIST.add( new AddAIToCreeperOnSpawn() );
-
-		// On death events
-		OnDeathEventHandler.REGISTRY_LIST.add( new SpawnPlayerZombieOnDeath() );*/
 	}
 
 	private static void registerCommands( RegisterCommandsEvent event ) {
