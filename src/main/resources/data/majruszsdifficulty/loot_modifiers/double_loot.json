@@ -14,6 +14,6 @@
     }
   ],
   "normal_chance": 0.0,
-  "expert_chance": 0.25,
-  "master_chance": 0.75
+  "expert_chance": 0.2,
+  "master_chance": 0.4
 }
