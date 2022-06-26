@@ -45,10 +45,10 @@ public class DoubleLoot extends LootModifier {
 
 		if( Random.tryChance( chance ) ) {
 			Entity entity = LootHelper.getParameter( context, ( LootContextParams.THIS_ENTITY ) );
-			if( generatedLoot.size() > 0 && entity != null )
+			if( generatedLoot.size() > 1 && !generatedLoot.get( 0 ).isEmpty() && entity != null ) {
 				sendParticles( entity );
-
-			return doubleLoot( generatedLoot );
+				return doubleLoot( generatedLoot );
+			}
 		}
 
 		return generatedLoot;
@@ -62,7 +62,6 @@ public class DoubleLoot extends LootModifier {
 			serverLevel.sendParticles( ParticleTypes.HAPPY_VILLAGER, entity.getX(), entity.getY( 0.5 ), entity.getZ(), 1, 0.5, 0.5, 0.5, 0.5 );
 	}
 
-	/** Doubles given generated loot. Does not duplicate items from forbidden items list. */
 	protected ObjectArrayList< ItemStack > doubleLoot( ObjectArrayList< ItemStack > generatedLoot ) {
 		ObjectArrayList< ItemStack > doubledLoot = new ObjectArrayList<>();
 		for( ItemStack itemStack : generatedLoot ) {
