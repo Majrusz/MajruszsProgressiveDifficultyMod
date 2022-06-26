@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features;
+package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;

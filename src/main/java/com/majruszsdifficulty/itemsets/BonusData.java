@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.itemsets;
+package com.majruszsdifficulty.itemsets;
 
 import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;

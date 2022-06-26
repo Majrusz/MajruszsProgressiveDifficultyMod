@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.itemsets;
+package com.majruszsdifficulty.itemsets;
 
 public class Parameter {
 	final IValueProvider value;

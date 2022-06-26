@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.entities;
 
 import com.majruszsdifficulty.PacketHandler;
-import com.majruszsdifficulty.features.undead_army.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.majruszsdifficulty.goals.TankAttackGoal;
 import com.mlib.Random;
 import com.mlib.Utility;
@@ -30,8 +30,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;

@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.itemsets;
+package com.majruszsdifficulty.itemsets;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

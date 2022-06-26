@@ -1,9 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.features.EnderiumItems;
-import com.mlib.client.ClientHelper;
+import com.majruszsdifficulty.EnderiumItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;

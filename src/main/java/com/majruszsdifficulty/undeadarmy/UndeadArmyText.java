@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.undead_army;
+package com.majruszsdifficulty.undeadarmy;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

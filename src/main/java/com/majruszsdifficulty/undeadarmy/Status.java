@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.undead_army;
+package com.majruszsdifficulty.undeadarmy;
 
 /** Possible Undead Army wave statuses. */
 public enum Status {

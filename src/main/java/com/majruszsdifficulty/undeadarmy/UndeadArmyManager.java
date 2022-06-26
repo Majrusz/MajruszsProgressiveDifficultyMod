@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.undead_army;
+package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.levels.LevelHelper;

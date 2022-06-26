@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.undead_army;
+package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.MajruszLibrary;
 import com.mlib.config.ConfigGroup;

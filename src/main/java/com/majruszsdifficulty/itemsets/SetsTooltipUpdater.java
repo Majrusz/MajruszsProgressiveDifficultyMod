@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.itemsets;
+package com.majruszsdifficulty.itemsets;
 
 import com.majruszsdifficulty.MajruszsHelper;
 import com.mlib.client.ClientHelper;

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers;
 
 import com.majruszsdifficulty.config.GameStageEnumConfig;
-import com.majruszsdifficulty.features.undead_army.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;

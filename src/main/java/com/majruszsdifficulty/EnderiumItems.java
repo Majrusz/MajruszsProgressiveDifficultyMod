@@ -1,6 +1,5 @@
-package com.majruszsdifficulty.features;
+package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.items.EnderiumAxeItem;
 import com.majruszsdifficulty.items.EnderiumHoeItem;
 import com.majruszsdifficulty.items.EnderiumPickaxeItem;
