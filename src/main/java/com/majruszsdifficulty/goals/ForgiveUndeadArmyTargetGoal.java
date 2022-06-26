@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.goals;
 
-import com.majruszsdifficulty.features.undead_army.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 

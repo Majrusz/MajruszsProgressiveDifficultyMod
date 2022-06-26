@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.features.undead_army.Direction;
-import com.majruszsdifficulty.features.undead_army.UndeadArmyManager;
+import com.majruszsdifficulty.undeadarmy.Direction;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
 import com.mojang.brigadier.CommandDispatcher;

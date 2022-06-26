@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.features.undead_army.UndeadArmyKeys;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyKeys;
 import com.mlib.Utility;
 import com.mlib.commands.EntityCommand;
 import com.mlib.commands.IRegistrableCommand;
