@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Spider;
 
 public class SpiderPoisonAttack extends GameModifier {
-	static final ProgressiveEffectConfig POISON = new ProgressiveEffectConfig( "Poison", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
+	static final ProgressiveEffectConfig POISON = new ProgressiveEffectConfig( "", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

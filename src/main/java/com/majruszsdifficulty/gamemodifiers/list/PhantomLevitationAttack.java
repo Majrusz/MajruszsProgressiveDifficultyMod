@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Phantom;
 
 public class PhantomLevitationAttack extends GameModifier {
-	static final ProgressiveEffectConfig LEVITATION = new ProgressiveEffectConfig( "Levitation", ()->MobEffects.LEVITATION, 0, 5.0, 60.0 );
+	static final ProgressiveEffectConfig LEVITATION = new ProgressiveEffectConfig( "", ()->MobEffects.LEVITATION, 0, 5.0, 60.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

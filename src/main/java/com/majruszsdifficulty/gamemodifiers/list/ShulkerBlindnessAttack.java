@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Shulker;
 
 public class ShulkerBlindnessAttack extends GameModifier {
-	static final ProgressiveEffectConfig BLINDNESS = new ProgressiveEffectConfig( "Blindness", ()->MobEffects.BLINDNESS, 0, 5.0, 60.0 );
+	static final ProgressiveEffectConfig BLINDNESS = new ProgressiveEffectConfig( "", ()->MobEffects.BLINDNESS, 0, 5.0, 60.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

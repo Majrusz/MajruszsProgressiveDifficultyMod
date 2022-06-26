@@ -30,7 +30,7 @@ public class CustomConditions {
 		final GameStageEnumConfig minimumStage;
 
 		public GameStage( com.majruszsdifficulty.GameStage.Stage minimumStage ) {
-			this.minimumStage = new GameStageEnumConfig( "minimum_stage", "Minimum game stage required for that game modifier to happen.", false, minimumStage );
+			this.minimumStage = new GameStageEnumConfig( "minimum_stage", "Minimum game stage required for that to happen.", false, minimumStage );
 			this.addConfig( this.minimumStage );
 		}
 

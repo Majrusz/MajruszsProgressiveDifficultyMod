@@ -41,7 +41,7 @@ public class WitherSwordItem extends SwordItem {
 	}
 
 	public static class Effect extends GameModifier {
-		static final EffectConfig WITHER = new EffectConfig( "Wither", ()->MobEffects.WITHER, 1, 6.0 );
+		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 1, 6.0 );
 		static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 		static {
@@ -51,7 +51,7 @@ public class WitherSwordItem extends SwordItem {
 		}
 
 		public Effect() {
-			super( GameModifier.DEFAULT, "WitherSwordEffect", "Wither sword inflicts wither effect.", ON_DAMAGED );
+			super( GameModifier.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect.", ON_DAMAGED );
 		}
 
 		@Override

@@ -27,7 +27,7 @@ public class ProgressiveEffectConfig extends ConfigGroup {
 	) {
 		super( groupName, "" );
 		this.effect = effect;
-		this.amplifier = new GameStageIntegerConfig( "Amplifier", "Level of the effect to apply.", amplifier.normal(), amplifier.expert(), amplifier.master(), MIN_AMPLIFIER, MAX_AMPLIFIER );
+		this.amplifier = new GameStageIntegerConfig( "Amplifier", "Level of the effect to apply.", amplifier.normal() + 1, amplifier.expert() + 1, amplifier.master() + 1, MIN_AMPLIFIER, MAX_AMPLIFIER );
 		this.duration = new GameStageDoubleConfig( "Duration", "Duration in seconds.", duration.normal(), duration.expert(), duration.master(), MIN_DURATION, MAX_DURATION );
 		this.maxDuration = maxDuration.map( value->new DoubleConfig( "maximum_duration", "Maximum duration in seconds it can reach.", false, value, MIN_LIMIT, MAX_LIMIT ) );
 		this.addConfigs( this.amplifier, this.duration );

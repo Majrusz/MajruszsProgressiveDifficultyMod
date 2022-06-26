@@ -17,7 +17,7 @@ public class ExperienceBonus extends GameModifier {
 
 	public ExperienceBonus() {
 		super( GameModifier.DEFAULT, "ExperienceBonus", "Gives extra experience as the difficulty increases.", ON_PICKUP );
-		this.bonusMultiplier = new GameStageDoubleConfig( "bonus_multiplier", "Extra bonus multiplier to experience gathered from any source.", 0.0, 0.2, 0.4, 0.0, 10.0 );
+		this.bonusMultiplier = new GameStageDoubleConfig( "BonusMultiplier", "Extra bonus multiplier to experience gathered from any source.", 0.0, 0.2, 0.4, 0.0, 10.0 );
 		this.addConfig( this.bonusMultiplier );
 	}
 
