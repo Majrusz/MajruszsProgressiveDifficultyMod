@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.treasure_bag;
+package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
@@ -33,7 +33,7 @@ public class RaidTreasureBagRewarder {
 			setLastRaidID( player, pillagerRaid.getId() );
 
 			TreasureBagItem treasureBagItem = Registries.PILLAGER_TREASURE_BAG.get();
-			if( treasureBagItem.isAvailable() )
+			if( treasureBagItem.isEnabled() )
 				ItemHelper.giveItemStackToPlayer( new ItemStack( treasureBagItem ), player, ( ServerLevel )player.level );
 		}
 	}

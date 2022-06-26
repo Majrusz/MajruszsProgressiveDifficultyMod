@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.treasure_bag;
+package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
@@ -43,7 +43,7 @@ public class FishingRewarder {
 
 		if( fishedItemsCounter >= Registries.FISHING_REWARDER.getRequiredItems() ) {
 			data.putInt( FISHING_TAG, fishedItemsCounter - Registries.FISHING_REWARDER.getRequiredItems() );
-			if( Registries.FISHING_TREASURE_BAG.get().isAvailable() )
+			if( Registries.FISHING_TREASURE_BAG.get().isEnabled() )
 				giveTreasureBagTo( player );
 		}
 	}

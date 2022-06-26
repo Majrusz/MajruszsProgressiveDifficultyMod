@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.features.treasure_bag.LootProgress;
+import com.majruszsdifficulty.treasurebags.LootProgress;
 import com.mlib.Utility;
 import com.mlib.commands.EntityCommand;
 import com.mlib.commands.IRegistrableCommand;

@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.treasure_bag;
+package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
