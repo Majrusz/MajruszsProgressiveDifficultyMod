@@ -172,7 +172,7 @@ public class TreasureBagItem extends Item {
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden", "" );
 
 		public Warden() {
-			super( "Warden", CONFIG );
+			super( "warden", CONFIG );
 		}
 	}
 }
