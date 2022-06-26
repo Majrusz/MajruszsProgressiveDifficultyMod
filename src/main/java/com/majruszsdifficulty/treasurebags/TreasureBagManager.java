@@ -88,14 +88,14 @@ public class TreasureBagManager {
 		}
 	}
 
-	/*static class Handler extends GameModifier {
+	static class Handler extends GameModifier {
 		public Handler() {
-			super( GameModifier.TREASURE_BAG, "Handler", "", contexts );
+			super( GameModifier.TREASURE_BAG, "", "" );
 		}
 
 		@Override
 		public void execute( Object object ) {
 
 		}
-	}*/
+	}
 }

@@ -4,6 +4,7 @@ import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteractContext;
@@ -54,8 +55,8 @@ public class BandageItem extends Item {
 
 	public static class BandageUse extends GameModifier {
 		static final EffectConfig REGENERATION = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
-		static final EffectConfig GOLDEN_REGENERATION = new EffectConfig( "GoldenBandageRegeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
-		static final EffectConfig GOLDEN_IMMUNITY = new EffectConfig( "GoldenBandageImmunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
+		static final EffectConfig GOLDEN_REGENERATION = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
+		static final EffectConfig GOLDEN_IMMUNITY = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
 		static final OnPlayerInteractContext ON_INTERACTION = new OnPlayerInteractContext();
 
 		static {
@@ -63,11 +64,12 @@ public class BandageItem extends Item {
 			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->data.target != null ) );
 			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->!data.player.swinging ) );
 			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) ) );
-			ON_INTERACTION.addConfigs( REGENERATION, GOLDEN_REGENERATION, GOLDEN_IMMUNITY );
+			ON_INTERACTION.addConfig( new ConfigGroup( "Bandage", "Config for a Bandage item.", REGENERATION ) );
+			ON_INTERACTION.addConfig( new ConfigGroup( "GoldenBandage", "Config for a Golden Bandage item.", GOLDEN_REGENERATION, GOLDEN_IMMUNITY ) );
 		}
 
 		public BandageUse() {
-			super( GameModifier.DEFAULT, "Bandage", "Config for bandages.", ON_INTERACTION );
+			super( GameModifier.DEFAULT, ON_INTERACTION );
 		}
 
 		@Override

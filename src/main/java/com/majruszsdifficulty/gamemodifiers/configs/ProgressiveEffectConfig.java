@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public class ProgressiveEffectConfig extends ConfigGroup {
 	static final int MIN_AMPLIFIER = 1, MAX_AMPLIFIER = 10;
-	static final double MIN_DURATION = 1.0, MAX_DURATION = 99.0;
+	static final double MIN_DURATION = 1.0, MAX_DURATION = 999.0;
 	static final double MIN_LIMIT = 5.0, MAX_LIMIT = 999.0;
 	final Supplier< MobEffect > effect;
 	final GameStageIntegerConfig amplifier;

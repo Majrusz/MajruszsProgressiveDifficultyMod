@@ -31,7 +31,7 @@ public class IncreaseGameStage extends GameModifier {
 	}
 
 	public IncreaseGameStage() {
-		super( GameModifier.GAME_STAGE, "IncreaseGameStage", "Handles what may increase the game stage.", ON_DIMENSION_CHANGED, ON_DEATH );
+		super( GameModifier.GAME_STAGE, ON_DIMENSION_CHANGED, ON_DEATH );
 		this.addConfigs( ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE, DEFAULT_GAME_STAGE, EXPERT_MODE, MASTER_MODE );
 	}
 
