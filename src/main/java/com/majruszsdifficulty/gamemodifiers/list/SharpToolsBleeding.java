@@ -2,8 +2,8 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.items.ItemHelper;
@@ -12,7 +12,7 @@ import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TridentItem;
 
 public class SharpToolsBleeding extends GameModifier {
-	static final CustomConfigs.Bleeding BLEEDING = new CustomConfigs.Bleeding();
+	static final BleedingConfig BLEEDING = new BleedingConfig();
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

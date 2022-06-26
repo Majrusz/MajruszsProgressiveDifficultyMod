@@ -4,11 +4,8 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
-import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.Config;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperExplodeBehindWall extends GameModifier {

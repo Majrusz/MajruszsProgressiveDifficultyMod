@@ -1,19 +1,16 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
-import com.mlib.effects.EffectHelper;
-import com.mlib.gamemodifiers.Config;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Spider;
 
 public class SpiderPoisonAttack extends GameModifier {
-	static final CustomConfigs.ProgressiveEffect POISON = new CustomConfigs.ProgressiveEffect( "Poison", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
+	static final ProgressiveEffectConfig POISON = new ProgressiveEffectConfig( "Poison", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

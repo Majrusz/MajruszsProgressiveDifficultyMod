@@ -2,10 +2,10 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.Config;
+import com.mlib.gamemodifiers.configs.ItemStackConfig;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -13,15 +13,13 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.item.Items;
 
-import java.util.List;
-
 public class PiglinsInGroup extends GameModifier {
-	static final Config.ItemStack GOLDEN_SWORD = new Config.ItemStack( "SidekickGoldenSword", "Chance for a sidekick to have the Golden Sword.", ()->Items.GOLDEN_SWORD, EquipmentSlot.MAINHAND, 0.4, 0.05, 0.2 );
-	static final Config.ItemStack GOLDEN_HELMET = new Config.ItemStack( "LeaderGoldenHelmet", "Chance for a leader to have the Golden Helmet.", ()->Items.GOLDEN_HELMET, EquipmentSlot.HEAD, 0.67, 0.05, 0.75 );
-	static final Config.ItemStack GOLDEN_CHESTPLATE = new Config.ItemStack( "LeaderGoldenChestplate", "Chance for a leader to have the Golden Chestplate.", ()->Items.GOLDEN_CHESTPLATE, EquipmentSlot.CHEST, 0.67, 0.05, 0.75 );
-	static final Config.ItemStack GOLDEN_LEGGINGS = new Config.ItemStack( "LeaderGoldenLeggings", "Chance for a leader to have the Golden Leggings.", ()->Items.GOLDEN_LEGGINGS, EquipmentSlot.LEGS, 0.67, 0.05, 0.75 );
-	static final Config.ItemStack GOLDEN_BOOTS = new Config.ItemStack( "LeaderGoldenBoots", "Chance for a leader to have the Golden Boots.", ()->Items.GOLDEN_BOOTS, EquipmentSlot.FEET, 0.67, 0.05, 0.75 );
-	static final CustomConfigs.MobGroups MOB_GROUPS = new CustomConfigs.MobGroups( "Piglins", ()->EntityType.PIGLIN, 1, 3 );
+	static final ItemStackConfig GOLDEN_SWORD = new ItemStackConfig( "SidekickGoldenSword", "Chance for a sidekick to have the Golden Sword.", ()->Items.GOLDEN_SWORD, EquipmentSlot.MAINHAND, 0.4, 0.05, 0.2 );
+	static final ItemStackConfig GOLDEN_HELMET = new ItemStackConfig( "LeaderGoldenHelmet", "Chance for a leader to have the Golden Helmet.", ()->Items.GOLDEN_HELMET, EquipmentSlot.HEAD, 0.67, 0.05, 0.75 );
+	static final ItemStackConfig GOLDEN_CHESTPLATE = new ItemStackConfig( "LeaderGoldenChestplate", "Chance for a leader to have the Golden Chestplate.", ()->Items.GOLDEN_CHESTPLATE, EquipmentSlot.CHEST, 0.67, 0.05, 0.75 );
+	static final ItemStackConfig GOLDEN_LEGGINGS = new ItemStackConfig( "LeaderGoldenLeggings", "Chance for a leader to have the Golden Leggings.", ()->Items.GOLDEN_LEGGINGS, EquipmentSlot.LEGS, 0.67, 0.05, 0.75 );
+	static final ItemStackConfig GOLDEN_BOOTS = new ItemStackConfig( "LeaderGoldenBoots", "Chance for a leader to have the Golden Boots.", ()->Items.GOLDEN_BOOTS, EquipmentSlot.FEET, 0.67, 0.05, 0.75 );
+	static final MobGroupConfig MOB_GROUPS = new MobGroupConfig( "Piglins", ()->EntityType.PIGLIN, 1, 3 );
 	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
 
 	static {

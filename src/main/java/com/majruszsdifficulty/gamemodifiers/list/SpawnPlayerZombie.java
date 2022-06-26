@@ -1,12 +1,11 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDeathContext;
 import net.minecraft.nbt.CompoundTag;
@@ -42,7 +41,7 @@ public class SpawnPlayerZombie extends GameModifier {
 
 		this.headChance = new DoubleConfig( "head_chance", "Chance for a zombie to have player's head.", false, 1.0, 0.0, 1.0 );
 		this.headDropChance = new DoubleConfig( "head_drop_chance", "Chance for a zombie to drop player's head.", false, 0.1, 0.0, 1.0 );
-		this.configGroup.addConfigs( this.headChance, this.headDropChance );
+		this.addConfigs( this.headChance, this.headDropChance );
 	}
 
 	@Override

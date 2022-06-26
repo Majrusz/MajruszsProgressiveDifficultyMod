@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.lootmodifiers;
 
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.features.treasure_bag.TreasureBagManager;
+import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.loot_modifiers.LootHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -33,7 +33,7 @@ public class AddTreasureBagsToLoot extends LootModifier {
 			return generatedLoot;
 
 		TreasureBagItem treasureBag = TreasureBagManager.getTreasureBag( entity.getType() );
-		if( treasureBag == null || !( entity instanceof LivingEntity ) || !treasureBag.isAvailable() )
+		if( treasureBag == null || !( entity instanceof LivingEntity ) || !treasureBag.isEnabled() )
 			return generatedLoot;
 
 		if( TreasureBagManager.rewardAllPlayers( ( LivingEntity )entity ) )

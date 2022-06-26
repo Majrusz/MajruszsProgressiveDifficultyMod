@@ -3,13 +3,12 @@ package com.majruszsdifficulty.gamemodifiers;
 import com.majruszsdifficulty.config.GameStageEnumConfig;
 import com.majruszsdifficulty.features.undead_army.UndeadArmy;
 import com.mlib.Random;
-import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.GameModifier;
 import net.minecraft.world.entity.PathfinderMob;
 
-import static com.majruszsdifficulty.gamemodifiers.CustomConfigs.MobGroups.SIDEKICK_TAG;
+import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
 
 public class CustomConditions {
 	public static class CRDChance extends Condition {
@@ -18,11 +17,7 @@ public class CustomConditions {
 		public CRDChance( double defaultChance ) {
 			super( Priority.HIGH );
 			this.chance = new DoubleConfig( "chance", "Chance of this to happen (this value is scaled by Clamped Regional Difficulty).", false, defaultChance, 0.0, 1.0 );
-		}
-
-		@Override
-		public void setup( ConfigGroup group ) {
-			group.addConfig( this.chance );
+			this.addConfig( this.chance );
 		}
 
 		@Override
@@ -36,11 +31,7 @@ public class CustomConditions {
 
 		public GameStage( com.majruszsdifficulty.GameStage.Stage minimumStage ) {
 			this.minimumStage = new GameStageEnumConfig( "minimum_stage", "Minimum game stage required for that game modifier to happen.", false, minimumStage );
-		}
-
-		@Override
-		public void setup( ConfigGroup group ) {
-			group.addConfig( this.minimumStage );
+			this.addConfig( this.minimumStage );
 		}
 
 		@Override

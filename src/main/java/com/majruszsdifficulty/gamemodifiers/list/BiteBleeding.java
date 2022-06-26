@@ -2,8 +2,8 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +15,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import javax.annotation.Nullable;
 
 public class BiteBleeding extends GameModifier {
-	static final CustomConfigs.Bleeding BLEEDING = new CustomConfigs.Bleeding();
+	static final BleedingConfig BLEEDING = new BleedingConfig();
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

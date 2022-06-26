@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;

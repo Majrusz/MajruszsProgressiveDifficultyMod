@@ -1,21 +1,17 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
-import com.mlib.Utility;
-import com.mlib.effects.EffectHelper;
-import com.mlib.gamemodifiers.Config;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
 public class DrownDebuffs extends GameModifier {
-	static final CustomConfigs.ProgressiveEffect NAUSEA = new CustomConfigs.ProgressiveEffect( "Nausea", ()->MobEffects.CONFUSION, 0, 2.0, 60.0 );
-	static final CustomConfigs.ProgressiveEffect WEAKNESS = new CustomConfigs.ProgressiveEffect( "Weakness", ()->MobEffects.WEAKNESS, 0, 10.0, 60.0 );
+	static final ProgressiveEffectConfig NAUSEA = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 2.0, 60.0 );
+	static final ProgressiveEffectConfig WEAKNESS = new ProgressiveEffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 10.0, 60.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

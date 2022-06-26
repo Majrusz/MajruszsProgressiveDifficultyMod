@@ -16,6 +16,7 @@ public class MajruszsDifficulty {
 	public static final ConfigGroup GAME_MODIFIERS_GROUP = CONFIG_HANDLER.addNewGameModifierGroup( GameModifier.DEFAULT );
 	public static final ConfigGroup UNDEAD_ARMY_GROUP = CONFIG_HANDLER.addNewGameModifierGroup( GameModifier.UNDEAD_ARMY, "UndeadArmy", "" );
 	public static final ConfigGroup STAGE_GROUP = CONFIG_HANDLER.addNewGameModifierGroup( GameModifier.GAME_STAGE, "GameStage", "" );
+	public static final ConfigGroup TREASURE_BAG_GROUP = CONFIG_HANDLER.addNewGameModifierGroup( GameModifier.TREASURE_BAG, "TreasureBag", "" );
 	public static final ConfigGroup ENTITIES_GROUP = CONFIG_HANDLER.addNewGroup( "Entities", "" );
 	public static final ConfigGroup STATE_GROUP = CONFIG_HANDLER.addNewGroup( "GameStage", "" );
 

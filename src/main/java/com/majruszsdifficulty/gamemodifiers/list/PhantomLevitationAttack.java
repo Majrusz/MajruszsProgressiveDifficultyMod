@@ -1,20 +1,16 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
-import com.mlib.Utility;
-import com.mlib.effects.EffectHelper;
-import com.mlib.gamemodifiers.Config;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Phantom;
 
 public class PhantomLevitationAttack extends GameModifier {
-	static final CustomConfigs.ProgressiveEffect LEVITATION = new CustomConfigs.ProgressiveEffect( "Levitation", ()->MobEffects.LEVITATION, 0, 5.0, 60.0 );
+	static final ProgressiveEffectConfig LEVITATION = new ProgressiveEffectConfig( "Levitation", ()->MobEffects.LEVITATION, 0, 5.0, 60.0 );
 	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 	static {

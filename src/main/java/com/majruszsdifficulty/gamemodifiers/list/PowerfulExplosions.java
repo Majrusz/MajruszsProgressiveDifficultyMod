@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
@@ -24,7 +23,7 @@ public class PowerfulExplosions extends GameModifier {
 		super( GameModifier.DEFAULT, "PowerfulExplosions", "Makes all explosions (creepers, ghast ball etc.) much more deadly.", ON_EXPLOSION );
 		this.radiusMultiplier = new DoubleConfig( "radius_multiplier", "Multiplies explosion radius by the given value (this value is scaled by Clamped Regional Difficulty).", false, 1.2599, 1.0, 10.0 );
 		this.fireChance = new DoubleConfig( "fire_chance", "Gives all explosions a chance to cause fire (this value is scaled by Clamped Regional Difficulty).", false, 0.75, 0.0, 1.0 );
-		this.configGroup.addConfigs( this.radiusMultiplier, this.fireChance );
+		this.addConfigs( this.radiusMultiplier, this.fireChance );
 	}
 
 	@Override

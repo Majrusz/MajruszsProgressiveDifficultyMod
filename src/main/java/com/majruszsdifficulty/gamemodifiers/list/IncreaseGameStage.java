@@ -2,8 +2,8 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.config.GameStageEnumConfig;
-import com.majruszsdifficulty.gamemodifiers.CustomConfigs;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
 import com.mlib.config.BooleanConfig;
 import com.mlib.gamemodifiers.contexts.OnDeathContext;
 import com.mlib.gamemodifiers.contexts.OnDimensionChangedContext;
@@ -19,8 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import javax.annotation.Nullable;
 
 public class IncreaseGameStage extends GameModifier {
-	static final CustomConfigs.StageProgress EXPERT_MODE = new CustomConfigs.StageProgress( "ExpertMode", "Determines what starts the Expert Mode.", "none", "minecraft:the_nether" );
-	static final CustomConfigs.StageProgress MASTER_MODE = new CustomConfigs.StageProgress( "MasterMode", "Determines what starts the Master Mode.", "minecraft:ender_dragon", "none" );
+	static final StageProgressConfig EXPERT_MODE = new StageProgressConfig( "ExpertMode", "Determines what starts the Expert Mode.", "none", "minecraft:the_nether" );
+	static final StageProgressConfig MASTER_MODE = new StageProgressConfig( "MasterMode", "Determines what starts the Master Mode.", "minecraft:ender_dragon", "none" );
 	static final OnDimensionChangedContext ON_DIMENSION_CHANGED = new OnDimensionChangedContext();
 	static final OnDeathContext ON_DEATH = new OnDeathContext();
 	static final BooleanConfig ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE = new BooleanConfig( "any_dimension_expert", "Determines whether any dimension should start Expert Mode (useful for integration with other mods).", false, true );
@@ -32,8 +32,7 @@ public class IncreaseGameStage extends GameModifier {
 
 	public IncreaseGameStage() {
 		super( GameModifier.GAME_STAGE, "IncreaseGameStage", "Handles what may increase the game stage.", ON_DIMENSION_CHANGED, ON_DEATH );
-		addConfigs( EXPERT_MODE, MASTER_MODE );
-		this.configGroup.addConfigs( ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE, DEFAULT_GAME_STAGE );
+		this.addConfigs( ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE, DEFAULT_GAME_STAGE, EXPERT_MODE, MASTER_MODE );
 	}
 
 	@Override

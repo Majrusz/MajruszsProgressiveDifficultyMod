@@ -5,7 +5,7 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.Utility;
 import com.mlib.effects.EffectHelper;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.Config;
+import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.items.ItemHelper;
 import net.minecraft.ChatFormatting;
@@ -41,7 +41,7 @@ public class WitherSwordItem extends SwordItem {
 	}
 
 	public static class Effect extends GameModifier {
-		static final Config.Effect WITHER = new Config.Effect( "Wither", ()->MobEffects.WITHER, 1, 6.0 );
+		static final EffectConfig WITHER = new EffectConfig( "Wither", ()->MobEffects.WITHER, 1, 6.0 );
 		static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
 
 		static {

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.entities.TankEntity;
-import com.majruszsdifficulty.features.treasure_bag.LootProgress;
+import com.majruszsdifficulty.treasurebags.LootProgress;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;

@@ -1,10 +1,9 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.mlib.config.DoubleConfig;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.entity.monster.Creeper;
@@ -24,7 +23,7 @@ public class CreeperExplosionImmunity extends GameModifier {
 	public CreeperExplosionImmunity() {
 		super( GameModifier.DEFAULT, "CreeperExplosionImmunity", "Makes a Creeper take less damage from explosions.", ON_DAMAGED );
 		this.damageMultiplier = new DoubleConfig( "damage_multiplier", "", false, 0.2, 0.0, 0.99 );
-		this.configGroup.addConfig( this.damageMultiplier );
+		this.addConfig( this.damageMultiplier );
 	}
 
 	@Override

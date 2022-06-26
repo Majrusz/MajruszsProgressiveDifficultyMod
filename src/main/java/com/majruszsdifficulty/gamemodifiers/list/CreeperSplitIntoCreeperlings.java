@@ -30,8 +30,8 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 
 	public CreeperSplitIntoCreeperlings() {
 		super( GameModifier.DEFAULT, "CreeperSplitIntoCreeperlings", "When the Creeper explode it may spawn a few Creeperlings.", ON_EXPLOSION );
-		this.creeperlingsAmount = new GameStageIntegerConfig( "max_creeperlings", "Maximum amount of Creeperlings to spawn.", 2, 4, 6, 1, 10 );
-		this.configGroup.addConfig( this.creeperlingsAmount );
+		this.creeperlingsAmount = new GameStageIntegerConfig( "MaxCreeperlings", "Maximum amount of Creeperlings to spawn.", 2, 4, 6, 1, 10 );
+		this.addConfig( this.creeperlingsAmount );
 	}
 
 	@Override

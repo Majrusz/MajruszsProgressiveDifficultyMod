@@ -2,16 +2,13 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
-import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
 import com.mlib.attributes.AttributeHandler;
-import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Creeper;
 
 public class MobsSpawnStronger extends GameModifier {
 	static final AttributeHandler MAX_HEALTH_ATTRIBUTE = new AttributeHandler( "ba9de909-4a9e-43da-9d14-fbcbc2403316", "ProgressiveDifficultyHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE );
@@ -32,7 +29,7 @@ public class MobsSpawnStronger extends GameModifier {
 		this.healthBonus = new GameStageDoubleConfig( "HealthBonusMultiplier", "", 0.0, 0.15, 0.3, 0.0, 10.0 );
 		this.damageBonus = new GameStageDoubleConfig( "DamageBonusMultiplier", "", 0.0, 0.15, 0.3, 0.0, 10.0 );
 		this.nightMultiplier = new GameStageDoubleConfig( "NightMultiplier", "Multiplies health and damage bonuses at night.", 2.0, 2.0, 2.0, 1.0, 10.0 );
-		this.configGroup.addConfigs( this.healthBonus, this.damageBonus, this.nightMultiplier );
+		this.addConfigs( this.healthBonus, this.damageBonus, this.nightMultiplier );
 	}
 
 	@Override

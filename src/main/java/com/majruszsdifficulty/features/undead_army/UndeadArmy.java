@@ -430,7 +430,7 @@ public class UndeadArmy {
 			if( player instanceof ServerPlayer )
 				Registries.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( ( ServerPlayer )player, this.currentWave );
 
-			if( Registries.UNDEAD_ARMY_TREASURE_BAG.get().isAvailable() )
+			if( Registries.UNDEAD_ARMY_TREASURE_BAG.get().isEnabled() )
 				for( int i = 0; i < config.getAmountOfVictoryTreasureBags(); i++ )
 					ItemHelper.giveItemStackToPlayer( new ItemStack( Registries.UNDEAD_ARMY_TREASURE_BAG.get() ), player, this.level );
 		}

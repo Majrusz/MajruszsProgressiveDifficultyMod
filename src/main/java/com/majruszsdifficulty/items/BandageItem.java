@@ -5,7 +5,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.Config;
+import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteractContext;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
@@ -53,9 +53,9 @@ public class BandageItem extends Item {
 	}
 
 	public static class BandageUse extends GameModifier {
-		static final Config.Effect REGENERATION = new Config.Effect( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
-		static final Config.Effect GOLDEN_REGENERATION = new Config.Effect( "GoldenBandageRegeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
-		static final Config.Effect GOLDEN_IMMUNITY = new Config.Effect( "GoldenBandageImmunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
+		static final EffectConfig REGENERATION = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
+		static final EffectConfig GOLDEN_REGENERATION = new EffectConfig( "GoldenBandageRegeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
+		static final EffectConfig GOLDEN_IMMUNITY = new EffectConfig( "GoldenBandageImmunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
 		static final OnPlayerInteractContext ON_INTERACTION = new OnPlayerInteractContext();
 
 		static {
