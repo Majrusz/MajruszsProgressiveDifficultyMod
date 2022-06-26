@@ -16,15 +16,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class MajruszsHelper {
-	/**
-	 Returns player from given damage source.
-	 Returns null if casting was impossible.
-	 */
-	@Nullable
-	public static Player getPlayerFromDamageSource( DamageSource damageSource ) {
-		return damageSource.getEntity() instanceof Player ? ( Player )damageSource.getEntity() : null;
-	}
-
 	public static void addTranslatableText( List< Component > tooltip, String translationKey ) {
 		tooltip.add( Component.translatable( translationKey ).withStyle( ChatFormatting.GRAY ) );
 	}
@@ -66,18 +57,5 @@ public class MajruszsHelper {
 
 	public static void addEmptyLine( List< Component > tooltip ) {
 		tooltip.add( getEmptyLine() );
-	}
-
-	/** Teleports the target somewhere nearby. */
-	public static boolean teleportNearby( LivingEntity target, ServerLevel world, double insideOffset, double outsideOffset ) {
-		double distanceFactor = insideOffset;
-		if( target.yOld + 8 > world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ( int )target.xOld, ( int )target.zOld ) )
-			distanceFactor = outsideOffset;
-
-		Vec3 newPosition = Random.getRandomVector3d( -distanceFactor, distanceFactor, -1.0, 1.0, -distanceFactor, distanceFactor )
-			.add( target.position() );
-		double y = world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ( int )newPosition.x, ( int )newPosition.z ) + 1;
-
-		return !( y < 5 ) && target.randomTeleport( newPosition.x, target.yOld + 8 > y ? y : newPosition.y, newPosition.z, true );
 	}
 }

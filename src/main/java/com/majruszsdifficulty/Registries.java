@@ -9,24 +9,22 @@ import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.GiantEntity;
 import com.majruszsdifficulty.entities.TankEntity;
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.list.*;
+import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.itemsets.EnderiumSet;
 import com.majruszsdifficulty.itemsets.OceanSet;
 import com.majruszsdifficulty.itemsets.UndeadSet;
-import com.majruszsdifficulty.treasurebags.FishingRewarder;
-import com.majruszsdifficulty.treasurebags.TreasureBagManager;
-import com.majruszsdifficulty.undeadarmy.ReloadUndeadArmyGoals;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
-import com.majruszsdifficulty.gamemodifiers.list.*;
-import com.majruszsdifficulty.items.*;
-import com.majruszsdifficulty.lootmodifiers.AddTreasureBagsToLoot;
 import com.majruszsdifficulty.lootmodifiers.DoubleLoot;
+import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
+import com.majruszsdifficulty.undeadarmy.ReloadUndeadArmyGoals;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.commands.IRegistrableCommand;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -143,10 +141,7 @@ public class Registries {
 	// Fake items (just to display icons etc.)
 	static {
 		String[] fakeItemNames = new String[]{
-			"normal",
-			"expert",
-			"master",
-			"bleeding"
+			"normal", "expert", "master", "bleeding"
 		};
 		for( String name : fakeItemNames )
 			ITEMS.register( "advancement_" + name, FakeItem::new );
@@ -174,7 +169,6 @@ public class Registries {
 
 	// Misc
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
-	public static final FishingRewarder FISHING_REWARDER = new FishingRewarder();
 	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
 
@@ -204,11 +198,11 @@ public class Registries {
 	// Loot Modifiers
 	static {
 		LOOT_MODIFIERS.register( "double_loot", DoubleLoot.Serializer::new );
-		LOOT_MODIFIERS.register( "add_treasure_bag_to_loot", AddTreasureBagsToLoot.Serializer::new );
 	}
 
 	// Game Modifiers
 	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
+
 	static {
 		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
@@ -239,6 +233,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new SpawnPlayerZombie() );
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
+		GAME_MODIFIERS.add( new TreasureBagManager() );
 		GAME_MODIFIERS.add( new WitherSkeletonWithSword() );
 		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 		GAME_MODIFIERS.add( new ZombiesInGroup() );
@@ -298,9 +293,9 @@ public class Registries {
 		if( UNDEAD_ARMY_MANAGER != null )
 			UNDEAD_ARMY_MANAGER.updateWorld( server.getLevel( ServerLevel.OVERWORLD ) );
 
-		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get(), false );
-		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get(), false );
-		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get(), false );
+		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
+		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
+		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get() );
 	}
 
 	public static void onLoadingLevel( WorldEvent.Load event ) {

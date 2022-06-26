@@ -2,11 +2,11 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
-import com.majruszsdifficulty.features.treasure_bag.LootProgress;
-import com.majruszsdifficulty.features.treasure_bag.LootProgressClient;
-import com.mlib.config.BooleanConfig;
-import com.mlib.config.ConfigGroup;
+import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
+import com.majruszsdifficulty.treasurebags.LootProgress;
+import com.majruszsdifficulty.treasurebags.LootProgressClient;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,32 +30,43 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
-
-/** Common code for all treasure bags. */
-@Mod.EventBusSubscriber
 public class TreasureBagItem extends Item {
 	public final static List< TreasureBagItem > TREASURE_BAGS = new ArrayList<>();
-	protected final static ConfigGroup CONFIG_GROUP = GAME_MODIFIERS_GROUP.addGroup( new ConfigGroup( "TreasureBag", "Configuration for treasure bags." ) );
-	private final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.item_tooltip";
+	final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.item_tooltip";
+	final ResourceLocation lootTableLocation;
+	final TreasureBagConfig config;
 
-	private final ResourceLocation lootTableLocation;
-	private final BooleanConfig availability;
+	public static TreasureBagConfig[] getConfigs() {
+		return new TreasureBagConfig[]{
+			UndeadArmy.CONFIG,
+			ElderGuardian.CONFIG,
+			Wither.CONFIG,
+			EnderDragon.CONFIG,
+			Fishing.CONFIG,
+			Pillager.CONFIG,
+			Warden.CONFIG
+		};
+	}
 
-	public TreasureBagItem( String id, String entityNameForConfiguration ) {
+	/** Generates loot context of current treasure bag. (who opened the bag, where, etc.) */
+	public static LootContext generateLootContext( Player player ) {
+		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerLevel )player.level );
+		lootContextBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
+		lootContextBuilder.withParameter( LootContextParams.THIS_ENTITY, player );
+
+		return lootContextBuilder.create( LootContextParamSets.GIFT );
+	}
+
+	public TreasureBagItem( String id, TreasureBagConfig config ) {
 		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
-
 		this.lootTableLocation = Registries.getLocation( "gameplay/" + id + "_treasure_loot" );
-		this.availability = new BooleanConfig( id, createConfigComment( entityNameForConfiguration ), false, true );
-		CONFIG_GROUP.addConfig( this.availability );
-
+		this.config = config;
 		TREASURE_BAGS.add( this );
 	}
 
@@ -69,14 +80,11 @@ public class TreasureBagItem extends Item {
 				triggerTreasureBagAdvancement( serverPlayer );
 
 			level.playSound( null, player.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 0.9f );
-
-			if( this.availability.isEnabled() ) {
-				List< ItemStack > loot = generateLoot( player );
-				MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) );
-				LootProgress.updateProgress( this, player, loot );
-				if( level instanceof ServerLevel serverLevel )
-					loot.forEach( reward -> ItemHelper.giveItemStackToPlayer( reward, player, serverLevel ) );
-			}
+			List< ItemStack > loot = generateLoot( player );
+			MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) );
+			LootProgress.updateProgress( this, player, loot );
+			if( level instanceof ServerLevel serverLevel )
+				loot.forEach( reward->ItemHelper.giveItemStackToPlayer( reward, player, serverLevel ) );
 		}
 
 		return InteractionResultHolder.sidedSuccess( itemStack, level.isClientSide() );
@@ -90,71 +98,81 @@ public class TreasureBagItem extends Item {
 		LootProgressClient.addDropList( this, tooltip );
 	}
 
-	/** Generates loot context of current treasure bag. (who opened the bag, where, etc.) */
-	public static LootContext generateLootContext( Player player ) {
-		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerLevel )player.level );
-		lootContextBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
-		lootContextBuilder.withParameter( LootContextParams.THIS_ENTITY, player );
-
-		return lootContextBuilder.create( LootContextParamSets.GIFT );
-	}
-
-	private static String createConfigComment( String treasureBagSourceName ) {
-		return "Is treasure bag from " + treasureBagSourceName + " available in survival mode?";
-	}
-
-	/** Checks whether the treasure bag is not disabled in configuration file. */
-	public boolean isAvailable() {
-		return this.availability.isEnabled();
-	}
-
-	protected List< ItemStack > generateLoot( Player player ) {
-		LootTable lootTable = getLootTable();
-
-		return lootTable.getRandomItems( generateLootContext( player ) );
+	public boolean isEnabled() {
+		return this.config.isEnabled();
 	}
 
 	public LootTable getLootTable() {
 		return ServerLifecycleHooks.getCurrentServer().getLootTables().get( this.lootTableLocation );
 	}
 
-	protected void triggerTreasureBagAdvancement( ServerPlayer player ) {
+	private List< ItemStack > generateLoot( Player player ) {
+		LootTable lootTable = getLootTable();
+
+		return lootTable.getRandomItems( generateLootContext( player ) );
+	}
+
+	private void triggerTreasureBagAdvancement( ServerPlayer player ) {
 		Registries.TREASURE_BAG_TRIGGER.trigger( player, this, player.getStats().getValue( Stats.ITEM_USED.get( this ) ) );
 	}
 
 	public static class UndeadArmy extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "UndeadArmy", "" );
+
 		public UndeadArmy() {
-			super( "undead_army", "Undead Army" );
+			super( "undead_army", CONFIG );
 		}
 	}
 
 	public static class ElderGuardian extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "ElderGuardian", "" );
+
 		public ElderGuardian() {
-			super( "elder_guardian", "Elder Guardian" );
+			super( "elder_guardian", CONFIG );
 		}
 	}
 
 	public static class Wither extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Wither", "" );
+
 		public Wither() {
-			super( "wither", "Wither" );
+			super( "wither", CONFIG );
 		}
 	}
 
 	public static class EnderDragon extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "EnderDragon", "" );
+
 		public EnderDragon() {
-			super( "ender_dragon", "Ender Dragon" );
+			super( "ender_dragon", CONFIG );
 		}
 	}
 
 	public static class Fishing extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Fishing", "" );
+		public static final GameStageIntegerConfig REQUIRED_FISH_COUNT = new GameStageIntegerConfig( "RequiredFishCount", "Required amount of items fished to get this Treasure Bag.", 20, 15, 10, 3, 100 );
+		static {
+			CONFIG.addConfig( REQUIRED_FISH_COUNT );
+		}
+
 		public Fishing() {
-			super( "fishing", "Fishing" );
+			super( "fishing", CONFIG );
 		}
 	}
 
 	public static class Pillager extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "PillagerRaid", "" );
+
 		public Pillager() {
-			super( "pillager", "Pillager Raid" );
+			super( "pillager", CONFIG );
+		}
+	}
+
+	public static class Warden extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden", "" );
+
+		public Warden() {
+			super( "Warden", CONFIG );
 		}
 	}
 }

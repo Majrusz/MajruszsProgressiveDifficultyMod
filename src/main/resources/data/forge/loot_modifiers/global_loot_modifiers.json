@@ -1,7 +1,6 @@
 {
   "replace": false,
   "entries": [
-    "majruszsdifficulty:double_loot",
-    "majruszsdifficulty:add_treasure_bag_to_loot"
+    "majruszsdifficulty:double_loot"
   ]
 }
