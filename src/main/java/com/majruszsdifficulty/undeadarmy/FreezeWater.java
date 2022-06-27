@@ -18,6 +18,6 @@ public class FreezeWater {
 
 	/** Checks whether entity belongs to Undead Army. */
 	protected static boolean isEntityValid( LivingEntity entity ) {
-		return entity instanceof Monster && UndeadArmy.doesEntityBelongToUndeadArmy( entity ) && !entity.level.isClientSide;
+		return entity instanceof Monster && UndeadArmyOld.doesEntityBelongToUndeadArmy( entity ) && !entity.level.isClientSide;
 	}
 }

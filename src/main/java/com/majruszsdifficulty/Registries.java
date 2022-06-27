@@ -22,6 +22,7 @@ import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManagerOld;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.registries.DeferredRegisterHelper;
@@ -234,6 +235,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
 		GAME_MODIFIERS.add( new TreasureBagManager() );
+		GAME_MODIFIERS.add( new UndeadArmyManager() );
 		GAME_MODIFIERS.add( new WitherSkeletonWithSword() );
 		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 		GAME_MODIFIERS.add( new ZombiesInGroup() );

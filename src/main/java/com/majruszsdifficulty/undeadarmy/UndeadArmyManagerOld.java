@@ -28,7 +28,7 @@ import java.util.Optional;
 public class UndeadArmyManagerOld extends SavedData {
 	public static final String DATA_NAME = "undead_army";
 	public static final double MAXIMUM_DISTANCE_TO_ARMY = 12000.0;
-	private final List< UndeadArmy > undeadArmies = new ArrayList<>();
+	private final List< UndeadArmyOld > undeadArmies = new ArrayList<>();
 	private final List< UndeadArmyToBeSpawned > undeadArmiesToBeSpawned = new ArrayList<>();
 	private ServerLevel level;
 	private long ticksActive = 0L;
@@ -43,7 +43,7 @@ public class UndeadArmyManagerOld extends SavedData {
 		compoundNBT.putLong( UndeadArmyKeys.TICKS_ACTIVE, this.ticksActive );
 
 		ListTag listNBT = new ListTag();
-		for( UndeadArmy undeadArmy : this.undeadArmies ) {
+		for( UndeadArmyOld undeadArmy : this.undeadArmies ) {
 			CompoundTag nbt = new CompoundTag();
 			undeadArmy.write( nbt );
 			listNBT.add( nbt );
@@ -60,7 +60,7 @@ public class UndeadArmyManagerOld extends SavedData {
 
 		ListTag listNBT = nbt.getList( UndeadArmyKeys.ARMIES, 10 );
 		for( int i = 0; i < listNBT.size(); i++ )
-			armyManager.undeadArmies.add( new UndeadArmy( armyManager.level, listNBT.getCompound( i ) ) );
+			armyManager.undeadArmies.add( new UndeadArmyOld( armyManager.level, listNBT.getCompound( i ) ) );
 
 		return armyManager;
 	}
@@ -78,7 +78,7 @@ public class UndeadArmyManagerOld extends SavedData {
 	public void updateWorld( ServerLevel world ) {
 		this.level = world;
 
-		for( UndeadArmy undeadArmy : this.undeadArmies )
+		for( UndeadArmyOld undeadArmy : this.undeadArmies )
 			undeadArmy.updateWorld( world );
 	}
 
@@ -136,11 +136,11 @@ public class UndeadArmyManagerOld extends SavedData {
 	 @return May return null if there is none Undead Army or if one is very far away.
 	 */
 	@Nullable
-	public UndeadArmy findNearestUndeadArmy( BlockPos position ) {
-		UndeadArmy nearestArmy = null;
+	public UndeadArmyOld findNearestUndeadArmy( BlockPos position ) {
+		UndeadArmyOld nearestArmy = null;
 		double minimumDistance = MAXIMUM_DISTANCE_TO_ARMY;
 
-		for( UndeadArmy undeadArmy : this.undeadArmies ) {
+		for( UndeadArmyOld undeadArmy : this.undeadArmies ) {
 			double distanceToUndeadArmy = undeadArmy.getAttackPosition().distSqr( position );
 
 			if( undeadArmy.isActive() && distanceToUndeadArmy < minimumDistance ) {
@@ -163,7 +163,7 @@ public class UndeadArmyManagerOld extends SavedData {
 
 	/** Updates AI goals of Undead Army after reloading the game. */
 	public void updateUndeadAIGoals() {
-		for( UndeadArmy undeadArmy : this.undeadArmies )
+		for( UndeadArmyOld undeadArmy : this.undeadArmies )
 			undeadArmy.updateNearbyUndeadAIGoals();
 	}
 
@@ -173,7 +173,7 @@ public class UndeadArmyManagerOld extends SavedData {
 			undeadArmyToBeSpawned.ticksToSpawn--;
 
 			if( undeadArmyToBeSpawned.ticksToSpawn == 0 )
-				this.undeadArmies.add( new UndeadArmy( this.level, undeadArmyToBeSpawned.position, undeadArmyToBeSpawned.direction ) );
+				this.undeadArmies.add( new UndeadArmyOld( this.level, undeadArmyToBeSpawned.position, undeadArmyToBeSpawned.direction ) );
 		}
 
 		this.undeadArmiesToBeSpawned.removeIf( undeadArmyToBeSpawned->undeadArmyToBeSpawned.ticksToSpawn == 0 );
@@ -181,7 +181,7 @@ public class UndeadArmyManagerOld extends SavedData {
 
 	/** Updates all Undead Armies every tick. */
 	private void tickArmies() {
-		for( UndeadArmy undeadArmy : this.undeadArmies )
+		for( UndeadArmyOld undeadArmy : this.undeadArmies )
 			undeadArmy.tick();
 
 		if( this.ticksActive % 20L == 0L )
@@ -203,7 +203,7 @@ public class UndeadArmyManagerOld extends SavedData {
 
 	/** Checks whether entity was spawned on Undead Army. */
 	public boolean doesEntityBelongToUndeadArmy( LivingEntity entity ) {
-		return UndeadArmy.doesEntityBelongToUndeadArmy( entity );
+		return UndeadArmyOld.doesEntityBelongToUndeadArmy( entity );
 	}
 
 	/** Struct that holds information where should Undead Army be spawned. (because firstly plays a sound and then after few seconds Undead Army will truly spawn) */

@@ -14,7 +14,7 @@ public class UpdateWaveProgress {
 		LivingEntity entity = event.getEntityLiving();
 		UndeadArmyManagerOld undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
 		if( undeadArmyManager != null && undeadArmyManager.doesEntityBelongToUndeadArmy( entity ) ) {
-			UndeadArmy undeadArmy = undeadArmyManager.findNearestUndeadArmy( entity.blockPosition() );
+			UndeadArmyOld undeadArmy = undeadArmyManager.findNearestUndeadArmy( entity.blockPosition() );
 			if( undeadArmy != null )
 				undeadArmy.increaseUndeadCounter();
 		}

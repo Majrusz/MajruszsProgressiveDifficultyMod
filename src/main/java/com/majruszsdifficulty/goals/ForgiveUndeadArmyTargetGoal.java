@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.goals;
 
-import com.majruszsdifficulty.undeadarmy.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyOld;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 
@@ -11,7 +11,7 @@ public class ForgiveUndeadArmyTargetGoal extends HurtByTargetGoal {
 	}
 
 	public boolean canUse() {
-		return this.mob.getLastHurtByMob() != null && !( UndeadArmy.doesEntityBelongToUndeadArmy( this.mob ) && UndeadArmy.doesEntityBelongToUndeadArmy( this.mob.getLastHurtByMob() )
+		return this.mob.getLastHurtByMob() != null && !( UndeadArmyOld.doesEntityBelongToUndeadArmy( this.mob ) && UndeadArmyOld.doesEntityBelongToUndeadArmy( this.mob.getLastHurtByMob() )
 		) && super.canUse();
 	}
 }

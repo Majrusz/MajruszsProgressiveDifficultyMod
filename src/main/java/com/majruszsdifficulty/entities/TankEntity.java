@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.entities;
 
 import com.majruszsdifficulty.PacketHandler;
-import com.majruszsdifficulty.undeadarmy.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyOld;
 import com.majruszsdifficulty.goals.TankAttackGoal;
 import com.mlib.Random;
 import com.mlib.Utility;
@@ -122,7 +122,7 @@ public class TankEntity extends Monster {
 
 	@Override
 	public void aiStep() {
-		if( this.isSunBurnTick() && !UndeadArmy.doesEntityBelongToUndeadArmy( this ) )
+		if( this.isSunBurnTick() && !UndeadArmyOld.doesEntityBelongToUndeadArmy( this ) )
 			this.setSecondsOnFire( 8 );
 
 		super.aiStep();

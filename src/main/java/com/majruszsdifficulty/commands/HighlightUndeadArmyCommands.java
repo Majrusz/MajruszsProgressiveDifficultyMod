@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.undeadarmy.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyOld;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
 import com.mojang.brigadier.CommandDispatcher;
@@ -15,7 +15,7 @@ public class HighlightUndeadArmyCommands extends PositionCommand implements IReg
 	/** Highlights all mobs from the Undead Army at given position and sends information to the caller. */
 	@Override
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source, Vec3 position ) {
-		UndeadArmy undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
+		UndeadArmyOld undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			undeadArmy.highlightUndeadArmy();
 			source.sendSuccess( CommandsHelper.createBaseMessageWithPosition( "commands.undeadarmy.highlighted", position ), true );

@@ -48,7 +48,7 @@ import java.util.function.Predicate;
 
 /** Class representing Undead Army raid. (new raid that starts after killing certain amount of undead) */
 @Mod.EventBusSubscriber
-public class UndeadArmy {
+public class UndeadArmyOld {
 	private final static int SAFE_SPAWN_RADIUS = 90;
 	private final static int SPAWN_RADIUS = 70;
 	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
@@ -59,7 +59,7 @@ public class UndeadArmy {
 	private int ticksActive, ticksInactive, ticksInactiveMaximum, ticksWaveActive, ticksBetweenWaves, ticksBetweenWavesMaximum, currentWave, undeadToKill, undeadKilled;
 	private ServerLevel level;
 
-	public UndeadArmy( ServerLevel level, BlockPos positionToAttack, Direction direction ) {
+	public UndeadArmyOld( ServerLevel level, BlockPos positionToAttack, Direction direction ) {
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
 		this.status = Status.BETWEEN_WAVES;
@@ -78,7 +78,7 @@ public class UndeadArmy {
 		this.bossInfo.setProgress( 0.0f );
 	}
 
-	public UndeadArmy( ServerLevel level, CompoundTag nbt ) {
+	public UndeadArmyOld( ServerLevel level, CompoundTag nbt ) {
 		this.positionToAttack = NBTHelper.loadBlockPos( nbt, UndeadArmyKeys.POSITION );
 		this.direction = Direction.getByName( nbt.getString( UndeadArmyKeys.DIRECTION ) );
 		this.status = Status.getByName( nbt.getString( UndeadArmyKeys.STATUS ) );
