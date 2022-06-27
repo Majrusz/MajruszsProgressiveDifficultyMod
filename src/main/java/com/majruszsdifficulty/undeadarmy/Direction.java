@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -22,12 +21,10 @@ public enum Direction {
 		this.zFactor = ( this.x != 0 ? 5 : 1 ) * DISTANCE_MULTIPLIER;
 	}
 
-	/** Returns random direction. */
 	public static Direction getRandom() {
-		return Direction.values()[ MajruszLibrary.RANDOM.nextInt( Direction.values().length ) ];
+		return Direction.values()[ Random.nextInt( 0, Direction.values().length ) ];
 	}
 
-	/** Returns direction by given string. */
 	public static Direction getByName( String name ) {
 		for( Direction direction : Direction.values() )
 			if( name.equalsIgnoreCase( direction.name() ) )
@@ -36,7 +33,6 @@ public enum Direction {
 		return WEST;
 	}
 
-	/** Returns random position for entity to spawn in given direction. */
 	public BlockPos getRandomSpawnPosition( ServerLevel world, BlockPos positionToAttack, int spawnRadius ) {
 		Vec3 offset = Random.getRandomVector3d( -this.xFactor, this.xFactor, 0.0, 0.0, -this.zFactor, this.zFactor );
 

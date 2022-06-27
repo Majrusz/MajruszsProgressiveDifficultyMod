@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -146,7 +147,7 @@ public class UndeadArmyOld {
 	/** Updates progression bar text depending on current status. */
 	public void updateBarText() {
 		switch( this.status ) {
-			case ONGOING -> this.bossInfo.setName( this.currentWave == 0 ? UndeadArmyText.TITLE : UndeadArmyText.getWaveMessage( this.currentWave ) );
+			case ONGOING -> this.bossInfo.setName( this.currentWave == 0 ? UndeadArmyText.TITLE : UndeadArmyText.constructWaveMessage( this.currentWave ) );
 			case BETWEEN_WAVES -> this.bossInfo.setName( UndeadArmyText.BETWEEN_WAVES );
 			case VICTORY -> this.bossInfo.setName( UndeadArmyText.VICTORY );
 			case FAILED -> this.bossInfo.setName( UndeadArmyText.FAILED );
@@ -160,8 +161,12 @@ public class UndeadArmyOld {
 		if( !isActive() )
 			return;
 
-		if( this.ticksActive == 0 )
-			UndeadArmyText.notifyAboutStart( getNearbyPlayers(), this.direction );
+		if( this.ticksActive == 0 ) {
+			MutableComponent message = UndeadArmyText.constructDirectionMessage( this.direction );
+			for( ServerPlayer player : getNearbyPlayers() ) {
+				player.displayClientMessage( message, false );
+			}
+		}
 
 		if( this.ticksActive % 20 == 0 )
 			updateUndeadArmyBarVisibility();
