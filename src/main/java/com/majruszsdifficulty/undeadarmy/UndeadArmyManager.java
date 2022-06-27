@@ -28,7 +28,7 @@ public class UndeadArmyManager extends GameModifier {
 	public void execute( Object data ) {
 		if( data instanceof OnSpawnedContext.Data spawnedData ) {
 			if( spawnedData.context == ON_LOADED ) {
-				Registries.UNDEAD_ARMY_MANAGER.updateUndeadAIGoals();
+				Registries.UNDEAD_ARMY_MANAGER.updateUndeadAIGoals(); // DO NOT UPDATE ALL OF THEM
 			}
 		}
 	}
