@@ -12,7 +12,7 @@ public class UpdateWaveProgress {
 	@SubscribeEvent
 	public static void onUndeadKill( LivingDeathEvent event ) {
 		LivingEntity entity = event.getEntityLiving();
-		UndeadArmyManager undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
+		UndeadArmyManagerOld undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
 		if( undeadArmyManager != null && undeadArmyManager.doesEntityBelongToUndeadArmy( entity ) ) {
 			UndeadArmy undeadArmy = undeadArmyManager.findNearestUndeadArmy( entity.blockPosition() );
 			if( undeadArmy != null )

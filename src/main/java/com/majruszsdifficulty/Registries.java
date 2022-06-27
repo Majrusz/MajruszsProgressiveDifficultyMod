@@ -21,9 +21,8 @@ import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
-import com.majruszsdifficulty.undeadarmy.ReloadUndeadArmyGoals;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManagerOld;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
@@ -170,7 +169,7 @@ public class Registries {
 
 	// Misc
 	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
-	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
+	public static UndeadArmyManagerOld UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
 
 	// Triggers
@@ -307,12 +306,10 @@ public class Registries {
 
 		DimensionDataStorage manager = level.getDataStorage();
 
-		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManager.load( nbt, level ), ()->new UndeadArmyManager( level ), UndeadArmyManager.DATA_NAME );
+		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManagerOld.load( nbt, level ), ()->new UndeadArmyManagerOld( level ), UndeadArmyManagerOld.DATA_NAME );
 		UNDEAD_ARMY_MANAGER.updateWorld( level );
 
 		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
-
-		ReloadUndeadArmyGoals.resetTimer();
 	}
 
 	public static void onSavingLevel( WorldEvent.Save event ) {
