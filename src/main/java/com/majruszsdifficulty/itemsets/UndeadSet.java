@@ -28,8 +28,8 @@ public class UndeadSet extends BaseSet {
 	private static final AttributeHandler MOVEMENT_BONUS = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "UndeadSetMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
 
 	public UndeadSet() {
-		super( new ItemData[]{ ITEM_1, ITEM_2, ITEM_3, ITEM_4 }, new BonusData[]{ BONUS_1,
-			BONUS_2
+		super( new ItemData[]{ ITEM_1, ITEM_2, ITEM_3, ITEM_4 }, new BonusData[]{
+			BONUS_1, BONUS_2
 		}, ChatFormatting.LIGHT_PURPLE, "majruszsdifficulty.sets.undead.name" );
 	}
 

@@ -8,7 +8,7 @@ import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperChainReaction extends GameModifier {
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( CreeperChainReaction::igniteCreeper );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
@@ -20,11 +20,8 @@ public class CreeperChainReaction extends GameModifier {
 		super( GameModifier.DEFAULT, "CreeperChainReaction", "Makes a Creeper ignite once any other Creeper explode nearby.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			Creeper creeper = ( Creeper )damagedData.target;
-			creeper.ignite();
-		}
+	private static void igniteCreeper( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		Creeper creeper = ( Creeper )data.target;
+		creeper.ignite();
 	}
 }

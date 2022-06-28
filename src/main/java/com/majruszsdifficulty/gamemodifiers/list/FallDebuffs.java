@@ -12,7 +12,7 @@ import net.minecraft.world.effect.MobEffects;
 public class FallDebuffs extends GameModifier {
 	static final ProgressiveEffectConfig NAUSEA = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 8.0 );
 	static final ProgressiveEffectConfig SLOWNESS = new ProgressiveEffectConfig( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( FallDebuffs::applyDebuffs );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
@@ -26,11 +26,8 @@ public class FallDebuffs extends GameModifier {
 		super( GameModifier.DEFAULT, "FallDebuffs", "Inflicts several debuffs when taking fall damage.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			NAUSEA.apply( damagedData.target );
-			SLOWNESS.apply( damagedData.target );
-		}
+	private static void applyDebuffs( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		NAUSEA.apply( data.target );
+		SLOWNESS.apply( data.target );
 	}
 }

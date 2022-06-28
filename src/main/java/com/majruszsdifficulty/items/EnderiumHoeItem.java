@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.EnderiumItems;
+import com.majruszsdifficulty.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class EnderiumHoeItem extends HoeItem {
-	static final EnderiumItems.Tooltip ENDERIUM_TOOLTIP = new EnderiumItems.Tooltip( EnderiumItems.Keys.HASTE_TOOLTIP, EnderiumItems.Keys.TILL_TOOLTIP  );
+	static final EnderiumItems.Tooltip ENDERIUM_TOOLTIP = new EnderiumItems.Tooltip( EnderiumItems.Keys.HASTE_TOOLTIP, EnderiumItems.Keys.TILL_TOOLTIP );
 
 	public EnderiumHoeItem() {
 		super( CustomItemTier.END, -5, 0.0f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );

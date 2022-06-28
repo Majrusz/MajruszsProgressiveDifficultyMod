@@ -15,14 +15,10 @@ import java.util.function.Supplier;
 
 /** Mod custom armor materials. */
 public enum CustomArmorMaterial implements ArmorMaterial {
-	HERMES( "hermes", 10, new int[]{ 2,
-		5,
-		6,
-		2
-	}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->Ingredient.of( Items.FEATHER ) ), END( "end", 39, new int[]{ 4,
-		6,
-		8,
-		4
+	HERMES( "hermes", 10, new int[]{
+		2, 5, 6, 2
+	}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f, ()->Ingredient.of( Items.FEATHER ) ), END( "end", 39, new int[]{
+		4, 6, 8, 4
 	}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.1f, ()->Ingredient.of( Registries.ENDERIUM_INGOT.get() ) );
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };

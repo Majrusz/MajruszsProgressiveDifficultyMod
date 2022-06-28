@@ -26,9 +26,8 @@ public class EnderiumSet extends BaseSet {
 	private static final AttributeHandler ATTRIBUTE_HANDLER = new AttributeHandler( "e8242b56-b5a6-4ad9-9159-f9089ecf3165", "EndSetHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.ADDITION );
 
 	public EnderiumSet() {
-		super( new ItemData[]{ ITEM_1, ITEM_2, ITEM_3, ITEM_4 }, new BonusData[]{ BONUS_1,
-			BONUS_2,
-			BONUS_3
+		super( new ItemData[]{ ITEM_1, ITEM_2, ITEM_3, ITEM_4 }, new BonusData[]{
+			BONUS_1, BONUS_2, BONUS_3
 		}, ChatFormatting.DARK_PURPLE, "majruszsdifficulty.sets.enderium.name" );
 	}
 

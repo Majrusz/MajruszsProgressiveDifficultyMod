@@ -1,136 +1,78 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
-import com.mlib.config.*;
-import net.minecraft.world.entity.EntityType;
+import com.mlib.config.BooleanConfig;
+import com.mlib.config.DoubleConfig;
+import com.mlib.config.IntegerConfig;
 
 import java.util.List;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.CONFIG_HANDLER;
-
-/** Class with all configurable aspects of the Undead Army. */
 public class UndeadArmyConfig {
-	private final ConfigGroup group;
-	private final BooleanConfig availability;
-	private final IntegerConfig killRequirement;
-	private final DoubleConfig sizeMultiplier;
-	private final DoubleConfig skeletonHorseChance;
-	private final GameStageIntegerConfig experienceReward;
-	private final GameStageIntegerConfig treasureBagReward;
-	private final GameStageDoubleConfig enchantedItemsChance;
-	private final GameStageDoubleConfig armorChance;
-	private final DoubleConfig durationBetweenWaves;
-	private final DoubleConfig maximumInactiveDuration;
-	private final WaveMembersConfig waveMembers;
+	static final BooleanConfig AVAILABILITY = new BooleanConfig( "is_enabled", "Can the Undead Army spawn?", false, true );
+	static final IntegerConfig KILL_REQUIREMENT = new IntegerConfig( "kill_requirement", "Required amount of killed undead to start the Undead Army.", false, 100, 10, 1000 );
+	static final DoubleConfig SIZE_MULTIPLIER = new DoubleConfig( "player_scale", "Extra size multiplier for each extra player participating in the Undead Army.", false, 0.5, 0.1, 1.0 );
+	static final DoubleConfig SKELETON_HORSE_CHANCE = new DoubleConfig( "horse_chance", "Chance for all Skeletons to spawn on Skeleton Horse.", false, 0.15, 0.1, 1.0 );
+	static final GameStageIntegerConfig EXPERIENCE_REWARD = new GameStageIntegerConfig( "ExperienceReward", "Experience reward for each player after defeating the Undead Army.", 40, 80, 120, 4, 1000 );
+	static final GameStageDoubleConfig ENCHANTED_ITEM_CHANCE = new GameStageDoubleConfig( "EnchantedItemChance", "Chance for the undead item to be enchanted (separate for each item).", 0.125, 0.25, 0.5, 0.0, 1.0 );
+	static final GameStageDoubleConfig ARMOR_CHANCE = new GameStageDoubleConfig( "ArmorChance", "Chance for the undead to have armor piece (separate for each armor piece).", 0.25, 0.5, 0.75, 0.0, 1.0 );
+	static final DoubleConfig DURATION_BETWEEN_WAVES = new DoubleConfig( "time_between_waves", "Time in seconds between waves (requires game/world restart!).", true, 10.0, 3.0, 60.0 );
+	static final DoubleConfig MAXIMUM_INACTIVE_DURATION = new DoubleConfig( "inactive_duration", "Duration in seconds after which the Undead Army will end if there is no player nearby (requires game/world restart!).", true, 900.0, 300.0, 3200.0 );
+	static final WaveMembersConfig WAVE_MEMBERS = new WaveMembersConfig( "WaveMembers", "Amount of enemies in each wave (format: {minimal amount}-{maximal amount} {entity})." );
 
-	public UndeadArmyConfig() {
-		String availabilityComment = "Is the Undead Army enabled?";
-		this.availability = new BooleanConfig( "is_enabled", availabilityComment, false, true );
-
-		String killComment = "Required amount of killed undead to start the Undead Army.";
-		this.killRequirement = new IntegerConfig( "kill_requirement", killComment, false, 100, 10, 1000 );
-
-		String sizeComment = "Extra size multiplier for each extra player participating in the Undead Army.";
-		this.sizeMultiplier = new DoubleConfig( "player_scale", sizeComment, false, 0.5, 0.1, 1.0 );
-
-		String horseComment = "Chance for all skeletons to spawn on Skeleton Horse.";
-		this.skeletonHorseChance = new DoubleConfig( "horse_chance", horseComment, false, 0.15, 0.1, 1.0 );
-
-		String expComment = "Experience for each player after defeating the Undead Army.";
-		this.experienceReward = new GameStageIntegerConfig( "Experience", expComment, 40, 80, 120, 4, 1000 );
-
-		String bagComment = "Treasure Bags for each player after defeating the Undead Army.";
-		this.treasureBagReward = new GameStageIntegerConfig( "TreasureBags", bagComment, 1, 1, 2, 1, 5 );
-
-		String enchantComment = "Chance of the undead to have enchanted items. (separate for each item)";
-		this.enchantedItemsChance = new GameStageDoubleConfig( "EnchantedItems", enchantComment, 0.125, 0.25, 0.5, 0.0, 1.0 );
-
-		String armorComment = "Chance of the undead to have armor piece. (separate for each armor piece)";
-		this.armorChance = new GameStageDoubleConfig( "ArmorChance", armorComment, 0.25, 0.5, 0.75, 0.0, 1.0 );
-
-		String waveComment = "Time between waves. (in seconds) (requires game/world restart!) ";
-		this.durationBetweenWaves = new DoubleConfig( "time_between_waves", waveComment, true, 10.0, 3.0, 60.0 );
-
-		String inactiveComment = "The maximum duration before Undead Army will end if there is no player. (in seconds) (requires game/world restart!) ";
-		this.maximumInactiveDuration = new DoubleConfig( "inactive_duration", inactiveComment, true, 900.0, 300.0, 3200.0 );
-
-		String membersComment = "Amount of enemies in every wave. (format: {minimal_amount}-{maximal_amount} {entity})";
-		this.waveMembers = new WaveMembersConfig( "WaveMembers", membersComment );
-		StringListConfig waveConfig1 = this.waveMembers.createWaveConfig( "4-6 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray", "0-2 majruszsdifficulty:elite_skeleton" );
-		StringListConfig waveConfig2 = this.waveMembers.createWaveConfig( "3-5 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray", "1-3 majruszsdifficulty:elite_skeleton" );
-		StringListConfig waveConfig3 = this.waveMembers.createWaveConfig( "2-4 minecraft:zombie", "1-3 minecraft:husk", "1-3 minecraft:skeleton", "1-3 minecraft:stray", "2-4 majruszsdifficulty:elite_skeleton", "1-1 majruszsdifficulty:tank" );
-		StringListConfig waveConfig4 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie", "3-5 minecraft:husk", "1-3 minecraft:skeleton", "2-4 minecraft:stray", "4-6 majruszsdifficulty:elite_skeleton", "2-2 majruszsdifficulty:tank" );
-		StringListConfig waveConfig5 = this.waveMembers.createWaveConfig( "1-3 minecraft:zombie", "4-6 minecraft:husk", "1-3 minecraft:skeleton", "3-5 minecraft:stray", "5-7 majruszsdifficulty:elite_skeleton", "3-3 majruszsdifficulty:tank" );
-		this.waveMembers.addWaveConfigs( waveConfig1, waveConfig2, waveConfig3, waveConfig4, waveConfig5 );
-
-		this.group = CONFIG_HANDLER.addNewGroup( "UndeadArmy", "" );
-		this.group.addConfigs( this.availability, this.killRequirement, this.sizeMultiplier, this.skeletonHorseChance, this.experienceReward, this.treasureBagReward, this.enchantedItemsChance, this.armorChance, this.durationBetweenWaves, this.maximumInactiveDuration, this.waveMembers );
+	static {
+		WAVE_MEMBERS.addWaveConfig( "4-6 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray" );
+		WAVE_MEMBERS.addWaveConfig( "3-5 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray" );
+		WAVE_MEMBERS.addWaveConfig( "2-4 minecraft:zombie", "1-3 minecraft:husk", "1-3 minecraft:skeleton", "1-3 minecraft:stray", "1-1 majruszsdifficulty:tank" );
+		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "3-5 minecraft:husk", "1-3 minecraft:skeleton", "2-4 minecraft:stray", "2-2 majruszsdifficulty:tank" );
+		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "4-6 minecraft:husk", "1-3 minecraft:skeleton", "3-5 minecraft:stray", "3-3 majruszsdifficulty:tank" );
+		MajruszsDifficulty.UNDEAD_ARMY_GROUP.addConfigs( AVAILABILITY, KILL_REQUIREMENT, SIZE_MULTIPLIER, SKELETON_HORSE_CHANCE, EXPERIENCE_REWARD, ENCHANTED_ITEM_CHANCE, ARMOR_CHANCE, DURATION_BETWEEN_WAVES, MAXIMUM_INACTIVE_DURATION, WAVE_MEMBERS );
 	}
 
-	/** Returns whether Undead Army is disabled. */
-	public boolean isUndeadArmyDisabled() {
-		return this.availability.isDisabled();
+	public static boolean isUndeadArmyDisabled() {
+		return AVAILABILITY.isDisabled();
 	}
 
-	/** Returns required amount of killed undead to start the Undead Army. */
-	public int getRequiredKills() {
-		return this.killRequirement.get();
+	public static int getRequiredKills() {
+		return KILL_REQUIREMENT.get();
 	}
 
-	/** Returns size multiplier depending on amount of players participating in. */
-	public double getSizeMultiplier( int amountOfPlayers ) {
-		return 1.0 + this.sizeMultiplier.get() * ( Math.max( 1, amountOfPlayers ) - 1 );
+	public static double getSizeMultiplier( int amountOfPlayers ) {
+		return 1.0 + SIZE_MULTIPLIER.get() * ( Math.max( 1, amountOfPlayers ) - 1 );
 	}
 
-	/** Returns chance that Skeleton has to spawn on a Skeleton Horse. */
-	public double getSkeletonHorseChance() {
-		return this.skeletonHorseChance.get();
+	public static double getSkeletonHorseChance() {
+		return SKELETON_HORSE_CHANCE.get();
 	}
 
-	/** Returns amount of experience as a reward for completing the Undead Army. */
-	public int getAmountOfVictoryExperience() {
-		return this.experienceReward.getCurrentGameStageValue();
+	public static int getAmountOfVictoryExperience() {
+		return EXPERIENCE_REWARD.getCurrentGameStageValue();
 	}
 
-	/** Returns amount of Treasure Bags every player should get after victory. */
-	public int getAmountOfVictoryTreasureBags() {
-		return this.treasureBagReward.getCurrentGameStageValue();
+	public static double getEnchantedItemChance() {
+		return ENCHANTED_ITEM_CHANCE.getCurrentGameStageValue();
 	}
 
-	/** Returns chance for undead to have a enchanted items instead of standard ones. (separately for each item) */
-	public double getEnchantedItemChance() {
-		return this.enchantedItemsChance.getCurrentGameStageValue();
+	public static double getArmorPieceChance() {
+		return ARMOR_CHANCE.getCurrentGameStageValue();
 	}
 
-	/** Returns a chance for undead to have a armor piece. (separately for each armor piece) */
-	public double getArmorPieceChance() {
-		return this.armorChance.getCurrentGameStageValue();
+	public static int getTicksBetweenWaves() {
+		return DURATION_BETWEEN_WAVES.asTicks();
 	}
 
-	/** Returns amount of ticks between waves. */
-	public int getAmountOfTicksBetweenWaves() {
-		return this.durationBetweenWaves.asTicks();
+	public static int getInactivityTicks() {
+		return MAXIMUM_INACTIVE_DURATION.asTicks();
 	}
 
-	/** Returns amount of ticks when the Undead Army will end if there is not any player nearby. */
-	public int getAmountOfInactivityTicks() {
-		return this.maximumInactiveDuration.asTicks();
-	}
-
-	/** Returns amount of waves. */
-	public int getWaves() {
+	public static int getWavesCount() {
 		return GameStage.getCurrentGameStageDependentValue( 3, 4, 5 );
 	}
 
-	/** Returns list of enemies in given wave. */
-	public List< WaveMembersConfig.WaveMember > getWaveMembers( int waveNumber ) {
-		return this.waveMembers.getWaveMembers( waveNumber );
+	public static List< WaveMembersConfig.WaveMember > getWaveMembers( int waveNumber ) {
+		return WAVE_MEMBERS.getWaveMembers( waveNumber );
 	}
 
-	/** Returns entity type for monster spawner. */
-	public EntityType< ? > getEntityTypeForMonsterSpawner() {
-		return GameStage.getCurrentGameStageDependentValue( EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SKELETON );
-	}
 }

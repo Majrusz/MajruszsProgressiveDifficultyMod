@@ -11,7 +11,7 @@ import net.minecraft.world.entity.monster.Slime;
 
 public class SlimeSlownessAttack extends GameModifier {
 	static final ProgressiveEffectConfig SLOWNESS = new ProgressiveEffectConfig( "", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( SlimeSlownessAttack::applyEffect );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
@@ -26,10 +26,7 @@ public class SlimeSlownessAttack extends GameModifier {
 		super( GameModifier.DEFAULT, "SlimeSlownessAttack", "Shulker attack may inflict stackable blindness effect.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			SLOWNESS.apply( damagedData.target );
-		}
+	private static void applyEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		SLOWNESS.apply( data.target );
 	}
 }

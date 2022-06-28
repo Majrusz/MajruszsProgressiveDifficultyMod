@@ -11,7 +11,7 @@ import net.minecraft.world.entity.monster.Spider;
 
 public class SpiderPoisonAttack extends GameModifier {
 	static final ProgressiveEffectConfig POISON = new ProgressiveEffectConfig( "", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( SpiderPoisonAttack::applyEffect );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
@@ -26,10 +26,7 @@ public class SpiderPoisonAttack extends GameModifier {
 		super( GameModifier.DEFAULT, "SpiderPoisonAttack", "Spider attack may inflict poison effect.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			POISON.apply( damagedData.target );
-		}
+	private static void applyEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		POISON.apply( data.target );
 	}
 }

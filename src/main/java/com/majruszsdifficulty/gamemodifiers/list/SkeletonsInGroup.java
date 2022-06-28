@@ -21,7 +21,7 @@ public class SkeletonsInGroup extends GameModifier {
 	static final ItemStackConfig LEATHER_LEGGINGS = new ItemStackConfig( "LeaderLeatherLeggings", "Chance for a leader to have the Leather Leggings.", ()->Items.LEATHER_LEGGINGS, EquipmentSlot.LEGS, 0.67, 0.05, 0.75 );
 	static final ItemStackConfig LEATHER_BOOTS = new ItemStackConfig( "LeaderLeatherBoots", "Chance for a leader to have the Leather Boots.", ()->Items.LEATHER_BOOTS, EquipmentSlot.FEET, 0.67, 0.05, 0.75 );
 	static final MobGroupConfig MOB_GROUPS = new MobGroupConfig( "Skeletons", ()->EntityType.SKELETON, 1, 3 );
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( SkeletonsInGroup::spawnGroup );
 
 	static {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
@@ -29,7 +29,7 @@ public class SkeletonsInGroup extends GameModifier {
 		ON_SPAWNED.addCondition( new CustomConditions.IsNotSidekick() );
 		ON_SPAWNED.addCondition( new CustomConditions.IsNotUndeadArmy() );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Skeleton ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Skeleton && data.level != null ) );
 		ON_SPAWNED.addConfigs( WOODEN_SWORD, STONE_SWORD, LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, MOB_GROUPS );
 
 		MOB_GROUPS.addLeaderConfigs( LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS );
@@ -40,10 +40,7 @@ public class SkeletonsInGroup extends GameModifier {
 		super( GameModifier.DEFAULT, "SkeletonsInGroup", "Skeletons may spawn in groups.", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData && spawnedData.level != null ) {
-			MOB_GROUPS.spawn( ( PathfinderMob )spawnedData.target );
-		}
+	private static void spawnGroup( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		MOB_GROUPS.spawn( ( PathfinderMob )data.target );
 	}
 }

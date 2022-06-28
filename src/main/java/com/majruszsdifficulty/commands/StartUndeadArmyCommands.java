@@ -2,7 +2,7 @@ package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.undeadarmy.Direction;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManagerOld;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
 import com.mojang.brigadier.CommandDispatcher;
@@ -22,7 +22,7 @@ public class StartUndeadArmyCommands extends PositionCommand implements IRegistr
 	/** Starts the Undead Army at given position and sends information to the caller. */
 	@Override
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source, Vec3 position ) {
-		UndeadArmyManagerOld undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
+		UndeadArmyManager undeadArmyManager = Registries.UNDEAD_ARMY_MANAGER;
 		BlockPos blockPosition = new BlockPos( position );
 		Optional< Direction > direction = getOptionalEnum( context, ENUM_ARGUMENT_NAME, Direction.class );
 		if( undeadArmyManager.findNearestUndeadArmy( blockPosition ) == null && undeadArmyManager.tryToSpawn( blockPosition, direction ) ) {

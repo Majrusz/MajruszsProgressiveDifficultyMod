@@ -23,48 +23,43 @@ import net.minecraft.world.item.Items;
 import javax.annotation.Nullable;
 
 public class SpawnPlayerZombie extends GameModifier {
-	static final OnDeathContext ON_DEATH = new OnDeathContext();
+	static final OnDeathContext ON_DEATH = new OnDeathContext( SpawnPlayerZombie::spawnZombie );
+	static final DoubleConfig HEAD_CHANCE = new DoubleConfig( "head_chance", "Chance for a zombie to have player's head.", false, 1.0, 0.0, 1.0 );
+	static final DoubleConfig HEAD_DROP_CHANCE = new DoubleConfig( "head_drop_chance", "Chance for a zombie to drop player's head.", false, 0.1, 0.0, 1.0 );
 
 	static {
 		ON_DEATH.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
 		ON_DEATH.addCondition( new Condition.Chance( 1.0 ) );
 		ON_DEATH.addCondition( new Condition.Excludable() );
-		ON_DEATH.addCondition( new Condition.ContextOnDeath( data->data.target instanceof Player ) );
+		ON_DEATH.addCondition( new Condition.ContextOnDeath( data->data.target instanceof Player && data.level != null ) );
 		ON_DEATH.addCondition( new Condition.ContextOnDeath( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie ) );
+		ON_DEATH.addConfigs( HEAD_CHANCE, HEAD_DROP_CHANCE );
 	}
-
-	final DoubleConfig headChance;
-	final DoubleConfig headDropChance;
 
 	public SpawnPlayerZombie() {
 		super( GameModifier.DEFAULT, "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place.", ON_DEATH );
-
-		this.headChance = new DoubleConfig( "head_chance", "Chance for a zombie to have player's head.", false, 1.0, 0.0, 1.0 );
-		this.headDropChance = new DoubleConfig( "head_drop_chance", "Chance for a zombie to drop player's head.", false, 0.1, 0.0, 1.0 );
-		this.addConfigs( this.headChance, this.headDropChance );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDeathContext.Data deathData && deathData.level != null && deathData.target instanceof Player player ) {
-			EntityType< ? extends Zombie > zombieType = getZombieType( deathData.attacker );
-			Zombie zombie = ( Zombie )zombieType.spawn( deathData.level, null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
-			if( zombie == null )
-				return;
+	private static void spawnZombie( com.mlib.gamemodifiers.GameModifier gameModifier, OnDeathContext.Data data ) {
+		assert data.level != null;
+		Player player = ( Player )data.target;
+		EntityType< ? extends Zombie > zombieType = getZombieType( data.attacker );
+		Zombie zombie = ( Zombie )zombieType.spawn( data.level, null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
+		if( zombie == null )
+			return;
 
-			if( Random.tryChance( this.headChance.get() ) ) {
-				ItemStack playerSkull = getHead( player );
-				zombie.setItemSlot( EquipmentSlot.HEAD, playerSkull );
-				zombie.setDropChance( EquipmentSlot.HEAD, this.headDropChance.get().floatValue() );
-			}
-
-			zombie.setCustomName( player.getName() );
-			zombie.setCanPickUpLoot( false );
-			zombie.setPersistenceRequired();
+		if( Random.tryChance( HEAD_CHANCE.get() ) ) {
+			ItemStack playerSkull = getHead( player );
+			zombie.setItemSlot( EquipmentSlot.HEAD, playerSkull );
+			zombie.setDropChance( EquipmentSlot.HEAD, HEAD_DROP_CHANCE.get().floatValue() );
 		}
+
+		zombie.setCustomName( player.getName() );
+		zombie.setCanPickUpLoot( false );
+		zombie.setPersistenceRequired();
 	}
 
-	private ItemStack getHead( Player player ) {
+	private static ItemStack getHead( Player player ) {
 		ItemStack playerSkull = new ItemStack( Items.PLAYER_HEAD, 1 );
 
 		CompoundTag nbt = playerSkull.getOrCreateTag();
@@ -74,7 +69,7 @@ public class SpawnPlayerZombie extends GameModifier {
 		return playerSkull;
 	}
 
-	private EntityType< ? extends Zombie > getZombieType( @Nullable LivingEntity attacker ) {
+	private static EntityType< ? extends Zombie > getZombieType( @Nullable LivingEntity attacker ) {
 		if( attacker instanceof ZombifiedPiglin )
 			return EntityType.ZOMBIFIED_PIGLIN;
 		else if( attacker instanceof Husk )

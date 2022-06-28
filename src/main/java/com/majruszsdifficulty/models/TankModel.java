@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.models;
 
 import com.majruszsdifficulty.entities.TankEntity;
-import com.mlib.MajruszLibrary;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
 import com.mlib.math.VectorHelper;
@@ -11,7 +10,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

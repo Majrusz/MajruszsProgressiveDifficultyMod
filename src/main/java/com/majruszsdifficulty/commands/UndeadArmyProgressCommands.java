@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyKeys;
 import com.mlib.Utility;
 import com.mlib.commands.EntityCommand;
@@ -21,7 +21,7 @@ public class UndeadArmyProgressCommands extends EntityCommand implements IRegist
 		if( livingEntity != null ) {
 			NBTHelper.IntegerData undeadKilledData = new NBTHelper.IntegerData( livingEntity, UndeadArmyKeys.KILLED );
 			int undeadKilled = undeadKilledData.get();
-			int undeadKilledMax = Registries.UNDEAD_ARMY_CONFIG.getRequiredKills();
+			int undeadKilledMax = UndeadArmyConfig.getRequiredKills();
 
 			source.sendSuccess( Component.translatable( "commands.undeadarmy.progress", entity.getName(), undeadKilled, undeadKilledMax ), true );
 			return 0;

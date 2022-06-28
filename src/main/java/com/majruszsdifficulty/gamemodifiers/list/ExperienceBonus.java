@@ -7,25 +7,20 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnPickupXpContext;
 
 public class ExperienceBonus extends GameModifier {
-	static final OnPickupXpContext ON_PICKUP = new OnPickupXpContext();
+	static final OnPickupXpContext ON_PICKUP = new OnPickupXpContext( ExperienceBonus::giveExtraExperience );
+	static final GameStageDoubleConfig BONUS_MULTIPLIER = new GameStageDoubleConfig( "BonusMultiplier", "Extra bonus multiplier to experience gathered from any source.", 0.0, 0.2, 0.4, 0.0, 10.0 );
 
 	static {
 		ON_PICKUP.addCondition( new Condition.Excludable() );
+		ON_PICKUP.addConfig( BONUS_MULTIPLIER );
 	}
-
-	final GameStageDoubleConfig bonusMultiplier;
 
 	public ExperienceBonus() {
 		super( GameModifier.DEFAULT, "ExperienceBonus", "Gives extra experience as the difficulty increases.", ON_PICKUP );
-		this.bonusMultiplier = new GameStageDoubleConfig( "BonusMultiplier", "Extra bonus multiplier to experience gathered from any source.", 0.0, 0.2, 0.4, 0.0, 10.0 );
-		this.addConfig( this.bonusMultiplier );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnPickupXpContext.Data pickupData ) {
-			double experience = pickupData.event.getOrb().getValue();
-			pickupData.player.giveExperiencePoints( Random.roundRandomly( this.bonusMultiplier.getCurrentGameStageValue() * experience ) );
-		}
+	private static void giveExtraExperience( com.mlib.gamemodifiers.GameModifier gameModifier, OnPickupXpContext.Data data ) {
+		double experience = data.event.getOrb().getValue();
+		data.player.giveExperiencePoints( Random.roundRandomly( BONUS_MULTIPLIER.getCurrentGameStageValue() * experience ) );
 	}
 }

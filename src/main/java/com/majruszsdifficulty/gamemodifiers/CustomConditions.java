@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers;
 
 import com.majruszsdifficulty.config.GameStageEnumConfig;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyOld;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -58,7 +58,7 @@ public class CustomConditions {
 
 		@Override
 		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
-			return !UndeadArmyOld.doesEntityBelongToUndeadArmy( data.entity );
+			return !UndeadArmyManager.isUndeadArmy( data.entity );
 		}
 	}
 }

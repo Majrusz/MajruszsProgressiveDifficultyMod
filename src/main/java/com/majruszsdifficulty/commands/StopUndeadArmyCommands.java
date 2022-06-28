@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyOld;
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
 import com.mojang.brigadier.CommandDispatcher;
@@ -15,7 +15,7 @@ public class StopUndeadArmyCommands extends PositionCommand implements IRegistra
 	/** Stops the Undead Army at given position and sends information to the caller. */
 	@Override
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source, Vec3 position ) {
-		UndeadArmyOld undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
+		UndeadArmy undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			undeadArmy.finish();
 			source.sendSuccess( CommandsHelper.createBaseMessageWithPosition( "commands.undeadarmy.finished", position ), true );

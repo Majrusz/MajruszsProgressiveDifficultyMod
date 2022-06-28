@@ -12,7 +12,7 @@ import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperSpawnDebuffed extends GameModifier {
 	static final EffectConfig[] EFFECTS;
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( CreeperSpawnDebuffed::applyRandomEffect );
 
 	static {
 		EFFECTS = new EffectConfig[]{
@@ -33,10 +33,7 @@ public class CreeperSpawnDebuffed extends GameModifier {
 		super( GameModifier.DEFAULT, "CreeperSpawnDebuffed", "Creeper may spawn with negative effects applied.", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData ) {
-			Random.nextRandom( EFFECTS ).apply( spawnedData.target );
-		}
+	private static void applyRandomEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		Random.nextRandom( EFFECTS ).apply( data.target );
 	}
 }

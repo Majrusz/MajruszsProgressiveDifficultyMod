@@ -12,7 +12,7 @@ import net.minecraft.world.entity.monster.WitherSkeleton;
 
 public class WitherSkeletonWithSword extends GameModifier {
 	static final ItemStackConfig WITHER_SWORD = new ItemStackConfig( "WitherSword", Registries.WITHER_SWORD::get, EquipmentSlot.MAINHAND, 0.5, 0.01, 0.2 );
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( WitherSkeletonWithSword::giveWitherSword );
 
 	static {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
@@ -25,11 +25,8 @@ public class WitherSkeletonWithSword extends GameModifier {
 		super( GameModifier.DEFAULT, "WitherSkeletonWithSword", "Wither Skeleton may spawn with the Wither Sword.", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData ) {
-			WitherSkeleton skeleton = ( WitherSkeleton )spawnedData.target;
-			WITHER_SWORD.tryToEquip( skeleton, GameStage.getRegionalDifficulty( skeleton ) );
-		}
+	private static void giveWitherSword( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		WitherSkeleton skeleton = ( WitherSkeleton )data.target;
+		WITHER_SWORD.tryToEquip( skeleton, GameStage.getRegionalDifficulty( skeleton ) );
 	}
 }

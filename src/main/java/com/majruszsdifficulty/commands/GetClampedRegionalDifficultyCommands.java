@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.GameStage;
-import com.mlib.levels.LevelHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.commands.PositionCommand;
+import com.mlib.levels.LevelHelper;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.ChatFormatting;

@@ -29,7 +29,7 @@ public class ZombiesInGroup extends GameModifier {
 	static final ItemStackConfig IRON_LEGGINGS = new ItemStackConfig( "LeaderIronLeggings", "Chance for a leader to have the Iron Leggings.", ()->Items.IRON_LEGGINGS, EquipmentSlot.LEGS, 0.67, 0.05, 0.75 );
 	static final ItemStackConfig IRON_BOOTS = new ItemStackConfig( "LeaderIronBoots", "Chance for a leader to have the Iron Boots.", ()->Items.IRON_BOOTS, EquipmentSlot.FEET, 0.67, 0.05, 0.75 );
 	static final MobGroupConfig MOB_GROUPS = new MobGroupConfig( "Zombies", ()->EntityType.ZOMBIE, 1, 3 );
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( ZombiesInGroup::spawnGroup );
 
 	static {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
@@ -37,7 +37,7 @@ public class ZombiesInGroup extends GameModifier {
 		ON_SPAWNED.addCondition( new CustomConditions.IsNotSidekick() );
 		ON_SPAWNED.addCondition( new CustomConditions.IsNotUndeadArmy() );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) && data.level != null ) );
 		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f ) );
 		ON_SPAWNED.addConfigs( TORCH, WOODEN_PICKAXE, STONE_PICKAXE, IRON_PICKAXE, COAL, IRON_INGOT, GOLD_INGOT, DIAMOND, IRON_HELMET, IRON_CHESTPLATE, IRON_LEGGINGS, IRON_BOOTS, MOB_GROUPS );
 
@@ -49,10 +49,7 @@ public class ZombiesInGroup extends GameModifier {
 		super( GameModifier.DEFAULT, "ZombiesInGroup", "Zombies may spawn in groups as miners (only underground).", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData && spawnedData.level != null ) {
-			MOB_GROUPS.spawn( ( PathfinderMob )spawnedData.target );
-		}
+	private static void spawnGroup( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		MOB_GROUPS.spawn( ( PathfinderMob )data.target );
 	}
 }

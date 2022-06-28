@@ -11,7 +11,7 @@ import net.minecraft.world.entity.monster.Shulker;
 
 public class ShulkerBlindnessAttack extends GameModifier {
 	static final ProgressiveEffectConfig BLINDNESS = new ProgressiveEffectConfig( "", ()->MobEffects.BLINDNESS, 0, 5.0, 60.0 );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( ShulkerBlindnessAttack::applyEffect );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) );
@@ -25,10 +25,7 @@ public class ShulkerBlindnessAttack extends GameModifier {
 		super( GameModifier.DEFAULT, "ShulkerBlindnessAttack", "Shulker attack may inflict stackable blindness effect.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			BLINDNESS.apply( damagedData.target );
-		}
+	private static void applyEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		BLINDNESS.apply( data.target );
 	}
 }

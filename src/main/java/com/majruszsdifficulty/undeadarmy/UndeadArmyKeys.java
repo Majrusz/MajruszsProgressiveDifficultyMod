@@ -5,7 +5,6 @@ public class UndeadArmyKeys {
 	public static final String POSITION = "UndeadArmyPosition";
 	public static final String DIRECTION = "Direction";
 	public static final String ACTIVE = "IsActive";
-	public static final String SPAWNER = "SpawnerWasCreated";
 	public static final String TICKS_ACTIVE = "TicksActive";
 	public static final String TICKS_INACTIVE = "TicksInactive";
 	public static final String TICKS_WAVE = "TicksWaveActive";

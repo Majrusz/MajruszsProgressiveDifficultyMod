@@ -11,7 +11,7 @@ import net.minecraft.world.entity.projectile.ThrownTrident;
 
 public class ThrowableWeaponsBleeding extends GameModifier {
 	static final BleedingConfig BLEEDING = new BleedingConfig();
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( ThrowableWeaponsBleeding::applyBleeding );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
@@ -27,10 +27,7 @@ public class ThrowableWeaponsBleeding extends GameModifier {
 		super( GameModifier.DEFAULT, "ThrowableWeaponsBleeding", "All throwable sharp items (arrows, trident etc.) may inflict bleeding.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			BLEEDING.apply( damagedData );
-		}
+	private static void applyBleeding( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		BLEEDING.apply( data );
 	}
 }

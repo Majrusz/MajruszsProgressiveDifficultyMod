@@ -110,5 +110,6 @@ public class GameStage {
 	}
 
 	public record Integer( int normal, int expert, int master ) {}
+
 	public record Double( double normal, double expert, double master ) {}
 }

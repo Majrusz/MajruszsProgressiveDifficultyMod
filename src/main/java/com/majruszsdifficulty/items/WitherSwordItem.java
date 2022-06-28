@@ -42,7 +42,7 @@ public class WitherSwordItem extends SwordItem {
 
 	public static class Effect extends GameModifier {
 		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 1, 6.0 );
-		static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+		static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( Effect::applyWither );
 
 		static {
 			ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) ) );
@@ -54,11 +54,8 @@ public class WitherSwordItem extends SwordItem {
 			super( GameModifier.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect.", ON_DAMAGED );
 		}
 
-		@Override
-		public void execute( Object data ) {
-			if( data instanceof OnDamagedContext.Data damagedData ) {
-				EffectHelper.applyEffectIfPossible( damagedData.target, MobEffects.WITHER, WITHER.getDuration(), WITHER.getAmplifier() );
-			}
+		private static void applyWither( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+			EffectHelper.applyEffectIfPossible( data.target, MobEffects.WITHER, WITHER.getDuration(), WITHER.getAmplifier() );
 		}
 	}
 

@@ -1,8 +1,8 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.ConfigHandler;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;

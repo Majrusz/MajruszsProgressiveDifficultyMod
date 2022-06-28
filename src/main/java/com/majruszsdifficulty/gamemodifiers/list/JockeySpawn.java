@@ -12,29 +12,27 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 
 public class JockeySpawn extends GameModifier {
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( JockeySpawn::spawnSkeletonOnSpider );
 
 	static {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
 		ON_SPAWNED.addCondition( new Condition.Chance( 0.125 ) );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Spider && !( data.target instanceof CaveSpider ) ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Spider && !( data.target instanceof CaveSpider ) && data.level != null ) );
 	}
 
 	public JockeySpawn() {
 		super( GameModifier.DEFAULT, "JockeySpawn", "Jockey is more likely to spawn.", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData && spawnedData.level != null ) {
-			Skeleton skeleton = EntityType.SKELETON.create( spawnedData.level );
-			if( skeleton == null )
-				return;
+	private static void spawnSkeletonOnSpider( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		assert data.level != null;
+		Skeleton skeleton = EntityType.SKELETON.create( data.level );
+		if( skeleton == null )
+			return;
 
-			skeleton.moveTo( spawnedData.target.getX(), spawnedData.target.getY(), spawnedData.target.getZ(), spawnedData.target.yBodyRot, 0.0f );
-			skeleton.finalizeSpawn( spawnedData.level, spawnedData.level.getCurrentDifficultyAt( spawnedData.target.blockPosition() ), MobSpawnType.JOCKEY, null, null );
-			skeleton.startRiding( spawnedData.target );
-		}
+		skeleton.moveTo( data.target.getX(), data.target.getY(), data.target.getZ(), data.target.yBodyRot, 0.0f );
+		skeleton.finalizeSpawn( data.level, data.level.getCurrentDifficultyAt( data.target.blockPosition() ), MobSpawnType.JOCKEY, null, null );
+		skeleton.startRiding( data.target );
 	}
 }

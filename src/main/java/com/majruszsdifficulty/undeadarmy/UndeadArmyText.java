@@ -3,9 +3,6 @@ package com.majruszsdifficulty.undeadarmy;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerPlayer;
-
-import java.util.List;
 
 public class UndeadArmyText {
 	public static final MutableComponent TITLE = Component.translatable( "majruszsdifficulty.undead_army.title" );

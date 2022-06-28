@@ -1,11 +1,7 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.Utility;
-import com.mlib.config.ConfigGroup;
-import com.mlib.config.DoubleConfig;
-import com.mlib.config.StringListConfig;
 import com.mlib.effects.EffectHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -24,8 +20,6 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.majruszsdifficulty.MajruszsDifficulty.GAME_MODIFIERS_GROUP;
 
 /** A bleeding effect similar to the poison effect. */
 @Mod.EventBusSubscriber

@@ -44,13 +44,7 @@ public class TreasureBagItem extends Item {
 
 	public static TreasureBagConfig[] getConfigs() {
 		return new TreasureBagConfig[]{
-			UndeadArmy.CONFIG,
-			ElderGuardian.CONFIG,
-			Wither.CONFIG,
-			EnderDragon.CONFIG,
-			Fishing.CONFIG,
-			Pillager.CONFIG,
-			Warden.CONFIG
+			UndeadArmy.CONFIG, ElderGuardian.CONFIG, Wither.CONFIG, EnderDragon.CONFIG, Fishing.CONFIG, Pillager.CONFIG, Warden.CONFIG
 		};
 	}
 
@@ -151,6 +145,7 @@ public class TreasureBagItem extends Item {
 	public static class Fishing extends TreasureBagItem {
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Fishing", "" );
 		public static final GameStageIntegerConfig REQUIRED_FISH_COUNT = new GameStageIntegerConfig( "RequiredFishCount", "Required amount of items fished to get this Treasure Bag.", 20, 15, 10, 3, 100 );
+
 		static {
 			CONFIG.addConfig( REQUIRED_FISH_COUNT );
 		}

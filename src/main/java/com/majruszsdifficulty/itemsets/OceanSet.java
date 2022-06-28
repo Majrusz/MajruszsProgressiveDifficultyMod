@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.itemsets;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.levels.LevelHelper;
 import com.mlib.attributes.AttributeHandler;
+import com.mlib.levels.LevelHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;

@@ -5,7 +5,6 @@ import com.majruszsdifficulty.Registries;
 import com.mlib.items.ItemHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;

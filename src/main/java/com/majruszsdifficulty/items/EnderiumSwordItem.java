@@ -1,7 +1,8 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SwordItem;
 
 public class EnderiumSwordItem extends SwordItem {
 	public EnderiumSwordItem() {

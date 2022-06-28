@@ -1,10 +1,8 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.Registries;
-import com.mlib.levels.LevelHelper;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.StringListConfig;
+import com.mlib.levels.LevelHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;

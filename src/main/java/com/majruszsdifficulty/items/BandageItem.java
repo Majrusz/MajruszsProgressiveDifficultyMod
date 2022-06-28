@@ -14,7 +14,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.gossip.GossipType;
@@ -57,7 +56,7 @@ public class BandageItem extends Item {
 		static final EffectConfig REGENERATION = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
 		static final EffectConfig GOLDEN_REGENERATION = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
 		static final EffectConfig GOLDEN_IMMUNITY = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
-		static final OnPlayerInteractContext ON_INTERACTION = new OnPlayerInteractContext();
+		static final OnPlayerInteractContext ON_INTERACTION = new OnPlayerInteractContext( BandageUse::useBandage );
 
 		static {
 			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->data.itemStack.getItem() instanceof BandageItem ) );
@@ -72,12 +71,9 @@ public class BandageItem extends Item {
 			super( GameModifier.DEFAULT, ON_INTERACTION );
 		}
 
-		@Override
-		public void execute( Object data ) {
-			if( data instanceof OnPlayerInteractContext.Data interactData ) {
-				useBandage( interactData, interactData.event );
-				interactData.event.setCancellationResult( InteractionResult.SUCCESS );
-			}
+		private static void useBandage( com.mlib.gamemodifiers.GameModifier gameModifier, OnPlayerInteractContext.Data data ) {
+			useBandage( data, data.event );
+			data.event.setCancellationResult( InteractionResult.SUCCESS );
 		}
 
 		public static void useBandage( OnPlayerInteractContext.Data data, PlayerInteractEvent event ) {

@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class EvokerWithTotem extends GameModifier {
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( EvokerWithTotem::giveTotemOfUndying );
 
 	static {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
@@ -24,11 +24,8 @@ public class EvokerWithTotem extends GameModifier {
 		super( GameModifier.DEFAULT, "EvokerWithTotem", "Evoker may spawn with a Totem of Undying.", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData ) {
-			Evoker evoker = ( Evoker )spawnedData.target;
-			evoker.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.TOTEM_OF_UNDYING ) );
-		}
+	private static void giveTotemOfUndying( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		Evoker evoker = ( Evoker )data.target;
+		evoker.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.TOTEM_OF_UNDYING ) );
 	}
 }

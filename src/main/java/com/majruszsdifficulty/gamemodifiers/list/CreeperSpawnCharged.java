@@ -10,28 +10,26 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperSpawnCharged extends GameModifier {
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( CreeperSpawnCharged::chargeCreeper );
 
 	static {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
 		ON_SPAWNED.addCondition( new CustomConditions.CRDChance( 0.125 ) );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Creeper ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Creeper && data.level != null ) );
 	}
 
 	public CreeperSpawnCharged() {
 		super( GameModifier.DEFAULT, "CreeperSpawnCharged", "Creeper may spawn charged.", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData && spawnedData.level != null ) {
-			Creeper creeper = ( Creeper )spawnedData.target;
-			LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( spawnedData.level );
-			if( lightningBolt != null ) {
-				creeper.thunderHit( spawnedData.level, lightningBolt );
-				creeper.clearFire();
-			}
+	private static void chargeCreeper( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		assert data.level != null;
+		Creeper creeper = ( Creeper )data.target;
+		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.level );
+		if( lightningBolt != null ) {
+			creeper.thunderHit( data.level, lightningBolt );
+			creeper.clearFire();
 		}
 	}
 }

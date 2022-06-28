@@ -12,7 +12,7 @@ import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 
 public class DrownedLightningAttack extends GameModifier {
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( DrownedLightningAttack::spawnLightningBolt );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
@@ -26,15 +26,12 @@ public class DrownedLightningAttack extends GameModifier {
 		super( GameModifier.DEFAULT, "DrownedLightningAttack", "Drowned trident throw may spawn a lightning bolt when it rains.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( damagedData.target.level );
-			if( lightningBolt == null )
-				return;
+	private static void spawnLightningBolt( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.target.level );
+		if( lightningBolt == null )
+			return;
 
-			lightningBolt.absMoveTo( damagedData.target.getX(), damagedData.target.getY(), damagedData.target.getZ() );
-			damagedData.target.level.addFreshEntity( lightningBolt );
-		}
+		lightningBolt.absMoveTo( data.target.getX(), data.target.getY(), data.target.getZ() );
+		data.target.level.addFreshEntity( lightningBolt );
 	}
 }

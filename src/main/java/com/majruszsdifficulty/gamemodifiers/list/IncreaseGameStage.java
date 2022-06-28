@@ -21,8 +21,8 @@ import javax.annotation.Nullable;
 public class IncreaseGameStage extends GameModifier {
 	static final StageProgressConfig EXPERT_MODE = new StageProgressConfig( "ExpertMode", "Determines what starts the Expert Mode.", "none", "minecraft:the_nether" );
 	static final StageProgressConfig MASTER_MODE = new StageProgressConfig( "MasterMode", "Determines what starts the Master Mode.", "minecraft:ender_dragon", "none" );
-	static final OnDimensionChangedContext ON_DIMENSION_CHANGED = new OnDimensionChangedContext();
-	static final OnDeathContext ON_DEATH = new OnDeathContext();
+	static final OnDimensionChangedContext ON_DIMENSION_CHANGED = new OnDimensionChangedContext( IncreaseGameStage::handleDimensionChange );
+	static final OnDeathContext ON_DEATH = new OnDeathContext( IncreaseGameStage::handleKilledEntity );
 	static final BooleanConfig ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE = new BooleanConfig( "any_dimension_expert", "Determines whether any dimension should start Expert Mode (useful for integration with other mods).", false, true );
 	static final GameStageEnumConfig DEFAULT_GAME_STAGE = new GameStageEnumConfig( "default_mode", "Game stage set at the beginning of a new world.", false, GameStage.Stage.NORMAL );
 
@@ -35,31 +35,29 @@ public class IncreaseGameStage extends GameModifier {
 		this.addConfigs( ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE, DEFAULT_GAME_STAGE, EXPERT_MODE, MASTER_MODE );
 	}
 
-	@Override
-	public void execute( Object data ) {
+	private static void handleDimensionChange( com.mlib.gamemodifiers.GameModifier gameModifier, OnDimensionChangedContext.Data data ) {
 		GameStage.Stage currentGameStage = GameStage.getCurrentStage();
-		boolean isNormal = currentGameStage == GameStage.Stage.NORMAL;
-		boolean isExpert = currentGameStage == GameStage.Stage.EXPERT;
-		if( data instanceof OnDimensionChangedContext.Data dimensionData ) {
-			@Nullable MinecraftServer server = dimensionData.entity.getServer();
-			ResourceLocation dimension = dimensionData.to.location();
-			if( isNormal && ( EXPERT_MODE.dimensionTriggersChange( dimension ) || ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE.isEnabled() ) ) {
-				startExpertMode( server );
-			} else if( isExpert && MASTER_MODE.dimensionTriggersChange( dimension ) ) {
-				startMasterMode( server );
-			}
-		} else if( data instanceof OnDeathContext.Data deathData ) {
-			@Nullable MinecraftServer server = deathData.target.getServer();
-			ResourceLocation entityType = EntityType.getKey( deathData.target.getType() );
-			if( isNormal && EXPERT_MODE.entityTriggersChange( entityType ) ) {
-				startExpertMode( server );
-			} else if( isExpert && MASTER_MODE.entityTriggersChange( entityType ) ) {
-				startMasterMode( server );
-			}
+		@Nullable MinecraftServer server = data.entity.getServer();
+		ResourceLocation dimension = data.to.location();
+		if( currentGameStage == GameStage.Stage.NORMAL && ( EXPERT_MODE.dimensionTriggersChange( dimension ) || ENTERING_ANY_DIMENSION_STARTS_EXPERT_MODE.isEnabled() ) ) {
+			startExpertMode( server );
+		} else if( currentGameStage == GameStage.Stage.EXPERT && MASTER_MODE.dimensionTriggersChange( dimension ) ) {
+			startMasterMode( server );
 		}
 	}
 
-	private void startExpertMode( @Nullable MinecraftServer minecraftServer ) {
+	private static void handleKilledEntity( com.mlib.gamemodifiers.GameModifier gameModifier, OnDeathContext.Data data ) {
+		GameStage.Stage currentGameStage = GameStage.getCurrentStage();
+		@Nullable MinecraftServer server = data.target.getServer();
+		ResourceLocation entityType = EntityType.getKey( data.target.getType() );
+		if( currentGameStage == GameStage.Stage.NORMAL && EXPERT_MODE.entityTriggersChange( entityType ) ) {
+			startExpertMode( server );
+		} else if( currentGameStage == GameStage.Stage.EXPERT && MASTER_MODE.entityTriggersChange( entityType ) ) {
+			startMasterMode( server );
+		}
+	}
+
+	private static void startExpertMode( @Nullable MinecraftServer minecraftServer ) {
 		if( minecraftServer == null )
 			return;
 
@@ -67,7 +65,7 @@ public class IncreaseGameStage extends GameModifier {
 		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszsdifficulty.on_expert_mode_start", GameStage.EXPERT_MODE_COLOR );
 	}
 
-	private void startMasterMode( @Nullable MinecraftServer minecraftServer ) {
+	private static void startMasterMode( @Nullable MinecraftServer minecraftServer ) {
 		if( minecraftServer == null )
 			return;
 
@@ -75,7 +73,7 @@ public class IncreaseGameStage extends GameModifier {
 		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszsdifficulty.on_master_mode_start", GameStage.MASTER_MODE_COLOR );
 	}
 
-	private void sendMessageToAllPlayers( PlayerList playerList, String translationKey, ChatFormatting textColor ) {
+	private static void sendMessageToAllPlayers( PlayerList playerList, String translationKey, ChatFormatting textColor ) {
 		for( Player player : playerList.getPlayers() ) {
 			MutableComponent message = Component.translatable( translationKey );
 			message.withStyle( textColor, ChatFormatting.BOLD );

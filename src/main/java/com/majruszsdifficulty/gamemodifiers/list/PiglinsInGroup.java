@@ -20,14 +20,14 @@ public class PiglinsInGroup extends GameModifier {
 	static final ItemStackConfig GOLDEN_LEGGINGS = new ItemStackConfig( "LeaderGoldenLeggings", "Chance for a leader to have the Golden Leggings.", ()->Items.GOLDEN_LEGGINGS, EquipmentSlot.LEGS, 0.67, 0.05, 0.75 );
 	static final ItemStackConfig GOLDEN_BOOTS = new ItemStackConfig( "LeaderGoldenBoots", "Chance for a leader to have the Golden Boots.", ()->Items.GOLDEN_BOOTS, EquipmentSlot.FEET, 0.67, 0.05, 0.75 );
 	static final MobGroupConfig MOB_GROUPS = new MobGroupConfig( "Piglins", ()->EntityType.PIGLIN, 1, 3 );
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext();
+	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( PiglinsInGroup::spawnGroup );
 
 	static {
 		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
 		ON_SPAWNED.addCondition( new CustomConditions.CRDChance( 0.25 ) );
 		ON_SPAWNED.addCondition( new CustomConditions.IsNotSidekick() );
 		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Piglin ) );
+		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Piglin && data.level != null ) );
 		ON_SPAWNED.addConfigs( GOLDEN_SWORD, GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS, MOB_GROUPS );
 
 		MOB_GROUPS.addLeaderConfigs( GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS );
@@ -38,10 +38,7 @@ public class PiglinsInGroup extends GameModifier {
 		super( GameModifier.DEFAULT, "PiglinsInGroup", "Piglins may spawn in groups.", ON_SPAWNED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnSpawnedContext.Data spawnedData && spawnedData.level != null ) {
-			MOB_GROUPS.spawn( ( PathfinderMob )spawnedData.target );
-		}
+	private static void spawnGroup( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+		MOB_GROUPS.spawn( ( PathfinderMob )data.target );
 	}
 }

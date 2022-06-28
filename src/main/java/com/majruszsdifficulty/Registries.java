@@ -22,8 +22,8 @@ import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManagerOld;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
@@ -32,7 +32,6 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -169,8 +168,7 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Misc
-	public static final UndeadArmyConfig UNDEAD_ARMY_CONFIG = new UndeadArmyConfig();
-	public static UndeadArmyManagerOld UNDEAD_ARMY_MANAGER;
+	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
 
 	// Triggers
@@ -235,10 +233,12 @@ public class Registries {
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
 		GAME_MODIFIERS.add( new TreasureBagManager() );
-		GAME_MODIFIERS.add( new UndeadArmyManager() );
+		GAME_MODIFIERS.add( new UndeadArmyEventsHandler() );
 		GAME_MODIFIERS.add( new WitherSkeletonWithSword() );
 		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 		GAME_MODIFIERS.add( new ZombiesInGroup() );
+
+		new UndeadArmyConfig(); // we need to make sure that this class is loaded before the configs are registered
 	}
 
 	public static ResourceLocation getLocation( String register ) {
@@ -291,14 +291,9 @@ public class Registries {
 	}
 
 	private static void onServerStart( ServerLifecycleEvent event ) {
-		MinecraftServer server = event.getServer();
-		if( UNDEAD_ARMY_MANAGER != null )
-			UNDEAD_ARMY_MANAGER.updateWorld( server.getLevel( ServerLevel.OVERWORLD ) );
-
-		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
-		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
-		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get() );
-		TreasureBagManager.addTreasureBagTo( EntityType.WARDEN, WARDEN_TREASURE_BAG.get() );
+		/*MinecraftServer server = event.getServer();
+		if( UNDEAD_ARMY_MANAGER != null )*
+			UNDEAD_ARMY_MANAGER.updateWorld( server.getLevel( ServerLevel.OVERWORLD ) );*/
 	}
 
 	public static void onLoadingLevel( WorldEvent.Load event ) {
@@ -307,11 +302,15 @@ public class Registries {
 			return;
 
 		DimensionDataStorage manager = level.getDataStorage();
-
-		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManagerOld.load( nbt, level ), ()->new UndeadArmyManagerOld( level ), UndeadArmyManagerOld.DATA_NAME );
-		UNDEAD_ARMY_MANAGER.updateWorld( level );
+		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManager.load( nbt, level ), ()->new UndeadArmyManager( level ), UndeadArmyManager.DATA_NAME );
+		// UNDEAD_ARMY_MANAGER.updateWorld( level );
 
 		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
+
+		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
+		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
+		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get() );
+		TreasureBagManager.addTreasureBagTo( EntityType.WARDEN, WARDEN_TREASURE_BAG.get() );
 	}
 
 	public static void onSavingLevel( WorldEvent.Save event ) {
@@ -325,11 +324,7 @@ public class Registries {
 
 	@Nullable
 	private static ServerLevel getOverworld( LevelAccessor levelAccessor ) {
-		MinecraftServer minecraftServer = levelAccessor.getServer();
-		if( minecraftServer == null )
-			return null;
-
-		ServerLevel overworld = minecraftServer.getLevel( Level.OVERWORLD );
+		ServerLevel overworld = levelAccessor.getServer() != null ? levelAccessor.getServer().getLevel( Level.OVERWORLD ) : null;
 		return levelAccessor.equals( overworld ) ? overworld : null;
 	}
 

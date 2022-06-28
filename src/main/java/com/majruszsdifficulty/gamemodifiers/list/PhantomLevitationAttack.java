@@ -11,7 +11,7 @@ import net.minecraft.world.entity.monster.Phantom;
 
 public class PhantomLevitationAttack extends GameModifier {
 	static final ProgressiveEffectConfig LEVITATION = new ProgressiveEffectConfig( "", ()->MobEffects.LEVITATION, 0, 5.0, 60.0 );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( PhantomLevitationAttack::applyEffect );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) );
@@ -26,10 +26,7 @@ public class PhantomLevitationAttack extends GameModifier {
 		super( GameModifier.DEFAULT, "PhantomLevitationAttack", "Phantom attack may inflict stackable levitation effect.", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			LEVITATION.apply( damagedData.target );
-		}
+	private static void applyEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		LEVITATION.apply( data.target );
 	}
 }

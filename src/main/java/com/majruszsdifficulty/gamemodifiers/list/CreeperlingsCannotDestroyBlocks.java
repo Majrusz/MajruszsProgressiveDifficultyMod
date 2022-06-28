@@ -7,7 +7,7 @@ import com.mlib.gamemodifiers.contexts.OnExplosionContext;
 import net.minecraftforge.event.world.ExplosionEvent;
 
 public class CreeperlingsCannotDestroyBlocks extends GameModifier {
-	static final OnExplosionContext ON_EXPLOSION = new OnExplosionContext();
+	static final OnExplosionContext ON_EXPLOSION = new OnExplosionContext( CreeperlingsCannotDestroyBlocks::revertBlocksToDestroy );
 
 	static {
 		ON_EXPLOSION.addCondition( new Condition.Excludable() );
@@ -19,10 +19,7 @@ public class CreeperlingsCannotDestroyBlocks extends GameModifier {
 		super( GameModifier.DEFAULT, "CreeperlingsCannotDestroyBlocks", "Make the Creeperling do not destroy block on explosion.", ON_EXPLOSION );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnExplosionContext.Data explosionData ) {
-			explosionData.explosion.clearToBlow();
-		}
+	private static void revertBlocksToDestroy( com.mlib.gamemodifiers.GameModifier gameModifier, OnExplosionContext.Data data ) {
+		data.explosion.clearToBlow();
 	}
 }

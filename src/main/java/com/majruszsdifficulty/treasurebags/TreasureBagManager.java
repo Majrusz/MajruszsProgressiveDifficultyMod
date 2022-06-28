@@ -34,10 +34,10 @@ public class TreasureBagManager extends GameModifier {
 	static final String FISHING_TAG = "TreasureBagFishingCounter";
 	static final String RAID_TAG = "TreasureBagLastPillagerRaidID";
 	static final List< Register > REGISTERS = new ArrayList<>();
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
-	static final OnDeathContext ON_DEATH = new OnDeathContext();
-	static final OnItemFishedContext ON_FISHED = new OnItemFishedContext();
-	static final OnPlayerTickContext ON_TICK = new OnPlayerTickContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( TreasureBagManager::addPlayerToParticipantList );
+	static final OnDeathContext ON_DEATH = new OnDeathContext( TreasureBagManager::rewardAllParticipants );
+	static final OnItemFishedContext ON_FISHED = new OnItemFishedContext( TreasureBagManager::giveTreasureBagToAngler );
+	static final OnPlayerTickContext ON_TICK = new OnPlayerTickContext( TreasureBagManager::giveTreasureBagToHero );
 
 	static {
 		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Player ) );
@@ -108,20 +108,7 @@ public class TreasureBagManager extends GameModifier {
 		this.addConfigs( TreasureBagItem.getConfigs() );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			addPlayerToParticipantList( damagedData );
-		} else if( data instanceof OnDeathContext.Data deathData ) {
-			rewardAllParticipants( deathData );
-		} else if( data instanceof OnItemFishedContext.Data fishedData ) {
-			giveTreasureBagToFisherman( fishedData );
-		} else if( data instanceof OnPlayerTickContext.Data tickData ) {
-			giveTreasureBagToHero( tickData );
-		}
-	}
-
-	private void addPlayerToParticipantList( OnDamagedContext.Data damagedData ) {
+	private static void addPlayerToParticipantList( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data damagedData ) {
 		Player player = ( Player )damagedData.attacker;
 		ListTag listNBT = getOrCreateList( damagedData.target );
 		CompoundTag playerNBT = createPlayerTag( player );
@@ -153,7 +140,7 @@ public class TreasureBagManager extends GameModifier {
 		return false;
 	}
 
-	private static void rewardAllParticipants( OnDeathContext.Data deathData ) {
+	private static void rewardAllParticipants( com.mlib.gamemodifiers.GameModifier gameModifier, OnDeathContext.Data deathData ) {
 		LivingEntity killedEntity = deathData.target;
 		ListTag listNBT = getOrCreateList( killedEntity );
 		if( deathData.level == null )
@@ -172,13 +159,13 @@ public class TreasureBagManager extends GameModifier {
 		ItemHelper.giveItemStackToPlayer( new ItemStack( item ), player, level );
 	}
 
-	private static void giveTreasureBagToFisherman( OnItemFishedContext.Data fishedData ) {
+	private static void giveTreasureBagToAngler( com.mlib.gamemodifiers.GameModifier gameModifier, OnItemFishedContext.Data fishedData ) {
 		giveTreasureBagTo( fishedData.player, Registries.FISHING_TREASURE_BAG.get(), fishedData.level );
 	}
 
-	private static void giveTreasureBagToHero( OnPlayerTickContext.Data tickData ) {
+	private static void giveTreasureBagToHero( com.mlib.gamemodifiers.GameModifier gameModifier, OnPlayerTickContext.Data tickData ) {
 		giveTreasureBagTo( tickData.player, Registries.PILLAGER_TREASURE_BAG.get(), tickData.level );
 	}
 
-	record Register(EntityType< ? > entityType, TreasureBagItem treasureBag) {}
+	record Register( EntityType< ? > entityType, TreasureBagItem treasureBag ) {}
 }

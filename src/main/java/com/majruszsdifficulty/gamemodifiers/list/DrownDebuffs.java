@@ -12,7 +12,7 @@ import net.minecraft.world.effect.MobEffects;
 public class DrownDebuffs extends GameModifier {
 	static final ProgressiveEffectConfig NAUSEA = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 2.0, 60.0 );
 	static final ProgressiveEffectConfig WEAKNESS = new ProgressiveEffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 10.0, 60.0 );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext();
+	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( DrownDebuffs::applyDebuffs );
 
 	static {
 		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
@@ -26,11 +26,8 @@ public class DrownDebuffs extends GameModifier {
 		super( GameModifier.DEFAULT, "DrownDebuffs", "Inflicts several debuffs when taking drown damage (these debuffs stack).", ON_DAMAGED );
 	}
 
-	@Override
-	public void execute( Object data ) {
-		if( data instanceof OnDamagedContext.Data damagedData ) {
-			NAUSEA.apply( damagedData.target );
-			WEAKNESS.apply( damagedData.target );
-		}
+	private static void applyDebuffs( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		NAUSEA.apply( data.target );
+		WEAKNESS.apply( data.target );
 	}
 }

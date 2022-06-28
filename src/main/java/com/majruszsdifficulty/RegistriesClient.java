@@ -33,6 +33,7 @@ public class RegistriesClient {
 		EntityRenderers.register( Registries.TANK.get(), TankRenderer::new );
 
 		ItemProperties.register( Registries.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EndShardLocatorItem::calculateDistanceToEndShard );
-		ItemProperties.register( Registries.OCEAN_SHIELD.get(), new ResourceLocation( "blocking" ), ( itemStack, world, entity, p_174668_ )->entity != null && entity.getUseItem().getUseAnimation() == UseAnim.BLOCK && entity.getUseItem() == itemStack ? 1.0f : 0.0f );
+		ItemProperties.register( Registries.OCEAN_SHIELD.get(), new ResourceLocation( "blocking" ), ( itemStack, world, entity, p_174668_ )->entity != null && entity.getUseItem()
+			.getUseAnimation() == UseAnim.BLOCK && entity.getUseItem() == itemStack ? 1.0f : 0.0f );
 	}
 }
