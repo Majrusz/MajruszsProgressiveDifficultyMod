@@ -263,7 +263,6 @@ public class Registries {
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( Registries::onLoadingLevel );
 		forgeEventBus.addListener( Registries::onSavingLevel );
-		forgeEventBus.addListener( Registries::onServerStart );
 		forgeEventBus.addListener( Registries::registerCommands );
 
 		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
@@ -290,12 +289,6 @@ public class Registries {
 			command.register( event.getDispatcher() );
 	}
 
-	private static void onServerStart( ServerLifecycleEvent event ) {
-		/*MinecraftServer server = event.getServer();
-		if( UNDEAD_ARMY_MANAGER != null )*
-			UNDEAD_ARMY_MANAGER.updateWorld( server.getLevel( ServerLevel.OVERWORLD ) );*/
-	}
-
 	public static void onLoadingLevel( WorldEvent.Load event ) {
 		ServerLevel level = getOverworld( event.getWorld() );
 		if( level == null )
@@ -303,8 +296,6 @@ public class Registries {
 
 		DimensionDataStorage manager = level.getDataStorage();
 		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManager.load( nbt, level ), ()->new UndeadArmyManager( level ), UndeadArmyManager.DATA_NAME );
-		// UNDEAD_ARMY_MANAGER.updateWorld( level );
-
 		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
 
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );

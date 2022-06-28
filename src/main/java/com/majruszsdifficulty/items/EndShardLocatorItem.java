@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -42,9 +43,8 @@ public class EndShardLocatorItem extends Item {
 
 	/** Calculates distance to the nearest End Shard. */
 	@OnlyIn( Dist.CLIENT )
-	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int p_174668_
-	) {
-		if( entity == null )
+	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int seed ) {
+		if( !( entity instanceof Player player ) )
 			return INVALID_DISTANCE;
 
 		Level world = entity.level;
