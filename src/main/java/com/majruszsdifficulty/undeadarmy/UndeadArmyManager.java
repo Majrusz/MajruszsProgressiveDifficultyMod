@@ -60,7 +60,6 @@ public class UndeadArmyManager extends SavedData {
 
 	public void tick() {
 		this.undeadArmiesToSpawn.forEach( undeadArmyToSpawn->{
-			MajruszLibrary.LOGGER.info( undeadArmyToSpawn.ticksToSpawn );
 			undeadArmyToSpawn.tick();
 			if( undeadArmyToSpawn.isReadyToSpawn() ) {
 				this.undeadArmies.add( undeadArmyToSpawn.spawn() );

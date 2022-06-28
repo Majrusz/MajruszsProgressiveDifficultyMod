@@ -13,6 +13,7 @@ import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
 import com.mlib.nbt.NBTHelper;
 import com.mlib.time.TimeHelper;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -46,6 +48,7 @@ public class UndeadArmy {
 	private final static int SPAWN_RADIUS = 70;
 	private final ServerLevel level;
 	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
+	private final List< Pair< BlockPos, EntityType< ? > > > spawnInfoList = new ArrayList<>();
 	private final BlockPos positionToAttack;
 	private final Direction direction;
 	private Status status;
@@ -77,6 +80,7 @@ public class UndeadArmy {
 		this.ticksInactiveMaximum = UndeadArmyConfig.getInactivityTicks();
 
 		this.bossInfo.setProgress( 0.0f );
+		generateSpawnInfo();
 	}
 
 	public UndeadArmy( ServerLevel level, CompoundTag nbt ) {
@@ -96,6 +100,9 @@ public class UndeadArmy {
 		this.ticksInactiveMaximum = UndeadArmyConfig.getInactivityTicks();
 
 		updateProgressBarText();
+		if( this.status == Status.BETWEEN_WAVES ) {
+			generateSpawnInfo();
+		}
 	}
 
 	public CompoundTag write( CompoundTag nbt ) {
@@ -186,6 +193,10 @@ public class UndeadArmy {
 			proceedToNextWave();
 
 		this.bossInfo.setProgress( Mth.clamp( 1.0f - ( ( float )this.ticksBetweenWaves ) / this.ticksBetweenWavesMaximum, 0.0f, 1.0f ) );
+		this.spawnInfoList.forEach( spawnInfo->{
+			BlockPos position = spawnInfo.getFirst();
+			this.level.sendParticles( ParticleTypes.SOUL, position.getX() + 0.5, position.getY(), position.getZ() + 0.5, 3, 0.5, 0.5, 0.5, 0.02 );
+		} );
 	}
 
 	private void tickOngoing() {
@@ -239,40 +250,50 @@ public class UndeadArmy {
 		} else {
 			this.status = Status.BETWEEN_WAVES;
 			this.ticksBetweenWaves = this.ticksBetweenWavesMaximum;
+			generateSpawnInfo();
 		}
 
 		updateProgressBarText();
 	}
 
-	/** Spawns monsters depending on current wave. */
+	private void generateSpawnInfo() {
+		this.spawnInfoList.clear();
+		UndeadArmyConfig.getWaveMembers( this.currentWave + 1 ).forEach( waveMember->{
+			int totalAmount = this.getTotalAmount( waveMember );
+			for( int i = 0; i < totalAmount; i++ ) {
+				this.spawnInfoList.add( new Pair<>( this.direction.getRandomSpawnPosition( this.level, this.positionToAttack, SPAWN_RADIUS ), waveMember.entityType() ) );
+			}
+		} );
+	}
+
+	private int getTotalAmount( WaveMembersConfig.WaveMember waveMember ) {
+		return ( int )( waveMember.amount() * UndeadArmyConfig.getSizeMultiplier( countNearbyPlayers() ) );
+	}
+
 	private void spawnWaveEnemies() {
-		double playersFactor = UndeadArmyConfig.getSizeMultiplier( countNearbyPlayers() );
 		this.undeadToKill = 0;
 		this.undeadKilled = 0;
-		for( WaveMembersConfig.WaveMember waveMember : UndeadArmyConfig.getWaveMembers( this.currentWave ) ) {
-			int totalAmount = ( int )( waveMember.amount() * playersFactor );
-			for( int i = 0; i < totalAmount; i++ ) {
-				BlockPos randomPosition = this.direction.getRandomSpawnPosition( this.level, this.positionToAttack, SPAWN_RADIUS );
-				Entity entity = waveMember.entityType().create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
-				if( !( entity instanceof Mob monster ) )
-					continue;
+		for( Pair< BlockPos, EntityType< ? > > spawnInfo : this.spawnInfoList ) {
+			BlockPos randomPosition = spawnInfo.getFirst();
+			EntityType< ? > entityType = spawnInfo.getSecond();
+			Entity entity = entityType.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
+			if( !( entity instanceof Mob monster ) )
+				continue;
 
-				monster.setPersistenceRequired();
-				updateUndeadAIGoal( monster );
-				equipWithUndeadArmyArmor( monster );
-				tryToEnchantEquipment( monster );
-				markAsUndeadArmyMob( monster );
-				if( monster instanceof Skeleton && Random.tryChance( UndeadArmyConfig.getSkeletonHorseChance() ) )
-					spawnOnSkeletonHorse( monster );
-				monster.setCanPickUpLoot( false );
+			monster.setPersistenceRequired();
+			updateUndeadAIGoal( monster );
+			equipWithUndeadArmyArmor( monster );
+			tryToEnchantEquipment( monster );
+			markAsUndeadArmyMob( monster );
+			if( monster instanceof Skeleton && Random.tryChance( UndeadArmyConfig.getSkeletonHorseChance() ) )
+				spawnOnSkeletonHorse( monster );
+			monster.setCanPickUpLoot( false );
 
-				if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(), randomPosition.getZ(), null, MobSpawnType.EVENT ) )
-					continue;
-				this.level.addFreshEntity( monster );
-				this.level.sendParticles( ParticleTypes.SMOKE, randomPosition.getX(), randomPosition.getY(), randomPosition.getZ(), 40, 0.5, 0.5, 0.5, 0.01 );
+			if( net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn( monster, this.level, randomPosition.getX(), randomPosition.getY(), randomPosition.getZ(), null, MobSpawnType.EVENT ) )
+				continue;
+			this.level.addFreshEntity( monster );
 
-				++this.undeadToKill;
-			}
+			++this.undeadToKill;
 		}
 
 		int x = this.positionToAttack.getX() + this.direction.x * SPAWN_RADIUS;
