@@ -96,19 +96,13 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:book",
-          "weight": 4,
-          "quality": 2,
+          "weight": 5,
+          "quality": 3,
           "functions": [
             {
               "function": "minecraft:enchant_randomly"
             }
           ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:enchanted_golden_apple",
-          "weight": 1,
-          "quality": 3
         }
       ]
     }

@@ -88,7 +88,7 @@
           "type": "minecraft:item",
           "name": "minecraft:totem_of_undying",
           "weight": 4,
-          "quality": 2
+          "quality": 3
         }
       ]
     }
