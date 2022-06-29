@@ -7,6 +7,7 @@ import com.mlib.effects.EffectHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
 import com.mlib.items.ItemHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -42,19 +43,19 @@ public class WitherSwordItem extends SwordItem {
 
 	public static class Effect extends GameModifier {
 		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 1, 6.0 );
-		static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( Effect::applyWither );
-
-		static {
-			ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) ) );
-			ON_DAMAGED.addCondition( new OnDamagedContext.DirectDamage() );
-			ON_DAMAGED.addConfig( WITHER );
-		}
 
 		public Effect() {
-			super( GameModifier.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect.", ON_DAMAGED );
+			super( GameModifier.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect." );
+
+			OnDamagedContext onDamaged = new OnDamagedContext( this::applyWither );
+			onDamaged.addCondition( new Condition.ContextOnDamaged( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) ) )
+				.addCondition( new OnDamagedContext.DirectDamage() )
+				.addConfig( WITHER );
+
+			this.addContext( onDamaged );
 		}
 
-		private static void applyWither( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
+		private void applyWither( OnDamagedData data ) {
 			EffectHelper.applyEffectIfPossible( data.target, MobEffects.WITHER, WITHER.getDuration(), WITHER.getAmplifier() );
 		}
 	}

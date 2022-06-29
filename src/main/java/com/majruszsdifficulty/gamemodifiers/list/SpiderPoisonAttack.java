@@ -6,27 +6,28 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Spider;
 
 public class SpiderPoisonAttack extends GameModifier {
-	static final ProgressiveEffectConfig POISON = new ProgressiveEffectConfig( "", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( SpiderPoisonAttack::applyEffect );
-
-	static {
-		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
-		ON_DAMAGED.addCondition( new CustomConditions.CRDChance( 0.25 ) );
-		ON_DAMAGED.addCondition( new Condition.Excludable() );
-		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Spider ) );
-		ON_DAMAGED.addCondition( new OnDamagedContext.DirectDamage() );
-		ON_DAMAGED.addConfig( POISON );
-	}
+	final ProgressiveEffectConfig poison = new ProgressiveEffectConfig( "", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
 
 	public SpiderPoisonAttack() {
-		super( GameModifier.DEFAULT, "SpiderPoisonAttack", "Spider attack may inflict poison effect.", ON_DAMAGED );
+		super( GameModifier.DEFAULT, "SpiderPoisonAttack", "Spider attack may inflict poison effect." );
+
+		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
+		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance( 0.25 ) )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Spider ) )
+			.addCondition( new OnDamagedContext.DirectDamage() )
+			.addConfig( this.poison );
+
+		this.addContext( onDamaged );
 	}
 
-	private static void applyEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
-		POISON.apply( data.target );
+	private void applyEffect( OnDamagedData data ) {
+		this.poison.apply( data.target );
 	}
 }

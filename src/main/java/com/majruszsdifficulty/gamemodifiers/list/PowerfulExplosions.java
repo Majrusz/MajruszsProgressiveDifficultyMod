@@ -6,28 +6,29 @@ import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnExplosionContext;
+import com.mlib.gamemodifiers.data.OnExplosionData;
 import net.minecraftforge.event.world.ExplosionEvent;
 
 public class PowerfulExplosions extends GameModifier {
-	static final OnExplosionContext ON_EXPLOSION = new OnExplosionContext( PowerfulExplosions::modifyExplosion );
-	static final DoubleConfig RADIUS_MULTIPLIER = new DoubleConfig( "radius_multiplier", "Multiplies explosion radius by the given value (this value is scaled by Clamped Regional Difficulty).", false, 1.2599, 1.0, 10.0 );
-	static final DoubleConfig FIRE_CHANCE = new DoubleConfig( "fire_chance", "Gives all explosions a chance to cause fire (this value is scaled by Clamped Regional Difficulty).", false, 0.75, 0.0, 1.0 );
-
-	static {
-		ON_EXPLOSION.addCondition( new Condition.Excludable() );
-		ON_EXPLOSION.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Start ) );
-		ON_EXPLOSION.addConfigs( RADIUS_MULTIPLIER, FIRE_CHANCE );
-	}
+	final DoubleConfig radiusMultiplier = new DoubleConfig( "radius_multiplier", "Multiplies explosion radius by the given value (this value is scaled by Clamped Regional Difficulty).", false, 1.2599, 1.0, 10.0 );
+	final DoubleConfig fireChance = new DoubleConfig( "fire_chance", "Gives all explosions a chance to cause fire (this value is scaled by Clamped Regional Difficulty).", false, 0.75, 0.0, 1.0 );
 
 	public PowerfulExplosions() {
-		super( GameModifier.DEFAULT, "PowerfulExplosions", "Makes all explosions (creepers, ghast ball etc.) much more deadly.", ON_EXPLOSION );
+		super( GameModifier.DEFAULT, "PowerfulExplosions", "Makes all explosions (creepers, ghast ball etc.) much more deadly." );
+
+		OnExplosionContext onExplosion = new OnExplosionContext( this::modifyExplosion );
+		onExplosion.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Start ) )
+			.addConfigs( this.radiusMultiplier, this.fireChance );
+
+		this.addContext( onExplosion );
 	}
 
-	private static void modifyExplosion( com.mlib.gamemodifiers.GameModifier gameModifier, OnExplosionContext.Data data ) {
+	private void modifyExplosion( OnExplosionData data ) {
 		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( data.level, data.explosion.getPosition() );
-		double radiusMultiplier = clampedRegionalDifficulty * ( RADIUS_MULTIPLIER.get() - 1.0 ) + 1.0;
+		double radiusMultiplier = clampedRegionalDifficulty * ( this.radiusMultiplier.get() - 1.0 ) + 1.0;
 		data.radius.setValue( radiusMultiplier * data.radius.getValue() );
-		if( Random.tryChance( clampedRegionalDifficulty * FIRE_CHANCE.get() ) ) {
+		if( Random.tryChance( clampedRegionalDifficulty * this.fireChance.get() ) ) {
 			data.causesFire.setValue( true );
 		}
 	}

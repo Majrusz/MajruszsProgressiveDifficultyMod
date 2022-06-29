@@ -9,6 +9,10 @@ import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.contexts.OnDeathContext;
 import com.mlib.gamemodifiers.contexts.OnItemFishedContext;
 import com.mlib.gamemodifiers.contexts.OnPlayerTickContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.data.OnDeathData;
+import com.mlib.gamemodifiers.data.OnItemFishedData;
+import com.mlib.gamemodifiers.data.OnPlayerTickData;
 import com.mlib.items.ItemHelper;
 import com.mlib.nbt.NBTHelper;
 import com.mlib.time.TimeHelper;
@@ -34,33 +38,58 @@ public class TreasureBagManager extends GameModifier {
 	static final String FISHING_TAG = "TreasureBagFishingCounter";
 	static final String RAID_TAG = "TreasureBagLastPillagerRaidID";
 	static final List< Register > REGISTERS = new ArrayList<>();
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( TreasureBagManager::addPlayerToParticipantList );
-	static final OnDeathContext ON_DEATH = new OnDeathContext( TreasureBagManager::rewardAllParticipants );
-	static final OnItemFishedContext ON_FISHED = new OnItemFishedContext( TreasureBagManager::giveTreasureBagToAngler );
-	static final OnPlayerTickContext ON_TICK = new OnPlayerTickContext( TreasureBagManager::giveTreasureBagToHero );
 
-	static {
-		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Player ) );
-		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->hasTreasureBag( data.target.getType() ) ) );
+	public static void addTreasureBagTo( EntityType< ? > entityType, TreasureBagItem treasureBag ) {
+		REGISTERS.add( new Register( entityType, treasureBag ) );
+	}
 
-		ON_DEATH.addCondition( new Condition.ContextOnDeath( data->hasTreasureBag( data.target.getType() ) ) );
-		ON_DEATH.addCondition( new Condition.ContextOnDeath( data->{
-			TreasureBagItem treasureBag = getTreasureBag( data.target.getType() );
-			return treasureBag != null && treasureBag.isEnabled();
-		} ) );
+	@Nullable public static TreasureBagItem getTreasureBag( EntityType< ? > entityType ) {
+		Register register = getRegisterFor( entityType );
+		return register != null ? register.treasureBag : null;
+	}
 
-		ON_FISHED.addCondition( new Condition.ContextOnItemFished( data->data.level != null ) );
-		ON_FISHED.addCondition( new Condition.ContextOnItemFished( data->{
+	public static boolean hasTreasureBag( EntityType< ? > entityType ) {
+		return getRegisterFor( entityType ) != null;
+	}
+
+	@Nullable private static Player getPlayerByUUID( ServerLevel level, CompoundTag tag ) {
+		return level.getPlayerByUUID( UUID.fromString( tag.getString( PLAYER_TAG ) ) );
+	}
+
+	@Nullable private static Register getRegisterFor( EntityType< ? > entityType ) {
+		for( Register register : REGISTERS )
+			if( register.entityType.equals( entityType ) )
+				return register;
+
+		return null;
+	}
+
+	public TreasureBagManager() {
+		super( GameModifier.TREASURE_BAG, "", "" );
+
+		OnDamagedContext onDamaged = new OnDamagedContext( this::addPlayerToParticipantList );
+		onDamaged.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Player ) )
+			.addCondition( new Condition.ContextOnDamaged( data->hasTreasureBag( data.target.getType() ) ) );
+
+		OnDeathContext onDeath = new OnDeathContext( this::rewardAllParticipants );
+		onDeath.addCondition( new Condition.ContextOnDeath( data->hasTreasureBag( data.target.getType() ) ) )
+			.addCondition( new Condition.ContextOnDeath( data->{
+				TreasureBagItem treasureBag = getTreasureBag( data.target.getType() );
+				return treasureBag != null && treasureBag.isEnabled();
+			} ) );
+
+		OnItemFishedContext onFished = new OnItemFishedContext( this::giveTreasureBagToAngler );
+		onFished.addCondition( new Condition.ContextOnItemFished( data->data.level != null ) ).addCondition( new Condition.ContextOnItemFished( data->{
 			int requiredFishCount = TreasureBagItem.Fishing.REQUIRED_FISH_COUNT.getCurrentGameStageValue();
 			NBTHelper.IntegerData fishedItems = new NBTHelper.IntegerData( data.player, FISHING_TAG );
 			fishedItems.set( x->( x + 1 ) % requiredFishCount );
 
 			return fishedItems.get() == 0;
-		} ) );
-		ON_FISHED.addCondition( new Condition.ContextOnItemFished( data->TreasureBagItem.Fishing.CONFIG.isEnabled() ) );
+		} ) ).addCondition( new Condition.ContextOnItemFished( data->TreasureBagItem.Fishing.CONFIG.isEnabled() ) );
 
-		ON_TICK.addCondition( new Condition.ContextOnPlayerTick( data->data.level != null && TimeHelper.hasServerTicksPassed( 20 ) ) );
-		ON_TICK.addCondition( new Condition.ContextOnPlayerTick( data->{
+		OnPlayerTickContext onTick = new OnPlayerTickContext( this::giveTreasureBagToHero );
+		onTick.addCondition( new Condition.ContextOnPlayerTick( data->data.level != null && TimeHelper.hasServerTicksPassed( 20 ) ) )
+			.addCondition( new Condition.ContextOnPlayerTick( data->{
 			assert data.level != null;
 			Raid raid = data.level.getRaidAt( data.player.blockPosition() );
 			if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) )
@@ -73,42 +102,12 @@ public class TreasureBagManager extends GameModifier {
 			lastRaidId.set( raid.getId() );
 			return true;
 		} ) );
-	}
 
-	public static void addTreasureBagTo( EntityType< ? > entityType, TreasureBagItem treasureBag ) {
-		REGISTERS.add( new Register( entityType, treasureBag ) );
-	}
-
-	@Nullable
-	public static TreasureBagItem getTreasureBag( EntityType< ? > entityType ) {
-		Register register = getRegisterFor( entityType );
-		return register != null ? register.treasureBag : null;
-	}
-
-	public static boolean hasTreasureBag( EntityType< ? > entityType ) {
-		return getRegisterFor( entityType ) != null;
-	}
-
-	@Nullable
-	private static Player getPlayerByUUID( ServerLevel level, CompoundTag tag ) {
-		return level.getPlayerByUUID( UUID.fromString( tag.getString( PLAYER_TAG ) ) );
-	}
-
-	@Nullable
-	private static Register getRegisterFor( EntityType< ? > entityType ) {
-		for( Register register : REGISTERS )
-			if( register.entityType.equals( entityType ) )
-				return register;
-
-		return null;
-	}
-
-	public TreasureBagManager() {
-		super( GameModifier.TREASURE_BAG, "", "", ON_DAMAGED, ON_DEATH, ON_FISHED, ON_TICK );
+		this.addContexts( onDamaged, onDeath, onFished, onTick );
 		this.addConfigs( TreasureBagItem.getConfigs() );
 	}
 
-	private static void addPlayerToParticipantList( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data damagedData ) {
+	private void addPlayerToParticipantList( OnDamagedData damagedData ) {
 		Player player = ( Player )damagedData.attacker;
 		ListTag listNBT = getOrCreateList( damagedData.target );
 		CompoundTag playerNBT = createPlayerTag( player );
@@ -140,7 +139,7 @@ public class TreasureBagManager extends GameModifier {
 		return false;
 	}
 
-	private static void rewardAllParticipants( com.mlib.gamemodifiers.GameModifier gameModifier, OnDeathContext.Data deathData ) {
+	private void rewardAllParticipants( OnDeathData deathData ) {
 		LivingEntity killedEntity = deathData.target;
 		ListTag listNBT = getOrCreateList( killedEntity );
 		if( deathData.level == null )
@@ -159,11 +158,11 @@ public class TreasureBagManager extends GameModifier {
 		ItemHelper.giveItemStackToPlayer( new ItemStack( item ), player, level );
 	}
 
-	private static void giveTreasureBagToAngler( com.mlib.gamemodifiers.GameModifier gameModifier, OnItemFishedContext.Data fishedData ) {
+	private void giveTreasureBagToAngler( OnItemFishedData fishedData ) {
 		giveTreasureBagTo( fishedData.player, Registries.FISHING_TREASURE_BAG.get(), fishedData.level );
 	}
 
-	private static void giveTreasureBagToHero( com.mlib.gamemodifiers.GameModifier gameModifier, OnPlayerTickContext.Data tickData ) {
+	private void giveTreasureBagToHero( OnPlayerTickData tickData ) {
 		giveTreasureBagTo( tickData.player, Registries.PILLAGER_TREASURE_BAG.get(), tickData.level );
 	}
 

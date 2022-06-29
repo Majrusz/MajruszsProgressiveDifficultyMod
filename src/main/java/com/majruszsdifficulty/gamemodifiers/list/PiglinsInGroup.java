@@ -7,6 +7,7 @@ import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
+import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
@@ -14,31 +15,31 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.item.Items;
 
 public class PiglinsInGroup extends GameModifier {
-	static final ItemStackConfig GOLDEN_SWORD = new ItemStackConfig( "SidekickGoldenSword", "Chance for a sidekick to have the Golden Sword.", ()->Items.GOLDEN_SWORD, EquipmentSlot.MAINHAND, 0.4, 0.05, 0.2 );
-	static final ItemStackConfig GOLDEN_HELMET = new ItemStackConfig( "LeaderGoldenHelmet", "Chance for a leader to have the Golden Helmet.", ()->Items.GOLDEN_HELMET, EquipmentSlot.HEAD, 0.67, 0.05, 0.75 );
-	static final ItemStackConfig GOLDEN_CHESTPLATE = new ItemStackConfig( "LeaderGoldenChestplate", "Chance for a leader to have the Golden Chestplate.", ()->Items.GOLDEN_CHESTPLATE, EquipmentSlot.CHEST, 0.67, 0.05, 0.75 );
-	static final ItemStackConfig GOLDEN_LEGGINGS = new ItemStackConfig( "LeaderGoldenLeggings", "Chance for a leader to have the Golden Leggings.", ()->Items.GOLDEN_LEGGINGS, EquipmentSlot.LEGS, 0.67, 0.05, 0.75 );
-	static final ItemStackConfig GOLDEN_BOOTS = new ItemStackConfig( "LeaderGoldenBoots", "Chance for a leader to have the Golden Boots.", ()->Items.GOLDEN_BOOTS, EquipmentSlot.FEET, 0.67, 0.05, 0.75 );
-	static final MobGroupConfig MOB_GROUPS = new MobGroupConfig( "Piglins", ()->EntityType.PIGLIN, 1, 3 );
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( PiglinsInGroup::spawnGroup );
-
-	static {
-		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) );
-		ON_SPAWNED.addCondition( new CustomConditions.CRDChance( 0.25 ) );
-		ON_SPAWNED.addCondition( new CustomConditions.IsNotSidekick() );
-		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Piglin && data.level != null ) );
-		ON_SPAWNED.addConfigs( GOLDEN_SWORD, GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS, MOB_GROUPS );
-
-		MOB_GROUPS.addLeaderConfigs( GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS );
-		MOB_GROUPS.addSidekickConfigs( GOLDEN_SWORD );
-	}
+	final ItemStackConfig sword = new ItemStackConfig( "SidekickGoldenSword", "Chance for a sidekick to have the Golden Sword.", ()->Items.GOLDEN_SWORD, EquipmentSlot.MAINHAND, 0.4, 0.05, 0.2 );
+	final ItemStackConfig helmet = new ItemStackConfig( "LeaderGoldenHelmet", "Chance for a leader to have the Golden Helmet.", ()->Items.GOLDEN_HELMET, EquipmentSlot.HEAD, 0.67, 0.05, 0.75 );
+	final ItemStackConfig chestplate = new ItemStackConfig( "LeaderGoldenChestplate", "Chance for a leader to have the Golden Chestplate.", ()->Items.GOLDEN_CHESTPLATE, EquipmentSlot.CHEST, 0.67, 0.05, 0.75 );
+	final ItemStackConfig leggings = new ItemStackConfig( "LeaderGoldenLeggings", "Chance for a leader to have the Golden Leggings.", ()->Items.GOLDEN_LEGGINGS, EquipmentSlot.LEGS, 0.67, 0.05, 0.75 );
+	final ItemStackConfig boots = new ItemStackConfig( "LeaderGoldenBoots", "Chance for a leader to have the Golden Boots.", ()->Items.GOLDEN_BOOTS, EquipmentSlot.FEET, 0.67, 0.05, 0.75 );
+	final MobGroupConfig mobGroups = new MobGroupConfig( "Piglins", ()->EntityType.PIGLIN, 1, 3 );
 
 	public PiglinsInGroup() {
-		super( GameModifier.DEFAULT, "PiglinsInGroup", "Piglins may spawn in groups.", ON_SPAWNED );
+		super( GameModifier.DEFAULT, "PiglinsInGroup", "Piglins may spawn in groups." );
+
+		this.mobGroups.addLeaderConfigs( this.helmet, this.chestplate, this.leggings, this.boots );
+		this.mobGroups.addSidekickConfigs( this.sword );
+
+		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnGroup );
+		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.CRDChance( 0.25 ) )
+			.addCondition( new CustomConditions.IsNotSidekick() )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Piglin && data.level != null ) )
+			.addConfigs( this.sword, this.helmet, this.chestplate, this.leggings, this.boots, this.mobGroups );
+
+		this.addContext( onSpawned );
 	}
 
-	private static void spawnGroup( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
-		MOB_GROUPS.spawn( ( PathfinderMob )data.target );
+	private void spawnGroup( OnSpawnedData data ) {
+		this.mobGroups.spawn( ( PathfinderMob )data.target );
 	}
 }

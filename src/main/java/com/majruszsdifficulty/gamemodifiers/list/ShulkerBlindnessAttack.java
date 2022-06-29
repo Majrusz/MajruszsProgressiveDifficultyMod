@@ -6,26 +6,27 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Shulker;
 
 public class ShulkerBlindnessAttack extends GameModifier {
-	static final ProgressiveEffectConfig BLINDNESS = new ProgressiveEffectConfig( "", ()->MobEffects.BLINDNESS, 0, 5.0, 60.0 );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( ShulkerBlindnessAttack::applyEffect );
-
-	static {
-		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) );
-		ON_DAMAGED.addCondition( new CustomConditions.CRDChance( 0.5 ) );
-		ON_DAMAGED.addCondition( new Condition.Excludable() );
-		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Shulker ) );
-		ON_DAMAGED.addConfig( BLINDNESS );
-	}
+	final ProgressiveEffectConfig blindness = new ProgressiveEffectConfig( "", ()->MobEffects.BLINDNESS, 0, 5.0, 60.0 );
 
 	public ShulkerBlindnessAttack() {
-		super( GameModifier.DEFAULT, "ShulkerBlindnessAttack", "Shulker attack may inflict stackable blindness effect.", ON_DAMAGED );
+		super( GameModifier.DEFAULT, "ShulkerBlindnessAttack", "Shulker attack may inflict stackable blindness effect." );
+
+		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
+		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )
+			.addCondition( new CustomConditions.CRDChance( 0.5 ) )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Shulker ) )
+			.addConfig( this.blindness );
+
+		this.addContext( onDamaged );
 	}
 
-	private static void applyEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
-		BLINDNESS.apply( data.target );
+	private void applyEffect( OnDamagedData data ) {
+		this.blindness.apply( data.target );
 	}
 }

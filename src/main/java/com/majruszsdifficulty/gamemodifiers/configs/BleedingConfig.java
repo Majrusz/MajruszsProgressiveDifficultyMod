@@ -5,6 +5,8 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.effects.EffectHelper;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +26,7 @@ public class BleedingConfig extends ProgressiveEffectConfig {
 		this( 24.0 );
 	}
 
-	public void apply( OnDamagedContext.Data data ) {
+	public void apply( OnDamagedData data ) {
 		LivingEntity target = data.target;
 		@Nullable LivingEntity attacker = data.attacker;
 		BleedingEffect.MobEffectInstance effectInstance = new BleedingEffect.MobEffectInstance( getDuration(), getAmplifier(), false, true, attacker );

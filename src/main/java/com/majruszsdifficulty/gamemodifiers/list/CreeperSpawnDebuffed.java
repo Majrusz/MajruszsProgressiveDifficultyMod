@@ -7,33 +7,32 @@ import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
+import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperSpawnDebuffed extends GameModifier {
-	static final EffectConfig[] EFFECTS;
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( CreeperSpawnDebuffed::applyRandomEffect );
-
-	static {
-		EFFECTS = new EffectConfig[]{
-			new EffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 60.0 ),
-			new EffectConfig( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 60.0 ),
-			new EffectConfig( "MiningFatigue", ()->MobEffects.DIG_SLOWDOWN, 0, 60.0 ),
-			new EffectConfig( "Saturation", ()->MobEffects.SATURATION, 0, 60.0 )
-		};
-
-		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
-		ON_SPAWNED.addCondition( new CustomConditions.CRDChance( 0.375 ) );
-		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Creeper ) );
-		ON_SPAWNED.addConfigs( EFFECTS );
-	}
+	final EffectConfig[] effects = new EffectConfig[]{
+		new EffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 60.0 ),
+		new EffectConfig( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 60.0 ),
+		new EffectConfig( "MiningFatigue", ()->MobEffects.DIG_SLOWDOWN, 0, 60.0 ),
+		new EffectConfig( "Saturation", ()->MobEffects.SATURATION, 0, 60.0 )
+	};
 
 	public CreeperSpawnDebuffed() {
-		super( GameModifier.DEFAULT, "CreeperSpawnDebuffed", "Creeper may spawn with negative effects applied.", ON_SPAWNED );
+		super( GameModifier.DEFAULT, "CreeperSpawnDebuffed", "Creeper may spawn with negative effects applied." );
+
+		OnSpawnedContext onSpawned = new OnSpawnedContext( this::applyRandomEffect );
+		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance( 0.375 ) )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Creeper ) )
+			.addConfigs( this.effects );
+
+		this.addContext( onSpawned );
 	}
 
-	private static void applyRandomEffect( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
-		Random.nextRandom( EFFECTS ).apply( data.target );
+	private void applyRandomEffect( OnSpawnedData data ) {
+		Random.nextRandom( this.effects ).apply( data.target );
 	}
 }

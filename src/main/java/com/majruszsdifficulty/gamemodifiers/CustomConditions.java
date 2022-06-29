@@ -5,6 +5,7 @@ import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.ContextData;
 import com.mlib.gamemodifiers.GameModifier;
 import net.minecraft.world.entity.PathfinderMob;
 
@@ -21,7 +22,7 @@ public class CustomConditions {
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
+		public boolean check( GameModifier gameModifier, ContextData data ) {
 			return Random.tryChance( com.majruszsdifficulty.GameStage.getRegionalDifficulty( data.entity ) * this.chance.get() );
 		}
 	}
@@ -35,7 +36,7 @@ public class CustomConditions {
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
+		public boolean check( GameModifier gameModifier, ContextData data ) {
 			return com.majruszsdifficulty.GameStage.atLeast( this.minimumStage.get() );
 		}
 	}
@@ -46,7 +47,7 @@ public class CustomConditions {
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
+		public boolean check( GameModifier gameModifier, ContextData data ) {
 			return data.entity instanceof PathfinderMob && !data.entity.getPersistentData().getBoolean( SIDEKICK_TAG );
 		}
 	}
@@ -57,7 +58,7 @@ public class CustomConditions {
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, com.mlib.gamemodifiers.Context.Data data ) {
+		public boolean check( GameModifier gameModifier, ContextData data ) {
 			return !UndeadArmyManager.isUndeadArmy( data.entity );
 		}
 	}

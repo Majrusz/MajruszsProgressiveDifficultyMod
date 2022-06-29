@@ -4,22 +4,22 @@ import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnExplosionContext;
+import com.mlib.gamemodifiers.data.OnExplosionData;
 import net.minecraftforge.event.world.ExplosionEvent;
 
 public class CreeperlingsCannotDestroyBlocks extends GameModifier {
-	static final OnExplosionContext ON_EXPLOSION = new OnExplosionContext( CreeperlingsCannotDestroyBlocks::revertBlocksToDestroy );
-
-	static {
-		ON_EXPLOSION.addCondition( new Condition.Excludable() );
-		ON_EXPLOSION.addCondition( new Condition.ContextOnExplosion( data->data.explosion.getExploder() instanceof CreeperlingEntity ) );
-		ON_EXPLOSION.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Detonate ) );
-	}
-
 	public CreeperlingsCannotDestroyBlocks() {
-		super( GameModifier.DEFAULT, "CreeperlingsCannotDestroyBlocks", "Make the Creeperling do not destroy block on explosion.", ON_EXPLOSION );
+		super( GameModifier.DEFAULT, "CreeperlingsCannotDestroyBlocks", "Make the Creeperling do not destroy block on explosion." );
+
+		OnExplosionContext onExplosion = new OnExplosionContext( this::revertBlocksToDestroy );
+		onExplosion.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnExplosion( data->data.explosion.getExploder() instanceof CreeperlingEntity ) )
+			.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Detonate ) );
+
+		this.addContext( onExplosion );
 	}
 
-	private static void revertBlocksToDestroy( com.mlib.gamemodifiers.GameModifier gameModifier, OnExplosionContext.Data data ) {
+	private void revertBlocksToDestroy( OnExplosionData data ) {
 		data.explosion.clearToBlow();
 	}
 }

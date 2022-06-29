@@ -5,26 +5,26 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
+import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.Evoker;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class EvokerWithTotem extends GameModifier {
-	static final OnSpawnedContext ON_SPAWNED = new OnSpawnedContext( EvokerWithTotem::giveTotemOfUndying );
-
-	static {
-		ON_SPAWNED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
-		ON_SPAWNED.addCondition( new CustomConditions.CRDChance( 1.0 ) );
-		ON_SPAWNED.addCondition( new Condition.Excludable() );
-		ON_SPAWNED.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Evoker ) );
-	}
-
 	public EvokerWithTotem() {
-		super( GameModifier.DEFAULT, "EvokerWithTotem", "Evoker may spawn with a Totem of Undying.", ON_SPAWNED );
+		super( GameModifier.DEFAULT, "EvokerWithTotem", "Evoker may spawn with a Totem of Undying." );
+
+		OnSpawnedContext onSpawned = new OnSpawnedContext( this::giveTotemOfUndying );
+		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance( 1.0 ) )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Evoker ) );
+
+		this.addContext( onSpawned );
 	}
 
-	private static void giveTotemOfUndying( com.mlib.gamemodifiers.GameModifier gameModifier, OnSpawnedContext.Data data ) {
+	private void giveTotemOfUndying( OnSpawnedData data ) {
 		Evoker evoker = ( Evoker )data.target;
 		evoker.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.TOTEM_OF_UNDYING ) );
 	}

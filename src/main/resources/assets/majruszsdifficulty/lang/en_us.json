@@ -42,6 +42,8 @@
   "item.majruszsdifficulty.golden_bandage": "Golden Bandage",
   "item.majruszsdifficulty.recall_potion": "Recall Potion",
   "item.majruszsdifficulty.recall_potion.item_tooltip": "Teleports back home.",
+  "item.majruszsdifficulty.angler_emblem": "Angler Emblem",
+  "item.majruszsdifficulty.angler_emblem.item_tooltip": "Increases luck by %s when fishing.",
   "block.majruszsdifficulty.enderium_shard_ore": "Enderium Shard Ore",
   "block.majruszsdifficulty.enderium_block": "Enderium Block",
   "block.majruszsdifficulty.infested_end_stone": "Infested End Stone",

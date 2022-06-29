@@ -6,28 +6,29 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
 public class DrownDebuffs extends GameModifier {
-	static final ProgressiveEffectConfig NAUSEA = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 2.0, 60.0 );
-	static final ProgressiveEffectConfig WEAKNESS = new ProgressiveEffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 10.0, 60.0 );
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( DrownDebuffs::applyDebuffs );
-
-	static {
-		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
-		ON_DAMAGED.addCondition( new Condition.Chance( 1.0 ) );
-		ON_DAMAGED.addCondition( new Condition.Excludable() );
-		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.source.equals( DamageSource.DROWN ) ) );
-		ON_DAMAGED.addConfigs( NAUSEA, WEAKNESS );
-	}
+	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 2.0, 60.0 );
+	final ProgressiveEffectConfig weakness = new ProgressiveEffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 10.0, 60.0 );
 
 	public DrownDebuffs() {
-		super( GameModifier.DEFAULT, "DrownDebuffs", "Inflicts several debuffs when taking drown damage (these debuffs stack).", ON_DAMAGED );
+		super( GameModifier.DEFAULT, "DrownDebuffs", "Inflicts several debuffs when taking drown damage (these debuffs stack)." );
+
+		OnDamagedContext onDamaged = new OnDamagedContext( this::applyDebuffs );
+		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
+			.addCondition( new Condition.Chance( 1.0 ) )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.ContextOnDamaged( data->data.source.equals( DamageSource.DROWN ) ) )
+			.addConfigs( this.nausea, this.weakness );
+
+		this.addContext( onDamaged );
 	}
 
-	private static void applyDebuffs( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
-		NAUSEA.apply( data.target );
-		WEAKNESS.apply( data.target );
+	private void applyDebuffs( OnDamagedData data ) {
+		this.nausea.apply( data.target );
+		this.weakness.apply( data.target );
 	}
 }

@@ -6,31 +6,32 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
 import com.mlib.items.ItemHelper;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TridentItem;
 
 public class SharpToolsBleeding extends GameModifier {
-	static final BleedingConfig BLEEDING = new BleedingConfig();
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( SharpToolsBleeding::applyBleeding );
-
-	static {
-		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
-		ON_DAMAGED.addCondition( new Condition.Chance( 0.25 ) );
-		ON_DAMAGED.addCondition( new Condition.Excludable() );
-		ON_DAMAGED.addCondition( new Condition.IsLivingBeing() );
-		ON_DAMAGED.addCondition( new Condition.ArmorDependentChance() );
-		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) ) );
-		ON_DAMAGED.addCondition( new OnDamagedContext.DirectDamage() );
-		ON_DAMAGED.addConfig( BLEEDING );
-	}
+	final BleedingConfig bleeding = new BleedingConfig();
 
 	public SharpToolsBleeding() {
-		super( GameModifier.DEFAULT, "SharpToolsBleeding", "All sharp items (tools, shears etc.) may inflict bleeding.", ON_DAMAGED );
+		super( GameModifier.DEFAULT, "SharpToolsBleeding", "All sharp items (tools, shears etc.) may inflict bleeding." );
+
+		OnDamagedContext onDamaged = new OnDamagedContext( this::applyBleeding );
+		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
+			.addCondition( new Condition.Chance( 0.25 ) )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.IsLivingBeing() )
+			.addCondition( new Condition.ArmorDependentChance() )
+			.addCondition( new Condition.ContextOnDamaged( data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) ) )
+			.addCondition( new OnDamagedContext.DirectDamage() )
+			.addConfig( this.bleeding );
+
+		this.addContext( onDamaged );
 	}
 
-	private static void applyBleeding( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
-		BLEEDING.apply( data );
+	private void applyBleeding( OnDamagedData data ) {
+		this.bleeding.apply( data );
 	}
 }

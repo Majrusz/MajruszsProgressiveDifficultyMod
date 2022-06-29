@@ -5,22 +5,23 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnPickupXpContext;
+import com.mlib.gamemodifiers.data.OnPickupXpData;
 
 public class ExperienceBonus extends GameModifier {
-	static final OnPickupXpContext ON_PICKUP = new OnPickupXpContext( ExperienceBonus::giveExtraExperience );
-	static final GameStageDoubleConfig BONUS_MULTIPLIER = new GameStageDoubleConfig( "BonusMultiplier", "Extra bonus multiplier to experience gathered from any source.", 0.0, 0.2, 0.4, 0.0, 10.0 );
-
-	static {
-		ON_PICKUP.addCondition( new Condition.Excludable() );
-		ON_PICKUP.addConfig( BONUS_MULTIPLIER );
-	}
+	final GameStageDoubleConfig bonusMultiplier = new GameStageDoubleConfig( "BonusMultiplier", "Extra bonus multiplier to experience gathered from any source.", 0.0, 0.2, 0.4, 0.0, 10.0 );
 
 	public ExperienceBonus() {
-		super( GameModifier.DEFAULT, "ExperienceBonus", "Gives extra experience as the difficulty increases.", ON_PICKUP );
+		super( GameModifier.DEFAULT, "ExperienceBonus", "Gives extra experience as the difficulty increases." );
+
+		OnPickupXpContext onPickup = new OnPickupXpContext( this::giveExtraExperience );
+		onPickup.addCondition( new Condition.Excludable() )
+			.addConfig( this.bonusMultiplier );
+
+		this.addContext( onPickup );
 	}
 
-	private static void giveExtraExperience( com.mlib.gamemodifiers.GameModifier gameModifier, OnPickupXpContext.Data data ) {
+	private void giveExtraExperience( OnPickupXpData data ) {
 		double experience = data.event.getOrb().getValue();
-		data.player.giveExperiencePoints( Random.roundRandomly( BONUS_MULTIPLIER.getCurrentGameStageValue() * experience ) );
+		data.player.giveExperiencePoints( Random.roundRandomly( this.bonusMultiplier.getCurrentGameStageValue() * experience ) );
 	}
 }

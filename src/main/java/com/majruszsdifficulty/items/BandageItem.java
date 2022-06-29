@@ -8,6 +8,7 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteractContext;
+import com.mlib.gamemodifiers.data.OnPlayerInteractData;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,58 +47,53 @@ public class BandageItem extends Item {
 		this( Rarity.COMMON );
 	}
 
-	@Override
-	@OnlyIn( Dist.CLIENT )
-	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
+	@Override @OnlyIn( Dist.CLIENT ) public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag
+	) {
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, TOOLTIP_TRANSLATION_KEY_1, TOOLTIP_TRANSLATION_KEY_2 );
 	}
 
 	public static class BandageUse extends GameModifier {
-		static final EffectConfig REGENERATION = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
-		static final EffectConfig GOLDEN_REGENERATION = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
-		static final EffectConfig GOLDEN_IMMUNITY = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
-		static final OnPlayerInteractContext ON_INTERACTION = new OnPlayerInteractContext( BandageUse::useBandage );
-
-		static {
-			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->data.itemStack.getItem() instanceof BandageItem ) );
-			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->data.target != null ) );
-			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->!data.player.swinging ) );
-			ON_INTERACTION.addCondition( new Condition.ContextOnPlayerInteract( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) ) );
-			ON_INTERACTION.addConfig( new ConfigGroup( "Bandage", "Config for a Bandage item.", REGENERATION ) );
-			ON_INTERACTION.addConfig( new ConfigGroup( "GoldenBandage", "Config for a Golden Bandage item.", GOLDEN_REGENERATION, GOLDEN_IMMUNITY ) );
-		}
+		final EffectConfig regeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
+		final EffectConfig goldenRegeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
+		final EffectConfig goldenImmunity = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
 
 		public BandageUse() {
-			super( GameModifier.DEFAULT, ON_INTERACTION );
+			super( GameModifier.DEFAULT );
+
+			OnPlayerInteractContext onInteraction = new OnPlayerInteractContext( this::useBandage );
+			onInteraction.addCondition( new Condition.ContextOnPlayerInteract( data->data.itemStack.getItem() instanceof BandageItem ) )
+				.addCondition( new Condition.ContextOnPlayerInteract( data->data.target != null ) )
+				.addCondition( new Condition.ContextOnPlayerInteract( data->!data.player.swinging ) )
+				.addCondition( new Condition.ContextOnPlayerInteract( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) ) )
+				.addConfig( new ConfigGroup( "Bandage", "Config for a Bandage item.", this.regeneration ) )
+				.addConfig( new ConfigGroup( "GoldenBandage", "Config for a Golden Bandage item.", this.goldenRegeneration, this.goldenImmunity ) );
+
+			this.addContext( onInteraction );
 		}
 
-		private static void useBandage( com.mlib.gamemodifiers.GameModifier gameModifier, OnPlayerInteractContext.Data data ) {
-			useBandage( data, data.event );
-			data.event.setCancellationResult( InteractionResult.SUCCESS );
-		}
-
-		public static void useBandage( OnPlayerInteractContext.Data data, PlayerInteractEvent event ) {
+		private void useBandage( OnPlayerInteractData data ) {
 			Player player = data.player;
 			LivingEntity target = data.target;
-			ItemStack itemStack = event.getItemStack();
+			ItemStack itemStack = data.event.getItemStack();
 
 			assert target != null;
 			ItemHelper.consumeItemOnUse( itemStack, player );
-			player.swing( event.getHand(), true );
+			player.swing( data.event.getHand(), true );
 			removeBleeding( itemStack, player, target );
 			if( target instanceof Villager villager && villager.hasEffect( Registries.BLEEDING.get() ) ) {
 				increaseReputation( villager, player );
 			}
 			applyEffects( itemStack, target );
 			playSfx( target );
+			data.event.setCancellationResult( InteractionResult.SUCCESS );
 		}
 
-		private static void applyEffects( ItemStack itemStack, LivingEntity target ) {
+		private void applyEffects( ItemStack itemStack, LivingEntity target ) {
 			if( itemStack.getItem() instanceof GoldenBandageItem ) {
-				GOLDEN_REGENERATION.apply( target );
-				GOLDEN_IMMUNITY.apply( target );
+				this.goldenRegeneration.apply( target );
+				this.goldenImmunity.apply( target );
 			} else {
-				REGENERATION.apply( target );
+				this.regeneration.apply( target );
 			}
 		}
 

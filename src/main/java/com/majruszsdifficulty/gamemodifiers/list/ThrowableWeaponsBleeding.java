@@ -6,28 +6,29 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 
 public class ThrowableWeaponsBleeding extends GameModifier {
-	static final BleedingConfig BLEEDING = new BleedingConfig();
-	static final OnDamagedContext ON_DAMAGED = new OnDamagedContext( ThrowableWeaponsBleeding::applyBleeding );
-
-	static {
-		ON_DAMAGED.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) );
-		ON_DAMAGED.addCondition( new Condition.Chance( 0.4 ) );
-		ON_DAMAGED.addCondition( new Condition.Excludable() );
-		ON_DAMAGED.addCondition( new Condition.IsLivingBeing() );
-		ON_DAMAGED.addCondition( new Condition.ArmorDependentChance() );
-		ON_DAMAGED.addCondition( new Condition.ContextOnDamaged( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident ) );
-		ON_DAMAGED.addConfig( BLEEDING );
-	}
+	final BleedingConfig bleeding = new BleedingConfig();
 
 	public ThrowableWeaponsBleeding() {
-		super( GameModifier.DEFAULT, "ThrowableWeaponsBleeding", "All throwable sharp items (arrows, trident etc.) may inflict bleeding.", ON_DAMAGED );
+		super( GameModifier.DEFAULT, "ThrowableWeaponsBleeding", "All throwable sharp items (arrows, trident etc.) may inflict bleeding." );
+
+		OnDamagedContext onDamaged = new OnDamagedContext( this::applyBleeding );
+		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
+			.addCondition( new Condition.Chance( 0.4 ) )
+			.addCondition( new Condition.Excludable() )
+			.addCondition( new Condition.IsLivingBeing() )
+			.addCondition( new Condition.ArmorDependentChance() )
+			.addCondition( new Condition.ContextOnDamaged( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident ) )
+			.addConfig( this.bleeding );
+
+		this.addContext( onDamaged );
 	}
 
-	private static void applyBleeding( com.mlib.gamemodifiers.GameModifier gameModifier, OnDamagedContext.Data data ) {
-		BLEEDING.apply( data );
+	private void applyBleeding( OnDamagedData data ) {
+		this.bleeding.apply( data );
 	}
 }
