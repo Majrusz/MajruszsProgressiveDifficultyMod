@@ -1,5 +1,6 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.accessories.FishingLuckBonus;
 import com.majruszsdifficulty.blocks.EndShardOre;
 import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
@@ -95,9 +96,7 @@ public class Registries {
 	// Items
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
 	public static final RegistryObject< GoldenBandageItem > GOLDEN_BANDAGE = ITEMS.register( "golden_bandage", GoldenBandageItem::new );
-	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 	public static final RegistryObject< HermesBootsItem > HERMES_BOOTS = ITEMS.register( "hermes_boots", HermesBootsItem::new );
-	public static final RegistryObject< SwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< ClothItem > CLOTH = ITEMS.register( "cloth", ClothItem::new );
 	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_HELMET = ITEMS.register( "enderium_helmet", EnderiumArmorItem.Helmet::new );
@@ -113,6 +112,9 @@ public class Registries {
 	public static final RegistryObject< EnderiumShovelItem > ENDERIUM_SHOVEL = ITEMS.register( "enderium_shovel", EnderiumShovelItem::new );
 	public static final RegistryObject< EnderiumHoeItem > ENDERIUM_HOE = ITEMS.register( "enderium_hoe", EnderiumHoeItem::new );
 	public static final RegistryObject< OceanShieldItem > OCEAN_SHIELD = ITEMS.register( "ocean_shield", OceanShieldItem::new );
+	public static final RegistryObject< WitherSwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
+	public static final RegistryObject< AnglerEmblemItem > ANGLER_EMBLEM = ITEMS.register( "angler_emblem", AnglerEmblemItem::new );
+	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 
 	// Treasure Bags
 	public static final RegistryObject< TreasureBagItem > UNDEAD_ARMY_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", TreasureBagItem.UndeadArmy::new );
@@ -237,6 +239,8 @@ public class Registries {
 		GAME_MODIFIERS.add( new WitherSkeletonWithSword() );
 		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 		GAME_MODIFIERS.add( new ZombiesInGroup() );
+
+		GAME_MODIFIERS.add( new FishingLuckBonus.Modifier() );
 
 		new UndeadArmyConfig(); // we need to make sure that this class is loaded before the configs are registered
 	}

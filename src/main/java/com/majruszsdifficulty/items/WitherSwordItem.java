@@ -9,6 +9,7 @@ import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.data.OnDamagedData;
 import com.mlib.items.ItemHelper;
+import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
@@ -36,8 +37,8 @@ public class WitherSwordItem extends SwordItem {
 		if( !flag.isAdvanced() )
 			return;
 
-		String amplifier = Utility.toRoman( Effect.WITHER.getAmplifier() + 1 );
-		String duration = Utility.minPrecision( Utility.ticksToSeconds( Effect.WITHER.getDuration() ) );
+		String amplifier = TextHelper.toRoman( Effect.WITHER.getAmplifier() + 1 );
+		String duration = TextHelper.minPrecision( Utility.ticksToSeconds( Effect.WITHER.getDuration() ) );
 		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY, amplifier, duration ).withStyle( ChatFormatting.GRAY ) );
 	}
 
