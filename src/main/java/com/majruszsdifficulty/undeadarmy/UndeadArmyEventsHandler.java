@@ -13,6 +13,7 @@ import com.mlib.gamemodifiers.data.OnServerTickData;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import com.mlib.levels.LevelHelper;
 import com.mlib.nbt.NBTHelper;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
@@ -43,7 +44,10 @@ public class UndeadArmyEventsHandler extends GameModifier {
 	}
 
 	private void resetUndeadArmyGoals( OnSpawnedData data ) {
-		// Registries.UNDEAD_ARMY_MANAGER.updateUndeadAIGoals(); // DO NOT UPDATE ALL OF THEM
+		UndeadArmy undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( data.target.blockPosition() );
+		if( undeadArmy != null && data.target instanceof Mob mob ) {
+			undeadArmy.addUndeadArmyAI( mob );
+		}
 	}
 
 	private void freezeNearbyWater( OnEntityTickData data ) {

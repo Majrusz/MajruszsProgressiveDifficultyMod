@@ -188,6 +188,17 @@ public class UndeadArmy {
 		mobs.forEach( mob->mob.hurt( DamageSource.MAGIC, 9001 ) );
 	}
 
+	public void addUndeadArmyAI( Mob monster ) {
+		float speedModifier = monster instanceof TankEntity ? 1.5f : 1.25f;
+		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackedPosition(), speedModifier, 20.0f, 3.0f ) );
+
+		PathfinderMob pathfinderMob = Utility.castIfPossible( PathfinderMob.class, monster );
+		if( pathfinderMob != null ) {
+			monster.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
+			monster.targetSelector.addGoal( 1, new ForgiveUndeadArmyTargetGoal( pathfinderMob ) );
+		}
+	}
+
 	private void tickBetweenWaves() {
 		if( this.ticksBetweenWaves-- <= 0 )
 			proceedToNextWave();
@@ -281,7 +292,7 @@ public class UndeadArmy {
 				continue;
 
 			monster.setPersistenceRequired();
-			updateUndeadAIGoal( monster );
+			addUndeadArmyAI( monster );
 			equipWithUndeadArmyArmor( monster );
 			tryToEnchantEquipment( monster );
 			markAsUndeadArmyMob( monster );
@@ -378,17 +389,6 @@ public class UndeadArmy {
 		monster.startRiding( skeletonHorse );
 		skeletonHorse.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( skeletonHorse, getAttackedPosition(), 1.5f, 20.0f, 3.0f ) );
 		markAsUndeadArmyMob( skeletonHorse );
-	}
-
-	private void updateUndeadAIGoal( Mob monster ) {
-		float speedModifier = monster instanceof TankEntity ? 1.5f : 1.25f;
-		monster.goalSelector.addGoal( 4, new UndeadAttackPositionGoal( monster, getAttackedPosition(), speedModifier, 20.0f, 3.0f ) );
-
-		PathfinderMob pathfinderMob = Utility.castIfPossible( PathfinderMob.class, monster );
-		if( pathfinderMob != null ) {
-			monster.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
-			monster.targetSelector.addGoal( 1, new ForgiveUndeadArmyTargetGoal( pathfinderMob ) );
-		}
 	}
 
 	private void updateUndeadArmyBarVisibility() {
