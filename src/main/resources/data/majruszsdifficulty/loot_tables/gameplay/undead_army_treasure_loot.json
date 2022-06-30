@@ -2,22 +2,6 @@
   "type": "minecraft:gift",
   "pools": [
     {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "majruszsdifficulty:hermes_boots",
-          "quality": 4,
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 0.2
-            }
-          ]
-        }
-      ]
-    },
-    {
       "rolls": {
         "min": 6.0,
         "max": 12.0,

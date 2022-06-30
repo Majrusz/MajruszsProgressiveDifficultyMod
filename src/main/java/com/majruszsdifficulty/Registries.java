@@ -1,6 +1,5 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.accessories.FishingLuckBonus;
 import com.majruszsdifficulty.blocks.EndShardOre;
 import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
@@ -14,7 +13,6 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.itemsets.EnderiumSet;
-import com.majruszsdifficulty.itemsets.OceanSet;
 import com.majruszsdifficulty.itemsets.UndeadSet;
 import com.majruszsdifficulty.lootmodifiers.DoubleLoot;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
@@ -44,7 +42,6 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -58,7 +55,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.server.ServerLifecycleEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -96,7 +92,6 @@ public class Registries {
 	// Items
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
 	public static final RegistryObject< GoldenBandageItem > GOLDEN_BANDAGE = ITEMS.register( "golden_bandage", GoldenBandageItem::new );
-	public static final RegistryObject< HermesBootsItem > HERMES_BOOTS = ITEMS.register( "hermes_boots", HermesBootsItem::new );
 	public static final RegistryObject< ClothItem > CLOTH = ITEMS.register( "cloth", ClothItem::new );
 	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_HELMET = ITEMS.register( "enderium_helmet", EnderiumArmorItem.Helmet::new );
@@ -111,9 +106,7 @@ public class Registries {
 	public static final RegistryObject< EnderiumAxeItem > ENDERIUM_AXE = ITEMS.register( "enderium_axe", EnderiumAxeItem::new );
 	public static final RegistryObject< EnderiumShovelItem > ENDERIUM_SHOVEL = ITEMS.register( "enderium_shovel", EnderiumShovelItem::new );
 	public static final RegistryObject< EnderiumHoeItem > ENDERIUM_HOE = ITEMS.register( "enderium_hoe", EnderiumHoeItem::new );
-	public static final RegistryObject< OceanShieldItem > OCEAN_SHIELD = ITEMS.register( "ocean_shield", OceanShieldItem::new );
 	public static final RegistryObject< WitherSwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
-	public static final RegistryObject< AnglerEmblemItem > ANGLER_EMBLEM = ITEMS.register( "angler_emblem", AnglerEmblemItem::new );
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 
 	// Treasure Bags
@@ -151,7 +144,6 @@ public class Registries {
 
 	// Item Sets
 	public static final EnderiumSet ENDERIUM_SET = new EnderiumSet();
-	public static final OceanSet OCEAN_SET = new OceanSet();
 	public static final UndeadSet UNDEAD_SET = new UndeadSet();
 
 	// Blocks
@@ -240,8 +232,6 @@ public class Registries {
 		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 		GAME_MODIFIERS.add( new ZombiesInGroup() );
 
-		GAME_MODIFIERS.add( new FishingLuckBonus.Modifier() );
-
 		new UndeadArmyConfig(); // we need to make sure that this class is loaded before the configs are registered
 	}
 
@@ -317,14 +307,12 @@ public class Registries {
 		UNDEAD_ARMY_MANAGER.setDirty();
 	}
 
-	@Nullable
-	private static ServerLevel getOverworld( LevelAccessor levelAccessor ) {
+	@Nullable private static ServerLevel getOverworld( LevelAccessor levelAccessor ) {
 		ServerLevel overworld = levelAccessor.getServer() != null ? levelAccessor.getServer().getLevel( Level.OVERWORLD ) : null;
 		return levelAccessor.equals( overworld ) ? overworld : null;
 	}
 
-	@OnlyIn( Dist.CLIENT )
-	private static void onTextureStitch( TextureStitchEvent.Pre event ) {
+	@OnlyIn( Dist.CLIENT ) private static void onTextureStitch( TextureStitchEvent.Pre event ) {
 		final TextureAtlas map = event.getAtlas();
 		if( InventoryMenu.BLOCK_ATLAS.equals( map.location() ) )
 			event.addSprite( RegistriesClient.OCEAN_SHIELD_MATERIAL.texture() );
