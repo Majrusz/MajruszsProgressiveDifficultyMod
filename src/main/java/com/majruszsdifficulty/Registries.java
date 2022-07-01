@@ -23,6 +23,7 @@ import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+import com.majruszsdifficulty.world.EntityBiomeModifier;
 import com.majruszsdifficulty.world.OreBiomeModifier;
 import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.commands.IRegistrableCommand;
@@ -48,6 +49,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -192,8 +194,9 @@ public class Registries {
 	public static final RegistryObject< Codec< OreBiomeModifier > > ORE_MODIFIER = BIOME_MODIFIERS.register( "ores", ()->RecordCodecBuilder.create( builder->builder.group( Biome.LIST_CODEC.fieldOf( "biomes" )
 			.forGetter( OreBiomeModifier::biomes ), PlacedFeature.CODEC.fieldOf( "feature" ).forGetter( OreBiomeModifier::feature ) )
 		.apply( builder, OreBiomeModifier::new ) ) );
-	// Configs
-	public static final SpawnDisabler.Config SPAWN_DISABLER_CONFIG = new SpawnDisabler.Config(); // TODO: REMOVE
+	public static final RegistryObject< Codec< EntityBiomeModifier > > ENTITY_MODIFIER = BIOME_MODIFIERS.register( "entities", ()->RecordCodecBuilder.create( builder->builder.group( Biome.LIST_CODEC.fieldOf( "biomes" )
+			.forGetter( EntityBiomeModifier::biomes ), MobSpawnSettings.SpawnerData.CODEC.fieldOf( "spawners" ).forGetter( EntityBiomeModifier::spawnerData ) )
+		.apply( builder, EntityBiomeModifier::new ) ) );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;
@@ -243,6 +246,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );
 		GAME_MODIFIERS.add( new SkeletonsInGroup() );
 		GAME_MODIFIERS.add( new SlimeSlownessAttack() );
+		GAME_MODIFIERS.add( new SpawnBlocker() );
 		GAME_MODIFIERS.add( new SpawnPlayerZombie() );
 		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
 		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
