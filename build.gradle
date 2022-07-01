@@ -65,7 +65,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19-41.0.1'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.62'
     implementation fg.deobf( 'com.mlib:majrusz-library-1.19:2.8.0' )
 }
 

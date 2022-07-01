@@ -23,13 +23,18 @@ import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+import com.majruszsdifficulty.world.OreBiomeModifier;
+import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -38,26 +43,28 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.storage.DimensionDataStorage;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -83,6 +90,9 @@ public class Registries {
 	static final DeferredRegister< ParticleType< ? > > PARTICLE_TYPES = HELPER.create( ForgeRegistries.Keys.PARTICLE_TYPES );
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
 	static final DeferredRegister< GlobalLootModifierSerializer< ? > > LOOT_MODIFIERS = HELPER.create( ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS );
+	static final DeferredRegister< PlacedFeature > PLACED_FEATURES = HELPER.create( Registry.PLACED_FEATURE_REGISTRY );
+	static final DeferredRegister< ConfiguredFeature< ?, ? > > CONFIGURED_FEATURES = HELPER.create( Registry.CONFIGURED_FEATURE_REGISTRY );
+	static final DeferredRegister< Codec< ? extends BiomeModifier > > BIOME_MODIFIERS = HELPER.create( ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS );
 
 	// Entities
 	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.register( "giant", GiantEntity.createSupplier() );
@@ -172,8 +182,22 @@ public class Registries {
 	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
 	public static final BasicTrigger BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( MajruszsDifficulty.MOD_ID );
 
+	// Configured Feature
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_SMALL_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_small", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 1, 0.99f ) );
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_LARGE_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_large", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 2, 0.99f ) );
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > INFESTED_END_STONE_CONFIGURED = CONFIGURED_FEATURES.register( "infested_end_stone", ()->WorldGenHelper.getEndConfigured( INFESTED_END_STONE, 4, 0.0f ) );
+
+	// Placed Feature
+	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 16 ) );
+	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 8 ) );
+	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 128 ) );
+
+	// Biome Modifiers
+	public static final RegistryObject< Codec< OreBiomeModifier > > ORE_MODIFIER = BIOME_MODIFIERS.register( "ores", ()->RecordCodecBuilder.create( builder->builder.group( Biome.LIST_CODEC.fieldOf( "biomes" )
+			.forGetter( OreBiomeModifier::biomes ), PlacedFeature.CODEC.fieldOf( "feature" ).forGetter( OreBiomeModifier::feature ) )
+		.apply( builder, OreBiomeModifier::new ) ) );
 	// Configs
-	public static final SpawnDisabler.Config SPAWN_DISABLER_CONFIG = new SpawnDisabler.Config();
+	public static final SpawnDisabler.Config SPAWN_DISABLER_CONFIG = new SpawnDisabler.Config(); // TODO: REMOVE
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;
@@ -252,7 +276,6 @@ public class Registries {
 		modEventBus.addListener( Registries::setupClient );
 		modEventBus.addListener( Registries::setupEntities );
 		modEventBus.addListener( PacketHandler::registerPacket );
-		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->modEventBus.addListener( Registries::onTextureStitch ) );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( Registries::onLoadingLevel );
@@ -307,14 +330,9 @@ public class Registries {
 		UNDEAD_ARMY_MANAGER.setDirty();
 	}
 
-	@Nullable private static ServerLevel getOverworld( LevelAccessor levelAccessor ) {
+	@Nullable
+	private static ServerLevel getOverworld( LevelAccessor levelAccessor ) {
 		ServerLevel overworld = levelAccessor.getServer() != null ? levelAccessor.getServer().getLevel( Level.OVERWORLD ) : null;
 		return levelAccessor.equals( overworld ) ? overworld : null;
-	}
-
-	@OnlyIn( Dist.CLIENT ) private static void onTextureStitch( TextureStitchEvent.Pre event ) {
-		final TextureAtlas map = event.getAtlas();
-		if( InventoryMenu.BLOCK_ATLAS.equals( map.location() ) )
-			event.addSprite( RegistriesClient.OCEAN_SHIELD_MATERIAL.texture() );
 	}
 }
