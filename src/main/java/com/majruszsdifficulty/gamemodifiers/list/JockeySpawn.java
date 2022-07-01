@@ -34,5 +34,6 @@ public class JockeySpawn extends GameModifier {
 		skeleton.moveTo( data.target.getX(), data.target.getY(), data.target.getZ(), data.target.yBodyRot, 0.0f );
 		skeleton.finalizeSpawn( data.level, data.level.getCurrentDifficultyAt( data.target.blockPosition() ), MobSpawnType.JOCKEY, null, null );
 		skeleton.startRiding( data.target );
+		data.level.addFreshEntity( skeleton );
 	}
 }

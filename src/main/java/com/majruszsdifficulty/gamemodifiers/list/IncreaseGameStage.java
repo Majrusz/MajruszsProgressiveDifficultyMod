@@ -70,11 +70,11 @@ public class IncreaseGameStage extends GameModifier {
 	}
 
 	private void startMasterMode( OnDimensionChangedData data ) {
-		startExpertMode( data.entity.getServer() );
+		startMasterMode( data.entity.getServer() );
 	}
 
 	private void startMasterMode( OnDeathData data ) {
-		startExpertMode( data.target.getServer() );
+		startMasterMode( data.target.getServer() );
 	}
 
 	private void startMasterMode( @Nullable MinecraftServer minecraftServer ) {

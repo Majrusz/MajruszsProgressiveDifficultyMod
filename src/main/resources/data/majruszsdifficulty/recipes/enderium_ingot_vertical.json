@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "group": "enderium_ingot",
   "pattern": [
+    "cc ",
     "cec",
-    "cic",
-    "cec"
+    " cc"
   ],
   "key": {
     "c": {
