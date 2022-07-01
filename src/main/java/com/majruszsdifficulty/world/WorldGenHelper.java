@@ -17,7 +17,9 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 
 public class WorldGenHelper {
-	public static ConfiguredFeature< ?, ? > getConfigured( Block targetBlock, RegistryObject< ? extends Block > block, int count, float airExposureDiscardChance ) {
+	public static ConfiguredFeature< ?, ? > getConfigured( Block targetBlock, RegistryObject< ? extends Block > block, int count,
+		float airExposureDiscardChance
+	) {
 		List< OreConfiguration.TargetBlockState > target = List.of( OreConfiguration.target( new BlockMatchTest( targetBlock ), block.get()
 			.defaultBlockState() ) );
 		return new ConfiguredFeature<>( Feature.ORE, new OreConfiguration( target, count, airExposureDiscardChance ) );

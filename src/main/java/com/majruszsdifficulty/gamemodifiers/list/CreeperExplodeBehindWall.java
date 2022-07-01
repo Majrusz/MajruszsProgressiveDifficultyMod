@@ -7,7 +7,6 @@ import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
-import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperExplodeBehindWall extends GameModifier {

@@ -3,8 +3,6 @@ package com.majruszsdifficulty.undeadarmy;
 import com.majruszsdifficulty.Registries;
 import com.mlib.MajruszLibrary;
 import com.mlib.Utility;
-import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.contexts.OnServerTickContext;
 import com.mlib.levels.LevelHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;

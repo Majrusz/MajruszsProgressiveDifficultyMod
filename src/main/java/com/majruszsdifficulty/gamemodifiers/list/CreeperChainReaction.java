@@ -6,7 +6,6 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.data.OnDamagedData;
-import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperChainReaction extends GameModifier {

@@ -2,7 +2,6 @@ package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.items.EndShardLocatorItem;
 import com.majruszsdifficulty.models.CreeperlingModel;
-import com.majruszsdifficulty.models.OceanShieldModel;
 import com.majruszsdifficulty.models.TankModel;
 import com.majruszsdifficulty.renderers.CreeperlingRenderer;
 import com.majruszsdifficulty.renderers.GiantRenderer;

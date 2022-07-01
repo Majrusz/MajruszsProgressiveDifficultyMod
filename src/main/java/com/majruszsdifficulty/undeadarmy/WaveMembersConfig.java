@@ -4,7 +4,6 @@ import com.mlib.Random;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.StringListConfig;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;

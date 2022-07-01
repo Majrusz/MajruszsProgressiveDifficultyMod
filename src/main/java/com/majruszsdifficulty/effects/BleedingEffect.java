@@ -79,8 +79,7 @@ public class BleedingEffect extends MobEffect {
 
 	/** Bleeding damage source that stores information about the causer of bleeding. (required for converting villager to zombie villager etc.) */
 	public static class EntityBleedingDamageSource extends DamageSource {
-		@Nullable
-		protected final Entity damageSourceEntity;
+		@Nullable protected final Entity damageSourceEntity;
 
 		public EntityBleedingDamageSource( @Nullable Entity damageSourceEntity ) {
 			super( Registries.BLEEDING_SOURCE.msgId );
@@ -104,8 +103,7 @@ public class BleedingEffect extends MobEffect {
 
 	/** Bleeding effect instance that stores information about the causer of bleeding. (required for converting villager to zombie villager etc.) */
 	public static class MobEffectInstance extends net.minecraft.world.effect.MobEffectInstance {
-		@Nullable
-		protected final Entity damageSourceEntity;
+		@Nullable protected final Entity damageSourceEntity;
 
 		public MobEffectInstance( int duration, int amplifier, boolean ambient, boolean showParticles, @Nullable LivingEntity attacker ) {
 			super( Registries.BLEEDING.get(), duration, amplifier, ambient, showParticles );

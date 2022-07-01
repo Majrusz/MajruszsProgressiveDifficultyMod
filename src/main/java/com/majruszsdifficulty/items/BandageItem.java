@@ -47,7 +47,9 @@ public class BandageItem extends Item {
 		this( Rarity.COMMON );
 	}
 
-	@Override @OnlyIn( Dist.CLIENT ) public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag
+	@Override
+	@OnlyIn( Dist.CLIENT )
+	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag
 	) {
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, TOOLTIP_TRANSLATION_KEY_1, TOOLTIP_TRANSLATION_KEY_2 );
 	}

@@ -14,8 +14,7 @@ public class ExperienceBonus extends GameModifier {
 		super( GameModifier.DEFAULT, "ExperienceBonus", "Gives extra experience as the difficulty increases." );
 
 		OnPickupXpContext onPickup = new OnPickupXpContext( this::giveExtraExperience );
-		onPickup.addCondition( new Condition.Excludable() )
-			.addConfig( this.bonusMultiplier );
+		onPickup.addCondition( new Condition.Excludable() ).addConfig( this.bonusMultiplier );
 
 		this.addContext( onPickup );
 	}

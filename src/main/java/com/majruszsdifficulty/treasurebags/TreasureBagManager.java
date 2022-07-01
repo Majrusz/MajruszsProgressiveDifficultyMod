@@ -43,7 +43,8 @@ public class TreasureBagManager extends GameModifier {
 		REGISTERS.add( new Register( entityType, treasureBag ) );
 	}
 
-	@Nullable public static TreasureBagItem getTreasureBag( EntityType< ? > entityType ) {
+	@Nullable
+	public static TreasureBagItem getTreasureBag( EntityType< ? > entityType ) {
 		Register register = getRegisterFor( entityType );
 		return register != null ? register.treasureBag : null;
 	}
@@ -52,11 +53,13 @@ public class TreasureBagManager extends GameModifier {
 		return getRegisterFor( entityType ) != null;
 	}
 
-	@Nullable private static Player getPlayerByUUID( ServerLevel level, CompoundTag tag ) {
+	@Nullable
+	private static Player getPlayerByUUID( ServerLevel level, CompoundTag tag ) {
 		return level.getPlayerByUUID( UUID.fromString( tag.getString( PLAYER_TAG ) ) );
 	}
 
-	@Nullable private static Register getRegisterFor( EntityType< ? > entityType ) {
+	@Nullable
+	private static Register getRegisterFor( EntityType< ? > entityType ) {
 		for( Register register : REGISTERS )
 			if( register.entityType.equals( entityType ) )
 				return register;
@@ -90,18 +93,18 @@ public class TreasureBagManager extends GameModifier {
 		OnPlayerTickContext onTick = new OnPlayerTickContext( this::giveTreasureBagToHero );
 		onTick.addCondition( new Condition.ContextOnPlayerTick( data->data.level != null && TimeHelper.hasServerTicksPassed( 20 ) ) )
 			.addCondition( new Condition.ContextOnPlayerTick( data->{
-			assert data.level != null;
-			Raid raid = data.level.getRaidAt( data.player.blockPosition() );
-			if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) )
-				return false;
+				assert data.level != null;
+				Raid raid = data.level.getRaidAt( data.player.blockPosition() );
+				if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) )
+					return false;
 
-			NBTHelper.IntegerData lastRaidId = new NBTHelper.IntegerData( data.player, RAID_TAG );
-			if( lastRaidId.get() == raid.getId() )
-				return false;
+				NBTHelper.IntegerData lastRaidId = new NBTHelper.IntegerData( data.player, RAID_TAG );
+				if( lastRaidId.get() == raid.getId() )
+					return false;
 
-			lastRaidId.set( raid.getId() );
-			return true;
-		} ) );
+				lastRaidId.set( raid.getId() );
+				return true;
+			} ) );
 
 		this.addContexts( onDamaged, onDeath, onFished, onTick );
 		this.addConfigs( TreasureBagItem.getConfigs() );

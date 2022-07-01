@@ -4,7 +4,6 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
-import com.mlib.config.BooleanConfig;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
 
