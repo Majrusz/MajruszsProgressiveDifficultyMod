@@ -17,9 +17,8 @@ import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.item.Items;
 
 public class ZombiesInGroup extends GameModifier {
-	final ItemStackConfig torch = new ItemStackConfig( "SidekickTorch", "Chance for a sidekick to have a Torch (main hand).", ()->Items.TORCH, EquipmentSlot.MAINHAND, 1.0, 0.05 );
-	final ItemStackConfig woodenPickaxe = new ItemStackConfig( "SidekickWoodenPickaxe", "Chance for a sidekick to have the Wooden Pickaxe (main hand).", ()->Items.WOODEN_PICKAXE, EquipmentSlot.MAINHAND, 0.5, 0.05, 0.1 );
-	final ItemStackConfig stonePickaxe = new ItemStackConfig( "SidekickStonePickaxe", "Chance for a sidekick to have the Stone Pickaxe (main hand).", ()->Items.STONE_PICKAXE, EquipmentSlot.MAINHAND, 0.25, 0.05, 0.1 );
+	final ItemStackConfig woodenPickaxe = new ItemStackConfig( "SidekickWoodenPickaxe", "Chance for a sidekick to have the Wooden Pickaxe (main hand).", ()->Items.WOODEN_PICKAXE, EquipmentSlot.MAINHAND, 0.75, 0.05, 0.1 );
+	final ItemStackConfig stonePickaxe = new ItemStackConfig( "SidekickStonePickaxe", "Chance for a sidekick to have the Stone Pickaxe (main hand).", ()->Items.STONE_PICKAXE, EquipmentSlot.MAINHAND, 0.5, 0.05, 0.1 );
 	final ItemStackConfig ironPickaxe = new ItemStackConfig( "SidekickIronPickaxe", "Chance for a sidekick to have the Iron Pickaxe (main hand).", ()->Items.IRON_PICKAXE, EquipmentSlot.MAINHAND, 0.1, 0.05, 0.2 );
 	final ItemStackConfig coal = new ItemStackConfig( "SidekickCoal", "Chance for a sidekick to have a Coal (offhand).", ()->Items.COAL, EquipmentSlot.OFFHAND, 0.6, 1 );
 	final ItemStackConfig ironIngot = new ItemStackConfig( "SidekickIronIngot", "Chance for a sidekick to have an Iron Ingot (offhand).", ()->Items.IRON_INGOT, EquipmentSlot.OFFHAND, 0.4, 1 );
@@ -34,8 +33,8 @@ public class ZombiesInGroup extends GameModifier {
 	public ZombiesInGroup() {
 		super( GameModifier.DEFAULT, "ZombiesInGroup", "Zombies may spawn in groups as miners (only underground)." );
 
-		mobGroups.addLeaderConfigs( woodenPickaxe, stonePickaxe, ironPickaxe, helmet, chestplate, leggings, boots );
-		mobGroups.addSidekickConfigs( torch, woodenPickaxe, stonePickaxe, ironPickaxe, coal, ironIngot, goldIngot, diamond );
+		mobGroups.addLeaderConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.helmet, this.chestplate, this.leggings, this.boots );
+		mobGroups.addSidekickConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.coal, this.ironIngot, this.goldIngot, this.diamond );
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnGroup );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
@@ -45,7 +44,7 @@ public class ZombiesInGroup extends GameModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) && data.level != null ) )
 			.addCondition( new Condition.ContextOnSpawned( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f ) )
-			.addConfigs( this.torch, this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.coal, this.ironIngot, this.goldIngot, this.diamond )
+			.addConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.coal, this.ironIngot, this.goldIngot, this.diamond )
 			.addConfigs( this.helmet, this.chestplate, this.leggings, this.boots, this.mobGroups );
 
 		this.addContext( onSpawned );
