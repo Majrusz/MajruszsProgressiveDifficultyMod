@@ -15,8 +15,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class EnderiumAxeItem extends AxeItem {
-	static final EnderiumItems.Tooltip ENDERIUM_TOOLTIP = new EnderiumItems.Tooltip( EnderiumItems.Keys.HASTE_TOOLTIP );
-
 	public EnderiumAxeItem() {
 		super( CustomItemTier.END, 6.0f, -3.1f, new Properties().rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ).fireResistant() );
 	}
@@ -24,6 +22,6 @@ public class EnderiumAxeItem extends AxeItem {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		ENDERIUM_TOOLTIP.apply( tooltip );
+		new EnderiumItems.Tooltip( EnderiumItems.Keys.HASTE_TOOLTIP ).apply( tooltip );
 	}
 }

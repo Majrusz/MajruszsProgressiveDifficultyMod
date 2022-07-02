@@ -1,9 +1,12 @@
 package com.majruszsdifficulty.treasurebags;
 
-import com.majruszsdifficulty.ObfuscationGetter;
 import com.majruszsdifficulty.PacketHandler;
+import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.items.TreasureBagItem;
+import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
+import com.mlib.gamemodifiers.contexts.OnPlayerLoggedContext;
+import com.mlib.gamemodifiers.data.OnPlayerLoggedData;
 import com.mlib.network.message.EntityMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -20,9 +23,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -30,35 +30,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Mod.EventBusSubscriber
-public class LootProgress {
-	public static ObfuscationGetter< LootTable, List< LootPool > > POOLS_GETTER = new ObfuscationGetter<>( LootTable.class, "pools", "f_79109_" );
-	public static ObfuscationGetter< LootPool, LootPoolEntryContainer[] > ENTRIES_GETTER = new ObfuscationGetter<>( LootPool.class, "entries", "f_79023_" );
-
-	@SubscribeEvent
-	public static void onSpawn( PlayerEvent.PlayerLoggedInEvent event ) {
-		Player player = event.getPlayer();
-		for( TreasureBagItem treasureBagItem : TreasureBagItem.TREASURE_BAGS )
-			createDefaultProgressIfPossible( player, treasureBagItem );
-
-		notifyPlayerAboutChanges( player );
-	}
-
-	public static void cleanProgress( Player player ) {
-		for( TreasureBagItem treasureBagItem : TreasureBagItem.TREASURE_BAGS ) {
-			String bagID = Utility.getRegistryString( treasureBagItem );
-			if( bagID == null )
-				continue;
-
-			CompoundTag compoundTag = player.getPersistentData();
-			if( compoundTag.contains( bagID ) )
-				compoundTag.remove( bagID );
-
-			createDefaultProgressIfPossible( player, treasureBagItem );
-		}
-
-		notifyPlayerAboutChanges( player );
-	}
+public class LootProgressManager extends GameModifier {
+	static final ObfuscationGetter.Field< LootTable, List< LootPool > > POOLS = new ObfuscationGetter.Field<>( LootTable.class, "f_79109_" );
+	static final ObfuscationGetter.Field< LootPool, LootPoolEntryContainer[] > ENTRIES = new ObfuscationGetter.Field<>( LootPool.class, "f_79023_" );
 
 	public static void updateProgress( TreasureBagItem treasureBagItem, Player player, List< ItemStack > generatedLoot ) {
 		String bagID = Utility.getRegistryString( treasureBagItem );
@@ -77,7 +51,7 @@ public class LootProgress {
 			CompoundTag treasureBagTag = compoundTag.getCompound( bagID );
 			if( treasureBagTag.contains( itemID ) ) {
 				LootData lootData = LootData.read( treasureBagTag, itemID );
-				lootData.isUnlocked = true;
+				lootData.unlock();
 				lootData.write( treasureBagTag );
 
 				compoundTag.put( bagID, treasureBagTag );
@@ -87,18 +61,42 @@ public class LootProgress {
 		notifyPlayerAboutChanges( player, treasureBagItem );
 	}
 
-	protected static void createDefaultProgressIfPossible( Player player, TreasureBagItem treasureBagItem ) {
-		String bagID = Utility.getRegistryString( treasureBagItem );
-		if( bagID == null )
-			return;
+	public static void cleanProgress( Player player ) {
+		for( TreasureBagItem treasureBagItem : TreasureBagItem.TREASURE_BAGS ) {
+			String bagID = Utility.getRegistryString( treasureBagItem );
+			if( bagID == null )
+				continue;
 
-		List< LootPool > pools = POOLS_GETTER.get( treasureBagItem.getLootTable() );
-		if( pools == null )
+			CompoundTag compoundTag = player.getPersistentData();
+			if( compoundTag.contains( bagID ) )
+				compoundTag.remove( bagID );
+
+			createDefaultProgress( player, treasureBagItem );
+		}
+
+		notifyPlayerAboutChanges( player );
+	}
+
+	public LootProgressManager() {
+		super( GameModifier.TREASURE_BAG );
+
+		this.addContext( new OnPlayerLoggedContext( this::onLogged ) );
+	}
+
+	private void onLogged( OnPlayerLoggedData data ) {
+		TreasureBagItem.TREASURE_BAGS.forEach( item->createDefaultProgress( data.player, item ) );
+		notifyPlayerAboutChanges( data.player );
+	}
+
+	private static void createDefaultProgress( Player player, TreasureBagItem treasureBagItem ) {
+		String bagID = Utility.getRegistryString( treasureBagItem );
+		List< LootPool > pools = POOLS.get( treasureBagItem.getLootTable() );
+		if( bagID == null || pools == null )
 			return;
 
 		LootContext context = TreasureBagItem.generateLootContext( player );
 		for( LootPool lootPool : pools ) {
-			LootPoolEntryContainer[] entries = ENTRIES_GETTER.get( lootPool );
+			LootPoolEntryContainer[] entries = ENTRIES.get( lootPool );
 			if( entries == null )
 				return;
 
@@ -125,7 +123,7 @@ public class LootProgress {
 		}
 	}
 
-	protected static void notifyPlayerAboutChanges( Player player, TreasureBagItem treasureBagItem ) {
+	private static void notifyPlayerAboutChanges( Player player, TreasureBagItem treasureBagItem ) {
 		ServerPlayer serverPlayer = Utility.castIfPossible( ServerPlayer.class, player );
 		if( serverPlayer == null )
 			return;
@@ -144,10 +142,10 @@ public class LootProgress {
 			lootDataList.add( LootData.read( treasureBagTag, itemID ) );
 
 		lootDataList.sort( Comparator.comparingInt( a->-a.quality ) );
-		PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), new ProgressMessage( serverPlayer, bagID, lootDataList ) );
+		PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), new LootProgressManager.ProgressMessage( serverPlayer, bagID, lootDataList ) );
 	}
 
-	protected static void notifyPlayerAboutChanges( Player player ) {
+	private static void notifyPlayerAboutChanges( Player player ) {
 		for( TreasureBagItem treasureBagItem : TreasureBagItem.TREASURE_BAGS )
 			notifyPlayerAboutChanges( player, treasureBagItem );
 	}

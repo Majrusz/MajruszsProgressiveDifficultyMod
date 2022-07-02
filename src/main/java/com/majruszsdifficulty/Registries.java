@@ -15,6 +15,7 @@ import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.itemsets.EnderiumSet;
 import com.majruszsdifficulty.itemsets.UndeadSet;
 import com.majruszsdifficulty.lootmodifiers.DoubleLoot;
+import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
@@ -238,6 +239,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new FallDebuffs() );
 		GAME_MODIFIERS.add( new IncreaseGameStage() );
 		GAME_MODIFIERS.add( new JockeySpawn() );
+		GAME_MODIFIERS.add( new LootProgressManager() );
 		GAME_MODIFIERS.add( new MobsSpawnStronger() );
 		GAME_MODIFIERS.add( new PhantomLevitationAttack() );
 		GAME_MODIFIERS.add( new PiglinsInGroup() );

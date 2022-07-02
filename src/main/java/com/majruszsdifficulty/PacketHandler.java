@@ -1,7 +1,7 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.entities.TankEntity;
-import com.majruszsdifficulty.treasurebags.LootProgress;
+import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -14,6 +14,6 @@ public class PacketHandler {
 	public static void registerPacket( final FMLCommonSetupEvent event ) {
 		CHANNEL = NetworkRegistry.newSimpleChannel( Registries.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals );
 		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode, TankEntity.TankAttackMessage::new, TankEntity.TankAttackMessage::handle );
-		CHANNEL.registerMessage( 1, LootProgress.ProgressMessage.class, LootProgress.ProgressMessage::encode, LootProgress.ProgressMessage::new, LootProgress.ProgressMessage::handle );
+		CHANNEL.registerMessage( 1, LootProgressManager.ProgressMessage.class, LootProgressManager.ProgressMessage::encode, LootProgressManager.ProgressMessage::new, LootProgressManager.ProgressMessage::handle );
 	}
 }

@@ -5,8 +5,8 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
 import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
-import com.majruszsdifficulty.treasurebags.LootProgress;
 import com.majruszsdifficulty.treasurebags.LootProgressClient;
+import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -76,7 +76,7 @@ public class TreasureBagItem extends Item {
 			level.playSound( null, player.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 0.9f );
 			List< ItemStack > loot = generateLoot( player );
 			MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) );
-			LootProgress.updateProgress( this, player, loot );
+			LootProgressManager.updateProgress( this, player, loot );
 			if( level instanceof ServerLevel serverLevel )
 				loot.forEach( reward->ItemHelper.giveItemStackToPlayer( reward, player, serverLevel ) );
 		}

@@ -3,17 +3,20 @@ package com.majruszsdifficulty.treasurebags;
 import net.minecraft.nbt.CompoundTag;
 
 public class LootData {
-	public static final String UNLOCKED_TAG = "unlocked";
-	public static final String QUALITY_TAG = "quality";
-
-	public String itemID;
-	public boolean isUnlocked;
-	public int quality;
+	static final String UNLOCKED_TAG = "unlocked";
+	static final String QUALITY_TAG = "quality";
+	final String itemID;
+	boolean isUnlocked;
+	final int quality;
 
 	public LootData( String itemID, boolean isUnlocked, int quality ) {
 		this.itemID = itemID;
 		this.isUnlocked = isUnlocked;
 		this.quality = quality;
+	}
+
+	public void unlock() {
+		this.isUnlocked = true;
 	}
 
 	public void write( CompoundTag treasureBagTag ) {
@@ -26,9 +29,6 @@ public class LootData {
 
 	public static LootData read( CompoundTag treasureBagTag, String itemID ) {
 		CompoundTag itemTag = treasureBagTag.getCompound( itemID );
-		boolean isUnlocked = itemTag.getBoolean( LootData.UNLOCKED_TAG );
-		int quality = itemTag.getInt( LootData.QUALITY_TAG );
-
-		return new LootData( itemID, isUnlocked, quality );
+		return new LootData( itemID, itemTag.getBoolean( LootData.UNLOCKED_TAG ), itemTag.getInt( LootData.QUALITY_TAG ) );
 	}
 }

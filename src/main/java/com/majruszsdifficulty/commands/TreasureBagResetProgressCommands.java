@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.treasurebags.LootProgress;
+import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.mlib.Utility;
 import com.mlib.commands.EntityCommand;
 import com.mlib.commands.IRegistrableCommand;
@@ -17,7 +17,7 @@ public class TreasureBagResetProgressCommands extends EntityCommand implements I
 	protected int handleCommand( CommandContext< CommandSourceStack > context, CommandSourceStack source, Entity entity ) {
 		Player player = Utility.castIfPossible( Player.class, entity );
 		if( player != null ) {
-			LootProgress.cleanProgress( player );
+			LootProgressManager.cleanProgress( player );
 			source.sendSuccess( Component.translatable( "commands.treasurebag.reset", entity.getName() ), true );
 			return 0;
 		}

@@ -2,7 +2,6 @@ package com.majruszsdifficulty.config;
 
 import com.majruszsdifficulty.GameStage;
 import com.mlib.config.ConfigGroup;
-import com.mlib.config.DoubleConfig;
 import com.mlib.config.StringListConfig;
 import com.mlib.config.UserConfig;
 import net.minecraftforge.common.ForgeConfigSpec;

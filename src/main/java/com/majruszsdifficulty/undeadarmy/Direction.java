@@ -42,7 +42,7 @@ public enum Direction {
 			z = positionToAttack.getZ() + this.z * spawnRadius + ( int )offset.z;
 			y = world.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z );
 			++tries;
-		} while ( y != world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) && tries < 5 );
+		} while( y != world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) && tries < 5 );
 
 		return new BlockPos( x, y + 1, z );
 	}
