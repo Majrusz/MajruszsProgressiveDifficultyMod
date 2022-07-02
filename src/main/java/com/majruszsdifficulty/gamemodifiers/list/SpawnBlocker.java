@@ -16,7 +16,7 @@ import net.minecraftforge.eventbus.api.Event;
 
 public class SpawnBlocker extends GameModifier {
 	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( "", "", new String[]{
-		"minecraft:illusioner", "majruszsdifficulty:giant", "majruszsdifficulty:tank"
+		"minecraft:illusioner", "majruszsdifficulty:tank"
 	}, new String[]{}, new String[]{} );
 
 	public SpawnBlocker() {
