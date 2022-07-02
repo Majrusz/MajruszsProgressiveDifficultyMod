@@ -23,8 +23,6 @@ import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
-import com.majruszsdifficulty.world.EntityBiomeModifier;
-import com.majruszsdifficulty.world.OreBiomeModifier;
 import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.registries.DeferredRegisterHelper;
@@ -58,7 +56,6 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -90,7 +87,6 @@ public class Registries {
 	static final DeferredRegister< GlobalLootModifierSerializer< ? > > LOOT_MODIFIERS = HELPER.create( ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS );
 	static final DeferredRegister< PlacedFeature > PLACED_FEATURES = HELPER.create( Registry.PLACED_FEATURE_REGISTRY );
 	static final DeferredRegister< ConfiguredFeature< ?, ? > > CONFIGURED_FEATURES = HELPER.create( Registry.CONFIGURED_FEATURE_REGISTRY );
-	static final DeferredRegister< Codec< ? extends BiomeModifier > > BIOME_MODIFIERS = HELPER.create( ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -123,7 +119,6 @@ public class Registries {
 	public static final RegistryObject< TreasureBagItem > ENDER_DRAGON_TREASURE_BAG = ITEMS.register( "ender_dragon_treasure_bag", TreasureBagItem.EnderDragon::new );
 	public static final RegistryObject< TreasureBagItem > FISHING_TREASURE_BAG = ITEMS.register( "fishing_treasure_bag", TreasureBagItem.Fishing::new );
 	public static final RegistryObject< TreasureBagItem > PILLAGER_TREASURE_BAG = ITEMS.register( "pillager_treasure_bag", TreasureBagItem.Pillager::new );
-	public static final RegistryObject< TreasureBagItem > WARDEN_TREASURE_BAG = ITEMS.register( "warden_treasure_bag", TreasureBagItem.Warden::new );
 
 	// Item Blocks
 	public static final RegistryObject< EndShardOre.EndShardOreItem > ENDERIUM_SHARD_ORE_ITEM = ITEMS.register( "enderium_shard_ore", EndShardOre.EndShardOreItem::new );
@@ -179,22 +174,14 @@ public class Registries {
 	public static final BasicTrigger BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( MajruszsDifficulty.MOD_ID );
 
 	// Configured Feature
-	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_SMALL_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_small", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 1, 0.99f ) );
-	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_LARGE_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_large", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 2, 0.99f ) );
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_SMALL_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_small", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 2, 0.99f ) );
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_LARGE_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_large", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 3, 0.99f ) );
 	public static final RegistryObject< ConfiguredFeature< ?, ? > > INFESTED_END_STONE_CONFIGURED = CONFIGURED_FEATURES.register( "infested_end_stone", ()->WorldGenHelper.getEndConfigured( INFESTED_END_STONE, 4, 0.0f ) );
 
 	// Placed Feature
 	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 16 ) );
 	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 8 ) );
 	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 128 ) );
-
-	// Biome Modifiers
-	public static final RegistryObject< Codec< OreBiomeModifier > > ORE_MODIFIER = BIOME_MODIFIERS.register( "ores", ()->RecordCodecBuilder.create( builder->builder.group( Biome.LIST_CODEC.fieldOf( "biomes" )
-			.forGetter( OreBiomeModifier::biomes ), PlacedFeature.CODEC.fieldOf( "feature" ).forGetter( OreBiomeModifier::feature ) )
-		.apply( builder, OreBiomeModifier::new ) ) );
-	public static final RegistryObject< Codec< EntityBiomeModifier > > ENTITY_MODIFIER = BIOME_MODIFIERS.register( "entities", ()->RecordCodecBuilder.create( builder->builder.group( Biome.LIST_CODEC.fieldOf( "biomes" )
-			.forGetter( EntityBiomeModifier::biomes ), MobSpawnSettings.SpawnerData.CODEC.fieldOf( "spawners" ).forGetter( EntityBiomeModifier::spawnerData ) )
-		.apply( builder, EntityBiomeModifier::new ) ) );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;
@@ -315,7 +302,6 @@ public class Registries {
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get() );
-		TreasureBagManager.addTreasureBagTo( EntityType.WARDEN, WARDEN_TREASURE_BAG.get() );
 	}
 
 	public static void onSavingLevel( WorldEvent.Save event ) {

@@ -19,7 +19,6 @@
   "item.majruszsdifficulty.ender_dragon_treasure_bag": "Ender Dragon Treasure Bag",
   "item.majruszsdifficulty.fishing_treasure_bag": "Angler Treasure Bag",
   "item.majruszsdifficulty.pillager_treasure_bag": "Raid Treasure Bag",
-  "item.majruszsdifficulty.warden_treasure_bag": "Warden Treasure Bag",
   "item.majruszsdifficulty.bandage": "Bandage",
   "item.majruszsdifficulty.bandage.item_tooltip1": "Causes the bleeding to stop.",
   "item.majruszsdifficulty.bandage.item_tooltip2": "It can also be used on other mobs.",
@@ -152,9 +151,5 @@
   "advancements.progressive_difficulty.ender_dragon_treasure_bag.title": "Unearthly Treasures",
   "advancements.progressive_difficulty.ender_dragon_treasure_bag.description": "Open the first Ender Dragon Treasure Bag",
   "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.title": "The End of the End?",
-  "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.description": "Open the sixteenth Ender Dragon Treasure Bag",
-  "advancements.progressive_difficulty.warden_treasure_bag.title": "Forbidden Bag",
-  "advancements.progressive_difficulty.warden_treasure_bag.description": "Open the first Warden Treasure Bag",
-  "advancements.progressive_difficulty.warden_treasure_bag_16.title": "Master of Silence",
-  "advancements.progressive_difficulty.warden_treasure_bag_16.description": "Open the sixteenth Warden Treasure Bag"
+  "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.description": "Open the sixteenth Ender Dragon Treasure Bag"
 }

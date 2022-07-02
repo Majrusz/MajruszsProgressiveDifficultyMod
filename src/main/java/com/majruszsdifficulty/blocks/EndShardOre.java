@@ -9,8 +9,10 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.fml.common.Mod;
@@ -25,10 +27,8 @@ public class EndShardOre extends Block {
 	}
 
 	@Override
-	protected void tryDropExperience( ServerLevel level, BlockPos position, ItemStack itemStack, IntProvider intProvider ) {
-		if( EnchantmentHelper.getItemEnchantmentLevel( Enchantments.SILK_TOUCH, itemStack ) == 0 ) {
-			this.popExperience( level, position, Random.nextInt( 6, 11 ) );
-		}
+	public int getExpDrop( BlockState state, LevelReader world, BlockPos position, int fortuneLevel, int silkTouchLevel ) {
+		return silkTouchLevel == 0 ? Random.nextInt( 6, 11 ) : 0;
 	}
 
 	public static class EndShardOreItem extends BlockItem {

@@ -5,6 +5,8 @@ import com.mlib.commands.BaseCommand;
 import com.mlib.commands.IRegistrableCommand;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
@@ -32,7 +34,7 @@ public class CommandsHelper {
 	}
 
 	public static MutableComponent createGameStageMessage( GameStage.Stage stage, String translationID ) {
-		return Component.translatable( "commands.gamestage." + translationID, GameStage.getGameStageText( stage ) );
+		return new TranslatableComponent( "commands.gamestage." + translationID, GameStage.getGameStageText( stage ) );
 	}
 
 	public static MutableComponent createBaseMessageWithPosition( String translationKey, Vec3 position, Object... objects ) {
@@ -40,7 +42,7 @@ public class CommandsHelper {
 		copy[ objects.length ] = getPositionFormatted( position );
 		System.arraycopy( objects, 0, copy, 0, objects.length );
 
-		return Component.translatable( translationKey, copy );
+		return new TranslatableComponent( translationKey, copy );
 	}
 
 	public static String getPositionFormatted( Vec3 position ) {

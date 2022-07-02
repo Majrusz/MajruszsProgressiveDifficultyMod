@@ -40,7 +40,7 @@ public class DoubleLoot extends LootModifier {
 
 	@Nonnull
 	@Override
-	public ObjectArrayList< ItemStack > doApply( ObjectArrayList< ItemStack > generatedLoot, LootContext context ) {
+	public List< ItemStack > doApply( List< ItemStack > generatedLoot, LootContext context ) {
 		double chance = GameStage.getCurrentGameStageDependentValue( this.normalModeChance, this.expertModeChance, this.masterModeChance );
 
 		if( Random.tryChance( chance ) ) {
@@ -62,8 +62,8 @@ public class DoubleLoot extends LootModifier {
 			serverLevel.sendParticles( ParticleTypes.HAPPY_VILLAGER, entity.getX(), entity.getY( 0.5 ), entity.getZ(), 1, 0.5, 0.5, 0.5, 0.5 );
 	}
 
-	protected ObjectArrayList< ItemStack > doubleLoot( ObjectArrayList< ItemStack > generatedLoot ) {
-		ObjectArrayList< ItemStack > doubledLoot = new ObjectArrayList<>();
+	protected List< ItemStack > doubleLoot( List< ItemStack > generatedLoot ) {
+		List< ItemStack > doubledLoot = new ArrayList<>();
 		for( ItemStack itemStack : generatedLoot ) {
 			boolean isItemForbidden = isForbidden( itemStack.getItem() );
 

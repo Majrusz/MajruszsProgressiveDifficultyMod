@@ -19,7 +19,6 @@
   "item.majruszsdifficulty.ender_dragon_treasure_bag": "Worek ze skarbem smoka endu",
   "item.majruszsdifficulty.fishing_treasure_bag": "Worek ze skarbem rybaka",
   "item.majruszsdifficulty.pillager_treasure_bag": "Worek ze skarbem najazdu",
-  "item.majruszsdifficulty.warden_treasure_bag": "Worek ze skarbem nadzorcy",
   "item.majruszsdifficulty.bandage": "Bandaż",
   "item.majruszsdifficulty.bandage.item_tooltip1": "Zatrzymuje krwawienie.",
   "item.majruszsdifficulty.bandage.item_tooltip2": "Może zostać również użyte na innych.",
@@ -153,9 +152,5 @@
   "advancements.progressive_difficulty.ender_dragon_treasure_bag.title": "Nieziemskie skarby",
   "advancements.progressive_difficulty.ender_dragon_treasure_bag.description": "Otwórz pierwszy worek ze skarbem smoka endu",
   "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.title": "Koniec końca?",
-  "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.description": "Otwórz szesnasty worek ze skarbem smoka endu",
-  "advancements.progressive_difficulty.warden_treasure_bag.title": "Zakazany worek",
-  "advancements.progressive_difficulty.warden_treasure_bag.description": "Otwórz pierwszy worek ze skarbem nadzorcy",
-  "advancements.progressive_difficulty.warden_treasure_bag_16.title": "Król ciszy",
-  "advancements.progressive_difficulty.warden_treasure_bag_16.description": "Otwórz szesnasty worek ze skarbem nadzorcy"
+  "advancements.progressive_difficulty.ender_dragon_treasure_bag_16.description": "Otwórz szesnasty worek ze skarbem smoka endu"
 }
