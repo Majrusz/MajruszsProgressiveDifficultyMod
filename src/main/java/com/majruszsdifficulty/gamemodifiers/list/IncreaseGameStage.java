@@ -11,6 +11,8 @@ import com.mlib.gamemodifiers.contexts.OnDimensionChangedContext;
 import com.mlib.gamemodifiers.data.OnDeathData;
 import com.mlib.gamemodifiers.data.OnDimensionChangedData;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
@@ -87,7 +89,7 @@ public class IncreaseGameStage extends GameModifier {
 
 	private static void sendMessageToAllPlayers( PlayerList playerList, String translationKey, ChatFormatting textColor ) {
 		for( Player player : playerList.getPlayers() ) {
-			MutableComponent message = Component.translatable( translationKey );
+			MutableComponent message = new TranslatableComponent( translationKey );
 			message.withStyle( textColor, ChatFormatting.BOLD );
 
 			player.displayClientMessage( message, false );

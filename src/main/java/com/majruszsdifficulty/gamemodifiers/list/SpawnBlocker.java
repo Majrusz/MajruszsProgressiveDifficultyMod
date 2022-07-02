@@ -8,7 +8,7 @@ import com.mlib.gamemodifiers.data.OnCheckSpawnData;
 import com.mlib.levels.LevelHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.StructureTags;
+import net.minecraft.tags.ConfiguredStructureTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Illusioner;
 import net.minecraft.world.level.Level;
@@ -42,6 +42,6 @@ public class SpawnBlocker extends GameModifier {
 		if( !( entity.level instanceof ServerLevel level ) || !LevelHelper.isEntityIn( entity, Level.OVERWORLD ) )
 			return false;
 
-		return level.findNearestMapStructure( StructureTags.VILLAGE, entity.blockPosition(), 10000, false ) != null;
+		return level.findNearestMapFeature( ConfiguredStructureTags.VILLAGE, entity.blockPosition(), 10000, false ) != null;
 	}
 }
