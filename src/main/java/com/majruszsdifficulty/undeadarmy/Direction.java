@@ -34,12 +34,16 @@ public enum Direction {
 	}
 
 	public BlockPos getRandomSpawnPosition( ServerLevel world, BlockPos positionToAttack, int spawnRadius ) {
-		Vec3 offset = Random.getRandomVector3d( -this.xFactor, this.xFactor, 0.0, 0.0, -this.zFactor, this.zFactor );
+		int tries = 0;
+		int x, y, z;
+		do {
+			Vec3 offset = Random.getRandomVector3d( -this.xFactor, this.xFactor, 0.0, 0.0, -this.zFactor, this.zFactor );
+			x = positionToAttack.getX() + this.x * spawnRadius + ( int )offset.x;
+			z = positionToAttack.getZ() + this.z * spawnRadius + ( int )offset.z;
+			y = world.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z );
+			++tries;
+		} while ( y != world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) && tries < 5 );
 
-		int x = positionToAttack.getX() + this.x * spawnRadius + ( int )offset.x;
-		int z = positionToAttack.getZ() + this.z * spawnRadius + ( int )offset.z;
-		int y = world.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z ) + 1;
-
-		return new BlockPos( x, y, z );
+		return new BlockPos( x, y + 1, z );
 	}
 }

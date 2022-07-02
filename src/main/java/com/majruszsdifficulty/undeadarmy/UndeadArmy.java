@@ -206,7 +206,7 @@ public class UndeadArmy {
 		this.bossInfo.setProgress( Mth.clamp( 1.0f - ( ( float )this.ticksBetweenWaves ) / this.ticksBetweenWavesMaximum, 0.0f, 1.0f ) );
 		this.spawnInfoList.forEach( spawnInfo->{
 			BlockPos position = spawnInfo.getFirst();
-			this.level.sendParticles( ParticleTypes.SOUL, position.getX() + 0.5, position.getY(), position.getZ() + 0.5, 3, 0.5, 0.5, 0.5, 0.02 );
+			this.level.sendParticles( ParticleTypes.SOUL, position.getX() + 0.5, position.getY(), position.getZ() + 0.5, 2, 0.5, 0.5, 0.5, 0.02 );
 		} );
 	}
 
