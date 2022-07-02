@@ -43,7 +43,7 @@ public class TankEntity extends Monster {
 	public static final int NORMAL_ATTACK_DURATION = Utility.secondsToTicks( 0.6 );
 
 	public static Supplier< EntityType< TankEntity > > createSupplier() {
-		return ()->EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 1.1f, 2.7f ).build( "tank" );
+		return ()->EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 0.99f, 2.7f ).build( "tank" );
 	}
 
 	public static AttributeSupplier getAttributeMap() {
