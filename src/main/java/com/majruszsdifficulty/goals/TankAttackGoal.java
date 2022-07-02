@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -75,8 +76,11 @@ public class TankAttackGoal extends MeleeAttackGoal {
 		Vec3 position = getSpecialAttackPosition( this.tank.position(), target.position() );
 		Predicate< LivingEntity > notTankPredicate = entity->!( entity instanceof TankEntity );
 		List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 7.0, notTankPredicate );
-		for( LivingEntity entity : entities )
+		for( LivingEntity entity : entities ) {
 			this.tank.doHurtTarget( entity );
+			if( entity instanceof ServerPlayer player && player.isBlocking() )
+				player.disableShield( true );
+		}
 
 		spawnSpecialAttackEffects( level, position );
 	}
