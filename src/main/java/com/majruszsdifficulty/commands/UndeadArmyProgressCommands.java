@@ -9,8 +9,6 @@ import com.mlib.nbt.NBTHelper;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,7 +23,7 @@ public class UndeadArmyProgressCommands extends EntityCommand implements IRegist
 			int undeadKilled = undeadKilledData.get();
 			int undeadKilledMax = UndeadArmyConfig.getRequiredKills();
 
-			source.sendSuccess( new TranslatableComponent( "commands.undeadarmy.progress", entity.getName(), undeadKilled, undeadKilledMax ), true );
+			source.sendSuccess( Component.translatable( "commands.undeadarmy.progress", entity.getName(), undeadKilled, undeadKilledMax ), true );
 			return 0;
 		}
 

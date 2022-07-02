@@ -1,8 +1,6 @@
 package com.majruszsdifficulty.itemsets;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -50,7 +48,7 @@ public class BaseSet {
 	}
 
 	public MutableComponent getTranslatedName() {
-		return new TranslatableComponent( this.translationKey );
+		return Component.translatable( this.translationKey );
 	}
 
 	public ChatFormatting getChatFormatting() {

@@ -1,11 +1,11 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[41,)"
 license = "MIT License"
 issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
 [[mods]]
 modId = "majruszsdifficulty"
-version = "1.4.2"
+version = "1.5.0"
 displayName = "Majrusz's Progressive Difficulty"
 updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.19/update.json"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
@@ -17,20 +17,20 @@ description = '''Mod which increases the game difficulty of Minecraft after cert
 [[dependencies.majruszsdifficulty]]
 modId = "forge"
 mandatory = true
-versionRange = "[40,)"
+versionRange = "[41,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18.2,1.19)"
+versionRange = "[1.19,1.20)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
 modId = "majruszlib"
 mandatory = true
-versionRange = "[2.7.2,3.0.0)"
+versionRange = "[2.8.0,3.0.0)"
 ordering = "NONE"
 side = "BOTH"

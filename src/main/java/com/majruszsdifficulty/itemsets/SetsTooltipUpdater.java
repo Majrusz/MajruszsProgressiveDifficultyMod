@@ -3,8 +3,6 @@ package com.majruszsdifficulty.itemsets;
 import com.majruszsdifficulty.MajruszsHelper;
 import com.mlib.client.ClientHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -55,24 +53,24 @@ public class SetsTooltipUpdater {
 	}
 
 	protected static void addItemList( List< Component > tooltip, BaseSet set, Player player ) {
-		tooltip.add( new TranslatableComponent( SET_TOOLTIP, set.getTranslatedName(), set.countSetItems( player ), set.itemData.length )
+		tooltip.add( Component.translatable( SET_TOOLTIP, set.getTranslatedName(), set.countSetItems( player ), set.itemData.length )
 			.withStyle( HINT_FORMAT ) );
 		for( ItemData itemData : set.itemData ) {
 			ChatFormatting chatFormatting = itemData.hasItemEquipped( player ) ? set.getChatFormatting() : DISABLED_FORMAT;
 
-			tooltip.add( new TextComponent( " " ).append( itemData.getTranslatedName() ).withStyle( chatFormatting ) );
+			tooltip.add( Component.literal( " " ).append( itemData.getTranslatedName() ).withStyle( chatFormatting ) );
 		}
 	}
 
 	protected static void addBonusList( List< Component > tooltip, BaseSet set, Player player ) {
-		tooltip.add( new TranslatableComponent( BONUS_TOOLTIP ).withStyle( HINT_FORMAT ) );
+		tooltip.add( Component.translatable( BONUS_TOOLTIP ).withStyle( HINT_FORMAT ) );
 		for( BonusData bonusData : set.bonusData ) {
 			boolean metRequirements = set.areRequirementsMet( player, bonusData );
 			ChatFormatting chatFormatting = metRequirements ? set.chatFormatting : DISABLED_FORMAT;
 
-			MutableComponent component = new TextComponent( " " )
-				.append( new TranslatableComponent( ITEM_PROGRESS_TOOLTIP, bonusData.requiredItems, set.itemData.length ).withStyle( chatFormatting ) )
-				.append( new TextComponent( " " ) )
+			MutableComponent component = Component.literal( " " )
+				.append( Component.translatable( ITEM_PROGRESS_TOOLTIP, bonusData.requiredItems, set.itemData.length ).withStyle( chatFormatting ) )
+				.append( Component.literal( " " ) )
 				.append( bonusData.createTranslatedText( metRequirements ? HINT_FORMAT : DISABLED_FORMAT, metRequirements ? set.chatFormatting : DISABLED_FORMAT ) );
 			tooltip.add( component );
 		}

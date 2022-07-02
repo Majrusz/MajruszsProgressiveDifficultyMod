@@ -25,8 +25,8 @@ public class InfestedEndStone extends Block {
 	}
 
 	@Override
-	public void spawnAfterBreak( BlockState state, ServerLevel worldIn, BlockPos pos, ItemStack stack ) {
-		super.spawnAfterBreak( state, worldIn, pos, stack );
+	public void spawnAfterBreak( BlockState state, ServerLevel worldIn, BlockPos pos, ItemStack stack, boolean p_221364_ ) {
+		super.spawnAfterBreak( state, worldIn, pos, stack, p_221364_ );
 
 		GameRules gameRules = worldIn.getGameRules();
 		if( gameRules.getBoolean( GameRules.RULE_DOBLOCKDROPS ) && EnchantmentHelper.getItemEnchantmentLevel( Enchantments.SILK_TOUCH, stack ) == 0 )

@@ -2,9 +2,6 @@ package com.majruszsdifficulty;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.TooltipFlag;
 
@@ -12,7 +9,7 @@ import java.util.List;
 
 public class MajruszsHelper {
 	public static void addTranslatableText( List< Component > tooltip, String translationKey ) {
-		tooltip.add( new TranslatableComponent( translationKey ).withStyle( ChatFormatting.GRAY ) );
+		tooltip.add( Component.translatable( translationKey ).withStyle( ChatFormatting.GRAY ) );
 	}
 
 	public static void addTranslatableTexts( List< Component > tooltip, String... translationKeys ) {
@@ -35,11 +32,11 @@ public class MajruszsHelper {
 
 	/** Returns formatted text with information that item is disabled. */
 	public static MutableComponent getDisabledItemComponent() {
-		return new TranslatableComponent( "majruszsdifficulty.items.disabled_tooltip" ).withStyle( ChatFormatting.RED, ChatFormatting.BOLD );
+		return Component.translatable( "majruszsdifficulty.items.disabled_tooltip" ).withStyle( ChatFormatting.RED, ChatFormatting.BOLD );
 	}
 
 	public static MutableComponent getMoreDetailsComponent() {
-		return new TranslatableComponent( "majruszsdifficulty.items.advanced_tooltip" ).withStyle( ChatFormatting.GRAY );
+		return Component.translatable( "majruszsdifficulty.items.advanced_tooltip" ).withStyle( ChatFormatting.GRAY );
 	}
 
 	public static void addMoreDetailsText( List< Component > tooltip ) {
@@ -47,7 +44,7 @@ public class MajruszsHelper {
 	}
 
 	public static MutableComponent getEmptyLine() {
-		return new TextComponent( " " );
+		return Component.literal( " " );
 	}
 
 	public static void addEmptyLine( List< Component > tooltip ) {

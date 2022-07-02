@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -75,10 +76,11 @@ public class TankEntity extends Monster {
 		this.targetSelector.addGoal( 1, new HurtByTargetGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
+		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, Warden.class, true ) );
 	}
 
 	@Override
-	public int getExperienceReward( Player player ) {
+	public int getExperienceReward() {
 		return Random.nextInt( 17 );
 	}
 

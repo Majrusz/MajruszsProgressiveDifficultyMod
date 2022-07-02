@@ -8,8 +8,6 @@ import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
 import com.majruszsdifficulty.treasurebags.LootProgressClient;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.mlib.items.ItemHelper;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -46,7 +44,7 @@ public class TreasureBagItem extends Item {
 
 	public static TreasureBagConfig[] getConfigs() {
 		return new TreasureBagConfig[]{
-			UndeadArmy.CONFIG, ElderGuardian.CONFIG, Wither.CONFIG, EnderDragon.CONFIG, Fishing.CONFIG, Pillager.CONFIG
+			UndeadArmy.CONFIG, ElderGuardian.CONFIG, Wither.CONFIG, EnderDragon.CONFIG, Fishing.CONFIG, Pillager.CONFIG, Warden.CONFIG
 		};
 	}
 
@@ -162,6 +160,14 @@ public class TreasureBagItem extends Item {
 
 		public Pillager() {
 			super( "pillager", CONFIG );
+		}
+	}
+
+	public static class Warden extends TreasureBagItem {
+		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden", "" );
+
+		public Warden() {
+			super( "warden", CONFIG );
 		}
 	}
 }

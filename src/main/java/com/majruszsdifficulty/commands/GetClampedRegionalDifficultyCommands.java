@@ -8,8 +8,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
@@ -38,20 +36,20 @@ public class GetClampedRegionalDifficultyCommands extends PositionCommand implem
 		String clampedRegionalDifficulty = String.format( "%.3f", LevelHelper.getClampedRegionalDifficulty( level, position ) );
 		String stateModifier = String.format( "%.2f", GameStage.getStageModifier() );
 		String finalDifficulty = String.format( "%.3f", GameStage.getRegionalDifficulty( level, position ) );
-		MutableComponent formula = new TranslatableComponent( "commands.clampedregionaldifficulty.formula", stateModifier, finalDifficulty );
+		MutableComponent formula = Component.translatable( "commands.clampedregionaldifficulty.formula", stateModifier, finalDifficulty );
 		String positionFormatted = CommandsHelper.getPositionFormatted( position );
 
 		switch( GameStage.getCurrentStage() ) {
 			case MASTER:
 				formula.withStyle( GameStage.MASTER_MODE_COLOR, ChatFormatting.BOLD );
 
-				return new TranslatableComponent( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, formula, positionFormatted );
+				return Component.translatable( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, formula, positionFormatted );
 			case EXPERT:
 				formula.withStyle( GameStage.EXPERT_MODE_COLOR, ChatFormatting.BOLD );
 
-				return new TranslatableComponent( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, formula, positionFormatted );
+				return Component.translatable( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, formula, positionFormatted );
 			default:
-				return new TranslatableComponent( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, "", positionFormatted );
+				return Component.translatable( "commands.clampedregionaldifficulty", clampedRegionalDifficulty, "", positionFormatted );
 		}
 	}
 }

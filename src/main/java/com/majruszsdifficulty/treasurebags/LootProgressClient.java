@@ -5,8 +5,6 @@ import com.mlib.Utility;
 import com.mlib.client.ClientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -33,12 +31,12 @@ public class LootProgressClient {
 		int unlockedItems = 0, totalItems = 0;
 		List< Component > tooltip = new ArrayList<>();
 		for( LootData lootData : lootDataList ) {
-			MutableComponent component = new TextComponent( " " );
+			MutableComponent component = Component.literal( " " );
 			if( lootData.isUnlocked ) {
 				MutableComponent mutableComponent = Registry.ITEM.get( new ResourceLocation( lootData.itemID ) ).getDescription().copy();
 				component.append( mutableComponent.withStyle( getUnlockedItemFormat( lootData.quality ) ) );
 			} else {
-				component.append( new TextComponent( "???" ).withStyle( getLockedItemFormat( lootData.quality ) ) );
+				component.append( Component.literal( "???" ).withStyle( getLockedItemFormat( lootData.quality ) ) );
 			}
 
 			if( lootData.isUnlocked )
@@ -59,11 +57,11 @@ public class LootProgressClient {
 				return;
 
 			Tuple< Integer, Integer > tuple = UNLOCKED_LOOT.get( bagID );
-			tooltip.add( new TranslatableComponent( LIST_TOOLTIP_TRANSLATION_KEY, tuple.getA(), tuple.getB() ).withStyle( ChatFormatting.GRAY ) );
+			tooltip.add( Component.translatable( LIST_TOOLTIP_TRANSLATION_KEY, tuple.getA(), tuple.getB() ).withStyle( ChatFormatting.GRAY ) );
 			if( LootProgressClient.TREASURE_BAG_COMPONENTS.containsKey( bagID ) )
 				tooltip.addAll( LootProgressClient.TREASURE_BAG_COMPONENTS.get( bagID ) );
 		} else {
-			tooltip.add( new TranslatableComponent( HINT_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY ) );
+			tooltip.add( Component.translatable( HINT_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY ) );
 		}
 	}
 
