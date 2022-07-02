@@ -29,7 +29,7 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
-modId = "majrusz_library"
+modId = "mlib"
 mandatory = true
 versionRange = "[2.8.0,3.0.0)"
 ordering = "NONE"
