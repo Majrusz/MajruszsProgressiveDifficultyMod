@@ -7,7 +7,6 @@ import com.majruszsdifficulty.commands.CommandsHelper;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
-import com.majruszsdifficulty.entities.GiantEntity;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.list.*;
@@ -94,7 +93,6 @@ public class Registries {
 	static final DeferredRegister< Codec< ? extends BiomeModifier > > BIOME_MODIFIERS = HELPER.create( ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS );
 
 	// Entities
-	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.register( "giant", GiantEntity.createSupplier() );
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
 
@@ -292,13 +290,11 @@ public class Registries {
 	}
 
 	public static void setupEntities( EntityAttributeCreationEvent event ) {
-		event.put( GIANT.get(), GiantEntity.getAttributeMap() );
 		event.put( CREEPERLING.get(), CreeperlingEntity.getAttributeMap() );
 		event.put( TANK.get(), TankEntity.getAttributeMap() );
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
-		SpawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 	}

@@ -4,7 +4,6 @@ import com.majruszsdifficulty.items.EndShardLocatorItem;
 import com.majruszsdifficulty.models.CreeperlingModel;
 import com.majruszsdifficulty.models.TankModel;
 import com.majruszsdifficulty.renderers.CreeperlingRenderer;
-import com.majruszsdifficulty.renderers.GiantRenderer;
 import com.majruszsdifficulty.renderers.TankRenderer;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -20,7 +19,6 @@ public class RegistriesClient {
 		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER_LOCATION, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
 		ForgeHooksClient.registerLayerDefinition( TankRenderer.LAYER_LOCATION, ()->TankModel.createBodyLayer( CubeDeformation.NONE ) );
 
-		EntityRenderers.register( Registries.GIANT.get(), GiantRenderer::new );
 		EntityRenderers.register( Registries.CREEPERLING.get(), CreeperlingRenderer::new );
 		EntityRenderers.register( Registries.TANK.get(), TankRenderer::new );
 
