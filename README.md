@@ -1,8 +1,8 @@
 ![Mod logo](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/1.16.4/logo.png?raw=true)
 
 ## What is Majrusz's Progressive Difficulty? [![](http://cf.way2muchnoise.eu/full_majruszs-progressive-difficulty_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty)
-**Majrusz's Progressive Difficulty** is a Minecraft Forge modification which focuses
-mainly on making the game more difficult after reaching certain milestones.
+**Majrusz's Progressive Difficulty** is a Minecraft Forge modification which
+progressively makes the game more difficult over time.
 
 ## Where is Majrusz's Progressive Difficulty available?
 - [Curse Forge](https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty)
