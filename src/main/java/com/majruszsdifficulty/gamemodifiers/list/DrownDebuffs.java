@@ -21,7 +21,7 @@ public class DrownDebuffs extends GameModifier {
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new Condition.Chance( 1.0 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.source.equals( DamageSource.DROWN ) ) )
+			.addCondition( data->data.source.equals( DamageSource.DROWN ) )
 			.addConfigs( this.nausea, this.weakness );
 
 		this.addContext( onDamaged );

@@ -19,7 +19,7 @@ public class EvokerWithTotem extends GameModifier {
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance( 1.0 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Evoker ) );
+			.addCondition( data->data.target instanceof Evoker );
 
 		this.addContext( onSpawned );
 	}

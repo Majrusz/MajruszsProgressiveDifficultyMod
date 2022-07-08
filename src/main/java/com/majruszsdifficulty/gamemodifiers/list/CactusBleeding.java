@@ -21,8 +21,8 @@ public class CactusBleeding extends GameModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.source.equals( DamageSource.CACTUS ) ) )
-			.addCondition( new OnDamagedContext.DirectDamage() )
+			.addCondition( data->data.source.equals( DamageSource.CACTUS ) )
+			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.bleeding );
 
 		this.addContext( onDamaged );

@@ -42,8 +42,9 @@ public class ZombiesInGroup extends GameModifier {
 			.addCondition( new CustomConditions.IsNotSidekick() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy() )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) && data.level != null ) )
-			.addCondition( new Condition.ContextOnSpawned( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f ) )
+			.addCondition( data->data.level != null )
+			.addCondition( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) )
+			.addCondition( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f )
 			.addConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.coal, this.ironIngot, this.goldIngot, this.diamond )
 			.addConfigs( this.helmet, this.chestplate, this.leggings, this.boots, this.mobGroups );
 

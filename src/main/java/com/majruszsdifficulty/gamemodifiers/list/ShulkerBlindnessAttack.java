@@ -20,7 +20,7 @@ public class ShulkerBlindnessAttack extends GameModifier {
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )
 			.addCondition( new CustomConditions.CRDChance( 0.5 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Shulker ) )
+			.addCondition( data->data.attacker instanceof Shulker )
 			.addConfig( this.blindness );
 
 		this.addContext( onDamaged );

@@ -20,8 +20,8 @@ public class SpiderPoisonAttack extends GameModifier {
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance( 0.25 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Spider ) )
-			.addCondition( new OnDamagedContext.DirectDamage() )
+			.addCondition( data->data.attacker instanceof Spider )
+			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.poison );
 
 		this.addContext( onDamaged );

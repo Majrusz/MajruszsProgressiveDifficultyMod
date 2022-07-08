@@ -35,7 +35,8 @@ public class SkeletonsInGroup extends GameModifier {
 			.addCondition( new CustomConditions.IsNotSidekick() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy() )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Skeleton && data.level != null ) )
+			.addCondition( data->data.level != null )
+			.addCondition( data->data.target instanceof Skeleton )
 			.addConfigs( this.woodenSword, this.stoneSword, this.helmet, this.chestplate, this.leggings, this.boots, this.mobGroups );
 
 		this.addContext( onSpawned );

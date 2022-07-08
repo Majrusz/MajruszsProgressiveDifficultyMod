@@ -21,7 +21,7 @@ public class FallDebuffs extends GameModifier {
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new Condition.Chance( 1.0 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f ) )
+			.addCondition( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f )
 			.addConfigs( this.nausea, this.slowness );
 
 		this.addContext( onDamaged );

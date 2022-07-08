@@ -63,10 +63,10 @@ public class BandageItem extends Item {
 			super( GameModifier.DEFAULT );
 
 			OnPlayerInteractContext onInteraction = new OnPlayerInteractContext( this::useBandage );
-			onInteraction.addCondition( new Condition.ContextOnPlayerInteract( data->data.itemStack.getItem() instanceof BandageItem ) )
-				.addCondition( new Condition.ContextOnPlayerInteract( data->data.target != null ) )
-				.addCondition( new Condition.ContextOnPlayerInteract( data->!data.player.swinging ) )
-				.addCondition( new Condition.ContextOnPlayerInteract( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) ) )
+			onInteraction.addCondition( data->data.itemStack.getItem() instanceof BandageItem )
+				.addCondition( data->data.target != null )
+				.addCondition( data->!data.player.swinging )
+				.addCondition( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) )
 				.addConfig( new ConfigGroup( "Bandage", "Config for a Bandage item.", this.regeneration ) )
 				.addConfig( new ConfigGroup( "GoldenBandage", "Config for a Golden Bandage item.", this.goldenRegeneration, this.goldenImmunity ) );
 

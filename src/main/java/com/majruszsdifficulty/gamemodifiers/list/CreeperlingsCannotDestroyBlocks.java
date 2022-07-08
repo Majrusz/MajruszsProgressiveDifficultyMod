@@ -13,8 +13,8 @@ public class CreeperlingsCannotDestroyBlocks extends GameModifier {
 
 		OnExplosionContext onExplosion = new OnExplosionContext( this::revertBlocksToDestroy );
 		onExplosion.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnExplosion( data->data.explosion.getExploder() instanceof CreeperlingEntity ) )
-			.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Detonate ) );
+			.addCondition( data->data.explosion.getExploder() instanceof CreeperlingEntity )
+			.addCondition( data->data.event instanceof ExplosionEvent.Detonate );
 
 		this.addContext( onExplosion );
 	}

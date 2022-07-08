@@ -34,15 +34,15 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 		onExplosion.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new Condition.Chance( 0.666 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnExplosion( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) ) )
-			.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Detonate ) )
+			.addCondition( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) )
+			.addCondition( data->data.event instanceof ExplosionEvent.Detonate )
 			.addConfig( this.creeperlingsAmount );
 
 		OnExplosionContext onExplosion2 = new OnExplosionContext( this::giveAdvancement );
-		onExplosion2.addCondition( new Condition.ContextOnExplosion( data->data.explosion.getExploder() instanceof CreeperlingEntity && data.level != null ) );
+		onExplosion2.addCondition( data->data.explosion.getExploder() instanceof CreeperlingEntity && data.level != null );
 
 		OnDeathContext onDeath = new OnDeathContext( this::giveAdvancement );
-		onDeath.addCondition( new Condition.ContextOnDeath( data->data.attacker instanceof ServerPlayer ) );
+		onDeath.addCondition( data->data.attacker instanceof ServerPlayer );
 
 		this.addContexts( onExplosion, onExplosion2, onDeath );
 	}

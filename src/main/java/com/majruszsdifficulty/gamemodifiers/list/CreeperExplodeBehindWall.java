@@ -17,7 +17,7 @@ public class CreeperExplodeBehindWall extends GameModifier {
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new Condition.Chance( 1.0 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Creeper ) );
+			.addCondition( data->data.target instanceof Creeper );
 
 		this.addContext( onSpawned );
 	}

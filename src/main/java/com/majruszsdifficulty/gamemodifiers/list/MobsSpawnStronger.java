@@ -23,7 +23,8 @@ public class MobsSpawnStronger extends GameModifier {
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::makeMobsStronger );
 		onSpawned.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Mob && AttributeHandler.hasAttribute( data.target, Attributes.ATTACK_DAMAGE ) && data.level != null ) )
+			.addCondition( data->data.level != null )
+			.addCondition( data->data.target instanceof Mob && AttributeHandler.hasAttribute( data.target, Attributes.ATTACK_DAMAGE ) )
 			.addConfigs( this.healthBonus, this.damageBonus, this.nightMultiplier );
 
 		this.addContext( onSpawned );

@@ -34,20 +34,20 @@ public class IncreaseGameStage extends GameModifier {
 		super( GameModifier.GAME_STAGE );
 
 		OnDimensionChangedContext onExpertDimension = new OnDimensionChangedContext( this::startExpertMode );
-		onExpertDimension.addCondition( new Condition.ContextOnDimensionChanged( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.ContextOnDimensionChanged( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() ) );
+		onExpertDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
+			.addCondition( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() );
 
 		OnDimensionChangedContext onMasterDimension = new OnDimensionChangedContext( this::startMasterMode );
-		onMasterDimension.addCondition( new Condition.ContextOnDimensionChanged( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT ) )
-			.addCondition( new Condition.ContextOnDimensionChanged( data->this.masterMode.dimensionTriggersChange( data.to.location() ) ) );
+		onMasterDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
+			.addCondition( data->this.masterMode.dimensionTriggersChange( data.to.location() ) );
 
 		OnDeathContext onExpertKill = new OnDeathContext( this::startExpertMode );
-		onExpertKill.addCondition( new Condition.ContextOnDeath( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.ContextOnDeath( data->this.expertMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) ) );
+		onExpertKill.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
+			.addCondition( data->this.expertMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) );
 
 		OnDeathContext onMasterKill = new OnDeathContext( this::startMasterMode );
-		onMasterKill.addCondition( new Condition.ContextOnDeath( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT ) )
-			.addCondition( new Condition.ContextOnDeath( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) ) );
+		onMasterKill.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
+			.addCondition( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) );
 
 		this.addContexts( onExpertDimension, onMasterDimension, onExpertKill, onMasterKill );
 		this.addConfigs( DEFAULT_GAME_STAGE, this.enteringAnyDimensionStartsExpertMode, this.expertMode, this.masterMode );

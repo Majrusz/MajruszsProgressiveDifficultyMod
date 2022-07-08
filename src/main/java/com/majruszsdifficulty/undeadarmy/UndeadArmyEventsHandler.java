@@ -25,20 +25,20 @@ public class UndeadArmyEventsHandler extends GameModifier {
 		super( GameModifier.UNDEAD_ARMY, "", "" );
 
 		OnSpawnedContext onLoaded = new OnSpawnedContext( this::resetUndeadArmyGoals );
-		onLoaded.addCondition( new Condition.ContextOnSpawned( data->data.loadedFromDisk && isUndeadArmy( data.entity ) ) );
+		onLoaded.addCondition( data->data.loadedFromDisk && isUndeadArmy( data.entity ) );
 
 		OnEntityTickContext onTick = new OnEntityTickContext( this::freezeNearbyWater );
-		onTick.addCondition( new Condition.ContextOnEntityTick( data->isUndeadArmy( data.entity ) ) );
+		onTick.addCondition( data->isUndeadArmy( data.entity ) );
 
 		OnDeathContext onArmyProgress = new OnDeathContext( this::updateArmyProgress );
-		onArmyProgress.addCondition( new Condition.ContextOnDeath( data->isUndeadArmy( data.entity ) && Registries.UNDEAD_ARMY_MANAGER != null ) );
+		onArmyProgress.addCondition( data->isUndeadArmy( data.entity ) && Registries.UNDEAD_ARMY_MANAGER != null );
 
 		OnDeathContext onUndeadKill = new OnDeathContext( this::updateKilledUndead );
-		onUndeadKill.addCondition( new Condition.ContextOnDeath( data->data.target.getMobType() == MobType.UNDEAD && Registries.UNDEAD_ARMY_MANAGER != null ) )
-			.addCondition( new Condition.ContextOnDeath( data->data.attacker instanceof Player && !isUndeadArmy( data.target ) ) );
+		onUndeadKill.addCondition( data->data.target.getMobType() == MobType.UNDEAD && Registries.UNDEAD_ARMY_MANAGER != null )
+			.addCondition( data->data.attacker instanceof Player && !isUndeadArmy( data.target ) );
 
 		OnServerTickContext onServerTick = new OnServerTickContext( this::tickManager );
-		onServerTick.addCondition( new Condition.ContextOnServerTick( data->data.event.phase == TickEvent.Phase.END && Registries.UNDEAD_ARMY_MANAGER != null ) );
+		onServerTick.addCondition( data->data.event.phase == TickEvent.Phase.END && Registries.UNDEAD_ARMY_MANAGER != null );
 
 		this.addContexts( onLoaded, onTick, onArmyProgress, onUndeadKill, onServerTick );
 	}

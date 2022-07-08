@@ -23,8 +23,8 @@ public class SpawnBlocker extends GameModifier {
 		super( GameModifier.DEFAULT, "SpawnBlocker", "Blocks certain mobs from spawning when given game stage is active." );
 
 		OnCheckSpawnContext onCheckSpawn = new OnCheckSpawnContext( this::blockSpawn );
-		onCheckSpawn.addCondition( new Condition.ContextOnCheckSpawn( data->this.isForbidden( data.entity ) ) )
-			.addCondition( new Condition.ContextOnCheckSpawn( data->!( data.entity instanceof Illusioner ) || !isVillageNearby( data.entity ) ) )
+		onCheckSpawn.addCondition( data->this.isForbidden( data.entity ) )
+			.addCondition( data->!( data.entity instanceof Illusioner ) || !isVillageNearby( data.entity ) )
 			.addConfig( this.forbiddenEntities );
 
 		this.addContext( onCheckSpawn );

@@ -22,7 +22,7 @@ public class ThrowableWeaponsBleeding extends GameModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident ) )
+			.addCondition( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident )
 			.addConfig( this.bleeding );
 
 		this.addContext( onDamaged );

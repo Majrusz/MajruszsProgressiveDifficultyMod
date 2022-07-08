@@ -19,9 +19,9 @@ public class DrownedLightningAttack extends GameModifier {
 		OnDamagedContext onDamaged = new OnDamagedContext( this::spawnLightningBolt );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Drowned ) )
-			.addCondition( new Condition.ContextOnDamaged( data->data.source.getDirectEntity() instanceof ThrownTrident ) )
-			.addCondition( new Condition.ContextOnDamaged( data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) ) );
+			.addCondition( data->data.attacker instanceof Drowned )
+			.addCondition( data->data.source.getDirectEntity() instanceof ThrownTrident )
+			.addCondition( data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) );
 
 		this.addContext( onDamaged );
 	}

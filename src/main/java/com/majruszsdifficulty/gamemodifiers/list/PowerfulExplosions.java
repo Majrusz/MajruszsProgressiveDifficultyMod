@@ -18,7 +18,8 @@ public class PowerfulExplosions extends GameModifier {
 
 		OnExplosionContext onExplosion = new OnExplosionContext( this::modifyExplosion );
 		onExplosion.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnExplosion( data->data.event instanceof ExplosionEvent.Start && data.level != null ) )
+			.addCondition( data->data.level != null )
+			.addCondition( data->data.event instanceof ExplosionEvent.Start )
 			.addConfigs( this.radiusMultiplier, this.fireChance );
 
 		this.addContext( onExplosion );

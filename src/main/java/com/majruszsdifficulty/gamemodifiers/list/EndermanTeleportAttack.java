@@ -20,8 +20,9 @@ public class EndermanTeleportAttack extends GameModifier {
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )
 			.addCondition( new CustomConditions.CRDChance( 0.5 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof EnderMan && data.level != null ) )
-			.addCondition( new OnDamagedContext.DirectDamage() );
+			.addCondition( data->data.level != null )
+			.addCondition( data->data.attacker instanceof EnderMan )
+			.addCondition( data->data.source.getDirectEntity() == data.attacker );
 
 		this.addContext( onDamaged );
 	}

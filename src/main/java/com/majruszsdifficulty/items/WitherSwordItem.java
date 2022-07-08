@@ -49,8 +49,8 @@ public class WitherSwordItem extends SwordItem {
 			super( GameModifier.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect." );
 
 			OnDamagedContext onDamaged = new OnDamagedContext( this::applyWither );
-			onDamaged.addCondition( new Condition.ContextOnDamaged( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) ) )
-				.addCondition( new OnDamagedContext.DirectDamage() )
+			onDamaged.addCondition( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) )
+				.addCondition( data->data.source.getDirectEntity() == data.attacker )
 				.addConfig( WITHER );
 
 			this.addContext( onDamaged );

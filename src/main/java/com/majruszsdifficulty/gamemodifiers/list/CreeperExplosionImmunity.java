@@ -18,8 +18,8 @@ public class CreeperExplosionImmunity extends GameModifier {
 		OnDamagedContext onDamaged = new OnDamagedContext( this::reduceExplosionDamage );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.target instanceof Creeper ) )
-			.addCondition( new Condition.ContextOnDamaged( data->data.source.isExplosion() ) )
+			.addCondition( data->data.target instanceof Creeper )
+			.addCondition( data->data.source.isExplosion() )
 			.addConfig( this.damageMultiplier );
 
 		this.addContext( onDamaged );

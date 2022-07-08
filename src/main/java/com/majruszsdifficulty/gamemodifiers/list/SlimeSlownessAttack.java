@@ -20,8 +20,8 @@ public class SlimeSlownessAttack extends GameModifier {
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 0.5 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.attacker instanceof Slime ) )
-			.addCondition( new OnDamagedContext.DirectDamage() )
+			.addCondition( data->data.attacker instanceof Slime )
+			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.slowness );
 
 		this.addContext( onDamaged );

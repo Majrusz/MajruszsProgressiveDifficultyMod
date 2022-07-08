@@ -15,7 +15,7 @@ public class CreeperChainReaction extends GameModifier {
 		OnDamagedContext onDamaged = new OnDamagedContext( this::igniteCreeper );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnDamaged( data->data.target instanceof Creeper && data.attacker instanceof Creeper ) );
+			.addCondition( data->data.target instanceof Creeper && data.attacker instanceof Creeper );
 
 		this.addContext( onDamaged );
 	}

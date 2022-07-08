@@ -20,7 +20,7 @@ public class WitherSkeletonWithSword extends GameModifier {
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::giveWitherSword );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof WitherSkeleton ) )
+			.addCondition( data->data.target instanceof WitherSkeleton )
 			.addConfig( this.witherSword );
 
 		this.addContext( onSpawned );

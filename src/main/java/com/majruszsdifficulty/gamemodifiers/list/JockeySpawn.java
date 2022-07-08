@@ -20,7 +20,8 @@ public class JockeySpawn extends GameModifier {
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Chance( 0.125 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Spider && !( data.target instanceof CaveSpider ) && data.level != null ) );
+			.addCondition( data->data.level != null )
+			.addCondition( data->data.target instanceof Spider && !( data.target instanceof CaveSpider ) );
 
 		this.addContext( onSpawned );
 	}

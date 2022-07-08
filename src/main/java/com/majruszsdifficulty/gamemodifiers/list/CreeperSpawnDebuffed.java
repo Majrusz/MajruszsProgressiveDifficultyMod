@@ -26,7 +26,7 @@ public class CreeperSpawnDebuffed extends GameModifier {
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance( 0.375 ) )
 			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Creeper ) )
+			.addCondition( data->data.target instanceof Creeper )
 			.addConfigs( this.effects );
 
 		this.addContext( onSpawned );
