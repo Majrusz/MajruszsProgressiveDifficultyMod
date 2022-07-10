@@ -1,41 +1,42 @@
 package com.majruszsdifficulty.lootmodifiers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.common.base.Suppliers;
 import com.majruszsdifficulty.GameStage;
 import com.mlib.Random;
 import com.mlib.loot_modifiers.LootHelper;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /** Gives a chance to double loot from enemies. */
 public class DoubleLoot extends LootModifier {
-	private final double normalModeChance, expertModeChance, masterModeChance;
-	private final List< Item > forbiddenItemsToDuplicate;
+	public static final Supplier< Codec< DoubleLoot > > CODEC = Suppliers.memoize( ()->RecordCodecBuilder.create( inst->codecStart( inst ).apply( inst, DoubleLoot::new ) ) );
+	final double normalModeChance = 0.0;
+	final double expertModeChance = 0.2;
+	final double masterModeChance = 0.4;
+	final List< Item > forbiddenItemsToDuplicate = new ArrayList<>();
 
-	public DoubleLoot( LootItemCondition[] conditions, double normalChance, double expertChance, double masterChance, List< Item > forbiddenItems ) {
+	public DoubleLoot( LootItemCondition[] conditions ) {
 		super( conditions );
 
-		this.normalModeChance = normalChance;
-		this.expertModeChance = expertChance;
-		this.masterModeChance = masterChance;
-		this.forbiddenItemsToDuplicate = forbiddenItems;
+		this.forbiddenItemsToDuplicate.add( Items.NETHER_STAR );
+		this.forbiddenItemsToDuplicate.add( Items.TOTEM_OF_UNDYING );
 	}
 
 	@Nonnull
@@ -82,27 +83,8 @@ public class DoubleLoot extends LootModifier {
 		return false;
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer< DoubleLoot > {
-		@Override
-		public DoubleLoot read( ResourceLocation name, JsonObject object, LootItemCondition[] conditions ) {
-			double normalModeChance = GsonHelper.getAsFloat( object, "normal_chance" );
-			double expertModeChance = GsonHelper.getAsFloat( object, "expert_chance" );
-			double masterModeChance = GsonHelper.getAsFloat( object, "master_chance" );
-			JsonArray items = GsonHelper.getAsJsonArray( object, "forbidden_items" );
-
-			List< Item > forbiddenItemsToDuplicate = new ArrayList<>();
-			for( int i = 0; i < items.size(); i++ ) {
-				JsonObject item = items.get( i ).getAsJsonObject();
-
-				forbiddenItemsToDuplicate.add( ForgeRegistries.ITEMS.getValue( new ResourceLocation( item.get( "name" ).getAsString() ) ) );
-			}
-
-			return new DoubleLoot( conditions, normalModeChance, expertModeChance, masterModeChance, forbiddenItemsToDuplicate );
-		}
-
-		@Override
-		public JsonObject write( DoubleLoot instance ) {
-			return null;
-		}
+	@Override
+	public Codec< ? extends IGlobalLootModifier > codec() {
+		return CODEC.get();
 	}
 }

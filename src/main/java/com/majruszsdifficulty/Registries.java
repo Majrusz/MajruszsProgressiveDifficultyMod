@@ -57,7 +57,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -87,7 +87,7 @@ public class Registries {
 	static final DeferredRegister< MobEffect > MOB_EFFECTS = HELPER.create( ForgeRegistries.Keys.MOB_EFFECTS );
 	static final DeferredRegister< ParticleType< ? > > PARTICLE_TYPES = HELPER.create( ForgeRegistries.Keys.PARTICLE_TYPES );
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
-	static final DeferredRegister< GlobalLootModifierSerializer< ? > > LOOT_MODIFIERS = HELPER.create( ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS );
+	static final DeferredRegister< Codec< ? extends IGlobalLootModifier > > LOOT_MODIFIERS = HELPER.create( ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS );
 	static final DeferredRegister< PlacedFeature > PLACED_FEATURES = HELPER.create( Registry.PLACED_FEATURE_REGISTRY );
 	static final DeferredRegister< ConfiguredFeature< ?, ? > > CONFIGURED_FEATURES = HELPER.create( Registry.CONFIGURED_FEATURE_REGISTRY );
 	static final DeferredRegister< Codec< ? extends BiomeModifier > > BIOME_MODIFIERS = HELPER.create( ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS );
@@ -211,7 +211,7 @@ public class Registries {
 
 	// Loot Modifiers
 	static {
-		LOOT_MODIFIERS.register( "double_loot", DoubleLoot.Serializer::new );
+		LOOT_MODIFIERS.register( "double_loot", DoubleLoot.CODEC );
 	}
 
 	// Game Modifiers

@@ -7,6 +7,7 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ContextData;
 import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.parameters.Priority;
 import net.minecraft.world.entity.PathfinderMob;
 
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
