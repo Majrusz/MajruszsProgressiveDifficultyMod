@@ -23,8 +23,8 @@ public class SpawnBlocker extends GameModifier {
 		super( GameModifier.DEFAULT, "SpawnBlocker", "Blocks certain mobs from spawning when given game stage is active." );
 
 		OnCheckSpawnContext onCheckSpawn = new OnCheckSpawnContext( this::blockSpawn );
-		onCheckSpawn.addCondition( data->this.isForbidden( data.entity ) )
-			.addCondition( data->!( data.entity instanceof Illusioner ) || !isVillageNearby( data.entity ) )
+		onCheckSpawn.addCondition( data->data.entity instanceof Illusioner && isVillageNearby( data.entity ) )
+			.addCondition( data->this.isForbidden( data.entity ) )
 			.addConfig( this.forbiddenEntities );
 
 		this.addContext( onCheckSpawn );
@@ -42,6 +42,6 @@ public class SpawnBlocker extends GameModifier {
 		if( !( entity.level instanceof ServerLevel level ) || !LevelHelper.isEntityIn( entity, Level.OVERWORLD ) )
 			return false;
 
-		return level.findNearestMapStructure( StructureTags.VILLAGE, entity.blockPosition(), 10000, false ) != null;
+		return level.findNearestMapStructure( StructureTags.VILLAGE, entity.blockPosition(), 100, false ) != null;
 	}
 }
