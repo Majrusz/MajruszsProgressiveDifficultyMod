@@ -41,6 +41,7 @@ public class ZombiesInGroup extends GameModifier {
 			.addCondition( new CustomConditions.CRDChance( 0.25 ) )
 			.addCondition( new CustomConditions.IsNotSidekick() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy() )
+			.addCondition( new CustomConditions.IsNotTooManyMobsNearby() )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) && data.level != null ) )
 			.addCondition( new Condition.ContextOnSpawned( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f ) )

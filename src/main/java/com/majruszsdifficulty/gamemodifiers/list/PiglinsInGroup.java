@@ -32,6 +32,7 @@ public class PiglinsInGroup extends GameModifier {
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 0.25 ) )
 			.addCondition( new CustomConditions.IsNotSidekick() )
+			.addCondition( new CustomConditions.IsNotTooManyMobsNearby() )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.ContextOnSpawned( data->data.target instanceof Piglin && data.level != null ) )
 			.addConfigs( this.sword, this.helmet, this.chestplate, this.leggings, this.boots, this.mobGroups );
