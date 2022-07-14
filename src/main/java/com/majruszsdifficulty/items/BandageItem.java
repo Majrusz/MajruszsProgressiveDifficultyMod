@@ -78,7 +78,7 @@ public class BandageItem extends Item {
 		private void useBandage( OnPlayerInteractData data ) {
 			Player player = data.player;
 			LivingEntity target = data.target;
-			ItemStack itemStack = data.event.getItemStack();
+			ItemStack itemStack = data.itemStack;
 
 			assert target != null;
 			ItemHelper.consumeItemOnUse( itemStack, player );
