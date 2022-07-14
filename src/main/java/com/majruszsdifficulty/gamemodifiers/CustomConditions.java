@@ -8,6 +8,8 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ContextData;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.parameters.Priority;
+import com.mlib.math.AABBHelper;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
@@ -61,6 +63,22 @@ public class CustomConditions {
 		@Override
 		public boolean check( GameModifier gameModifier, ContextData data ) {
 			return !UndeadArmyManager.isUndeadArmy( data.entity );
+		}
+	}
+
+	public static class IsNotTooManyMobsNearby extends Condition {
+		public IsNotTooManyMobsNearby() {
+			super( Priority.LOWEST ); // it can significantly affect the performance
+		}
+
+		@Override
+		public boolean check( GameModifier gameModifier, ContextData data ) {
+			if( data.level == null || data.entity == null ) {
+				return false;
+			}
+
+			return data.level.getEntities( data.entity, AABBHelper.createInflatedAABB( data.entity.position(), 10.0 ), entity->entity instanceof LivingEntity )
+				.size() < 15;
 		}
 	}
 }
