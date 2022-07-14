@@ -7,7 +7,6 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ContextData;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.parameters.Priority;
 import com.mlib.math.AABBHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
