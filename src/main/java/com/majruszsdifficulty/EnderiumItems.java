@@ -34,7 +34,7 @@ public class EnderiumItems {
 		FarmlandTiller.registerList.add( new FarmlandTiller.Register() {
 			@Override
 			public boolean shouldBeExecuted( ServerLevel serverLevel, Player player, ItemStack itemStack ) {
-				return itemStack.getItem() instanceof HoeItem;
+				return itemStack.getItem() instanceof EnderiumHoeItem;
 			}
 		} );
 	}
