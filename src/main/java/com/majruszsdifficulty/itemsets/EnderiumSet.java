@@ -33,13 +33,13 @@ public class EnderiumSet extends BaseSet {
 
 	@SubscribeEvent
 	public static void onHurt( LivingHurtEvent event ) {
-		if( event.getEntityLiving() instanceof Player player && event.getAmount() >= 1 && Registries.ENDERIUM_SET.countSetItems( player ) >= 3 )
+		if( event.getEntity() instanceof Player player && event.getAmount() >= 1 && Registries.ENDERIUM_SET.countSetItems( player ) >= 3 )
 			EffectHelper.applyEffectIfPossible( player, MobEffects.MOVEMENT_SPEED, BONUS_2.asTicks( 0 ), 0 );
 	}
 
 	@SubscribeEvent
 	public static void onEquipmentChange( LivingEquipmentChangeEvent event ) {
-		if( event.getEntityLiving() instanceof Player player )
+		if( event.getEntity() instanceof Player player )
 			ATTRIBUTE_HANDLER.setValueAndApply( player, Registries.ENDERIUM_SET.countSetItems( player ) >= 4 ? BONUS_3.asFloat( 0 ) * 2.0f : 0.0 );
 	}
 }

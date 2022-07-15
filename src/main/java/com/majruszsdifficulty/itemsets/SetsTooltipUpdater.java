@@ -26,7 +26,7 @@ public class SetsTooltipUpdater {
 
 	@SubscribeEvent
 	public static void onItemTooltip( ItemTooltipEvent event ) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		ItemStack itemStack = event.getItemStack();
 		List< Component > tooltip = event.getToolTip();
 

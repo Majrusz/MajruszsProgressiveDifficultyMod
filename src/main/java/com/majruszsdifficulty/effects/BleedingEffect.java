@@ -55,17 +55,17 @@ public class BleedingEffect extends MobEffect {
 	}
 
 	@SubscribeEvent
-	public static void onUpdate( LivingEvent.LivingUpdateEvent event ) {
+	public static void onUpdate( LivingEvent.LivingTickEvent event ) {
 		BleedingEffect bleeding = Registries.BLEEDING.get();
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		if( TimeHelper.hasServerTicksPassed( 5 ) && entity.hasEffect( bleeding ) )
 			spawnParticles( entity, EffectHelper.getEffectAmplifier( entity, bleeding ) + 3 );
 	}
 
 	@SubscribeEvent
 	public static void onDeath( LivingDeathEvent event ) {
-		if( event.getEntityLiving().hasEffect( Registries.BLEEDING.get() ) )
-			spawnParticles( event.getEntityLiving(), 100 );
+		if( event.getEntity().hasEffect( Registries.BLEEDING.get() ) )
+			spawnParticles( event.getEntity(), 100 );
 	}
 
 	public static boolean isBleedingSource( DamageSource damageSource ) {

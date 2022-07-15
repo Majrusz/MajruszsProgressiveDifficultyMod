@@ -5,7 +5,7 @@ import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnExplosionContext;
 import com.mlib.gamemodifiers.data.OnExplosionData;
-import net.minecraftforge.event.world.ExplosionEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
 
 public class CreeperlingsCannotDestroyBlocks extends GameModifier {
 	public CreeperlingsCannotDestroyBlocks() {

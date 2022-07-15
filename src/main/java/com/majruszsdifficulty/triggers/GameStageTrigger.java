@@ -30,8 +30,8 @@ public class GameStageTrigger extends SimpleCriterionTrigger< GameStageTrigger.I
 
 	@SubscribeEvent
 	public static void onStart( PlayerEvent.PlayerLoggedInEvent event ) {
-		if( event.getPlayer() instanceof ServerPlayer )
-			GameStage.triggerAdvancement( ( ServerPlayer )event.getPlayer() );
+		if( event.getEntity() instanceof ServerPlayer )
+			GameStage.triggerAdvancement( ( ServerPlayer )event.getEntity() );
 	}
 
 	/** Triggers an advancement for given player. */

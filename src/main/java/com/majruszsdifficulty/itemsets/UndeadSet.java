@@ -35,7 +35,7 @@ public class UndeadSet extends BaseSet {
 
 	@SubscribeEvent
 	public static void onHit( LivingHurtEvent event ) {
-		if( !( event.getEntityLiving() instanceof Player player ) || !( event.getSource().getEntity() instanceof Mob mob ) )
+		if( !( event.getEntity() instanceof Player player ) || !( event.getSource().getEntity() instanceof Mob mob ) )
 			return;
 
 		boolean hasFullUndeadSet = Registries.UNDEAD_SET.countSetItems( player ) >= 4;
