@@ -10,9 +10,9 @@ displayName = "Majrusz's Progressive Difficulty"
 updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.19/update.json"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
 logoFile = "logo.png"
-credits = "Thanks for all your support!"
+credits = "Thanks for all your support and downloads!"
 authors = "Majrusz"
-description = '''Mod which increases the game difficulty of Minecraft after certain events.'''
+description = '''Mod that progressively increases the game difficulty over time.'''
 
 [[dependencies.majruszsdifficulty]]
 modId = "forge"
