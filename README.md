@@ -22,5 +22,4 @@
 - Java 8
 - [Minecraft Forge API](https://github.com/MinecraftForge/MinecraftForge)
 
-## Special thanks goes to
-- [Julia](https://www.instagram.com/musiqeorn/) for music & sounds
+![Mod logo](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/blob/1.19/textures/languages.png?raw=true)
