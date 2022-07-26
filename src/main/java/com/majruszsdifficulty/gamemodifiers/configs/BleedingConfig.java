@@ -27,7 +27,7 @@ public class BleedingConfig extends ProgressiveEffectConfig {
 	public void apply( OnDamagedData data ) {
 		LivingEntity target = data.target;
 		@Nullable LivingEntity attacker = data.attacker;
-		BleedingEffect.MobEffectInstance effectInstance = new BleedingEffect.MobEffectInstance( getDuration(), getAmplifier(), false, true, attacker );
+		BleedingEffect.MobEffectInstance effectInstance = new BleedingEffect.MobEffectInstance( getDuration(), getAmplifier(), false, attacker );
 		EffectHelper.applyEffectIfPossible( target, effectInstance );
 
 		if( target instanceof ServerPlayer targetPlayer ) {

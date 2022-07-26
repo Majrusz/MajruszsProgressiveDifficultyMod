@@ -105,8 +105,8 @@ public class BleedingEffect extends MobEffect {
 	public static class MobEffectInstance extends net.minecraft.world.effect.MobEffectInstance {
 		@Nullable protected final Entity damageSourceEntity;
 
-		public MobEffectInstance( int duration, int amplifier, boolean ambient, boolean showParticles, @Nullable LivingEntity attacker ) {
-			super( Registries.BLEEDING.get(), duration, amplifier, ambient, showParticles );
+		public MobEffectInstance( int duration, int amplifier, boolean ambient, @Nullable LivingEntity attacker ) {
+			super( Registries.BLEEDING.get(), duration, amplifier, ambient, false, true );
 			this.damageSourceEntity = attacker;
 		}
 	}
