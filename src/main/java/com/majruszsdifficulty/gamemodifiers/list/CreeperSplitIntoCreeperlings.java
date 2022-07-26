@@ -42,7 +42,8 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 		onExplosion2.addCondition( data->data.explosion.getExploder() instanceof CreeperlingEntity && data.level != null );
 
 		OnDeathContext onDeath = new OnDeathContext( this::giveAdvancement );
-		onDeath.addCondition( data->data.attacker instanceof ServerPlayer );
+		onDeath.addCondition( data->data.attacker instanceof ServerPlayer )
+			.addCondition( data->data.target instanceof CreeperlingEntity );
 
 		this.addContexts( onExplosion, onExplosion2, onDeath );
 	}
