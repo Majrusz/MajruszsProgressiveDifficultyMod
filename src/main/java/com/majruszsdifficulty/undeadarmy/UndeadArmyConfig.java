@@ -9,6 +9,8 @@ import com.mlib.config.IntegerConfig;
 
 import java.util.List;
 
+import static com.majruszsdifficulty.Registries.UNDEAD_ARMY_GROUP;
+
 public class UndeadArmyConfig {
 	static final IntegerConfig KILL_REQUIREMENT = new IntegerConfig( "kill_requirement", "Required amount of killed undead to start the Undead Army.", false, 100, 10, 1000 );
 	static final DoubleConfig SIZE_MULTIPLIER = new DoubleConfig( "player_scale", "Extra size multiplier for each extra player participating in the Undead Army.", false, 0.5, 0.1, 1.0 );
@@ -26,7 +28,7 @@ public class UndeadArmyConfig {
 		WAVE_MEMBERS.addWaveConfig( "2-4 minecraft:zombie", "1-3 minecraft:husk", "1-3 minecraft:skeleton", "1-3 minecraft:stray", "1-1 majruszsdifficulty:tank" );
 		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "3-5 minecraft:husk", "1-3 minecraft:skeleton", "2-4 minecraft:stray", "2-2 majruszsdifficulty:tank" );
 		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "4-6 minecraft:husk", "1-3 minecraft:skeleton", "3-5 minecraft:stray", "3-3 majruszsdifficulty:tank" );
-		MajruszsDifficulty.UNDEAD_ARMY_GROUP.addConfigs( KILL_REQUIREMENT, SIZE_MULTIPLIER, SKELETON_HORSE_CHANCE, EXPERIENCE_REWARD, ENCHANTED_ITEM_CHANCE, ARMOR_CHANCE, DURATION_BETWEEN_WAVES, MAXIMUM_INACTIVE_DURATION, WAVE_MEMBERS );
+		UNDEAD_ARMY_GROUP.addConfigs( KILL_REQUIREMENT, SIZE_MULTIPLIER, SKELETON_HORSE_CHANCE, EXPERIENCE_REWARD, ENCHANTED_ITEM_CHANCE, ARMOR_CHANCE, DURATION_BETWEEN_WAVES, MAXIMUM_INACTIVE_DURATION, WAVE_MEMBERS );
 	}
 
 	public static int getRequiredKills() {

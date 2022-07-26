@@ -27,6 +27,7 @@ import com.majruszsdifficulty.world.EntityBiomeModifier;
 import com.majruszsdifficulty.world.OreBiomeModifier;
 import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.commands.IRegistrableCommand;
+import com.mlib.config.ConfigGroup;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
 import com.mojang.serialization.Codec;
@@ -76,9 +77,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static com.majruszsdifficulty.MajruszsDifficulty.CONFIG_HANDLER;
+
 public class Registries {
 	private static final DeferredRegisterHelper HELPER = new DeferredRegisterHelper( MajruszsDifficulty.MOD_ID );
 	public static final CreativeModeTab ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
+	public static final ConfigGroup UNDEAD_ARMY_GROUP;
+
+	static {
+		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.DEFAULT ) );
+		UNDEAD_ARMY_GROUP = CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.UNDEAD_ARMY, "UndeadArmy", "" ) );
+		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.GAME_STAGE, "GameStage", "" ) );
+		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.TREASURE_BAG, "TreasureBag", "" ) );
+		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.ACCESSORY, "Accessory", "" ) );
+	}
 
 	// Groups
 	static final DeferredRegister< Block > BLOCKS = HELPER.create( ForgeRegistries.Keys.BLOCKS );
@@ -281,7 +293,7 @@ public class Registries {
 		forgeEventBus.addListener( Registries::onSavingLevel );
 		forgeEventBus.addListener( Registries::registerCommands );
 
-		MajruszsDifficulty.CONFIG_HANDLER.register( ModLoadingContext.get() );
+		CONFIG_HANDLER.register( ModLoadingContext.get() );
 	}
 
 	private static void setupClient( final FMLClientSetupEvent event ) {
