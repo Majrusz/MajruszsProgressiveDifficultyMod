@@ -80,7 +80,7 @@ public class UndeadArmyManager extends SavedData {
 	}
 
 	public boolean tryToSpawn( BlockPos attackPosition, Optional< Direction > optionalDirection ) {
-		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) /*|| config.isUndeadArmyDisabled()*/ )
+		if( findNearestUndeadArmy( attackPosition ) != null || isArmySpawningHere( attackPosition ) || !UndeadArmyConfig.isEnabled() )
 			return false;
 
 		Direction direction = optionalDirection.orElseGet( Direction::getRandom );
