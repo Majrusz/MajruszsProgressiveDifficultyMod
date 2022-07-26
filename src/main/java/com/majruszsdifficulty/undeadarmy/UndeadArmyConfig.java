@@ -18,8 +18,8 @@ public class UndeadArmyConfig {
 	static final GameStageIntegerConfig EXPERIENCE_REWARD = new GameStageIntegerConfig( "ExperienceReward", "Experience reward for each player after defeating the Undead Army.", 40, 80, 120, 4, 1000 );
 	static final GameStageDoubleConfig ENCHANTED_ITEM_CHANCE = new GameStageDoubleConfig( "EnchantedItemChance", "Chance for the undead item to be enchanted (separate for each item).", 0.125, 0.25, 0.5, 0.0, 1.0 );
 	static final GameStageDoubleConfig ARMOR_CHANCE = new GameStageDoubleConfig( "ArmorChance", "Chance for the undead to have armor piece (separate for each armor piece).", 0.25, 0.5, 0.75, 0.0, 1.0 );
-	static final DoubleConfig DURATION_BETWEEN_WAVES = new DoubleConfig( "time_between_waves", "Time in seconds between waves (requires game/world restart!).", true, 10.0, 3.0, 60.0 );
-	static final DoubleConfig MAXIMUM_INACTIVE_DURATION = new DoubleConfig( "inactive_duration", "Duration in seconds after which the Undead Army will end if there is no player nearby (requires game/world restart!).", true, 900.0, 300.0, 3200.0 );
+	static final DoubleConfig DURATION_BETWEEN_WAVES = new DoubleConfig( "time_between_waves", "Time in seconds between waves.", true, 10.0, 3.0, 60.0 );
+	static final DoubleConfig MAXIMUM_INACTIVE_DURATION = new DoubleConfig( "inactive_duration", "Duration in seconds after which the Undead Army will end if there is no player nearby.", true, 900.0, 300.0, 3200.0 );
 	static final WaveMembersConfig WAVE_MEMBERS = new WaveMembersConfig( "WaveMembers", "Amount of enemies in each wave (format: {minimal amount}-{maximal amount} {entity})." );
 
 	static {
