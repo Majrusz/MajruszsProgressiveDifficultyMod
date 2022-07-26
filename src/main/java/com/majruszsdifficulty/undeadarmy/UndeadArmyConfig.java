@@ -14,7 +14,7 @@ import static com.majruszsdifficulty.Registries.UNDEAD_ARMY_GROUP;
 
 public class UndeadArmyConfig {
 	static final BooleanConfig ENABLED = new BooleanConfig( "is_enabled", "Can the Undead Army spawn?", false, true );
-	static final IntegerConfig KILL_REQUIREMENT = new IntegerConfig( "kill_requirement", "Required amount of killed undead to start the Undead Army.", false, 100, 10, 1000 );
+	static final IntegerConfig KILL_REQUIREMENT = new IntegerConfig( "kill_requirement", "Required amount of killed undead to start the Undead Army. (set to 0 if you want to disable this)", false, 100, 0, 1000 );
 	static final DoubleConfig SIZE_MULTIPLIER = new DoubleConfig( "player_scale", "Extra size multiplier for each extra player participating in the Undead Army.", false, 0.5, 0.1, 1.0 );
 	static final DoubleConfig SKELETON_HORSE_CHANCE = new DoubleConfig( "horse_chance", "Chance for all Skeletons to spawn on Skeleton Horse.", false, 0.15, 0.1, 1.0 );
 	static final GameStageIntegerConfig EXPERIENCE_REWARD = new GameStageIntegerConfig( "ExperienceReward", "Experience reward for each player after defeating the Undead Army.", 40, 80, 120, 4, 1000 );

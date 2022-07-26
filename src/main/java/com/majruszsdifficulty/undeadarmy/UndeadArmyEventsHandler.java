@@ -35,7 +35,8 @@ public class UndeadArmyEventsHandler extends GameModifier {
 
 		OnDeathContext onUndeadKill = new OnDeathContext( this::updateKilledUndead );
 		onUndeadKill.addCondition( data->data.target.getMobType() == MobType.UNDEAD && Registries.UNDEAD_ARMY_MANAGER != null )
-			.addCondition( data->data.attacker instanceof Player && !isUndeadArmy( data.target ) );
+			.addCondition( data->data.attacker instanceof Player && !isUndeadArmy( data.target ) )
+			.addCondition( data->UndeadArmyConfig.getRequiredKills() > 0 );
 
 		OnServerTickContext onServerTick = new OnServerTickContext( this::tickManager );
 		onServerTick.addCondition( data->data.event.phase == TickEvent.Phase.END && Registries.UNDEAD_ARMY_MANAGER != null );
