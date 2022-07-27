@@ -4,33 +4,33 @@ license = "MIT License"
 issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
 [[mods]]
-modId = "majruszsdifficulty"
-version = "1.5.6"
-displayName = "Majrusz's Progressive Difficulty"
-updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.19/update.json"
-displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
-logoFile = "logo.png"
-credits = "Thanks for all your support and downloads!"
-authors = "Majrusz"
-description = '''Mod that progressively increases the game difficulty over time.'''
+    modId = "majruszsdifficulty"
+    version = "1.5.7"
+    displayName = "Majrusz's Progressive Difficulty"
+    updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.19/update.json"
+    displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
+    logoFile = "logo.png"
+    credits = "Thanks for all your support and downloads!"
+    authors = "Majrusz"
+    description = '''Mod that progressively increases the game difficulty over time.'''
 
 [[dependencies.majruszsdifficulty]]
-modId = "forge"
-mandatory = true
-versionRange = "[41,)"
-ordering = "NONE"
-side = "BOTH"
+    modId = "forge"
+    mandatory = true
+    versionRange = "[41,)"
+    ordering = "NONE"
+    side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
-modId = "minecraft"
-mandatory = true
-versionRange = "[1.19,1.20)"
-ordering = "NONE"
-side = "BOTH"
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.19,1.20)"
+    ordering = "NONE"
+    side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
-modId = "majruszlib"
-mandatory = true
-versionRange = "[2.12.0,3.0.0)"
-ordering = "NONE"
-side = "BOTH"
+    modId = "majruszlib"
+    mandatory = true
+    versionRange = "[2.12.0,3.0.0)"
+    ordering = "NONE"
+    side = "BOTH"
