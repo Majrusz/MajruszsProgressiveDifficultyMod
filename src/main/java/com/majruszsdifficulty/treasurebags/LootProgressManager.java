@@ -78,7 +78,7 @@ public class LootProgressManager extends GameModifier {
 	}
 
 	public LootProgressManager() {
-		super( GameModifier.TREASURE_BAG );
+		super( GameModifier.TREASURE_BAG, "LootProgressManager", "" );
 
 		this.addContext( new OnPlayerLoggedContext( this::onLogged ) );
 	}

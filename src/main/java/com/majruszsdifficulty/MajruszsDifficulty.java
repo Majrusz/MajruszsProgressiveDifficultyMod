@@ -13,7 +13,7 @@ public class MajruszsDifficulty {
 	public static final ConfigHandler CONFIG_HANDLER = new ConfigHandler( ModConfig.Type.COMMON, "common.toml", MOD_ID );
 
 	public MajruszsDifficulty() {
-		Registries.initialize();
+		com.majruszsdifficulty.Registries.initialize();
 		MinecraftForge.EVENT_BUS.register( this );
 	}
 }

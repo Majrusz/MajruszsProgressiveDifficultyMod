@@ -31,7 +31,7 @@ public class IncreaseGameStage extends GameModifier {
 	}
 
 	public IncreaseGameStage() {
-		super( GameModifier.GAME_STAGE );
+		super( GameModifier.GAME_STAGE, "GameStage", "" );
 
 		OnDimensionChangedContext onExpertDimension = new OnDimensionChangedContext( this::startExpertMode );
 		onExpertDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )

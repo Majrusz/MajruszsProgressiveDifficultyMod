@@ -60,7 +60,7 @@ public class BandageItem extends Item {
 		final EffectConfig goldenImmunity = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
 
 		public BandageUse() {
-			super( GameModifier.DEFAULT );
+			super( GameModifier.DEFAULT, "Bandages", "" );
 
 			OnPlayerInteractContext onInteraction = new OnPlayerInteractContext( this::useBandage );
 			onInteraction.addCondition( data->data.itemStack.getItem() instanceof BandageItem )

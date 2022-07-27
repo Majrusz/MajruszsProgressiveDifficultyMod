@@ -12,8 +12,4 @@ public abstract class GameModifier extends com.mlib.gamemodifiers.GameModifier {
 	public GameModifier( String configKey, String configName, String configComment ) {
 		super( configKey, configName, configComment );
 	}
-
-	public GameModifier( String configKey ) {
-		super( configKey );
-	}
 }
