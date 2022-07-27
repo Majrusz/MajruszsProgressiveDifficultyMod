@@ -68,7 +68,7 @@ public class TreasureBagManager extends GameModifier {
 	}
 
 	public TreasureBagManager() {
-		super( GameModifier.TREASURE_BAG, "", "" );
+		super( GameModifier.TREASURE_BAG, "TreasureBagManager", "" );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::addPlayerToParticipantList );
 		onDamaged.addCondition( data->data.attacker instanceof Player )
