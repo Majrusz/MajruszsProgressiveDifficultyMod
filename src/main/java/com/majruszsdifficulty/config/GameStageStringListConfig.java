@@ -2,14 +2,14 @@ package com.majruszsdifficulty.config;
 
 import com.majruszsdifficulty.GameStage;
 import com.mlib.config.ConfigGroup;
-import com.mlib.config.IValueConfig;
 import com.mlib.config.StringListConfig;
 import com.mlib.config.UserConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-public class GameStageStringListConfig extends UserConfig implements IValueConfig< List< ? extends String > > {
+public class GameStageStringListConfig extends UserConfig implements Supplier< List< ? extends String > > {
 	protected final ConfigGroup group;
 	protected final StringListConfig normal;
 	protected final StringListConfig expert;

@@ -1,11 +1,10 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.config.GameStageEnumConfig;
 import com.majruszsdifficulty.gamemodifiers.GameModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
 import com.mlib.config.BooleanConfig;
-import com.mlib.gamemodifiers.Condition;
+import com.mlib.config.EnumConfig;
 import com.mlib.gamemodifiers.contexts.OnDeathContext;
 import com.mlib.gamemodifiers.contexts.OnDimensionChangedContext;
 import com.mlib.gamemodifiers.data.OnDeathData;
@@ -21,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import javax.annotation.Nullable;
 
 public class IncreaseGameStage extends GameModifier {
-	static final GameStageEnumConfig DEFAULT_GAME_STAGE = new GameStageEnumConfig( "default_mode", "Game stage set at the beginning of a new world.", false, GameStage.Stage.NORMAL );
+	static final EnumConfig< GameStage.Stage > DEFAULT_GAME_STAGE = new EnumConfig<>( "default_mode", "Game stage set at the beginning of a new world.", false, GameStage.Stage.NORMAL );
 	final StageProgressConfig expertMode = new StageProgressConfig( "ExpertMode", "Determines what starts the Expert Mode.", "none", "minecraft:the_nether" );
 	final StageProgressConfig masterMode = new StageProgressConfig( "MasterMode", "Determines what starts the Master Mode.", "minecraft:ender_dragon", "none" );
 	final BooleanConfig enteringAnyDimensionStartsExpertMode = new BooleanConfig( "any_dimension_expert", "Determines whether any dimension should start Expert Mode (useful for integration with other mods).", false, true );

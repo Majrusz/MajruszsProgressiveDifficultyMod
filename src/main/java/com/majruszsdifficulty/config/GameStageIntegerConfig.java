@@ -2,12 +2,13 @@ package com.majruszsdifficulty.config;
 
 import com.majruszsdifficulty.GameStage;
 import com.mlib.config.ConfigGroup;
-import com.mlib.config.IValueConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.config.UserConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class GameStageIntegerConfig extends UserConfig implements IValueConfig< Integer > {
+import java.util.function.Supplier;
+
+public class GameStageIntegerConfig extends UserConfig implements Supplier< Integer > {
 	protected final ConfigGroup group;
 	protected final IntegerConfig normal;
 	protected final IntegerConfig expert;

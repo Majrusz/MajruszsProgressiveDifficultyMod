@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.gamemodifiers;
 
-import com.majruszsdifficulty.config.GameStageEnumConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
+import com.mlib.config.EnumConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ContextData;
 import com.mlib.gamemodifiers.GameModifier;
@@ -31,10 +31,10 @@ public class CustomConditions {
 	}
 
 	public static class GameStage extends Condition {
-		final GameStageEnumConfig minimumStage;
+		final EnumConfig< com.majruszsdifficulty.GameStage.Stage > minimumStage;
 
 		public GameStage( com.majruszsdifficulty.GameStage.Stage minimumStage ) {
-			this.minimumStage = new GameStageEnumConfig( "minimum_stage", "Minimum game stage required for that to happen.", false, minimumStage );
+			this.minimumStage = new EnumConfig<>( "minimum_stage", "Minimum game stage required for that to happen.", false, minimumStage );
 			this.addConfig( this.minimumStage );
 		}
 
