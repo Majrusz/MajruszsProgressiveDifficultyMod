@@ -3,10 +3,11 @@ package com.majruszsdifficulty.config;
 import com.majruszsdifficulty.GameStage;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
+import com.mlib.config.IValueConfig;
 import com.mlib.config.UserConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class GameStageDoubleConfig extends UserConfig {
+public class GameStageDoubleConfig extends UserConfig implements IValueConfig< Double > {
 	protected final ConfigGroup group;
 	protected final DoubleConfig normal;
 	protected final DoubleConfig expert;
@@ -29,6 +30,7 @@ public class GameStageDoubleConfig extends UserConfig {
 		this.group.build( builder );
 	}
 
+	@Override
 	public Double get() {
 		return getCurrentGameStageValue();
 	}
