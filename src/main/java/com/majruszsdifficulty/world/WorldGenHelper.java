@@ -22,7 +22,7 @@ public class WorldGenHelper {
 	) {
 		List< OreConfiguration.TargetBlockState > target = List.of( OreConfiguration.target( new BlockMatchTest( targetBlock ), block.get()
 			.defaultBlockState() ) );
-		return new ConfiguredFeature<>( Feature.ORE, new OreConfiguration( target, count, airExposureDiscardChance ) );
+		return new ConfiguredFeature<>( Feature.SCATTERED_ORE, new OreConfiguration( target, count, airExposureDiscardChance ) );
 	}
 
 	public static ConfiguredFeature< ?, ? > getEndConfigured( RegistryObject< ? extends Block > block, int count, float airExposureDiscardChance ) {
