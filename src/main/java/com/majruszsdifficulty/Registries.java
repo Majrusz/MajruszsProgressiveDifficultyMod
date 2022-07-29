@@ -28,6 +28,7 @@ import com.majruszsdifficulty.world.OreBiomeModifier;
 import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.config.ConfigGroup;
+import com.mlib.items.ItemCreativeModeTab;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
 import com.mojang.serialization.Codec;
@@ -81,7 +82,6 @@ import static com.majruszsdifficulty.MajruszsDifficulty.CONFIG_HANDLER;
 
 public class Registries {
 	private static final DeferredRegisterHelper HELPER = new DeferredRegisterHelper( MajruszsDifficulty.MOD_ID );
-	public static final CreativeModeTab ITEM_GROUP = new CustomItemGroup( "majruszs_tab" );
 	public static final ConfigGroup UNDEAD_ARMY_GROUP;
 
 	static {
@@ -180,6 +180,7 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Misc
+	public static final CreativeModeTab ITEM_GROUP = new ItemCreativeModeTab( "majruszs_difficulty_tab", BATTLE_STANDARD );
 	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
 
