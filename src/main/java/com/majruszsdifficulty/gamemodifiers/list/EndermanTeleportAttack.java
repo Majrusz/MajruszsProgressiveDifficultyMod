@@ -18,7 +18,7 @@ public class EndermanTeleportAttack extends DifficultyModifier {
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::teleportPlayerRandomly );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )
-			.addCondition( new CustomConditions.CRDChance( 0.5 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.5, true ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.attacker instanceof EnderMan )

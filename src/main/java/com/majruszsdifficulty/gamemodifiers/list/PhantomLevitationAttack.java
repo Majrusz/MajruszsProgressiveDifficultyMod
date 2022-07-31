@@ -18,7 +18,7 @@ public class PhantomLevitationAttack extends DifficultyModifier {
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )
-			.addCondition( new CustomConditions.CRDChance( 0.75 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.75, true ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.attacker instanceof Phantom )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )

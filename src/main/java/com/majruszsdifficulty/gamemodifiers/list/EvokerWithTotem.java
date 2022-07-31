@@ -17,7 +17,7 @@ public class EvokerWithTotem extends DifficultyModifier {
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::giveTotemOfUndying );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 1.0 ) )
+			.addCondition( new CustomConditions.CRDChance( 1.0, true ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.target instanceof Evoker );
 

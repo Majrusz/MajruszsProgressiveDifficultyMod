@@ -18,7 +18,7 @@ public class JockeySpawn extends DifficultyModifier {
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnSkeletonOnSpider );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new Condition.Chance( 0.125 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.125, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Spider && !( data.target instanceof CaveSpider ) );

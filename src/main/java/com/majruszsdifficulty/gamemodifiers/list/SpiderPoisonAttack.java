@@ -18,7 +18,7 @@ public class SpiderPoisonAttack extends DifficultyModifier {
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 0.25 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.25, true ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.attacker instanceof Spider )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )

@@ -20,7 +20,7 @@ public class SharpToolsBleeding extends DifficultyModifier {
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyBleeding );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.Chance( 0.25 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.25, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )

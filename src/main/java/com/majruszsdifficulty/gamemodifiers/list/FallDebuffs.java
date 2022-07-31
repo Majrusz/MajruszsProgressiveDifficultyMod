@@ -19,7 +19,7 @@ public class FallDebuffs extends DifficultyModifier {
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyDebuffs );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.Chance( 1.0 ) )
+			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f )
 			.addConfigs( this.nausea, this.slowness );

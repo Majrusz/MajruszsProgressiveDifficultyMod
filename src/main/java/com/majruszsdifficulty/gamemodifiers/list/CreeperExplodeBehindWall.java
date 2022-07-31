@@ -15,7 +15,7 @@ public class CreeperExplodeBehindWall extends DifficultyModifier {
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::addNewGoal );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.Chance( 1.0 ) )
+			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.target instanceof Creeper );
 

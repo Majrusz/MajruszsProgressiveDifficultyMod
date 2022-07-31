@@ -31,7 +31,7 @@ public class CreeperSplitIntoCreeperlings extends DifficultyModifier {
 
 		OnExplosionContext onExplosion = new OnExplosionContext( this::spawnCreeperlings );
 		onExplosion.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.Chance( 0.666 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.666, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) )
 			.addCondition( data->data.event instanceof ExplosionEvent.Detonate )

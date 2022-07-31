@@ -16,7 +16,7 @@ public class CreeperSpawnCharged extends DifficultyModifier {
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::chargeCreeper );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 0.125 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.125, true ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Creeper );

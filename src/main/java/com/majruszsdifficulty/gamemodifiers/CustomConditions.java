@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers;
 
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
+import com.mlib.config.BooleanConfig;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.EnumConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -17,16 +18,20 @@ import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKI
 public class CustomConditions {
 	public static class CRDChance extends Condition {
 		final DoubleConfig chance;
+		final BooleanConfig scaledByCRD;
 
-		public CRDChance( double defaultChance ) {
+		public CRDChance( double defaultChance, boolean scaledByCRD ) {
 			super( Priority.HIGH );
-			this.chance = new DoubleConfig( "chance", "Chance of this to happen (this value is scaled by Clamped Regional Difficulty).", false, defaultChance, 0.0, 1.0 );
-			this.addConfig( this.chance );
+			this.chance = new DoubleConfig( "chance", "Chance of this to happen.", false, defaultChance, 0.0, 1.0 );
+			this.scaledByCRD = new BooleanConfig( "scaled_by_crd", "Specifies whether the chance should be scaled by Clamped Regional Difficulty.", false, scaledByCRD );
+			this.addConfigs( this.chance, this.scaledByCRD );
 		}
 
 		@Override
 		public boolean check( GameModifier gameModifier, ContextData data ) {
-			return Random.tryChance( com.majruszsdifficulty.GameStage.getRegionalDifficulty( data.entity ) * this.chance.get() );
+			double multiplier = this.scaledByCRD.isEnabled() ? com.majruszsdifficulty.GameStage.getRegionalDifficulty( data.entity ) : 1.0;
+
+			return Random.tryChance( multiplier * this.chance.get() );
 		}
 	}
 

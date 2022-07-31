@@ -19,7 +19,7 @@ public class DrownDebuffs extends DifficultyModifier {
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyDebuffs );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.Chance( 1.0 ) )
+			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.source.equals( DamageSource.DROWN ) )
 			.addConfigs( this.nausea, this.weakness );

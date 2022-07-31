@@ -24,7 +24,7 @@ public class CreeperSpawnDebuffed extends DifficultyModifier {
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::applyRandomEffect );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 0.375 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.375, true ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.target instanceof Creeper )
 			.addConfigs( this.effects );

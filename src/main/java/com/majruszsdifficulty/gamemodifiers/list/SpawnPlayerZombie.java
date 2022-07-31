@@ -32,7 +32,7 @@ public class SpawnPlayerZombie extends DifficultyModifier {
 
 		OnDeathContext onDeath = new OnDeathContext( this::spawnZombie );
 		onDeath.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new Condition.Chance( 1.0 ) )
+			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Player )

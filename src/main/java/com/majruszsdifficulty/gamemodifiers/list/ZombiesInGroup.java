@@ -38,7 +38,7 @@ public class ZombiesInGroup extends DifficultyModifier {
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnGroup );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance( 0.25 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.25, true ) )
 			.addCondition( new CustomConditions.IsNotSidekick() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy() )
 			.addCondition( new CustomConditions.IsNotTooManyMobsNearby() )

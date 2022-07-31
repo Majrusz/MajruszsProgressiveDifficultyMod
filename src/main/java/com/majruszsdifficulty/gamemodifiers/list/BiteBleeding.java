@@ -23,7 +23,7 @@ public class BiteBleeding extends DifficultyModifier {
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyBleeding );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new Condition.Chance( 0.5 ) )
+			.addCondition( new CustomConditions.CRDChance( 0.5, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )
