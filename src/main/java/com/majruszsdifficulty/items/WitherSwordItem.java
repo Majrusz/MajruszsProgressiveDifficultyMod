@@ -1,10 +1,9 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.Utility;
 import com.mlib.effects.EffectHelper;
-import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.data.OnDamagedData;
@@ -42,11 +41,11 @@ public class WitherSwordItem extends SwordItem {
 		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY, amplifier, duration ).withStyle( ChatFormatting.GRAY ) );
 	}
 
-	public static class Effect extends GameModifier {
+	public static class Effect extends DifficultyModifier {
 		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 1, 6.0 );
 
 		public Effect() {
-			super( GameModifier.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect." );
+			super( DifficultyModifier.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect." );
 
 			OnDamagedContext onDamaged = new OnDamagedContext( this::applyWither );
 			onDamaged.addCondition( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) )

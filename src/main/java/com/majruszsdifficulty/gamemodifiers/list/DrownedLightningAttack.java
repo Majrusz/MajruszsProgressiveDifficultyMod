@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.data.OnDamagedData;
@@ -12,9 +12,9 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 
-public class DrownedLightningAttack extends GameModifier {
+public class DrownedLightningAttack extends DifficultyModifier {
 	public DrownedLightningAttack() {
-		super( GameModifier.DEFAULT, "DrownedLightningAttack", "Drowned trident throw may spawn a lightning bolt when it rains." );
+		super( DifficultyModifier.DEFAULT, "DrownedLightningAttack", "Drowned trident throw may spawn a lightning bolt when it rains." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::spawnLightningBolt );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )

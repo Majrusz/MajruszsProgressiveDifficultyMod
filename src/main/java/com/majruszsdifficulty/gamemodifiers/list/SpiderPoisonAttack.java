@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
@@ -10,11 +10,11 @@ import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Spider;
 
-public class SpiderPoisonAttack extends GameModifier {
+public class SpiderPoisonAttack extends DifficultyModifier {
 	final ProgressiveEffectConfig poison = new ProgressiveEffectConfig( "", ()->MobEffects.POISON, 0, new GameStage.Double( 4.0, 7.0, 15.0 ) );
 
 	public SpiderPoisonAttack() {
-		super( GameModifier.DEFAULT, "SpiderPoisonAttack", "Spider attack may inflict poison effect." );
+		super( DifficultyModifier.DEFAULT, "SpiderPoisonAttack", "Spider attack may inflict poison effect." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )

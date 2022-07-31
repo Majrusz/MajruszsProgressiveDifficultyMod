@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
@@ -10,12 +10,12 @@ import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
-public class FallDebuffs extends GameModifier {
+public class FallDebuffs extends DifficultyModifier {
 	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 8.0 );
 	final ProgressiveEffectConfig slowness = new ProgressiveEffectConfig( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
 
 	public FallDebuffs() {
-		super( GameModifier.DEFAULT, "FallDebuffs", "Inflicts several debuffs when taking fall damage." );
+		super( DifficultyModifier.DEFAULT, "FallDebuffs", "Inflicts several debuffs when taking fall damage." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyDebuffs );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )

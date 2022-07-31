@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
@@ -10,9 +10,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Creeper;
 
-public class CreeperSpawnCharged extends GameModifier {
+public class CreeperSpawnCharged extends DifficultyModifier {
 	public CreeperSpawnCharged() {
-		super( GameModifier.DEFAULT, "CreeperSpawnCharged", "Creeper may spawn charged." );
+		super( DifficultyModifier.DEFAULT, "CreeperSpawnCharged", "Creeper may spawn charged." );
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::chargeCreeper );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )

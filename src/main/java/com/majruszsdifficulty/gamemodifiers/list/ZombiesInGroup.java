@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
@@ -16,7 +16,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.item.Items;
 
-public class ZombiesInGroup extends GameModifier {
+public class ZombiesInGroup extends DifficultyModifier {
 	final ItemStackConfig woodenPickaxe = new ItemStackConfig( "SidekickWoodenPickaxe", "Chance for a sidekick to have the Wooden Pickaxe (main hand).", ()->Items.WOODEN_PICKAXE, EquipmentSlot.MAINHAND, 0.75, 0.05, 0.1 );
 	final ItemStackConfig stonePickaxe = new ItemStackConfig( "SidekickStonePickaxe", "Chance for a sidekick to have the Stone Pickaxe (main hand).", ()->Items.STONE_PICKAXE, EquipmentSlot.MAINHAND, 0.5, 0.05, 0.1 );
 	final ItemStackConfig ironPickaxe = new ItemStackConfig( "SidekickIronPickaxe", "Chance for a sidekick to have the Iron Pickaxe (main hand).", ()->Items.IRON_PICKAXE, EquipmentSlot.MAINHAND, 0.1, 0.05, 0.2 );
@@ -31,7 +31,7 @@ public class ZombiesInGroup extends GameModifier {
 	final MobGroupConfig mobGroups = new MobGroupConfig( "Zombies", ()->EntityType.ZOMBIE, 1, 3 );
 
 	public ZombiesInGroup() {
-		super( GameModifier.DEFAULT, "ZombiesInGroup", "Zombies may spawn in groups as miners (only underground)." );
+		super( DifficultyModifier.DEFAULT, "ZombiesInGroup", "Zombies may spawn in groups as miners (only underground)." );
 
 		mobGroups.addLeaderConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.helmet, this.chestplate, this.leggings, this.boots );
 		mobGroups.addSidekickConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.coal, this.ironIngot, this.goldIngot, this.diamond );

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.PacketHandler;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class LootProgressManager extends GameModifier {
+public class LootProgressManager extends DifficultyModifier {
 	static final ObfuscationGetter.Field< LootTable, List< LootPool > > POOLS = new ObfuscationGetter.Field<>( LootTable.class, "f_79109_" );
 	static final ObfuscationGetter.Field< LootPool, LootPoolEntryContainer[] > ENTRIES = new ObfuscationGetter.Field<>( LootPool.class, "f_79023_" );
 
@@ -78,7 +78,7 @@ public class LootProgressManager extends GameModifier {
 	}
 
 	public LootProgressManager() {
-		super( GameModifier.TREASURE_BAG, "LootProgressManager", "" );
+		super( DifficultyModifier.TREASURE_BAG, "LootProgressManager", "" );
 
 		this.addContext( new OnPlayerLoggedContext( this::onLogged ) );
 	}

@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
@@ -15,11 +15,11 @@ import net.minecraft.world.entity.monster.Zombie;
 
 import javax.annotation.Nullable;
 
-public class BiteBleeding extends GameModifier {
+public class BiteBleeding extends DifficultyModifier {
 	final BleedingConfig bleeding = new BleedingConfig();
 
 	public BiteBleeding() {
-		super( GameModifier.DEFAULT, "BiteBleeding", "Animals (wolfs and from other mods), zombies and spiders may inflict bleeding." );
+		super( DifficultyModifier.DEFAULT, "BiteBleeding", "Animals (wolfs and from other mods), zombies and spiders may inflict bleeding." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyBleeding );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )

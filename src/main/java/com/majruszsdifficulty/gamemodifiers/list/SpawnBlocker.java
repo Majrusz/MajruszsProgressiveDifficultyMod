@@ -1,8 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.config.GameStageStringListConfig;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.Condition;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.gamemodifiers.contexts.OnCheckSpawnContext;
 import com.mlib.gamemodifiers.data.OnCheckSpawnData;
 import com.mlib.levels.LevelHelper;
@@ -14,13 +13,13 @@ import net.minecraft.world.entity.monster.Illusioner;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Event;
 
-public class SpawnBlocker extends GameModifier {
+public class SpawnBlocker extends DifficultyModifier {
 	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( "", "", new String[]{
 		"minecraft:illusioner", "majruszsdifficulty:tank"
 	}, new String[]{}, new String[]{} );
 
 	public SpawnBlocker() {
-		super( GameModifier.DEFAULT, "SpawnBlocker", "Blocks certain mobs from spawning when given game stage is active." );
+		super( DifficultyModifier.DEFAULT, "SpawnBlocker", "Blocks certain mobs from spawning when given game stage is active." );
 
 		OnCheckSpawnContext onCheckSpawn = new OnCheckSpawnContext( this::blockSpawn );
 		onCheckSpawn.addCondition( data->data.entity instanceof Illusioner && isVillageNearby( data.entity ) )

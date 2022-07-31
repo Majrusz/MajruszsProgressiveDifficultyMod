@@ -2,18 +2,18 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.entity.monster.Creeper;
 
-public class CreeperExplosionImmunity extends GameModifier {
+public class CreeperExplosionImmunity extends DifficultyModifier {
 	final DoubleConfig damageMultiplier = new DoubleConfig( "damage_multiplier", "", false, 0.2, 0.0, 0.99 );
 
 	public CreeperExplosionImmunity() {
-		super( GameModifier.DEFAULT, "CreeperExplosionImmunity", "Makes a Creeper take less damage from explosions." );
+		super( DifficultyModifier.DEFAULT, "CreeperExplosionImmunity", "Makes a Creeper take less damage from explosions." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::reduceExplosionDamage );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )

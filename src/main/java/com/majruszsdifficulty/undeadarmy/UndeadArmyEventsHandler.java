@@ -1,8 +1,7 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.Condition;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.gamemodifiers.contexts.OnDeathContext;
 import com.mlib.gamemodifiers.contexts.OnEntityTickContext;
 import com.mlib.gamemodifiers.contexts.OnServerTickContext;
@@ -20,9 +19,9 @@ import net.minecraftforge.event.TickEvent;
 
 import static com.majruszsdifficulty.undeadarmy.UndeadArmyManager.isUndeadArmy;
 
-public class UndeadArmyEventsHandler extends GameModifier {
+public class UndeadArmyEventsHandler extends DifficultyModifier {
 	public UndeadArmyEventsHandler() {
-		super( GameModifier.UNDEAD_ARMY, "UndeadArmyEventsHandler", "" );
+		super( DifficultyModifier.UNDEAD_ARMY, "UndeadArmyEventsHandler", "" );
 
 		OnSpawnedContext onLoaded = new OnSpawnedContext( this::resetUndeadArmyGoals );
 		onLoaded.addCondition( data->data.loadedFromDisk && isUndeadArmy( data.entity ) );

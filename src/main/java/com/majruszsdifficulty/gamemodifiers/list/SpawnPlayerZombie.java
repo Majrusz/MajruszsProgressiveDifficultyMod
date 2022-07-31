@@ -3,7 +3,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -23,12 +23,12 @@ import net.minecraft.world.item.Items;
 
 import javax.annotation.Nullable;
 
-public class SpawnPlayerZombie extends GameModifier {
+public class SpawnPlayerZombie extends DifficultyModifier {
 	final DoubleConfig headChance = new DoubleConfig( "head_chance", "Chance for a zombie to have player's head.", false, 1.0, 0.0, 1.0 );
 	final DoubleConfig headDropChance = new DoubleConfig( "head_drop_chance", "Chance for a zombie to drop player's head.", false, 0.1, 0.0, 1.0 );
 
 	public SpawnPlayerZombie() {
-		super( GameModifier.DEFAULT, "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
+		super( DifficultyModifier.DEFAULT, "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
 
 		OnDeathContext onDeath = new OnDeathContext( this::spawnZombie );
 		onDeath.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )

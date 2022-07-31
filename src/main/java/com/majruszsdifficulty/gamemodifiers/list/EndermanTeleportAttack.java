@@ -3,7 +3,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.data.OnDamagedData;
@@ -12,9 +12,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 
-public class EndermanTeleportAttack extends GameModifier {
+public class EndermanTeleportAttack extends DifficultyModifier {
 	public EndermanTeleportAttack() {
-		super( GameModifier.DEFAULT, "EndermanTeleport", "Enderman attack may teleport the player somewhere nearby." );
+		super( DifficultyModifier.DEFAULT, "EndermanTeleport", "Enderman attack may teleport the player somewhere nearby." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::teleportPlayerRandomly );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )

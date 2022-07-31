@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
@@ -10,11 +10,11 @@ import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Slime;
 
-public class SlimeSlownessAttack extends GameModifier {
+public class SlimeSlownessAttack extends DifficultyModifier {
 	final ProgressiveEffectConfig slowness = new ProgressiveEffectConfig( "", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
 
 	public SlimeSlownessAttack() {
-		super( GameModifier.DEFAULT, "SlimeSlownessAttack", "Shulker attack may inflict stackable blindness effect." );
+		super( DifficultyModifier.DEFAULT, "SlimeSlownessAttack", "Shulker attack may inflict stackable blindness effect." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )

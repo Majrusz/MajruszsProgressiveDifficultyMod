@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-public class MobsSpawnStronger extends GameModifier {
+public class MobsSpawnStronger extends DifficultyModifier {
 	static final AttributeHandler MAX_HEALTH_ATTRIBUTE = new AttributeHandler( "ba9de909-4a9e-43da-9d14-fbcbc2403316", "ProgressiveDifficultyHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE );
 	static final AttributeHandler DAMAGE_ATTRIBUTE = new AttributeHandler( "053d92c8-ccb5-4b95-9add-c31aca144177", "ProgressiveDifficultyDamageBonus", Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE );
 	final GameStageDoubleConfig healthBonus = new GameStageDoubleConfig( "HealthBonusMultiplier", "", 0.0, 0.15, 0.3, 0.0, 10.0 );
@@ -19,7 +19,7 @@ public class MobsSpawnStronger extends GameModifier {
 	final GameStageDoubleConfig nightMultiplier = new GameStageDoubleConfig( "NightMultiplier", "Multiplies health and damage bonuses at night.", 2.0, 2.0, 2.0, 1.0, 10.0 );
 
 	public MobsSpawnStronger() {
-		super( GameModifier.DEFAULT, "MobsSpawnStronger", "All hostile mobs get damage and health bonuses." );
+		super( DifficultyModifier.DEFAULT, "MobsSpawnStronger", "All hostile mobs get damage and health bonuses." );
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::makeMobsStronger );
 		onSpawned.addCondition( new Condition.Excludable() )

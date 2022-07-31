@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
@@ -12,9 +12,9 @@ import net.minecraft.world.entity.monster.CaveSpider;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 
-public class JockeySpawn extends GameModifier {
+public class JockeySpawn extends DifficultyModifier {
 	public JockeySpawn() {
-		super( GameModifier.DEFAULT, "JockeySpawn", "Jockey is more likely to spawn." );
+		super( DifficultyModifier.DEFAULT, "JockeySpawn", "Jockey is more likely to spawn." );
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnSkeletonOnSpider );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )

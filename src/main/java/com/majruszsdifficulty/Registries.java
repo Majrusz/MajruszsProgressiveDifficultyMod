@@ -8,7 +8,7 @@ import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.TankEntity;
-import com.majruszsdifficulty.gamemodifiers.GameModifier;
+import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.itemsets.EnderiumSet;
@@ -28,6 +28,7 @@ import com.majruszsdifficulty.world.OreBiomeModifier;
 import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.config.ConfigGroup;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.items.ItemCreativeModeTab;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
@@ -85,11 +86,11 @@ public class Registries {
 	public static final ConfigGroup UNDEAD_ARMY_GROUP;
 
 	static {
-		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.DEFAULT ) );
-		UNDEAD_ARMY_GROUP = CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.UNDEAD_ARMY, "UndeadArmy", "" ) );
-		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.GAME_STAGE, "GameStage", "" ) );
-		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.TREASURE_BAG, "TreasureBag", "" ) );
-		CONFIG_HANDLER.addGroup( com.mlib.gamemodifiers.GameModifier.addNewGroup( GameModifier.ACCESSORY, "Accessory", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.DEFAULT ) );
+		UNDEAD_ARMY_GROUP = CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.UNDEAD_ARMY, "UndeadArmy", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.GAME_STAGE, "GameStage", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.TREASURE_BAG, "TreasureBag", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.ACCESSORY, "Accessory", "" ) );
 	}
 
 	// Groups
