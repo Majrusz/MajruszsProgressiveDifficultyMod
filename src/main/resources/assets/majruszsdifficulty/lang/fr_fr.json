@@ -5,7 +5,7 @@
   "entity.majruszsdifficulty.creeperling": "Bébé creeper",
   "effect.majruszsdifficulty.bleeding": "Saignement",
   "effect.majruszsdifficulty.bleeding_immunity": "Imunité au saignement",
-  "itemGroup.majruszs_tab": "Majrusz՚s Progressive Difficulty",
+  "itemGroup.majruszs_difficulty_tab": "Majrusz՚s Progressive Difficulty",
   "item.majruszsdifficulty.giant_spawn_egg": "Oeuf d՚apparition de Géant",
   "item.majruszsdifficulty.illusioner_spawn_egg": "Oeuf d՚apparition d՚illusionniste",
   "item.majruszsdifficulty.pillager_wolf_spawn_egg": "Oeuf d՚apparition de chien de pillard",

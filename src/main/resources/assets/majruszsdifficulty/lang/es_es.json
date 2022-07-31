@@ -3,7 +3,7 @@
   "entity.majruszsdifficulty.tank": "Esqueleto Bruto",
   "effect.majruszsdifficulty.bleeding": "Sangrado",
   "effect.majruszsdifficulty.bleeding_immunity": "Inmunidad al Sangrado",
-  "itemGroup.majruszs_tab": "Dificultad Progresiva Majrusz",
+  "itemGroup.majruszs_difficulty_tab": "Dificultad Progresiva Majrusz",
   "item.majruszsdifficulty.illusioner_spawn_egg": "Huevo de Ilusionista",
   "item.majruszsdifficulty.creeperling_spawn_egg": "Huevo de Creepersito",
   "item.majruszsdifficulty.tank_spawn_egg": "Huevo de Esqueleto Bruto",

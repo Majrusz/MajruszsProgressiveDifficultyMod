@@ -3,7 +3,7 @@
   "entity.majruszsdifficulty.tank": "Tank",
   "effect.majruszsdifficulty.bleeding": "Krwawienie",
   "effect.majruszsdifficulty.bleeding_immunity": "Odporność na krwawienie",
-  "itemGroup.majruszs_tab": "Majrusz's Progressive Difficulty",
+  "itemGroup.majruszs_difficulty_tab": "Majrusz's Progressive Difficulty",
   "item.majruszsdifficulty.illusioner_spawn_egg": "Jajo przywołujące iluzjoniera",
   "item.majruszsdifficulty.creeperling_spawn_egg": "Jajo przywołujące creeperlinga",
   "item.majruszsdifficulty.tank_spawn_egg": "Jajo przywołujące tanka",

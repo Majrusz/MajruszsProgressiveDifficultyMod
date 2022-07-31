@@ -3,7 +3,7 @@
   "entity.majruszsdifficulty.tank": "Tank",
   "effect.majruszsdifficulty.bleeding": "Bleeding",
   "effect.majruszsdifficulty.bleeding_immunity": "Bleeding Immunity",
-  "itemGroup.majruszs_tab": "Majrusz's Progressive Difficulty",
+  "itemGroup.majruszs_difficulty_tab": "Majrusz's Progressive Difficulty",
   "item.majruszsdifficulty.illusioner_spawn_egg": "Illusioner Spawn Egg",
   "item.majruszsdifficulty.creeperling_spawn_egg": "Creeperling Spawn Egg",
   "item.majruszsdifficulty.tank_spawn_egg": "Tank Spawn Egg",
