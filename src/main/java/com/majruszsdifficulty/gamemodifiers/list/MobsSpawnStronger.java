@@ -3,9 +3,11 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.attributes.AttributeHandler;
+import com.mlib.config.StringListConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -17,6 +19,7 @@ public class MobsSpawnStronger extends DifficultyModifier {
 	final GameStageDoubleConfig healthBonus = new GameStageDoubleConfig( "HealthBonusMultiplier", "", 0.0, 0.15, 0.3, 0.0, 10.0 );
 	final GameStageDoubleConfig damageBonus = new GameStageDoubleConfig( "DamageBonusMultiplier", "", 0.0, 0.15, 0.3, 0.0, 10.0 );
 	final GameStageDoubleConfig nightMultiplier = new GameStageDoubleConfig( "NightMultiplier", "Multiplies health and damage bonuses at night.", 2.0, 2.0, 2.0, 1.0, 10.0 );
+	final StringListConfig excludedMobs = new StringListConfig( "excluded_mobs", "List of mobs that should not get health and damage bonuses. (for instance minecraft:wither)", false );
 
 	public MobsSpawnStronger() {
 		super( DifficultyModifier.DEFAULT, "MobsSpawnStronger", "All hostile mobs get damage and health bonuses." );
@@ -24,8 +27,9 @@ public class MobsSpawnStronger extends DifficultyModifier {
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::makeMobsStronger );
 		onSpawned.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.level != null )
-			.addCondition( data->data.target instanceof Mob && AttributeHandler.hasAttribute( data.target, Attributes.ATTACK_DAMAGE ) )
-			.addConfigs( this.healthBonus, this.damageBonus, this.nightMultiplier );
+			.addCondition( data->this.canMobAttack( data.target ) )
+			.addCondition( data->this.isNotMobExcluded( data.target ) )
+			.addConfigs( this.healthBonus, this.damageBonus, this.nightMultiplier, this.excludedMobs );
 
 		this.addContext( onSpawned );
 	}
@@ -38,5 +42,13 @@ public class MobsSpawnStronger extends DifficultyModifier {
 		MAX_HEALTH_ATTRIBUTE.setValue( this.healthBonus.getCurrentGameStageValue() * nightMultiplier ).apply( entity );
 		DAMAGE_ATTRIBUTE.setValue( this.damageBonus.getCurrentGameStageValue() * nightMultiplier ).apply( entity );
 		entity.setHealth( entity.getMaxHealth() );
+	}
+
+	private boolean canMobAttack( LivingEntity entity ) {
+		return entity instanceof Mob && AttributeHandler.hasAttribute( entity, Attributes.ATTACK_DAMAGE );
+	}
+
+	private boolean isNotMobExcluded( LivingEntity entity ) {
+		return !this.excludedMobs.contains( EntityType.getKey( entity.getType() ).toString() );
 	}
 }
