@@ -19,7 +19,7 @@ import java.util.List;
 import static com.majruszsdifficulty.GameStage.Stage;
 
 public class DoubleLoot extends DifficultyModifier {
-	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, new Vec3( 0.5, 0.5, 0.5 ), ()->0.1f );
+	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
 	final StringListConfig forbiddenItems = new StringListConfig( "forbidden_items", "List of items that cannot be duplicated.", false, "minecraft:nether_star", "minecraft:totem_of_undying" );
 
 	public DoubleLoot() {
@@ -46,7 +46,7 @@ public class DoubleLoot extends DifficultyModifier {
 
 		boolean doubledAtLeastOneItem = replaceLoot( data.generatedLoot );
 		if( doubledAtLeastOneItem && data.level != null ) {
-			AWARD.spawn( data.level, data.entity.position().add( 0.0, 0.5, 0.0 ), 8 );
+			AWARD.spawn( data.level, data.entity.position().add( 0.0, 0.5, 0.0 ), 12 );
 		}
 	}
 
