@@ -36,7 +36,7 @@
   "item.majruszsdifficulty.enderium_boots": "Enderium Boots",
   "item.majruszsdifficulty.cloth": "Cloth",
   "item.majruszsdifficulty.enderium_shard_locator": "Enderium Shard Locator",
-  "item.majruszsdifficulty.enderium_shard_locator.item_tooltip": "Informs the player how far they are from the Enderium Shard Ore.",
+  "item.majruszsdifficulty.enderium_shard_locator.item_tooltip": "Informs how far away the nearest Enderium Shard Ore is.",
   "item.majruszsdifficulty.golden_bandage": "Golden Bandage",
   "item.majruszsdifficulty.recall_potion": "Recall Potion",
   "item.majruszsdifficulty.recall_potion.item_tooltip": "Teleports back home.",
