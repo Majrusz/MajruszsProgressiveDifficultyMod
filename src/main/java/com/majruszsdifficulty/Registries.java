@@ -22,8 +22,6 @@ import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
-import com.majruszsdifficulty.world.EntityBiomeModifier;
-import com.majruszsdifficulty.world.OreBiomeModifier;
 import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.config.ConfigGroup;
@@ -200,14 +198,6 @@ public class Registries {
 	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 16 ) );
 	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 8 ) );
 	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 128 ) );
-
-	// Biome Modifiers
-	public static final RegistryObject< Codec< OreBiomeModifier > > ORE_MODIFIER = BIOME_MODIFIERS.register( "ores", ()->RecordCodecBuilder.create( builder->builder.group( Biome.LIST_CODEC.fieldOf( "biomes" )
-			.forGetter( OreBiomeModifier::biomes ), PlacedFeature.CODEC.fieldOf( "feature" ).forGetter( OreBiomeModifier::feature ) )
-		.apply( builder, OreBiomeModifier::new ) ) );
-	public static final RegistryObject< Codec< EntityBiomeModifier > > ENTITY_MODIFIER = BIOME_MODIFIERS.register( "entities", ()->RecordCodecBuilder.create( builder->builder.group( Biome.LIST_CODEC.fieldOf( "biomes" )
-			.forGetter( EntityBiomeModifier::biomes ), MobSpawnSettings.SpawnerData.CODEC.fieldOf( "spawners" ).forGetter( EntityBiomeModifier::spawnerData ) )
-		.apply( builder, EntityBiomeModifier::new ) ) );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;

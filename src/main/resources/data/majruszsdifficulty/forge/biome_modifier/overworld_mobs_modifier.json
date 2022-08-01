@@ -9,12 +9,6 @@
       "maxCount": 1
     },
     {
-      "type": "majruszsdifficulty:tank",
-      "weight": 3,
-      "minCount": 1,
-      "maxCount": 1
-    },
-    {
       "type": "majruszsdifficulty:giant",
       "weight": 3,
       "minCount": 1,
