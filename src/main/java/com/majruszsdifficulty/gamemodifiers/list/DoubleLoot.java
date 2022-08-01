@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
-import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.Utility;
@@ -17,33 +16,29 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.majruszsdifficulty.GameStage.Stage;
+
 public class DoubleLoot extends DifficultyModifier {
-	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, new Vec3( 0.5, 0.5, 0.5 ), () -> 0.1f );
+	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, new Vec3( 0.5, 0.5, 0.5 ), ()->0.1f );
 	final StringListConfig forbiddenItems = new StringListConfig( "forbidden_items", "List of items that cannot be duplicated.", false, "minecraft:nether_star", "minecraft:totem_of_undying" );
 
 	public DoubleLoot() {
 		super( DifficultyModifier.DEFAULT, "DoubleLoot", "Gives a chance to double the loot." );
 
-		OnLootContext onLootNormal = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "NormalMode", "Determines the chance on Normal Mode." ) );
-		onLootNormal.addCondition( new CustomConditions.GameStageExact( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 0.0, false ) )
-			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
-			.addCondition( OnLootContext.HAS_ENTITY );
-
-		OnLootContext onLootExpert = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "ExpertMode", "Determines the chance on Expert Mode." ) );
-		onLootExpert.addCondition( new CustomConditions.GameStageExact( GameStage.Stage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance( 0.2, false ) )
-			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
-			.addCondition( OnLootContext.HAS_ENTITY );
-
-		OnLootContext onLootMaster = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "MasterMode", "Determines the chance on Master Mode." ) );
-		onLootMaster.addCondition( new CustomConditions.GameStageExact( GameStage.Stage.MASTER ) )
-			.addCondition( new CustomConditions.CRDChance( 0.4, false ) )
-			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
-			.addCondition( OnLootContext.HAS_ENTITY );
-
-		this.addContexts( onLootNormal, onLootExpert, onLootMaster );
+		this.generateContext( 0.0, Stage.NORMAL, "NormalMode", "Determines the chance on Normal Mode." );
+		this.generateContext( 0.2, Stage.EXPERT, "ExpertMode", "Determines the chance on Expert Mode." );
+		this.generateContext( 0.4, Stage.MASTER, "MasterMode", "Determines the chance on Master Mode." );
 		this.addConfig( this.forbiddenItems );
+	}
+
+	private void generateContext( double chance, Stage stage, String configName, String configComment ) {
+		OnLootContext onLootContext = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, configName, configComment ) );
+		onLootContext.addCondition( new CustomConditions.GameStageExact( stage ) )
+			.addCondition( new CustomConditions.CRDChance( chance, false ) )
+			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
+			.addCondition( OnLootContext.HAS_ENTITY );
+
+		this.addContext( onLootContext );
 	}
 
 	private void doubleLoot( OnLootData data ) {
