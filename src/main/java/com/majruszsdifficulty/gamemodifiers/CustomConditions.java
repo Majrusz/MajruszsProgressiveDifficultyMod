@@ -13,6 +13,7 @@ import com.mlib.math.AABBHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 
+import static com.majruszsdifficulty.GameStage.Stage;
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
 
 public class CustomConditions {
@@ -36,9 +37,9 @@ public class CustomConditions {
 	}
 
 	public static class GameStage extends Condition {
-		final EnumConfig< com.majruszsdifficulty.GameStage.Stage > minimumStage;
+		final EnumConfig< Stage > minimumStage;
 
-		public GameStage( com.majruszsdifficulty.GameStage.Stage minimumStage ) {
+		public GameStage( Stage minimumStage ) {
 			this.minimumStage = new EnumConfig<>( "minimum_stage", "Minimum game stage required for that to happen.", false, minimumStage );
 			this.addConfig( this.minimumStage );
 		}
@@ -46,6 +47,19 @@ public class CustomConditions {
 		@Override
 		public boolean check( GameModifier gameModifier, ContextData data ) {
 			return com.majruszsdifficulty.GameStage.atLeast( this.minimumStage.get() );
+		}
+	}
+
+	public static class GameStageExact extends Condition {
+		final Stage stage;
+
+		public GameStageExact( Stage stage ) {
+			this.stage = stage;
+		}
+
+		@Override
+		public boolean check( GameModifier gameModifier, ContextData data ) {
+			return com.majruszsdifficulty.GameStage.getCurrentStage() == this.stage;
 		}
 	}
 
