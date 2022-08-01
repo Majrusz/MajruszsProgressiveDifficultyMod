@@ -24,19 +24,19 @@ public class DoubleLoot extends DifficultyModifier {
 	public DoubleLoot() {
 		super( DifficultyModifier.DEFAULT, "DoubleLoot", "Gives a chance to double the loot." );
 
-		OnLootContext onLootNormal = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "NormalMode", "" ) );
+		OnLootContext onLootNormal = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "NormalMode", "Determines the chance on Normal Mode." ) );
 		onLootNormal.addCondition( new CustomConditions.GameStageExact( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance( 0.0, false ) )
 			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
 			.addCondition( OnLootContext.HAS_ENTITY );
 
-		OnLootContext onLootExpert = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "ExpertMode", "" ) );
+		OnLootContext onLootExpert = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "ExpertMode", "Determines the chance on Expert Mode." ) );
 		onLootExpert.addCondition( new CustomConditions.GameStageExact( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 0.2, false ) )
 			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
 			.addCondition( OnLootContext.HAS_ENTITY );
 
-		OnLootContext onLootMaster = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "MasterMode", "" ) );
+		OnLootContext onLootMaster = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, "MasterMode", "Determines the chance on Master Mode." ) );
 		onLootMaster.addCondition( new CustomConditions.GameStageExact( GameStage.Stage.MASTER ) )
 			.addCondition( new CustomConditions.CRDChance( 0.4, false ) )
 			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
