@@ -4,13 +4,11 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -32,5 +30,10 @@ public class WorldGenHelper {
 	public static PlacedFeature getEndPlaced( RegistryObject< ConfiguredFeature< ?, ? > > configuredFeature, int count ) {
 		Holder< ConfiguredFeature< ?, ? > > holder = configuredFeature.getHolder().get();
 		return new PlacedFeature( holder, List.of( CountPlacement.of( count ), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome() ) );
+	}
+
+	public static PlacedFeature getEnderiumPlaced( RegistryObject< ConfiguredFeature< ?, ? > > configuredFeature, int rarity ) {
+		Holder< ConfiguredFeature< ?, ? > > holder = configuredFeature.getHolder().get();
+		return new PlacedFeature( holder, List.of( RarityFilter.onAverageOnceEvery( rarity ), InSquarePlacement.spread(), HeightRangePlacement.triangle( VerticalAnchor.aboveBottom( 10 ), VerticalAnchor.aboveBottom( 70 ) ), BiomeFilter.biome() ) );
 	}
 }

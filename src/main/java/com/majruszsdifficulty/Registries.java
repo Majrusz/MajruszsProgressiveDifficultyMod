@@ -195,8 +195,8 @@ public class Registries {
 	public static final RegistryObject< ConfiguredFeature< ?, ? > > INFESTED_END_STONE_CONFIGURED = CONFIGURED_FEATURES.register( "infested_end_stone", ()->WorldGenHelper.getEndConfigured( INFESTED_END_STONE, 4, 0.0f ) );
 
 	// Placed Feature
-	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 16 ) );
-	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 8 ) );
+	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEnderiumPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 1 ) );
+	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEnderiumPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 3 ) );
 	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 128 ) );
 
 	// Sounds
