@@ -1,8 +1,0 @@
-{
-  "type": "majruszsdifficulty:double_loot",
-  "conditions": [
-    {
-      "condition": "minecraft:killed_by_player"
-    }
-  ]
-}

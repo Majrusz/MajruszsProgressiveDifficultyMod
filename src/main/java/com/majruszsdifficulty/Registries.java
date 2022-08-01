@@ -13,7 +13,6 @@ import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.itemsets.EnderiumSet;
 import com.majruszsdifficulty.itemsets.UndeadSet;
-import com.majruszsdifficulty.lootmodifiers.DoubleLoot;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
@@ -223,11 +222,6 @@ public class Registries {
 		return SOUNDS_EVENTS.register( name, ()->new SoundEvent( getLocation( name ) ) );
 	}
 
-	// Loot Modifiers
-	static {
-		LOOT_MODIFIERS.register( "double_loot", DoubleLoot.CODEC );
-	}
-
 	// Game Modifiers
 	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
 
@@ -242,6 +236,7 @@ public class Registries {
 		GAME_MODIFIERS.add( new CreeperSpawnCharged() );
 		GAME_MODIFIERS.add( new CreeperSpawnDebuffed() );
 		GAME_MODIFIERS.add( new CreeperSplitIntoCreeperlings() );
+		GAME_MODIFIERS.add( new DoubleLoot() );
 		GAME_MODIFIERS.add( new DrownDebuffs() );
 		GAME_MODIFIERS.add( new DrownedLightningAttack() );
 		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
