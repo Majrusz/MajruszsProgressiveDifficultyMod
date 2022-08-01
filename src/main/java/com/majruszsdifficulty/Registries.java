@@ -197,7 +197,7 @@ public class Registries {
 	// Placed Feature
 	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEnderiumPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 1 ) );
 	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEnderiumPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 3 ) );
-	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 128 ) );
+	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 8, 255 ) );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;

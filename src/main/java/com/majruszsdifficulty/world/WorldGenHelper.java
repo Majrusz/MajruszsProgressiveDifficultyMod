@@ -2,6 +2,7 @@ package com.majruszsdifficulty.world;
 
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -27,9 +28,9 @@ public class WorldGenHelper {
 		return getConfigured( Blocks.END_STONE, block, count, airExposureDiscardChance );
 	}
 
-	public static PlacedFeature getEndPlaced( RegistryObject< ConfiguredFeature< ?, ? > > configuredFeature, int count ) {
+	public static PlacedFeature getEndPlaced( RegistryObject< ConfiguredFeature< ?, ? > > configuredFeature, int minCount, int maxCount ) {
 		Holder< ConfiguredFeature< ?, ? > > holder = configuredFeature.getHolder().get();
-		return new PlacedFeature( holder, List.of( CountPlacement.of( count ), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome() ) );
+		return new PlacedFeature( holder, List.of( CountPlacement.of( UniformInt.of( minCount, maxCount ) ), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome() ) );
 	}
 
 	public static PlacedFeature getEnderiumPlaced( RegistryObject< ConfiguredFeature< ?, ? > > configuredFeature, int rarity ) {
