@@ -44,7 +44,7 @@ public class TreasureBagItem extends Item {
 
 	public static TreasureBagConfig[] getConfigs() {
 		return new TreasureBagConfig[]{
-			UndeadArmy.CONFIG, ElderGuardian.CONFIG, Wither.CONFIG, EnderDragon.CONFIG, Fishing.CONFIG, Pillager.CONFIG, Warden.CONFIG
+			UndeadArmy.CONFIG, ElderGuardian.CONFIG, Wither.CONFIG, EnderDragon.CONFIG, Fishing.CONFIG, Pillager.CONFIG
 		};
 	}
 
@@ -160,14 +160,6 @@ public class TreasureBagItem extends Item {
 
 		public Pillager() {
 			super( "pillager", CONFIG );
-		}
-	}
-
-	public static class Warden extends TreasureBagItem {
-		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden", "" );
-
-		public Warden() {
-			super( "warden", CONFIG );
 		}
 	}
 }
