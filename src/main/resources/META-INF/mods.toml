@@ -1,13 +1,13 @@
 modLoader = "javafml"
-loaderVersion = "[42,)"
+loaderVersion = "[40,)"
 license = "MIT License"
 issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
 [[mods]]
     modId = "majruszsdifficulty"
-    version = "1.5.9"
+    version = "1.4.4"
     displayName = "Majrusz's Progressive Difficulty"
-    updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.19/update.json"
+    updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MajruszsProgressiveDifficultyMod/1.18.X/update.json"
     displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
     logoFile = "logo.png"
     credits = "Thanks for all your support and downloads!"
@@ -17,20 +17,20 @@ issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/i
 [[dependencies.majruszsdifficulty]]
     modId = "forge"
     mandatory = true
-    versionRange = "[42.0.0,)"
+    versionRange = "[40.1.69,)"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.19.1,1.20)"
+    versionRange = "[1.18.2,1.19)"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
     modId = "majruszlib"
     mandatory = true
-    versionRange = "[2.15.0,3.0.0)"
+    versionRange = "[2.7.3,3.0.0)"
     ordering = "NONE"
     side = "BOTH"

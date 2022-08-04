@@ -12,6 +12,7 @@ import com.mlib.gamemodifiers.data.OnDimensionChangedData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.EntityType;
@@ -86,7 +87,7 @@ public class IncreaseGameStage extends DifficultyModifier {
 
 	private static void sendMessageToAllPlayers( PlayerList playerList, String translationKey, ChatFormatting textColor ) {
 		for( Player player : playerList.getPlayers() ) {
-			MutableComponent message = Component.translatable( translationKey );
+			MutableComponent message = new TranslatableComponent( translationKey );
 			message.withStyle( textColor, ChatFormatting.BOLD );
 
 			player.displayClientMessage( message, false );

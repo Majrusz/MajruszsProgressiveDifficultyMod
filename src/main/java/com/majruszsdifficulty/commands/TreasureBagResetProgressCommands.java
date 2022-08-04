@@ -8,6 +8,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
@@ -18,7 +19,7 @@ public class TreasureBagResetProgressCommands extends EntityCommand implements I
 		Player player = Utility.castIfPossible( Player.class, entity );
 		if( player != null ) {
 			LootProgressManager.cleanProgress( player );
-			source.sendSuccess( Component.translatable( "commands.treasurebag.reset", entity.getName() ), true );
+			source.sendSuccess( new TranslatableComponent( "commands.treasurebag.reset", entity.getName() ), true );
 			return 0;
 		}
 

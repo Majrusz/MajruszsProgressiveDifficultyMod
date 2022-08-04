@@ -5,7 +5,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,8 +33,8 @@ public class BleedingImmunityEffect extends MobEffect {
 	}
 
 	@SubscribeEvent
-	public static void onEffectApplied( MobEffectEvent.Added event ) {
-		if( event.getEffectInstance().getEffect() instanceof BleedingEffect && event.getEntity().hasEffect( Registries.BLEEDING_IMMUNITY.get() ) )
+	public static void onEffectApplied( PotionEvent.PotionAddedEvent event ) {
+		if( event.getPotionEffect().getEffect() instanceof BleedingEffect && event.getEntityLiving().hasEffect( Registries.BLEEDING_IMMUNITY.get() ) )
 			event.setResult( Event.Result.DENY );
 	}
 }

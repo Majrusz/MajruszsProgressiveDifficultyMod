@@ -4,6 +4,7 @@ import com.mlib.levels.LevelHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -102,7 +103,7 @@ public class GameStage {
 	}
 
 	private static MutableComponent constructGameStageText( String stage, ChatFormatting color ) {
-		return Component.translatable( "majruszsdifficulty.stages." + stage ).withStyle( color, ChatFormatting.BOLD );
+		return new TranslatableComponent( "majruszsdifficulty.stages." + stage ).withStyle( color, ChatFormatting.BOLD );
 	}
 
 	public enum Stage {

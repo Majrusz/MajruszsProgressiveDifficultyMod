@@ -24,13 +24,6 @@ public class EndShardOre extends Block {
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 	}
 
-	@Override
-	protected void tryDropExperience( ServerLevel level, BlockPos position, ItemStack itemStack, IntProvider intProvider ) {
-		if( EnchantmentHelper.getItemEnchantmentLevel( Enchantments.SILK_TOUCH, itemStack ) == 0 ) {
-			this.popExperience( level, position, Random.nextInt( 6, 11 ) );
-		}
-	}
-
 	public static class EndShardOreItem extends BlockItem {
 		public EndShardOreItem() {
 			super( Registries.ENDERIUM_SHARD_ORE.get(), new Properties().stacksTo( 64 ).tab( Registries.ITEM_GROUP ) );

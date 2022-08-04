@@ -14,15 +14,15 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.5.9'
+version = '1.4.4'
 group = 'com.majruszsdifficulty'
-archivesBaseName = 'majruszs-difficulty-1.19.1'
+archivesBaseName = 'majruszs-difficulty-1.18.2'
 
 // Mojang ships Java 16 to end users in 1.17+ instead of Java 8 in 1.16 or lower, so your mod should target Java 16.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'official', version: '1.19.1'
+    mappings channel: 'official', version: '1.18.2'
 
     accessTransformer = file( 'src/main/resources/META-INF/accesstransformer.cfg' ) // Currently, this location cannot be changed from the default.
 
@@ -75,8 +75,8 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.1-42.0.0'
-    implementation fg.deobf( 'com.mlib:majrusz-library-1.19.1:2.15.0-unfinished' )
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.69'
+    implementation fg.deobf( 'com.mlib:majrusz-library-1.18.2:2.7.3' )
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

@@ -11,6 +11,7 @@ import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -38,7 +39,7 @@ public class WitherSwordItem extends SwordItem {
 
 		String amplifier = TextHelper.toRoman( Effect.WITHER.getAmplifier() + 1 );
 		String duration = TextHelper.minPrecision( Utility.ticksToSeconds( Effect.WITHER.getDuration() ) );
-		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY, amplifier, duration ).withStyle( ChatFormatting.GRAY ) );
+		tooltip.add( new TranslatableComponent( TOOLTIP_TRANSLATION_KEY, amplifier, duration ).withStyle( ChatFormatting.GRAY ) );
 	}
 
 	public static class Effect extends DifficultyModifier {

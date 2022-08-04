@@ -311,7 +311,7 @@ public class UndeadArmy {
 		int z = this.positionToAttack.getZ() + this.direction.z * SPAWN_RADIUS;
 
 		for( ServerPlayer player : getNearbyPlayers() )
-			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
+			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f ) );
 
 		this.undeadToKill = Math.max( this.undeadToKill, 1 );
 	}

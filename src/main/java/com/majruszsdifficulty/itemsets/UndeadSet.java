@@ -6,6 +6,7 @@ import com.mlib.attributes.AttributeHandler;
 import com.mlib.time.TimeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
@@ -19,10 +20,10 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class UndeadSet extends BaseSet {
-	private static final ItemData ITEM_1 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->Component.translatable( UndeadArmorItem.HELMET_ID ), EquipmentSlot.HEAD );
-	private static final ItemData ITEM_2 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->Component.translatable( UndeadArmorItem.CHESTPLATE_ID ), EquipmentSlot.CHEST );
-	private static final ItemData ITEM_3 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->Component.translatable( UndeadArmorItem.LEGGINGS_ID ), EquipmentSlot.LEGS );
-	private static final ItemData ITEM_4 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->Component.translatable( UndeadArmorItem.BOOTS_ID ), EquipmentSlot.FEET );
+	private static final ItemData ITEM_1 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.HELMET_ID ), EquipmentSlot.HEAD );
+	private static final ItemData ITEM_2 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.CHESTPLATE_ID ), EquipmentSlot.CHEST );
+	private static final ItemData ITEM_3 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.LEGGINGS_ID ), EquipmentSlot.LEGS );
+	private static final ItemData ITEM_4 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.BOOTS_ID ), EquipmentSlot.FEET );
 	private static final BonusData BONUS_1 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_4_1", Parameter.asPercent( 0.4f ) );
 	private static final BonusData BONUS_2 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_4_2", Parameter.asPercent( 0.2f ) );
 	private static final AttributeHandler MOVEMENT_BONUS = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "UndeadSetMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );

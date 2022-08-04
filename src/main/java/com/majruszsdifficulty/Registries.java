@@ -58,10 +58,9 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -97,10 +96,8 @@ public class Registries {
 	static final DeferredRegister< MobEffect > MOB_EFFECTS = HELPER.create( ForgeRegistries.Keys.MOB_EFFECTS );
 	static final DeferredRegister< ParticleType< ? > > PARTICLE_TYPES = HELPER.create( ForgeRegistries.Keys.PARTICLE_TYPES );
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
-	static final DeferredRegister< Codec< ? extends IGlobalLootModifier > > LOOT_MODIFIERS = HELPER.create( ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS );
 	static final DeferredRegister< PlacedFeature > PLACED_FEATURES = HELPER.create( Registry.PLACED_FEATURE_REGISTRY );
 	static final DeferredRegister< ConfiguredFeature< ?, ? > > CONFIGURED_FEATURES = HELPER.create( Registry.CONFIGURED_FEATURE_REGISTRY );
-	static final DeferredRegister< Codec< ? extends BiomeModifier > > BIOME_MODIFIERS = HELPER.create( ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -302,8 +299,8 @@ public class Registries {
 			command.register( event.getDispatcher() );
 	}
 
-	public static void onLoadingLevel( LevelEvent.Load event ) {
-		ServerLevel level = getOverworld( event.getLevel() );
+	public static void onLoadingLevel( WorldEvent.Load event ) {
+		ServerLevel level = getOverworld( event.getWorld() );
 		if( level == null )
 			return;
 
@@ -314,11 +311,10 @@ public class Registries {
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get() );
-		TreasureBagManager.addTreasureBagTo( EntityType.WARDEN, WARDEN_TREASURE_BAG.get() );
 	}
 
-	public static void onSavingLevel( LevelEvent.Save event ) {
-		ServerLevel level = getOverworld( event.getLevel() );
+	public static void onSavingLevel( WorldEvent.Save event ) {
+		ServerLevel level = getOverworld( event.getWorld() );
 		if( level == null )
 			return;
 
