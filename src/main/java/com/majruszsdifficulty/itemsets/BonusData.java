@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BonusData {
-	static final ObfuscationGetter.Field< TranslatableComponent, List< FormattedText > > DECOMPOSED_PARTS = new ObfuscationGetter.Field<>( TranslatableComponent.class, "f_237500_" );
-	static final ObfuscationGetter.Method< TranslatableComponent > DECOMPOSE = new ObfuscationGetter.Method<>( TranslatableComponent.class, "m_237524_" );
+	static final ObfuscationGetter.Field< TranslatableComponent, List< FormattedText > > DECOMPOSED_PARTS = new ObfuscationGetter.Field<>( TranslatableComponent.class, "f_131301_" );
+	static final ObfuscationGetter.Method< TranslatableComponent > DECOMPOSE = new ObfuscationGetter.Method<>( TranslatableComponent.class, "m_131330_" );
 	public final int requiredItems;
 	public final String translationKey;
 	public final ICondition condition;
