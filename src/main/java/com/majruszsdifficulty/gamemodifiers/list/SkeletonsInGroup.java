@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.item.Items;
 
-public class SkeletonsInGroup extends DifficultyModifier {
+public class SkeletonsInGroup extends GameModifier {
 	final ItemStackConfig woodenSword = new ItemStackConfig( "SidekickWoodenSword", "Chance for a sidekick to have the Wooden Sword.", ()->Items.WOODEN_SWORD, EquipmentSlot.MAINHAND, 0.5, 0.05, 0.2 );
 	final ItemStackConfig stoneSword = new ItemStackConfig( "SidekickStoneSword", "Chance for a sidekick to have the Stone Sword.", ()->Items.STONE_SWORD, EquipmentSlot.MAINHAND, 0.25, 0.05, 0.2 );
 	final ItemStackConfig helmet = new ItemStackConfig( "LeaderLeatherHelmet", "Chance for a leader to have the Leather Helmet.", ()->Items.LEATHER_HELMET, EquipmentSlot.HEAD, 0.67, 0.05, 0.75 );
@@ -24,7 +24,7 @@ public class SkeletonsInGroup extends DifficultyModifier {
 	final MobGroupConfig mobGroups = new MobGroupConfig( "Skeletons", ()->EntityType.SKELETON, 1, 3 );
 
 	public SkeletonsInGroup() {
-		super( DifficultyModifier.DEFAULT, "SkeletonsInGroup", "Skeletons may spawn in groups." );
+		super( Registries.Modifiers.DEFAULT, "SkeletonsInGroup", "Skeletons may spawn in groups." );
 
 		this.mobGroups.addLeaderConfigs( this.helmet, this.chestplate, this.leggings, this.boots );
 		this.mobGroups.addSidekickConfigs( this.woodenSword, this.stoneSword );

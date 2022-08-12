@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.item.Items;
 
-public class PiglinsInGroup extends DifficultyModifier {
+public class PiglinsInGroup extends GameModifier {
 	final ItemStackConfig sword = new ItemStackConfig( "SidekickGoldenSword", "Chance for a sidekick to have the Golden Sword.", ()->Items.GOLDEN_SWORD, EquipmentSlot.MAINHAND, 0.4, 0.05, 0.2 );
 	final ItemStackConfig helmet = new ItemStackConfig( "LeaderGoldenHelmet", "Chance for a leader to have the Golden Helmet.", ()->Items.GOLDEN_HELMET, EquipmentSlot.HEAD, 0.67, 0.05, 0.75 );
 	final ItemStackConfig chestplate = new ItemStackConfig( "LeaderGoldenChestplate", "Chance for a leader to have the Golden Chestplate.", ()->Items.GOLDEN_CHESTPLATE, EquipmentSlot.CHEST, 0.67, 0.05, 0.75 );
@@ -23,7 +23,7 @@ public class PiglinsInGroup extends DifficultyModifier {
 	final MobGroupConfig mobGroups = new MobGroupConfig( "Piglins", ()->EntityType.PIGLIN, 1, 3 );
 
 	public PiglinsInGroup() {
-		super( DifficultyModifier.DEFAULT, "PiglinsInGroup", "Piglins may spawn in groups." );
+		super( Registries.Modifiers.DEFAULT, "PiglinsInGroup", "Piglins may spawn in groups." );
 
 		this.mobGroups.addLeaderConfigs( this.helmet, this.chestplate, this.leggings, this.boots );
 		this.mobGroups.addSidekickConfigs( this.sword );

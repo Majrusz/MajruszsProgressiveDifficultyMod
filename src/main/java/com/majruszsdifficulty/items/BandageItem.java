@@ -3,8 +3,8 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.mlib.config.ConfigGroup;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteractContext;
 import com.mlib.gamemodifiers.data.OnPlayerInteractData;
@@ -53,13 +53,13 @@ public class BandageItem extends Item {
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, TOOLTIP_TRANSLATION_KEY_1, TOOLTIP_TRANSLATION_KEY_2 );
 	}
 
-	public static class BandageUse extends DifficultyModifier {
+	public static class BandageUse extends GameModifier {
 		final EffectConfig regeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
 		final EffectConfig goldenRegeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
 		final EffectConfig goldenImmunity = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
 
 		public BandageUse() {
-			super( DifficultyModifier.DEFAULT, "Bandages", "" );
+			super( Registries.Modifiers.DEFAULT, "Bandages", "" );
 
 			OnPlayerInteractContext onInteraction = new OnPlayerInteractContext( this::useBandage );
 			onInteraction.addCondition( data->data.itemStack.getItem() instanceof BandageItem )

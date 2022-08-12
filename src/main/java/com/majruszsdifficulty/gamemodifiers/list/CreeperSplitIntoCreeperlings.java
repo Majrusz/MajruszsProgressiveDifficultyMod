@@ -5,7 +5,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDeathContext;
@@ -23,11 +23,11 @@ import net.minecraftforge.event.level.ExplosionEvent;
 
 import java.util.List;
 
-public class CreeperSplitIntoCreeperlings extends DifficultyModifier {
+public class CreeperSplitIntoCreeperlings extends GameModifier {
 	final GameStageIntegerConfig creeperlingsAmount = new GameStageIntegerConfig( "MaxCreeperlings", "Maximum amount of Creeperlings to spawn.", 2, 4, 6, 1, 10 );
 
 	public CreeperSplitIntoCreeperlings() {
-		super( DifficultyModifier.DEFAULT, "CreeperSplitIntoCreeperlings", "When the Creeper explode it may spawn a few Creeperlings." );
+		super( Registries.Modifiers.DEFAULT, "CreeperSplitIntoCreeperlings", "When the Creeper explode it may spawn a few Creeperlings." );
 
 		OnExplosionContext onExplosion = new OnExplosionContext( this::spawnCreeperlings );
 		onExplosion.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
@@ -41,8 +41,7 @@ public class CreeperSplitIntoCreeperlings extends DifficultyModifier {
 		onExplosion2.addCondition( data->data.explosion.getExploder() instanceof CreeperlingEntity && data.level != null );
 
 		OnDeathContext onDeath = new OnDeathContext( this::giveAdvancement );
-		onDeath.addCondition( data->data.attacker instanceof ServerPlayer )
-			.addCondition( data->data.target instanceof CreeperlingEntity );
+		onDeath.addCondition( data->data.attacker instanceof ServerPlayer ).addCondition( data->data.target instanceof CreeperlingEntity );
 
 		this.addContexts( onExplosion, onExplosion2, onDeath );
 	}

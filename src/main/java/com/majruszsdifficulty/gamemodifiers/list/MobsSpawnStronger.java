@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.StringListConfig;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-public class MobsSpawnStronger extends DifficultyModifier {
+public class MobsSpawnStronger extends GameModifier {
 	static final AttributeHandler MAX_HEALTH_ATTRIBUTE = new AttributeHandler( "ba9de909-4a9e-43da-9d14-fbcbc2403316", "ProgressiveDifficultyHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE );
 	static final AttributeHandler DAMAGE_ATTRIBUTE = new AttributeHandler( "053d92c8-ccb5-4b95-9add-c31aca144177", "ProgressiveDifficultyDamageBonus", Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE );
 	final GameStageDoubleConfig healthBonus = new GameStageDoubleConfig( "HealthBonusMultiplier", "", 0.0, 0.15, 0.3, 0.0, 10.0 );
@@ -24,7 +24,7 @@ public class MobsSpawnStronger extends DifficultyModifier {
 	final StringListConfig excludedDimensions = new StringListConfig( "excluded_dimensions", "List of dimensions where health and damage bonuses should not be applied. (for instance minecraft:overworld)", false );
 
 	public MobsSpawnStronger() {
-		super( DifficultyModifier.DEFAULT, "MobsSpawnStronger", "All hostile mobs get damage and health bonuses." );
+		super( Registries.Modifiers.DEFAULT, "MobsSpawnStronger", "All hostile mobs get damage and health bonuses." );
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::makeMobsStronger );
 		onSpawned.addCondition( new Condition.Excludable() )

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.ParticleHandler;
@@ -18,12 +18,12 @@ import java.util.List;
 
 import static com.majruszsdifficulty.GameStage.Stage;
 
-public class DoubleLoot extends DifficultyModifier {
+public class DoubleLoot extends GameModifier {
 	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
 	final StringListConfig forbiddenItems = new StringListConfig( "forbidden_items", "List of items that cannot be duplicated.", false, "minecraft:nether_star", "minecraft:totem_of_undying" );
 
 	public DoubleLoot() {
-		super( DifficultyModifier.DEFAULT, "DoubleLoot", "Gives a chance to double the loot." );
+		super( Registries.Modifiers.DEFAULT, "DoubleLoot", "Gives a chance to double the loot." );
 
 		this.generateContext( 0.0, Stage.NORMAL, "NormalMode", "Determines the chance on Normal Mode." );
 		this.generateContext( 0.2, Stage.EXPERT, "ExpertMode", "Determines the chance on Expert Mode." );

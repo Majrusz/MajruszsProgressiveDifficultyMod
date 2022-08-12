@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
-public class IncreaseGameStage extends DifficultyModifier {
+public class IncreaseGameStage extends GameModifier {
 	static final EnumConfig< GameStage.Stage > DEFAULT_GAME_STAGE = new EnumConfig<>( "default_mode", "Game stage set at the beginning of a new world.", false, GameStage.Stage.NORMAL );
 	final StageProgressConfig expertMode = new StageProgressConfig( "ExpertMode", "Determines what starts the Expert Mode.", "none", "minecraft:the_nether" );
 	final StageProgressConfig masterMode = new StageProgressConfig( "MasterMode", "Determines what starts the Master Mode.", "minecraft:ender_dragon", "none" );
@@ -30,7 +30,7 @@ public class IncreaseGameStage extends DifficultyModifier {
 	}
 
 	public IncreaseGameStage() {
-		super( DifficultyModifier.GAME_STAGE, "GameStage", "" );
+		super( Registries.Modifiers.GAME_STAGE, "GameStage", "" );
 
 		OnDimensionChangedContext onExpertDimension = new OnDimensionChangedContext( this::startExpertMode );
 		onExpertDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )

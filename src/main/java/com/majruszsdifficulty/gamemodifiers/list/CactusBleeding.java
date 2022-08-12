@@ -1,19 +1,20 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
 import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.world.damagesource.DamageSource;
 
-public class CactusBleeding extends DifficultyModifier {
+public class CactusBleeding extends GameModifier {
 	final BleedingConfig bleeding = new BleedingConfig();
 
 	public CactusBleeding() {
-		super( DifficultyModifier.DEFAULT, "CactusBleeding", "Cactus damage may inflict bleeding." );
+		super( Registries.Modifiers.DEFAULT, "CactusBleeding", "Cactus damage may inflict bleeding." );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::applyBleeding );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )

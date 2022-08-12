@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.EffectConfig;
@@ -11,7 +11,7 @@ import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
-public class CreeperSpawnDebuffed extends DifficultyModifier {
+public class CreeperSpawnDebuffed extends GameModifier {
 	final EffectConfig[] effects = new EffectConfig[]{
 		new EffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 60.0 ),
 		new EffectConfig( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 60.0 ),
@@ -20,7 +20,7 @@ public class CreeperSpawnDebuffed extends DifficultyModifier {
 	};
 
 	public CreeperSpawnDebuffed() {
-		super( DifficultyModifier.DEFAULT, "CreeperSpawnDebuffed", "Creeper may spawn with negative effects applied." );
+		super( Registries.Modifiers.DEFAULT, "CreeperSpawnDebuffed", "Creeper may spawn with negative effects applied." );
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::applyRandomEffect );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )

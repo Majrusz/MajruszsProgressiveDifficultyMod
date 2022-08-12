@@ -1,38 +1,21 @@
 package com.majruszsdifficulty.config;
 
-import com.majruszsdifficulty.GameStage;
-import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.config.UserConfig;
-import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.util.function.Supplier;
-
-public class GameStageDoubleConfig extends UserConfig implements Supplier< Double > {
-	protected final ConfigGroup group;
-	protected final DoubleConfig normal;
-	protected final DoubleConfig expert;
-	protected final DoubleConfig master;
-
+public class GameStageDoubleConfig extends GameStageConfig< Double > {
 	public GameStageDoubleConfig( String name, String comment, double defaultNormal, double defaultExpert, double defaultMaster, double min, double max ) {
-		super( name, comment );
-		this.normal = new DoubleConfig( "normal", "Normal Mode", false, defaultNormal, min, max );
-		this.expert = new DoubleConfig( "expert", "Expert Mode", false, defaultExpert, min, max );
-		this.master = new DoubleConfig( "master", "Master Mode", false, defaultMaster, min, max );
-		this.group = new ConfigGroup( name, comment, this.normal, this.expert, this.master );
+		super( name, comment, normalMode( defaultNormal, min, max ), expertMode( defaultExpert, min, max ), masterMode( defaultMaster, min, max ) );
 	}
 
-	public double getCurrentGameStageValue() {
-		return GameStage.getCurrentGameStageDependentValue( this.normal.get(), this.expert.get(), this.master.get() );
+	private static DoubleConfig normalMode( double value, double min, double max ) {
+		return new DoubleConfig( "normal", "Normal Mode", false, value, min, max );
 	}
 
-	@Override
-	public void build( ForgeConfigSpec.Builder builder ) {
-		this.group.build( builder );
+	private static DoubleConfig expertMode( double value, double min, double max ) {
+		return new DoubleConfig( "expert", "Expert Mode", false, value, min, max );
 	}
 
-	@Override
-	public Double get() {
-		return getCurrentGameStageValue();
+	private static DoubleConfig masterMode( double value, double min, double max ) {
+		return new DoubleConfig( "master", "Master Mode", false, value, min, max );
 	}
 }

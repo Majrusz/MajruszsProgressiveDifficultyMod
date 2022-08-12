@@ -2,16 +2,16 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.monster.Creeper;
 
-public class CreeperExplodeBehindWall extends DifficultyModifier {
+public class CreeperExplodeBehindWall extends GameModifier {
 	public CreeperExplodeBehindWall() {
-		super( DifficultyModifier.DEFAULT, "CreeperExplodeBehindWall", "Creeper explodes when the player is behind the wall." );
+		super( Registries.Modifiers.DEFAULT, "CreeperExplodeBehindWall", "Creeper explodes when the player is behind the wall." );
 
 		OnSpawnedContext onSpawned = new OnSpawnedContext( this::addNewGoal );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )

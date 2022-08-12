@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
+import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
 import com.mlib.gamemodifiers.contexts.OnDamagedContext;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 /** Responsible for awarding the player with Treasure Bags. */
-public class TreasureBagManager extends DifficultyModifier {
+public class TreasureBagManager extends GameModifier {
 	static final String PARTICIPANT_LIST_TAG = "TreasureBagPlayersToReward";
 	static final String PLAYER_TAG = "TreasureBagPlayerUUID";
 	static final String FISHING_TAG = "TreasureBagFishingCounter";
@@ -67,7 +67,7 @@ public class TreasureBagManager extends DifficultyModifier {
 	}
 
 	public TreasureBagManager() {
-		super( DifficultyModifier.TREASURE_BAG, "TreasureBagManager", "" );
+		super( Registries.Modifiers.TREASURE_BAG, "TreasureBagManager", "" );
 
 		OnDamagedContext onDamaged = new OnDamagedContext( this::addPlayerToParticipantList );
 		onDamaged.addCondition( data->data.attacker instanceof Player )

@@ -8,7 +8,6 @@ import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.TankEntity;
-import com.majruszsdifficulty.gamemodifiers.DifficultyModifier;
 import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.itemsets.EnderiumSet;
@@ -83,11 +82,11 @@ public class Registries {
 	public static final ConfigGroup UNDEAD_ARMY_GROUP;
 
 	static {
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.DEFAULT ) );
-		UNDEAD_ARMY_GROUP = CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.UNDEAD_ARMY, "UndeadArmy", "" ) );
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.GAME_STAGE, "GameStage", "" ) );
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.TREASURE_BAG, "TreasureBag", "" ) );
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( DifficultyModifier.ACCESSORY, "Accessory", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.DEFAULT ) );
+		UNDEAD_ARMY_GROUP = CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.UNDEAD_ARMY, "UndeadArmy", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.GAME_STAGE, "GameStage", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.TREASURE_BAG, "TreasureBag", "" ) );
+		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.ACCESSORY, "Accessory", "" ) );
 	}
 
 	// Groups
@@ -330,5 +329,13 @@ public class Registries {
 	private static ServerLevel getOverworld( LevelAccessor levelAccessor ) {
 		ServerLevel overworld = levelAccessor.getServer() != null ? levelAccessor.getServer().getLevel( Level.OVERWORLD ) : null;
 		return levelAccessor.equals( overworld ) ? overworld : null;
+	}
+
+	public static class Modifiers {
+		public static final String DEFAULT = Registries.getLocationString( "default" );
+		public static final String UNDEAD_ARMY = Registries.getLocationString( "undead_army" );
+		public static final String GAME_STAGE = Registries.getLocationString( "game_stage" );
+		public static final String TREASURE_BAG = Registries.getLocationString( "treasure_bag" );
+		public static final String ACCESSORY = Registries.getLocationString( "accessory" );
 	}
 }
