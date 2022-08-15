@@ -57,9 +57,9 @@ public class TreasureBagItem extends Item {
 		return lootContextBuilder.create( LootContextParamSets.GIFT );
 	}
 
-	public TreasureBagItem( String id, TreasureBagConfig config ) {
+	public TreasureBagItem( ResourceLocation location, TreasureBagConfig config ) {
 		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
-		this.lootTableLocation = Registries.getLocation( "gameplay/" + id + "_treasure_loot" );
+		this.lootTableLocation = location;
 		this.config = config;
 		TREASURE_BAGS.add( this );
 	}
@@ -111,38 +111,43 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class UndeadArmy extends TreasureBagItem {
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/undead_army_treasure_loot" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "UndeadArmy", "" );
 
 		public UndeadArmy() {
-			super( "undead_army", CONFIG );
+			super( LOCATION, CONFIG );
 		}
 	}
 
 	public static class ElderGuardian extends TreasureBagItem {
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/elder_guardian_treasure_loot" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "ElderGuardian", "" );
 
 		public ElderGuardian() {
-			super( "elder_guardian", CONFIG );
+			super( LOCATION, CONFIG );
 		}
 	}
 
 	public static class Wither extends TreasureBagItem {
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/wither_treasure_loot" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Wither", "" );
 
 		public Wither() {
-			super( "wither", CONFIG );
+			super( LOCATION, CONFIG );
 		}
 	}
 
 	public static class EnderDragon extends TreasureBagItem {
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/ender_dragon_treasure_loot" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "EnderDragon", "" );
 
 		public EnderDragon() {
-			super( "ender_dragon", CONFIG );
+			super( LOCATION, CONFIG );
 		}
 	}
 
 	public static class Fishing extends TreasureBagItem {
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/fishing_treasure_loot" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Fishing", "" );
 		public static final GameStageIntegerConfig REQUIRED_FISH_COUNT = new GameStageIntegerConfig( "RequiredFishCount", "Required amount of items fished to get this Treasure Bag.", 20, 15, 10, 3, 100 );
 
@@ -151,23 +156,25 @@ public class TreasureBagItem extends Item {
 		}
 
 		public Fishing() {
-			super( "fishing", CONFIG );
+			super( LOCATION, CONFIG );
 		}
 	}
 
 	public static class Pillager extends TreasureBagItem {
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/pillager_treasure_loot" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "PillagerRaid", "" );
 
 		public Pillager() {
-			super( "pillager", CONFIG );
+			super( LOCATION, CONFIG );
 		}
 	}
 
 	public static class Warden extends TreasureBagItem {
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/warden_treasure_loot" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden", "" );
 
 		public Warden() {
-			super( "warden", CONFIG );
+			super( LOCATION, CONFIG );
 		}
 	}
 }
