@@ -78,13 +78,13 @@ public class BandageItem extends Item {
 			ItemStack itemStack = data.itemStack;
 
 			assert target != null;
-			ItemHelper.consumeItemOnUse( itemStack, player );
 			player.swing( data.event.getHand(), true );
 			removeBleeding( itemStack, player, target );
 			if( target instanceof Villager villager && villager.hasEffect( Registries.BLEEDING.get() ) ) {
 				increaseReputation( villager, player );
 			}
 			applyEffects( itemStack, target );
+			ItemHelper.consumeItemOnUse( itemStack, player );
 			playSfx( target );
 			data.event.setCancellationResult( InteractionResult.SUCCESS );
 		}
