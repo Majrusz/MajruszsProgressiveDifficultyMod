@@ -72,7 +72,7 @@ public class UndeadArmyManager extends SavedData {
 	}
 
 	public boolean tryToSpawn( Player player ) {
-		return LevelHelper.isEntityIn( player, Level.OVERWORLD ) && tryToSpawn( getAttackPosition( player ) );
+		return LevelHelper.isEntityOutside( player ) && LevelHelper.isEntityIn( player, Level.OVERWORLD ) && tryToSpawn( getAttackPosition( player ) );
 	}
 
 	public boolean tryToSpawn( BlockPos attackPosition ) {
