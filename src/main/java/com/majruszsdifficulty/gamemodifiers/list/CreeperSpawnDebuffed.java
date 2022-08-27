@@ -6,6 +6,7 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.EffectConfig;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.effect.MobEffects;
@@ -22,17 +23,18 @@ public class CreeperSpawnDebuffed extends GameModifier {
 	public CreeperSpawnDebuffed() {
 		super( Registries.Modifiers.DEFAULT, "CreeperSpawnDebuffed", "Creeper may spawn with negative effects applied." );
 
-		OnSpawnedContext onSpawned = new OnSpawnedContext( this::applyRandomEffect );
+		OnSpawned.Context onSpawned = new OnSpawned.Context( this::applyRandomEffect );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance( 0.375, true ) )
 			.addCondition( new Condition.Excludable() )
+			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.target instanceof Creeper )
 			.addConfigs( this.effects );
 
 		this.addContext( onSpawned );
 	}
 
-	private void applyRandomEffect( OnSpawnedData data ) {
+	private void applyRandomEffect( OnSpawned.Data data ) {
 		Random.nextRandom( this.effects ).apply( data.target );
 	}
 }

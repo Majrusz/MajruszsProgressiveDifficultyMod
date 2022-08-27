@@ -6,6 +6,7 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EntityType;
@@ -28,12 +29,13 @@ public class PiglinsInGroup extends GameModifier {
 		this.mobGroups.addLeaderConfigs( this.helmet, this.chestplate, this.leggings, this.boots );
 		this.mobGroups.addSidekickConfigs( this.sword );
 
-		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnGroup );
+		OnSpawned.Context onSpawned = new OnSpawned.Context( this::spawnGroup );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 0.25, true ) )
 			.addCondition( new CustomConditions.IsNotSidekick() )
 			.addCondition( new CustomConditions.IsNotTooManyMobsNearby() )
 			.addCondition( new Condition.Excludable() )
+			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Piglin )
 			.addConfigs( this.sword, this.helmet, this.chestplate, this.leggings, this.boots, this.mobGroups );
@@ -41,7 +43,7 @@ public class PiglinsInGroup extends GameModifier {
 		this.addContext( onSpawned );
 	}
 
-	private void spawnGroup( OnSpawnedData data ) {
+	private void spawnGroup( OnSpawned.Data data ) {
 		this.mobGroups.spawn( ( PathfinderMob )data.target );
 	}
 }

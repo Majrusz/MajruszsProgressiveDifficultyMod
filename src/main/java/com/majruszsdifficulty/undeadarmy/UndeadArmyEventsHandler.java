@@ -2,10 +2,7 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
-import com.mlib.gamemodifiers.contexts.OnDeathContext;
-import com.mlib.gamemodifiers.contexts.OnEntityTickContext;
-import com.mlib.gamemodifiers.contexts.OnServerTickContext;
-import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
+import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.gamemodifiers.data.OnDeathData;
 import com.mlib.gamemodifiers.data.OnEntityTickData;
 import com.mlib.gamemodifiers.data.OnServerTickData;
@@ -23,7 +20,7 @@ public class UndeadArmyEventsHandler extends GameModifier {
 	public UndeadArmyEventsHandler() {
 		super( Registries.Modifiers.UNDEAD_ARMY, "UndeadArmyEventsHandler", "" );
 
-		OnSpawnedContext onLoaded = new OnSpawnedContext( this::resetUndeadArmyGoals );
+		OnSpawned.Context onLoaded = new OnSpawned.Context( this::resetUndeadArmyGoals );
 		onLoaded.addCondition( data->data.loadedFromDisk && isUndeadArmy( data.entity ) );
 
 		OnEntityTickContext onTick = new OnEntityTickContext( this::freezeNearbyWater );
@@ -43,7 +40,7 @@ public class UndeadArmyEventsHandler extends GameModifier {
 		this.addContexts( onLoaded, onTick, onArmyProgress, onUndeadKill, onServerTick );
 	}
 
-	private void resetUndeadArmyGoals( OnSpawnedData data ) {
+	private void resetUndeadArmyGoals( OnSpawned.Data data ) {
 		UndeadArmy undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( data.target.blockPosition() );
 		if( undeadArmy != null && data.target instanceof Mob mob ) {
 			undeadArmy.addUndeadArmyAI( mob );

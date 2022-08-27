@@ -6,6 +6,7 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import com.mlib.levels.LevelHelper;
@@ -36,13 +37,14 @@ public class ZombiesInGroup extends GameModifier {
 		mobGroups.addLeaderConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.helmet, this.chestplate, this.leggings, this.boots );
 		mobGroups.addSidekickConfigs( this.woodenPickaxe, this.stonePickaxe, this.ironPickaxe, this.coal, this.ironIngot, this.goldIngot, this.diamond );
 
-		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnGroup );
+		OnSpawned.Context onSpawned = new OnSpawned.Context( this::spawnGroup );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 0.25, true ) )
 			.addCondition( new CustomConditions.IsNotSidekick() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy() )
 			.addCondition( new CustomConditions.IsNotTooManyMobsNearby() )
 			.addCondition( new Condition.Excludable() )
+			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) )
 			.addCondition( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f )
@@ -52,7 +54,7 @@ public class ZombiesInGroup extends GameModifier {
 		this.addContext( onSpawned );
 	}
 
-	private void spawnGroup( OnSpawnedData data ) {
+	private void spawnGroup( OnSpawned.Data data ) {
 		this.mobGroups.spawn( ( PathfinderMob )data.target );
 	}
 }

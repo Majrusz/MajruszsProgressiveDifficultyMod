@@ -4,6 +4,7 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -15,16 +16,17 @@ public class EvokerWithTotem extends GameModifier {
 	public EvokerWithTotem() {
 		super( Registries.Modifiers.DEFAULT, "EvokerWithTotem", "Evoker may spawn with a Totem of Undying." );
 
-		OnSpawnedContext onSpawned = new OnSpawnedContext( this::giveTotemOfUndying );
+		OnSpawned.Context onSpawned = new OnSpawned.Context( this::giveTotemOfUndying );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance( 1.0, true ) )
 			.addCondition( new Condition.Excludable() )
+			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.target instanceof Evoker );
 
 		this.addContext( onSpawned );
 	}
 
-	private void giveTotemOfUndying( OnSpawnedData data ) {
+	private void giveTotemOfUndying( OnSpawned.Data data ) {
 		Evoker evoker = ( Evoker )data.target;
 		evoker.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.TOTEM_OF_UNDYING ) );
 	}

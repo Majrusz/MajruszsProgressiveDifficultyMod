@@ -4,6 +4,7 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EntityType;
@@ -16,17 +17,18 @@ public class JockeySpawn extends GameModifier {
 	public JockeySpawn() {
 		super( Registries.Modifiers.DEFAULT, "JockeySpawn", "Jockey is more likely to spawn." );
 
-		OnSpawnedContext onSpawned = new OnSpawnedContext( this::spawnSkeletonOnSpider );
+		OnSpawned.Context onSpawned = new OnSpawned.Context( this::spawnSkeletonOnSpider );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 0.125, false ) )
 			.addCondition( new Condition.Excludable() )
+			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Spider && !( data.target instanceof CaveSpider ) );
 
 		this.addContext( onSpawned );
 	}
 
-	private void spawnSkeletonOnSpider( OnSpawnedData data ) {
+	private void spawnSkeletonOnSpider( OnSpawned.Data data ) {
 		assert data.level != null;
 		Skeleton skeleton = EntityType.SKELETON.create( data.level );
 		if( skeleton == null )

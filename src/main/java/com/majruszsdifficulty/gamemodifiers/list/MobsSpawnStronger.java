@@ -6,6 +6,7 @@ import com.mlib.Utility;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.StringListConfig;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.server.level.ServerLevel;
@@ -26,8 +27,9 @@ public class MobsSpawnStronger extends GameModifier {
 	public MobsSpawnStronger() {
 		super( Registries.Modifiers.DEFAULT, "MobsSpawnStronger", "All hostile mobs get damage and health bonuses." );
 
-		OnSpawnedContext onSpawned = new OnSpawnedContext( this::makeMobsStronger );
+		OnSpawned.Context onSpawned = new OnSpawned.Context( this::makeMobsStronger );
 		onSpawned.addCondition( new Condition.Excludable() )
+			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
 			.addCondition( data->this.canMobAttack( data.target ) )
 			.addCondition( data->this.isNotDimensionExcluded( data.level ) )
@@ -37,7 +39,7 @@ public class MobsSpawnStronger extends GameModifier {
 		this.addContext( onSpawned );
 	}
 
-	private void makeMobsStronger( OnSpawnedData data ) {
+	private void makeMobsStronger( OnSpawned.Data data ) {
 		assert data.level != null;
 		LivingEntity entity = data.target;
 		double nightMultiplier = data.level.isNight() ? this.nightMultiplier.get() : 1.0;

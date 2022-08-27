@@ -6,6 +6,7 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
 import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,16 +18,17 @@ public class WitherSkeletonWithSword extends GameModifier {
 	public WitherSkeletonWithSword() {
 		super( Registries.Modifiers.DEFAULT, "WitherSkeletonWithSword", "Wither Skeleton may spawn with the Wither Sword." );
 
-		OnSpawnedContext onSpawned = new OnSpawnedContext( this::giveWitherSword );
+		OnSpawned.Context onSpawned = new OnSpawned.Context( this::giveWitherSword );
 		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Excludable() )
+			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.target instanceof WitherSkeleton )
 			.addConfig( this.witherSword );
 
 		this.addContext( onSpawned );
 	}
 
-	private void giveWitherSword( OnSpawnedData data ) {
+	private void giveWitherSword( OnSpawned.Data data ) {
 		WitherSkeleton skeleton = ( WitherSkeleton )data.target;
 		this.witherSword.tryToEquip( skeleton, GameStage.getRegionalDifficulty( skeleton ) );
 	}
