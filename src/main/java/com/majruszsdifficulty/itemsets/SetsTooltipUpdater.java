@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -26,12 +27,12 @@ public class SetsTooltipUpdater {
 
 	@SubscribeEvent
 	public static void onItemTooltip( ItemTooltipEvent event ) {
-		Player player = event.getEntity();
+		@Nullable Player player = event.getEntity();
 		ItemStack itemStack = event.getItemStack();
 		List< Component > tooltip = event.getToolTip();
 
 		boolean isFromAnySet = BaseSet.isFromAnySet( itemStack );
-		if( !isFromAnySet )
+		if( !isFromAnySet || player == null )
 			return;
 
 		if( !ClientHelper.isShiftDown() ) {
