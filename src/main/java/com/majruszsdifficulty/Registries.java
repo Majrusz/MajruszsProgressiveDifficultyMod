@@ -217,6 +217,7 @@ public class Registries {
 	static {
 		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
+		GAME_MODIFIERS.add( new BlockIllusionerFromJoiningRaids() );
 		GAME_MODIFIERS.add( new CactusBleeding() );
 		GAME_MODIFIERS.add( new CreeperChainReaction() );
 		GAME_MODIFIERS.add( new CreeperExplodeBehindWall() );
