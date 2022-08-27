@@ -83,7 +83,8 @@ public class Registries {
 
 	static {
 		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.DEFAULT ) );
-		UNDEAD_ARMY_GROUP = CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.UNDEAD_ARMY, "UndeadArmy", "" ) );
+		UNDEAD_ARMY_GROUP = GameModifier.addNewGroup( Modifiers.UNDEAD_ARMY, "UndeadArmy", "" );
+		CONFIG_HANDLER.addGroup( UNDEAD_ARMY_GROUP );
 		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.GAME_STAGE, "GameStage", "" ) );
 		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.TREASURE_BAG, "TreasureBag", "" ) );
 		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.ACCESSORY, "Accessory", "" ) );
