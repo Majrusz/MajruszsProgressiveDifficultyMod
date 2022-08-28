@@ -29,7 +29,6 @@ import com.mlib.items.ItemCreativeModeTab;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
@@ -47,8 +46,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -75,19 +72,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.CONFIG_HANDLER;
+import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
 
 public class Registries {
 	private static final DeferredRegisterHelper HELPER = new DeferredRegisterHelper( MajruszsDifficulty.MOD_ID );
 	public static final ConfigGroup UNDEAD_ARMY_GROUP;
 
 	static {
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.DEFAULT ) );
+		SERVER_CONFIG.addGroup( GameModifier.addNewGroup( Modifiers.DEFAULT ) );
 		UNDEAD_ARMY_GROUP = GameModifier.addNewGroup( Modifiers.UNDEAD_ARMY, "UndeadArmy", "" );
-		CONFIG_HANDLER.addGroup( UNDEAD_ARMY_GROUP );
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.GAME_STAGE, "GameStage", "" ) );
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.TREASURE_BAG, "TreasureBag", "" ) );
-		CONFIG_HANDLER.addGroup( GameModifier.addNewGroup( Modifiers.ACCESSORY, "Accessory", "" ) );
+		SERVER_CONFIG.addGroup( UNDEAD_ARMY_GROUP );
+		SERVER_CONFIG.addGroup( GameModifier.addNewGroup( Modifiers.GAME_STAGE, "GameStage", "" ) );
+		SERVER_CONFIG.addGroup( GameModifier.addNewGroup( Modifiers.TREASURE_BAG, "TreasureBag", "" ) );
 	}
 
 	// Groups
@@ -281,7 +277,7 @@ public class Registries {
 		forgeEventBus.addListener( Registries::onSavingLevel );
 		forgeEventBus.addListener( Registries::registerCommands );
 
-		CONFIG_HANDLER.register( ModLoadingContext.get() );
+		SERVER_CONFIG.register( ModLoadingContext.get() );
 	}
 
 	private static void setupClient( final FMLClientSetupEvent event ) {
@@ -338,6 +334,5 @@ public class Registries {
 		public static final String UNDEAD_ARMY = Registries.getLocationString( "undead_army" );
 		public static final String GAME_STAGE = Registries.getLocationString( "game_stage" );
 		public static final String TREASURE_BAG = Registries.getLocationString( "treasure_bag" );
-		public static final String ACCESSORY = Registries.getLocationString( "accessory" );
 	}
 }

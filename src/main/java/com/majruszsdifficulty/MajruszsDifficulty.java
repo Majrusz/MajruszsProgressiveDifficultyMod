@@ -10,7 +10,7 @@ import net.minecraftforge.fml.config.ModConfig;
 public class MajruszsDifficulty {
 	public static final String MOD_ID = "majruszsdifficulty";
 	public static final String NAME = "Majrusz's Progressive Difficulty";
-	public static final ConfigHandler CONFIG_HANDLER = new ConfigHandler( ModConfig.Type.COMMON, "common.toml", MOD_ID );
+	public static final ConfigHandler SERVER_CONFIG = new ConfigHandler( ModConfig.Type.SERVER );
 
 	public MajruszsDifficulty() {
 		com.majruszsdifficulty.Registries.initialize();
