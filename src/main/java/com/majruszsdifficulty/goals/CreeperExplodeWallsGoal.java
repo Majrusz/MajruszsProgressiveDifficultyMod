@@ -67,7 +67,7 @@ public class CreeperExplodeWallsGoal extends Goal {
 		if( level == null )
 			return null;
 
-		Predicate< Player > playerPredicate = player->!EntityHelper.isOnCreativeMode( player );
+		Predicate< Player > playerPredicate = player->!EntityHelper.isOnCreativeMode( player ) && !EntityHelper.isOnSpectatorMode( player );
 		List< Player > nearestPlayers = EntityHelper.getEntitiesInSphere( Player.class, level, creeper, OFFSET, playerPredicate );
 		Player nearestPlayer = null;
 		for( Player player : nearestPlayers )
