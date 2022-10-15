@@ -1,17 +1,14 @@
 package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
+import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeathContext;
-import com.mlib.gamemodifiers.contexts.OnItemFishedContext;
-import com.mlib.gamemodifiers.contexts.OnPlayerTickContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.contexts.OnItemFished;
+import com.mlib.gamemodifiers.contexts.OnPlayerTick;
 import com.mlib.gamemodifiers.data.OnDeathData;
-import com.mlib.gamemodifiers.data.OnItemFishedData;
-import com.mlib.gamemodifiers.data.OnPlayerTickData;
 import com.mlib.items.ItemHelper;
 import com.mlib.nbt.NBTHelper;
 import com.mlib.time.TimeHelper;
@@ -67,20 +64,18 @@ public class TreasureBagManager extends GameModifier {
 	}
 
 	public TreasureBagManager() {
-		super( Registries.Modifiers.TREASURE_BAG, "TreasureBagManager", "" );
+		super( Registries.Modifiers.TREASURE_BAG, "", "" );
 
-		OnDamagedContext onDamaged = new OnDamagedContext( this::addPlayerToParticipantList );
-		onDamaged.addCondition( data->data.attacker instanceof Player )
-			.addCondition( data->hasTreasureBag( data.target.getType() ) );
+		OnDamaged.Context onDamaged = new OnDamaged.Context( this::addPlayerToParticipantList );
+		onDamaged.addCondition( data->data.attacker instanceof Player ).addCondition( data->hasTreasureBag( data.target.getType() ) );
 
 		OnDeathContext onDeath = new OnDeathContext( this::rewardAllParticipants );
-		onDeath.addCondition( data->hasTreasureBag( data.target.getType() ) )
-			.addCondition( data->{
-				TreasureBagItem treasureBag = getTreasureBag( data.target.getType() );
-				return treasureBag != null && treasureBag.isEnabled();
-			} );
+		onDeath.addCondition( data->hasTreasureBag( data.target.getType() ) ).addCondition( data->{
+			TreasureBagItem treasureBag = getTreasureBag( data.target.getType() );
+			return treasureBag != null && treasureBag.isEnabled();
+		} );
 
-		OnItemFishedContext onFished = new OnItemFishedContext( this::giveTreasureBagToAngler );
+		OnItemFished.Context onFished = new OnItemFished.Context( this::giveTreasureBagToAngler );
 		onFished.addCondition( data->data.level != null ).addCondition( data->{
 			int requiredFishCount = TreasureBagItem.Fishing.REQUIRED_FISH_COUNT.getCurrentGameStageValue();
 			NBTHelper.IntegerData fishedItems = new NBTHelper.IntegerData( data.player, FISHING_TAG );
@@ -89,28 +84,26 @@ public class TreasureBagManager extends GameModifier {
 			return fishedItems.get() == 0;
 		} ).addCondition( data->TreasureBagItem.Fishing.CONFIG.isEnabled() );
 
-		OnPlayerTickContext onTick = new OnPlayerTickContext( this::giveTreasureBagToHero );
-		onTick.addCondition( data->data.level != null )
-			.addCondition( data->TimeHelper.hasServerTicksPassed( 20 ) )
-			.addCondition( data->{
-				assert data.level != null;
-				Raid raid = data.level.getRaidAt( data.player.blockPosition() );
-				if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) )
-					return false;
+		OnPlayerTick.Context onTick = new OnPlayerTick.Context( this::giveTreasureBagToHero );
+		onTick.addCondition( data->data.level != null ).addCondition( data->TimeHelper.hasServerTicksPassed( 20 ) ).addCondition( data->{
+			assert data.level != null;
+			Raid raid = data.level.getRaidAt( data.player.blockPosition() );
+			if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) )
+				return false;
 
-				NBTHelper.IntegerData lastRaidId = new NBTHelper.IntegerData( data.player, RAID_TAG );
-				if( lastRaidId.get() == raid.getId() )
-					return false;
+			NBTHelper.IntegerData lastRaidId = new NBTHelper.IntegerData( data.player, RAID_TAG );
+			if( lastRaidId.get() == raid.getId() )
+				return false;
 
-				lastRaidId.set( raid.getId() );
-				return true;
-			} );
+			lastRaidId.set( raid.getId() );
+			return true;
+		} );
 
 		this.addContexts( onDamaged, onDeath, onFished, onTick );
 		this.addConfigs( TreasureBagItem.getConfigs() );
 	}
 
-	private void addPlayerToParticipantList( OnDamagedData damagedData ) {
+	private void addPlayerToParticipantList( OnDamaged.Data damagedData ) {
 		Player player = ( Player )damagedData.attacker;
 		ListTag listNBT = getOrCreateList( damagedData.target );
 		CompoundTag playerNBT = createPlayerTag( player );
@@ -161,11 +154,11 @@ public class TreasureBagManager extends GameModifier {
 		ItemHelper.giveItemStackToPlayer( new ItemStack( item ), player, level );
 	}
 
-	private void giveTreasureBagToAngler( OnItemFishedData fishedData ) {
+	private void giveTreasureBagToAngler( OnItemFished.Data fishedData ) {
 		giveTreasureBagTo( fishedData.player, Registries.FISHING_TREASURE_BAG.get(), fishedData.level );
 	}
 
-	private void giveTreasureBagToHero( OnPlayerTickData tickData ) {
+	private void giveTreasureBagToHero( OnPlayerTick.Data tickData ) {
 		giveTreasureBagTo( tickData.player, Registries.PILLAGER_TREASURE_BAG.get(), tickData.level );
 	}
 

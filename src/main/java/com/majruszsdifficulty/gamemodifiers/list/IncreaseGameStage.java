@@ -30,7 +30,7 @@ public class IncreaseGameStage extends GameModifier {
 	}
 
 	public IncreaseGameStage() {
-		super( Registries.Modifiers.GAME_STAGE, "GameStage", "" );
+		super( Registries.Modifiers.GAME_STAGE, "", "" );
 
 		OnDimensionChangedContext onExpertDimension = new OnDimensionChangedContext( this::startExpertMode );
 		onExpertDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
@@ -85,11 +85,7 @@ public class IncreaseGameStage extends GameModifier {
 	}
 
 	private static void sendMessageToAllPlayers( PlayerList playerList, String translationKey, ChatFormatting textColor ) {
-		for( Player player : playerList.getPlayers() ) {
-			MutableComponent message = Component.translatable( translationKey );
-			message.withStyle( textColor, ChatFormatting.BOLD );
-
-			player.displayClientMessage( message, false );
-		}
+		MutableComponent message = Component.translatable( translationKey ).withStyle( textColor, ChatFormatting.BOLD );
+		playerList.getPlayers().forEach( player -> player.displayClientMessage( message, false ) );
 	}
 }
