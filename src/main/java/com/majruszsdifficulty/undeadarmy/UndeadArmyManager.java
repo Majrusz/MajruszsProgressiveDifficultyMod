@@ -25,6 +25,7 @@ import java.util.Optional;
 public class UndeadArmyManager extends SavedData {
 	public static final String DATA_NAME = "undead_army";
 	static final float MAXIMUM_DISTANCE_TO_ARMY = 12000.0f;
+	static final int START_DURATION = Utility.secondsToTicks( 6.5 );
 	final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	final List< UndeadArmyToSpawn > undeadArmiesToSpawn = new ArrayList<>();
 	final ServerLevel level;
@@ -65,9 +66,12 @@ public class UndeadArmyManager extends SavedData {
 		} );
 		this.undeadArmiesToSpawn.removeIf( UndeadArmyToSpawn::isReadyToSpawn );
 		this.undeadArmies.forEach( UndeadArmy::tick );
-		this.undeadArmies.removeIf( UndeadArmy::hasEnded );
+		boolean anyArmyHasEnded = this.undeadArmies.removeIf( UndeadArmy::hasEnded );
 		if( TimeHelper.hasServerSecondsPassed( 10.0 ) ) {
 			this.setDirty();
+		}
+		if( anyArmyHasEnded && this.undeadArmies.isEmpty() ) {
+			LevelHelper.setClearWeather( this.level, Utility.minutesToTicks( 10.0 ) );
 		}
 	}
 
@@ -86,6 +90,7 @@ public class UndeadArmyManager extends SavedData {
 		Direction direction = optionalDirection.orElseGet( Direction::getRandom );
 		this.undeadArmiesToSpawn.add( new UndeadArmyToSpawn( this.level, attackPosition, direction ) );
 		this.level.playSound( null, attackPosition, Registries.UNDEAD_ARMY_APPROACHING.get(), SoundSource.AMBIENT, 0.25f, 1.0f );
+		LevelHelper.startRaining( this.level, Utility.minutesToTicks( 10.0 ), true, START_DURATION - Utility.secondsToTicks( 0.5 ) );
 		MajruszLibrary.LOGGER.info( "Undead Army started at " + attackPosition + "!" );
 
 		return true;
@@ -130,7 +135,7 @@ public class UndeadArmyManager extends SavedData {
 			this.level = level;
 			this.position = position;
 			this.direction = direction;
-			this.ticksToSpawn = Utility.secondsToTicks( 6.5 );
+			this.ticksToSpawn = START_DURATION;
 		}
 
 		public UndeadArmy spawn() {
