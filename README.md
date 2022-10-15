@@ -8,8 +8,8 @@
 - [Planet Minecraft](https://www.planetminecraft.com/mod/majrusz-s-progressive-difficulty/)
 
 ## Current Mod Releases (Source Code)
-- [v1.5.10 for Minecraft 1.19.2](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.19.X/)
-- [v1.4.2 for Minecraft 1.18.2](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.18.2/)
+- [v1.5.11 for Minecraft 1.19.2](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.19.X/)
+- [v1.4.4 for Minecraft 1.18.2](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.18.X/)
 - [v1.4.0 for Minecraft 1.18.1](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.18.1/) *(not supported anymore)*
 - [v1.3.0 for Minecraft 1.17.1](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.17.1/) *(not supported anymore)*
 - [v1.1.0 for Minecraft 1.16.4](https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/tree/1.16.4/) *(not supported anymore)*
