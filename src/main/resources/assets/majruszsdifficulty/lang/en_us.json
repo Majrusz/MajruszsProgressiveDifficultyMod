@@ -79,8 +79,6 @@
   "majruszsdifficulty.undead_army.south": "south",
   "majruszsdifficulty.subtitle.undead_army.approaching": "Undead Army Approaching",
   "majruszsdifficulty.subtitle.undead_army.wave_started": "Wave Started",
-  "majruszsdifficulty.enderium_items.haste_tooltip": "Applies Haste effect whenever a block is destroyed.",
-  "majruszsdifficulty.enderium_items.till_tooltip": "Tills the ground in a 3x1x3 area.",
   "majruszsdifficulty.sets.enderium.name": "Set of the End",
   "majruszsdifficulty.sets.enderium.bonus_2": "Enderium Helmet makes all Endermans less hostile.",
   "majruszsdifficulty.sets.enderium.bonus_3": "Whenever you take damage you get Speed effect for %d seconds.",
