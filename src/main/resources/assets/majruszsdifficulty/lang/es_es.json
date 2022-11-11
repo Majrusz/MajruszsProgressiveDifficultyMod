@@ -45,7 +45,7 @@
   "block.majruszsdifficulty.enderium_block": "Bloque de Metal del Vacio",
   "block.majruszsdifficulty.infested_end_stone": "Piedra del End infestada",
   "commands.gamestage.changed": "Etapa del Juego Cambio a %s",
-  "commands.gamestage.cannotchange": "Etapa del Juego ya es %s",
+  "commands.gamestage.cannot_change": "Etapa del Juego ya es %s",
   "commands.gamestage.current": "Etapa del Juego Actual es %s",
   "commands.undeadarmy.finished": "Ejercito No Muerto Detenido en la posición %s",
   "commands.undeadarmy.missing": "No Hay Ejercito no muerto en la posición %s",

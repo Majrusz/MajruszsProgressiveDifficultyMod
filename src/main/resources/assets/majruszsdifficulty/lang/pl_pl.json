@@ -45,7 +45,7 @@
   "block.majruszsdifficulty.enderium_block": "Blok enderium",
   "block.majruszsdifficulty.infested_end_stone": "Zainfekowany kamień Endu",
   "commands.gamestage.changed": "Etap gry został zmieniony na %s.",
-  "commands.gamestage.cannotchange": "Etapem gry jest już %s!",
+  "commands.gamestage.cannot_change": "Etapem gry jest już %s!",
   "commands.gamestage.current": "Aktualny etap gry to %s.",
   "commands.undeadarmy.finished": "Armia nieumarłych została ukończona na pozycji: %s",
   "commands.undeadarmy.missing": "Nie ma żadnej armii nieumarłych na pozycji: %s",

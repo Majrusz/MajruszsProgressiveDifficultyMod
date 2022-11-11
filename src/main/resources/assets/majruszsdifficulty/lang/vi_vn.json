@@ -46,7 +46,7 @@
   "block.majruszsdifficulty.enderium_block": "Khối Enderium",
   "block.majruszsdifficulty.infested_end_stone": "Đá End bị nhiễm khuẩn",
   "commands.gamestage.changed": "Giai đoạn của trò chơi đã được thay đổi thành %s.",
-  "commands.gamestage.cannotchange": "Giai đoạn của trò chơi đã là %s rồi!",
+  "commands.gamestage.cannot_change": "Giai đoạn của trò chơi đã là %s rồi!",
   "commands.gamestage.current": "Giai đoạn của trò chơi hiện tại là %s.",
   "commands.undeadarmy.finished": "Một đội quân Thây ma đã bị chặn lại tại vị trí: %s",
   "commands.undeadarmy.missing": "Không có đội quân Thây ma nào tại vị trí: %s",

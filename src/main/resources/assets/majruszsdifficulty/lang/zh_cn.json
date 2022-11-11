@@ -44,7 +44,7 @@
   "block.majruszsdifficulty.enderium_block": "末地块",
   "block.majruszsdifficulty.infested_end_stone": "被虫蚀的末地石",
   "commands.gamestage.changed": "游戏阶段已变更为：%s",
-  "commands.gamestage.cannotchange": "当前的游戏阶段已经是 %s 了！",
+  "commands.gamestage.cannot_change": "当前的游戏阶段已经是 %s 了！",
   "commands.gamestage.current": "当前游戏阶段为 %s",
   "commands.undeadarmy.undead_left": "亡灵军团剩余：%s",
   "commands.undeadarmy.missing": "这里没有亡灵军团！",

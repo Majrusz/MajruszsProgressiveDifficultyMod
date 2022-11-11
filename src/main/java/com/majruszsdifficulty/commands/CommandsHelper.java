@@ -25,14 +25,8 @@ public class CommandsHelper {
 		COMMANDS.add( new HighlightUndeadArmyCommands() );
 		COMMANDS.add( new UndeadArmyUndeadLeftCommands() );
 		COMMANDS.add( new UndeadArmyProgressCommands() );
-		COMMANDS.add( new ChangeGameStageCommand() );
-		COMMANDS.add( new GetGameStageCommand() );
 		COMMANDS.add( new GetClampedRegionalDifficultyCommands() );
 		COMMANDS.add( new TreasureBagResetProgressCommands() );
-	}
-
-	public static MutableComponent createGameStageMessage( GameStage.Stage stage, String translationID ) {
-		return Component.translatable( "commands.gamestage." + translationID, GameStage.getGameStageText( stage ) );
 	}
 
 	public static MutableComponent createBaseMessageWithPosition( String translationKey, Vec3 position, Object... objects ) {

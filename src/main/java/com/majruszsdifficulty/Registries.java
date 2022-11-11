@@ -22,6 +22,8 @@ import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.majruszsdifficulty.world.WorldGenHelper;
+import com.mlib.annotations.AnnotationHandler;
+import com.mlib.commands.Command;
 import com.mlib.commands.IRegistrableCommand;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
@@ -175,6 +177,7 @@ public class Registries {
 
 	// Misc
 	public static final CreativeModeTab ITEM_GROUP = new ItemCreativeModeTab( "majruszs_difficulty_tab", BATTLE_STANDARD );
+	static final List< Command > COMMANDS;
 	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
 
@@ -212,6 +215,8 @@ public class Registries {
 	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
 
 	static {
+		COMMANDS = new AnnotationHandler( "com.majruszsdifficulty.commands" ).getInstances( Command.class );
+
 		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
 		GAME_MODIFIERS.add( new BlockIllusionerFromJoiningRaids() );
