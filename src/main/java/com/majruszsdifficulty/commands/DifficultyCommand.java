@@ -7,8 +7,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
 
 public class DifficultyCommand extends Command {
-	static final String GAME_STAGE_ID = "gamestage";
-
 	protected MutableComponent createGameStageMessage( GameStage.Stage stage, String translationKey ) {
 		return Component.translatable( "commands.gamestage." + translationKey, GameStage.getGameStageText( stage ) );
 	}
