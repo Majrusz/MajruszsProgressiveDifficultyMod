@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.GameStage;
 import com.mlib.commands.BaseCommand;
 import com.mlib.commands.IRegistrableCommand;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Stores instances of all commands. */
+@Deprecated
 public class CommandsHelper {
 	public static final List< IRegistrableCommand > COMMANDS = new ArrayList<>();
 	public final static LiteralArgumentBuilder< CommandSourceStack > UNDEAD_ARMY_ARGUMENT = BaseCommand.literal( "undeadarmy" );
@@ -25,7 +25,6 @@ public class CommandsHelper {
 		COMMANDS.add( new HighlightUndeadArmyCommands() );
 		COMMANDS.add( new UndeadArmyUndeadLeftCommands() );
 		COMMANDS.add( new UndeadArmyProgressCommands() );
-		COMMANDS.add( new GetClampedRegionalDifficultyCommands() );
 		COMMANDS.add( new TreasureBagResetProgressCommands() );
 	}
 

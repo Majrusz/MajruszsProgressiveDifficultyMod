@@ -101,6 +101,14 @@ public class GameStage {
 		return getCurrentGameStageDependentValue( 0.0, 0.15, 0.3 );
 	}
 
+	public static MutableComponent withStyle( MutableComponent component ) {
+		return switch( CURRENT ) {
+			case MASTER -> component.withStyle( GameStage.MASTER_MODE_COLOR, ChatFormatting.BOLD );
+			case EXPERT -> component.withStyle( GameStage.EXPERT_MODE_COLOR, ChatFormatting.BOLD );
+			default -> component;
+		};
+	}
+
 	private static MutableComponent constructGameStageText( String stage, ChatFormatting color ) {
 		return Component.translatable( "majruszsdifficulty.stages." + stage ).withStyle( color, ChatFormatting.BOLD );
 	}
