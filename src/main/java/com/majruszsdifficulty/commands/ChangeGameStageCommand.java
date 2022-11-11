@@ -9,8 +9,8 @@ public class ChangeGameStageCommand extends DifficultyCommand {
 	public ChangeGameStageCommand() {
 		this.newBuilder()
 			.literal( "gamestage", "gamestate" )
-			.hasPermission( 4 )
 			.enumeration( GAME_STAGE_ID, GameStage.Stage.class )
+			.hasPermission( 4 )
 			.execute( this::handle );
 	}
 
