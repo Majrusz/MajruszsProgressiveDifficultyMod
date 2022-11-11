@@ -29,7 +29,7 @@ public class GetClampedRegionalDifficultyCommand extends DifficultyCommand {
 
 	private MutableComponent buildMessage( CommandData data ) throws CommandSyntaxException {
 		ServerLevel level = data.source.getLevel();
-		Vec3 position = this.getOptionalEntity( data ).orElse( data.source.getEntityOrException() ).position();
+		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
 		String total = String.format( "%.2f", GameStage.getRegionalDifficulty( level, position ) );
 
 		return Component.translatable( "commands.clampedregionaldifficulty", this.asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
