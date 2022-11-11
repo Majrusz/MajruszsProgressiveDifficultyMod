@@ -12,8 +12,13 @@ import net.minecraft.world.phys.Vec3;
 @AutoInstance
 public class GetClampedRegionalDifficultyCommand extends DifficultyCommand {
 	public GetClampedRegionalDifficultyCommand() {
-		this.newBuilder().literal( "crd", "clampedregionaldifficulty" ).isPlayer().execute( this::handle );
-		this.newBuilder().literal( "crd", "clampedregionaldifficulty" ).entity().hasPermission( 4 ).execute( this::handle );
+		this.newBuilder()
+			.literal( "crd", "clampedregionaldifficulty" )
+			.isPlayer()
+			.execute( this::handle )
+			.entity()
+			.hasPermission( 4 )
+			.execute( this::handle );
 	}
 
 	private int handle( CommandData data ) {
