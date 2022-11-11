@@ -4,6 +4,7 @@ import com.majruszsdifficulty.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 import com.mlib.levels.LevelHelper;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -14,22 +15,21 @@ public class GetClampedRegionalDifficultyCommand extends DifficultyCommand {
 	public GetClampedRegionalDifficultyCommand() {
 		this.newBuilder()
 			.literal( "crd", "clampedregionaldifficulty" )
-			.isPlayer()
 			.execute( this::handle )
 			.entity()
 			.hasPermission( 4 )
 			.execute( this::handle );
 	}
 
-	private int handle( CommandData data ) {
+	private int handle( CommandData data ) throws CommandSyntaxException {
 		data.source.sendSuccess( this.buildMessage( data ), true );
 
 		return 0;
 	}
 
-	private MutableComponent buildMessage( CommandData data ) {
+	private MutableComponent buildMessage( CommandData data ) throws CommandSyntaxException {
 		ServerLevel level = data.source.getLevel();
-		Vec3 position = this.getOptionalEntity( data ).orElse( data.source.getEntity() ).position();
+		Vec3 position = this.getOptionalEntity( data ).orElse( data.source.getEntityOrException() ).position();
 		String total = String.format( "%.2f", GameStage.getRegionalDifficulty( level, position ) );
 
 		return Component.translatable( "commands.clampedregionaldifficulty", this.asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
