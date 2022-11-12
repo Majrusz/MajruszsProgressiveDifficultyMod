@@ -213,6 +213,7 @@ public class Registries {
 
 	static {
 		COMMANDS = new AnnotationHandler( "com.majruszsdifficulty.commands" ).getInstances( Command.class );
+		new AnnotationHandler( "com.majruszsdifficulty" ).getInstances( GameModifier.class );
 
 		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
