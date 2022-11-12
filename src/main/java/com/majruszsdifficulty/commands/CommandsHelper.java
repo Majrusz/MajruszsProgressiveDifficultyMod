@@ -21,7 +21,6 @@ public class CommandsHelper {
 	static {
 		COMMANDS.add( new KillUndeadArmyCommands() );
 		COMMANDS.add( new HighlightUndeadArmyCommands() );
-		COMMANDS.add( new UndeadArmyProgressCommands() );
 	}
 
 	public static MutableComponent createBaseMessageWithPosition( String translationKey, Vec3 position, Object... objects ) {
