@@ -18,7 +18,7 @@ public class GameStageChangeCommand extends DifficultyCommand {
 		GameStage.Stage gameStage = this.getEnumeration( data, GameStage.Stage.class );
 		boolean hasGameStageChanged = GameStage.changeModeWithAdvancement( gameStage, data.source.getServer() );
 		String translationKey = hasGameStageChanged ? "changed" : "cannot_change";
-		data.source.sendSuccess( this.createGameStageMessage( gameStage, translationKey ), true );
+		data.source.sendSuccess( createGameStageMessage( gameStage, translationKey ), true );
 
 		return GameStage.convertStageToInteger( gameStage );
 	}

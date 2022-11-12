@@ -11,7 +11,7 @@ public class GameStageGetCommand extends DifficultyCommand {
 	}
 
 	private int handle( CommandData data ) {
-		data.source.sendSuccess( this.createGameStageMessage( GameStage.getCurrentStage(), "current" ), true );
+		data.source.sendSuccess( createGameStageMessage( GameStage.getCurrentStage(), "current" ), true );
 
 		return GameStage.convertStageToInteger( GameStage.getCurrentStage() );
 	}

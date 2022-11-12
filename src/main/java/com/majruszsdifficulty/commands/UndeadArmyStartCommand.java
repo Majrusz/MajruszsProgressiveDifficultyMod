@@ -29,11 +29,11 @@ public class UndeadArmyStartCommand extends DifficultyCommand {
 		Optional< Direction > direction = this.getOptionalEnumeration( data, Direction.class );
 		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
 		if( Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( new BlockPos( position ), direction ) ) {
-			data.source.sendSuccess( Component.translatable( "commands.undeadarmy.started", this.asVec3i( position ) ), true );
+			data.source.sendSuccess( Component.translatable( "commands.undeadarmy.started", asVec3i( position ) ), true );
 			return 0;
 		}
 
-		data.source.sendSuccess( Component.translatable( "commands.undeadarmy.cannot_start", this.asVec3i( position ) ), true );
+		data.source.sendSuccess( Component.translatable( "commands.undeadarmy.cannot_start", asVec3i( position ) ), true );
 		return -1;
 	}
 }

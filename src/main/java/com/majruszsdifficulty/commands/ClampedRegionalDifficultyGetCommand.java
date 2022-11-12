@@ -32,7 +32,7 @@ public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
 		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
 		String total = String.format( "%.2f", GameStage.getRegionalDifficulty( level, position ) );
 
-		return Component.translatable( "commands.clampedregionaldifficulty", this.asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
+		return Component.translatable( "commands.clampedregionaldifficulty", asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
 	}
 
 	private MutableComponent buildFormula( ServerLevel level, Vec3 position ) {
