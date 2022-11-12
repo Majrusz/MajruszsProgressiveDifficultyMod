@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-/** An effect that makes the entity immune to bleeding. */
 @Mod.EventBusSubscriber
 public class BleedingImmunityEffect extends MobEffect {
 	public BleedingImmunityEffect() {
