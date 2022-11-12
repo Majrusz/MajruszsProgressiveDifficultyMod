@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Optional;
 
 @AutoInstance
-public class StartUndeadArmyCommand extends DifficultyCommand {
-	public StartUndeadArmyCommand() {
+public class UndeadArmyStartCommand extends DifficultyCommand {
+	public UndeadArmyStartCommand() {
 		this.newBuilder()
 			.literal( "undeadarmy" )
 			.literal( "start" )

@@ -10,8 +10,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
 
 @AutoInstance
-public class StopUndeadArmyCommand extends DifficultyCommand {
-	public StopUndeadArmyCommand() {
+public class UndeadArmyStopCommand extends DifficultyCommand {
+	public UndeadArmyStopCommand() {
 		this.newBuilder()
 			.literal( "undeadarmy" )
 			.literal( "stop" )
