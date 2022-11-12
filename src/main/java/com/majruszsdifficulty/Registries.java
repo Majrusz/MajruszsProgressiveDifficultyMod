@@ -3,7 +3,6 @@ package com.majruszsdifficulty;
 import com.majruszsdifficulty.blocks.EndShardOre;
 import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
-import com.majruszsdifficulty.commands.CommandsHelper;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
@@ -24,7 +23,6 @@ import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.annotations.AnnotationHandler;
 import com.mlib.commands.Command;
-import com.mlib.commands.IRegistrableCommand;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.items.ItemCreativeModeTab;
@@ -57,7 +55,6 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -280,7 +277,6 @@ public class Registries {
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( Registries::onLoadingLevel );
 		forgeEventBus.addListener( Registries::onSavingLevel );
-		forgeEventBus.addListener( Registries::registerCommands );
 
 		SERVER_CONFIG.register( ModLoadingContext.get() );
 	}
@@ -299,10 +295,6 @@ public class Registries {
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 	}
 
-	private static void registerCommands( RegisterCommandsEvent event ) {
-		for( IRegistrableCommand command : CommandsHelper.COMMANDS )
-			command.register( event.getDispatcher() );
-	}
 
 	public static void onLoadingLevel( LevelEvent.Load event ) {
 		ServerLevel level = getOverworld( event.getLevel() );
