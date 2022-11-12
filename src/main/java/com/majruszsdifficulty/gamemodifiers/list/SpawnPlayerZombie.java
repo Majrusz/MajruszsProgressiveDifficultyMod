@@ -3,13 +3,13 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnDeathContext;
-import com.mlib.gamemodifiers.data.OnDeathData;
+import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnDeath;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,8 +30,8 @@ public class SpawnPlayerZombie extends GameModifier {
 	public SpawnPlayerZombie() {
 		super( Registries.Modifiers.DEFAULT, "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
 
-		OnDeathContext onDeath = new OnDeathContext( this::spawnZombie );
-		onDeath.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
+		OnDeath.Context onDeath1 = new OnDeath.Context( this::spawnZombie );
+		onDeath1.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.level != null )
@@ -39,10 +39,15 @@ public class SpawnPlayerZombie extends GameModifier {
 			.addCondition( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie )
 			.addConfigs( this.headChance, this.headDropChance );
 
-		this.addContext( onDeath );
+		OnDeath.Context onDeath2 = new OnDeath.Context( this::giveAdvancement );
+		onDeath2.addCondition( data->data.target instanceof Zombie )
+			.addCondition( data->data.attacker instanceof ServerPlayer )
+			.addCondition( data->data.target.getName().equals( data.attacker.getName() ) );
+
+		this.addContexts( onDeath1, onDeath2 );
 	}
 
-	private void spawnZombie( OnDeathData data ) {
+	private void spawnZombie( OnDeath.Data data ) {
 		assert data.level != null;
 		Player player = ( Player )data.target;
 		EntityType< ? extends Zombie > zombieType = getZombieType( data.attacker );
@@ -59,6 +64,10 @@ public class SpawnPlayerZombie extends GameModifier {
 		zombie.setCustomName( player.getName() );
 		zombie.setCanPickUpLoot( false );
 		zombie.setPersistenceRequired();
+	}
+
+	private void giveAdvancement( OnDeath.Data data ) {
+		Registries.BASIC_TRIGGER.trigger( ( ServerPlayer )data.attacker, "kill_yourself" );
 	}
 
 	private static ItemStack getHead( Player player ) {
