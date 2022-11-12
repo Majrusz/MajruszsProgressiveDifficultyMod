@@ -9,8 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 @AutoInstance
-public class ResetTreasureBagProgressCommand extends DifficultyCommand {
-	public ResetTreasureBagProgressCommand() {
+public class TreasureBagResetProgressCommand extends DifficultyCommand {
+	public TreasureBagResetProgressCommand() {
 		this.newBuilder()
 			.literal( "treasurebag" )
 			.literal( "reset" )
