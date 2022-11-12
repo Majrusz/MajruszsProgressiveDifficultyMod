@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.5.12-unfinished'
+version = '1.6.0-unfinished'
 group = 'com.majruszsdifficulty'
 archivesBaseName = 'majruszs-difficulty-1.19.2'
 
