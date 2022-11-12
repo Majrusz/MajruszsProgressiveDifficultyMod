@@ -5,8 +5,8 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 
 @AutoInstance
-public class ChangeGameStageCommand extends DifficultyCommand {
-	public ChangeGameStageCommand() {
+public class GameStageChangeCommand extends DifficultyCommand {
+	public GameStageChangeCommand() {
 		this.newBuilder()
 			.literal( "gamestage", "gamestate" )
 			.enumeration( GameStage.Stage.class )

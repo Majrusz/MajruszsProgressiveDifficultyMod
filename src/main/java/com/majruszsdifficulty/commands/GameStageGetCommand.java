@@ -5,8 +5,8 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 
 @AutoInstance
-public class GetGameStageCommand extends DifficultyCommand {
-	public GetGameStageCommand() {
+public class GameStageGetCommand extends DifficultyCommand {
+	public GameStageGetCommand() {
 		this.newBuilder().literal( "gamestage", "gamestate" ).execute( this::handle );
 	}
 
