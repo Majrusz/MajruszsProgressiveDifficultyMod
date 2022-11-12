@@ -26,7 +26,7 @@ public class EndShardOre extends Block {
 
 	@Override
 	protected void tryDropExperience( ServerLevel level, BlockPos position, ItemStack itemStack, IntProvider intProvider ) {
-		if( EnchantmentHelper.getItemEnchantmentLevel( Enchantments.SILK_TOUCH, itemStack ) == 0 ) {
+		if( itemStack.getEnchantmentLevel( Enchantments.SILK_TOUCH ) == 0 ) {
 			this.popExperience( level, position, Random.nextInt( 6, 11 ) );
 		}
 	}
