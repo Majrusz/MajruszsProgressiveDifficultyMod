@@ -11,8 +11,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 
 @AutoInstance
-public class GetClampedRegionalDifficultyCommand extends DifficultyCommand {
-	public GetClampedRegionalDifficultyCommand() {
+public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
+	public ClampedRegionalDifficultyGetCommand() {
 		this.newBuilder()
 			.literal( "crd", "clampedregionaldifficulty" )
 			.execute( this::handle )
