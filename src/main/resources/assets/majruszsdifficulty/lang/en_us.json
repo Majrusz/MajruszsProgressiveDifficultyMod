@@ -67,6 +67,7 @@
   "majruszsdifficulty.treasure_bag.item_tooltip": "Right click to open the bag.",
   "majruszsdifficulty.treasure_bag.hint_tooltip": "Press SHIFT to display possible drops...",
   "majruszsdifficulty.treasure_bag.list_tooltip": "Possible drops (%d/%d)",
+  "majruszsdifficulty.treasure_bag.new_items": "You have found new items in %1$s!",
   "majruszsdifficulty.undead_army.title": "Undead Army",
   "majruszsdifficulty.undead_army.wave": "Wave",
   "majruszsdifficulty.undead_army.victory": "Victory!",

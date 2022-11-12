@@ -7,6 +7,7 @@ import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
 import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
 import com.majruszsdifficulty.treasurebags.LootProgressClient;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
+import com.mlib.client.ClientHelper;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -89,7 +90,7 @@ public class TreasureBagItem extends Item {
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY, " " );
 
-		LootProgressClient.addDropList( this, tooltip );
+		LootProgressClient.addDropList( this, tooltip, ClientHelper::isShiftDown );
 	}
 
 	public boolean isEnabled() {

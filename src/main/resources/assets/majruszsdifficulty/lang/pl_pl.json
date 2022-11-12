@@ -66,6 +66,7 @@
   "majruszsdifficulty.treasure_bag.item_tooltip": "Kliknij prawy przycisk trzymając w dłoni, żeby otworzyć worek.",
   "majruszsdifficulty.treasure_bag.hint_tooltip": "Wciśnij SHIFT, żeby zobaczyć przedmioty do zdobycia...",
   "majruszsdifficulty.treasure_bag.list_tooltip": "Możliwe przedmioty do zdobycia (%d/%d)",
+  "majruszsdifficulty.treasure_bag.new_items": "Znaleziono nowe przedmioty w %1$s!",
   "majruszsdifficulty.undead_army.title": "Armia nieumarłych",
   "majruszsdifficulty.undead_army.wave": "Fala",
   "majruszsdifficulty.undead_army.victory": "Zwycięstwo!",

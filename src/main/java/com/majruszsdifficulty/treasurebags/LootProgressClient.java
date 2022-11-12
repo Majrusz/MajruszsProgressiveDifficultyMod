@@ -16,17 +16,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @OnlyIn( Dist.CLIENT )
 public class LootProgressClient {
 	private static final Map< String, List< Component > > TREASURE_BAG_COMPONENTS = new HashMap<>();
 	private static final Map< String, Tuple< Integer, Integer > > UNLOCKED_LOOT = new HashMap<>();
+	private static final Map< String, Boolean > UNLOCKED_NEW_LOOT = new HashMap<>();
 	private static final String HINT_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.hint_tooltip";
 	private static final String LIST_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.list_tooltip";
 
 	public static void generateComponents( String treasureBagID, List< LootData > lootDataList ) {
+		int previouslyUnlockedItems = UNLOCKED_LOOT.getOrDefault( treasureBagID, new Tuple<>( 0, 1 ) ).getA();
+
 		TREASURE_BAG_COMPONENTS.remove( treasureBagID );
 		UNLOCKED_LOOT.remove( treasureBagID );
+		UNLOCKED_NEW_LOOT.remove( treasureBagID );
 
 		int unlockedItems = 0, totalItems = 0;
 		List< Component > tooltip = new ArrayList<>();
@@ -46,12 +51,13 @@ public class LootProgressClient {
 			tooltip.add( component );
 		}
 
+		UNLOCKED_NEW_LOOT.put( treasureBagID, unlockedItems > previouslyUnlockedItems );
 		UNLOCKED_LOOT.put( treasureBagID, new Tuple<>( unlockedItems, totalItems ) );
 		TREASURE_BAG_COMPONENTS.put( treasureBagID, tooltip );
 	}
 
-	public static void addDropList( TreasureBagItem treasureBagItem, List< Component > tooltip ) {
-		if( ClientHelper.isShiftDown() ) {
+	public static void addDropList( TreasureBagItem treasureBagItem, List< Component > tooltip, Supplier< Boolean > isDetailed ) {
+		if( isDetailed.get() ) {
 			String bagID = Utility.getRegistryString( treasureBagItem );
 			if( bagID == null )
 				return;
@@ -63,6 +69,10 @@ public class LootProgressClient {
 		} else {
 			tooltip.add( Component.translatable( HINT_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY ) );
 		}
+	}
+
+	public static boolean hasUnlockedNewItems( String treasureBagID ) {
+		return UNLOCKED_NEW_LOOT.getOrDefault( treasureBagID, false );
 	}
 
 	protected static ChatFormatting getUnlockedItemFormat( int quality ) {

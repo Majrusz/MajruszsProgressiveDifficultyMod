@@ -1,21 +1,30 @@
 package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.PacketHandler;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
+import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnPlayerLogged;
 import com.mlib.gamemodifiers.contexts.OnPlayerLoggedContext;
 import com.mlib.gamemodifiers.data.OnPlayerLoggedData;
 import com.mlib.network.message.EntityMessage;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -58,7 +67,7 @@ public class LootProgressManager extends GameModifier {
 			}
 		}
 
-		notifyPlayerAboutChanges( player, treasureBagItem );
+		notifyPlayerAboutChanges( player, treasureBagItem, false );
 	}
 
 	public static void cleanProgress( Player player ) {
@@ -74,18 +83,18 @@ public class LootProgressManager extends GameModifier {
 			createDefaultProgress( player, treasureBagItem );
 		}
 
-		notifyPlayerAboutChanges( player );
+		notifyPlayerAboutChanges( player, false );
 	}
 
 	public LootProgressManager() {
 		super( Registries.Modifiers.TREASURE_BAG, "LootProgressManager", "" );
 
-		this.addContext( new OnPlayerLoggedContext( this::onLogged ) );
+		this.addContext( new OnPlayerLogged.Context( this::onLogged ) );
 	}
 
-	private void onLogged( OnPlayerLoggedData data ) {
+	private void onLogged( OnPlayerLogged.Data data ) {
 		TreasureBagItem.TREASURE_BAGS.forEach( item->createDefaultProgress( data.player, item ) );
-		notifyPlayerAboutChanges( data.player );
+		notifyPlayerAboutChanges( data.player, true );
 	}
 
 	private static void createDefaultProgress( Player player, TreasureBagItem treasureBagItem ) {
@@ -123,7 +132,7 @@ public class LootProgressManager extends GameModifier {
 		}
 	}
 
-	private static void notifyPlayerAboutChanges( Player player, TreasureBagItem treasureBagItem ) {
+	private static void notifyPlayerAboutChanges( Player player, TreasureBagItem treasureBagItem, boolean onLogged ) {
 		ServerPlayer serverPlayer = Utility.castIfPossible( ServerPlayer.class, player );
 		if( serverPlayer == null )
 			return;
@@ -142,28 +151,31 @@ public class LootProgressManager extends GameModifier {
 			lootDataList.add( LootData.read( treasureBagTag, itemID ) );
 
 		lootDataList.sort( Comparator.comparingInt( a->-a.quality ) );
-		PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), new LootProgressManager.ProgressMessage( serverPlayer, bagID, lootDataList ) );
+		PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), new LootProgressManager.ProgressMessage( serverPlayer, bagID, lootDataList, onLogged ) );
 	}
 
-	private static void notifyPlayerAboutChanges( Player player ) {
+	private static void notifyPlayerAboutChanges( Player player, boolean onLogged ) {
 		for( TreasureBagItem treasureBagItem : TreasureBagItem.TREASURE_BAGS )
-			notifyPlayerAboutChanges( player, treasureBagItem );
+			notifyPlayerAboutChanges( player, treasureBagItem, onLogged );
 	}
 
 	public static class ProgressMessage extends EntityMessage {
-		private final String treasureBagID;
-		private final List< LootData > lootDataList;
+		final String treasureBagID;
+		final List< LootData > lootDataList;
+		final boolean onLogged;
 
-		public ProgressMessage( Entity entity, String treasureBagID, List< LootData > lootDataList ) {
+		public ProgressMessage( Entity entity, String treasureBagID, List< LootData > lootDataList, boolean onLogged ) {
 			super( entity );
 			this.treasureBagID = treasureBagID;
 			this.lootDataList = lootDataList;
+			this.onLogged = onLogged;
 		}
 
 		public ProgressMessage( FriendlyByteBuf buffer ) {
 			super( buffer );
 			this.treasureBagID = buffer.readUtf();
 			this.lootDataList = buffer.readList( byteBuffer->new LootData( byteBuffer.readUtf(), byteBuffer.readBoolean(), byteBuffer.readInt() ) );
+			this.onLogged = buffer.readBoolean();
 		}
 
 		@Override
@@ -175,14 +187,42 @@ public class LootProgressManager extends GameModifier {
 				byteBuffer.writeBoolean( lootData.isUnlocked );
 				byteBuffer.writeInt( lootData.quality );
 			} );
+			buffer.writeBoolean( this.onLogged );
 		}
 
 		@Override
 		@OnlyIn( Dist.CLIENT )
 		public void receiveMessage( NetworkEvent.Context context ) {
-			Level level = Minecraft.getInstance().level;
-			if( level != null )
+			Minecraft minecraft = Minecraft.getInstance();
+			if( minecraft.level != null && minecraft.player != null ) {
 				LootProgressClient.generateComponents( this.treasureBagID, this.lootDataList );
+				if( !this.onLogged && LootProgressClient.hasUnlockedNewItems( this.treasureBagID ) ) {
+					minecraft.player.sendSystemMessage( this.generateTreasureBagText() );
+				}
+			}
+		}
+
+		@OnlyIn( Dist.CLIENT )
+		private MutableComponent generateTreasureBagText() {
+			Item item = Registry.ITEM.get( new ResourceLocation( this.treasureBagID ) );
+			if( item instanceof TreasureBagItem treasureBagItem ) {
+				List< Component > list = new ArrayList<>();
+				LootProgressClient.addDropList( treasureBagItem, list, ()->true );
+				MutableComponent fullList = Component.literal( "" );
+				for( int i = 0; i < list.size(); ++i ) {
+					fullList.append( list.get( i ) );
+					if( i < list.size() - 1 ) {
+						fullList.append( "\n" );
+					}
+				}
+				MutableComponent treasureBag = treasureBagItem.getDescription()
+					.copy()
+					.withStyle( style->style.withHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, fullList ) ) );
+				return Component.translatable( "majruszsdifficulty.treasure_bag.new_items", ComponentUtils.wrapInSquareBrackets( treasureBag )
+					.withStyle( treasureBagItem.getRarity( new ItemStack( treasureBagItem ) ).getStyleModifier() ) );
+			}
+
+			return Component.literal( "ERROR" ).withStyle( ChatFormatting.RED );
 		}
 	}
 }
