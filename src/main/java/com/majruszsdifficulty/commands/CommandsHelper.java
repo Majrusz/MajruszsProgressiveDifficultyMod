@@ -19,7 +19,6 @@ public class CommandsHelper {
 	public final static LiteralArgumentBuilder< CommandSourceStack > TREASURE_BAG_ARGUMENT = BaseCommand.literal( "treasurebag" );
 
 	static {
-		COMMANDS.add( new StopUndeadArmyCommands() );
 		COMMANDS.add( new KillUndeadArmyCommands() );
 		COMMANDS.add( new HighlightUndeadArmyCommands() );
 		COMMANDS.add( new UndeadArmyUndeadLeftCommands() );
