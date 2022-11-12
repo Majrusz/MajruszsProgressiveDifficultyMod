@@ -21,7 +21,6 @@ public class CommandsHelper {
 	static {
 		COMMANDS.add( new KillUndeadArmyCommands() );
 		COMMANDS.add( new HighlightUndeadArmyCommands() );
-		COMMANDS.add( new UndeadArmyUndeadLeftCommands() );
 		COMMANDS.add( new UndeadArmyProgressCommands() );
 	}
 

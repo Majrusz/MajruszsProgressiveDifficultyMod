@@ -10,11 +10,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
 
 @AutoInstance
-public class UndeadArmyStopCommand extends DifficultyCommand {
-	public UndeadArmyStopCommand() {
+public class UndeadArmyMobsLeftCommand extends DifficultyCommand {
+	public UndeadArmyMobsLeftCommand() {
 		this.newBuilder()
 			.literal( "undeadarmy" )
-			.literal( "stop" )
+			.literal( "mobsleft", "undeadleft" )
 			.hasPermission( 4 )
 			.execute( this::handle )
 			.entity()
@@ -25,8 +25,8 @@ public class UndeadArmyStopCommand extends DifficultyCommand {
 		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
 		UndeadArmy undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
-			undeadArmy.finish();
-			data.source.sendSuccess( Component.translatable( "commands.undeadarmy.finished", this.asVec3i( position ) ), true );
+			int mobsLeft = undeadArmy.countMobsLeft();
+			data.source.sendSuccess( Component.translatable( "commands.undeadarmy.undeadleft", this.asVec3i( position ), mobsLeft ), true );
 			return 0;
 		}
 
