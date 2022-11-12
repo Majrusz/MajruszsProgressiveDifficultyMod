@@ -51,7 +51,7 @@
   "commands.undeadarmy.finished": "Một đội quân Thây ma đã bị chặn lại tại vị trí: %s",
   "commands.undeadarmy.missing": "Không có đội quân Thây ma nào tại vị trí: %s",
   "commands.undeadarmy.started": "Đội quân Thây ma đã được triệu hồi tại vị trí: %s",
-  "commands.undeadarmy.cannotstart": "Đội quân Thây ma không thể được triệu hồi tại vị trí: %s",
+  "commands.undeadarmy.cannot_start": "Đội quân Thây ma không thể được triệu hồi tại vị trí: %s",
   "commands.undeadarmy.killed": "Mọi đơn vị đội quân Thây ma đã bị giết tại vị trí: %s",
   "commands.undeadarmy.highlighted": "Mọi đơn vị đội quân Thây ma đã được đánh dấu tại vị trí: %s",
   "commands.undeadarmy.undeadleft": "Đội quân Thây ma còn lại %d đơn vị tại vị trí: %s",

@@ -50,7 +50,7 @@
   "commands.undeadarmy.finished": "Armia nieumarłych została ukończona na pozycji: %s",
   "commands.undeadarmy.missing": "Nie ma żadnej armii nieumarłych na pozycji: %s",
   "commands.undeadarmy.started": "Armia nieumarłych została uruchomiona na pozycji: %s",
-  "commands.undeadarmy.cannotstart": "Armia nieumarłych nie może zostać uruchomiona na pozycji: %s",
+  "commands.undeadarmy.cannot_start": "Armia nieumarłych nie może zostać uruchomiona na pozycji: %s",
   "commands.undeadarmy.killed": "Wszystkie jednostki armii nieumarłych zostały zabite na pozycji: %s",
   "commands.undeadarmy.highlighted": "Wszystkie jednostki armii nieumarłych zostały podświetlone na pozycji: %s",
   "commands.undeadarmy.undeadleft": "Armia nieumarłych składa się z %d jednost(ki/ek) na pozycji: %s",

@@ -51,7 +51,7 @@
   "commands.undeadarmy.finished": "An Undead Army has been stopped at position: %s",
   "commands.undeadarmy.missing": "There is no Undead Army at position: %s",
   "commands.undeadarmy.started": "An Undead Army has been spawned at position: %s",
-  "commands.undeadarmy.cannotstart": "An Undead Army cannot be spawned at position: %s",
+  "commands.undeadarmy.cannot_start": "An Undead Army cannot be spawned at position: %s",
   "commands.undeadarmy.killed": "All Undead Army units were killed at position: %s",
   "commands.undeadarmy.highlighted": "All Undead Army units were highlighted at position: %s",
   "commands.undeadarmy.undeadleft": "Undead Army has %d unit(s) left at position: %s",

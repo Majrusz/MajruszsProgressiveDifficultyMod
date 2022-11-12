@@ -49,7 +49,7 @@
   "commands.undeadarmy.undead_left": "亡灵军团剩余：%s",
   "commands.undeadarmy.missing": "这里没有亡灵军团！",
   "commands.undeadarmy.started": "一支亡灵军团已经在这个位置生成：%s",
-  "commands.undeadarmy.cannotstart": "一支亡灵军团无法在这个位置生成：%s",
+  "commands.undeadarmy.cannot_start": "一支亡灵军团无法在这个位置生成：%s",
   "commands.undeadarmy.killed": "此位置的所有亡灵军团生物已被杀死：%s",
   "commands.undeadarmy.highlighted": "此位置的所有亡灵军团生物已高亮：%s",
   "commands.undeadarmy.undeadleft": "亡灵军团还剩下 %d 个单位，位于 %s",

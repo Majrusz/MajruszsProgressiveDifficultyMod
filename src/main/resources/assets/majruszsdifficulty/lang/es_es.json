@@ -50,7 +50,7 @@
   "commands.undeadarmy.finished": "Ejercito No Muerto Detenido en la posición %s",
   "commands.undeadarmy.missing": "No Hay Ejercito no muerto en la posición %s",
   "commands.undeadarmy.started": "Apareció un Ejercito de los Muertos en la posición %s",
-  "commands.undeadarmy.cannotstart": "No se puede Iniciar un Ejercito No Muerto en la posición %s",
+  "commands.undeadarmy.cannot_start": "No se puede Iniciar un Ejercito No Muerto en la posición %s",
   "commands.undeadarmy.killed": "Todas las tropas del Ejercito No Muerto fueron Terminadas en la posición %s",
   "commands.undeadarmy.highlighted": "Todas las tropas del Ejercito No Muerto fueron resaltadas en la posición %s",
   "commands.undeadarmy.undeadleft": "Quedan %d No Muertos en la posición %s",
