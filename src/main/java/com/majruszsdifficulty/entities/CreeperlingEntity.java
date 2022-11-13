@@ -11,7 +11,9 @@ import java.util.function.Supplier;
 /** Tiny version of the Creeper (but still deadly!). */
 public class CreeperlingEntity extends Creeper {
 	public static Supplier< EntityType< CreeperlingEntity > > createSupplier() {
-		return ()->EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER ).sized( 0.6f, 0.9f ).build( "creeperling" );
+		return ()->EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER )
+			.sized( 0.6f, 0.9f )
+			.build( "creeperling" );
 	}
 
 	public static AttributeSupplier getAttributeMap() {
