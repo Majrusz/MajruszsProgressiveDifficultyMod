@@ -2,11 +2,11 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
+import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
-import com.mlib.gamemodifiers.contexts.OnPlayerInteractContext;
-import com.mlib.gamemodifiers.data.OnPlayerInteractData;
+import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
 import com.mlib.items.ItemHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -18,9 +18,9 @@ import net.minecraft.world.entity.ai.gossip.GossipType;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.UseAnim;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class BandageItem extends Item {
@@ -32,9 +32,6 @@ public class BandageItem extends Item {
 		this( Rarity.COMMON );
 	}
 
-	@Override
-	}
-
 	public static class BandageUse extends GameModifier {
 		final EffectConfig regeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
 		final EffectConfig goldenRegeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
@@ -43,24 +40,25 @@ public class BandageItem extends Item {
 		public BandageUse() {
 			super( Registries.Modifiers.DEFAULT, "Bandages", "" );
 
-			OnPlayerInteractContext onInteraction = new OnPlayerInteractContext( this::useBandage );
+			OnPlayerInteract.Context onInteraction = new OnPlayerInteract.Context( this::useBandage );
 			onInteraction.addCondition( data->data.itemStack.getItem() instanceof BandageItem )
 				.addCondition( data->data.target != null )
-				.addCondition( data->!data.player.swinging )
 				.addCondition( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) )
+				.addCondition( BandageUse::canUse )
 				.addConfig( new ConfigGroup( "Bandage", "Config for a Bandage item.", this.regeneration ) )
 				.addConfig( new ConfigGroup( "GoldenBandage", "Config for a Golden Bandage item.", this.goldenRegeneration, this.goldenImmunity ) );
 
 			this.addContext( onInteraction );
 		}
 
-		private void useBandage( OnPlayerInteractData data ) {
+		private void useBandage( OnPlayerInteract.Data data ) {
 			Player player = data.player;
 			LivingEntity target = data.target;
 			ItemStack itemStack = data.itemStack;
 
 			assert target != null;
 			player.swing( data.event.getHand(), true );
+			setCooldown( player );
 			removeBleeding( itemStack, player, target );
 			if( target instanceof Villager villager && villager.hasEffect( Registries.BLEEDING.get() ) ) {
 				increaseReputation( villager, player );
@@ -78,6 +76,16 @@ public class BandageItem extends Item {
 			} else {
 				this.regeneration.apply( target );
 			}
+		}
+
+		private static void setCooldown( Player player ) {
+			int duration = Utility.secondsToTicks( 0.7 );
+
+			ItemHelper.addCooldown( player, duration, Registries.BANDAGE.get(), Registries.GOLDEN_BANDAGE.get() );
+		}
+
+		private static boolean canUse( OnPlayerInteract.Data data ) {
+			return !ItemHelper.isOnCooldown( data.player, Registries.BANDAGE.get(), Registries.GOLDEN_BANDAGE.get() );
 		}
 
 		private static void increaseReputation( Villager villager, Player player ) {
