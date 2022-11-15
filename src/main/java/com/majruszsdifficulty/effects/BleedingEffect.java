@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.gui.BleedingGui;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
@@ -12,6 +13,7 @@ import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.mobeffects.MobEffectHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -22,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -43,6 +46,12 @@ public class BleedingEffect extends MobEffect {
 		} else {
 			entity.hurt( Registries.BLEEDING_SOURCE, 1.0f );
 		}
+
+		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->{
+			if( entity == Minecraft.getInstance().player ) {
+				BleedingGui.addBloodOnScreen();
+			}
+		} );
 	}
 
 	@Override

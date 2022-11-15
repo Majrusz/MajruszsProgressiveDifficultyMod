@@ -5,9 +5,11 @@ import com.mlib.Random;
 import com.mlib.gamemodifiers.contexts.OnClientTick;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
@@ -16,33 +18,45 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Mod.EventBusSubscriber( value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD )
 public class BleedingGui {
+	static final Particles PARTICLES = new Particles();
 
-	public static void addBlood() {
+	public static void addBloodOnScreen() {
+		List< Integer > x = IntStream.iterate( 0, i->i + 1 ).limit( Particle.GRID_WIDTH ).boxed().collect( Collectors.toList() );
+		List< Integer > y = IntStream.iterate( 0, i->i + 1 ).limit( Particle.GRID_HEIGHT ).boxed().collect( Collectors.toList() );
 
+		Collections.shuffle( x );
+		Collections.shuffle( y );
+
+		List.of( 0, 1 ).forEach( idx->PARTICLES.get().get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
 	}
 
 	@SubscribeEvent
 	public static void registerGui( RegisterGuiOverlaysEvent event ) {
-		event.registerAboveAll( "bleeding", new Overlay() );
+		event.registerBelowAll( "bleeding", new Overlay() );
 	}
 
 	static class Overlay implements IGuiOverlay {
-		private static final ResourceLocation FILLED_THIRST = Registries.getLocation( "textures/particle/blood_1.png" );
-		final Particles particles = new Particles();
-
 		@Override
 		public void render( ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight ) {
-			RenderSystem.setShader( GameRenderer::getPositionColorTexShader );
-			RenderSystem.setShaderColor( 1.0f, 1.0f, 1.0f, 0.2f );
-			for( Particle particle : this.particles.get() ) {
+			RenderSystem.setShader( GameRenderer::getPositionTexShader );
+			RenderSystem.enableBlend();
+			for( Particle particle : PARTICLES.get() ) {
+				if( particle.hasFinished() )
+					continue;
+
 				Particle.RenderData renderData = particle.buildRenderData( screenWidth, screenHeight );
-				RenderSystem.setShaderTexture( 0, FILLED_THIRST );
+				RenderSystem.setShaderColor( 1.0f, 1.0f, 1.0f, particle.getAlpha() );
+				RenderSystem.setShaderTexture( 0, renderData.resource );
 				GuiComponent.blit( poseStack, renderData.x, renderData.y, 0, 0, renderData.size, renderData.size, renderData.size, renderData.size );
 			}
+			RenderSystem.disableBlend();
 		}
 	}
 
@@ -51,8 +65,10 @@ public class BleedingGui {
 
 		public Particles() {
 			this.particles = new ArrayList<>();
-			for( int i = 0; i < Particle.GRID_WIDTH * Particle.GRID_HEIGHT; ++i ) {
-				this.particles.add( new Particle( i % Particle.GRID_WIDTH, i / Particle.GRID_WIDTH ) );
+			for( int x = 0; x < Particle.GRID_WIDTH; ++x ) {
+				for( int y = 0; y < Particle.GRID_HEIGHT; ++y ) {
+					this.particles.add( new Particle( x, y ) );
+				}
 			}
 
 			new OnClientTick.Context( this::updateParticles );
@@ -68,43 +84,58 @@ public class BleedingGui {
 	}
 
 	static class Particle {
-		static final int PHASE_COUNT = 7;
-		static final int GRID_WIDTH = 6, GRID_HEIGHT = 5;
+		static final int ASSETS_COUNT = 5;
+		static final int GRID_WIDTH = 6, GRID_HEIGHT = 4;
+		static final int LIFETIME = 180;
+		static final List< ResourceLocation > ASSETS = new ArrayList<>();
+
+		static {
+			for( int i = 0; i < ASSETS_COUNT; ++i ) {
+				ASSETS.add( Registries.getLocation( String.format( "textures/particle/blood_%d.png", i + 1 ) ) );
+			}
+		}
+
 		final int x;
 		final int y;
 		int ticks = 0;
-		int phase = PHASE_COUNT + 1;
+		int phase = 0;
 
 		public Particle( int x, int y ) {
 			this.x = x;
 			this.y = y;
 		}
 
-		public void spawn() {
-			this.ticks = Random.nextInt( 1, 10 );
-			this.phase = Random.nextInt( 1, 3 );
+		public void makeVisible() {
+			if( !this.hasFinished() )
+				return;
+
+			this.ticks = Random.nextInt( 0, 40 );
+			this.phase = Random.nextInt( 0, ASSETS_COUNT - 1 );
 		}
 
 		public RenderData buildRenderData( int width, int height ) {
-			float size = 1.0f * height / GRID_HEIGHT;
-			float x = this.x * 1.0f * size + ( this.x >= GRID_WIDTH / 2 ? width - GRID_WIDTH * size : 0 );
-			float y = this.y * 1.0f * size;
+			float size = height / ( GRID_HEIGHT * 1.5f );
+			float x = this.x * size + ( this.x >= GRID_WIDTH / 2 ? width - GRID_WIDTH * size : 0 );
+			float y = ( 1.5f * this.y + ( this.x % 2 == 0 ? 0.0f : 0.5f ) ) * size;
 
-			return new RenderData( ( int )x, ( int )y, ( int )size );
+			return new RenderData( ( int )x, ( int )y, ( int )size, ASSETS.get( this.phase ) );
 		}
 
 		public boolean hasFinished() {
-			return this.phase > PHASE_COUNT;
+			return this.ticks >= LIFETIME;
+		}
+
+		public float getAlpha() {
+			return ( float )( 0.7f * Math.sqrt( Mth.clamp( 1.0f - 1.0f * this.ticks / LIFETIME, 0.0f, 1.0f ) ) );
 		}
 
 		public void tick() {
+			if( Minecraft.getInstance().isPaused() )
+				return;
+
 			++this.ticks;
-			if( this.ticks >= 20 ) {
-				++this.phase;
-				this.ticks = 0;
-			}
 		}
 
-		public record RenderData( int x, int y, int size ) {}
+		public record RenderData( int x, int y, int size, ResourceLocation resource ) {}
 	}
 }
