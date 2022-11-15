@@ -34,7 +34,7 @@ public class BleedingGui {
 		Collections.shuffle( x );
 		Collections.shuffle( y );
 
-		List.of( 0, 1 ).forEach( idx->PARTICLES.get().get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
+		List.of( 0, 1, 2 ).forEach( idx->PARTICLES.get().get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
 	}
 
 	@SubscribeEvent
