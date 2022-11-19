@@ -25,6 +25,7 @@ import com.mlib.commands.Command;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.items.ItemCreativeModeTab;
+import com.mlib.itemsets.ItemSet;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
 import com.mojang.serialization.Codec;
@@ -213,6 +214,7 @@ public class Registries {
 	static {
 		COMMANDS = new AnnotationHandler( "com.majruszsdifficulty.commands" ).getInstances( Command.class );
 		new AnnotationHandler( "com.majruszsdifficulty" ).getInstances( GameModifier.class );
+		new AnnotationHandler( "com.majruszsdifficulty.itemsets" ).getInstances( ItemSet.class );
 
 		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
