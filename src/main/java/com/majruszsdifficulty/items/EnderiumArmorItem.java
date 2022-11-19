@@ -51,7 +51,7 @@ public class EnderiumArmorItem extends ArmorItem {
 
 		@Override
 		public boolean isEnderMask( ItemStack stack, Player player, EnderMan endermanEntity ) {
-			return Registries.ENDERIUM_SET.countSetItems( player ) >= 2;
+			return false;//Registries.ENDERIUM_SET.countSetItems( player ) >= 2;
 		}
 	}
 

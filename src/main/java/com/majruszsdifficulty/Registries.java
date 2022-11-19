@@ -9,8 +9,7 @@ import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
-import com.majruszsdifficulty.itemsets.EnderiumSet;
-import com.majruszsdifficulty.itemsets.UndeadSet;
+import com.majruszsdifficulty.itemsets.*;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
@@ -154,8 +153,8 @@ public class Registries {
 	}
 
 	// Item Sets
-	public static final EnderiumSet ENDERIUM_SET = new EnderiumSet();
-	public static final UndeadSet UNDEAD_SET = new UndeadSet();
+	// public static final EnderiumSet ENDERIUM_SET = new EnderiumSet();
+	// public static final UndeadSet UNDEAD_SET = new UndeadSet();
 
 	// Blocks
 	public static final RegistryObject< EndShardOre > ENDERIUM_SHARD_ORE = BLOCKS.register( "enderium_shard_ore", EndShardOre::new );
