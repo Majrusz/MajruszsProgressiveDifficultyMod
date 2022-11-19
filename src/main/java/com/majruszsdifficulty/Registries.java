@@ -284,7 +284,7 @@ public class Registries {
 	}
 
 	private static void setupClient( final FMLClientSetupEvent event ) {
-		RegistriesClient.setup(); // sets up client models etc.
+		event.enqueueWork( RegistriesClient::setup ); // sets up client models etc.
 	}
 
 	public static void setupEntities( EntityAttributeCreationEvent event ) {
