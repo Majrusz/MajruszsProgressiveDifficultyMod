@@ -39,7 +39,6 @@
   "item.majruszsdifficulty.enderium_shard_locator.item_tooltip": "Informuje jak daleko jest najbliższa ruda z kryształami enderium.",
   "item.majruszsdifficulty.golden_bandage": "Złoty bandaż",
   "item.majruszsdifficulty.recall_potion": "Mikstura powrotu",
-  "item.majruszsdifficulty.recall_potion.item_tooltip": "Teleportuje do domu po wypiciu.",
   "block.majruszsdifficulty.enderium_shard_ore": "Ruda kryształu enderium",
   "block.majruszsdifficulty.enderium_shard_ore.warning": "Po zniszczeniu tej rudy wszystkie Enderman'y cię zaatakują!",
   "block.majruszsdifficulty.enderium_block": "Blok enderium",

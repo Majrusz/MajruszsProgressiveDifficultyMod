@@ -36,7 +36,6 @@
   "item.majruszsdifficulty.enderium_shard_locator.item_tooltip": "Informa al Jugador la distancia a la Mena de Vacio mas Cercana",
   "item.majruszsdifficulty.golden_bandage": "Vendas Doradas",
   "item.majruszsdifficulty.recall_potion": "Poción de Egreso",
-  "item.majruszsdifficulty.recall_potion.item_tooltip": "Teletransporta al Spawn al beberse",
   "item.majruszsdifficulty.angler_emblem": "Angler Emblem",
   "item.majruszsdifficulty.angler_emblem.item_tooltip": "Increases luck by %s when fishing.",
   "block.majruszsdifficulty.enderium_shard_ore": "Mena del Vacio",
