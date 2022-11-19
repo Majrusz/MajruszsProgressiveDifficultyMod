@@ -41,16 +41,15 @@ public class EndShardLocatorItem extends Item {
 		MajruszsHelper.addAdvancedTranslatableText( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
-	/** Calculates distance to the nearest End Shard. */
 	@OnlyIn( Dist.CLIENT )
 	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int seed ) {
-		if( !( entity instanceof Player player ) )
+		if( !( entity instanceof Player player ) || player.getInventory().findSlotMatchingItem( itemStack ) == -1 )
 			return INVALID_DISTANCE;
 
 		Level world = entity.level;
 		Vec3 entityPosition = entity.position();
 
-		CompoundTag data = entity.getPersistentData();
+		CompoundTag data = itemStack.getOrCreateTag();
 		int counter = data.getInt( COUNTER_TAG );
 		BlockPos nearestEndShard = new BlockPos( data.getInt( POSITION_X_TAG ), data.getInt( POSITION_Y_TAG ), data.getInt( POSITION_Z_TAG ) );
 		BlockState currentBlockState = world.getBlockState( nearestEndShard );
