@@ -41,7 +41,7 @@
           "type": "minecraft:item",
           "name": "minecraft:iron_nugget",
           "weight": 30,
-          "quality": 0,
+          "quality": 1,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -89,7 +89,7 @@
           "type": "minecraft:item",
           "name": "minecraft:gold_nugget",
           "weight": 16,
-          "quality": 0,
+          "quality": 1,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -105,7 +105,7 @@
           "type": "minecraft:item",
           "name": "minecraft:book",
           "weight": 7,
-          "quality": 1,
+          "quality": 2,
           "functions": [
             {
               "function": "minecraft:enchant_randomly"
@@ -116,19 +116,19 @@
           "type": "minecraft:item",
           "name": "minecraft:scute",
           "weight": 7,
-          "quality": 2
+          "quality": 3
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:name_tag",
           "weight": 2,
-          "quality": 2
+          "quality": 3
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:nautilus_shell",
           "weight": 2,
-          "quality": 2
+          "quality": 3
         }
       ]
     }
