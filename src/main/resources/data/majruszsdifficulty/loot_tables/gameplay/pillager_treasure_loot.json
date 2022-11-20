@@ -9,19 +9,29 @@
           "type": "minecraft:item",
           "name": "majruszsdifficulty:recall_potion",
           "quality": 4,
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 0.33333
-            }
-          ],
           "functions": [
             {
               "function": "set_count",
               "count": {
-                "min": 10,
-                "max": 16
+                "min": 2,
+                "max": 5
               }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszsdifficulty:bad_omen_potion",
+          "quality": 4,
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.33333
             }
           ]
         }
