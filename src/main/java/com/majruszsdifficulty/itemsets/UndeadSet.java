@@ -37,8 +37,8 @@ public class UndeadSet extends ItemSet {
 	public UndeadSet() {
 		super( ()->Stream.of( ITEM_1, ITEM_2, ITEM_3, ITEM_4 ), ()->Stream.of( BONUS_1, BONUS_2, BONUS_3 ), ChatFormatting.LIGHT_PURPLE, "majruszsdifficulty.sets.undead.name" );
 
-		OnDamaged.Context onDamaged = new OnDamaged.Context( this::increaseDamage );
-		onDamaged.addCondition( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
+		new OnDamaged.Context( this::increaseDamage )
+			.addCondition( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
 			.addCondition( data->data.attacker != null );
 
 		new OnItemEquipped.Context( this::increaseMovementSpeed );
