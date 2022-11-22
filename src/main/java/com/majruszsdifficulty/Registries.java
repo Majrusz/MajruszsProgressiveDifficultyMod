@@ -121,6 +121,7 @@ public class Registries {
 	public static final RegistryObject< WitherSwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 	public static final RegistryObject< BadOmenPotionItem > BAD_OMEN_POTION = ITEMS.register( "bad_omen_potion", BadOmenPotionItem::new );
+	public static final RegistryObject< UndeadTotemItem > UNDEAD_TOTEM = ITEMS.register( "undead_totem", UndeadTotemItem::new );
 
 	// Treasure Bags
 	public static final RegistryObject< TreasureBagItem > UNDEAD_ARMY_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", TreasureBagItem.UndeadArmy::new );
@@ -211,11 +212,13 @@ public class Registries {
 
 	// Game Modifiers
 	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
+	public static final List< GameModifier > GAME_MODIFIERS;
 
 	static {
 		COMMANDS = new AnnotationHandler( "com.majruszsdifficulty.commands" ).getInstances( Command.class );
 		new AnnotationHandler( "com.majruszsdifficulty" ).getInstances( GameModifier.class );
 		new AnnotationHandler( "com.majruszsdifficulty.itemsets" ).getInstances( ItemSet.class );
+		GAME_MODIFIERS = new AnnotationHandler( "com.majruszsdifficulty" ).getInstances( GameModifier.class );
 
 		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
