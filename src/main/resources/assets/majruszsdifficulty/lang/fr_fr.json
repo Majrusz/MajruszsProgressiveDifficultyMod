@@ -44,7 +44,6 @@
   "item.majruszsdifficulty.enderium_boots.item_tooltip": "armure",
   "item.majruszsdifficulty.cloth": "tissue déchiré",
   "item.majruszsdifficulty.enderium_shard_locator": "Localisateur de fragment de l՚End",
-  "item.majruszsdifficulty.enderium_shard_locator.item_tooltip": "Informe le joueur de la distance du plus proche minerai de fragment de l՚End.",
   "item.majruszsdifficulty.golden_bandage": "Bandage doré",
   "block.majruszsdifficulty.enderium_shard_ore": "Minerai de fragment de l՚End",
   "block.majruszsdifficulty.enderium_shard_ore.warning": "Après destruction de ce bloc, tout les Endermans proches vous attaqueront!",
