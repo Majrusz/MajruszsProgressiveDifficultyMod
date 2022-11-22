@@ -16,7 +16,7 @@ public class UndeadArmorItem {
 	public static final String HELMET_ID = "majruszsdifficulty.items.undead_helmet";
 	public static final String LEGGINGS_ID = "majruszsdifficulty.items.undead_leggings";
 	public static final String NBT_TAG = "UndeadArmySet";
-	public static final int ARMOR_COLOR = 0x92687b;
+	public static final int ARMOR_COLOR = 0xA07988;
 
 	public static ItemStack constructItem( String id ) {
 		ItemData itemData = getData( id );
