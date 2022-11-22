@@ -9,7 +9,6 @@ import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
-import com.majruszsdifficulty.itemsets.*;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
@@ -67,9 +66,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
 
@@ -148,16 +147,9 @@ public class Registries {
 
 	// Fake items (just to display icons etc.)
 	static {
-		String[] fakeItemNames = new String[]{
-			"normal", "expert", "master", "bleeding"
-		};
-		for( String name : fakeItemNames )
-			ITEMS.register( "advancement_" + name, FakeItem::new );
+		Stream.of( "normal", "expert", "master", "bleeding" )
+			.forEach( name->ITEMS.register( "advancement_" + name, FakeItem::new ) );
 	}
-
-	// Item Sets
-	// public static final EnderiumSet ENDERIUM_SET = new EnderiumSet();
-	// public static final UndeadSet UNDEAD_SET = new UndeadSet();
 
 	// Blocks
 	public static final RegistryObject< EndShardOre > ENDERIUM_SHARD_ORE = BLOCKS.register( "enderium_shard_ore", EndShardOre::new );
@@ -211,7 +203,6 @@ public class Registries {
 	}
 
 	// Game Modifiers
-	public static final List< GameModifier > GAME_MODIFIERS = new ArrayList<>();
 	public static final List< GameModifier > GAME_MODIFIERS;
 
 	static {
