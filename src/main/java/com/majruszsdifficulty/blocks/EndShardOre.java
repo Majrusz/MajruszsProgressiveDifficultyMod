@@ -20,7 +20,7 @@ public class EndShardOre extends Block {
 	public EndShardOre() {
 		super( Properties.of( Material.METAL, MaterialColor.COLOR_YELLOW )
 			.requiresCorrectToolForDrops()
-			.strength( 30.0f, 1200.0f )
+			.strength( 10.0f, 1200.0f )
 			.sound( SoundType.ANCIENT_DEBRIS ) );
 	}
 
