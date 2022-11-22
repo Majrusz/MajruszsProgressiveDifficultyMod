@@ -34,20 +34,4 @@ public class MajruszsHelper {
 	public static MutableComponent getDisabledItemComponent() {
 		return Component.translatable( "majruszsdifficulty.items.disabled_tooltip" ).withStyle( ChatFormatting.RED, ChatFormatting.BOLD );
 	}
-
-	public static MutableComponent getMoreDetailsComponent() {
-		return Component.translatable( "majruszsdifficulty.items.advanced_tooltip" ).withStyle( ChatFormatting.GRAY );
-	}
-
-	public static void addMoreDetailsText( List< Component > tooltip ) {
-		tooltip.add( getMoreDetailsComponent() );
-	}
-
-	public static MutableComponent getEmptyLine() {
-		return Component.literal( " " );
-	}
-
-	public static void addEmptyLine( List< Component > tooltip ) {
-		tooltip.add( getEmptyLine() );
-	}
 }
