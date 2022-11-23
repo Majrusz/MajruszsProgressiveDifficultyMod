@@ -2,7 +2,6 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
-import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -19,7 +18,7 @@ public class EnderPouchItem extends Item {
 	}
 
 	private void openEnderChest( OnPlayerInteract.Data data ) {
-		data.player.openMenu( new SimpleMenuProvider( ( containerId, inventory, player )->ChestMenu.threeRows( containerId, inventory, player.getEnderChestInventory() ), Component.translatable( "container.enderchest" ) ) );
+		data.player.openMenu( new SimpleMenuProvider( ( containerId, inventory, player )->ChestMenu.threeRows( containerId, inventory, player.getEnderChestInventory() ), this.getDescription() ) );
 		data.player.awardStat( Stats.OPEN_ENDERCHEST );
 		data.event.setCancellationResult( InteractionResult.SUCCESS );
 	}
