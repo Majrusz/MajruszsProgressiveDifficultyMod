@@ -8,13 +8,14 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:enderium_shard_locator",
-          "quality": 4,
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 0.375
-            }
-          ]
+          "weight": 667,
+          "quality": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "majruszsdifficulty:ender_pouch",
+          "weight": 333,
+          "quality": 4
         }
       ]
     },
