@@ -3,8 +3,6 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,11 +38,6 @@ public class EnderiumArmorItem extends ArmorItem {
 	public static class Helmet extends EnderiumArmorItem {
 		public Helmet() {
 			super( EquipmentSlot.HEAD );
-		}
-
-		@Override
-		public boolean isEnderMask( ItemStack stack, Player player, EnderMan endermanEntity ) {
-			return false;//Registries.ENDERIUM_SET.countSetItems( player ) >= 2;
 		}
 	}
 
