@@ -1,17 +1,14 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -19,7 +16,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 /** Item for locating End Shards. */
 public class EndShardLocatorItem extends Item {
@@ -35,7 +31,9 @@ public class EndShardLocatorItem extends Item {
 	}
 
 	@OnlyIn( Dist.CLIENT )
-	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int seed ) {
+	public static float calculateDistanceToEndShard( ItemStack itemStack, @Nullable ClientLevel clientWorld,
+		@Nullable LivingEntity entity, int seed
+	) {
 		if( !( entity instanceof Player player ) || player.getInventory().findSlotMatchingItem( itemStack ) == -1 )
 			return INVALID_DISTANCE;
 
