@@ -19,6 +19,7 @@ import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.time.Slider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -90,9 +91,9 @@ public class EnderiumSet extends ItemSet {
 	}
 
 	private void cancelDeath( OnDeath.Data data ) {
-		data.event.setCanceled( true );
 		EntityHelper.cheatDeath( data.target, 1.0f, false );
 		LevelHelper.teleportToSpawnPosition( ( ServerPlayer )data.target );
-		new Slider( 5.0, slider->ParticleHandler.PORTAL.spawn( data.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
+		new Slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
+		data.event.setCanceled( true );
 	}
 }
