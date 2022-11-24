@@ -1,6 +1,7 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.items.EndShardLocatorItem;
+import com.majruszsdifficulty.items.WitherBowItem;
 import com.majruszsdifficulty.models.CreeperlingModel;
 import com.majruszsdifficulty.models.TankModel;
 import com.majruszsdifficulty.renderers.CreeperlingRenderer;
@@ -23,5 +24,7 @@ public class RegistriesClient {
 		EntityRenderers.register( Registries.TANK.get(), TankRenderer::new );
 
 		ItemProperties.register( Registries.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EndShardLocatorItem::calculateDistanceToEndShard );
+		ItemProperties.register( Registries.WITHER_BOW.get(), new ResourceLocation( "pull" ), WitherBowItem::calculatePull );
+		ItemProperties.register( Registries.WITHER_BOW.get(), new ResourceLocation( "pulling" ), WitherBowItem::calculatePulling );
 	}
 }
