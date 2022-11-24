@@ -23,7 +23,6 @@ import java.util.List;
 
 /** Item for locating End Shards. */
 public class EndShardLocatorItem extends Item {
-	private static final String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.enderium_shard_locator.item_tooltip";
 	private static final String COUNTER_TAG = "EndShardLocatorCounter";
 	private static final String POSITION_X_TAG = "EndShardLocatorX";
 	private static final String POSITION_Y_TAG = "EndShardLocatorY";
@@ -33,12 +32,6 @@ public class EndShardLocatorItem extends Item {
 
 	public EndShardLocatorItem() {
 		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
-	}
-
-	@Override
-	@OnlyIn( Dist.CLIENT )
-	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addAdvancedTranslatableText( tooltip, flag, TOOLTIP_TRANSLATION_KEY );
 	}
 
 	@OnlyIn( Dist.CLIENT )
