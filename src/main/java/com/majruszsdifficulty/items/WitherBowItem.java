@@ -59,7 +59,7 @@ public class WitherBowItem extends BowItem {
 
 	@AutoInstance
 	public static class Effect extends GameModifier {
-		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 1, 9.0 );
+		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 0, 16.0 );
 
 		public Effect() {
 			super( Registries.Modifiers.DEFAULT, "WitherBowEffect", "Wither Bow inflicts wither effect." );
