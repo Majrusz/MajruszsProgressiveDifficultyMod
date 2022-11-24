@@ -1,13 +1,13 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.Utility;
-import com.mlib.effects.EffectHelper;
+import com.mlib.annotations.AutoInstance;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.items.ItemHelper;
+import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,13 +41,14 @@ public class WitherSwordItem extends SwordItem {
 		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY, amplifier, duration ).withStyle( ChatFormatting.GRAY ) );
 	}
 
+	@AutoInstance
 	public static class Effect extends GameModifier {
 		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 1, 6.0 );
 
 		public Effect() {
 			super( Registries.Modifiers.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect." );
 
-			OnDamagedContext onDamaged = new OnDamagedContext( this::applyWither );
+			OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyWither );
 			onDamaged.addCondition( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) )
 				.addCondition( data->data.source.getDirectEntity() == data.attacker )
 				.addConfig( WITHER );
@@ -55,8 +56,8 @@ public class WitherSwordItem extends SwordItem {
 			this.addContext( onDamaged );
 		}
 
-		private void applyWither( OnDamagedData data ) {
-			EffectHelper.applyEffectIfPossible( data.target, MobEffects.WITHER, WITHER.getDuration(), WITHER.getAmplifier() );
+		private void applyWither( OnDamaged.Data data ) {
+			MobEffectHelper.tryToApply( data.target, MobEffects.WITHER, WITHER.getDuration(), WITHER.getAmplifier() );
 		}
 	}
 

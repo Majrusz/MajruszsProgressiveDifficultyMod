@@ -248,7 +248,6 @@ public class Registries {
 		GAME_MODIFIERS.add( new TreasureBagManager() );
 		GAME_MODIFIERS.add( new UndeadArmyEventsHandler() );
 		GAME_MODIFIERS.add( new WitherSkeletonWithSword() );
-		GAME_MODIFIERS.add( new WitherSwordItem.Effect() );
 		GAME_MODIFIERS.add( new ZombiesInGroup() );
 
 		new UndeadArmyConfig(); // we need to make sure that this class is loaded before the configs are registered
