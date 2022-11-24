@@ -15,7 +15,7 @@ public class CreeperExplodeBehindWall extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "CreeperExplodeBehindWall", "Creeper explodes when the player is behind the wall." );
 
 		OnSpawned.Context onSpawned = new OnSpawned.Context( this::addNewGoal );
-		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
+		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.target instanceof Creeper );
