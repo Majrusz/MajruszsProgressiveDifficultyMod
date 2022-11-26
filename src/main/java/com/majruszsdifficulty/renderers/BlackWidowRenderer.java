@@ -18,7 +18,7 @@ public class BlackWidowRenderer extends MobRenderer< BlackWidowEntity, BlackWido
 	private static final ResourceLocation TEXTURE_LOCATION = Registries.getLocation( "textures/entity/black_widow.png" );
 
 	public BlackWidowRenderer( EntityRendererProvider.Context context ) {
-		super( context, new BlackWidowModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.5f );
+		super( context, new BlackWidowModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.25f );
 	}
 
 	@Override
