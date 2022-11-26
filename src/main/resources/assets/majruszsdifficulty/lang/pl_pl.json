@@ -1,6 +1,7 @@
 {
   "entity.majruszsdifficulty.creeperling": "Creeperling",
   "entity.majruszsdifficulty.tank": "Tank",
+  "entity.majruszsdifficulty.black_widow": "Czarna wdowa",
   "effect.majruszsdifficulty.bleeding": "Krwawienie",
   "effect.majruszsdifficulty.bleeding.description": "Zadaje śmiertelne obrażenia od czasu do czasu. Głównie wywoływane ostrymi przedmiotami, przez zombie oraz przez pająki. Nie wpływa na nieumarłych.",
   "effect.majruszsdifficulty.bleeding_immunity": "Odporność na krwawienie",
@@ -9,6 +10,7 @@
   "item.majruszsdifficulty.illusioner_spawn_egg": "Jajo przywołujące iluzjoniera",
   "item.majruszsdifficulty.creeperling_spawn_egg": "Jajo przywołujące creeperlinga",
   "item.majruszsdifficulty.tank_spawn_egg": "Jajo przywołujące tanka",
+  "item.majruszsdifficulty.black_widow_spawn_egg": "Jajo przywołujące czarną wdowę",
   "item.majruszsdifficulty.undead_battle_standard": "Bitewny sztandar nieumarłych",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip1": "Przywołuje armię nieumarłych.",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip2": "Armia nieumarłych może zostać",
