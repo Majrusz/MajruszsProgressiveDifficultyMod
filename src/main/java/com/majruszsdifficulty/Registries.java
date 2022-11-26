@@ -5,6 +5,7 @@ import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
+import com.majruszsdifficulty.entities.BlackWidowEntity;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.gamemodifiers.list.*;
@@ -99,6 +100,7 @@ public class Registries {
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
+	public static final RegistryObject< EntityType< BlackWidowEntity > > BLACK_WIDOW = ENTITY_TYPES.register( "black_widow", BlackWidowEntity.createSupplier() );
 
 	// Items
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
@@ -142,6 +144,7 @@ public class Registries {
 	public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.register( "illusioner_spawn_egg", createEggSupplier( ()->EntityType.ILLUSIONER, 0x135a97, 9804699 ) );
 	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.register( "creeperling_spawn_egg", createEggSupplier( CREEPERLING, 0x0da70b, 0x000000 ) );
 	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( TANK, 0xc1c1c1, 0x949494 ) );
+	public static final RegistryObject< SpawnEggItem > BLACK_WIDOW_SPAWN_EGG = ITEMS.register( "black_widow_spawn_egg", createEggSupplier( BLACK_WIDOW, 0x414141, 0xc12121 ) );
 
 	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor, int highlightColor ) {
 		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties().tab( ITEM_GROUP ) );
@@ -284,13 +287,14 @@ public class Registries {
 	public static void setupEntities( EntityAttributeCreationEvent event ) {
 		event.put( CREEPERLING.get(), CreeperlingEntity.getAttributeMap() );
 		event.put( TANK.get(), TankEntity.getAttributeMap() );
+		event.put( BLACK_WIDOW.get(), BlackWidowEntity.getAttributeMap() );
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
 		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
+		SpawnPlacements.register( BLACK_WIDOW.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 	}
-
 
 	public static void onLoadingLevel( LevelEvent.Load event ) {
 		ServerLevel level = getOverworld( event.getLevel() );
