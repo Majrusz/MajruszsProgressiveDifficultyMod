@@ -19,6 +19,7 @@ public class BlackWidowRenderer extends MobRenderer< BlackWidowEntity, BlackWido
 
 	public BlackWidowRenderer( EntityRendererProvider.Context context ) {
 		super( context, new BlackWidowModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.25f );
+		this.addLayer( new BlackWidowEyesLayer<>( this ) );
 	}
 
 	@Override
