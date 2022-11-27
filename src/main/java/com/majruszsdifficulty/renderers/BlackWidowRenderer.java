@@ -31,8 +31,13 @@ public class BlackWidowRenderer extends MobRenderer< BlackWidowEntity, BlackWido
 	public void render( BlackWidowEntity blackWidow, float p_114209_, float partialTicks, PoseStack poseStack,
 		MultiBufferSource bufferSource, int packedLight
 	) {
-		this.model.prepareMobModel( blackWidow, 0.0F, 0.0F, partialTicks );
+		this.model.prepareMobModel( blackWidow, 0.0f, 0.0f, partialTicks );
 
 		super.render( blackWidow, p_114209_, partialTicks, poseStack, bufferSource, packedLight );
+	}
+
+	@Override
+	protected float getFlipDegrees( BlackWidowEntity blackWidow ) {
+		return 180.0f;
 	}
 }
