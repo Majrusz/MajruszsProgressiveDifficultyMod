@@ -23,7 +23,7 @@ public class JockeySpawn extends GameModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
-			.addCondition( data->data.target instanceof Spider && !( data.target instanceof CaveSpider ) );
+			.addCondition( data->Spider.class.equals( data.target.getClass() ) );
 
 		this.addContext( onSpawned );
 	}
