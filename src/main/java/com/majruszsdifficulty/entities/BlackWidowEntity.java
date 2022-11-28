@@ -1,5 +1,7 @@
 package com.majruszsdifficulty.entities;
 
+import com.mlib.Random;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -25,11 +27,24 @@ public class BlackWidowEntity extends Spider {
 
 	public BlackWidowEntity( EntityType< ? extends BlackWidowEntity > type, Level world ) {
 		super( type, world );
-		this.xpReward = 3;
 	}
 
 	@Override
-	protected float getStandingEyeHeight( Pose p_33799_, EntityDimensions p_33800_) {
+	public int getExperienceReward() {
+		return Random.nextInt( 3 );
+	}
+
+	@Override
+	public void playSound( SoundEvent sound, float volume, float pitch ) {
+		if( !this.isSilent() ) {
+			float finalVolume = volume * Random.nextFloat( 0.5f, 0.7f );
+			float finalPitch = pitch * Random.nextFloat( 1.35f, 1.5f );
+			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), finalVolume, finalPitch );
+		}
+	}
+
+	@Override
+	protected float getStandingEyeHeight( Pose pose, EntityDimensions dimensions ) {
 		return 0.2f;
 	}
 }
