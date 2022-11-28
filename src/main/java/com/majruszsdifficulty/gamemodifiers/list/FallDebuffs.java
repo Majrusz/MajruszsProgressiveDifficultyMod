@@ -1,16 +1,15 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
+import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobType;
 
 public class FallDebuffs extends GameModifier {
 	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 8.0 );
@@ -19,18 +18,18 @@ public class FallDebuffs extends GameModifier {
 	public FallDebuffs() {
 		super( Registries.Modifiers.DEFAULT, "FallDebuffs", "Inflicts several debuffs when taking fall damage." );
 
-		OnDamagedContext onDamaged = new OnDamagedContext( this::applyDebuffs );
+		OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyDebuffs );
 		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
 			.addCondition( new Condition.Excludable() )
 			.addCondition( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f )
-			.addCondition( data->!( data.target instanceof Mob mob ) || mob.getMobType() != MobType.UNDEAD )
+			.addCondition( data->EntityHelper.isHuman( data.target ) )
 			.addConfigs( this.nausea, this.slowness );
 
 		this.addContext( onDamaged );
 	}
 
-	private void applyDebuffs( OnDamagedData data ) {
+	private void applyDebuffs( OnDamaged.Data data ) {
 		this.nausea.apply( data.target );
 		this.slowness.apply( data.target );
 	}
