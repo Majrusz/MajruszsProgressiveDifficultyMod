@@ -1,12 +1,20 @@
 package com.majruszsdifficulty.entities;
 
+import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
+import com.mlib.annotations.AutoInstance;
+import com.mlib.config.DoubleConfig;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnEntityTick;
+import com.mlib.time.TimeHelper;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.function.Supplier;
 
@@ -46,5 +54,31 @@ public class BlackWidowEntity extends Spider {
 	@Override
 	protected float getStandingEyeHeight( Pose pose, EntityDimensions dimensions ) {
 		return 0.2f;
+	}
+
+	@AutoInstance
+	public static class WebAbility extends GameModifier {
+		final DoubleConfig delay = new DoubleConfig( "delay", "Duration between creating a new web (in seconds).", false, 30.0, 5.0, 600.0 );
+
+		public WebAbility() {
+			super( Registries.Modifiers.DEFAULT, "BlackWidowWebAbility", "Black Widow spawns the web when in combat." );
+
+			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnWeb );
+			onTick.addCondition( new Condition.IsServer() )
+				.addCondition( new Condition.Excludable() )
+				.addCondition( data->data.entity instanceof BlackWidowEntity )
+				.addCondition( this::ticksHavePassed )
+				.addConfig( this.delay );
+
+			this.addContext( onTick );
+		}
+
+		private void spawnWeb( OnEntityTick.Data data ) {
+			data.level.setBlock( data.entity.blockPosition(), Blocks.COBWEB.defaultBlockState(), 3 );
+		}
+
+		private boolean ticksHavePassed( OnEntityTick.Data data ) {
+			return data.entity.tickCount % this.delay.asTicks() == 0;
+		}
 	}
 }
