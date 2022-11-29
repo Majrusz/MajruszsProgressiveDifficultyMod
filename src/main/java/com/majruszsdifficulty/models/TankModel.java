@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/** Model for new Tank enemy. */
 @OnlyIn( Dist.CLIENT )
 public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {
 	static final Animation.Degrees SPECIAL_ATTACK_BODY_X = new Animation.Degrees( TankEntity.SPECIAL_ATTACK_DURATION );
@@ -44,12 +43,12 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 			.addNewFloatFrame( 0.55f, -50.0f )
 			.addNewFloatFrame( 1.0f, 0.0f, Frame.InterpolationType.SQUARE );
 
-		NORMAL_ATTACK_ARM.addNewVectorFrame( 0.0f, new Vector3f( 0.0f, 0.0f, 10.0f ) )
+		NORMAL_ATTACK_ARM.addNewVectorFrame( 0.0f, new Vector3f( 0.0f, 5.0f, 12.5f ) )
 			.addNewVectorFrame( 0.2f, new Vector3f( 45.0f, 0.0f, 45.0f ), Frame.InterpolationType.SQUARE )
 			.addNewVectorFrame( 0.3f, new Vector3f( 45.0f, 0.0f, 45.0f ) )
 			.addNewVectorFrame( 0.5f, new Vector3f( -90.0f, -30.0f, 60.0f ), Frame.InterpolationType.SQUARE )
 			.addNewVectorFrame( 0.6f, new Vector3f( -80.0f, -25.0f, 50.0f ), Frame.InterpolationType.SQUARE )
-			.addNewVectorFrame( 1.0f, new Vector3f( 0.0f, 0.0f, 10.0f ), Frame.InterpolationType.SQUARE );
+			.addNewVectorFrame( 1.0f, new Vector3f( 0.0f, 5.0f, 12.5f ), Frame.InterpolationType.SQUARE );
 	}
 
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;
@@ -71,7 +70,9 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 	}
 
 	@Override
-	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
+	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
+		float headPitch
+	) {
 		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
 
 		// head rotation when looking around
@@ -88,12 +89,14 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatioLeft, ageInTicks );
 
 		// arms animations when the Tank is using standard attack (we need to update both hands because model parts share reference between all instances)
+		float extraLeftArmRotationX = ( float )( Math.cos( limbFactor1 ) * limbSwingAmount ) * 10.0f;
+		float extraRightArmRotationX = ( float )( Math.cos( limbFactor1 + ( float )Math.PI ) * limbSwingAmount ) * 10.0f;
 		if( this.isLeftHandAttack ) {
-			rotateArm( this.leftArm, ageInTicks, this.normalAttackDurationRatioLeft );
-			rotateArm( this.rightArm, ageInTicks, 1.0f );
+			rotateArm( this.leftArm, ageInTicks, this.normalAttackDurationRatioLeft, extraLeftArmRotationX );
+			rotateArm( this.rightArm, ageInTicks, 1.0f, extraRightArmRotationX );
 		} else {
-			rotateArm( this.leftArm, ageInTicks, 1.0f );
-			rotateArm( this.rightArm, ageInTicks, this.normalAttackDurationRatioLeft );
+			rotateArm( this.leftArm, ageInTicks, 1.0f, extraLeftArmRotationX );
+			rotateArm( this.rightArm, ageInTicks, this.normalAttackDurationRatioLeft, extraRightArmRotationX );
 		}
 
 		// body and arms animations when Tank is using special attack
@@ -119,50 +122,51 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
-		partDefinition.addOrReplaceChild( "body", CubeListBuilder.create()
+		PartDefinition body = partDefinition.addOrReplaceChild( "body", CubeListBuilder.create()
 			.texOffs( 0, 20 )
-			.addBox( -8.0F, -22.0F, -5.0F, 16.0F, 12.0F, 8.0F, cubeDeformation )
+			.addBox( -8.0F, -22.0F, -5.0F, 16.0F, 12.0F, 8.0F, new CubeDeformation( 0.0F ) )
 			.texOffs( 36, 40 )
-			.addBox( -1.0F, -23.0F, 1.0F, 2.0F, 22.0F, 2.0F, cubeDeformation.extend( -0.1F ) )
+			.addBox( -1.0F, -23.0F, 1.0F, 2.0F, 22.0F, 2.0F, new CubeDeformation( -0.1F ) )
 			.texOffs( 0, 40 )
-			.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, cubeDeformation ), PartPose.offsetAndRotation( 0.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F ) );
+			.addBox( -6.0F, -4.0F, -3.0F, 12.0F, 4.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, 12.0F, 0.0F, 0.1745F, 0.0F, 0.0F ) );
 
-		partDefinition.getChild( "body" ).addOrReplaceChild( "head", CubeListBuilder.create()
+		PartDefinition head = body.addOrReplaceChild( "head", CubeListBuilder.create()
 			.texOffs( 0, 0 )
-			.addBox( -5.0F, -10.0F, -5.0F, 10.0F, 10.0F, 10.0F, cubeDeformation ), PartPose.offsetAndRotation( 0.0F, -22.0F, -1.0F, 0.0873F, 0.0F, 0.0F ) );
+			.addBox( -5.0F, -10.0F, -5.0F, 10.0F, 10.0F, 10.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -22.0F, -1.0F, 0.0873F, 0.0F, 0.0F ) );
 
-		partDefinition.getChild( "body" ).addOrReplaceChild( "arms", CubeListBuilder.create(), PartPose.offset( 0.0F, -22.0F, 0.0F ) );
+		PartDefinition arms = body.addOrReplaceChild( "arms", CubeListBuilder.create(), PartPose.offset( 0.0F, -22.0F, 0.0F ) );
 
-		partDefinition.getChild( "body" ).getChild( "arms" ).addOrReplaceChild( "rightArm", CubeListBuilder.create()
+		PartDefinition rightArm = arms.addOrReplaceChild( "rightArm", CubeListBuilder.create()
 			.texOffs( 40, 0 )
-			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ), PartPose.offsetAndRotation( -9.5F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1745F ) );
+			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -9.5F, 0.0F, -0.5F, 0.0F, 0.0873F, 0.1745F ) );
 
-		partDefinition.getChild( "body" ).getChild( "arms" ).getChild( "rightArm" ).addOrReplaceChild( "rightForearm", CubeListBuilder.create()
+		PartDefinition rightForearm = rightArm.addOrReplaceChild( "rightForearm", CubeListBuilder.create()
 			.texOffs( 44, 37 )
-			.addBox( -2.5F, -0.5F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ), PartPose.offsetAndRotation( 0.0F, 14.5F, 0.0F, -0.7854F, 0.0F, 0.0F ) );
+			.addBox( -2.5F, -0.5F, -2.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.2F ) ), PartPose.offsetAndRotation( 0.0F, 15.5F, 0.0F, -0.7854F, 0.0F, 0.0F ) );
 
-		partDefinition.getChild( "body" ).getChild( "arms" ).addOrReplaceChild( "leftArm", CubeListBuilder.create()
+		PartDefinition leftArm = arms.addOrReplaceChild( "leftArm", CubeListBuilder.create()
 			.texOffs( 40, 0 )
-			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, cubeDeformation ), PartPose.offsetAndRotation( 9.5F, 0.0F, -0.5F, 0.0F, 0.0F, -0.1745F ) );
+			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 9.5F, 0.0F, -0.5F, 0.0F, -0.0873F, -0.1745F ) );
 
-		partDefinition.getChild( "body" ).getChild( "arms" ).getChild( "leftArm" ).addOrReplaceChild( "leftForearm", CubeListBuilder.create()
+		PartDefinition leftForearm = leftArm.addOrReplaceChild( "leftForearm", CubeListBuilder.create()
 			.texOffs( 44, 37 )
-			.addBox( -2.5F, -2.0F, -3.5F, 5.0F, 16.0F, 5.0F, cubeDeformation.extend( -0.2F ) ), PartPose.offsetAndRotation( 0.0F, 16.0F, 0.0F, -0.7854F, 0.0F, 0.0F ) );
+			.addBox( -2.5F, -2.0F, -3.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.2F ) ), PartPose.offsetAndRotation( 0.0F, 17.0F, -1.0F, -0.7854F, 0.0F, 0.0F ) );
 
-		partDefinition.addOrReplaceChild( "leftLeg", CubeListBuilder.create()
+		PartDefinition leftLeg = partDefinition.addOrReplaceChild( "leftLeg", CubeListBuilder.create()
 			.texOffs( 48, 21 )
-			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ), PartPose.offset( 3.0F, 12.0F, 0.0F ) );
+			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( 3.0F, 12.0F, 0.0F ) );
 
-		partDefinition.addOrReplaceChild( "rightLeg", CubeListBuilder.create()
+		PartDefinition rightLeg = partDefinition.addOrReplaceChild( "rightLeg", CubeListBuilder.create()
 			.texOffs( 48, 21 )
-			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, cubeDeformation ), PartPose.offset( -3.0F, 12.0F, 0.0F ) );
+			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( -3.0F, 12.0F, 0.0F ) );
 
 		return LayerDefinition.create( meshDefinition, 64, 64 );
 	}
 
-	private void rotateArm( ModelPart arm, float ageInTicks, float duration ) {
+	private void rotateArm( ModelPart arm, float ageInTicks, float duration, float extraRotationX ) {
 		float multiplier = arm == this.leftArm ? -1.0f : 1.0f;
 		Vector3f vectorHandMultiplier = new Vector3f( 1.0f, multiplier, multiplier );
-		Animation.applyRotationInDegrees( VectorHelper.multiply( NORMAL_ATTACK_ARM.apply( duration, ageInTicks ), vectorHandMultiplier ), arm );
+		Vector3f rotation = VectorHelper.add( NORMAL_ATTACK_ARM.apply( duration, ageInTicks ), new Vector3f( extraRotationX, 0.0f, 0.0f ) );
+		Animation.applyRotationInDegrees( VectorHelper.multiply( rotation, vectorHandMultiplier ), arm );
 	}
 }
