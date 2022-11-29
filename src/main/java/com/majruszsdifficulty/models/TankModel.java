@@ -138,7 +138,7 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 
 		PartDefinition rightArm = arms.addOrReplaceChild( "rightArm", CubeListBuilder.create()
 			.texOffs( 40, 0 )
-			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -9.5F, 0.0F, -0.5F, 0.0F, 0.0873F, 0.1745F ) );
+			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -8.5F, 0.0F, -0.5F, 0.0F, 0.0873F, 0.2182F ) );
 
 		PartDefinition rightForearm = rightArm.addOrReplaceChild( "rightForearm", CubeListBuilder.create()
 			.texOffs( 44, 37 )
@@ -146,7 +146,7 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 
 		PartDefinition leftArm = arms.addOrReplaceChild( "leftArm", CubeListBuilder.create()
 			.texOffs( 40, 0 )
-			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 9.5F, 0.0F, -0.5F, 0.0F, -0.0873F, -0.1745F ) );
+			.addBox( -2.5F, 0.0F, -2.5F, 5.0F, 16.0F, 5.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 8.5F, 0.0F, -0.5F, 0.0F, -0.0873F, -0.2182F ) );
 
 		PartDefinition leftForearm = leftArm.addOrReplaceChild( "leftForearm", CubeListBuilder.create()
 			.texOffs( 44, 37 )
