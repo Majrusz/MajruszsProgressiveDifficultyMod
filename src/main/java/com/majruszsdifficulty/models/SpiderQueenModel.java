@@ -37,7 +37,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 			.texOffs( 76, 0 )
 			.addBox( -6.0F, -3.0F, -12.0F, 12.0F, 8.0F, 12.0F, new CubeDeformation( 0.0F ) )
 			.texOffs( 76, 20 )
-			.addBox( -4.5F, -3.0F, -10.0F, 9.0F, 1.0F, 8.0F, new CubeDeformation( 0.1F ) ), PartPose.offsetAndRotation( 0.0F, 11.0F, -8.0F, 0.5236F, 0.0F, 0.0F ) );
+			.addBox( -4.5F, -3.0F, -10.0F, 9.0F, 1.0F, 8.0F, new CubeDeformation( 0.1F ) ), PartPose.offsetAndRotation( 0.0F, 11.0F, -10.0F, 0.5236F, 0.0F, 0.0F ) );
 
 		PartDefinition right_claw_back = head.addOrReplaceChild( "right_claw_back", CubeListBuilder.create()
 			.texOffs( 0, 0 )
@@ -57,7 +57,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition body0 = partdefinition.addOrReplaceChild( "body0", CubeListBuilder.create()
 			.texOffs( 0, 0 )
-			.addBox( -11.0F, -20.0F, -8.0F, 22.0F, 16.0F, 32.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( 0.0F, 24.0F, 0.0F ) );
+			.addBox( -11.0F, -20.0F, -8.0F, 22.0F, 16.0F, 32.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( 0.0F, 24.0F, -2.0F ) );
 
 		PartDefinition body1 = partdefinition.addOrReplaceChild( "body1", CubeListBuilder.create()
 			.texOffs( 0, 48 )
@@ -65,7 +65,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition right_front_leg = partdefinition.addOrReplaceChild( "right_front_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -10.0F, 15.0F, -6.0F, 0.6545F, -0.829F, -0.7854F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -10.0F, 15.0F, -8.0F, 0.6545F, -0.829F, -0.7854F ) );
 
 		PartDefinition right_front_leg2 = right_front_leg.addOrReplaceChild( "right_front_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
@@ -77,7 +77,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition right_middle_front_leg = partdefinition.addOrReplaceChild( "right_middle_front_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -11.0F, 15.0F, -4.0F, 0.1745F, -0.3491F, -0.5236F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -11.0F, 15.0F, -6.0F, 0.1745F, -0.3491F, -0.5236F ) );
 
 		PartDefinition right_middle_front_leg2 = right_middle_front_leg.addOrReplaceChild( "right_middle_front_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
@@ -89,7 +89,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition right_middle_hind_leg = partdefinition.addOrReplaceChild( "right_middle_hind_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -11.0F, 15.0F, -2.0F, -0.1745F, 0.3491F, -0.5236F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -11.0F, 15.0F, -4.0F, -0.1745F, 0.3491F, -0.5236F ) );
 
 		PartDefinition right_middle_hind_leg2 = right_middle_hind_leg.addOrReplaceChild( "right_middle_hind_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
@@ -101,7 +101,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition right_hind_leg = partdefinition.addOrReplaceChild( "right_hind_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -10.0F, 15.0F, 0.0F, -0.6545F, 0.829F, -0.7854F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( -10.0F, 15.0F, -2.0F, -0.6545F, 0.829F, -0.7854F ) );
 
 		PartDefinition right_hind_leg2 = right_hind_leg.addOrReplaceChild( "right_hind_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
@@ -113,7 +113,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition left_front_leg = partdefinition.addOrReplaceChild( "left_front_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 10.0F, 15.0F, -6.0F, -0.6545F, -2.3126F, 0.7854F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 10.0F, 15.0F, -8.0F, -0.6545F, -2.3126F, 0.7854F ) );
 
 		PartDefinition left_front_leg2 = left_front_leg.addOrReplaceChild( "left_front_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
@@ -125,7 +125,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition left_middle_front_leg = partdefinition.addOrReplaceChild( "left_middle_front_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 11.0F, 15.0F, -4.0F, -0.1745F, -2.7925F, 0.5236F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 11.0F, 15.0F, -6.0F, -0.1745F, -2.7925F, 0.5236F ) );
 
 		PartDefinition left_middle_front_leg2 = left_middle_front_leg.addOrReplaceChild( "left_middle_front_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
@@ -137,7 +137,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition left_middle_hind_leg = partdefinition.addOrReplaceChild( "left_middle_hind_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 11.0F, 15.0F, -2.0F, 0.1745F, 2.7925F, 0.5236F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 11.0F, 15.0F, -4.0F, 0.1745F, 2.7925F, 0.5236F ) );
 
 		PartDefinition left_middle_hind_leg2 = left_middle_hind_leg.addOrReplaceChild( "left_middle_hind_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
@@ -149,7 +149,7 @@ public class SpiderQueenModel< Type extends Entity > extends HierarchicalModel< 
 
 		PartDefinition left_hind_leg = partdefinition.addOrReplaceChild( "left_hind_leg", CubeListBuilder.create()
 			.texOffs( 0, 12 )
-			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 10.0F, 15.0F, 0.0F, 0.6545F, 2.3126F, 0.7854F ) );
+			.addBox( -2.0F, -16.0F, -2.0F, 4.0F, 16.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 10.0F, 15.0F, -2.0F, 0.6545F, 2.3126F, 0.7854F ) );
 
 		PartDefinition left_hind_leg2 = left_hind_leg.addOrReplaceChild( "left_hind_leg2", CubeListBuilder.create()
 			.texOffs( 0, 12 )
