@@ -7,7 +7,9 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
-import com.mlib.time.TimeHelper;
+import com.mlib.gamemodifiers.contexts.OnItemTooltip;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -79,6 +81,22 @@ public class BlackWidowEntity extends Spider {
 
 		private boolean ticksHavePassed( OnEntityTick.Data data ) {
 			return data.entity.tickCount % this.delay.asTicks() == 0;
+		}
+	}
+
+	@Deprecated
+	@AutoInstance
+	public static class TempTooltip extends GameModifier {
+		public TempTooltip() {
+			super( Registries.Modifiers.DEFAULT, "", "" );
+
+			new OnItemTooltip.Context( this::addTooltip )
+				.addCondition( data->data.itemStack.getItem().equals( Registries.BLACK_WIDOW_SPAWN_EGG.get() ) );
+		}
+
+		private void addTooltip( OnItemTooltip.Data data ) {
+			data.tooltip.add( Component.literal( "This mob is not finished yet, wait until the next major update!" )
+				.withStyle( ChatFormatting.RED ) );
 		}
 	}
 }
