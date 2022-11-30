@@ -89,8 +89,8 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatioLeft, ageInTicks );
 
 		// arms animations when the Tank is using standard attack (we need to update both hands because model parts share reference between all instances)
-		float extraLeftArmRotationX = ( float )( Math.cos( limbFactor1 ) * limbSwingAmount ) * 10.0f;
-		float extraRightArmRotationX = ( float )( Math.cos( limbFactor1 + ( float )Math.PI ) * limbSwingAmount ) * 10.0f;
+		float extraLeftArmRotationX = ( float )( Math.cos( limbFactor1 ) * limbSwingAmount ) * 20.0f;
+		float extraRightArmRotationX = ( float )( Math.cos( limbFactor1 + ( float )Math.PI ) * limbSwingAmount ) * 20.0f;
 		if( this.isLeftHandAttack ) {
 			rotateArm( this.leftArm, ageInTicks, this.normalAttackDurationRatioLeft, extraLeftArmRotationX );
 			rotateArm( this.rightArm, ageInTicks, 1.0f, extraRightArmRotationX );
