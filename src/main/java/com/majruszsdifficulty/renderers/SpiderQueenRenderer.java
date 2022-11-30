@@ -18,7 +18,7 @@ public class SpiderQueenRenderer extends MobRenderer< SpiderQueenEntity, SpiderQ
 	private static final ResourceLocation TEXTURE_LOCATION = Registries.getLocation( "textures/entity/spider_queen.png" );
 
 	public SpiderQueenRenderer( EntityRendererProvider.Context context ) {
-		super( context, new SpiderQueenModel<>( context.bakeLayer( LAYER_LOCATION ) ), 1.75f );
+		super( context, new SpiderQueenModel<>( context.bakeLayer( LAYER_LOCATION ) ), 1.5f );
 	}
 
 	@Override
