@@ -31,6 +31,8 @@ import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
 import com.mojang.serialization.Codec;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -264,6 +266,18 @@ public class Registries {
 
 	public static String getLocationString( String register ) {
 		return getLocation( register ).toString();
+	}
+
+	public static ModelLayerLocation getModelLayer( String register, String layer ) {
+		return new ModelLayerLocation( getLocation( register ), layer );
+	}
+
+	public static ModelLayerLocation getModelLayer( String register ) {
+		return new ModelLayerLocation( getLocation( register ), "main" );
+	}
+
+	public static RenderType getEyesRenderType( String register ) {
+		return RenderType.eyes( getLocation( register ) );
 	}
 
 	public static void initialize() {

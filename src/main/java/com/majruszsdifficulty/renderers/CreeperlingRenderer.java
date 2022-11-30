@@ -12,14 +12,13 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/** Renderer for new Creeperling entity. */
 @OnlyIn( Dist.CLIENT )
 public class CreeperlingRenderer extends MobRenderer< CreeperlingEntity, CreeperlingModel< CreeperlingEntity > > {
-	private static final ResourceLocation CREEPERLING_TEXTURES = Registries.getLocation( "textures/entity/creeperling.png" );
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( Registries.getLocation( "creeperling" ), "main" );
+	public static final ModelLayerLocation LAYER = Registries.getModelLayer( "creeperling" );
+	static final ResourceLocation TEXTURE = Registries.getLocation( "textures/entity/creeperling.png" );
 
 	public CreeperlingRenderer( EntityRendererProvider.Context context ) {
-		super( context, new CreeperlingModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.25f );
+		super( context, new CreeperlingModel<>( context.bakeLayer( LAYER ) ), 0.25f );
 	}
 
 	@Override
@@ -40,10 +39,7 @@ public class CreeperlingRenderer extends MobRenderer< CreeperlingEntity, Creeper
 		stack.scale( f2, f3, f2 );
 	}
 
-	/**
-	 Returns the location of an entity's texture.
-	 */
 	public ResourceLocation getTextureLocation( CreeperlingEntity entity ) {
-		return CREEPERLING_TEXTURES;
+		return TEXTURE;
 	}
 }

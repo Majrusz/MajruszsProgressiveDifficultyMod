@@ -14,20 +14,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
 public class TankRenderer extends MobRenderer< TankEntity, TankModel< TankEntity > > {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( Registries.getLocation( "tank" ), "main" );
-	private static final ResourceLocation TEXTURE_LOCATION = Registries.getLocation( "textures/entity/tank.png" );
+	public static final ModelLayerLocation LAYER = Registries.getModelLayer( "tank" );
+	static final ResourceLocation TEXTURE = Registries.getLocation( "textures/entity/tank.png" );
 
 	public TankRenderer( EntityRendererProvider.Context context ) {
-		super( context, new TankModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.5f );
+		super( context, new TankModel<>( context.bakeLayer( LAYER ) ), 0.5f );
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation( TankEntity tank ) {
-		return TEXTURE_LOCATION;
+		return TEXTURE;
 	}
 
 	@Override
-	public void render( TankEntity tank, float p_114209_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight ) {
+	public void render( TankEntity tank, float p_114209_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource,
+		int packedLight
+	) {
 		this.model.prepareMobModel( tank, 0.0F, 0.0F, partialTicks );
 
 		super.render( tank, p_114209_, partialTicks, poseStack, bufferSource, packedLight );

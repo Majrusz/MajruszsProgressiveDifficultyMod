@@ -14,17 +14,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
 public class BlackWidowRenderer extends MobRenderer< BlackWidowEntity, BlackWidowModel< BlackWidowEntity > > {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation( Registries.getLocation( "black_widow" ), "main" );
-	private static final ResourceLocation TEXTURE_LOCATION = Registries.getLocation( "textures/entity/black_widow.png" );
+	public static final ModelLayerLocation LAYER = Registries.getModelLayer( "black_widow" );
+	static final ResourceLocation TEXTURE = Registries.getLocation( "textures/entity/black_widow.png" );
 
 	public BlackWidowRenderer( EntityRendererProvider.Context context ) {
-		super( context, new BlackWidowModel<>( context.bakeLayer( LAYER_LOCATION ) ), 0.25f );
-		this.addLayer( new BlackWidowEyesLayer<>( this ) );
+		super( context, new BlackWidowModel<>( context.bakeLayer( LAYER ) ), 0.25f );
+		this.addLayer( new BlackWidowEyesLayer( this ) );
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation( BlackWidowEntity blackWidow ) {
-		return TEXTURE_LOCATION;
+		return TEXTURE;
 	}
 
 	@Override

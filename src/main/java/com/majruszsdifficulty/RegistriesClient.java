@@ -23,11 +23,11 @@ import net.minecraftforge.client.ForgeHooksClient;
 @OnlyIn( Dist.CLIENT )
 public class RegistriesClient {
 	public static void setup() {
-		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER_LOCATION, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
-		ForgeHooksClient.registerLayerDefinition( TankRenderer.LAYER_LOCATION, ()->TankModel.createBodyLayer( CubeDeformation.NONE ) );
-		ForgeHooksClient.registerLayerDefinition( BlackWidowRenderer.LAYER_LOCATION, BlackWidowModel::createBodyLayer );
-		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.INNER_ARMOR, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
-		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.OUTER_ARMOR, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
+		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
+		ForgeHooksClient.registerLayerDefinition( TankRenderer.LAYER, ()->TankModel.createBodyLayer( CubeDeformation.NONE ) );
+		ForgeHooksClient.registerLayerDefinition( BlackWidowRenderer.LAYER, BlackWidowModel::createBodyLayer );
+		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.INNER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
+		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.OUTER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
 		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.MAIN_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
 
 		EntityRenderers.register( Registries.CREEPERLING.get(), CreeperlingRenderer::new );
