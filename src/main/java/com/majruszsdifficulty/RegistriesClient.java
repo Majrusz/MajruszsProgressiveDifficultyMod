@@ -10,6 +10,7 @@ import com.majruszsdifficulty.renderers.BlackWidowRenderer;
 import com.majruszsdifficulty.renderers.CreeperlingRenderer;
 import com.majruszsdifficulty.renderers.CursedArmorRenderer;
 import com.majruszsdifficulty.renderers.TankRenderer;
+import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -25,9 +26,9 @@ public class RegistriesClient {
 		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER_LOCATION, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
 		ForgeHooksClient.registerLayerDefinition( TankRenderer.LAYER_LOCATION, ()->TankModel.createBodyLayer( CubeDeformation.NONE ) );
 		ForgeHooksClient.registerLayerDefinition( BlackWidowRenderer.LAYER_LOCATION, BlackWidowModel::createBodyLayer );
+		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.INNER_ARMOR, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
+		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.OUTER_ARMOR, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
 		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.MAIN_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
-		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.INNER_ARMOR, ()->LayerDefinition.create( CursedArmorModel.createMesh( CubeDeformation.NONE, 0.2f ), 64, 64 ) );
-		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.OUTER_ARMOR, ()->LayerDefinition.create( CursedArmorModel.createMesh( CubeDeformation.NONE, 0.1f ), 64, 64 ) );
 
 		EntityRenderers.register( Registries.CREEPERLING.get(), CreeperlingRenderer::new );
 		EntityRenderers.register( Registries.TANK.get(), TankRenderer::new );
