@@ -1,21 +1,35 @@
 package com.majruszsdifficulty.entities;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.blocks.BlockHelper;
+import com.mlib.entities.EntityHelper;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.contexts.OnSpawned;
+import com.mlib.gamemodifiers.contexts.OnLoot;
+import com.mlib.gamemodifiers.contexts.OnLootTableCustomLoad;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
@@ -46,23 +60,60 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	@AutoInstance
-	public static class Equip extends GameModifier {
-		public Equip() {
+	public static class Spawn extends GameModifier {
+		static final String MAIN_TAG = "cursed_armor";
+		static final String LOOT_TABLE_TAG = "loot";
+		static final String CHANCE_TAG = "chance";
+		static final Map< ResourceLocation, Data > DATA_MAP = new HashMap<>();
+
+		public Spawn() {
 			super( Registries.Modifiers.DEFAULT, "", "" );
 
-			OnSpawned.Context onSpawned = new OnSpawned.Context( this::equipArmor );
-			onSpawned.addCondition( data->data.target instanceof CursedArmorEntity )
-				.addCondition( data->!data.loadedFromDisk );
+			OnLoot.Context onLoot = new OnLoot.Context( this::spawnCursedArmor );
+			onLoot.addCondition( new Condition.IsServer() )
+				.addCondition( OnLoot.HAS_ORIGIN )
+				.addCondition( data->BlockHelper.getBlockEntity( data.level, data.origin ) instanceof ChestBlockEntity )
+				.addCondition( data->data.entity instanceof ServerPlayer )
+				.addCondition( this::hasLootDefined );
+
+			OnLootTableCustomLoad.Context onLootTableLoad = new OnLootTableCustomLoad.Context( this::loadCursedArmorLoot );
+			onLootTableLoad.addCondition( data->data.jsonObject.has( MAIN_TAG ) );
 		}
 
-		private void equipArmor( OnSpawned.Data data ) {
-			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
-			cursedArmor.setItemSlot( EquipmentSlot.HEAD, new ItemStack( Items.GOLDEN_HELMET ) );
-			cursedArmor.setDropChance( EquipmentSlot.HEAD, 1.0f );
-			cursedArmor.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.DIAMOND_SWORD ) );
-			cursedArmor.setDropChance( EquipmentSlot.MAINHAND, 1.0f );
-			cursedArmor.setItemSlot( EquipmentSlot.OFFHAND, new ItemStack( Items.SHIELD ) );
-			cursedArmor.setDropChance( EquipmentSlot.OFFHAND, 1.0f );
+		private void spawnCursedArmor( OnLoot.Data data ) {
+			Vec3 position = data.origin.add( 0.0, 0.5, 0.0 );
+			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.level, position );
+			if( cursedArmor == null )
+				return;
+
+			LootTable lootTable = DATA_MAP.get( data.context.getQueriedLootTableId() ).lootTable;
+			LootContext lootContext = new LootContext.Builder( data.level )
+				.withParameter( LootContextParams.ORIGIN, data.origin )
+				.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
+				.create( LootContextParamSets.GIFT );
+
+			lootTable.getRandomItems( lootContext ).forEach( cursedArmor::equipItemIfPossible );
 		}
+
+		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
+			JsonObject object = data.jsonObject.get( MAIN_TAG ).getAsJsonObject();
+			double chance = object.has( CHANCE_TAG ) ? object.get( CHANCE_TAG ).getAsDouble() : 1.0;
+			JsonElement ids = object.get( LOOT_TABLE_TAG );
+			if( ids.isJsonArray() ) {
+				JsonArray array = ids.getAsJsonArray();
+				array.forEach( id->DATA_MAP.put( new ResourceLocation( id.getAsString() ), new Data( data.table, chance ) ) );
+			} else {
+				DATA_MAP.put( new ResourceLocation( ids.getAsString() ), new Data( data.table, chance ) );
+			}
+		}
+
+		private boolean hasLootDefined( OnLoot.Data data ) {
+			ResourceLocation lootTableId = data.context.getQueriedLootTableId();
+
+			return DATA_MAP.containsKey( lootTableId )
+				&& Random.tryChance( DATA_MAP.get( lootTableId ).chance );
+		}
+
+		private record Data( LootTable lootTable, double chance ) {}
 	}
 }

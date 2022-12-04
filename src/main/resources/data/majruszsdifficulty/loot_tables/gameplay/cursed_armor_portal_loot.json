@@ -1,0 +1,24 @@
+{
+  "mlib": "majruszsdifficulty:gameplay/cursed_armor_portal_loot",
+  "cursed_armor": {
+    "loot": "minecraft:chests/ruined_portal",
+    "chance": 1.0
+  },
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszsdifficulty:wither_bow",
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
