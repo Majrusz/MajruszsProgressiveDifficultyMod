@@ -11,6 +11,7 @@ import com.majruszsdifficulty.entities.CursedArmorEntity;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
+import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
@@ -54,6 +55,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
@@ -95,10 +97,9 @@ public class Registries {
 	static final DeferredRegister< MobEffect > MOB_EFFECTS = HELPER.create( ForgeRegistries.Keys.MOB_EFFECTS );
 	static final DeferredRegister< ParticleType< ? > > PARTICLE_TYPES = HELPER.create( ForgeRegistries.Keys.PARTICLE_TYPES );
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
-	static final DeferredRegister< Codec< ? extends IGlobalLootModifier > > LOOT_MODIFIERS = HELPER.create( ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS );
 	static final DeferredRegister< PlacedFeature > PLACED_FEATURES = HELPER.create( Registry.PLACED_FEATURE_REGISTRY );
 	static final DeferredRegister< ConfiguredFeature< ?, ? > > CONFIGURED_FEATURES = HELPER.create( Registry.CONFIGURED_FEATURE_REGISTRY );
-	static final DeferredRegister< Codec< ? extends BiomeModifier > > BIOME_MODIFIERS = HELPER.create( ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS );
+	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( Registry.LOOT_FUNCTION_REGISTRY );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -200,17 +201,15 @@ public class Registries {
 	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 8, 255 ) );
 
 	// Sounds
-	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING;
-	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_WAVE_STARTED;
-
-	static {
-		UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );
-		UNDEAD_ARMY_WAVE_STARTED = register( "undead_army.wave_started" );
-	}
+	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );
+	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_WAVE_STARTED = register( "undead_army.wave_started" );
 
 	static RegistryObject< SoundEvent > register( String name ) {
 		return SOUNDS_EVENTS.register( name, ()->new SoundEvent( getLocation( name ) ) );
 	}
+
+	// Loot Functions
+	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY = LOOT_FUNCTIONS.register( "curse_randomly", CurseRandomlyFunction::newType );
 
 	// Game Modifiers
 	public static final List< GameModifier > GAME_MODIFIERS;

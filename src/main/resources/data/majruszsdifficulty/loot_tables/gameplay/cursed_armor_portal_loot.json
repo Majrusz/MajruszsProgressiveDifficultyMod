@@ -14,7 +14,7 @@
           "name": "majruszsdifficulty:wither_bow",
           "functions": [
             {
-              "function": "minecraft:enchant_randomly"
+              "function": "majruszsdifficulty:curse_randomly"
             }
           ]
         }
