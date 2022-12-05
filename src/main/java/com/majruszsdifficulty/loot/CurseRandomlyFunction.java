@@ -3,7 +3,9 @@ package com.majruszsdifficulty.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.majruszsdifficulty.Registries;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -16,15 +18,19 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CurseRandomlyFunction extends LootItemConditionalFunction {
+	final List< ResourceLocation > excludedEnchantments;
+
 	public static LootItemFunctionType newType() {
 		return new LootItemFunctionType( new CurseRandomlyFunction.Serializer() );
 	}
 
-	public CurseRandomlyFunction( LootItemCondition[] itemConditions ) {
+	public CurseRandomlyFunction( LootItemCondition[] itemConditions, List< ResourceLocation > excludedEnchantments ) {
 		super( itemConditions );
+		this.excludedEnchantments = excludedEnchantments;
 	}
 
 	@Override
@@ -34,15 +40,18 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 
 	@Override
 	public ItemStack run( ItemStack itemStack, LootContext context ) {
-		List< Enchantment > list = Registry.ENCHANTMENT.stream()
+		List< Enchantment > list = Registry.ENCHANTMENT.holders()
+			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.key().location() ) )
+			.map( Holder::get )
 			.filter( Enchantment::isDiscoverable )
 			.filter( Enchantment::isCurse )
 			.filter( enchantment->enchantment.canEnchant( itemStack ) )
 			.toList();
-		RandomSource randomSource = context.getRandom();
-		Enchantment enchantment = list.get( context.getRandom().nextInt( list.size() ) );
+		if( list.isEmpty() )
+			return itemStack;
 
-		return enchantItem( itemStack, enchantment, randomSource );
+		RandomSource randomSource = context.getRandom();
+		return enchantItem( itemStack, list.get( randomSource.nextInt( list.size() ) ), randomSource );
 	}
 
 	private static ItemStack enchantItem( ItemStack itemStack, Enchantment enchantment, RandomSource randomSource ) {
@@ -62,7 +71,14 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 		public CurseRandomlyFunction deserialize( JsonObject jsonObject, JsonDeserializationContext context,
 			LootItemCondition[] itemConditions
 		) {
-			return new CurseRandomlyFunction( itemConditions );
+			List< ResourceLocation > excludedEnchantments = new ArrayList<>();
+			if( jsonObject.has( "excluding" ) ) {
+				jsonObject.get( "excluding" )
+					.getAsJsonArray()
+					.forEach( enchantment->excludedEnchantments.add( new ResourceLocation( enchantment.getAsString() ) ) );
+			}
+
+			return new CurseRandomlyFunction( itemConditions, excludedEnchantments );
 		}
 	}
 }

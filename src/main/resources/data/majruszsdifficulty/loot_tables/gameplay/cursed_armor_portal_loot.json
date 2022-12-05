@@ -11,10 +11,64 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:wither_bow",
+          "name": "minecraft:golden_helmet",
           "functions": [
             {
-              "function": "majruszsdifficulty:curse_randomly"
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_chestplate",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_leggings",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_boots",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
             }
           ]
         }
