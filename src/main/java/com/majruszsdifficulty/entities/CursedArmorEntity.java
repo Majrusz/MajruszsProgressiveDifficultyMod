@@ -20,7 +20,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -51,11 +58,10 @@ public class CursedArmorEntity extends Monster {
 	public static AttributeSupplier getAttributeMap() {
 		return Mob.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 30.0 )
-			.add( Attributes.MOVEMENT_SPEED, 0.25 )
+			.add( Attributes.MOVEMENT_SPEED, 0.23 )
 			.add( Attributes.ATTACK_DAMAGE, 3.0 )
-			.add( Attributes.FOLLOW_RANGE, 30.0 )
-			.add( Attributes.ATTACK_KNOCKBACK, 3.0 )
-			.add( Attributes.KNOCKBACK_RESISTANCE, 0.75 )
+			.add( Attributes.FOLLOW_RANGE, 35.0 )
+			.add( Attributes.ARMOR, 3.0 )
 			.build();
 	}
 
@@ -66,6 +72,16 @@ public class CursedArmorEntity extends Monster {
 	@Override
 	public int getExperienceReward() {
 		return Random.nextInt( 4 );
+	}
+
+	@Override
+	protected void registerGoals() {
+		this.goalSelector.addGoal( 2, new MeleeAttackGoal( this, 1.0D, false ) );
+		this.goalSelector.addGoal( 3, new WaterAvoidingRandomStrollGoal( this, 1.0D ) );
+		this.goalSelector.addGoal( 4, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
+		this.goalSelector.addGoal( 4, new RandomLookAroundGoal( this ) );
+		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
+		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
 	}
 
 	@AutoInstance
@@ -114,7 +130,7 @@ public class CursedArmorEntity extends Monster {
 				.forEach( cursedArmor::equipItemIfPossible );
 
 			Arrays.stream( EquipmentSlot.values() )
-				.forEach( slot -> cursedArmor.setDropChance( slot, this.dropChance.asFloat() ) );
+				.forEach( slot->cursedArmor.setDropChance( slot, this.dropChance.asFloat() ) );
 		}
 
 		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
