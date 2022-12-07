@@ -30,7 +30,6 @@ import com.mlib.items.ItemCreativeModeTab;
 import com.mlib.itemsets.ItemSet;
 import com.mlib.registries.DeferredRegisterHelper;
 import com.mlib.triggers.BasicTrigger;
-import com.mojang.serialization.Codec;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderType;
@@ -58,8 +57,6 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -81,13 +78,14 @@ import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
 public class Registries {
 	private static final DeferredRegisterHelper HELPER = new DeferredRegisterHelper( MajruszsDifficulty.MOD_ID );
 	public static final ConfigGroup UNDEAD_ARMY_GROUP;
+	public static final ConfigGroup MOBS_GROUP;
 
 	static {
-		SERVER_CONFIG.addGroup( GameModifier.addNewGroup( Modifiers.DEFAULT ) );
-		UNDEAD_ARMY_GROUP = GameModifier.addNewGroup( Modifiers.UNDEAD_ARMY, "UndeadArmy", "" );
-		SERVER_CONFIG.addGroup( UNDEAD_ARMY_GROUP );
-		SERVER_CONFIG.addGroup( GameModifier.addNewGroup( Modifiers.GAME_STAGE, "GameStage", "" ) );
-		SERVER_CONFIG.addGroup( GameModifier.addNewGroup( Modifiers.TREASURE_BAG, "TreasureBag", "" ) );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.DEFAULT );
+		UNDEAD_ARMY_GROUP = GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.UNDEAD_ARMY, "UndeadArmy", "" );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.GAME_STAGE, "GameStage", "" );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.TREASURE_BAG, "TreasureBag", "" );
+		MOBS_GROUP = GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.MOBS, "Mobs", "" );
 	}
 
 	// Groups
@@ -349,5 +347,6 @@ public class Registries {
 		public static final String UNDEAD_ARMY = Registries.getLocationString( "undead_army" );
 		public static final String GAME_STAGE = Registries.getLocationString( "game_stage" );
 		public static final String TREASURE_BAG = Registries.getLocationString( "treasure_bag" );
+		public static final String MOBS = Registries.getLocationString( "mobs" );
 	}
 }
