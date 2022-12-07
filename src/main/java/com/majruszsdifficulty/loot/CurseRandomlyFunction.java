@@ -22,15 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurseRandomlyFunction extends LootItemConditionalFunction {
-	final List< ResourceLocation > excludedEnchantments;
+	final List< ResourceLocation > excludedCurses;
 
 	public static LootItemFunctionType newType() {
 		return new LootItemFunctionType( new CurseRandomlyFunction.Serializer() );
 	}
 
-	public CurseRandomlyFunction( LootItemCondition[] itemConditions, List< ResourceLocation > excludedEnchantments ) {
+	public CurseRandomlyFunction( LootItemCondition[] itemConditions, List< ResourceLocation > excludedCurses ) {
 		super( itemConditions );
-		this.excludedEnchantments = excludedEnchantments;
+		this.excludedCurses = excludedCurses;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 	@Override
 	public ItemStack run( ItemStack itemStack, LootContext context ) {
 		List< Enchantment > list = Registry.ENCHANTMENT.holders()
-			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.key().location() ) )
+			.filter( enchantment->!this.excludedCurses.contains( enchantment.key().location() ) )
 			.map( Holder::get )
 			.filter( Enchantment::isDiscoverable )
 			.filter( Enchantment::isCurse )
