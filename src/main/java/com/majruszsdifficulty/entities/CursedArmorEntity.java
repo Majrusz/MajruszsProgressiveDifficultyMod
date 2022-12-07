@@ -97,7 +97,7 @@ public class CursedArmorEntity extends Monster {
 				.create( LootContextParamSets.GIFT );
 
 			lootTable.getRandomItems( lootContext )
-				.forEach( this.buildItemStackConsumer( cursedArmor ) );
+				.forEach( cursedArmor::equipItemIfPossible );
 		}
 
 		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
@@ -117,16 +117,6 @@ public class CursedArmorEntity extends Monster {
 
 			return DATA_MAP.containsKey( lootTableId )
 				&& Random.tryChance( DATA_MAP.get( lootTableId ).chance );
-		}
-
-		private Consumer< ItemStack > buildItemStackConsumer( CursedArmorEntity cursedArmor ) {
-			return itemStack -> {
-				if( itemStack.getItem() instanceof ShieldItem ) {
-					cursedArmor.setItemInHand( InteractionHand.OFF_HAND, itemStack );
-				} else {
-					cursedArmor.equipItemIfPossible( itemStack );
-				}
-			};
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
