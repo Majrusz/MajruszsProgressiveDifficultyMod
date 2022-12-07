@@ -14,6 +14,15 @@
           "name": "minecraft:golden_helmet",
           "functions": [
             {
+              "add": false,
+              "damage": {
+                "type": "minecraft:uniform",
+                "max": 0.25,
+                "min": 0.1
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
               "function": "majruszsdifficulty:curse_randomly",
               "excluding": [
                 "minecraft:vanishing_curse"
@@ -30,6 +39,15 @@
           "type": "minecraft:item",
           "name": "minecraft:golden_chestplate",
           "functions": [
+            {
+              "add": false,
+              "damage": {
+                "type": "minecraft:uniform",
+                "max": 0.25,
+                "min": 0.1
+              },
+              "function": "minecraft:set_damage"
+            },
             {
               "function": "majruszsdifficulty:curse_randomly",
               "excluding": [
@@ -48,6 +66,15 @@
           "name": "minecraft:golden_leggings",
           "functions": [
             {
+              "add": false,
+              "damage": {
+                "type": "minecraft:uniform",
+                "max": 0.25,
+                "min": 0.1
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
               "function": "majruszsdifficulty:curse_randomly",
               "excluding": [
                 "minecraft:vanishing_curse"
@@ -65,10 +92,67 @@
           "name": "minecraft:golden_boots",
           "functions": [
             {
+              "add": false,
+              "damage": {
+                "type": "minecraft:uniform",
+                "max": 0.25,
+                "min": 0.1
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
               "function": "majruszsdifficulty:curse_randomly",
               "excluding": [
                 "minecraft:vanishing_curse"
               ]
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_sword",
+          "functions": [
+            {
+              "add": false,
+              "damage": {
+                "type": "minecraft:uniform",
+                "max": 0.25,
+                "min": 0.1
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:shield",
+          "functions": [
+            {
+              "add": false,
+              "damage": {
+                "type": "minecraft:uniform",
+                "max": 0.25,
+                "min": 0.1
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.334
             }
           ]
         }
