@@ -14,12 +14,15 @@ import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnLootTableCustomLoad;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -30,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
@@ -92,7 +96,8 @@ public class CursedArmorEntity extends Monster {
 				.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
 				.create( LootContextParamSets.GIFT );
 
-			lootTable.getRandomItems( lootContext ).forEach( cursedArmor::equipItemIfPossible );
+			lootTable.getRandomItems( lootContext )
+				.forEach( this.buildItemStackConsumer( cursedArmor ) );
 		}
 
 		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
@@ -112,6 +117,16 @@ public class CursedArmorEntity extends Monster {
 
 			return DATA_MAP.containsKey( lootTableId )
 				&& Random.tryChance( DATA_MAP.get( lootTableId ).chance );
+		}
+
+		private Consumer< ItemStack > buildItemStackConsumer( CursedArmorEntity cursedArmor ) {
+			return itemStack -> {
+				if( itemStack.getItem() instanceof ShieldItem ) {
+					cursedArmor.setItemInHand( InteractionHand.OFF_HAND, itemStack );
+				} else {
+					cursedArmor.equipItemIfPossible( itemStack );
+				}
+			};
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
