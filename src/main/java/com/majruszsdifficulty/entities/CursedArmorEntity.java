@@ -9,17 +9,16 @@ import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.blocks.BlockHelper;
 import com.mlib.config.DoubleConfig;
+import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnLootTableCustomLoad;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -30,6 +29,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,7 +91,12 @@ public class CursedArmorEntity extends Monster {
 			OnLootTableCustomLoad.Context onLootTableLoad = new OnLootTableCustomLoad.Context( this::loadCursedArmorLoot );
 			onLootTableLoad.addCondition( data->data.jsonObject.has( MAIN_TAG ) );
 
-			this.addConfig( onLoot );
+			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
+			onTick.addCondition( new Condition.IsServer() )
+				.addCondition( new Condition.Cooldown( 0.25, Dist.DEDICATED_SERVER, false ) )
+				.addCondition( data->data.entity instanceof CursedArmorEntity );
+
+			this.addConfigs( onLoot, onLootTableLoad, onTick );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
@@ -128,6 +133,13 @@ public class CursedArmorEntity extends Monster {
 			ResourceLocation lootTableId = data.context.getQueriedLootTableId();
 
 			return DATA_MAP.containsKey( lootTableId ) && Random.tryChance( DATA_MAP.get( lootTableId ).chance );
+		}
+
+		private void spawnParticles( OnEntityTick.Data data ) {
+			LivingEntity entity = data.entity;
+			Vec3 position = entity.position().add( 0.0, entity.getBbHeight() * 0.5, 0.0 );
+			Vec3 offset = new Vec3( entity.getBbWidth() * 0.3, entity.getBbHeight() * 0.3, entity.getBbWidth() * 0.3 );
+			ParticleHandler.ENCHANTED_HIT.spawn( data.level, position, 2, ()->offset );
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
