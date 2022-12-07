@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.majruszsdifficulty.Registries;
-import com.mlib.EquipmentSlots;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.blocks.BlockHelper;
@@ -37,10 +36,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
-	public static final String GROUP = "CursedArmor";
+	public static final String GROUP_ID = "CursedArmor";
 
 	static {
-		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP, "CursedArmor", "" );
+		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID, "CursedArmor", "" );
 	}
 
 	public static Supplier< EntityType< CursedArmorEntity > > createSupplier() {
@@ -78,7 +77,7 @@ public class CursedArmorEntity extends Monster {
 		final DoubleConfig dropChance = new DoubleConfig( "drop_chance", "Chance for each equipped item to drop when killed.", false, 0.1, 0.0, 1.0 );
 
 		public Spawn() {
-			super( GROUP, "", "" );
+			super( GROUP_ID, "", "" );
 
 			OnLoot.Context onLoot = new OnLoot.Context( this::spawnCursedArmor );
 			onLoot.addCondition( new Condition.IsServer() )
