@@ -107,7 +107,12 @@
               ]
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
         {
           "type": "minecraft:item",
           "name": "minecraft:golden_sword",
@@ -128,7 +133,12 @@
               ]
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
         {
           "type": "minecraft:item",
           "name": "minecraft:shield",
@@ -152,7 +162,7 @@
           "conditions": [
             {
               "condition": "minecraft:random_chance",
-              "chance": 0.334
+              "chance": 0.67
             }
           ]
         }
