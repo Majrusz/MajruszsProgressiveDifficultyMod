@@ -106,7 +106,8 @@ public class CursedArmorEntity extends Monster {
 				return;
 
 			LootTable lootTable = DATA_MAP.get( data.context.getQueriedLootTableId() ).lootTable;
-			LootContext lootContext = new LootContext.Builder( data.level ).withParameter( LootContextParams.ORIGIN, data.origin )
+			LootContext lootContext = new LootContext.Builder( data.level )
+				.withParameter( LootContextParams.ORIGIN, data.origin )
 				.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
 				.create( LootContextParamSets.GIFT );
 
