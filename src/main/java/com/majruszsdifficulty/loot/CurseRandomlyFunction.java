@@ -22,15 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurseRandomlyFunction extends LootItemConditionalFunction {
-	final List< ResourceLocation > excludedCurses;
+	final List< ResourceLocation > excludedEnchantments;
 
 	public static LootItemFunctionType newType() {
 		return new LootItemFunctionType( new CurseRandomlyFunction.Serializer() );
 	}
 
-	public CurseRandomlyFunction( LootItemCondition[] itemConditions, List< ResourceLocation > excludedCurses ) {
+	public CurseRandomlyFunction( LootItemCondition[] itemConditions, List< ResourceLocation > excludedEnchantments ) {
 		super( itemConditions );
-		this.excludedCurses = excludedCurses;
+		this.excludedEnchantments = excludedEnchantments;
 	}
 
 	@Override
@@ -40,27 +40,56 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 
 	@Override
 	public ItemStack run( ItemStack itemStack, LootContext context ) {
-		List< Enchantment > list = Registry.ENCHANTMENT.holders()
-			.filter( enchantment->!this.excludedCurses.contains( enchantment.key().location() ) )
+		RandomSource randomSource = context.getRandom();
+		List< Enchantment > randomEnchantments = new ArrayList<>();
+		List< Enchantment > enchantments = this.buildValidEnchantmentList( itemStack );
+		if( !enchantments.isEmpty() ) {
+			randomEnchantments.add( enchantments.get( randomSource.nextInt( enchantments.size() ) ) );
+		}
+		List< Enchantment > curses = this.buildValidCurseList( itemStack );
+		if( !curses.isEmpty() ) {
+			randomEnchantments.add( curses.get( randomSource.nextInt( curses.size() ) ) );
+		}
+
+		return !randomEnchantments.isEmpty() ? enchantItem( itemStack, randomSource, randomEnchantments ) : itemStack;
+	}
+
+	private List< Enchantment > buildValidEnchantmentList( ItemStack itemStack ) {
+		return Registry.ENCHANTMENT.holders()
+			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.key().location() ) )
+			.map( Holder::get )
+			.filter( Enchantment::isDiscoverable )
+			.filter( enchantment->!enchantment.isCurse() )
+			.filter( enchantment->enchantment.canEnchant( itemStack ) )
+			.toList();
+	}
+
+	// TODO: zmien zeby wpierw nakladalo klatwe na przedmiot, a pozniej enchantment (bo incompatibility)
+
+	private List< Enchantment > buildValidCurseList( ItemStack itemStack ) {
+		return Registry.ENCHANTMENT.holders()
+			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.key().location() ) )
 			.map( Holder::get )
 			.filter( Enchantment::isDiscoverable )
 			.filter( Enchantment::isCurse )
 			.filter( enchantment->enchantment.canEnchant( itemStack ) )
 			.toList();
-		if( list.isEmpty() )
-			return itemStack;
-
-		RandomSource randomSource = context.getRandom();
-		return enchantItem( itemStack, list.get( randomSource.nextInt( list.size() ) ), randomSource );
 	}
 
-	private static ItemStack enchantItem( ItemStack itemStack, Enchantment enchantment, RandomSource randomSource ) {
-		int level = Mth.nextInt( randomSource, enchantment.getMinLevel(), enchantment.getMaxLevel() );
+	private static ItemStack enchantItem( ItemStack itemStack, RandomSource randomSource,
+		List< Enchantment > enchantments
+	) {
 		if( itemStack.is( Items.BOOK ) ) {
 			itemStack = new ItemStack( Items.ENCHANTED_BOOK );
-			EnchantedBookItem.addEnchantment( itemStack, new EnchantmentInstance( enchantment, level ) );
-		} else {
-			itemStack.enchant( enchantment, level );
+		}
+
+		for( Enchantment enchantment : enchantments ) {
+			int level = Mth.nextInt( randomSource, enchantment.getMinLevel(), enchantment.getMaxLevel() );
+			if( itemStack.is( Items.ENCHANTED_BOOK ) ) {
+				EnchantedBookItem.addEnchantment( itemStack, new EnchantmentInstance( enchantment, level ) );
+			} else {
+				itemStack.enchant( enchantment, level );
+			}
 		}
 
 		return itemStack;
