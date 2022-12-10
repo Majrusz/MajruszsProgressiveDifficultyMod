@@ -31,6 +31,6 @@ issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/i
 [[dependencies.majruszsdifficulty]]
     modId = "majruszlib"
     mandatory = true
-    versionRange = "[2.18.0,3.0.0)"
+    versionRange = "[3.0.0,4.0.0)"
     ordering = "NONE"
     side = "BOTH"
