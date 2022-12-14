@@ -7,6 +7,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -85,7 +86,7 @@ public class GameStage {
 		return constructGameStageText( gameStageId, getChatFormatting( stage ) );
 	}
 
-	public static double getRegionalDifficulty( LivingEntity target ) {
+	public static double getRegionalDifficulty( Entity target ) {
 		double clampedRegionalDifficulty = target != null ? LevelHelper.getClampedRegionalDifficulty( target ) : 0.25;
 
 		return Mth.clamp( clampedRegionalDifficulty + getStageModifier(), 0.0, 1.0 );

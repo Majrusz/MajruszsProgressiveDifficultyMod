@@ -5,8 +5,7 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperExplosionImmunity extends GameModifier {
@@ -15,9 +14,9 @@ public class CreeperExplosionImmunity extends GameModifier {
 	public CreeperExplosionImmunity() {
 		super( Registries.Modifiers.DEFAULT, "CreeperExplosionImmunity", "Makes a Creeper take less damage from explosions." );
 
-		OnDamagedContext onDamaged = new OnDamagedContext( this::reduceExplosionDamage );
-		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new Condition.Excludable() )
+		OnDamaged.Context onDamaged = new OnDamaged.Context( this::reduceExplosionDamage );
+		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.target instanceof Creeper )
 			.addCondition( data->data.source.isExplosion() )
 			.addConfig( this.damageMultiplier );
@@ -25,7 +24,7 @@ public class CreeperExplosionImmunity extends GameModifier {
 		this.addContext( onDamaged );
 	}
 
-	private void reduceExplosionDamage( OnDamagedData data ) {
+	private void reduceExplosionDamage( OnDamaged.Data data ) {
 		data.event.setAmount( ( float )( data.event.getAmount() * this.damageMultiplier.get() ) );
 	}
 }

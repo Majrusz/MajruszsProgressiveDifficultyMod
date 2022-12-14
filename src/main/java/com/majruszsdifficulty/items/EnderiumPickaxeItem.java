@@ -6,6 +6,6 @@ import net.minecraft.world.item.Rarity;
 
 public class EnderiumPickaxeItem extends PickaxeItem {
 	public EnderiumPickaxeItem() {
-		super( CustomItemTier.END, 1, -2.8f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
+		super( CustomItemTier.END, 1, -2.8f, new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 }

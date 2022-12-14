@@ -33,7 +33,7 @@ public class EndShardOre extends Block {
 
 	public static class EndShardOreItem extends BlockItem {
 		public EndShardOreItem() {
-			super( Registries.ENDERIUM_SHARD_ORE.get(), new Properties().stacksTo( 64 ).tab( Registries.ITEM_GROUP ) );
+			super( Registries.ENDERIUM_SHARD_ORE.get(), new Properties().stacksTo( 64 ) );
 		}
 	}
 }

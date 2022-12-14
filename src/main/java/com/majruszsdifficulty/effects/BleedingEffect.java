@@ -114,15 +114,16 @@ public class BleedingEffect extends MobEffect {
 			super( Registries.Modifiers.DEFAULT, "Bleeding", "Common config for all Bleeding effects." );
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
-			onTick.addCondition( new Condition.IsServer() )
-				.addCondition( new Condition.Cooldown( 5, Dist.DEDICATED_SERVER, false ) )
-				.addCondition( new Condition.HasEffect( Registries.BLEEDING ) );
+			onTick.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 5, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
+				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
+				.addCondition( data->data.entity instanceof LivingEntity );
 
 			OnDeath.Context onDeath = new OnDeath.Context( this::spawnParticles );
-			onDeath.addCondition( new Condition.IsServer() ).addCondition( new Condition.HasEffect( Registries.BLEEDING ) );
+			onDeath.addCondition( new Condition.IsServer<>() ).addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
 
 			OnEffectApplicable.Context onEffectApplicable = new OnEffectApplicable.Context( this::cancelBleeding );
-			onEffectApplicable.addCondition( new Condition.Excludable( this.effectConfig, BooleanConfig::isDisabled ) )
+			onEffectApplicable.addCondition( new Condition.Excludable< OnEffectApplicable.Data >( this.effectConfig ).negate() )
 				.addCondition( data->data.effect.equals( Registries.BLEEDING.get() ) || data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) );
 
 			OnEffectApplicable.Context onEffectApplicable2 = new OnEffectApplicable.Context( this::cancelBleeding );
@@ -132,9 +133,7 @@ public class BleedingEffect extends MobEffect {
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
-			assert data.entity != null;
-
-			this.spawnParticles( data.level, data.entity, MobEffectHelper.getEffectAmplifier( data.entity, Registries.BLEEDING.get() ) + 3 );
+			this.spawnParticles( data.level, data.entity, MobEffectHelper.getAmplifier( ( LivingEntity )data.entity, Registries.BLEEDING.get() ) + 3 );
 		}
 
 		private void spawnParticles( OnDeath.Data data ) {
@@ -143,7 +142,7 @@ public class BleedingEffect extends MobEffect {
 			this.spawnParticles( data.level, data.entity, 100 );
 		}
 
-		private void spawnParticles( ServerLevel level, LivingEntity entity, int amountOfParticles ) {
+		private void spawnParticles( ServerLevel level, Entity entity, int amountOfParticles ) {
 			Vec3 position = new Vec3( entity.getX(), entity.getY( 0.5 ), entity.getZ() );
 			PARTICLES.spawn( level, position, amountOfParticles );
 		}

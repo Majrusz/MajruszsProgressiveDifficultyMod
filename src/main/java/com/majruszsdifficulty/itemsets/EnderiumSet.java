@@ -16,6 +16,7 @@ import com.mlib.itemsets.ItemData;
 import com.mlib.itemsets.ItemSet;
 import com.mlib.levels.LevelHelper;
 import com.mlib.mobeffects.MobEffectHelper;
+import com.mlib.time.Anim;
 import com.mlib.time.Slider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -25,6 +26,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
@@ -58,15 +60,15 @@ public class EnderiumSet extends ItemSet {
 			.addCondition( data->BONUS_1.isConditionMet( this, data.player ) );
 
 		new OnLootLevel.Context( this::increaseLuck )
-			.addCondition( data->data.entity != null )
+			.addCondition( data->data.entity instanceof LivingEntity )
 			.addCondition( data->data.entity.level.dimension() == Level.END )
-			.addCondition( data->BONUS_2.isConditionMet( this, data.entity ) );
+			.addCondition( data->BONUS_2.isConditionMet( this, ( LivingEntity )data.entity ) );
 
 		new OnChorusFruitTeleport.Context( this::giveRandomPotionEffect )
-			.addCondition( data->BONUS_3.isConditionMet( this, data.entity ) );
+			.addCondition( data->BONUS_3.isConditionMet( this, data.event.getEntityLiving() ) );
 
 		new OnDeath.Context( this::cancelDeath )
-			.addCondition( new Condition.IsServer() )
+			.addCondition( new Condition.IsServer<>() )
 			.addCondition( data->BONUS_4.isConditionMet( this, data.target ) )
 			.addCondition( data->data.target.getY() < data.target.level.getMinBuildHeight() - 64 )
 			.addCondition( data->data.source.equals( DamageSource.OUT_OF_WORLD ) )
@@ -83,17 +85,17 @@ public class EnderiumSet extends ItemSet {
 
 	private void giveRandomPotionEffect( OnChorusFruitTeleport.Data data ) {
 		List< MobEffect > notAppliedEffects = Stream.of( EFFECTS )
-			.filter( effect->MobEffectHelper.getAmplifier( data.entity, effect ) == -1 )
+			.filter( effect->MobEffectHelper.getAmplifier( data.event.getEntityLiving(), effect ) == -1 )
 			.toList();
 
-		MobEffectHelper.tryToApply( data.entity, Random.nextRandom( !notAppliedEffects.isEmpty() ? notAppliedEffects : List.of( EFFECTS ) ), Utility.minutesToTicks( 1.5 ), 0 );
+		MobEffectHelper.tryToApply( data.event.getEntityLiving(), Random.nextRandom( !notAppliedEffects.isEmpty() ? notAppliedEffects : List.of( EFFECTS ) ), Utility.minutesToTicks( 1.5 ), 0 );
 		data.event.setCanceled( true );
 	}
 
 	private void cancelDeath( OnDeath.Data data ) {
 		EntityHelper.cheatDeath( data.target, 1.0f, false );
 		LevelHelper.teleportToSpawnPosition( ( ServerPlayer )data.target );
-		new Slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
+		Anim.slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
 		data.event.setCanceled( true );
 	}
 }

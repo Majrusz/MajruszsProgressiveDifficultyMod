@@ -16,11 +16,11 @@ public class CactusBleeding extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "CactusBleeding", "Cactus damage may inflict bleeding." );
 
 		OnDamaged.Context onDamaged = new OnDamaged.Context( this.bleeding::apply );
-		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 0.5, false ) )
-			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.IsLivingBeing() )
-			.addCondition( new Condition.ArmorDependentChance() )
+		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance<>( 0.5, false ) )
+			.addCondition( new Condition.Excludable<>() )
+			.addCondition( new Condition.IsLivingBeing<>() )
+			.addCondition( new Condition.ArmorDependentChance<>() )
 			.addCondition( OnDamaged.DEALT_ANY_DAMAGE )
 			.addCondition( data->data.source.equals( DamageSource.CACTUS ) )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )

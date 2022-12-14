@@ -96,7 +96,7 @@ public class CursedArmorEntity extends Monster {
 			super( GROUP_ID, "", "" );
 
 			OnLoot.Context onLoot = new OnLoot.Context( this::spawnCursedArmor );
-			onLoot.addCondition( new Condition.IsServer() )
+			onLoot.addCondition( new Condition.IsServer<>() )
 				.addCondition( OnLoot.HAS_ORIGIN )
 				.addCondition( data->BlockHelper.getBlockEntity( data.level, data.origin ) instanceof ChestBlockEntity )
 				.addCondition( data->data.entity instanceof ServerPlayer )
@@ -107,8 +107,8 @@ public class CursedArmorEntity extends Monster {
 			onLootTableLoad.addCondition( data->data.jsonObject.has( MAIN_TAG ) );
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
-			onTick.addCondition( new Condition.IsServer() )
-				.addCondition( new Condition.Cooldown( 0.25, Dist.DEDICATED_SERVER, false ) )
+			onTick.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.25, Dist.DEDICATED_SERVER ).negate() )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
 
 			this.addConfigs( onLoot, onLootTableLoad, onTick );
@@ -152,7 +152,7 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
-			LivingEntity entity = data.entity;
+			Entity entity = data.entity;
 			Vec3 position = entity.position().add( 0.0, entity.getBbHeight() * 0.5, 0.0 );
 			Vec3 offset = new Vec3( entity.getBbWidth() * 0.3, entity.getBbHeight() * 0.3, entity.getBbWidth() * 0.3 );
 			ParticleHandler.ENCHANTED_HIT.spawn( data.level, position, 2, ()->offset );

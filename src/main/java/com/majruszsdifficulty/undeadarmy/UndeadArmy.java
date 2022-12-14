@@ -9,8 +9,8 @@ import com.majruszsdifficulty.goals.UndeadAttackPositionGoal;
 import com.majruszsdifficulty.items.UndeadArmorItem;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.effects.EffectHelper;
 import com.mlib.items.ItemHelper;
+import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.nbt.NBTHelper;
 import com.mlib.time.TimeHelper;
 import com.mojang.datafixers.util.Pair;
@@ -168,7 +168,7 @@ public class UndeadArmy {
 
 	public void highlightArmy() {
 		for( Mob monster : getArmyMobs() ) {
-			EffectHelper.applyEffectIfPossible( monster, MobEffects.GLOWING, Utility.secondsToTicks( 15.0 ), 5 );
+			MobEffectHelper.tryToApply( monster, MobEffects.GLOWING, Utility.secondsToTicks( 15.0 ), 5 );
 		}
 	}
 
@@ -287,7 +287,7 @@ public class UndeadArmy {
 		for( Pair< BlockPos, EntityType< ? > > spawnInfo : this.spawnInfoList ) {
 			BlockPos randomPosition = spawnInfo.getFirst();
 			EntityType< ? > entityType = spawnInfo.getSecond();
-			Entity entity = entityType.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
+			Entity entity = entityType.create( this.level, null, null, randomPosition, MobSpawnType.EVENT, true, true );
 			if( !( entity instanceof Mob monster ) )
 				continue;
 
@@ -311,7 +311,7 @@ public class UndeadArmy {
 		int z = this.positionToAttack.getZ() + this.direction.z * SPAWN_RADIUS;
 
 		for( ServerPlayer player : getNearbyPlayers() )
-			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
+			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.getHolder().get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
 
 		this.undeadToKill = Math.max( this.undeadToKill, 1 );
 	}

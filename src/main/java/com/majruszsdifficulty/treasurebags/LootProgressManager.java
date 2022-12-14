@@ -7,9 +7,7 @@ import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnPlayerLogged;
-import com.mlib.gamemodifiers.contexts.OnPlayerLoggedContext;
-import com.mlib.gamemodifiers.data.OnPlayerLoggedData;
-import com.mlib.network.message.EntityMessage;
+import com.mlib.network.NetworkMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -34,6 +32,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -159,35 +158,24 @@ public class LootProgressManager extends GameModifier {
 			notifyPlayerAboutChanges( player, treasureBagItem, onLogged );
 	}
 
-	public static class ProgressMessage extends EntityMessage {
+	public static class ProgressMessage extends NetworkMessage {
+		final int entityId;
 		final String treasureBagID;
 		final List< LootData > lootDataList;
 		final boolean onLogged;
 
 		public ProgressMessage( Entity entity, String treasureBagID, List< LootData > lootDataList, boolean onLogged ) {
-			super( entity );
-			this.treasureBagID = treasureBagID;
-			this.lootDataList = lootDataList;
-			this.onLogged = onLogged;
+			this.entityId = this.write( entity );
+			this.treasureBagID = this.write( treasureBagID );
+			this.lootDataList = this.write( lootDataList );
+			this.onLogged = this.write( onLogged );
 		}
 
 		public ProgressMessage( FriendlyByteBuf buffer ) {
-			super( buffer );
-			this.treasureBagID = buffer.readUtf();
-			this.lootDataList = buffer.readList( byteBuffer->new LootData( byteBuffer.readUtf(), byteBuffer.readBoolean(), byteBuffer.readInt() ) );
-			this.onLogged = buffer.readBoolean();
-		}
-
-		@Override
-		public void encode( FriendlyByteBuf buffer ) {
-			super.encode( buffer );
-			buffer.writeUtf( this.treasureBagID );
-			buffer.writeCollection( this.lootDataList, ( byteBuffer, lootData )->{
-				byteBuffer.writeUtf( lootData.itemID );
-				byteBuffer.writeBoolean( lootData.isUnlocked );
-				byteBuffer.writeInt( lootData.quality );
-			} );
-			buffer.writeBoolean( this.onLogged );
+			this.entityId = this.readEntity( buffer );
+			this.treasureBagID = this.readString( buffer );
+			this.lootDataList = this.readList( buffer, LootData::new );
+			this.onLogged = this.readBoolean( buffer );
 		}
 
 		@Override
@@ -204,7 +192,7 @@ public class LootProgressManager extends GameModifier {
 
 		@OnlyIn( Dist.CLIENT )
 		private MutableComponent generateTreasureBagText() {
-			Item item = Registry.ITEM.get( new ResourceLocation( this.treasureBagID ) );
+			Item item = ForgeRegistries.ITEMS.getValue( new ResourceLocation( this.treasureBagID ) );
 			if( item instanceof TreasureBagItem treasureBagItem ) {
 				List< Component > list = new ArrayList<>();
 				LootProgressClient.addDropList( treasureBagItem, list, ()->true );

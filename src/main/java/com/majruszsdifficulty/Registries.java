@@ -21,14 +21,13 @@ import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
-import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.annotations.AnnotationHandler;
 import com.mlib.commands.Command;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.items.ItemCreativeModeTab;
 import com.mlib.itemsets.ItemSet;
-import com.mlib.registries.DeferredRegisterHelper;
+import com.mlib.registries.RegistryHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -64,9 +63,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.*;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,7 +73,7 @@ import java.util.stream.Stream;
 import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
 
 public class Registries {
-	private static final DeferredRegisterHelper HELPER = new DeferredRegisterHelper( MajruszsDifficulty.MOD_ID );
+	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
 	public static final ConfigGroup UNDEAD_ARMY_GROUP;
 	public static final ConfigGroup MOBS_GROUP;
 
@@ -95,9 +92,7 @@ public class Registries {
 	static final DeferredRegister< MobEffect > MOB_EFFECTS = HELPER.create( ForgeRegistries.Keys.MOB_EFFECTS );
 	static final DeferredRegister< ParticleType< ? > > PARTICLE_TYPES = HELPER.create( ForgeRegistries.Keys.PARTICLE_TYPES );
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
-	static final DeferredRegister< PlacedFeature > PLACED_FEATURES = HELPER.create( Registry.PLACED_FEATURE_REGISTRY );
-	static final DeferredRegister< ConfiguredFeature< ?, ? > > CONFIGURED_FEATURES = HELPER.create( Registry.CONFIGURED_FEATURE_REGISTRY );
-	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( Registry.LOOT_FUNCTION_REGISTRY );
+	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( net.minecraft.core.registries.Registries.LOOT_FUNCTION_TYPE );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -151,7 +146,7 @@ public class Registries {
 	public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.register( "cursed_armor_spawn_egg", createEggSupplier( CURSED_ARMOR, 0x212121, 0xe12121 ) );
 
 	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor, int highlightColor ) {
-		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties().tab( ITEM_GROUP ) );
+		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties() );
 	}
 
 	// Fake items (just to display icons etc.)
@@ -176,7 +171,6 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Misc
-	public static final CreativeModeTab ITEM_GROUP = new ItemCreativeModeTab( "majruszs_difficulty_tab", BATTLE_STANDARD );
 	static final List< Command > COMMANDS;
 	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
@@ -186,24 +180,14 @@ public class Registries {
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 	public static final UndeadArmyDefeatedTrigger UNDEAD_ARMY_DEFEATED_TRIGGER = CriteriaTriggers.register( new UndeadArmyDefeatedTrigger() );
 	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
-	public static final BasicTrigger BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( MajruszsDifficulty.MOD_ID );
-
-	// Configured Feature
-	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_SMALL_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_small", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 1, 0.99f ) );
-	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_LARGE_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_large", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 2, 0.99f ) );
-	public static final RegistryObject< ConfiguredFeature< ?, ? > > INFESTED_END_STONE_CONFIGURED = CONFIGURED_FEATURES.register( "infested_end_stone", ()->WorldGenHelper.getEndConfigured( INFESTED_END_STONE, 4, 0.0f ) );
-
-	// Placed Feature
-	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEnderiumPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 1 ) );
-	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEnderiumPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 3 ) );
-	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 8, 255 ) );
+	public static final BasicTrigger BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( HELPER );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_WAVE_STARTED = register( "undead_army.wave_started" );
 
 	static RegistryObject< SoundEvent > register( String name ) {
-		return SOUNDS_EVENTS.register( name, ()->new SoundEvent( getLocation( name ) ) );
+		return SOUNDS_EVENTS.register( name, ()->SoundEvent.createVariableRangeEvent( getLocation( name ) ) );
 	}
 
 	// Loot Functions

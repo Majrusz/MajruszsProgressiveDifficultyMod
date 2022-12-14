@@ -6,6 +6,6 @@ import net.minecraft.world.item.ShovelItem;
 
 public class EnderiumShovelItem extends ShovelItem {
 	public EnderiumShovelItem() {
-		super( CustomItemTier.END, 1.5f, -3.0f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
+		super( CustomItemTier.END, 1.5f, -3.0f, new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 }

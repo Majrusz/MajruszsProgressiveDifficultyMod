@@ -4,8 +4,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageStringListConfig;
 import com.mlib.Utility;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.contexts.OnCheckSpawnContext;
-import com.mlib.gamemodifiers.data.OnCheckSpawnData;
+import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -17,13 +16,14 @@ public class SpawnBlocker extends GameModifier {
 	public SpawnBlocker() {
 		super( Registries.Modifiers.DEFAULT, "SpawnBlocker", "Blocks certain mobs from spawning when given game stage is active." );
 
-		OnCheckSpawnContext onCheckSpawn = new OnCheckSpawnContext( this::blockSpawn );
-		onCheckSpawn.addCondition( data->this.isForbidden( data.entity ) ).addConfig( this.forbiddenEntities );
+		OnCheckSpawn.Context onCheckSpawn = new OnCheckSpawn.Context( this::blockSpawn );
+		onCheckSpawn.addCondition( data->this.isForbidden( data.entity ) )
+			.addConfig( this.forbiddenEntities );
 
 		this.addContext( onCheckSpawn );
 	}
 
-	private void blockSpawn( OnCheckSpawnData data ) {
+	private void blockSpawn( OnCheckSpawn.Data data ) {
 		data.event.setResult( Event.Result.DENY );
 	}
 

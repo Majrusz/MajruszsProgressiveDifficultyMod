@@ -29,7 +29,7 @@ public class WitherBowItem extends BowItem {
 	final static String TOOLTIP_TRANSLATION_KEY = "item.majruszsdifficulty.wither_sword.tooltip";
 
 	public WitherBowItem() {
-		super( new Properties().stacksTo( 1 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override

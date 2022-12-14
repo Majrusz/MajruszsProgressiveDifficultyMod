@@ -66,8 +66,8 @@ public class BlackWidowEntity extends Spider {
 			super( Registries.Modifiers.DEFAULT, "BlackWidowWebAbility", "Black Widow spawns the web when in combat." );
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnWeb );
-			onTick.addCondition( new Condition.IsServer() )
-				.addCondition( new Condition.Excludable() )
+			onTick.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Excludable<>() )
 				.addCondition( data->data.entity instanceof BlackWidowEntity )
 				.addCondition( this::ticksHavePassed )
 				.addConfig( this.delay );

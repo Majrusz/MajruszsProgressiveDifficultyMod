@@ -6,6 +6,6 @@ import net.minecraft.world.item.Rarity;
 
 public class EnderiumAxeItem extends AxeItem {
 	public EnderiumAxeItem() {
-		super( CustomItemTier.END, 6.0f, -3.1f, new Properties().rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ).fireResistant() );
+		super( CustomItemTier.END, 6.0f, -3.1f, new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 }

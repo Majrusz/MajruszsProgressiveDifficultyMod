@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +31,7 @@ public class UndeadArmyManager extends SavedData {
 	final List< UndeadArmyToSpawn > undeadArmiesToSpawn = new ArrayList<>();
 	final ServerLevel level;
 
-	public static boolean isUndeadArmy( @Nullable LivingEntity entity ) {
+	public static boolean isUndeadArmy( @Nullable Entity entity ) {
 		return entity != null && !( entity instanceof SkeletonHorse ) && entity.getPersistentData().contains( UndeadArmyKeys.POSITION + "X" );
 	}
 
@@ -91,7 +92,7 @@ public class UndeadArmyManager extends SavedData {
 		this.undeadArmiesToSpawn.add( new UndeadArmyToSpawn( this.level, attackPosition, direction ) );
 		this.level.playSound( null, attackPosition, Registries.UNDEAD_ARMY_APPROACHING.get(), SoundSource.AMBIENT, 0.25f, 1.0f );
 		LevelHelper.startRaining( this.level, Utility.minutesToTicks( 10.0 ), true, START_DURATION - Utility.secondsToTicks( 0.5 ) );
-		MajruszLibrary.LOGGER.info( "Undead Army started at " + attackPosition + "!" );
+		MajruszLibrary.logOnDev( "Undead Army started at %s!", attackPosition );
 
 		return true;
 	}

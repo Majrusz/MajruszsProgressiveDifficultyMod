@@ -2,7 +2,7 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
-import com.mlib.effects.EffectHelper;
+import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.items.ItemHelper;
 import com.mlib.levels.LevelHelper;
 import com.mlib.mobeffects.MobEffectHelper;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 /** Potion that will teleport the player to spawn/bed position after drinking it. */
 public class RecallPotionItem extends Item {
 	public RecallPotionItem() {
-		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
+		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
 
 	@Override

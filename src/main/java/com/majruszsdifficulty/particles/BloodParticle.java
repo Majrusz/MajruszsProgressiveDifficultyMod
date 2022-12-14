@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.particles;
 
 import com.mlib.MajruszLibrary;
+import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.particles.SimpleParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -20,10 +21,10 @@ public class BloodParticle extends SimpleParticle {
 		this.zd = this.zd * 0.0025 + zSpeed;
 
 		this.lifetime = Utility.secondsToTicks( 28.0 );
-		this.age = MajruszLibrary.RANDOM.nextInt( ( int )( this.lifetime * 0.75 ) );
+		this.age = Random.nextInt( ( int )( this.lifetime * 0.75 ) );
 		setSpriteFromAge( this.spriteSet );
 
-		float colorVariation = MajruszLibrary.RANDOM.nextFloat() * 0.3f + 0.6f;
+		float colorVariation = Random.nextFloat() * 0.3f + 0.6f;
 		setColor( colorVariation, colorVariation, colorVariation );
 	}
 

@@ -6,8 +6,6 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
-import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
-import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperExplodeBehindWall extends GameModifier {
@@ -15,9 +13,9 @@ public class CreeperExplodeBehindWall extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "CreeperExplodeBehindWall", "Creeper explodes when the player is behind the wall." );
 
 		OnSpawned.Context onSpawned = new OnSpawned.Context( this::addNewGoal );
-		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
-			.addCondition( new Condition.Excludable() )
+		onSpawned.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.target instanceof Creeper );
 
 		this.addContext( onSpawned );

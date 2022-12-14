@@ -11,7 +11,7 @@ import net.minecraft.world.item.Rarity;
 
 public class EnderPouchItem extends Item {
 	public EnderPouchItem() {
-		super( new Properties().stacksTo( 1 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
 
 		new OnPlayerInteract.Context( this::openEnderChest )
 			.addCondition( data->data.itemStack.getItem() instanceof EnderPouchItem );

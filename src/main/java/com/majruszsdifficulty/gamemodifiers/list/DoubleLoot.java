@@ -5,10 +5,7 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.mlib.Utility;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.ParticleHandler;
-import com.mlib.gamemodifiers.contexts.OnLootContext;
-import com.mlib.gamemodifiers.data.OnLootData;
-import com.mlib.gamemodifiers.parameters.ContextParameters;
-import com.mlib.gamemodifiers.parameters.Priority;
+import com.mlib.gamemodifiers.contexts.OnLoot;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -19,7 +16,7 @@ import java.util.List;
 import static com.majruszsdifficulty.GameStage.Stage;
 
 public class DoubleLoot extends GameModifier {
-	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
+	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, ()->new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
 	final StringListConfig forbiddenItems = new StringListConfig( "forbidden_items", "List of items that cannot be duplicated.", false, "minecraft:nether_star", "minecraft:totem_of_undying" );
 
 	public DoubleLoot() {
@@ -32,16 +29,16 @@ public class DoubleLoot extends GameModifier {
 	}
 
 	private void generateContext( double chance, Stage stage, String configName, String configComment ) {
-		OnLootContext onLootContext = new OnLootContext( this::doubleLoot, new ContextParameters( Priority.NORMAL, configName, configComment ) );
-		onLootContext.addCondition( new CustomConditions.GameStageExact( stage ) )
-			.addCondition( new CustomConditions.CRDChance( chance, false ) )
-			.addCondition( OnLootContext.HAS_LAST_DAMAGE_PLAYER )
-			.addCondition( OnLootContext.HAS_ENTITY );
+		OnLoot.Context onLoot = new OnLoot.Context( this::doubleLoot, configName, configComment );
+		onLoot.addCondition( new CustomConditions.GameStageExact<>( stage ) )
+			.addCondition( new CustomConditions.CRDChance<>( chance, false ) )
+			.addCondition( OnLoot.HAS_LAST_DAMAGE_PLAYER )
+			.addCondition( OnLoot.HAS_ENTITY );
 
-		this.addContext( onLootContext );
+		this.addContext( onLoot );
 	}
 
-	private void doubleLoot( OnLootData data ) {
+	private void doubleLoot( OnLoot.Data data ) {
 		assert data.entity != null && data.lastDamagePlayer != null;
 
 		boolean doubledAtLeastOneItem = replaceLoot( data.generatedLoot );

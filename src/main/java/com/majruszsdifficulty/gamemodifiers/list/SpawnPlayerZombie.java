@@ -31,9 +31,9 @@ public class SpawnPlayerZombie extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
 
 		OnDeath.Context onDeath1 = new OnDeath.Context( this::spawnZombie );
-		onDeath1.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
-			.addCondition( new Condition.Excludable() )
+		onDeath1.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Player )
 			.addCondition( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie )
@@ -51,7 +51,7 @@ public class SpawnPlayerZombie extends GameModifier {
 		assert data.level != null;
 		Player player = ( Player )data.target;
 		EntityType< ? extends Zombie > zombieType = getZombieType( data.attacker );
-		Zombie zombie = ( Zombie )zombieType.spawn( data.level, null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
+		Zombie zombie = ( Zombie )zombieType.spawn( data.level, ( CompoundTag )null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
 		if( zombie == null )
 			return;
 

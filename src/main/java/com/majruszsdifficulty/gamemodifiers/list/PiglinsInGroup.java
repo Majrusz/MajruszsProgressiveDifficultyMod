@@ -7,8 +7,6 @@ import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.configs.ItemStackConfig;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
-import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
-import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
@@ -30,11 +28,11 @@ public class PiglinsInGroup extends GameModifier {
 		this.mobGroups.addSidekickConfigs( this.sword );
 
 		OnSpawned.Context onSpawned = new OnSpawned.Context( this::spawnGroup );
-		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance( 0.25, true ) )
-			.addCondition( new CustomConditions.IsNotSidekick() )
-			.addCondition( new CustomConditions.IsNotTooManyMobsNearby() )
-			.addCondition( new Condition.Excludable() )
+		onSpawned.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
+			.addCondition( new CustomConditions.IsNotSidekick<>() )
+			.addCondition( new CustomConditions.IsNotTooManyMobsNearby<>() )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Piglin )

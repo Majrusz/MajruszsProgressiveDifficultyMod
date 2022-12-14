@@ -8,6 +8,7 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /** Trigger called when player uses any Bandage on himself or on someone else. */
 public class BandageTrigger extends SimpleCriterionTrigger< BandageTrigger.Instance > {
@@ -52,7 +53,7 @@ public class BandageTrigger extends SimpleCriterionTrigger< BandageTrigger.Insta
 		}
 
 		public boolean test( BandageItem item, boolean usedOnOneself ) {
-			return usedOnOneself == this.usedOnOneself && Registry.ITEM.getKey( item ).toString().equals( this.bandageID );
+			return usedOnOneself == this.usedOnOneself && ForgeRegistries.ITEMS.getKey( item ).toString().equals( this.bandageID );
 		}
 	}
 }

@@ -6,7 +6,7 @@ import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.effects.EffectHelper;
+import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -70,9 +70,9 @@ public class ProgressiveEffectConfig extends ConfigGroup {
 
 	public void apply( LivingEntity entity ) {
 		if( this.maxDuration.isPresent() ) {
-			EffectHelper.stackEffectIfPossible( entity, getEffect(), getDuration(), getAmplifier(), getMaxDuration() );
+			MobEffectHelper.tryToStack( entity, getEffect(), getDuration(), getAmplifier(), getMaxDuration() );
 		} else {
-			EffectHelper.applyEffectIfPossible( entity, getEffect(), getDuration(), getAmplifier() );
+			MobEffectHelper.tryToApply( entity, getEffect(), getDuration(), getAmplifier() );
 		}
 	}
 

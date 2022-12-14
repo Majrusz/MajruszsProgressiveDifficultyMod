@@ -6,6 +6,6 @@ import net.minecraft.world.item.Rarity;
 
 public class EndShardItem extends Item {
 	public EndShardItem() {
-		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().rarity( Rarity.UNCOMMON ) );
 	}
 }

@@ -17,40 +17,40 @@ import static com.majruszsdifficulty.GameStage.Stage;
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
 
 public class CustomConditions {
-	public static class CRDChance extends Condition {
-		final DoubleConfig chance;
+	public static class CRDChance< DataType extends ContextData > extends Condition.Chance< DataType > {
 		final BooleanConfig scaledByCRD;
 
 		public CRDChance( double defaultChance, boolean scaledByCRD ) {
-			super( Priority.HIGH );
-			this.chance = new DoubleConfig( "chance", "Chance of this to happen.", false, defaultChance, 0.0, 1.0 );
+			super( defaultChance );
+
 			this.scaledByCRD = new BooleanConfig( "scaled_by_crd", "Specifies whether the chance should be scaled by Clamped Regional Difficulty.", false, scaledByCRD );
-			this.addConfigs( this.chance, this.scaledByCRD );
+			this.addConfig( this.scaledByCRD );
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, ContextData data ) {
+		public boolean check( GameModifier gameModifier, DataType data ) {
 			double multiplier = this.scaledByCRD.isEnabled() ? com.majruszsdifficulty.GameStage.getRegionalDifficulty( data.entity ) : 1.0;
 
-			return Random.tryChance( multiplier * this.chance.get() );
+			return Random.tryChance( multiplier * this.chance.getOrDefault() );
 		}
 	}
 
-	public static class GameStage extends Condition {
+	public static class GameStage< DataType extends ContextData > extends Condition< DataType > {
 		final EnumConfig< Stage > minimumStage;
 
 		public GameStage( Stage minimumStage ) {
 			this.minimumStage = new EnumConfig<>( "minimum_stage", "Minimum game stage required for that to happen.", false, minimumStage );
 			this.addConfig( this.minimumStage );
+			this.apply( params->params.setConfigurable( true ) );
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, ContextData data ) {
+		public boolean check( GameModifier gameModifier, DataType data ) {
 			return com.majruszsdifficulty.GameStage.atLeast( this.minimumStage.get() );
 		}
 	}
 
-	public static class GameStageExact extends Condition {
+	public static class GameStageExact< DataType extends ContextData > extends Condition< DataType > {
 		final Stage stage;
 
 		public GameStageExact( Stage stage ) {
@@ -63,31 +63,31 @@ public class CustomConditions {
 		}
 	}
 
-	public static class IsNotSidekick extends Condition {
+	public static class IsNotSidekick< DataType extends ContextData > extends Condition< DataType > {
 		public IsNotSidekick() {
-			super( Priority.HIGH );
+			this.apply( params->params.setPriority( Priority.HIGH ) );
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, ContextData data ) {
+		public boolean check( GameModifier gameModifier, DataType data ) {
 			return data.entity instanceof PathfinderMob && !data.entity.getPersistentData().getBoolean( SIDEKICK_TAG );
 		}
 	}
 
-	public static class IsNotUndeadArmy extends Condition {
+	public static class IsNotUndeadArmy< DataType extends ContextData > extends Condition< DataType > {
 		public IsNotUndeadArmy() {
-			super( Priority.HIGH );
+			this.apply( params->params.setPriority( Priority.HIGH ) );
 		}
 
 		@Override
-		public boolean check( GameModifier gameModifier, ContextData data ) {
+		public boolean check( GameModifier gameModifier, DataType data ) {
 			return !UndeadArmyManager.isUndeadArmy( data.entity );
 		}
 	}
 
-	public static class IsNotTooManyMobsNearby extends Condition {
+	public static class IsNotTooManyMobsNearby< DataType extends ContextData > extends Condition< DataType > {
 		public IsNotTooManyMobsNearby() {
-			super( Priority.LOWEST ); // it can significantly affect the performance
+			this.apply( params->params.setPriority( Priority.LOWEST ) ); // it can significantly affect the performance
 		}
 
 		@Override

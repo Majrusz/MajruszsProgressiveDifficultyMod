@@ -19,9 +19,9 @@ public class FallDebuffs extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "FallDebuffs", "Inflicts several debuffs when taking fall damage." );
 
 		OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyDebuffs );
-		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 1.0, false ) )
-			.addCondition( new Condition.Excludable() )
+		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f )
 			.addCondition( data->EntityHelper.isHuman( data.target ) )
 			.addConfigs( this.nausea, this.slowness );

@@ -5,8 +5,7 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Spider;
 
@@ -16,10 +15,10 @@ public class SpiderPoisonAttack extends GameModifier {
 	public SpiderPoisonAttack() {
 		super( Registries.Modifiers.DEFAULT, "SpiderPoisonAttack", "Spider attack may inflict poison effect." );
 
-		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
-		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 0.25, true ) )
-			.addCondition( new Condition.Excludable() )
+		OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyEffect );
+		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.attacker instanceof Spider )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.poison );
@@ -27,7 +26,7 @@ public class SpiderPoisonAttack extends GameModifier {
 		this.addContext( onDamaged );
 	}
 
-	private void applyEffect( OnDamagedData data ) {
+	private void applyEffect( OnDamaged.Data data ) {
 		this.poison.apply( data.target );
 	}
 }

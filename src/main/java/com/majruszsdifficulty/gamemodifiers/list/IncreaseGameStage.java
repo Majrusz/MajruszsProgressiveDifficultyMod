@@ -5,17 +5,14 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
-import com.mlib.gamemodifiers.contexts.OnDeathContext;
-import com.mlib.gamemodifiers.contexts.OnDimensionChangedContext;
-import com.mlib.gamemodifiers.data.OnDeathData;
-import com.mlib.gamemodifiers.data.OnDimensionChangedData;
+import com.mlib.gamemodifiers.contexts.OnDeath;
+import com.mlib.gamemodifiers.contexts.OnDimensionChanged;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
@@ -32,19 +29,19 @@ public class IncreaseGameStage extends GameModifier {
 	public IncreaseGameStage() {
 		super( Registries.Modifiers.GAME_STAGE, "", "" );
 
-		OnDimensionChangedContext onExpertDimension = new OnDimensionChangedContext( this::startExpertMode );
+		OnDimensionChanged.Context onExpertDimension = new OnDimensionChanged.Context( this::startExpertMode );
 		onExpertDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
 			.addCondition( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() );
 
-		OnDimensionChangedContext onMasterDimension = new OnDimensionChangedContext( this::startMasterMode );
+		OnDimensionChanged.Context onMasterDimension = new OnDimensionChanged.Context( this::startMasterMode );
 		onMasterDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
 			.addCondition( data->this.masterMode.dimensionTriggersChange( data.to.location() ) );
 
-		OnDeathContext onExpertKill = new OnDeathContext( this::startExpertMode );
+		OnDeath.Context onExpertKill = new OnDeath.Context( this::startExpertMode );
 		onExpertKill.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
 			.addCondition( data->this.expertMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) );
 
-		OnDeathContext onMasterKill = new OnDeathContext( this::startMasterMode );
+		OnDeath.Context onMasterKill = new OnDeath.Context( this::startMasterMode );
 		onMasterKill.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
 			.addCondition( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) );
 
@@ -52,11 +49,11 @@ public class IncreaseGameStage extends GameModifier {
 		this.addConfigs( DEFAULT_GAME_STAGE, this.enteringAnyDimensionStartsExpertMode, this.expertMode, this.masterMode );
 	}
 
-	private void startExpertMode( OnDimensionChangedData data ) {
+	private void startExpertMode( OnDimensionChanged.Data data ) {
 		startExpertMode( data.entity.getServer() );
 	}
 
-	private void startExpertMode( OnDeathData data ) {
+	private void startExpertMode( OnDeath.Data data ) {
 		startExpertMode( data.target.getServer() );
 	}
 
@@ -68,11 +65,11 @@ public class IncreaseGameStage extends GameModifier {
 		sendMessageToAllPlayers( minecraftServer.getPlayerList(), "majruszsdifficulty.on_expert_mode_start", GameStage.EXPERT_MODE_COLOR );
 	}
 
-	private void startMasterMode( OnDimensionChangedData data ) {
+	private void startMasterMode( OnDimensionChanged.Data data ) {
 		startMasterMode( data.entity.getServer() );
 	}
 
-	private void startMasterMode( OnDeathData data ) {
+	private void startMasterMode( OnDeath.Data data ) {
 		startMasterMode( data.target.getServer() );
 	}
 

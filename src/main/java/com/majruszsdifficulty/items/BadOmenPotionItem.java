@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class BadOmenPotionItem extends Item {
 	public BadOmenPotionItem() {
-		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
+		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
 
 	@Override

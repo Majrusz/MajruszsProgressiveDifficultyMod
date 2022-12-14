@@ -5,8 +5,7 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.mlib.Random;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnExplosionContext;
-import com.mlib.gamemodifiers.data.OnExplosionData;
+import com.mlib.gamemodifiers.contexts.OnExplosion;
 import net.minecraftforge.event.level.ExplosionEvent;
 
 public class PowerfulExplosions extends GameModifier {
@@ -16,8 +15,8 @@ public class PowerfulExplosions extends GameModifier {
 	public PowerfulExplosions() {
 		super( Registries.Modifiers.DEFAULT, "PowerfulExplosions", "Makes all explosions (creepers, ghast ball etc.) much more deadly." );
 
-		OnExplosionContext onExplosion = new OnExplosionContext( this::modifyExplosion );
-		onExplosion.addCondition( new Condition.Excludable() )
+		OnExplosion.Context onExplosion = new OnExplosion.Context( this::modifyExplosion );
+		onExplosion.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.event instanceof ExplosionEvent.Start )
 			.addConfigs( this.radiusMultiplier, this.fireChance );
@@ -25,7 +24,7 @@ public class PowerfulExplosions extends GameModifier {
 		this.addContext( onExplosion );
 	}
 
-	private void modifyExplosion( OnExplosionData data ) {
+	private void modifyExplosion( OnExplosion.Data data ) {
 		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( data.level, data.explosion.getPosition() );
 		double radiusMultiplier = clampedRegionalDifficulty * ( this.radiusMultiplier.get() - 1.0 ) + 1.0;
 		data.radius.setValue( radiusMultiplier * data.radius.getValue() );

@@ -3,9 +3,8 @@ package com.majruszsdifficulty.gamemodifiers.configs;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
-import com.mlib.effects.EffectHelper;
+import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
-import com.mlib.gamemodifiers.data.OnDamagedData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +28,7 @@ public class BleedingConfig extends ProgressiveEffectConfig {
 		LivingEntity target = data.target;
 		@Nullable LivingEntity attacker = data.attacker;
 		BleedingEffect.MobEffectInstance effectInstance = new BleedingEffect.MobEffectInstance( getDuration(), getAmplifier(), false, attacker );
-		EffectHelper.applyEffectIfPossible( target, effectInstance );
+		MobEffectHelper.tryToApply( target, effectInstance );
 
 		if( target instanceof ServerPlayer targetPlayer ) {
 			Registries.BASIC_TRIGGER.trigger( targetPlayer, "bleeding_received" );

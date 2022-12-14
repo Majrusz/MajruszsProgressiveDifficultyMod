@@ -17,9 +17,11 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CurseRandomlyFunction extends LootItemConditionalFunction {
 	final List< ResourceLocation > excludedEnchantments;
@@ -55,9 +57,10 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 	}
 
 	private List< Enchantment > buildValidEnchantmentList( ItemStack itemStack ) {
-		return Registry.ENCHANTMENT.holders()
-			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.key().location() ) )
-			.map( Holder::get )
+		return ForgeRegistries.ENCHANTMENTS.getEntries()
+			.stream()
+			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.getKey().location() ) )
+			.map( Map.Entry::getValue )
 			.filter( Enchantment::isDiscoverable )
 			.filter( enchantment->!enchantment.isCurse() )
 			.filter( enchantment->enchantment.canEnchant( itemStack ) )
@@ -67,9 +70,10 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 	// TODO: zmien zeby wpierw nakladalo klatwe na przedmiot, a pozniej enchantment (bo incompatibility)
 
 	private List< Enchantment > buildValidCurseList( ItemStack itemStack ) {
-		return Registry.ENCHANTMENT.holders()
-			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.key().location() ) )
-			.map( Holder::get )
+		return ForgeRegistries.ENCHANTMENTS.getEntries()
+			.stream()
+			.filter( enchantment->!this.excludedEnchantments.contains( enchantment.getKey().location() ) )
+			.map( Map.Entry::getValue )
 			.filter( Enchantment::isDiscoverable )
 			.filter( Enchantment::isCurse )
 			.filter( enchantment->enchantment.canEnchant( itemStack ) )

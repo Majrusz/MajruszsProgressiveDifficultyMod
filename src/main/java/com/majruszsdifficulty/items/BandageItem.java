@@ -25,7 +25,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class BandageItem extends Item {
 	public BandageItem( Rarity rarity ) {
-		super( new Properties().stacksTo( 16 ).tab( Registries.ITEM_GROUP ).rarity( rarity ) );
+		super( new Properties().stacksTo( 16 ).rarity( rarity ) );
 	}
 
 	public BandageItem() {

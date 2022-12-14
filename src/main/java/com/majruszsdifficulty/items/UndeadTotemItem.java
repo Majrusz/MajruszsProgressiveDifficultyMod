@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 public class UndeadTotemItem extends Item {
 	public UndeadTotemItem() {
-		super( new Properties().stacksTo( 1 ).tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
 	}
 
 	@AutoInstance

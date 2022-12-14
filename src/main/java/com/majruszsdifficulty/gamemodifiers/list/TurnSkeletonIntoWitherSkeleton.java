@@ -12,8 +12,10 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnProjectileHit;
+import com.mlib.time.Anim;
 import com.mlib.time.Slider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Skeleton;
@@ -35,10 +37,10 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 			.addCondition( data->data.entityHitResult != null && data.entityHitResult.getEntity() instanceof Skeleton );
 
 		OnDeath.Context onDeath = new OnDeath.Context( this::spawnWitherSkeleton );
-		onDeath.addCondition( new Condition.IsServer() )
-			.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )
-			.addCondition( new CustomConditions.CRDChance( 0.5, true ) )
-			.addCondition( new Condition.Excludable() )
+		onDeath.addCondition( new Condition.IsServer<>() )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.MASTER ) )
+			.addCondition( new CustomConditions.CRDChance<>( 0.5, true ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( this::hasWitherTag );
 
 		this.addContexts( onDamaged, onProjectileHit, onDeath );
@@ -53,7 +55,7 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 	}
 
 	private void spawnWitherSkeleton( OnDeath.Data data ) {
-		new Slider( 7.0, slider->{
+		Anim.slider( 7.0, slider->{
 			if( slider.getTicksLeft() % 5 == 0 ) {
 				ParticleHandler.SOUL.spawn( data.level, data.target.position()
 					.add( 0.0, 1.0, 0.0 ), ( int )( slider.getRatio() * 10 ), ParticleHandler.offset( slider.getRatio() ) );
@@ -65,7 +67,7 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 					.add( 0.0, 1.0, 0.0 ), 100, ParticleHandler.offset( 1.0f ) );
 			}
 			if( slider.isFinished() ) {
-				EntityType.WITHER_SKELETON.spawn( data.level, null, null, new BlockPos( data.target.position() ), MobSpawnType.EVENT, true, true );
+				EntityType.WITHER_SKELETON.spawn( data.level, ( CompoundTag )null, null, new BlockPos( data.target.position() ), MobSpawnType.EVENT, true, true );
 			}
 		} );
 	}

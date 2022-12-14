@@ -1,8 +1,10 @@
 package com.majruszsdifficulty.treasurebags;
 
+import com.mlib.network.NetworkMessage;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 
-public class LootData {
+public class LootData extends NetworkMessage {
 	static final String UNLOCKED_TAG = "unlocked";
 	static final String QUALITY_TAG = "quality";
 	final String itemID;
@@ -10,9 +12,15 @@ public class LootData {
 	final int quality;
 
 	public LootData( String itemID, boolean isUnlocked, int quality ) {
-		this.itemID = itemID;
-		this.isUnlocked = isUnlocked;
-		this.quality = quality;
+		this.itemID = this.write( itemID );
+		this.isUnlocked = this.write( isUnlocked );
+		this.quality = this.write( quality );
+	}
+
+	public LootData( FriendlyByteBuf buffer ) {
+		this.itemID = this.readString( buffer );
+		this.isUnlocked = this.readBoolean( buffer );
+		this.quality = this.readInt( buffer );
 	}
 
 	public void unlock() {

@@ -5,7 +5,7 @@ import com.majruszsdifficulty.goals.TankAttackGoal;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.network.message.EntityMessage;
+import com.mlib.network.NetworkMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -175,23 +175,18 @@ public class TankEntity extends Monster {
 		NORMAL, SPECIAL
 	}
 
-	public static class TankAttackMessage extends EntityMessage {
-		protected final AttackType attackType;
+	public static class TankAttackMessage extends NetworkMessage {
+		final int entityId;
+		final AttackType attackType;
 
 		public TankAttackMessage( Entity entity, AttackType attackType ) {
-			super( entity );
-			this.attackType = attackType;
+			this.entityId = this.write( entity );
+			this.attackType = this.write( attackType );
 		}
 
 		public TankAttackMessage( FriendlyByteBuf buffer ) {
-			super( buffer );
-			this.attackType = buffer.readEnum( AttackType.class );
-		}
-
-		@Override
-		public void encode( FriendlyByteBuf buffer ) {
-			super.encode( buffer );
-			buffer.writeEnum( this.attackType );
+			this.entityId = this.readEntity( buffer );
+			this.attackType = this.readEnum( buffer, AttackType.class );
 		}
 
 		@Override
@@ -201,7 +196,7 @@ public class TankEntity extends Monster {
 			if( level == null )
 				return;
 
-			TankEntity tank = Utility.castIfPossible( TankEntity.class, level.getEntity( this.id ) );
+			TankEntity tank = Utility.castIfPossible( TankEntity.class, level.getEntity( this.entityId ) );
 			if( tank != null )
 				tank.useAttack( this.attackType );
 		}

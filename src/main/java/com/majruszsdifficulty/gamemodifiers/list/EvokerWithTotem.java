@@ -5,8 +5,6 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
-import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
-import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.Evoker;
 import net.minecraft.world.item.ItemStack;
@@ -17,9 +15,9 @@ public class EvokerWithTotem extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "EvokerWithTotem", "Evoker may spawn with a Totem of Undying." );
 
 		OnSpawned.Context onSpawned = new OnSpawned.Context( this::giveTotemOfUndying );
-		onSpawned.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 1.0, true ) )
-			.addCondition( new Condition.Excludable() )
+		onSpawned.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance<>( 1.0, true ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.target instanceof Evoker );
 

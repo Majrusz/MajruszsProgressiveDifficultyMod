@@ -41,7 +41,8 @@ public class UndeadSet extends ItemSet {
 			.addCondition( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
 			.addCondition( data->data.attacker != null );
 
-		new OnItemEquipped.Context( this::increaseMovementSpeed );
+		new OnItemEquipped.Context( this::increaseMovementSpeed )
+			.addCondition( data->data.entity instanceof LivingEntity );
 	}
 
 	private void increaseDamage( OnDamaged.Data data ) {
@@ -49,7 +50,7 @@ public class UndeadSet extends ItemSet {
 	}
 
 	private void increaseMovementSpeed( OnItemEquipped.Data data ) {
-		MOVEMENT_BONUS.setValueAndApply( data.entity, this.getBonus( data.entity ) );
+		MOVEMENT_BONUS.setValueAndApply( ( LivingEntity )data.entity, this.getBonus( ( LivingEntity )data.entity ) );
 	}
 
 	private float getBonus( LivingEntity entity ) {

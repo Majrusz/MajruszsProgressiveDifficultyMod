@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class LootProgressClient {
 		for( LootData lootData : lootDataList ) {
 			MutableComponent component = Component.literal( " " );
 			if( lootData.isUnlocked ) {
-				MutableComponent mutableComponent = Registry.ITEM.get( new ResourceLocation( lootData.itemID ) ).getDescription().copy();
+				MutableComponent mutableComponent = ForgeRegistries.ITEMS.getValue( new ResourceLocation( lootData.itemID ) ).getDescription().copy();
 				component.append( mutableComponent.withStyle( getUnlockedItemFormat( lootData.quality ) ) );
 			} else {
 				component.append( Component.literal( "???" ).withStyle( getLockedItemFormat( lootData.quality ) ) );

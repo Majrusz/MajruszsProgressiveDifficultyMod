@@ -5,8 +5,7 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Phantom;
 
@@ -16,10 +15,10 @@ public class PhantomLevitationAttack extends GameModifier {
 	public PhantomLevitationAttack() {
 		super( Registries.Modifiers.DEFAULT, "PhantomLevitationAttack", "Phantom attack may inflict stackable levitation effect." );
 
-		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
-		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.MASTER ) )
-			.addCondition( new CustomConditions.CRDChance( 0.75, true ) )
-			.addCondition( new Condition.Excludable() )
+		OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyEffect );
+		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.MASTER ) )
+			.addCondition( new CustomConditions.CRDChance<>( 0.75, true ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.attacker instanceof Phantom )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.levitation );
@@ -27,7 +26,7 @@ public class PhantomLevitationAttack extends GameModifier {
 		this.addContext( onDamaged );
 	}
 
-	private void applyEffect( OnDamagedData data ) {
+	private void applyEffect( OnDamaged.Data data ) {
 		this.levitation.apply( data.target );
 	}
 }

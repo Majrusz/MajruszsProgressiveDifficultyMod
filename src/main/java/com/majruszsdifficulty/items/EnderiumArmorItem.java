@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class EnderiumArmorItem extends ArmorItem {
 	public EnderiumArmorItem( EquipmentSlot slot ) {
-		super( CustomArmorMaterial.END, slot, new Item.Properties().tab( Registries.ITEM_GROUP )
+		super( CustomArmorMaterial.END, slot, new Item.Properties()
 			.rarity( Rarity.UNCOMMON )
 			.fireResistant() );
 	}

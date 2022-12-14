@@ -5,8 +5,7 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Slime;
 
@@ -16,10 +15,10 @@ public class SlimeSlownessAttack extends GameModifier {
 	public SlimeSlownessAttack() {
 		super( Registries.Modifiers.DEFAULT, "SlimeSlownessAttack", "Shulker attack may inflict stackable blindness effect." );
 
-		OnDamagedContext onDamaged = new OnDamagedContext( this::applyEffect );
-		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance( 0.5, true ) )
-			.addCondition( new Condition.Excludable() )
+		OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyEffect );
+		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.CRDChance<>( 0.5, true ) )
+			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.attacker instanceof Slime )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.slowness );
@@ -27,7 +26,7 @@ public class SlimeSlownessAttack extends GameModifier {
 		this.addContext( onDamaged );
 	}
 
-	private void applyEffect( OnDamagedData data ) {
+	private void applyEffect( OnDamaged.Data data ) {
 		this.slowness.apply( data.target );
 	}
 }

@@ -7,8 +7,6 @@ import com.mlib.attributes.AttributeHandler;
 import com.mlib.config.StringListConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
-import com.mlib.gamemodifiers.contexts.OnSpawnedContext;
-import com.mlib.gamemodifiers.data.OnSpawnedData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -28,7 +26,7 @@ public class MobsSpawnStronger extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "MobsSpawnStronger", "All hostile mobs get damage and health bonuses." );
 
 		OnSpawned.Context onSpawned = new OnSpawned.Context( this::makeMobsStronger );
-		onSpawned.addCondition( new Condition.Excludable() )
+		onSpawned.addCondition( new Condition.Excludable<>() )
 			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
 			.addCondition( data->this.canMobAttack( data.target ) )

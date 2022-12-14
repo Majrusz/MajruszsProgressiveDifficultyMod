@@ -6,8 +6,7 @@ import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registr
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
-import com.mlib.gamemodifiers.contexts.OnDamagedContext;
-import com.mlib.gamemodifiers.data.OnDamagedData;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.Llama;
@@ -23,11 +22,11 @@ public class BiteBleeding extends GameModifier {
 		super( Registries.Modifiers.DEFAULT, "BiteBleeding", "Animals (wolfs and from other mods), zombies and spiders may inflict bleeding." );
 
 		OnDamaged.Context onDamaged = new OnDamaged.Context( this.bleeding::apply );
-		onDamaged.addCondition( new CustomConditions.GameStage( GameStage.Stage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance( 0.5, false ) )
-			.addCondition( new Condition.Excludable() )
-			.addCondition( new Condition.IsLivingBeing() )
-			.addCondition( new Condition.ArmorDependentChance() )
+		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.CRDChance<>( 0.5, false ) )
+			.addCondition( new Condition.Excludable<>() )
+			.addCondition( new Condition.IsLivingBeing<>() )
+			.addCondition( new Condition.ArmorDependentChance<>() )
 			.addCondition( OnDamaged.DEALT_ANY_DAMAGE )
 			.addCondition( data->canBite( data.attacker ) )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )
