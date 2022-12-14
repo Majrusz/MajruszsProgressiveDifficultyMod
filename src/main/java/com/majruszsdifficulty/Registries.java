@@ -25,14 +25,12 @@ import com.mlib.annotations.AnnotationHandler;
 import com.mlib.commands.Command;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.items.ItemCreativeModeTab;
 import com.mlib.itemsets.ItemSet;
 import com.mlib.registries.RegistryHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
@@ -43,15 +41,12 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -63,7 +58,9 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.*;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -145,7 +142,9 @@ public class Registries {
 	public static final RegistryObject< SpawnEggItem > BLACK_WIDOW_SPAWN_EGG = ITEMS.register( "black_widow_spawn_egg", createEggSupplier( BLACK_WIDOW, 0x212121, 0xe12121 ) );
 	public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.register( "cursed_armor_spawn_egg", createEggSupplier( CURSED_ARMOR, 0x212121, 0xe12121 ) );
 
-	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type, int backgroundColor, int highlightColor ) {
+	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type,
+		int backgroundColor, int highlightColor
+	) {
 		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties() );
 	}
 
