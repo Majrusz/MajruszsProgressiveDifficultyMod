@@ -119,7 +119,6 @@ public class Registries {
 	public static final RegistryObject< WitherBowItem > WITHER_BOW = ITEMS.register( "wither_bow", WitherBowItem::new );
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 	public static final RegistryObject< BadOmenPotionItem > BAD_OMEN_POTION = ITEMS.register( "bad_omen_potion", BadOmenPotionItem::new );
-	public static final RegistryObject< UndeadTotemItem > UNDEAD_TOTEM = ITEMS.register( "undead_totem", UndeadTotemItem::new );
 
 	// Treasure Bags
 	public static final RegistryObject< TreasureBagItem > UNDEAD_ARMY_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", TreasureBagItem.UndeadArmy::new );
