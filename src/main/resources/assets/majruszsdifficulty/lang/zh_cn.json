@@ -3,7 +3,7 @@
   "entity.majruszsdifficulty.tank": "坦克",
   "effect.majruszsdifficulty.bleeding": "流血",
   "effect.majruszsdifficulty.bleeding_immunity": "流血抗性",
-  "itemGroup.majruszs_difficulty_tab": "Majrusz的进阶难度",
+  "itemGroup.majruszsdifficulty.primary": "Majrusz的进阶难度",
   "item.majruszsdifficulty.illusioner_spawn_egg": "幻术师刷怪蛋",
   "item.majruszsdifficulty.pillager_wolf_spawn_egg": "掠夺者之狼刷怪蛋",
   "item.majruszsdifficulty.creeperling_spawn_egg": "小苦力怕刷怪蛋",

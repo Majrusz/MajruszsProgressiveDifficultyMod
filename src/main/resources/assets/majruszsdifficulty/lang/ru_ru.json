@@ -7,7 +7,7 @@
   "effect.majruszsdifficulty.bleeding": "Кровотечение",
   "effect.majruszsdifficulty.bleeding_immunity": "Иммунитет к кровотечению",
   "effect.majruszsdifficulty.infested": "Заразный",
-  "itemGroup.majruszs_difficulty_tab": "Majrusz's Progressive Difficulty",
+  "itemGroup.majruszsdifficulty.primary": "Majrusz's Progressive Difficulty",
   "item.majruszsdifficulty.giant_spawn_egg": "Яйцо призыва гиганта",
   "item.majruszsdifficulty.illusioner_spawn_egg": "Яйцо призыва иллюзора",
   "item.majruszsdifficulty.pillager_wolf_spawn_egg": "Яйцо призыва волка разбойника",

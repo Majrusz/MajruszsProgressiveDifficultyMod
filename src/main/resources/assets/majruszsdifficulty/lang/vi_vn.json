@@ -3,7 +3,7 @@
   "entity.majruszsdifficulty.tank": "Tank",
   "effect.majruszsdifficulty.bleeding": "Chảy máu",
   "effect.majruszsdifficulty.bleeding_immunity": "Chống chảy máu",
-  "itemGroup.majruszs_difficulty_tab": "Majrusz's Progressive Difficulty",
+  "itemGroup.majruszsdifficulty.primary": "Majrusz's Progressive Difficulty",
   "item.majruszsdifficulty.illusioner_spawn_egg": "Trứng sinh ra Kẻ gây ảo giác",
   "item.majruszsdifficulty.creeperling_spawn_egg": "Trứng sinh ra Creeper con",
   "item.majruszsdifficulty.tank_spawn_egg": "Trứng sinh ra Tank",
