@@ -15,6 +15,7 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnLootTableCustomLoad;
+import com.mlib.math.VectorHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
@@ -108,7 +109,7 @@ public class CursedArmorEntity extends Monster {
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
 			onTick.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.25, Dist.DEDICATED_SERVER ).negate() )
+				.addCondition( new Condition.Cooldown<>( 0.2, Dist.DEDICATED_SERVER ) )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
 
 			this.addConfigs( onLoot, onLootTableLoad, onTick );
@@ -154,8 +155,8 @@ public class CursedArmorEntity extends Monster {
 		private void spawnParticles( OnEntityTick.Data data ) {
 			Entity entity = data.entity;
 			Vec3 position = entity.position().add( 0.0, entity.getBbHeight() * 0.5, 0.0 );
-			Vec3 offset = new Vec3( entity.getBbWidth() * 0.3, entity.getBbHeight() * 0.3, entity.getBbWidth() * 0.3 );
-			ParticleHandler.ENCHANTED_HIT.spawn( data.level, position, 2, ()->offset );
+			Vec3 offset = VectorHelper.multiply( new Vec3( entity.getBbWidth(), entity.getBbHeight(), entity.getBbWidth() ), 0.3 );
+			ParticleHandler.ENCHANTED_GLYPH.spawn( data.level, position, 1, ()->offset, ()->0.5f );
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
