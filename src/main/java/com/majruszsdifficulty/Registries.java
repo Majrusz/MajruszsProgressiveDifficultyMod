@@ -196,9 +196,9 @@ public class Registries {
 	public static final List< GameModifier > GAME_MODIFIERS;
 
 	static {
-		COMMANDS = new AnnotationHandler( "com.majruszsdifficulty.commands" ).getInstances( Command.class );
-		GAME_MODIFIERS = new AnnotationHandler( "com.majruszsdifficulty" ).getInstances( GameModifier.class );
-		new AnnotationHandler( "com.majruszsdifficulty.itemsets" ).getInstances( ItemSet.class );
+		AnnotationHandler annotationHandler = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
+		COMMANDS = annotationHandler.getInstances( Command.class );
+		GAME_MODIFIERS = annotationHandler.getInstances( GameModifier.class );
 
 		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
