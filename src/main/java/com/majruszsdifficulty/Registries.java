@@ -245,19 +245,19 @@ public class Registries {
 	}
 
 	public static String getLocationString( String register ) {
-		return getLocation( register ).toString();
+		return HELPER.getLocationString( register );
 	}
 
 	public static ModelLayerLocation getModelLayer( String register, String layer ) {
-		return new ModelLayerLocation( getLocation( register ), layer );
+		return HELPER.getModelLayer( register, layer );
 	}
 
 	public static ModelLayerLocation getModelLayer( String register ) {
-		return new ModelLayerLocation( getLocation( register ), "main" );
+		return HELPER.getModelLayer( register, "main" );
 	}
 
 	public static RenderType getEyesRenderType( String register ) {
-		return RenderType.eyes( getLocation( register ) );
+		return HELPER.getEyesRenderType( register );
 	}
 
 	public static void initialize() {
@@ -289,6 +289,7 @@ public class Registries {
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
+		// FORGE: use SpawnPlacementRegisterEvent to register and modify spawn placements
 		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( BLACK_WIDOW.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlackWidowEntity::checkMonsterSpawnRules );
