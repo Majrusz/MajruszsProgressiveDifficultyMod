@@ -72,7 +72,7 @@ public class UndeadArmyManager extends SavedData {
 			this.setDirty();
 		}
 		if( anyArmyHasEnded && this.undeadArmies.isEmpty() ) {
-			LevelHelper.setClearWeather( this.level, Utility.minutesToTicks( 10.0 ) );
+			LevelHelper.setClearWeather( this.level, Utility.minutesToTicks( 0.5 ) );
 		}
 	}
 
@@ -91,7 +91,6 @@ public class UndeadArmyManager extends SavedData {
 		Direction direction = optionalDirection.orElseGet( Direction::getRandom );
 		this.undeadArmiesToSpawn.add( new UndeadArmyToSpawn( this.level, attackPosition, direction ) );
 		this.level.playSound( null, attackPosition, Registries.UNDEAD_ARMY_APPROACHING.get(), SoundSource.AMBIENT, 0.25f, 1.0f );
-		LevelHelper.startRaining( this.level, Utility.minutesToTicks( 10.0 ), true, START_DURATION - Utility.secondsToTicks( 0.5 ) );
 		MajruszLibrary.logOnDev( "Undead Army started at %s!", attackPosition );
 
 		return true;
@@ -140,6 +139,8 @@ public class UndeadArmyManager extends SavedData {
 		}
 
 		public UndeadArmy spawn() {
+			LevelHelper.startRaining( this.level, Utility.minutesToTicks( 10.0 ), true );
+
 			return new UndeadArmy( this.level, this.position, this.direction );
 		}
 
