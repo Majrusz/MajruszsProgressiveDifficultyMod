@@ -15,7 +15,9 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnLootTableCustomLoad;
+import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.math.VectorHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
@@ -112,7 +114,13 @@ public class CursedArmorEntity extends Monster {
 				.addCondition( new Condition.Cooldown<>( 0.2, Dist.DEDICATED_SERVER ) )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
 
-			this.addConfigs( onLoot, onLootTableLoad, onTick );
+			OnSpawned.Context onSpawned = new OnSpawned.Context( this::setCustomName );
+			onSpawned.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Chance< OnSpawned.Data >( 0.025 ).setConfigurable( false ) )
+				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+				.addCondition( data->data.target instanceof CursedArmorEntity );
+
+			this.addConfigs( onLoot, onLootTableLoad, onTick, onSpawned );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
@@ -157,6 +165,10 @@ public class CursedArmorEntity extends Monster {
 			Vec3 position = entity.position().add( 0.0, entity.getBbHeight() * 0.5, 0.0 );
 			Vec3 offset = VectorHelper.multiply( new Vec3( entity.getBbWidth(), entity.getBbHeight(), entity.getBbWidth() ), 0.3 );
 			ParticleHandler.ENCHANTED_GLYPH.spawn( data.level, position, 1, ()->offset, ()->0.5f );
+		}
+
+		private void setCustomName( OnSpawned.Data data ) {
+			data.target.setCustomName( Component.literal( "Freshah" ) );
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
