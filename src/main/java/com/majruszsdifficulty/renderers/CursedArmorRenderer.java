@@ -19,7 +19,7 @@ public class CursedArmorRenderer extends HumanoidMobRenderer< CursedArmorEntity,
 	public static final ResourceLocation TEXTURE = Registries.getLocation( "textures/entity/cursed_armor.png" );
 
 	public CursedArmorRenderer( EntityRendererProvider.Context context ) {
-		super( context, new CursedArmorModel<>( context.bakeLayer( MAIN_LAYER ) ), 0.5f );
+		super( context, new CursedArmorModel<>( context.bakeLayer( MAIN_LAYER ) ), 0.0f );
 		this.addLayer( new HumanoidArmorLayer<>( this, new CursedArmorModel<>( context.bakeLayer( INNER_ARMOR_LAYER ) ), new CursedArmorModel<>( context.bakeLayer( OUTER_ARMOR_LAYER ) ) ) );
 	}
 
