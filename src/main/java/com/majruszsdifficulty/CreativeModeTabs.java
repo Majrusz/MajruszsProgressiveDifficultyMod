@@ -64,28 +64,28 @@ public class CreativeModeTabs {
 	private void defineTreasureBagItems( FeatureFlagSet flagSet, CreativeModeTab.Output output, boolean hasPermissions ) {
 		Stream.of(
 			new ItemStack( Registries.FISHING_TREASURE_BAG.get() ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Angler Treasure Bag Unique #1" ) ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Angler Treasure Bag Unique #2" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Angler Treasure Bag Unique Item #1" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Angler Treasure Bag Unique Item #2" ) ),
 
 			new ItemStack( Registries.UNDEAD_ARMY_TREASURE_BAG.get() ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Undead Army Treasure Bag Unique #1" ) ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Undead Army Treasure Bag Unique #2" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Undead Army Treasure Bag Unique Item #1" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Undead Army Treasure Bag Unique Item #2" ) ),
 
 			new ItemStack( Registries.PILLAGER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.RECALL_POTION.get() ),
 			new ItemStack( Registries.BAD_OMEN_POTION.get() ),
 
 			new ItemStack( Registries.ELDER_GUARDIAN_TREASURE_BAG.get() ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Elder Guardian Treasure Bag Unique #1" ) ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Elder Guardian Treasure Bag Unique #2" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Elder Guardian Treasure Bag Unique Item #1" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Elder Guardian Treasure Bag Unique Item #2" ) ),
 
 			new ItemStack( Registries.WARDEN_TREASURE_BAG.get() ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Warden Treasure Bag Unique #1" ) ),
-			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Warden Treasure Bag Unique #2" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Warden Treasure Bag Unique Item #1" ) ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Warden Treasure Bag Unique Item #2" ) ),
 
 			new ItemStack( Registries.WITHER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.WITHER_SWORD.get() ),
-			new ItemStack( Registries.WITHER_BOW.get() ),
+			new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Wither Treasure Bag Unique Item #2" ) ),
 
 			new ItemStack( Registries.ENDER_DRAGON_TREASURE_BAG.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD_LOCATOR.get() ),
