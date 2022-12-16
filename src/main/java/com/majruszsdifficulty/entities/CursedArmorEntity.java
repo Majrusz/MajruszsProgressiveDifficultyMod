@@ -14,10 +14,10 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.math.VectorHelper;
-import com.mlib.text.FormattedTranslatable;
 import com.mlib.text.TextHelper;
 import com.mlib.time.Anim;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -34,6 +34,7 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -46,6 +47,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
@@ -132,12 +134,22 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
-			Vec3 position = data.origin.add( 0.0, 0.5, 0.0 );
-			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.level, position );
-			if( cursedArmor == null )
-				return;
+			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.level, this.getSpawnPosition( data ) );
+			if( cursedArmor != null ) {
+				this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
+			}
+		}
 
-			this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
+		private Vec3 getSpawnPosition( OnLoot.Data data ) {
+			ServerLevel level = data.level;
+			Vec3 origin = data.origin;
+			Function< Float, Boolean > isAir = y->BlockHelper.getBlockState( level, origin.add( 0.0, y, 0.0 ) ).isAir();
+			if( isAir.apply( 1.0f ) && isAir.apply( 2.0f ) ) {
+				return origin.add( 0.0, 0.5, 0.0 );
+			} else {
+				Vec3i offset = BlockHelper.getBlockState( data.level, data.origin ).getValue( ChestBlock.FACING ).getNormal();
+				return origin.add( offset.getX(), offset.getY(), offset.getZ() );
+			}
 		}
 
 		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
