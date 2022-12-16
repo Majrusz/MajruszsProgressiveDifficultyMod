@@ -14,6 +14,8 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.math.VectorHelper;
+import com.mlib.text.FormattedTranslatable;
+import com.mlib.text.TextHelper;
 import com.mlib.time.Anim;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -40,7 +42,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
@@ -201,9 +206,16 @@ public class CursedArmorEntity extends Monster {
 			List< Component > components = data.tooltip;
 			components.add( Component.translatable( "item.majruszsdifficulty.cursed_armor_spawn_egg.locations" )
 				.withStyle( ChatFormatting.GRAY ) );
-			Spawn.DATA_MAP.forEach( ( location, spawnData )->components.add( Component.literal( " - " )
-				.append( Component.translatable( location.toString() ) )
-				.withStyle( ChatFormatting.GRAY ) ) );
+
+			Spawn.DATA_MAP.forEach( ( location, spawnData )->{
+				String chance = TextHelper.percent( ( float )spawnData.chance );
+				components.add( Component.literal( " - " )
+					.append( Component.literal( location.toString() ) )
+					.append( Component.literal( " " ) )
+					.append( Component.literal( chance ).withStyle( ChatFormatting.DARK_GRAY ) )
+					.withStyle( ChatFormatting.GRAY )
+				);
+			} );
 		}
 	}
 }
