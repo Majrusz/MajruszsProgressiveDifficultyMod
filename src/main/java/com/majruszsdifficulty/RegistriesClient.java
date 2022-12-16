@@ -1,7 +1,6 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.items.EndShardLocatorItem;
-import com.majruszsdifficulty.items.WitherBowItem;
 import com.majruszsdifficulty.models.BlackWidowModel;
 import com.majruszsdifficulty.models.CreeperlingModel;
 import com.majruszsdifficulty.models.CursedArmorModel;
@@ -36,7 +35,5 @@ public class RegistriesClient {
 		EntityRenderers.register( Registries.CURSED_ARMOR.get(), CursedArmorRenderer::new );
 
 		ItemProperties.register( Registries.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EndShardLocatorItem::calculateDistanceToEndShard );
-		ItemProperties.register( Registries.WITHER_BOW.get(), new ResourceLocation( "pull" ), WitherBowItem::calculatePull );
-		ItemProperties.register( Registries.WITHER_BOW.get(), new ResourceLocation( "pulling" ), WitherBowItem::calculatePulling );
 	}
 }

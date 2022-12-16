@@ -14,16 +14,6 @@
               "function": "minecraft:enchant_randomly"
             }
           ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "majruszsdifficulty:wither_bow",
-          "quality": 4,
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly"
-            }
-          ]
         }
       ]
     },

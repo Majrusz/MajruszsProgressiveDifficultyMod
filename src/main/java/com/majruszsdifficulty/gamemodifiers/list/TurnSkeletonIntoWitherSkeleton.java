@@ -3,7 +3,6 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.items.WitherBowItem;
 import com.majruszsdifficulty.items.WitherSwordItem;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.effects.ParticleHandler;
@@ -11,9 +10,7 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.gamemodifiers.contexts.OnProjectileHit;
 import com.mlib.time.Anim;
-import com.mlib.time.Slider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -32,10 +29,6 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 			.addCondition( data->data.attacker.getMainHandItem().getItem() instanceof WitherSwordItem )
 			.addCondition( data->data.target instanceof Skeleton );
 
-		OnProjectileHit.Context onProjectileHit = new OnProjectileHit.Context( this::applyWitherTag );
-		onProjectileHit.addCondition( data->data.weapon != null && data.weapon.getItem() instanceof WitherBowItem )
-			.addCondition( data->data.entityHitResult != null && data.entityHitResult.getEntity() instanceof Skeleton );
-
 		OnDeath.Context onDeath = new OnDeath.Context( this::spawnWitherSkeleton );
 		onDeath.addCondition( new Condition.IsServer<>() )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.MASTER ) )
@@ -43,15 +36,11 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( this::hasWitherTag );
 
-		this.addContexts( onDamaged, onProjectileHit, onDeath );
+		this.addContexts( onDamaged, onDeath );
 	}
 
 	private void applyWitherTag( OnDamaged.Data data ) {
 		data.target.getPersistentData().putBoolean( WITHER_TAG, true );
-	}
-
-	private void applyWitherTag( OnProjectileHit.Data data ) {
-		data.entityHitResult.getEntity().getPersistentData().putBoolean( WITHER_TAG, true );
 	}
 
 	private void spawnWitherSkeleton( OnDeath.Data data ) {
