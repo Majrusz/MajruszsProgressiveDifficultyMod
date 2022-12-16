@@ -14,6 +14,7 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.math.VectorHelper;
+import com.mlib.time.Anim;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -38,10 +39,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
@@ -113,13 +111,18 @@ public class CursedArmorEntity extends Monster {
 				.addCondition( new Condition.Cooldown<>( 0.2, Dist.DEDICATED_SERVER ) )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
 
-			OnSpawned.Context onSpawned = new OnSpawned.Context( this::setCustomName );
-			onSpawned.addCondition( new Condition.IsServer<>() )
+			OnSpawned.Context onSpawned1 = new OnSpawned.Context( this::setCustomName );
+			onSpawned1.addCondition( new Condition.IsServer<>() )
 				.addCondition( new Condition.Chance< OnSpawned.Data >( 0.025 ).setConfigurable( false ) )
 				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 				.addCondition( data->data.target instanceof CursedArmorEntity );
 
-			this.addConfigs( onLoot, onLootTableLoad, onTick, onSpawned );
+			OnSpawned.Context onSpawned2 = new OnSpawned.Context( this::giveRandomArmor );
+			onSpawned2.addCondition( new Condition.IsServer<>() )
+				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+				.addCondition( data->data.target instanceof CursedArmorEntity );
+
+			this.addConfigs( onLoot, onLootTableLoad, onTick, onSpawned1, onSpawned2 );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
@@ -168,6 +171,23 @@ public class CursedArmorEntity extends Monster {
 
 		private void setCustomName( OnSpawned.Data data ) {
 			data.target.setCustomName( Component.literal( "Freshah" ) );
+		}
+
+		private void giveRandomArmor( OnSpawned.Data data ) {
+			Anim.nextTick( ()->{
+				CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
+				if( cursedArmor.getArmorCoverPercentage() > 0.0f )
+					return;
+
+				LootTable lootTable = Random.nextRandom( DATA_MAP ).lootTable;
+				LootContext lootContext = new LootContext.Builder( data.level )
+					.withParameter( LootContextParams.ORIGIN, cursedArmor.position() )
+					.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
+					.create( LootContextParamSets.GIFT );
+
+				lootTable.getRandomItems( lootContext )
+					.forEach( cursedArmor::equipItemIfPossible );
+			} );
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
