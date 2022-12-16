@@ -31,7 +31,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            args = ['--username', 'Majrusz']
+            args '--username', 'Majrusz'
 
             mods {
                 examplemod {
@@ -44,6 +44,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
+            args '--username', 'Majrusz'
 
             mods {
                 examplemod {
@@ -77,6 +78,11 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.3-44.0.18'
     implementation fg.deobf( 'com.mlib:majrusz-library-1.19.3:3.0.0-unfinished' )
+}
+
+mixin {
+    add sourceSets.main, 'mixins.majruszsdifficulty.refmap.json'
+    config 'mixins.majruszsdifficulty.json'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
