@@ -170,7 +170,7 @@ public class CursedArmorEntity extends Monster {
 				if( cursedArmor.getArmorCoverPercentage() > 0.0f )
 					return;
 
-				this.equipSet( Random.nextRandom( DATA_MAP ), cursedArmor, cursedArmor.position() );
+				this.equipSet( Random.nextRandom( DATA_MAP ).getValue(), cursedArmor, cursedArmor.position() );
 			} );
 		}
 
