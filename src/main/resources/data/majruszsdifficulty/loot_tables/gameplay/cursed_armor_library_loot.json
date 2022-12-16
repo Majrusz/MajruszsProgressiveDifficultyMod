@@ -2,7 +2,7 @@
   "mlib": "majruszsdifficulty:gameplay/cursed_armor_library_loot",
   "cursed_armor": {
     "loot": "minecraft:chests/stronghold_library",
-    "chance": 0.67
+    "chance": 0.8
   },
   "type": "minecraft:gift",
   "pools": [
@@ -23,7 +23,7 @@
           "conditions": [
             {
               "condition": "minecraft:random_chance",
-              "chance": 0.67
+              "chance": 0.8
             }
           ]
         }
@@ -63,7 +63,7 @@
           "conditions": [
             {
               "condition": "minecraft:random_chance",
-              "chance": 0.67
+              "chance": 0.8
             }
           ]
         }
@@ -86,7 +86,7 @@
           "conditions": [
             {
               "condition": "minecraft:random_chance",
-              "chance": 0.67
+              "chance": 0.8
             }
           ]
         }
@@ -126,7 +126,7 @@
           "conditions": [
             {
               "condition": "minecraft:random_chance",
-              "chance": 0.67
+              "chance": 0.8
             }
           ]
         }
