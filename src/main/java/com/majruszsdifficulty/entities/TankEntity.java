@@ -52,7 +52,7 @@ public class TankEntity extends Monster {
 			.add( Attributes.MOVEMENT_SPEED, 0.25 )
 			.add( Attributes.ATTACK_DAMAGE, 8.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
-			.add( Attributes.ATTACK_KNOCKBACK, 3.0 )
+			.add( Attributes.ATTACK_KNOCKBACK, 6.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.75 )
 			.build();
 	}
