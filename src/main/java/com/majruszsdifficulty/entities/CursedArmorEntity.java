@@ -18,6 +18,7 @@ import com.mlib.time.Anim;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -131,17 +132,7 @@ public class CursedArmorEntity extends Monster {
 			if( cursedArmor == null )
 				return;
 
-			LootTable lootTable = DATA_MAP.get( data.context.getQueriedLootTableId() ).lootTable;
-			LootContext lootContext = new LootContext.Builder( data.level )
-				.withParameter( LootContextParams.ORIGIN, data.origin )
-				.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
-				.create( LootContextParamSets.GIFT );
-
-			lootTable.getRandomItems( lootContext )
-				.forEach( cursedArmor::equipItemIfPossible );
-
-			Arrays.stream( EquipmentSlot.values() )
-				.forEach( slot->cursedArmor.setDropChance( slot, this.dropChance.asFloat() ) );
+			this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
 		}
 
 		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
@@ -179,15 +170,21 @@ public class CursedArmorEntity extends Monster {
 				if( cursedArmor.getArmorCoverPercentage() > 0.0f )
 					return;
 
-				LootTable lootTable = Random.nextRandom( DATA_MAP ).lootTable;
-				LootContext lootContext = new LootContext.Builder( data.level )
-					.withParameter( LootContextParams.ORIGIN, cursedArmor.position() )
-					.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
-					.create( LootContextParamSets.GIFT );
-
-				lootTable.getRandomItems( lootContext )
-					.forEach( cursedArmor::equipItemIfPossible );
+				this.equipSet( Random.nextRandom( DATA_MAP ), cursedArmor, cursedArmor.position() );
 			} );
+		}
+
+		private void equipSet( Data data, CursedArmorEntity cursedArmor, Vec3 position ) {
+			LootContext lootContext = new LootContext.Builder( ( ServerLevel )cursedArmor.level )
+				.withParameter( LootContextParams.ORIGIN, position )
+				.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
+				.create( LootContextParamSets.GIFT );
+
+			data.lootTable.getRandomItems( lootContext )
+				.forEach( cursedArmor::equipItemIfPossible );
+
+			Arrays.stream( EquipmentSlot.values() )
+				.forEach( slot->cursedArmor.setDropChance( slot, this.dropChance.asFloat() ) );
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
