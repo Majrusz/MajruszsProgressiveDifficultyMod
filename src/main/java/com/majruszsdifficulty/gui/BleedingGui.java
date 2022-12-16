@@ -97,7 +97,7 @@ public class BleedingGui {
 
 		final int x;
 		final int y;
-		int ticks = 0;
+		int ticks = LIFETIME;
 		int phase = 0;
 
 		public Particle( int x, int y ) {
