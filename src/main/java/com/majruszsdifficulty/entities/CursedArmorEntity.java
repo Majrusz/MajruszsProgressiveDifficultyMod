@@ -12,11 +12,9 @@ import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.contexts.OnEntityTick;
-import com.mlib.gamemodifiers.contexts.OnLoot;
-import com.mlib.gamemodifiers.contexts.OnLootTableCustomLoad;
-import com.mlib.gamemodifiers.contexts.OnSpawned;
+import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.math.VectorHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,6 +40,7 @@ import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -172,5 +171,22 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
+	}
+
+	@AutoInstance
+	public static class TooltipUpdater {
+		public TooltipUpdater() {
+			new OnItemTooltip.Context( this::addSpawnInfo )
+				.addCondition( data->data.itemStack.getItem().equals( Registries.CURSED_ARMOR_SPAWN_EGG.get() ) );
+		}
+
+		private void addSpawnInfo( OnItemTooltip.Data data ) {
+			List< Component > components = data.tooltip;
+			components.add( Component.translatable( "item.majruszsdifficulty.cursed_armor_spawn_egg.locations" )
+				.withStyle( ChatFormatting.GRAY ) );
+			Spawn.DATA_MAP.forEach( ( location, spawnData )->components.add( Component.literal( " - " )
+				.append( Component.translatable( location.toString() ) )
+				.withStyle( ChatFormatting.GRAY ) ) );
+		}
 	}
 }
