@@ -99,8 +99,8 @@ public class CursedArmorEntity extends Monster {
 	public void tick() {
 		super.tick();
 		this.assembleTicksLeft = Math.max( this.assembleTicksLeft - 1, 0 );
-		if( !this.isAssembling() && this.tickCount > ASSEMBLE_DURATION / 3 && this.goalSelector.getAvailableGoals().isEmpty() ) {
-			this.registerDefaultGoals();
+		if( this.goalSelector.getAvailableGoals().isEmpty() ) {
+			this.registerGoals();
 		}
 	}
 
@@ -127,9 +127,10 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	@Override
-	protected void registerGoals() {}
+	protected void registerGoals() {
+		if( this.isAssembling() || this.tickCount <= ASSEMBLE_DURATION / 3 )
+			return;
 
-	protected void registerDefaultGoals() {
 		this.goalSelector.addGoal( 2, new MeleeAttackGoal( this, 1.0D, false ) );
 		this.goalSelector.addGoal( 3, new WaterAvoidingRandomStrollGoal( this, 1.0D ) );
 		this.goalSelector.addGoal( 4, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
