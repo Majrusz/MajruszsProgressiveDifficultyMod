@@ -158,10 +158,15 @@ public class CursedArmorEntity extends Monster {
 			OnLootTableCustomLoad.Context onLootTableLoad = new OnLootTableCustomLoad.Context( this::loadCursedArmorLoot );
 			onLootTableLoad.addCondition( data->data.jsonObject.has( MAIN_TAG ) );
 
-			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
-			onTick.addCondition( new Condition.IsServer<>() )
+			OnEntityTick.Context onTick1 = new OnEntityTick.Context( this::spawnParticles );
+			onTick1.addCondition( new Condition.IsServer<>() )
 				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.2, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
+
+			OnEntityTick.Context onTick2 = new OnEntityTick.Context( this::spawnExtraParticles );
+			onTick2.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.2, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
+				.addCondition( data->data.entity instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
 
 			OnSpawned.Context onSpawned1 = new OnSpawned.Context( this::setCustomName, "CustomName", "Makes some Cursed Armors have a custom name." );
 			onSpawned1.addCondition( new Condition.IsServer<>() )
@@ -179,7 +184,7 @@ public class CursedArmorEntity extends Monster {
 			onSpawned3.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 				.addCondition( data->data.target instanceof CursedArmorEntity );
 
-			this.addContexts( onLoot, onLootTableLoad, onTick, onSpawned1, onSpawned2, onSpawned3 );
+			this.addContexts( onLoot, onLootTableLoad, onTick1, onTick2, onSpawned1, onSpawned2, onSpawned3 );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
@@ -228,10 +233,20 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
-			Entity entity = data.entity;
-			Vec3 position = entity.position().add( 0.0, entity.getBbHeight() * 0.5, 0.0 );
-			Vec3 offset = VectorHelper.multiply( new Vec3( entity.getBbWidth(), entity.getBbHeight(), entity.getBbWidth() ), 0.3 );
+			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.entity;
+			Vec3 position = cursedArmor.position().add( 0.0, cursedArmor.getBbHeight() * 0.5, 0.0 );
+			Vec3 offset = VectorHelper.multiply( new Vec3( cursedArmor.getBbWidth(), cursedArmor.getBbHeight(), cursedArmor.getBbWidth() ), 0.3 );
 			ParticleHandler.ENCHANTED_GLYPH.spawn( data.level, position, 1, ()->offset, ()->0.5f );
+			if( cursedArmor.isAssembling() ) {
+				ParticleHandler.ENCHANTED_GLYPH.spawn( data.level, position, 3, ()->VectorHelper.multiply( offset, 2 ), ()->0.5f );
+			}
+		}
+
+		private void spawnExtraParticles( OnEntityTick.Data data ) {
+			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.entity;
+			Vec3 position = cursedArmor.position();
+			Vec3 offset = VectorHelper.multiply( new Vec3( cursedArmor.getBbWidth(), cursedArmor.getBbHeight(), cursedArmor.getBbWidth() ), 0.6 );
+			ParticleHandler.ENCHANTED_GLYPH.spawn( data.level, position, 3, ()->offset, ()->0.5f );
 		}
 
 		private void setCustomName( OnSpawned.Data data ) {
