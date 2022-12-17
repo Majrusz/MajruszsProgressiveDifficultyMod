@@ -90,7 +90,7 @@ public class CursedArmorEntity extends Monster {
 
 	@Override
 	public int getExperienceReward() {
-		return Random.nextInt( 4 );
+		return Random.nextInt( 7 );
 	}
 
 	@Override
