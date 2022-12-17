@@ -23,13 +23,11 @@ import com.mlib.time.Anim;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -42,7 +40,6 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -55,7 +52,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -101,22 +97,16 @@ public class CursedArmorEntity extends Monster {
 	public void tick() {
 		super.tick();
 		this.assembleTicksLeft = Math.max( this.assembleTicksLeft - 1, 0 );
-		if( !this.isAssembling() && this.goalSelector.getAvailableGoals().isEmpty() ) {
+		if( !this.isAssembling() && this.tickCount > ASSEMBLE_DURATION / 3 && this.goalSelector.getAvailableGoals().isEmpty() ) {
 			this.registerDefaultGoals();
 		}
 	}
 
-	@Override
-	@Nullable
-	public SpawnGroupData finalizeSpawn( ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type,
-		@Nullable SpawnGroupData data, @Nullable CompoundTag compoundTag
-	) {
-		this.startAssembling();
-
-		return super.finalizeSpawn( level, difficulty, type, data, compoundTag );
-	}
-
 	public void startAssembling() {
+		if( this.assembleTicksLeft > 0 ) {
+			return;
+		}
+
 		this.assembleTicksLeft = ASSEMBLE_DURATION;
 		if( this.level instanceof ServerLevel ) {
 			Anim.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this ) ) );
@@ -183,12 +173,17 @@ public class CursedArmorEntity extends Monster {
 				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 				.addCondition( data->data.target instanceof CursedArmorEntity );
 
-			this.addContexts( onLoot, onLootTableLoad, onTick, onSpawned1, onSpawned2 );
+			OnSpawned.Context onSpawned3 = new OnSpawned.Context( this::startAssembling );
+			onSpawned3.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+				.addCondition( data->data.target instanceof CursedArmorEntity );
+
+			this.addContexts( onLoot, onLootTableLoad, onTick, onSpawned1, onSpawned2, onSpawned3 );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
 			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.level, this.getSpawnPosition( data ) );
 			if( cursedArmor != null ) {
+				cursedArmor.startAssembling();
 				this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
 			}
 		}
@@ -255,6 +250,11 @@ public class CursedArmorEntity extends Monster {
 
 			Arrays.stream( EquipmentSlot.values() )
 				.forEach( slot->cursedArmor.setDropChance( slot, this.dropChance.asFloat() ) );
+		}
+
+		private void startAssembling( OnSpawned.Data data ) {
+			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
+			cursedArmor.startAssembling();
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
