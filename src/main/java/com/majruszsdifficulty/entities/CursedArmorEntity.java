@@ -195,7 +195,7 @@ public class CursedArmorEntity extends Monster {
 
 			OnSpawned.Context onSpawned3 = new OnSpawned.Context( this::startAssembling );
 			onSpawned3.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-				.addCondition( data->data.target instanceof CursedArmorEntity );
+				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() );
 
 			this.addContexts( onLoot, onLootTableLoad, onSpawned1, onSpawned2, onSpawned3 );
 		}
