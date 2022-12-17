@@ -152,7 +152,6 @@ public class CursedArmorEntity extends Monster {
 			onLoot.addCondition( new Condition.IsServer<>() )
 				.addCondition( OnLoot.HAS_ORIGIN )
 				.addCondition( data->BlockHelper.getBlockEntity( data.level, data.origin ) instanceof ChestBlockEntity )
-				.addCondition( data->data.entity instanceof ServerPlayer )
 				.addCondition( this::hasLootDefined )
 				.addConfig( this.dropChance );
 
@@ -192,6 +191,9 @@ public class CursedArmorEntity extends Monster {
 
 				cursedArmor.startAssembling( yRot );
 				this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
+				if( data.entity instanceof ServerPlayer player ) {
+					Anim.nextTick( player::closeContainer );
+				}
 			}
 		}
 
