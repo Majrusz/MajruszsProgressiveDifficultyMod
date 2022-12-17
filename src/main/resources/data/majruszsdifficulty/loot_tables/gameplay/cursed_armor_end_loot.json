@@ -2,6 +2,7 @@
   "mlib": "majruszsdifficulty:gameplay/cursed_armor_end_loot",
   "cursed_armor": {
     "loot": "minecraft:chests/end_city_treasure",
+    "sound": "minecraft:item.armor.equip_diamond",
     "chance": 0.5
   },
   "type": "minecraft:gift",

@@ -12,6 +12,7 @@ import com.mlib.blocks.BlockHelper;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.StringConfig;
 import com.mlib.effects.ParticleHandler;
+import com.mlib.effects.SoundHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ContextBase;
@@ -29,6 +30,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -52,6 +56,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -64,7 +69,8 @@ import java.util.function.Supplier;
 public class CursedArmorEntity extends Monster {
 	public static final String GROUP_ID = "CursedArmor";
 	public static final int ASSEMBLE_DURATION = Utility.secondsToTicks( 4.5 );
-	private int assembleTicksLeft = 0;
+	SoundHandler assembleSound = null;
+	int assembleTicksLeft = 0;
 
 	static {
 		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID, "CursedArmor", "" );
@@ -98,6 +104,8 @@ public class CursedArmorEntity extends Monster {
 	@Override
 	public void tick() {
 		super.tick();
+
+		this.tryToPlaySfx();
 		this.assembleTicksLeft = Math.max( this.assembleTicksLeft - 1, 0 );
 		if( this.goalSelector.getAvailableGoals().isEmpty() ) {
 			this.registerGoals();
@@ -105,10 +113,6 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	public void startAssembling( float yRot ) {
-		if( this.assembleTicksLeft > 0 ) {
-			return;
-		}
-
 		this.assembleTicksLeft = ASSEMBLE_DURATION;
 		this.setYRot( yRot );
 		this.setYHeadRot( yRot );
@@ -116,6 +120,10 @@ public class CursedArmorEntity extends Monster {
 		if( this.level instanceof ServerLevel ) {
 			Anim.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this, yRot ) ) );
 		}
+	}
+
+	public void setAssembleSound( SoundEvent soundEvent ) {
+		this.assembleSound = new SoundHandler( soundEvent, SoundSource.HOSTILE );
 	}
 
 	public boolean isAssembling() {
@@ -139,10 +147,22 @@ public class CursedArmorEntity extends Monster {
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
 	}
 
+	private void tryToPlaySfx() {
+		if( !( this.level instanceof ServerLevel level ) )
+			return;
+
+		if( this.assembleTicksLeft == ASSEMBLE_DURATION ) {
+			SoundHandler.ENCHANT.play( level, this.position() );
+		} else if( this.assembleTicksLeft == ASSEMBLE_DURATION - 75 ) {
+			this.assembleSound.play( level, this.position() );
+		}
+	}
+
 	@AutoInstance
 	public static class Spawn extends GameModifier {
 		static final String MAIN_TAG = "cursed_armor";
 		static final String LOOT_TABLE_TAG = "loot";
+		static final String SOUND_TAG = "sound";
 		static final String CHANCE_TAG = "chance";
 		static final Map< ResourceLocation, Data > DATA_MAP = new HashMap<>();
 		final DoubleConfig dropChance = new DoubleConfig( "drop_chance", "Chance for each equipped item to drop when killed.", false, 0.1, 0.0, 1.0 );
@@ -171,7 +191,7 @@ public class CursedArmorEntity extends Monster {
 			OnSpawned.Context onSpawned2 = new OnSpawned.Context( this::giveRandomArmor );
 			onSpawned2.addCondition( new Condition.IsServer<>() )
 				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-				.addCondition( data->data.target instanceof CursedArmorEntity );
+				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
 
 			OnSpawned.Context onSpawned3 = new OnSpawned.Context( this::startAssembling );
 			onSpawned3.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
@@ -209,13 +229,14 @@ public class CursedArmorEntity extends Monster {
 
 		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
 			JsonObject object = data.jsonObject.get( MAIN_TAG ).getAsJsonObject();
+			ResourceLocation sound = new ResourceLocation( object.has( SOUND_TAG ) ? object.get( SOUND_TAG ).getAsString() : "item.armor.equip_generic" );
 			double chance = object.has( CHANCE_TAG ) ? object.get( CHANCE_TAG ).getAsDouble() : 1.0;
 			JsonElement ids = object.get( LOOT_TABLE_TAG );
 			if( ids.isJsonArray() ) {
 				JsonArray array = ids.getAsJsonArray();
-				array.forEach( id->DATA_MAP.put( new ResourceLocation( id.getAsString() ), new Data( data.table, chance ) ) );
+				array.forEach( id->DATA_MAP.put( new ResourceLocation( id.getAsString() ), new Data( data.table, sound, chance ) ) );
 			} else {
-				DATA_MAP.put( new ResourceLocation( ids.getAsString() ), new Data( data.table, chance ) );
+				DATA_MAP.put( new ResourceLocation( ids.getAsString() ), new Data( data.table, sound, chance ) );
 			}
 		}
 
@@ -250,6 +271,8 @@ public class CursedArmorEntity extends Monster {
 
 			Arrays.stream( EquipmentSlot.values() )
 				.forEach( slot->cursedArmor.setDropChance( slot, this.dropChance.asFloat() ) );
+
+			cursedArmor.setAssembleSound( ForgeRegistries.SOUND_EVENTS.getValue( data.sound ) );
 		}
 
 		private void startAssembling( OnSpawned.Data data ) {
@@ -257,7 +280,7 @@ public class CursedArmorEntity extends Monster {
 			cursedArmor.startAssembling( 0.0f );
 		}
 
-		private record Data( LootTable lootTable, double chance ) {}
+		private record Data( LootTable lootTable, ResourceLocation sound, double chance ) {}
 	}
 
 	@AutoInstance

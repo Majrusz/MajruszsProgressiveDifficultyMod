@@ -2,6 +2,7 @@
   "mlib": "majruszsdifficulty:gameplay/cursed_armor_portal_loot",
   "cursed_armor": {
     "loot": "minecraft:chests/ruined_portal",
+    "sound": "minecraft:item.armor.equip_gold",
     "chance": 1.0
   },
   "type": "minecraft:gift",
