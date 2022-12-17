@@ -66,7 +66,7 @@ public class CursedArmorModel< Type extends CursedArmorEntity > extends Humanoid
 	public void setupAnim( Type cursedArmor, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
 		float headPitch
 	) {
-		Animation.applyPosition( new Vector3f( -1.9f, 0.0f, 0.0f ), this.rightLeg );
+		Animation.applyPosition( new Vector3f( -1.9f, 0.0f, 0.0f ), this.rightLeg ); // initial values from HumanoidModel
 		Animation.applyPosition( new Vector3f( 1.9f, 0.0f, 0.0f ), this.leftLeg );
 		super.setupAnim( cursedArmor, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch );
 
