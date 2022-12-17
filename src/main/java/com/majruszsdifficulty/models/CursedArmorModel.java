@@ -26,13 +26,13 @@ public class CursedArmorModel< Type extends CursedArmorEntity > extends Humanoid
 	static {
 		RIGHT_LEG.addNewVectorFrame( 0.0f, new Vector3f( 0.0f, 15.0f, 0.0f ) )
 			.addNewVectorFrame( 2.0f, new Vector3f( 0.0f, 15.0f, 0.0f ) )
-			.addNewVectorFrame( 3.5f, new Vector3f( -6.0f, -3.0f, 0.0f ), Frame.InterpolationType.SQUARE_ROOT )
+			.addNewVectorFrame( 3.5f, new Vector3f( -4.0f, -3.0f, 0.0f ), Frame.InterpolationType.SQUARE_ROOT )
 			.addNewVectorFrame( 3.75f, new Vector3f( 0.0f, -6.0f, 0.0f ), Frame.InterpolationType.SQUARE_ROOT )
 			.addNewVectorFrame( 4.5f, new Vector3f( 0.0f, 0.0f, 0.0f ), Frame.InterpolationType.SQUARE );
 
 		LEFT_LEG.addNewVectorFrame( 0.0f, new Vector3f( 0.0f, 15.0f, 0.0f ) )
 			.addNewVectorFrame( 2.0f, new Vector3f( 0.0f, 15.0f, 0.0f ) )
-			.addNewVectorFrame( 3.5f, new Vector3f( 6.0f, -3.0f, 0.0f ), Frame.InterpolationType.SQUARE_ROOT )
+			.addNewVectorFrame( 3.5f, new Vector3f( 4.0f, -3.0f, 0.0f ), Frame.InterpolationType.SQUARE_ROOT )
 			.addNewVectorFrame( 3.75f, new Vector3f( 0.0f, -6.0f, 0.0f ), Frame.InterpolationType.SQUARE_ROOT )
 			.addNewVectorFrame( 4.5f, new Vector3f( 0.0f, 0.0f, 0.0f ), Frame.InterpolationType.SQUARE );
 
@@ -63,16 +63,22 @@ public class CursedArmorModel< Type extends CursedArmorEntity > extends Humanoid
 		SCALE_1.addNewFloatFrame( 0.0f, 0.01f )
 			.addNewFloatFrame( 1.0f, 0.01f )
 			.addNewFloatFrame( 2.0f, 1.0f )
+			.addNewFloatFrame( 3.5f, 1.1f )
+			.addNewFloatFrame( 3.75f, 1.0f )
 			.addNewFloatFrame( 4.5f, 1.0f );
 
 		SCALE_2.addNewFloatFrame( 0.0f, 0.01f )
 			.addNewFloatFrame( 1.5f, 0.01f )
 			.addNewFloatFrame( 2.5f, 1.0f )
+			.addNewFloatFrame( 3.5f, 1.1f )
+			.addNewFloatFrame( 3.75f, 1.0f )
 			.addNewFloatFrame( 4.5f, 1.0f );
 
 		SCALE_3.addNewFloatFrame( 0.0f, 0.01f )
 			.addNewFloatFrame( 2.0f, 0.01f )
 			.addNewFloatFrame( 3.0f, 1.0f )
+			.addNewFloatFrame( 3.5f, 1.1f )
+			.addNewFloatFrame( 3.75f, 1.0f )
 			.addNewFloatFrame( 4.5f, 1.0f );
 	}
 
