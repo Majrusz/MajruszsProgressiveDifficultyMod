@@ -8,6 +8,7 @@ import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.blocks.BlockHelper;
 import com.mlib.config.DoubleConfig;
+import com.mlib.config.StringConfig;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
@@ -99,6 +100,7 @@ public class CursedArmorEntity extends Monster {
 		static final String CHANCE_TAG = "chance";
 		static final Map< ResourceLocation, Data > DATA_MAP = new HashMap<>();
 		final DoubleConfig dropChance = new DoubleConfig( "drop_chance", "Chance for each equipped item to drop when killed.", false, 0.1, 0.0, 1.0 );
+		final StringConfig name = new StringConfig( "name", "", false, "Freshah" );
 
 		public Spawn() {
 			super( GROUP_ID, "", "" );
@@ -119,18 +121,19 @@ public class CursedArmorEntity extends Monster {
 				.addCondition( new Condition.Cooldown<>( 0.2, Dist.DEDICATED_SERVER ) )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
 
-			OnSpawned.Context onSpawned1 = new OnSpawned.Context( this::setCustomName );
+			OnSpawned.Context onSpawned1 = new OnSpawned.Context( this::setCustomName, "CustomName", "Makes some Cursed Armors have a custom name." );
 			onSpawned1.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Chance< OnSpawned.Data >( 0.025 ).setConfigurable( false ) )
+				.addCondition( new Condition.Chance<>( 0.025, "chance", "" ) )
 				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-				.addCondition( data->data.target instanceof CursedArmorEntity );
+				.addCondition( data->data.target instanceof CursedArmorEntity )
+				.addConfigs( this.name );
 
 			OnSpawned.Context onSpawned2 = new OnSpawned.Context( this::giveRandomArmor );
 			onSpawned2.addCondition( new Condition.IsServer<>() )
 				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 				.addCondition( data->data.target instanceof CursedArmorEntity );
 
-			this.addConfigs( onLoot, onLootTableLoad, onTick, onSpawned1, onSpawned2 );
+			this.addContexts( onLoot, onLootTableLoad, onTick, onSpawned1, onSpawned2 );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
@@ -178,7 +181,7 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void setCustomName( OnSpawned.Data data ) {
-			data.target.setCustomName( Component.literal( "Freshah" ) );
+			data.target.setCustomName( this.name.asLiteral() );
 		}
 
 		private void giveRandomArmor( OnSpawned.Data data ) {
