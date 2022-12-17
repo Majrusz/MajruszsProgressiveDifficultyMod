@@ -102,14 +102,17 @@ public class CursedArmorEntity extends Monster {
 		}
 	}
 
-	public void startAssembling() {
+	public void startAssembling( float yRot ) {
 		if( this.assembleTicksLeft > 0 ) {
 			return;
 		}
 
 		this.assembleTicksLeft = ASSEMBLE_DURATION;
+		this.setYRot( yRot );
+		this.setYHeadRot( yRot );
+		this.setYBodyRot( yRot );
 		if( this.level instanceof ServerLevel ) {
-			Anim.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this ) ) );
+			Anim.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this, yRot ) ) );
 		}
 	}
 
@@ -183,7 +186,11 @@ public class CursedArmorEntity extends Monster {
 		private void spawnCursedArmor( OnLoot.Data data ) {
 			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.level, this.getSpawnPosition( data ) );
 			if( cursedArmor != null ) {
-				cursedArmor.startAssembling();
+				float yRot = BlockHelper.getBlockState( data.level, data.origin )
+					.getValue( ChestBlock.FACING )
+					.toYRot();
+
+				cursedArmor.startAssembling( yRot );
 				this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
 			}
 		}
@@ -254,7 +261,7 @@ public class CursedArmorEntity extends Monster {
 
 		private void startAssembling( OnSpawned.Data data ) {
 			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
-			cursedArmor.startAssembling();
+			cursedArmor.startAssembling( 0.0f );
 		}
 
 		private record Data( LootTable lootTable, double chance ) {}
@@ -286,13 +293,16 @@ public class CursedArmorEntity extends Monster {
 
 	public static class AssembleMessage extends NetworkMessage {
 		final int entityId;
+		final float yRot;
 
-		public AssembleMessage( Entity entity ) {
+		public AssembleMessage( Entity entity, float yRot ) {
 			this.entityId = this.write( entity );
+			this.yRot = this.write( yRot );
 		}
 
 		public AssembleMessage( FriendlyByteBuf buffer ) {
 			this.entityId = this.readEntity( buffer );
+			this.yRot = this.readFloat( buffer );
 		}
 
 		@Override
@@ -300,7 +310,7 @@ public class CursedArmorEntity extends Monster {
 		public void receiveMessage( NetworkEvent.Context context ) {
 			Level level = Minecraft.getInstance().level;
 			if( level != null && level.getEntity( this.entityId ) instanceof CursedArmorEntity cursedArmor ) {
-				cursedArmor.startAssembling();
+				cursedArmor.startAssembling( this.yRot );
 			}
 		}
 	}
