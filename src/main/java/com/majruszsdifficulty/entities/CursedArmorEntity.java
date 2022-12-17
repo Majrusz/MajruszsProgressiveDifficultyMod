@@ -119,9 +119,7 @@ public class CursedArmorEntity extends Monster {
 	public void startAssembling() {
 		this.assembleTicksLeft = ASSEMBLE_DURATION;
 		if( this.level instanceof ServerLevel ) {
-			Anim.nextTick( ()->{
-				PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this ) );
-			} );
+			Anim.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this ) ) );
 		}
 	}
 
