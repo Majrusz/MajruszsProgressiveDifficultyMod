@@ -3,6 +3,7 @@ package com.majruszsdifficulty.entities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
@@ -16,11 +17,14 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.math.VectorHelper;
+import com.mlib.network.NetworkMessage;
 import com.mlib.text.TextHelper;
 import com.mlib.time.Anim;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +33,10 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
@@ -44,6 +51,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -108,10 +118,19 @@ public class CursedArmorEntity extends Monster {
 
 	public void startAssembling() {
 		this.assembleTicksLeft = ASSEMBLE_DURATION;
+		if( this.level instanceof ServerLevel ) {
+			Anim.nextTick( ()->{
+				PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this ) );
+			} );
+		}
 	}
 
 	public boolean isAssembling() {
 		return this.assembleTicksLeft > 0;
+	}
+
+	public float getAssembleTime() {
+		return ( float )Utility.ticksToSeconds( ASSEMBLE_DURATION - this.assembleTicksLeft );
 	}
 
 	@Override
@@ -264,6 +283,27 @@ public class CursedArmorEntity extends Monster {
 					.withStyle( ChatFormatting.GRAY )
 				);
 			} );
+		}
+	}
+
+	public static class AssembleMessage extends NetworkMessage {
+		final int entityId;
+
+		public AssembleMessage( Entity entity ) {
+			this.entityId = this.write( entity );
+		}
+
+		public AssembleMessage( FriendlyByteBuf buffer ) {
+			this.entityId = this.readEntity( buffer );
+		}
+
+		@Override
+		@OnlyIn( Dist.CLIENT )
+		public void receiveMessage( NetworkEvent.Context context ) {
+			Level level = Minecraft.getInstance().level;
+			if( level != null && level.getEntity( this.entityId ) instanceof CursedArmorEntity cursedArmor ) {
+				cursedArmor.startAssembling();
+			}
 		}
 	}
 }
