@@ -118,7 +118,7 @@ public class CursedArmorEntity extends Monster {
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
 			onTick.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown<>( 0.2, Dist.DEDICATED_SERVER ) )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.2, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
 
 			OnSpawned.Context onSpawned1 = new OnSpawned.Context( this::setCustomName, "CustomName", "Makes some Cursed Armors have a custom name." );
