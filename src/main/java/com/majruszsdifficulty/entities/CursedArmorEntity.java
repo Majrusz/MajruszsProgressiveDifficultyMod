@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
+import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.blocks.BlockHelper;
 import com.mlib.config.DoubleConfig;
@@ -19,22 +20,22 @@ import com.mlib.text.TextHelper;
 import com.mlib.time.Anim;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -44,6 +45,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +55,8 @@ import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
 	public static final String GROUP_ID = "CursedArmor";
+	public static final int ASSEMBLE_DURATION = Utility.secondsToTicks( 4.5 );
+	private int assembleTicksLeft = 0;
 
 	static {
 		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID, "CursedArmor", "" );
@@ -84,7 +88,36 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	@Override
-	protected void registerGoals() {
+	public void tick() {
+		super.tick();
+		this.assembleTicksLeft = Math.max( this.assembleTicksLeft - 1, 0 );
+		if( !this.isAssembling() && this.goalSelector.getAvailableGoals().isEmpty() ) {
+			this.registerDefaultGoals();
+		}
+	}
+
+	@Override
+	@Nullable
+	public SpawnGroupData finalizeSpawn( ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type,
+		@Nullable SpawnGroupData data, @Nullable CompoundTag compoundTag
+	) {
+		this.startAssembling();
+
+		return super.finalizeSpawn( level, difficulty, type, data, compoundTag );
+	}
+
+	public void startAssembling() {
+		this.assembleTicksLeft = ASSEMBLE_DURATION;
+	}
+
+	public boolean isAssembling() {
+		return this.assembleTicksLeft > 0;
+	}
+
+	@Override
+	protected void registerGoals() {}
+
+	protected void registerDefaultGoals() {
 		this.goalSelector.addGoal( 2, new MeleeAttackGoal( this, 1.0D, false ) );
 		this.goalSelector.addGoal( 3, new WaterAvoidingRandomStrollGoal( this, 1.0D ) );
 		this.goalSelector.addGoal( 4, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
