@@ -20,12 +20,6 @@
                 "minecraft:vanishing_curse"
               ]
             }
-          ],
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 0.9
-            }
           ]
         }
       ]
@@ -60,12 +54,6 @@
                 "minecraft:vanishing_curse"
               ]
             }
-          ],
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 0.9
-            }
           ]
         }
       ]
@@ -82,12 +70,6 @@
               "excluding": [
                 "minecraft:vanishing_curse"
               ]
-            }
-          ],
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 0.9
             }
           ]
         }
@@ -154,7 +136,7 @@
           "conditions": [
             {
               "condition": "minecraft:random_chance",
-              "chance": 0.9
+              "chance": 0.75
             }
           ]
         }
