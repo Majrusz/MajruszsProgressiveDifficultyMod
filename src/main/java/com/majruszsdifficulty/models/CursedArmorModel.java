@@ -25,58 +25,58 @@ public class CursedArmorModel< Type extends CursedArmorEntity > extends Humanoid
 	static {
 		RIGHT_LEG.add( 0.00f, new Frame.Vector( 0.0f, 15.0f, 0.0f ) )
 			.add( 2.00f, new Frame.Vector( 0.0f, 15.0f, 0.0f ) )
-			.add( 3.50f, new Frame.Vector( -4.0f, -3.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
+			.add( 3.50f, new Frame.Vector( -4.0f, -3.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
 			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
 			.add( 4.50f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) );
 
 		LEFT_LEG.add( 0.00f, new Frame.Vector( 0.0f, 15.0f, 0.0f ) )
 			.add( 2.00f, new Frame.Vector( 0.0f, 15.0f, 0.0f ) )
-			.add( 3.50f, new Frame.Vector( 4.0f, -3.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
-			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
+			.add( 3.50f, new Frame.Vector( 4.0f, -3.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
+			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
 			.add( 4.50f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) );
 
 		RIGHT_ARM.add( 0.00f, new Frame.Vector( 4.0f, 27.0f, 0.0f ) )
 			.add( 1.50f, new Frame.Vector( 4.0f, 27.0f, 0.0f ) )
-			.add( 3.50f, new Frame.Vector( -6.0f, -8.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
-			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
+			.add( 3.50f, new Frame.Vector( -5.0f, -8.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
+			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
 			.add( 4.50f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) );
 
 		LEFT_ARM.add( 0.00f, new Frame.Vector( -4.0f, 27.0f, 0.0f ) )
 			.add( 1.50f, new Frame.Vector( -4.0f, 27.0f, 0.0f ) )
-			.add( 3.50f, new Frame.Vector( 6.0f, -8.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
-			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
+			.add( 3.50f, new Frame.Vector( 5.0f, -8.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
+			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
 			.add( 4.50f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) );
 
 		BODY.add( 0.00f, new Frame.Vector( 0.0f, 27.0f, 0.0f ) )
 			.add( 1.50f, new Frame.Vector( 0.0f, 27.0f, 0.0f ) )
-			.add( 3.50f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
-			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
+			.add( 3.50f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
+			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
 			.add( 4.50f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) );
 
 		HEAD.add( 0.00f, new Frame.Vector( 0.0f, 35.0f, 0.0f ) )
 			.add( 1.00f, new Frame.Vector( 0.0f, 35.0f, 0.0f ) )
-			.add( 3.50f, new Frame.Vector( 0.0f, -10.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
-			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.SQUARE_ROOT ) )
+			.add( 3.50f, new Frame.Vector( 0.0f, -10.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
+			.add( 3.75f, new Frame.Vector( 0.0f, -6.0f, 0.0f, InterpolationType.CUBE_ROOT ) )
 			.add( 4.50f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) );
 
 		SCALE_1.add( 0.00f, new Frame.Value( 0.01f ) )
 			.add( 1.00f, new Frame.Value( 0.01f ) )
 			.add( 2.00f, new Frame.Value( 1.0f ) )
-			.add( 3.50f, new Frame.Value( 1.1f ) )
+			.add( 3.50f, new Frame.Value( 1.05f ) )
 			.add( 3.75f, new Frame.Value( 1.0f ) )
 			.add( 4.50f, new Frame.Value( 1.0f ) );
 
 		SCALE_2.add( 0.00f, new Frame.Value( 0.01f ) )
 			.add( 1.50f, new Frame.Value( 0.01f ) )
 			.add( 2.50f, new Frame.Value( 1.0f ) )
-			.add( 3.50f, new Frame.Value( 1.1f ) )
+			.add( 3.50f, new Frame.Value( 1.05f ) )
 			.add( 3.75f, new Frame.Value( 1.0f ) )
 			.add( 4.50f, new Frame.Value( 1.0f ) );
 
 		SCALE_3.add( 0.00f, new Frame.Value( 0.01f ) )
 			.add( 2.00f, new Frame.Value( 0.01f ) )
 			.add( 3.00f, new Frame.Value( 1.0f ) )
-			.add( 3.50f, new Frame.Value( 1.1f ) )
+			.add( 3.50f, new Frame.Value( 1.05f ) )
 			.add( 3.75f, new Frame.Value( 1.0f ) )
 			.add( 4.50f, new Frame.Value( 1.0f ) );
 	}
