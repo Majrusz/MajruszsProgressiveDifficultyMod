@@ -10,7 +10,7 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.time.Anim;
+import com.mlib.time.Time;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -44,7 +44,7 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 	}
 
 	private void spawnWitherSkeleton( OnDeath.Data data ) {
-		Anim.slider( 7.0, slider->{
+		Time.slider( 7.0, slider->{
 			if( slider.getTicksLeft() % 5 == 0 ) {
 				ParticleHandler.SOUL.spawn( data.level, data.target.position()
 					.add( 0.0, 1.0, 0.0 ), ( int )( slider.getRatio() * 10 ), ParticleHandler.offset( slider.getRatio() ) );

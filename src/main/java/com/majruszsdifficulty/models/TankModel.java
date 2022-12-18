@@ -3,6 +3,7 @@ package com.majruszsdifficulty.models;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
+import com.mlib.animations.InterpolationType;
 import com.mlib.math.VectorHelper;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,40 +16,40 @@ import org.joml.Vector3f;
 
 @OnlyIn( Dist.CLIENT )
 public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {
-	static final Animation.Degrees SPECIAL_ATTACK_BODY_X = new Animation.Degrees( TankEntity.SPECIAL_ATTACK_DURATION );
-	static final Animation.Degrees SPECIAL_ATTACK_ARMS_X = new Animation.Degrees( TankEntity.SPECIAL_ATTACK_DURATION );
-	static final Animation.Degrees NORMAL_ATTACK_BODY_Y = new Animation.Degrees( TankEntity.NORMAL_ATTACK_DURATION );
-	static final Animation.Vector NORMAL_ATTACK_ARM = new Animation.Vector( TankEntity.NORMAL_ATTACK_DURATION );
+	static final Animation< Float > SPECIAL_ATTACK_BODY_X = new Animation<>( TankEntity.SPECIAL_ATTACK_DURATION );
+	static final Animation< Float > SPECIAL_ATTACK_ARMS_X = new Animation<>( TankEntity.SPECIAL_ATTACK_DURATION );
+	static final Animation< Float > NORMAL_ATTACK_BODY_Y = new Animation<>( TankEntity.NORMAL_ATTACK_DURATION );
+	static final Animation< Vector3f > NORMAL_ATTACK_ARM = new Animation<>( TankEntity.NORMAL_ATTACK_DURATION );
 
 	static {
-		SPECIAL_ATTACK_BODY_X.addNewFloatFrame( 0.0f, 10.0f )
-			.addNewFloatFrame( 0.3f, -30.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 0.4f, -30.0f )
-			.addNewFloatFrame( 0.6f, 45.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 0.7f, 35.0f )
-			.addNewFloatFrame( 0.85f, 0.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 1.0f, 10.0f );
+		SPECIAL_ATTACK_BODY_X.add( 0.00f, new Frame.Degrees( 10.0f ) )
+			.add( 0.30f, new Frame.Degrees( -30.0f, InterpolationType.SQUARE ) )
+			.add( 0.40f, new Frame.Degrees( -30.0f ) )
+			.add( 0.60f, new Frame.Degrees( 45.0f, InterpolationType.SQUARE ) )
+			.add( 0.70f, new Frame.Degrees( 35.0f ) )
+			.add( 0.85f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 10.0f ) );
 
-		SPECIAL_ATTACK_ARMS_X.addNewFloatFrame( 0.0f, 0.0f )
-			.addNewFloatFrame( 0.4f, -160.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 0.6f, -40.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 0.7f, -30.0f )
-			.addNewFloatFrame( 0.85f, 10.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 1.0f, 0.0f, Frame.InterpolationType.SQUARE );
+		SPECIAL_ATTACK_ARMS_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
+			.add( 0.40f, new Frame.Degrees( -160.0f, InterpolationType.SQUARE ) )
+			.add( 0.60f, new Frame.Degrees( -40.0f, InterpolationType.SQUARE ) )
+			.add( 0.70f, new Frame.Degrees( -30.0f ) )
+			.add( 0.85f, new Frame.Degrees( 10.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
 
-		NORMAL_ATTACK_BODY_Y.addNewFloatFrame( 0.0f, 0.0f )
-			.addNewFloatFrame( 0.15f, 30.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 0.25f, 30.0f )
-			.addNewFloatFrame( 0.45f, -60.0f, Frame.InterpolationType.SQUARE )
-			.addNewFloatFrame( 0.55f, -50.0f )
-			.addNewFloatFrame( 1.0f, 0.0f, Frame.InterpolationType.SQUARE );
+		NORMAL_ATTACK_BODY_Y.add( 0.00f, new Frame.Degrees( 0.0f ) )
+			.add( 0.15f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
+			.add( 0.25f, new Frame.Degrees( 30.0f ) )
+			.add( 0.45f, new Frame.Degrees( -60.0f, InterpolationType.SQUARE ) )
+			.add( 0.55f, new Frame.Degrees( -50.0f ) )
+			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
 
-		NORMAL_ATTACK_ARM.addNewVectorFrame( 0.0f, new Vector3f( 0.0f, 5.0f, 12.5f ) )
-			.addNewVectorFrame( 0.2f, new Vector3f( 45.0f, 0.0f, 45.0f ), Frame.InterpolationType.SQUARE )
-			.addNewVectorFrame( 0.3f, new Vector3f( 45.0f, 0.0f, 45.0f ) )
-			.addNewVectorFrame( 0.5f, new Vector3f( -90.0f, -30.0f, 60.0f ), Frame.InterpolationType.SQUARE )
-			.addNewVectorFrame( 0.6f, new Vector3f( -80.0f, -25.0f, 50.0f ), Frame.InterpolationType.SQUARE )
-			.addNewVectorFrame( 1.0f, new Vector3f( 0.0f, 5.0f, 12.5f ), Frame.InterpolationType.SQUARE );
+		NORMAL_ATTACK_ARM.add( 0.00f, new Frame.Vector( 0.0f, 5.0f, 12.5f ) )
+			.add( 0.20f, new Frame.Vector( 45.0f, 0.0f, 45.0f, InterpolationType.SQUARE ) )
+			.add( 0.30f, new Frame.Vector( 45.0f, 0.0f, 45.0f ) )
+			.add( 0.50f, new Frame.Vector( -90.0f, -30.0f, 60.0f, InterpolationType.SQUARE ) )
+			.add( 0.60f, new Frame.Vector( -80.0f, -25.0f, 50.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Vector( 0.0f, 5.0f, 12.5f, InterpolationType.SQUARE ) );
 	}
 
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;

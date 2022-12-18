@@ -21,7 +21,7 @@ import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.math.VectorHelper;
 import com.mlib.network.NetworkMessage;
 import com.mlib.text.TextHelper;
-import com.mlib.time.Anim;
+import com.mlib.time.Time;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
@@ -31,7 +31,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -118,7 +117,7 @@ public class CursedArmorEntity extends Monster {
 		this.setYHeadRot( yRot );
 		this.setYBodyRot( yRot );
 		if( this.level instanceof ServerLevel ) {
-			Anim.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this, yRot ) ) );
+			Time.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this, yRot ) ) );
 		}
 	}
 
@@ -210,7 +209,7 @@ public class CursedArmorEntity extends Monster {
 				cursedArmor.startAssembling( yRot );
 				this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
 				if( data.entity instanceof ServerPlayer player ) {
-					Anim.nextTick( player::closeContainer );
+					Time.nextTick( player::closeContainer );
 				}
 			}
 		}
@@ -229,7 +228,8 @@ public class CursedArmorEntity extends Monster {
 
 		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
 			JsonObject object = data.jsonObject.get( MAIN_TAG ).getAsJsonObject();
-			ResourceLocation sound = new ResourceLocation( object.has( SOUND_TAG ) ? object.get( SOUND_TAG ).getAsString() : "item.armor.equip_generic" );
+			ResourceLocation sound = new ResourceLocation( object.has( SOUND_TAG ) ? object.get( SOUND_TAG )
+				.getAsString() : "item.armor.equip_generic" );
 			double chance = object.has( CHANCE_TAG ) ? object.get( CHANCE_TAG ).getAsDouble() : 1.0;
 			JsonElement ids = object.get( LOOT_TABLE_TAG );
 			if( ids.isJsonArray() ) {
@@ -251,7 +251,7 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void giveRandomArmor( OnSpawned.Data data ) {
-			Anim.nextTick( ()->{
+			Time.nextTick( ()->{
 				CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
 				if( cursedArmor.getArmorCoverPercentage() > 0.0f )
 					return;

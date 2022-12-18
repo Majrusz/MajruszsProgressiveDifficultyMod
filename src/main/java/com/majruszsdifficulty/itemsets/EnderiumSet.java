@@ -16,8 +16,7 @@ import com.mlib.itemsets.ItemData;
 import com.mlib.itemsets.ItemSet;
 import com.mlib.levels.LevelHelper;
 import com.mlib.mobeffects.MobEffectHelper;
-import com.mlib.time.Anim;
-import com.mlib.time.Slider;
+import com.mlib.time.Time;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -95,7 +94,7 @@ public class EnderiumSet extends ItemSet {
 	private void cancelDeath( OnDeath.Data data ) {
 		EntityHelper.cheatDeath( data.target, 1.0f, false );
 		LevelHelper.teleportToSpawnPosition( ( ServerPlayer )data.target );
-		Anim.slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
+		Time.slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
 		data.event.setCanceled( true );
 	}
 }
