@@ -13,7 +13,7 @@
   "item.majruszsdifficulty.sky_keeper_spawn_egg": "Oeuf d՚apparition de guadien de l՚End",
   "item.majruszsdifficulty.creeperling_spawn_egg": "Oeuf d՚apparition de bébé creeper",
   "item.majruszsdifficulty.wither_sword": "Épée de Wither",
-  "item.majruszsdifficulty.wither_sword.tooltip": "Inflige Wither II pour quelques secondes en frappant.",
+  "item.majruszsdifficulty.wither_sword.effect": "Inflige Wither II pour quelques secondes en frappant.",
   "item.majruszsdifficulty.undead_battle_standard": "Étendard de bataille de mort-vivants",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip1": "Invoque l՚armée de mort-vivants.",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip2": "L՚armée de mort-vivants peut être",

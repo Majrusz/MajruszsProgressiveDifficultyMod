@@ -40,7 +40,7 @@
   "item.majruszsdifficulty.enderium_boots": "Enderiumowe buty",
   "item.majruszsdifficulty.cloth": "Tkanina",
   "item.majruszsdifficulty.wither_sword": "Witherowy miecz",
-  "item.majruszsdifficulty.wither_sword.tooltip": "Nakłada Wither %s na %s sekund przy trafieniu.",
+  "item.majruszsdifficulty.wither_sword.effect": " %1$s na nałożenie efektu Wither %2$s",
   "item.majruszsdifficulty.enderium_shard_locator": "Lokalizator kryształów enderium",
   "item.majruszsdifficulty.ender_pouch": "Sakiewka kresu",
   "item.majruszsdifficulty.golden_bandage": "Złoty bandaż",

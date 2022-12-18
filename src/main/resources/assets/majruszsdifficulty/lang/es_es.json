@@ -8,7 +8,7 @@
   "item.majruszsdifficulty.creeperling_spawn_egg": "Huevo de Creepersito",
   "item.majruszsdifficulty.tank_spawn_egg": "Huevo de Esqueleto Bruto",
   "item.majruszsdifficulty.wither_sword": "Machete Wither",
-  "item.majruszsdifficulty.wither_sword.tooltip": "Inflinge Wither %s por %s segundos al golpear",
+  "item.majruszsdifficulty.wither_sword.effect": "Inflinge Wither %s por %s segundos al golpear",
   "item.majruszsdifficulty.undead_battle_standard": "Estandarte de los No Muertos",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip1": "Invoca al Ejercito No Muerto",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip2": "Ejercito No Muerto será Invocado",

@@ -8,7 +8,7 @@
   "item.majruszsdifficulty.creeperling_spawn_egg": "Trứng sinh ra Creeper con",
   "item.majruszsdifficulty.tank_spawn_egg": "Trứng sinh ra Tank",
   "item.majruszsdifficulty.wither_sword": "Kiếm Wither",
-  "item.majruszsdifficulty.wither_sword.tooltip": "Gây ra hiệu ứng khô héo %s trong %s giây cho kẻ địch.",
+  "item.majruszsdifficulty.wither_sword.effect": "Gây ra hiệu ứng khô héo %s trong %s giây cho kẻ địch.",
   "item.majruszsdifficulty.undead_battle_standard": "Thây ma xâm lược Tiêu chuẩn",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip1": "Triệu hồi đội quân thây ma.",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip2": "Đội quân này chỉ có thể",

@@ -16,7 +16,7 @@
   "item.majruszsdifficulty.creeperling_spawn_egg": "Яйцо призыва криперка",
   "item.majruszsdifficulty.parasite_spawn_egg": "Яйцо призыва паразита",
   "item.majruszsdifficulty.wither_sword": "Меч-иссушитель",
-  "item.majruszsdifficulty.wither_sword.tooltip": "Накладывает эффект иссушения.",
+  "item.majruszsdifficulty.wither_sword.effect": "Накладывает эффект иссушения.",
   "item.majruszsdifficulty.undead_battle_standard": "Боевой штандарт нежити",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip1": "Призывает армию мёртвых",
   "item.majruszsdifficulty.undead_battle_standard.item_tooltip2": "Армия нежити может быть призвана только",
