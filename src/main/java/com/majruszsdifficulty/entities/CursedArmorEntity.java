@@ -197,7 +197,10 @@ public class CursedArmorEntity extends Monster {
 			onSpawned3.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() );
 
-			this.addContexts( onLoot, onLootTableLoad, onSpawned1, onSpawned2, onSpawned3 );
+			OnPreDamaged.Context onDamaged = new OnPreDamaged.Context( OnPreDamaged.CANCEL );
+			onDamaged.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
+
+			this.addContexts( onLoot, onLootTableLoad, onSpawned1, onSpawned2, onSpawned3, onDamaged );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
@@ -307,7 +310,7 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void spawnAssemblingParticles( OnEntityTick.Data data ) {
-			this.spawnParticles( data, new Vec3( 0.0, 0.0, 0.0 ), 0.6, 4 );
+			this.spawnParticles( data, new Vec3( 0.0, 0.0, 0.0 ), 0.6, 5 );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data, Vec3 emitterOffset, double offsetMultiplier, int particlesCount ) {
