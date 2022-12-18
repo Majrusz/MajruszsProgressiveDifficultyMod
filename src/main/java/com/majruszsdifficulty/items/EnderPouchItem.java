@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.items;
 
+import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
@@ -20,6 +21,9 @@ public class EnderPouchItem extends Item {
 		data.player.openMenu( new SimpleMenuProvider( ( containerId, inventory, player )->ChestMenu.threeRows( containerId, inventory, player.getEnderChestInventory() ), this.getDescription() ) );
 		data.player.awardStat( Stats.OPEN_ENDERCHEST );
 		data.player.swing( data.hand );
+		if( data.level != null ) {
+			SoundHandler.ITEM_PICKUP.play( data.level, data.player.position() );
+		}
 		data.event.setCancellationResult( InteractionResult.SUCCESS );
 	}
 }
