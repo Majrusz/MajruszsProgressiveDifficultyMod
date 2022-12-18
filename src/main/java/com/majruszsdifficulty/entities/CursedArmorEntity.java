@@ -87,7 +87,8 @@ public class CursedArmorEntity extends Monster {
 			.add( Attributes.MOVEMENT_SPEED, 0.23 )
 			.add( Attributes.ATTACK_DAMAGE, 3.0 )
 			.add( Attributes.FOLLOW_RANGE, 35.0 )
-			.add( Attributes.ARMOR, 3.0 )
+			.add( Attributes.KNOCKBACK_RESISTANCE, 0.23 )
+			.add( Attributes.ARMOR, 4.0 )
 			.build();
 	}
 
