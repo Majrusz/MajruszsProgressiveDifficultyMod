@@ -123,7 +123,7 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	public void setAssembleSound( SoundEvent soundEvent ) {
-		this.assembleSound = new SoundHandler( soundEvent, SoundSource.HOSTILE );
+		this.assembleSound = new SoundHandler( soundEvent, SoundSource.HOSTILE, SoundHandler.randomized( 1.2f ) );
 	}
 
 	public boolean isAssembling() {
