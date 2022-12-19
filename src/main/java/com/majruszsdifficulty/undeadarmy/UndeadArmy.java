@@ -214,9 +214,6 @@ public class UndeadArmy {
 		if( countNearbyPlayers() == 0 )
 			this.status = Status.STOPPED;
 
-		if( shouldWaveEndPrematurely() )
-			killAllUndeadArmyMobs();
-
 		if( this.undeadKilled == this.undeadToKill )
 			endWave();
 
@@ -324,11 +321,6 @@ public class UndeadArmy {
 
 	private boolean shouldMobsBeHighlighted() {
 		return this.ticksWaveActive >= Utility.minutesToTicks( 1.5 ) && this.ticksWaveActive % 100 == 0 && this.undeadKilled > this.undeadToKill / 2;
-	}
-
-	private boolean shouldWaveEndPrematurely() {
-		boolean thereIsOnlyFewUndeadLeft = this.undeadKilled >= ( this.undeadToKill * 0.8 ) && countMobsLeft() < 3;
-		return thereIsOnlyFewUndeadLeft && this.ticksWaveActive >= Utility.minutesToTicks( 2.5 );
 	}
 
 	private void tryToEnchantEquipment( Mob monster ) {
