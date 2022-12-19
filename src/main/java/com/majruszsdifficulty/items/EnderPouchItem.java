@@ -22,7 +22,7 @@ public class EnderPouchItem extends Item {
 		data.player.awardStat( Stats.OPEN_ENDERCHEST );
 		data.player.swing( data.hand );
 		if( data.level != null ) {
-			SoundHandler.ITEM_PICKUP.play( data.level, data.player.position() );
+			SoundHandler.ITEM_PICKUP.play( data.level, data.player.position(), ()->0.5f );
 		}
 		data.event.setCancellationResult( InteractionResult.SUCCESS );
 	}
