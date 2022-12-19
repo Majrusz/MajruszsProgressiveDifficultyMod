@@ -143,7 +143,7 @@ public class BleedingEffect extends MobEffect {
 			onDeath.addCondition( new Condition.IsServer<>() ).addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
 
 			OnEffectApplicable.Context onEffectApplicable = new OnEffectApplicable.Context( this::cancelEffect );
-			onEffectApplicable.addCondition( data->IS_ENABLED.get() )
+			onEffectApplicable.addCondition( data->!BleedingEffect.isEnabled() )
 				.addCondition( data->data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) );
 
 			OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyBleeding );
