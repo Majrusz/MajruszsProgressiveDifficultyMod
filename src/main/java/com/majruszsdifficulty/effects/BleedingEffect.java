@@ -149,7 +149,7 @@ public class BleedingEffect extends MobEffect {
 			OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyBleeding );
 			onDamaged.addCondition( new Condition.IsServer<>() )
 				.addCondition( new Condition.Excludable< OnDamaged.Data >().save( this.excludable ) )
-				.addCondition( new Condition.ArmorDependentChance< OnDamaged.Data >( 0.9, 0.8, 0.7, 0.6 ).save( this.armorChance ) )
+				.addCondition( new Condition.ArmorDependentChance< OnDamaged.Data >( 0.8, 0.6, 0.7, 0.9 ).save( this.armorChance ) )
 				.addCondition( this::isNotImmune )
 				.addCondition( OnDamaged.DEALT_ANY_DAMAGE )
 				.addConfig( this.immuneMobs )
