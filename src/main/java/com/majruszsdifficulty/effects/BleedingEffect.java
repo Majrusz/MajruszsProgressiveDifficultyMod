@@ -29,9 +29,15 @@ import net.minecraftforge.fml.DistExecutor;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class BleedingEffect extends MobEffect {
 	public static final ParticleHandler PARTICLES = new ParticleHandler( Registries.BLOOD, ()->new Vec3( 0.125, 0.5, 0.125 ), ParticleHandler.speed( 0.05f ) );
+	static Supplier< Boolean > IS_ENABLED = ()->true;
+
+	public static boolean isEnabled() {
+		return IS_ENABLED.get();
+	}
 
 	public BleedingEffect() {
 		super( MobEffectCategory.HARMFUL, 0xffdd5555 );
@@ -112,6 +118,8 @@ public class BleedingEffect extends MobEffect {
 
 		public Bleeding() {
 			super( Registries.Modifiers.DEFAULT, "Bleeding", "Common config for all Bleeding effects." );
+
+			IS_ENABLED = this.effectConfig::isEnabled;
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
 			onTick.addCondition( new Condition.IsServer<>() )
