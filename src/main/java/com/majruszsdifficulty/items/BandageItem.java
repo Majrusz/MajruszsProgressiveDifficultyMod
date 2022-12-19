@@ -46,15 +46,16 @@ public class BandageItem extends Item {
 
 	@Override
 	public void appendHoverText( ItemStack itemStack, @Nullable Level level, List< Component > components, TooltipFlag flag ) {
-		components.add( CommonComponents.EMPTY );
-		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
-		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
 		if( this instanceof GoldenBandageItem ) {
 			components.add( this.buildComponent( Effects.INSTANCE.goldenRegeneration ).withStyle( ChatFormatting.BLUE ) );
 			components.add( this.buildComponent( Effects.INSTANCE.goldenImmunity ).withStyle( ChatFormatting.BLUE ) );
 		} else {
 			components.add( this.buildComponent( Effects.INSTANCE.regeneration ).withStyle( ChatFormatting.BLUE ) );
 		}
+
+		components.add( CommonComponents.EMPTY );
+		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
 	}
 
 	private MutableComponent buildComponent( EffectConfig config ) {
