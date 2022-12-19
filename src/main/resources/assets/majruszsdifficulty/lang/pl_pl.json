@@ -49,7 +49,7 @@
   "item.majruszsdifficulty.ender_pouch": "Sakiewka kresu",
   "item.majruszsdifficulty.golden_bandage": "Złoty bandaż",
   "item.majruszsdifficulty.recall_potion": "Mikstura powrotu",
-  "item.majruszsdifficulty.recall_potion.effect": " Teleportuje z powrotem do domu",
+  "item.majruszsdifficulty.recall_potion.effect": "Teleportuje z powrotem do domu",
   "item.majruszsdifficulty.bad_omen_potion": "Mikstura złego omenu",
   "item.majruszsdifficulty.bad_omen_potion.effect": "%1$s poziom złego omenu",
   "block.majruszsdifficulty.enderium_shard_ore": "Ruda kryształu enderium",

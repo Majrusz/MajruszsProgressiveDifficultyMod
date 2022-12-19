@@ -66,6 +66,6 @@ public class RecallPotionItem extends Item {
 	public void appendHoverText( ItemStack itemStack, @Nullable Level level, List< Component > components, TooltipFlag flag ) {
 		components.add( CommonComponents.EMPTY );
 		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
-		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.DARK_GREEN ) );
+		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
 	}
 }
