@@ -1,14 +1,16 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
+import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.gui.BleedingGui;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
-import com.mlib.config.BooleanConfig;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
@@ -19,6 +21,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -29,14 +32,25 @@ import net.minecraftforge.fml.DistExecutor;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BleedingEffect extends MobEffect {
 	public static final ParticleHandler PARTICLES = new ParticleHandler( Registries.BLOOD, ()->new Vec3( 0.125, 0.5, 0.125 ), ParticleHandler.speed( 0.05f ) );
 	static Supplier< Boolean > IS_ENABLED = ()->true;
+	static Supplier< Integer > GET_AMPLIFIER = ()->0;
+	static Function< EquipmentSlot, Float > ARMOR_MULTIPLIER = slot->1.0f;
 
 	public static boolean isEnabled() {
 		return IS_ENABLED.get();
+	}
+
+	public static int getAmplifier() {
+		return GET_AMPLIFIER.get();
+	}
+
+	public static float getArmorMultiplier( EquipmentSlot slot ) {
+		return ARMOR_MULTIPLIER.apply( slot );
 	}
 
 	public BleedingEffect() {
@@ -113,13 +127,13 @@ public class BleedingEffect extends MobEffect {
 
 	@AutoInstance
 	public static class Bleeding extends GameModifier {
-		final BooleanConfig effectConfig = new BooleanConfig( "is_enabled", "Specifies whether Bleeding should always be applicable.", false, true );
-		final StringListConfig immuneMobs = new StringListConfig( "immune_mobs", "Specifies which mobs should not be affected by Bleeding (all undead mobs are immune by default).", false, "minecraft:skeleton_horse" );
+		final StringListConfig immuneMobs = new StringListConfig( "immune_mobs", "Specifies which mobs should not be affected by Bleeding (all undead mobs are immune by default).", false, "minecraft:skeleton_horse", "minecraft:zombie_horse" );
+		final BleedingConfig effect = new BleedingConfig();
+		final Condition.Ref< Condition.Excludable< OnDamaged.Data > > excludable = new Condition.Ref<>();
+		final Condition.Ref< Condition.ArmorDependentChance< OnDamaged.Data > > armorChance = new Condition.Ref<>();
 
 		public Bleeding() {
 			super( Registries.Modifiers.DEFAULT, "Bleeding", "Common config for all Bleeding effects." );
-
-			IS_ENABLED = this.effectConfig::isEnabled;
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
 			onTick.addCondition( new Condition.IsServer<>() )
@@ -130,14 +144,24 @@ public class BleedingEffect extends MobEffect {
 			OnDeath.Context onDeath = new OnDeath.Context( this::spawnParticles );
 			onDeath.addCondition( new Condition.IsServer<>() ).addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
 
-			OnEffectApplicable.Context onEffectApplicable = new OnEffectApplicable.Context( this::cancelBleeding );
-			onEffectApplicable.addCondition( new Condition.Excludable< OnEffectApplicable.Data >( this.effectConfig ).negate() )
-				.addCondition( data->data.effect.equals( Registries.BLEEDING.get() ) || data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) );
+			OnEffectApplicable.Context onEffectApplicable = new OnEffectApplicable.Context( this::cancelEffect );
+			onEffectApplicable.addCondition( data->IS_ENABLED.get() )
+				.addCondition( data->data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) );
 
-			OnEffectApplicable.Context onEffectApplicable2 = new OnEffectApplicable.Context( this::cancelBleeding );
-			onEffectApplicable2.addCondition( this::isImmune ).addConfig( this.immuneMobs );
+			OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyBleeding );
+			onDamaged.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Excludable< OnDamaged.Data >().save( this.excludable ) )
+				.addCondition( new Condition.ArmorDependentChance<>() )
+				.addCondition( this::isNotImmune )
+				.addCondition( OnDamaged.DEALT_ANY_DAMAGE )
+				.addConfig( this.immuneMobs )
+				.addConfig( this.effect );
 
-			this.addContexts( onTick, onDeath, onEffectApplicable, onEffectApplicable2 );
+			IS_ENABLED = this.excludable.get().getConfig()::isEnabled;
+			GET_AMPLIFIER = this.effect::getAmplifier;
+			ARMOR_MULTIPLIER = slot->this.armorChance.get().getConfig( slot ).asFloat();
+
+			this.addContexts( onTick, onDeath, onEffectApplicable, onDamaged );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
@@ -155,16 +179,20 @@ public class BleedingEffect extends MobEffect {
 			PARTICLES.spawn( level, position, amountOfParticles );
 		}
 
-		private void cancelBleeding( OnEffectApplicable.Data data ) {
+		private void cancelEffect( OnEffectApplicable.Data data ) {
 			data.event.setResult( Event.Result.DENY );
 		}
 
-		private boolean isImmune( OnEffectApplicable.Data data ) {
-			assert data.entity != null;
-			boolean isBleedingEffect = data.effect.equals( Registries.BLEEDING.get() );
-			boolean isMobImmune = this.immuneMobs.contains( Utility.getRegistryString( data.entity.getType() ) );
+		private void applyBleeding( OnDamaged.Data data ) {
+			OnBleedingCheck.Data bleedingData = new OnBleedingCheck.Data( data.event );
+			OnBleedingCheck.Context.accept( bleedingData );
+			if( bleedingData.isEffectTriggered() ) {
+				this.effect.apply( data );
+			}
+		}
 
-			return isBleedingEffect && isMobImmune;
+		private boolean isNotImmune( OnDamaged.Data data ) {
+			return !this.immuneMobs.contains( Utility.getRegistryString( data.target.getType() ) );
 		}
 	}
 }
