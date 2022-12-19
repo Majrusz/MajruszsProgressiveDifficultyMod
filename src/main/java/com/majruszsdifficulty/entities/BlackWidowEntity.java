@@ -95,7 +95,7 @@ public class BlackWidowEntity extends Spider {
 		}
 
 		private void addTooltip( OnItemTooltip.Data data ) {
-			data.tooltip.add( Component.literal( "This mob is not finished yet, wait until the next major update!" )
+			data.tooltip.add( Component.literal( "This mob is not finished yet, coming soon in the next major update!" )
 				.withStyle( ChatFormatting.RED ) );
 		}
 	}
