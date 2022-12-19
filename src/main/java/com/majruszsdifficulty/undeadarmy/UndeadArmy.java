@@ -100,9 +100,6 @@ public class UndeadArmy {
 		this.ticksInactiveMaximum = UndeadArmyConfig.getInactivityTicks();
 
 		updateProgressBarText();
-		if( this.status == Status.BETWEEN_WAVES ) {
-			generateSpawnInfo();
-		}
 	}
 
 	public CompoundTag write( CompoundTag nbt ) {
@@ -200,6 +197,10 @@ public class UndeadArmy {
 	}
 
 	private void tickBetweenWaves() {
+		if( this.spawnInfoList.isEmpty() ) {
+			generateSpawnInfo();
+		}
+
 		if( this.ticksBetweenWaves-- <= 0 )
 			proceedToNextWave();
 
