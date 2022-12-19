@@ -16,7 +16,7 @@ public class EnderiumHoeItem extends HoeItem {
 
 	@AutoInstance
 	public static class IncreaseTillArea {
-		static final String ATTRIBUTE_ID = "item.majruszsdifficulty.enderium_hoe.till_range";
+		static final String ATTRIBUTE_ID = "item.majruszsdifficulty.enderium_hoe.effect";
 
 		public IncreaseTillArea() {
 			new OnFarmlandTillCheck.Context( OnFarmlandTillCheck.INCREASE_AREA )

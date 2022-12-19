@@ -1,12 +1,13 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
-import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.items.ItemHelper;
 import com.mlib.levels.LevelHelper;
 import com.mlib.mobeffects.MobEffectHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,8 +17,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 /** Potion that will teleport the player to spawn/bed position after drinking it. */
 public class RecallPotionItem extends Item {
+	static final String TOOLTIP_ID = "item.majruszsdifficulty.recall_potion.effect";
+
 	public RecallPotionItem() {
 		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
@@ -54,5 +60,12 @@ public class RecallPotionItem extends Item {
 	@Override
 	public boolean isFoil( ItemStack itemStack ) {
 		return true;
+	}
+
+	@Override
+	public void appendHoverText( ItemStack itemStack, @Nullable Level level, List< Component > components, TooltipFlag flag ) {
+		components.add( CommonComponents.EMPTY );
+		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.DARK_GREEN ) );
 	}
 }
