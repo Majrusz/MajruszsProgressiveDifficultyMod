@@ -265,6 +265,7 @@ public class UndeadArmy {
 		}
 
 		updateProgressBarText();
+		awardAdvancements();
 	}
 
 	private void generateSpawnInfo() {
@@ -366,7 +367,6 @@ public class UndeadArmy {
 			for( int i = 0; i < UndeadArmyConfig.getAmountOfVictoryExperience() / 4; i++ )
 				this.level.addFreshEntity( new ExperienceOrb( this.level, position.x, position.y + 1, position.z, 4 ) );
 
-			Registries.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( player, this.currentWave );
 			if( Registries.UNDEAD_ARMY_TREASURE_BAG.get().isEnabled() )
 				ItemHelper.giveItemStackToPlayer( new ItemStack( Registries.UNDEAD_ARMY_TREASURE_BAG.get() ), player, this.level );
 		}
@@ -402,6 +402,12 @@ public class UndeadArmy {
 		for( ServerPlayer player : currentPlayers )
 			if( !validPlayers.contains( player ) )
 				this.bossInfo.removePlayer( player );
+	}
+
+	private void awardAdvancements() {
+		for( ServerPlayer player : this.level.getPlayers( getParticipantsPredicate() ) ) {
+			Registries.UNDEAD_ARMY_DEFEATED_TRIGGER.trigger( player, this.currentWave );
+		}
 	}
 
 	private AABB getAxisAligned( double range ) {
