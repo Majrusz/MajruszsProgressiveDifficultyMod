@@ -6,6 +6,7 @@
   "effect.majruszsdifficulty.bleeding": "Krwawienie",
   "effect.majruszsdifficulty.bleeding.description": "Zadaje śmiertelne obrażenia od czasu do czasu. Głównie wywoływane ostrymi przedmiotami, przez zombie oraz przez pająki. Nie wpływa na nieumarłych.",
   "effect.majruszsdifficulty.bleeding.item_tooltip": " %1$s szansy na wywołanie krwawienia %2$s",
+  "effect.majruszsdifficulty.bleeding.armor_tooltip": "x%1$s szansa na krwawienie",
   "effect.majruszsdifficulty.bleeding_immunity": "Odporność na krwawienie",
   "effect.majruszsdifficulty.bleeding_immunity.description": "Powoduje, że gracz nie otrzymuje żadnych obrażeń od krwawienia.",
   "itemGroup.majruszsdifficulty.primary": "Majrusz's Progressive Difficulty",

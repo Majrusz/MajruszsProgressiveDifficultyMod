@@ -4,18 +4,19 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.gui.BleedingGui;
+import com.mlib.EquipmentSlots;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
-import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
-import com.mlib.gamemodifiers.contexts.OnEntityTick;
+import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.mobeffects.MobEffectHelper;
+import com.mlib.text.TextHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -23,6 +24,8 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,14 +35,12 @@ import net.minecraftforge.fml.DistExecutor;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BleedingEffect extends MobEffect {
 	public static final ParticleHandler PARTICLES = new ParticleHandler( Registries.BLOOD, ()->new Vec3( 0.125, 0.5, 0.125 ), ParticleHandler.speed( 0.05f ) );
 	static Supplier< Boolean > IS_ENABLED = ()->true;
 	static Supplier< Integer > GET_AMPLIFIER = ()->0;
-	static Function< EquipmentSlot, Float > ARMOR_MULTIPLIER = slot->1.0f;
 
 	public static boolean isEnabled() {
 		return IS_ENABLED.get();
@@ -47,10 +48,6 @@ public class BleedingEffect extends MobEffect {
 
 	public static int getAmplifier() {
 		return GET_AMPLIFIER.get();
-	}
-
-	public static float getArmorMultiplier( EquipmentSlot slot ) {
-		return ARMOR_MULTIPLIER.apply( slot );
 	}
 
 	public BleedingEffect() {
@@ -127,6 +124,7 @@ public class BleedingEffect extends MobEffect {
 
 	@AutoInstance
 	public static class Bleeding extends GameModifier {
+		static final String ATTRIBUTE_ID = "effect.majruszsdifficulty.bleeding.armor_tooltip";
 		final StringListConfig immuneMobs = new StringListConfig( "immune_mobs", "Specifies which mobs should not be affected by Bleeding (all undead mobs are immune by default).", false, "minecraft:skeleton_horse", "minecraft:zombie_horse" );
 		final BleedingConfig effect = new BleedingConfig();
 		final Condition.Ref< Condition.Excludable< OnDamaged.Data > > excludable = new Condition.Ref<>();
@@ -151,17 +149,20 @@ public class BleedingEffect extends MobEffect {
 			OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyBleeding );
 			onDamaged.addCondition( new Condition.IsServer<>() )
 				.addCondition( new Condition.Excludable< OnDamaged.Data >().save( this.excludable ) )
-				.addCondition( new Condition.ArmorDependentChance<>() )
+				.addCondition( new Condition.ArmorDependentChance< OnDamaged.Data >( 0.9, 0.8, 0.7, 0.6 ).save( this.armorChance ) )
 				.addCondition( this::isNotImmune )
 				.addCondition( OnDamaged.DEALT_ANY_DAMAGE )
 				.addConfig( this.immuneMobs )
 				.addConfig( this.effect );
 
+			OnItemAttributeTooltip.Context onTooltip = new OnItemAttributeTooltip.Context( this::addChanceTooltip );
+			onTooltip.addCondition( data->data.item instanceof ArmorItem )
+				.addCondition( data->BleedingEffect.isEnabled() );
+
 			IS_ENABLED = this.excludable.get().getConfig()::isEnabled;
 			GET_AMPLIFIER = this.effect::getAmplifier;
-			ARMOR_MULTIPLIER = slot->this.armorChance.get().getConfig( slot ).asFloat();
 
-			this.addContexts( onTick, onDeath, onEffectApplicable, onDamaged );
+			this.addContexts( onTick, onDeath, onEffectApplicable, onDamaged, onTooltip );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
@@ -193,6 +194,16 @@ public class BleedingEffect extends MobEffect {
 
 		private boolean isNotImmune( OnDamaged.Data data ) {
 			return !this.immuneMobs.contains( Utility.getRegistryString( data.target.getType() ) );
+		}
+
+		private void addChanceTooltip( OnItemAttributeTooltip.Data data ) {
+			for( EquipmentSlot slot : EquipmentSlots.ARMOR ) {
+				if( !data.itemStack.getAttributeModifiers( slot ).containsKey( Attributes.ARMOR ) )
+					continue;
+
+				String multiplier = TextHelper.minPrecision( this.armorChance.get().getConfig( slot ).asFloat() );
+				data.add( slot, Component.translatable( ATTRIBUTE_ID, multiplier ).withStyle( ChatFormatting.BLUE ) );
+			}
 		}
 	}
 }
