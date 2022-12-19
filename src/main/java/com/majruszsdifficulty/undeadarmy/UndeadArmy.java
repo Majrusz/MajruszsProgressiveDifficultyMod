@@ -223,7 +223,12 @@ public class UndeadArmy {
 		if( shouldMobsBeHighlighted() )
 			highlightArmy();
 
-		++this.ticksWaveActive;
+		if( ++this.ticksWaveActive % 20 == 0 ) {
+			this.undeadKilled = this.undeadToKill - this.countArmyMobs();
+			// sometimes mobs can go outside the raid or turn into Drowned and this
+			// value may become invalid, so to make sure this does not break the raid
+			// there is an update every second to keep the value up to date
+		}
 
 		this.bossInfo.setProgress( Mth.clamp( 1.0f - ( ( float )this.undeadKilled ) / this.undeadToKill, 0.0f, 1.0f ) );
 	}
