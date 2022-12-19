@@ -25,7 +25,6 @@ import com.mlib.annotations.AnnotationHandler;
 import com.mlib.commands.Command;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.itemsets.ItemSet;
 import com.mlib.registries.RegistryHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -198,7 +197,7 @@ public class Registries {
 		COMMANDS = annotationHandler.getInstances( Command.class );
 		GAME_MODIFIERS = annotationHandler.getInstances( GameModifier.class );
 
-		GAME_MODIFIERS.add( new BandageItem.BandageUse() );
+		GAME_MODIFIERS.add( new BandageItem.Effects() );
 		GAME_MODIFIERS.add( new BiteBleeding() );
 		GAME_MODIFIERS.add( new BlockIllusionerFromJoiningRaids() );
 		GAME_MODIFIERS.add( new CactusBleeding() );

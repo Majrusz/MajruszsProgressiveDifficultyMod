@@ -8,9 +8,15 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
 import com.mlib.items.ItemHelper;
+import com.mlib.text.TextHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.StringUtil;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,12 +24,18 @@ import net.minecraft.world.entity.ai.gossip.GossipType;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class BandageItem extends Item {
+	static final String TOOLTIP_ID = "item.majruszsdifficulty.bandage.effect";
+
 	public BandageItem( Rarity rarity ) {
 		super( new Properties().stacksTo( 16 ).rarity( rarity ) );
 	}
@@ -32,21 +44,44 @@ public class BandageItem extends Item {
 		this( Rarity.COMMON );
 	}
 
-	public static class BandageUse extends GameModifier {
+	@Override
+	public void appendHoverText( ItemStack itemStack, @Nullable Level level, List< Component > components, TooltipFlag flag ) {
+		components.add( CommonComponents.EMPTY );
+		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
+		if( this instanceof GoldenBandageItem ) {
+			components.add( this.buildComponent( Effects.INSTANCE.goldenRegeneration ).withStyle( ChatFormatting.BLUE ) );
+			components.add( this.buildComponent( Effects.INSTANCE.goldenImmunity ).withStyle( ChatFormatting.BLUE ) );
+		} else {
+			components.add( this.buildComponent( Effects.INSTANCE.regeneration ).withStyle( ChatFormatting.BLUE ) );
+		}
+	}
+
+	private MutableComponent buildComponent( EffectConfig config ) {
+		Component effectName = config.getEffect().getDisplayName();
+		Component fullName = config.getAmplifier() > 0 ? Component.translatable( "potion.withAmplifier", effectName.getString(), TextHelper.toRoman( config.getAmplifier() + 1 ) ) : Component.literal( effectName.getString() );
+
+		return Component.translatable( "potion.withDuration", fullName.getString(), StringUtil.formatTickDuration( config.getDuration() ) );
+	}
+
+	public static class Effects extends GameModifier {
+		static Effects INSTANCE = null;
 		final EffectConfig regeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
 		final EffectConfig goldenRegeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
 		final EffectConfig goldenImmunity = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
 
-		public BandageUse() {
+		public Effects() {
 			super( Registries.Modifiers.DEFAULT, "Bandages", "" );
 
 			OnPlayerInteract.Context onInteraction = new OnPlayerInteract.Context( this::useBandage );
 			onInteraction.addCondition( data->data.itemStack.getItem() instanceof BandageItem )
 				.addCondition( data->data.target != null )
 				.addCondition( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) )
-				.addCondition( BandageUse::canUse )
+				.addCondition( Effects::canUse )
 				.addConfig( new ConfigGroup( "Bandage", "Config for a Bandage item.", this.regeneration ) )
 				.addConfig( new ConfigGroup( "GoldenBandage", "Config for a Golden Bandage item.", this.goldenRegeneration, this.goldenImmunity ) );
+
+			INSTANCE = this;
 
 			this.addContext( onInteraction );
 		}
