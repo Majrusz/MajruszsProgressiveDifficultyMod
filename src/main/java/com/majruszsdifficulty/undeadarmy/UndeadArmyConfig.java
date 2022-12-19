@@ -28,8 +28,8 @@ public class UndeadArmyConfig {
 		WAVE_MEMBERS.addWaveConfig( "4-6 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray" );
 		WAVE_MEMBERS.addWaveConfig( "3-5 minecraft:zombie", "1-2 minecraft:husk", "2-4 minecraft:skeleton", "1-2 minecraft:stray" );
 		WAVE_MEMBERS.addWaveConfig( "2-4 minecraft:zombie", "1-3 minecraft:husk", "1-3 minecraft:skeleton", "1-3 minecraft:stray", "1-1 majruszsdifficulty:tank" );
-		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "3-5 minecraft:husk", "1-3 minecraft:skeleton", "2-4 minecraft:stray", "2-2 majruszsdifficulty:tank" );
-		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "4-6 minecraft:husk", "1-3 minecraft:skeleton", "3-5 minecraft:stray", "3-3 majruszsdifficulty:tank" );
+		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "2-4 minecraft:husk", "1-3 minecraft:skeleton", "2-4 minecraft:stray", "1-1 minecraft:wither_skeleton", "2-2 majruszsdifficulty:tank" );
+		WAVE_MEMBERS.addWaveConfig( "1-3 minecraft:zombie", "3-5 minecraft:husk", "1-3 minecraft:skeleton", "3-5 minecraft:stray", "2-3 minecraft:wither_skeleton", "3-3 majruszsdifficulty:tank" );
 		UNDEAD_ARMY_GROUP.addConfigs( ENABLED, KILL_REQUIREMENT, SIZE_MULTIPLIER, SKELETON_HORSE_CHANCE, EXPERIENCE_REWARD, ENCHANTED_ITEM_CHANCE, ARMOR_CHANCE, DURATION_BETWEEN_WAVES, MAXIMUM_INACTIVE_DURATION, WAVE_MEMBERS );
 	}
 
