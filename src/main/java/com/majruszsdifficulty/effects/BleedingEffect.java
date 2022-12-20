@@ -63,12 +63,6 @@ public class BleedingEffect extends MobEffect {
 		} else {
 			entity.hurt( Registries.BLEEDING_SOURCE, 1.0f );
 		}
-
-		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->{
-			if( entity == Minecraft.getInstance().player ) {
-				BleedingGui.addBloodOnScreen();
-			}
-		} );
 	}
 
 	@Override
@@ -139,6 +133,10 @@ public class BleedingEffect extends MobEffect {
 				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
 				.addCondition( data->data.entity instanceof LivingEntity );
 
+			OnPlayerTick.Context onTick2 = new OnPlayerTick.Context( this::addBloodOnScreen );
+			onTick2.addCondition( new Condition.Cooldown<>( 2.0, Dist.CLIENT ) )
+				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
+
 			OnDeath.Context onDeath = new OnDeath.Context( this::spawnParticles );
 			onDeath.addCondition( new Condition.IsServer<>() ).addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
 
@@ -162,7 +160,7 @@ public class BleedingEffect extends MobEffect {
 			IS_ENABLED = this.excludable.get().getConfig()::isEnabled;
 			GET_AMPLIFIER = this.effect::getAmplifier;
 
-			this.addContexts( onTick, onDeath, onEffectApplicable, onDamaged, onTooltip );
+			this.addContexts( onTick, onTick2, onDeath, onEffectApplicable, onDamaged, onTooltip );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
@@ -178,6 +176,14 @@ public class BleedingEffect extends MobEffect {
 		private void spawnParticles( ServerLevel level, Entity entity, int amountOfParticles ) {
 			Vec3 position = new Vec3( entity.getX(), entity.getY( 0.5 ), entity.getZ() );
 			PARTICLES.spawn( level, position, amountOfParticles );
+		}
+
+		private void addBloodOnScreen( OnPlayerTick.Data data ) {
+			DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->{
+				if( data.player == Minecraft.getInstance().player ) {
+					BleedingGui.addBloodOnScreen( 1 );
+				}
+			} );
 		}
 
 		private void cancelEffect( OnEffectApplicable.Data data ) {

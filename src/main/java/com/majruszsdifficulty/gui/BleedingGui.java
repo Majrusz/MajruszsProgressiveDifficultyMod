@@ -27,14 +27,16 @@ import java.util.stream.IntStream;
 public class BleedingGui {
 	static final Particles PARTICLES = new Particles();
 
-	public static void addBloodOnScreen() {
+	public static void addBloodOnScreen( int count ) {
 		List< Integer > x = IntStream.iterate( 0, i->i + 1 ).limit( Particle.GRID_WIDTH ).boxed().collect( Collectors.toList() );
 		List< Integer > y = IntStream.iterate( 0, i->i + 1 ).limit( Particle.GRID_HEIGHT ).boxed().collect( Collectors.toList() );
 
 		Collections.shuffle( x );
 		Collections.shuffle( y );
 
-		List.of( 0, 1, 2 ).forEach( idx->PARTICLES.get().get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
+		IntStream.iterate( 0, i->i + 1 )
+			.limit( count )
+			.forEach( idx->PARTICLES.get().get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
 	}
 
 	@SubscribeEvent
