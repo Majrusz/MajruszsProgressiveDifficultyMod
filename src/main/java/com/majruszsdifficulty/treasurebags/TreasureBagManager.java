@@ -3,6 +3,7 @@ package com.majruszsdifficulty.treasurebags;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeath;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 /** Responsible for awarding the player with Treasure Bags. */
+@AutoInstance
 public class TreasureBagManager extends GameModifier {
 	static final String PARTICIPANT_LIST_TAG = "TreasureBagPlayersToReward";
 	static final String PLAYER_TAG = "TreasureBagPlayerUUID";

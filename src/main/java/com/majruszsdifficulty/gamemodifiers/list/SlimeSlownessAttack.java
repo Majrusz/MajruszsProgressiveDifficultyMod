@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -9,6 +10,7 @@ import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Slime;
 
+@AutoInstance
 public class SlimeSlownessAttack extends GameModifier {
 	final ProgressiveEffectConfig slowness = new ProgressiveEffectConfig( "", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
 

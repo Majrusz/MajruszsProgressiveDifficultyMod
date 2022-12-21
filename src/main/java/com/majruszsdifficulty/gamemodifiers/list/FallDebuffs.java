@@ -4,6 +4,7 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
@@ -11,6 +12,7 @@ import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
+@AutoInstance
 public class FallDebuffs extends GameModifier {
 	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 8.0 );
 	final ProgressiveEffectConfig slowness = new ProgressiveEffectConfig( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );

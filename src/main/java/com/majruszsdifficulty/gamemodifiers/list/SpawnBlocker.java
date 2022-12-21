@@ -3,11 +3,13 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageStringListConfig;
 import com.mlib.Utility;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.eventbus.api.Event;
 
+@AutoInstance
 public class SpawnBlocker extends GameModifier {
 	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( "", "", new String[]{
 		"minecraft:illusioner", "majruszsdifficulty:tank"

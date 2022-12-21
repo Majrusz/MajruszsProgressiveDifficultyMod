@@ -2,12 +2,14 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.entity.monster.Creeper;
 
+@AutoInstance
 public class CreeperExplosionImmunity extends GameModifier {
 	final DoubleConfig damageMultiplier = new DoubleConfig( "damage_multiplier", "", false, 0.2, 0.0, 0.99 );
 

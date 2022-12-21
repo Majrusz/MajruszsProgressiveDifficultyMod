@@ -4,6 +4,7 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.Items;
 
 import javax.annotation.Nullable;
 
+@AutoInstance
 public class SpawnPlayerZombie extends GameModifier {
 	final DoubleConfig headChance = new DoubleConfig( "head_chance", "Chance for a zombie to have player's head.", false, 1.0, 0.0, 1.0 );
 	final DoubleConfig headDropChance = new DoubleConfig( "head_drop_chance", "Chance for a zombie to drop player's head.", false, 0.1, 0.0, 1.0 );

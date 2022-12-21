@@ -4,6 +4,7 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static com.majruszsdifficulty.Registries.UNDEAD_ARMY_GROUP;
 
+@AutoInstance
 public class UndeadArmyConfig {
 	static final BooleanConfig ENABLED = new BooleanConfig( "is_enabled", "Can the Undead Army spawn?", false, true );
 	static final IntegerConfig KILL_REQUIREMENT = new IntegerConfig( "kill_requirement", "Required amount of killed undead to start the Undead Army. (set to 0 if you want to disable this)", false, 100, 0, 1000 );

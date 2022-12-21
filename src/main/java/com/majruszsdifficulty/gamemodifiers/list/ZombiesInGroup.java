@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.item.Items;
 
+@AutoInstance
 public class ZombiesInGroup extends GameModifier {
 	final ItemStackConfig woodenPickaxe = new ItemStackConfig( "SidekickWoodenPickaxe", "Chance for a sidekick to have the Wooden Pickaxe (main hand).", ()->Items.WOODEN_PICKAXE, EquipmentSlot.MAINHAND, 0.75, 0.05, 0.1 );
 	final ItemStackConfig stonePickaxe = new ItemStackConfig( "SidekickStonePickaxe", "Chance for a sidekick to have the Stone Pickaxe (main hand).", ()->Items.STONE_PICKAXE, EquipmentSlot.MAINHAND, 0.5, 0.05, 0.1 );

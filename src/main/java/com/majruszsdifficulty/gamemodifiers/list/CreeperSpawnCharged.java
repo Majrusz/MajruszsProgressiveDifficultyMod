@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Creeper;
 
+@AutoInstance
 public class CreeperSpawnCharged extends GameModifier {
 	public CreeperSpawnCharged() {
 		super( Registries.Modifiers.DEFAULT, "CreeperSpawnCharged", "Creeper may spawn charged." );

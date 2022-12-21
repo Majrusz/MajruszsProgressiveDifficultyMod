@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
@@ -10,6 +11,7 @@ import com.mlib.gamemodifiers.contexts.OnSpawned;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
+@AutoInstance
 public class CreeperSpawnDebuffed extends GameModifier {
 	final EffectConfig[] effects = new EffectConfig[]{
 		new EffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 60.0 ),

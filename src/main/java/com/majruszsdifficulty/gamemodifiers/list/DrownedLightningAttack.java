@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 
+@AutoInstance
 public class DrownedLightningAttack extends GameModifier {
 	public DrownedLightningAttack() {
 		super( Registries.Modifiers.DEFAULT, "DrownedLightningAttack", "Drowned trident throw may spawn a lightning bolt when it rains." );

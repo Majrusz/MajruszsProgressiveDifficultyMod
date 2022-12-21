@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.item.Items;
 
+@AutoInstance
 public class PiglinsInGroup extends GameModifier {
 	final ItemStackConfig sword = new ItemStackConfig( "SidekickGoldenSword", "Chance for a sidekick to have the Golden Sword.", ()->Items.GOLDEN_SWORD, EquipmentSlot.MAINHAND, 0.4, 0.05, 0.2 );
 	final ItemStackConfig helmet = new ItemStackConfig( "LeaderGoldenHelmet", "Chance for a leader to have the Golden Helmet.", ()->Items.GOLDEN_HELMET, EquipmentSlot.HEAD, 0.67, 0.05, 0.75 );

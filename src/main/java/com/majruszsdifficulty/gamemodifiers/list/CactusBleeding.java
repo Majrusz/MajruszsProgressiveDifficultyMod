@@ -4,10 +4,12 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import net.minecraft.world.damagesource.DamageSource;
 
+@AutoInstance
 public class CactusBleeding extends GameModifier {
 	public CactusBleeding() {
 		super( Registries.Modifiers.DEFAULT, "CactusBleeding", "Cactus damage may inflict bleeding." );

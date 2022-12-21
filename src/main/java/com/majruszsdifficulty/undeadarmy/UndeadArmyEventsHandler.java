@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.Registries;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.levels.LevelHelper;
@@ -12,6 +13,7 @@ import net.minecraftforge.event.TickEvent;
 
 import static com.majruszsdifficulty.undeadarmy.UndeadArmyManager.isUndeadArmy;
 
+@AutoInstance
 public class UndeadArmyEventsHandler extends GameModifier {
 	public UndeadArmyEventsHandler() {
 		super( Registries.Modifiers.UNDEAD_ARMY, "UndeadArmyEventsHandler", "" );

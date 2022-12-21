@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.monster.CaveSpider;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 
+@AutoInstance
 public class JockeySpawn extends GameModifier {
 	public JockeySpawn() {
 		super( Registries.Modifiers.DEFAULT, "JockeySpawn", "Jockey is more likely to spawn." );

@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
 import com.mlib.config.BooleanConfig;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 
 import javax.annotation.Nullable;
 
+@AutoInstance
 public class IncreaseGameStage extends GameModifier {
 	static final EnumConfig< GameStage.Stage > DEFAULT_GAME_STAGE = new EnumConfig<>( "default_mode", "Game stage set at the beginning of a new world.", false, GameStage.Stage.NORMAL );
 	final StageProgressConfig expertMode = new StageProgressConfig( "ExpertMode", "Determines what starts the Expert Mode.", "none", "minecraft:the_nether" );

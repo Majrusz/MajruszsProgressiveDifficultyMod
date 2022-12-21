@@ -3,6 +3,7 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.Utility;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
@@ -65,6 +66,7 @@ public class BandageItem extends Item {
 		return Component.translatable( "potion.withDuration", fullName.getString(), StringUtil.formatTickDuration( config.getDuration() ) );
 	}
 
+	@AutoInstance
 	public static class Effects extends GameModifier {
 		static Effects INSTANCE = null;
 		final EffectConfig regeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );

@@ -9,17 +9,13 @@ import com.majruszsdifficulty.entities.BlackWidowEntity;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.entities.CursedArmorEntity;
 import com.majruszsdifficulty.entities.TankEntity;
-import com.majruszsdifficulty.gamemodifiers.list.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
-import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyEventsHandler;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.annotations.AnnotationHandler;
 import com.mlib.commands.Command;
@@ -196,45 +192,6 @@ public class Registries {
 		AnnotationHandler annotationHandler = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
 		COMMANDS = annotationHandler.getInstances( Command.class );
 		GAME_MODIFIERS = annotationHandler.getInstances( GameModifier.class );
-
-		GAME_MODIFIERS.add( new BandageItem.Effects() );
-		GAME_MODIFIERS.add( new BiteBleeding() );
-		GAME_MODIFIERS.add( new BlockIllusionerFromJoiningRaids() );
-		GAME_MODIFIERS.add( new CactusBleeding() );
-		GAME_MODIFIERS.add( new CreeperChainReaction() );
-		GAME_MODIFIERS.add( new CreeperExplodeBehindWall() );
-		GAME_MODIFIERS.add( new CreeperExplosionImmunity() );
-		GAME_MODIFIERS.add( new CreeperlingsCannotDestroyBlocks() );
-		GAME_MODIFIERS.add( new CreeperSpawnCharged() );
-		GAME_MODIFIERS.add( new CreeperSpawnDebuffed() );
-		GAME_MODIFIERS.add( new CreeperSplitIntoCreeperlings() );
-		GAME_MODIFIERS.add( new DoubleLoot() );
-		GAME_MODIFIERS.add( new DrownDebuffs() );
-		GAME_MODIFIERS.add( new DrownedLightningAttack() );
-		GAME_MODIFIERS.add( new EndermanTeleportAttack() );
-		GAME_MODIFIERS.add( new EvokerWithTotem() );
-		GAME_MODIFIERS.add( new ExperienceBonus() );
-		GAME_MODIFIERS.add( new FallDebuffs() );
-		GAME_MODIFIERS.add( new IncreaseGameStage() );
-		GAME_MODIFIERS.add( new JockeySpawn() );
-		GAME_MODIFIERS.add( new LootProgressManager() );
-		GAME_MODIFIERS.add( new MobsSpawnStronger() );
-		GAME_MODIFIERS.add( new PhantomLevitationAttack() );
-		GAME_MODIFIERS.add( new PiglinsInGroup() );
-		GAME_MODIFIERS.add( new PowerfulExplosions() );
-		GAME_MODIFIERS.add( new SharpToolsBleeding() );
-		GAME_MODIFIERS.add( new ShulkerBlindnessAttack() );
-		GAME_MODIFIERS.add( new SkeletonsInGroup() );
-		GAME_MODIFIERS.add( new SlimeSlownessAttack() );
-		GAME_MODIFIERS.add( new SpawnBlocker() );
-		GAME_MODIFIERS.add( new SpawnPlayerZombie() );
-		GAME_MODIFIERS.add( new SpiderPoisonAttack() );
-		GAME_MODIFIERS.add( new ThrowableWeaponsBleeding() );
-		GAME_MODIFIERS.add( new TreasureBagManager() );
-		GAME_MODIFIERS.add( new UndeadArmyEventsHandler() );
-		GAME_MODIFIERS.add( new ZombiesInGroup() );
-
-		new UndeadArmyConfig(); // we need to make sure that this class is loaded before the configs are registered
 	}
 
 	public static ResourceLocation getLocation( String register ) {

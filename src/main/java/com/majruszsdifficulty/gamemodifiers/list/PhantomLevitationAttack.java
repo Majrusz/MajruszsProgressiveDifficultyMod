@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -9,6 +10,7 @@ import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Phantom;
 
+@AutoInstance
 public class PhantomLevitationAttack extends GameModifier {
 	final ProgressiveEffectConfig levitation = new ProgressiveEffectConfig( "", ()->MobEffects.LEVITATION, 0, 5.0, 60.0 );
 

@@ -5,6 +5,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TridentItem;
 
+@AutoInstance
 public class SharpToolsBleeding extends GameModifier {
 	static final String ATTRIBUTE_ID = "effect.majruszsdifficulty.bleeding.item_tooltip";
 	final Condition.Ref< CustomConditions.CRDChance< OnDamaged.Data > > chance = new Condition.Ref<>();

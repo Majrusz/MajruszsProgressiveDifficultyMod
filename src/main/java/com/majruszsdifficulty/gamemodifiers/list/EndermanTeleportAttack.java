@@ -3,6 +3,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
@@ -11,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 
+@AutoInstance
 public class EndermanTeleportAttack extends GameModifier {
 	public EndermanTeleportAttack() {
 		super( Registries.Modifiers.DEFAULT, "EndermanTeleport", "Enderman attack may teleport the player somewhere nearby." );

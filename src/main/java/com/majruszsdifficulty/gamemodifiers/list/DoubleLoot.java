@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
 import com.mlib.config.StringListConfig;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static com.majruszsdifficulty.GameStage.Stage;
 
+@AutoInstance
 public class DoubleLoot extends GameModifier {
 	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, ()->new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
 	final StringListConfig forbiddenItems = new StringListConfig( "forbidden_items", "List of items that cannot be duplicated.", false, "minecraft:nether_star", "minecraft:totem_of_undying" );

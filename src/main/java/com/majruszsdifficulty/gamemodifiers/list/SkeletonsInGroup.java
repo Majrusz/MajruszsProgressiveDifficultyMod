@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.gamemodifiers.Condition;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.item.Items;
 
+@AutoInstance
 public class SkeletonsInGroup extends GameModifier {
 	final ItemStackConfig woodenSword = new ItemStackConfig( "SidekickWoodenSword", "Chance for a sidekick to have the Wooden Sword.", ()->Items.WOODEN_SWORD, EquipmentSlot.MAINHAND, 0.5, 0.05, 0.2 );
 	final ItemStackConfig stoneSword = new ItemStackConfig( "SidekickStoneSword", "Chance for a sidekick to have the Stone Sword.", ()->Items.STONE_SWORD, EquipmentSlot.MAINHAND, 0.25, 0.05, 0.2 );

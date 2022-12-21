@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.monster.Evoker;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+@AutoInstance
 public class EvokerWithTotem extends GameModifier {
 	public EvokerWithTotem() {
 		super( Registries.Modifiers.DEFAULT, "EvokerWithTotem", "Evoker may spawn with a Totem of Undying." );

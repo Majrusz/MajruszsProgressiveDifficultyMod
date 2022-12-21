@@ -2,12 +2,14 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import net.minecraft.world.entity.monster.Creeper;
 
+@AutoInstance
 public class CreeperExplodeBehindWall extends GameModifier {
 	public CreeperExplodeBehindWall() {
 		super( Registries.Modifiers.DEFAULT, "CreeperExplodeBehindWall", "Creeper explodes when the player is behind the wall." );

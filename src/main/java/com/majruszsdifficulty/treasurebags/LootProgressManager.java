@@ -5,6 +5,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnPlayerLogged;
 import com.mlib.network.NetworkMessage;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@AutoInstance
 public class LootProgressManager extends GameModifier {
 	static final ObfuscationGetter.Field< LootTable, List< LootPool > > POOLS = new ObfuscationGetter.Field<>( LootTable.class, "f_79109_" );
 	static final ObfuscationGetter.Field< LootPool, LootPoolEntryContainer[] > ENTRIES = new ObfuscationGetter.Field<>( LootPool.class, "f_79023_" );

@@ -5,6 +5,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.Random;
 import com.mlib.gamemodifiers.Condition;
@@ -22,6 +23,7 @@ import net.minecraftforge.event.level.ExplosionEvent;
 
 import java.util.List;
 
+@AutoInstance
 public class CreeperSplitIntoCreeperlings extends GameModifier {
 	final GameStageIntegerConfig creeperlingsAmount = new GameStageIntegerConfig( "MaxCreeperlings", "Maximum amount of Creeperlings to spawn.", 2, 4, 6, 1, 10 );
 
