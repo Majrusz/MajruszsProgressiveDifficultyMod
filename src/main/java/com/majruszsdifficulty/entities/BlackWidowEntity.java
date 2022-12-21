@@ -4,6 +4,7 @@ import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.DoubleConfig;
+import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
@@ -46,11 +47,13 @@ public class BlackWidowEntity extends Spider {
 
 	@Override
 	public void playSound( SoundEvent sound, float volume, float pitch ) {
-		if( !this.isSilent() ) {
-			float finalVolume = volume * Random.nextFloat( 0.5f, 0.7f );
-			float finalPitch = pitch * Random.nextFloat( 1.35f, 1.5f );
-			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), finalVolume, finalPitch );
+		if( this.isSilent() ) {
+			return;
 		}
+		float randomizedVolume = SoundHandler.randomized( volume * 0.6f ).get();
+		float randomizedPitch = SoundHandler.randomized( pitch * 1.4f ).get();
+
+		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import com.majruszsdifficulty.goals.TankAttackGoal;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
+import com.mlib.effects.SoundHandler;
 import com.mlib.network.NetworkMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -116,8 +117,13 @@ public class TankEntity extends Monster {
 
 	@Override
 	public void playSound( SoundEvent sound, float volume, float pitch ) {
-		if( !this.isSilent() )
-			this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume * 1.25f, pitch * 0.75f );
+		if( this.isSilent() ) {
+			return;
+		}
+		float randomizedVolume = SoundHandler.randomized( volume * 1.25f ).get();
+		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
+
+		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
 	@Override

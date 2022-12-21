@@ -5,6 +5,7 @@ import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
+import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
@@ -15,8 +16,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
@@ -103,7 +102,7 @@ public class BandageItem extends Item {
 			}
 			applyEffects( itemStack, target );
 			ItemHelper.consumeItemOnUse( itemStack, player );
-			playSfx( target );
+			SoundHandler.ITEM_PICKUP.play( target.level, target.position() );
 			data.event.setCancellationResult( InteractionResult.SUCCESS );
 		}
 
@@ -136,10 +135,6 @@ public class BandageItem extends Item {
 				Registries.BANDAGE_TRIGGER.trigger( serverPlayer, ( BandageItem )itemStack.getItem(), target.equals( serverPlayer ) );
 			}
 			target.removeEffect( bleeding );
-		}
-
-		private static void playSfx( LivingEntity target ) {
-			target.level.playSound( null, target.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.AMBIENT, 1.0f, 1.0f );
 		}
 	}
 }

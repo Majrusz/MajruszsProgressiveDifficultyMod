@@ -3,7 +3,9 @@ package com.majruszsdifficulty.undeadarmy;
 import com.majruszsdifficulty.Registries;
 import com.mlib.MajruszLibrary;
 import com.mlib.Utility;
+import com.mlib.effects.SoundHandler;
 import com.mlib.levels.LevelHelper;
+import com.mlib.math.VectorHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +13,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -25,6 +26,7 @@ import java.util.Optional;
 
 public class UndeadArmyManager extends SavedData {
 	public static final String DATA_NAME = "undead_army";
+	static final SoundHandler ARMY_APPROACHING = new SoundHandler( Registries.UNDEAD_ARMY_APPROACHING, SoundSource.AMBIENT, SoundHandler.randomized( 0.25f ) );
 	static final float MAXIMUM_DISTANCE_TO_ARMY = 12000.0f;
 	static final int START_DURATION = Utility.secondsToTicks( 6.5 );
 	final List< UndeadArmy > undeadArmies = new ArrayList<>();
@@ -32,7 +34,8 @@ public class UndeadArmyManager extends SavedData {
 	final ServerLevel level;
 
 	public static boolean isUndeadArmy( @Nullable Entity entity ) {
-		return entity != null && !( entity instanceof SkeletonHorse ) && entity.getPersistentData().contains( UndeadArmyKeys.POSITION + "X" );
+		return entity != null && !( entity instanceof SkeletonHorse ) && entity.getPersistentData()
+			.contains( UndeadArmyKeys.POSITION + "X" );
 	}
 
 	public static UndeadArmyManager load( CompoundTag nbt, ServerLevel level ) {
@@ -90,7 +93,7 @@ public class UndeadArmyManager extends SavedData {
 
 		Direction direction = optionalDirection.orElseGet( Direction::getRandom );
 		this.undeadArmiesToSpawn.add( new UndeadArmyToSpawn( this.level, attackPosition, direction ) );
-		this.level.playSound( null, attackPosition, Registries.UNDEAD_ARMY_APPROACHING.get(), SoundSource.AMBIENT, 0.25f, 1.0f );
+		ARMY_APPROACHING.play( this.level, VectorHelper.vec3( attackPosition ) );
 		MajruszLibrary.logOnDev( "Undead Army started at %s!", attackPosition );
 
 		return true;
