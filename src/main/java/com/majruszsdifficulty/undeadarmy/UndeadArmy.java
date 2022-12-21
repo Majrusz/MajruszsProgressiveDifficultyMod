@@ -338,7 +338,7 @@ public class UndeadArmy {
 			}
 	}
 
-	private void equipWithUndeadArmyArmor( Mob monster ) {
+	public static void equipWithUndeadArmyArmor( Mob monster ) {
 		float chanceToEquip = ( float )UndeadArmyConfig.getArmorPieceChance();
 		float chanceToDrop = 0.015f;
 
@@ -348,7 +348,7 @@ public class UndeadArmy {
 		tryToEquipItem( monster, UndeadArmorItem.BOOTS_ID, chanceToEquip, chanceToDrop );
 	}
 
-	private void tryToEquipItem( Mob monster, String itemId, float chanceToEquip, float chanceToDrop ) {
+	private static void tryToEquipItem( Mob monster, String itemId, float chanceToEquip, float chanceToDrop ) {
 		if( Random.tryChance( 1.0 - chanceToEquip ) || monster instanceof TankEntity )
 			return;
 
@@ -372,6 +372,10 @@ public class UndeadArmy {
 
 	private void markAsUndeadArmyMob( LivingEntity entity ) {
 		NBTHelper.saveBlockPos( entity.getPersistentData(), UndeadArmyKeys.POSITION, this.positionToAttack );
+	}
+
+	public static void markAsUndeadArmyPatrol( LivingEntity entity ) {
+		entity.getPersistentData().putBoolean( UndeadArmyKeys.PATROL, true );
 	}
 
 	private void spawnOnSkeletonHorse( Mob monster ) {
@@ -414,7 +418,7 @@ public class UndeadArmy {
 	}
 
 	private Predicate< Mob > getUndeadParticipantsPredicate() {
-		return mob->( mob.isAlive() && UndeadArmyManager.isUndeadArmy( mob ) );
+		return mob->( mob.isAlive() && UndeadArmyManager.belongsToUndeadArmy( mob ) );
 	}
 
 	private List< Mob > getArmyMobs() {

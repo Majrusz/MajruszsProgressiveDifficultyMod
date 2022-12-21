@@ -3,6 +3,7 @@ package com.majruszsdifficulty.undeadarmy;
 /** Class that stores all Undead Army-related keys. */
 public class UndeadArmyKeys {
 	public static final String POSITION = "UndeadArmyPosition";
+	public static final String PATROL = "UndeadArmyPatrol";
 	public static final String DIRECTION = "Direction";
 	public static final String ACTIVE = "IsActive";
 	public static final String TICKS_ACTIVE = "TicksActive";

@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class MobGroupConfig extends ConfigGroup {
@@ -20,6 +21,7 @@ public class MobGroupConfig extends ConfigGroup {
 	static final int MIN_COUNT = 1, MAX_COUNT = 9;
 	final List< ItemStackConfig > leaderConfigs = new ArrayList<>();
 	final List< ItemStackConfig > sidekickConfigs = new ArrayList<>();
+	final List< Consumer< PathfinderMob > > onSpawnConsumers = new ArrayList<>();
 	final Supplier< EntityType< ? extends PathfinderMob > > mob;
 	final IntegerConfig min;
 	final IntegerConfig max;
@@ -40,6 +42,10 @@ public class MobGroupConfig extends ConfigGroup {
 		this.sidekickConfigs.addAll( List.of( configs ) );
 	}
 
+	public void onSpawn( Consumer< PathfinderMob > consumer ) {
+		this.onSpawnConsumers.add( consumer );
+	}
+
 	public List< PathfinderMob > spawn( PathfinderMob leader ) {
 		int sidekickAmount = Random.nextInt( getMinCount(), getMaxCount() + 1 );
 		Vec3 spawnPosition = leader.position();
@@ -57,8 +63,10 @@ public class MobGroupConfig extends ConfigGroup {
 
 			leader.level.addFreshEntity( sidekick );
 			sidekicks.add( sidekick );
+			this.onSpawnConsumers.forEach( consumer->consumer.accept( sidekick ) );
 		}
 		applyConfigs( leader, sidekicks );
+		this.onSpawnConsumers.forEach( consumer->consumer.accept( leader ) );
 
 		return sidekicks;
 	}

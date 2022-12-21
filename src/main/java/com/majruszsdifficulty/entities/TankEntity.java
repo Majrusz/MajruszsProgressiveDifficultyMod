@@ -128,7 +128,7 @@ public class TankEntity extends Monster {
 
 	@Override
 	public void aiStep() {
-		if( this.isSunBurnTick() && !UndeadArmyManager.isUndeadArmy( this ) )
+		if( this.isSunBurnTick() && !UndeadArmyManager.belongsToUndeadArmy( this ) )
 			this.setSecondsOnFire( 8 );
 
 		super.aiStep();

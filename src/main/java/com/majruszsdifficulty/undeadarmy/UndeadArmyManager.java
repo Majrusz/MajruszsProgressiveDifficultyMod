@@ -33,9 +33,13 @@ public class UndeadArmyManager extends SavedData {
 	final List< UndeadArmyToSpawn > undeadArmiesToSpawn = new ArrayList<>();
 	final ServerLevel level;
 
-	public static boolean isUndeadArmy( @Nullable Entity entity ) {
+	public static boolean belongsToUndeadArmy( @Nullable Entity entity ) {
 		return entity != null && !( entity instanceof SkeletonHorse ) && entity.getPersistentData()
 			.contains( UndeadArmyKeys.POSITION + "X" );
+	}
+
+	public static boolean belongsToUndeadArmyPatrol( @Nullable Entity entity ) {
+		return entity != null && entity.getPersistentData().contains( UndeadArmyKeys.PATROL );
 	}
 
 	public static UndeadArmyManager load( CompoundTag nbt, ServerLevel level ) {

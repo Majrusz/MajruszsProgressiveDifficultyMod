@@ -2,6 +2,7 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.levels.LevelHelper;
@@ -9,9 +10,11 @@ import com.mlib.nbt.NBTHelper;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 
-import static com.majruszsdifficulty.undeadarmy.UndeadArmyManager.isUndeadArmy;
+import static com.majruszsdifficulty.undeadarmy.UndeadArmyManager.belongsToUndeadArmy;
+import static com.majruszsdifficulty.undeadarmy.UndeadArmyManager.belongsToUndeadArmyPatrol;
 
 @AutoInstance
 public class UndeadArmyEventsHandler extends GameModifier {
@@ -19,23 +22,27 @@ public class UndeadArmyEventsHandler extends GameModifier {
 		super( Registries.Modifiers.UNDEAD_ARMY, "UndeadArmyEventsHandler", "" );
 
 		OnSpawned.Context onLoaded = new OnSpawned.Context( this::resetUndeadArmyGoals );
-		onLoaded.addCondition( data->data.loadedFromDisk && isUndeadArmy( data.entity ) );
+		onLoaded.addCondition( data->data.loadedFromDisk && belongsToUndeadArmy( data.entity ) );
 
 		OnEntityTick.Context onTick = new OnEntityTick.Context( this::freezeNearbyWater );
-		onTick.addCondition( data->isUndeadArmy( data.entity ) );
+		onTick.addCondition( data->belongsToUndeadArmy( data.entity ) );
 
 		OnDeath.Context onArmyProgress = new OnDeath.Context( this::updateArmyProgress );
-		onArmyProgress.addCondition( data->isUndeadArmy( data.entity ) && Registries.UNDEAD_ARMY_MANAGER != null );
+		onArmyProgress.addCondition( data->belongsToUndeadArmy( data.entity ) && Registries.UNDEAD_ARMY_MANAGER != null );
 
 		OnDeath.Context onUndeadKill = new OnDeath.Context( this::updateKilledUndead );
 		onUndeadKill.addCondition( data->data.target.getMobType() == MobType.UNDEAD && Registries.UNDEAD_ARMY_MANAGER != null )
-			.addCondition( data->data.attacker instanceof Player && !isUndeadArmy( data.target ) )
+			.addCondition( data->data.attacker instanceof Player && !belongsToUndeadArmy( data.target ) )
 			.addCondition( data->UndeadArmyConfig.getRequiredKills() > 0 );
 
 		OnServerTick.Context onServerTick = new OnServerTick.Context( this::tickManager );
 		onServerTick.addCondition( data->data.event.phase == TickEvent.Phase.END && Registries.UNDEAD_ARMY_MANAGER != null );
 
-		this.addContexts( onLoaded, onTick, onArmyProgress, onUndeadKill, onServerTick );
+		OnLoot.Context onLoot = new OnLoot.Context( this::addCloth );
+		onLoot.addCondition( new Condition.Chance< OnLoot.Data >( 0.67 ).setConfigurable( false ) )
+			.addCondition( data->belongsToUndeadArmyPatrol( data.entity ) );
+
+		this.addContexts( onLoaded, onTick, onArmyProgress, onUndeadKill, onServerTick, onLoot );
 	}
 
 	private void resetUndeadArmyGoals( OnSpawned.Data data ) {
@@ -68,5 +75,9 @@ public class UndeadArmyEventsHandler extends GameModifier {
 
 	private void tickManager( OnServerTick.Data data ) {
 		Registries.UNDEAD_ARMY_MANAGER.tick();
+	}
+
+	private void addCloth( OnLoot.Data data ) {
+		data.generatedLoot.add( new ItemStack( Registries.CLOTH.get() ) );
 	}
 }
