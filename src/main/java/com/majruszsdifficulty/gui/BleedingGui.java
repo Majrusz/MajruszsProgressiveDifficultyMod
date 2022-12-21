@@ -2,6 +2,7 @@ package com.majruszsdifficulty.gui;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
+import com.mlib.Utility;
 import com.mlib.gamemodifiers.contexts.OnClientTick;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -28,11 +29,8 @@ public class BleedingGui {
 	static final Particles PARTICLES = new Particles();
 
 	public static void addBloodOnScreen( int count ) {
-		List< Integer > x = IntStream.iterate( 0, i->i + 1 ).limit( Particle.GRID_WIDTH ).boxed().collect( Collectors.toList() );
-		List< Integer > y = IntStream.iterate( 0, i->i + 1 ).limit( Particle.GRID_HEIGHT ).boxed().collect( Collectors.toList() );
-
-		Collections.shuffle( x );
-		Collections.shuffle( y );
+		List< Integer > x = randomizedCoordinates( Particle.GRID_WIDTH );
+		List< Integer > y = randomizedCoordinates( Particle.GRID_HEIGHT );
 
 		IntStream.iterate( 0, i->i + 1 )
 			.limit( count )
@@ -42,6 +40,13 @@ public class BleedingGui {
 	@SubscribeEvent
 	public static void registerGui( RegisterGuiOverlaysEvent event ) {
 		event.registerBelowAll( "bleeding", new Overlay() );
+	}
+
+	private static List< Integer > randomizedCoordinates( int max ) {
+		List< Integer > list = IntStream.iterate( 0, i->i + 1 ).limit( max ).boxed().collect( Collectors.toList() );
+		Collections.shuffle( list );
+
+		return list;
 	}
 
 	static class Overlay implements IGuiOverlay {
@@ -88,7 +93,7 @@ public class BleedingGui {
 	static class Particle {
 		static final int ASSETS_COUNT = 5;
 		static final int GRID_WIDTH = 6, GRID_HEIGHT = 4;
-		static final int LIFETIME = 180;
+		static final int LIFETIME = Utility.secondsToTicks( 9.0 );
 		static final List< ResourceLocation > ASSETS = new ArrayList<>();
 
 		static {
@@ -111,7 +116,7 @@ public class BleedingGui {
 			if( !this.hasFinished() )
 				return;
 
-			this.ticks = Random.nextInt( 0, 40 );
+			this.ticks = Random.nextInt( 0, Utility.secondsToTicks( 2.0 ) );
 			this.phase = Random.nextInt( 0, ASSETS_COUNT - 1 );
 		}
 
@@ -128,7 +133,9 @@ public class BleedingGui {
 		}
 
 		public float getAlpha() {
-			return ( float )( 0.7f * Math.sqrt( Mth.clamp( 1.0f - 1.0f * this.ticks / LIFETIME, 0.0f, 1.0f ) ) );
+			float ratio = ( float )this.ticks / LIFETIME;
+
+			return Mth.clamp( 0.7f * ( 1.0f - ratio * ratio ), 0.0f, 0.7f );
 		}
 
 		public void tick() {
