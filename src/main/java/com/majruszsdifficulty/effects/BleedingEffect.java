@@ -25,6 +25,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -63,6 +64,10 @@ public class BleedingEffect extends MobEffect {
 		} else {
 			entity.hurt( Registries.BLEEDING_SOURCE, 1.0f );
 		}
+
+		if( entity instanceof Player player ) {
+			addBloodOnScreen( player, 3 );
+		}
 	}
 
 	@Override
@@ -80,6 +85,14 @@ public class BleedingEffect extends MobEffect {
 	@Override
 	public List< ItemStack > getCurativeItems() {
 		return new ArrayList<>(); // removes the default milk bucket from curative items
+	}
+
+	private static void addBloodOnScreen( Player player, int count ) {
+		DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->{
+			if( player == Minecraft.getInstance().player ) {
+				BleedingGui.addBloodOnScreen( count );
+			}
+		} );
 	}
 
 	/** Bleeding damage source that stores information about the causer of bleeding. (required for converting villager to zombie villager etc.) */
@@ -129,13 +142,9 @@ public class BleedingEffect extends MobEffect {
 
 			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
 			onTick.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 5, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.25, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
 				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
 				.addCondition( data->data.entity instanceof LivingEntity );
-
-			OnPlayerTick.Context onTick2 = new OnPlayerTick.Context( this::addBloodOnScreen );
-			onTick2.addCondition( new Condition.Cooldown<>( 2.0, Dist.CLIENT ) )
-				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
 
 			OnDeath.Context onDeath = new OnDeath.Context( this::spawnParticles );
 			onDeath.addCondition( new Condition.IsServer<>() ).addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
@@ -160,7 +169,7 @@ public class BleedingEffect extends MobEffect {
 			IS_ENABLED = this.excludable.get().getConfig()::isEnabled;
 			GET_AMPLIFIER = this.effect::getAmplifier;
 
-			this.addContexts( onTick, onTick2, onDeath, onEffectApplicable, onDamaged, onTooltip );
+			this.addContexts( onTick, onDeath, onEffectApplicable, onDamaged, onTooltip );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
@@ -176,14 +185,6 @@ public class BleedingEffect extends MobEffect {
 		private void spawnParticles( ServerLevel level, Entity entity, int amountOfParticles ) {
 			Vec3 position = new Vec3( entity.getX(), entity.getY( 0.5 ), entity.getZ() );
 			PARTICLES.spawn( level, position, amountOfParticles );
-		}
-
-		private void addBloodOnScreen( OnPlayerTick.Data data ) {
-			DistExecutor.unsafeRunWhenOn( Dist.CLIENT, ()->()->{
-				if( data.player == Minecraft.getInstance().player ) {
-					BleedingGui.addBloodOnScreen( 1 );
-				}
-			} );
 		}
 
 		private void cancelEffect( OnEffectApplicable.Data data ) {
