@@ -67,8 +67,6 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 			.toList();
 	}
 
-	// TODO: zmien zeby wpierw nakladalo klatwe na przedmiot, a pozniej enchantment (bo incompatibility)
-
 	private List< Enchantment > buildValidCurseList( ItemStack itemStack ) {
 		return ForgeRegistries.ENCHANTMENTS.getEntries()
 			.stream()
