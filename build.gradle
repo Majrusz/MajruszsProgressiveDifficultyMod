@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.6.0'
+version = '1.6.1-unfinished'
 group = 'com.majruszsdifficulty'
 archivesBaseName = 'majruszs-difficulty-1.19.3'
 
@@ -77,7 +77,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.3-44.0.18'
-    implementation fg.deobf( 'com.mlib:majrusz-library-1.19.3:3.0.0' )
+    implementation fg.deobf( 'com.mlib:majrusz-library-1.19.3:3.1.0-unfinished' )
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
