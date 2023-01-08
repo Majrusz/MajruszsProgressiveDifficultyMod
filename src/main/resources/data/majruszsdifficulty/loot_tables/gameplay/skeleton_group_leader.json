@@ -59,12 +59,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_leggingsboots",
+          "name": "minecraft:leather_leggings",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_leggingsboots",
+          "name": "minecraft:leather_leggings",
           "weight": 75,
           "functions": [
             {

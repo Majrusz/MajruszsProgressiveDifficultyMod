@@ -59,12 +59,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:golden_leggingsboots",
+          "name": "minecraft:golden_leggings",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:golden_leggingsboots",
+          "name": "minecraft:golden_leggings",
           "weight": 75,
           "functions": [
             {
