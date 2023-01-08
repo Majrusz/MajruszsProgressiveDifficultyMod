@@ -11,6 +11,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
+import com.mlib.math.Range;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -25,14 +27,14 @@ import java.util.function.Supplier;
 @AutoInstance
 public class UndeadArmyPatrol extends GameModifier {
 	static final List< EntityType< ? extends PathfinderMob > > ENTITIES = List.of( EntityType.ZOMBIE, EntityType.HUSK, EntityType.SKELETON, EntityType.STRAY );
-	final MobGroupConfig mobGroups = new MobGroupConfig( "Undead", getMobTypes(), 2, 4 );
+	final MobGroupConfig mobGroups = new MobGroupConfig( getMobTypes(), new Range<>( 2, 4 ), null, null );
 
 	private static Supplier< EntityType< ? extends PathfinderMob > > getMobTypes() {
 		return ()->Random.nextRandom( ENTITIES );
 	}
 
 	public UndeadArmyPatrol() {
-		super( Registries.Modifiers.DEFAULT, "UndeadArmyPatrol", "Undead may spawn in groups as the Undead Army Patrol." );
+		super( Registries.Modifiers.DEFAULT );
 
 		this.mobGroups.onSpawn( mob->{
 			UndeadArmy.markAsUndeadArmyPatrol( mob );
@@ -44,8 +46,8 @@ public class UndeadArmyPatrol extends GameModifier {
 			mob.targetSelector.addGoal( 1, new ForgiveUndeadArmyTargetGoal( mob ) );
 		} );
 
-		OnSpawned.Context onSpawned = new OnSpawned.Context( this::spawnGroup );
-		onSpawned.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+		new OnSpawned.Context( this::spawnGroup )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.0625, true ) )
 			.addCondition( new CustomConditions.IsNotSidekick<>() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )
@@ -54,9 +56,10 @@ public class UndeadArmyPatrol extends GameModifier {
 			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
 			.addCondition( data->ENTITIES.stream().anyMatch( type->type.equals( data.target.getType() ) ) )
-			.addConfigs( this.mobGroups );
+			.addConfigs( this.mobGroups.name( "Undead" ) )
+			.insertTo( this );
 
-		this.addContext( onSpawned );
+		this.name( "UndeadArmyPatrol" ).comment( "Undead may spawn in groups as the Undead Army Patrol." );
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {

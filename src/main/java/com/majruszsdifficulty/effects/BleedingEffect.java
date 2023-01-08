@@ -36,12 +36,14 @@ import net.minecraftforge.fml.DistExecutor;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BleedingEffect extends MobEffect {
 	public static final ParticleHandler PARTICLES = new ParticleHandler( Registries.BLOOD, ()->new Vec3( 0.125, 0.5, 0.125 ), ParticleHandler.speed( 0.05f ) );
 	static Supplier< Boolean > IS_ENABLED = ()->true;
 	static Supplier< Integer > GET_AMPLIFIER = ()->0;
+	static Function< EquipmentSlot, Float > GET_ARMOR_MULTIPLIER = slot->1.0f;
 
 	public static boolean isEnabled() {
 		return IS_ENABLED.get();
@@ -60,7 +62,7 @@ public class BleedingEffect extends MobEffect {
 		if( entity.getEffect( this ) instanceof MobEffectInstance effectInstance ) {
 			Vec3 motion = entity.getDeltaMovement();
 			entity.hurt( new EntityBleedingDamageSource( effectInstance.damageSourceEntity ), 1.0f );
-			entity.setDeltaMovement( motion ); // sets previous motion to avoid any jumping from bleeding
+			entity.setDeltaMovement( motion ); // sets previous motion to avoid any knockback from bleeding
 		} else {
 			entity.hurt( Registries.BLEEDING_SOURCE, 1.0f );
 		}
@@ -132,44 +134,49 @@ public class BleedingEffect extends MobEffect {
 	@AutoInstance
 	public static class Bleeding extends GameModifier {
 		static final String ATTRIBUTE_ID = "effect.majruszsdifficulty.bleeding.armor_tooltip";
-		final StringListConfig immuneMobs = new StringListConfig( "immune_mobs", "Specifies which mobs should not be affected by Bleeding (all undead mobs are immune by default).", false, "minecraft:skeleton_horse", "minecraft:zombie_horse" );
+		final StringListConfig immuneMobs = new StringListConfig( "minecraft:skeleton_horse", "minecraft:zombie_horse" );
 		final BleedingConfig effect = new BleedingConfig();
-		final Condition.Ref< Condition.Excludable< OnDamaged.Data > > excludable = new Condition.Ref<>();
-		final Condition.Ref< Condition.ArmorDependentChance< OnDamaged.Data > > armorChance = new Condition.Ref<>();
 
 		public Bleeding() {
-			super( Registries.Modifiers.DEFAULT, "Bleeding", "Common config for all Bleeding effects." );
+			super( Registries.Modifiers.DEFAULT );
 
-			OnEntityTick.Context onTick = new OnEntityTick.Context( this::spawnParticles );
-			onTick.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.25, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
+			new OnEntityTick.Context( this::spawnParticles )
+				.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.25, Dist.DEDICATED_SERVER ).configurable( false ) )
 				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
-				.addCondition( data->data.entity instanceof LivingEntity );
+				.addCondition( data->data.entity instanceof LivingEntity )
+				.insertTo( this );
 
-			OnDeath.Context onDeath = new OnDeath.Context( this::spawnParticles );
-			onDeath.addCondition( new Condition.IsServer<>() ).addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) );
+			new OnDeath.Context( this::spawnParticles )
+				.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
+				.insertTo( this );
 
-			OnEffectApplicable.Context onEffectApplicable = new OnEffectApplicable.Context( this::cancelEffect );
-			onEffectApplicable.addCondition( data->!BleedingEffect.isEnabled() )
-				.addCondition( data->data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) );
+			new OnEffectApplicable.Context( this::cancelEffect )
+				.addCondition( data->!BleedingEffect.isEnabled() )
+				.addCondition( data->data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) )
+				.insertTo( this );
 
-			OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyBleeding );
-			onDamaged.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Excludable< OnDamaged.Data >().save( this.excludable ) )
-				.addCondition( new Condition.ArmorDependentChance< OnDamaged.Data >( 0.8, 0.6, 0.7, 0.9 ).save( this.armorChance ) )
+			new OnDamaged.Context( this::applyBleeding )
+				.addCondition( new Condition.IsServer<>() )
+				.addCondition( new ExcludableBleeding() )
+				.addCondition( new ArmorDependentBleedingChance( 0.8, 0.6, 0.7, 0.9 ) )
 				.addCondition( this::isNotImmune )
 				.addCondition( OnDamaged.DEALT_ANY_DAMAGE )
-				.addConfig( this.immuneMobs )
-				.addConfig( this.effect );
+				.addConfig( this.immuneMobs
+					.name( "immune_mobs" )
+					.comment( "Specifies which mobs should not be affected by Bleeding (all undead mobs are immune by default)." )
+				).addConfig( this.effect )
+				.insertTo( this );
 
-			OnItemAttributeTooltip.Context onTooltip = new OnItemAttributeTooltip.Context( this::addChanceTooltip );
-			onTooltip.addCondition( data->data.item instanceof ArmorItem )
-				.addCondition( data->BleedingEffect.isEnabled() );
+			new OnItemAttributeTooltip.Context( this::addChanceTooltip )
+				.addCondition( data->data.item instanceof ArmorItem )
+				.addCondition( data->BleedingEffect.isEnabled() )
+				.insertTo( this );
 
-			IS_ENABLED = this.excludable.get().getConfig()::isEnabled;
 			GET_AMPLIFIER = this.effect::getAmplifier;
 
-			this.addContexts( onTick, onDeath, onEffectApplicable, onDamaged, onTooltip );
+			this.name( "Bleeding" ).comment( "Common config for all Bleeding effects." );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
@@ -208,8 +215,24 @@ public class BleedingEffect extends MobEffect {
 				if( !data.itemStack.getAttributeModifiers( slot ).containsKey( Attributes.ARMOR ) )
 					continue;
 
-				String multiplier = TextHelper.minPrecision( this.armorChance.get().getConfig( slot ).asFloat() );
+				String multiplier = TextHelper.minPrecision( GET_ARMOR_MULTIPLIER.apply( slot ) );
 				data.add( slot, Component.translatable( ATTRIBUTE_ID, multiplier ).withStyle( ChatFormatting.BLUE ) );
+			}
+		}
+
+		private static class ArmorDependentBleedingChance extends Condition.ArmorDependentChance< OnDamaged.Data > {
+			ArmorDependentBleedingChance( double headChance, double chestChance, double legsChance, double feetChance ) {
+				super( headChance, chestChance, legsChance, feetChance );
+
+				GET_ARMOR_MULTIPLIER = slot->this.multipliers.get( slot ).asFloat();
+			}
+		}
+
+		private static class ExcludableBleeding extends Condition.Excludable< OnDamaged.Data > {
+			ExcludableBleeding() {
+				super();
+
+				IS_ENABLED = this.availability::isEnabled;
 			}
 		}
 	}

@@ -18,17 +18,18 @@ import javax.annotation.Nullable;
 @AutoInstance
 public class BiteBleeding extends GameModifier {
 	public BiteBleeding() {
-		super( Registries.Modifiers.DEFAULT, "BiteBleeding", "Animals (wolfs and from other mods), zombies and spiders may inflict bleeding." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnBleedingCheck.Context onCheck = new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger );
-		onCheck.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.5, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( new Condition.IsLivingBeing<>() )
 			.addCondition( data->canBite( data.attacker ) )
-			.addCondition( data->data.source.getDirectEntity() == data.attacker );
+			.addCondition( data->data.source.getDirectEntity() == data.attacker )
+			.insertTo( this );
 
-		this.addContext( onCheck );
+		this.name( "BiteBleeding" ).comment( "Animals (wolfs and from other mods), zombies and spiders may inflict bleeding." );
 	}
 
 	private static boolean canBite( @Nullable LivingEntity attacker ) {

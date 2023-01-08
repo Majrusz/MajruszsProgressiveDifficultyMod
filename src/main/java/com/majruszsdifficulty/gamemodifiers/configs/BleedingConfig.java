@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 
 public class BleedingConfig extends ProgressiveEffectConfig {
 	public BleedingConfig( GameStage.Double duration ) {
-		super( "", Registries.BLEEDING::get, new GameStage.Integer( 0, 1, 2 ), duration );
+		super( Registries.BLEEDING, new GameStage.Integer( 0, 1, 2 ), duration );
 	}
 
 	public BleedingConfig( double duration ) {

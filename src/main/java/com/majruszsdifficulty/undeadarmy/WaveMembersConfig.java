@@ -13,33 +13,14 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WaveMembersConfig implements IConfigurable {
-	final ConfigGroup group;
+public class WaveMembersConfig extends ConfigGroup {
 	final List< StringListConfig > configs = new ArrayList<>();
 
-	public WaveMembersConfig( String name, String comment ) {
-		this.group = new ConfigGroup( name, comment );
-	}
+	public WaveMembersConfig addWaveConfig( String... defaultValues ) {
+		this.configs.add( new StringListConfig( defaultValues ) );
+		this.addConfig( this.configs.get( this.configs.size() - 1 ).name( "wave_" + ( this.configs.size() + 1 ) ) );
 
-	@Override
-	public String getName() {
-		return this.group.getName();
-	}
-
-	@Override
-	public String getComment() {
-		return this.group.getComment();
-	}
-
-	@Override
-	public void build( ForgeConfigSpec.Builder builder ) {
-		this.group.build( builder );
-	}
-
-	public void addWaveConfig( String... defaultValues ) {
-		StringListConfig waveConfig = new StringListConfig( "wave_" + ( this.configs.size() + 1 ), "", false, defaultValues );
-		this.group.addConfig( waveConfig );
-		this.configs.add( waveConfig );
+		return this;
 	}
 
 	/** Returns list of wave members converted from config strings. */

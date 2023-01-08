@@ -4,12 +4,11 @@ import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 
 public class TreasureBagConfig extends ConfigGroup {
-	final BooleanConfig availability;
+	final BooleanConfig availability = new BooleanConfig( true );
 
-	public TreasureBagConfig( String groupName, String groupComment ) {
-		super( groupName, groupComment );
-		this.availability = new BooleanConfig( "is_enabled", "Determines whether this Treasure Bag should drop.", false, true );
-		this.addConfig( this.availability );
+	public TreasureBagConfig( String name ) {
+		this.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether this Treasure Bag should drop." ) );
+		this.name( name );
 	}
 
 	public boolean isEnabled() {

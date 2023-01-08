@@ -68,24 +68,31 @@ public class BandageItem extends Item {
 	@AutoInstance
 	public static class Effects extends GameModifier {
 		static Effects INSTANCE = null;
-		final EffectConfig regeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 0, 4.0 );
-		final EffectConfig goldenRegeneration = new EffectConfig( "Regeneration", ()->MobEffects.REGENERATION, 1, 4.0 );
-		final EffectConfig goldenImmunity = new EffectConfig( "Immunity", Registries.BLEEDING_IMMUNITY::get, 0, 60.0 );
+		final ConfigGroup bandageGroup = new ConfigGroup();
+		final EffectConfig regeneration = new EffectConfig( MobEffects.REGENERATION, 0, 4.0 );
+		final ConfigGroup goldenBandageGroup = new ConfigGroup();
+		final EffectConfig goldenRegeneration = new EffectConfig( MobEffects.REGENERATION, 1, 4.0 );
+		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 60.0 );
 
 		public Effects() {
-			super( Registries.Modifiers.DEFAULT, "Bandages", "" );
-
-			OnPlayerInteract.Context onInteraction = new OnPlayerInteract.Context( this::useBandage );
-			onInteraction.addCondition( data->data.itemStack.getItem() instanceof BandageItem )
-				.addCondition( data->data.target != null )
-				.addCondition( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) )
-				.addCondition( Effects::canUse )
-				.addConfig( new ConfigGroup( "Bandage", "Config for a Bandage item.", this.regeneration ) )
-				.addConfig( new ConfigGroup( "GoldenBandage", "Config for a Golden Bandage item.", this.goldenRegeneration, this.goldenImmunity ) );
+			super( Registries.Modifiers.DEFAULT );
 
 			INSTANCE = this;
 
-			this.addContext( onInteraction );
+			this.bandageGroup.addConfig( this.regeneration.name( "Regeneration" ) );
+			this.goldenBandageGroup.addConfig( this.goldenRegeneration.name( "Regeneration" ) )
+				.addConfig( this.goldenImmunity.name( "Immunity" ) );
+
+			new OnPlayerInteract.Context( this::useBandage )
+				.addCondition( data->data.itemStack.getItem() instanceof BandageItem )
+				.addCondition( data->data.target != null )
+				.addCondition( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) )
+				.addCondition( Effects::canUse )
+				.addConfig( this.bandageGroup.name( "Bandage" ).comment( "Config for a Bandage item." ) )
+				.addConfig( this.goldenBandageGroup.name( "GoldenBandage" ).comment( "Config for a Golden Bandage item." ) )
+				.insertTo( this );
+
+			this.name( "Bandages" );
 		}
 
 		private void useBandage( OnPlayerInteract.Data data ) {

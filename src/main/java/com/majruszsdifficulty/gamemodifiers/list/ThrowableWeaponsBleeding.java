@@ -13,15 +13,16 @@ import net.minecraft.world.entity.projectile.ThrownTrident;
 @AutoInstance
 public class ThrowableWeaponsBleeding extends GameModifier {
 	public ThrowableWeaponsBleeding() {
-		super( Registries.Modifiers.DEFAULT, "ThrowableWeaponsBleeding", "All throwable sharp items (arrows, trident etc.) may inflict bleeding." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnBleedingCheck.Context onCheck = new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger );
-		onCheck.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.4, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( new Condition.IsLivingBeing<>() )
-			.addCondition( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident );
+			.addCondition( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident )
+			.insertTo( this );
 
-		this.addContext( onCheck );
+		this.name( "ThrowableWeaponsBleeding" ).comment( "All throwable sharp items (arrows, trident etc.) may inflict bleeding." );
 	}
 }

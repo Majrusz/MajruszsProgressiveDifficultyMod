@@ -1,21 +1,34 @@
 package com.majruszsdifficulty.config;
 
 import com.mlib.config.IntegerConfig;
+import com.mlib.math.Range;
 
 public class GameStageIntegerConfig extends GameStageConfig< Integer > {
-	public GameStageIntegerConfig( String name, String comment, int defaultNormal, int defaultExpert, int defaultMaster, int min, int max ) {
-		super( name, comment, normalMode( defaultNormal, min, max ), expertMode( defaultExpert, min, max ), masterMode( defaultMaster, min, max ) );
+	public GameStageIntegerConfig( int defaultNormal, int defaultExpert, int defaultMaster, Range< Integer > range ) {
+		super( new NormalConfig( defaultNormal, range ), new ExpertConfig( defaultExpert, range ), new MasterConfig( defaultMaster, range ) );
 	}
 
-	private static IntegerConfig normalMode( int value, int min, int max ) {
-		return new IntegerConfig( "normal", "Normal Mode", false, value, min, max );
+	static class NormalConfig extends IntegerConfig {
+		public NormalConfig( int defaultValue, Range< Integer > range ) {
+			super( defaultValue, range );
+
+			this.name( "normal" ).comment( "Normal Mode" );
+		}
 	}
 
-	private static IntegerConfig expertMode( int value, int min, int max ) {
-		return new IntegerConfig( "expert", "Expert Mode", false, value, min, max );
+	static class ExpertConfig extends IntegerConfig {
+		public ExpertConfig( int defaultValue, Range< Integer > range ) {
+			super( defaultValue, range );
+
+			this.name( "expert" ).comment( "Expert Mode" );
+		}
 	}
 
-	private static IntegerConfig masterMode( int value, int min, int max ) {
-		return new IntegerConfig( "master", "Master Mode", false, value, min, max );
+	static class MasterConfig extends IntegerConfig {
+		public MasterConfig( int defaultValue, Range< Integer > range ) {
+			super( defaultValue, range );
+
+			this.name( "master" ).comment( "Master Mode" );
+		}
 	}
 }

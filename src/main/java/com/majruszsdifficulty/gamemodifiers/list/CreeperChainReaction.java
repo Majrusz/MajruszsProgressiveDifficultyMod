@@ -12,14 +12,15 @@ import net.minecraft.world.entity.monster.Creeper;
 @AutoInstance
 public class CreeperChainReaction extends GameModifier {
 	public CreeperChainReaction() {
-		super( Registries.Modifiers.DEFAULT, "CreeperChainReaction", "Makes a Creeper ignite once any other Creeper explode nearby." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnDamaged.Context onDamaged = new OnDamaged.Context( this::igniteCreeper );
-		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+		new OnDamaged.Context( this::igniteCreeper )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.target instanceof Creeper && data.attacker instanceof Creeper );
+			.addCondition( data->data.target instanceof Creeper && data.attacker instanceof Creeper )
+			.insertTo( this );
 
-		this.addContext( onDamaged );
+		this.name( "CreeperChainReaction" ).comment( "Makes a Creeper ignite once any other Creeper explode nearby." );
 	}
 
 	private void igniteCreeper( OnDamaged.Data data ) {

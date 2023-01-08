@@ -11,18 +11,20 @@ import net.minecraftforge.eventbus.api.Event;
 
 @AutoInstance
 public class SpawnBlocker extends GameModifier {
-	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( "", "", new String[]{
-		"minecraft:illusioner", "majruszsdifficulty:tank"
+	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( new String[]{
+		"minecraft:illusioner",
+		"majruszsdifficulty:tank"
 	}, new String[]{}, new String[]{} );
 
 	public SpawnBlocker() {
-		super( Registries.Modifiers.DEFAULT, "SpawnBlocker", "Blocks certain mobs from spawning when given game stage is active." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnCheckSpawn.Context onCheckSpawn = new OnCheckSpawn.Context( this::blockSpawn );
-		onCheckSpawn.addCondition( data->this.isForbidden( data.entity ) )
-			.addConfig( this.forbiddenEntities );
+		new OnCheckSpawn.Context( this::blockSpawn )
+			.addCondition( data->this.isForbidden( data.entity ) )
+			.addConfig( this.forbiddenEntities )
+			.insertTo( this );
 
-		this.addContext( onCheckSpawn );
+		this.name( "SpawnBlocker" ).comment( "Blocks certain mobs from spawning when given game stage is active." );
 	}
 
 	private void blockSpawn( OnCheckSpawn.Data data ) {

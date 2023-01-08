@@ -1,21 +1,34 @@
 package com.majruszsdifficulty.config;
 
 import com.mlib.config.DoubleConfig;
+import com.mlib.math.Range;
 
 public class GameStageDoubleConfig extends GameStageConfig< Double > {
-	public GameStageDoubleConfig( String name, String comment, double defaultNormal, double defaultExpert, double defaultMaster, double min, double max ) {
-		super( name, comment, normalMode( defaultNormal, min, max ), expertMode( defaultExpert, min, max ), masterMode( defaultMaster, min, max ) );
+	public GameStageDoubleConfig( double defaultNormal, double defaultExpert, double defaultMaster, Range< Double > range ) {
+		super( new NormalConfig( defaultNormal, range ), new ExpertConfig( defaultExpert, range ), new MasterConfig( defaultMaster, range ) );
 	}
 
-	private static DoubleConfig normalMode( double value, double min, double max ) {
-		return new DoubleConfig( "normal", "Normal Mode", false, value, min, max );
+	static class NormalConfig extends DoubleConfig {
+		public NormalConfig( double defaultValue, Range< Double > range ) {
+			super( defaultValue, range );
+
+			this.name( "normal" ).comment( "Normal Mode" );
+		}
 	}
 
-	private static DoubleConfig expertMode( double value, double min, double max ) {
-		return new DoubleConfig( "expert", "Expert Mode", false, value, min, max );
+	static class ExpertConfig extends DoubleConfig {
+		public ExpertConfig( double defaultValue, Range< Double > range ) {
+			super( defaultValue, range );
+
+			this.name( "expert" ).comment( "Expert Mode" );
+		}
 	}
 
-	private static DoubleConfig masterMode( double value, double min, double max ) {
-		return new DoubleConfig( "master", "Master Mode", false, value, min, max );
+	static class MasterConfig extends DoubleConfig {
+		public MasterConfig( double defaultValue, Range< Double > range ) {
+			super( defaultValue, range );
+
+			this.name( "master" ).comment( "Master Mode" );
+		}
 	}
 }

@@ -12,16 +12,17 @@ import net.minecraft.world.damagesource.DamageSource;
 @AutoInstance
 public class CactusBleeding extends GameModifier {
 	public CactusBleeding() {
-		super( Registries.Modifiers.DEFAULT, "CactusBleeding", "Cactus damage may inflict bleeding." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnBleedingCheck.Context onCheck = new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger );
-		onCheck.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.5, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( new Condition.IsLivingBeing<>() )
 			.addCondition( data->data.source.equals( DamageSource.CACTUS ) )
-			.addCondition( data->data.source.getDirectEntity() == data.attacker );
+			.addCondition( data->data.source.getDirectEntity() == data.attacker )
+			.insertTo( this );
 
-		this.addContext( onCheck );
+		this.name( "CactusBleeding" ).comment( "Cactus damage may inflict bleeding." );
 	}
 }

@@ -6,73 +6,61 @@ import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
+import com.mlib.math.Range;
 import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ProgressiveEffectConfig extends ConfigGroup {
-	static final int MIN_AMPLIFIER = 1, MAX_AMPLIFIER = 10;
-	static final double MIN_DURATION = 1.0, MAX_DURATION = 999.0;
-	static final double MIN_LIMIT = 5.0, MAX_LIMIT = 999.0;
+	static final Range< Integer > AMPLIFIER = new Range<>( 1, 10 );
+	static final Range< Double > DURATION = new Range<>( 1.0, 999.0 );
+	static final Range< Double > MAX_DURATION = new Range<>( 5.0, 9999.0 );
 	final Supplier< MobEffect > effect;
 	final GameStageIntegerConfig amplifier;
 	final GameStageDoubleConfig duration;
-	final Optional< DoubleConfig > maxDuration;
+	DoubleConfig maxDuration = null;
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, GameStage.Integer amplifier, GameStage.Double duration,
-		Optional< Double > maxDuration
-	) {
-		super( groupName, "" );
+	public ProgressiveEffectConfig( Supplier< MobEffect > effect, GameStage.Integer amplifier, GameStage.Double duration ) {
 		this.effect = effect;
-		this.amplifier = new GameStageIntegerConfig( "Amplifier", "Level of the effect to apply.", amplifier.normal() + 1, amplifier.expert() + 1, amplifier.master() + 1, MIN_AMPLIFIER, MAX_AMPLIFIER );
-		this.duration = new GameStageDoubleConfig( "Duration", "Duration in seconds.", duration.normal(), duration.expert(), duration.master(), MIN_DURATION, MAX_DURATION );
-		this.maxDuration = maxDuration.map( value->new DoubleConfig( "maximum_duration", "Maximum duration in seconds it can reach.", false, value, MIN_LIMIT, MAX_LIMIT ) );
-		this.addConfigs( this.amplifier, this.duration );
-		this.maxDuration.ifPresent( this::addConfig );
+		this.amplifier = new GameStageIntegerConfig( amplifier.normal() + 1, amplifier.expert() + 1, amplifier.master() + 1, AMPLIFIER );
+		this.duration = new GameStageDoubleConfig( duration.normal(), duration.expert(), duration.master(), DURATION );
+
+		this.addConfig( this.amplifier.name( "Amplifier" ).comment( "Level of the effect to apply." ) );
+		this.addConfig( this.duration.name( "Duration" ).comment( "Duration in seconds." ) );
 	}
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, GameStage.Integer amplifier, GameStage.Double duration ) {
-		this( groupName, effect, amplifier, duration, Optional.empty() );
+	public ProgressiveEffectConfig( RegistryObject< ? extends MobEffect > effect, GameStage.Integer amplifier, GameStage.Double duration ) {
+		this( effect::get, amplifier, duration );
 	}
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, GameStage.Integer amplifier, GameStage.Double duration,
-		double maxDuration
-	) {
-		this( groupName, effect, amplifier, duration, Optional.of( maxDuration ) );
+	public ProgressiveEffectConfig( MobEffect effect, GameStage.Integer amplifier, GameStage.Double duration ) {
+		this( ()->effect, amplifier, duration );
 	}
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, int amplifier, GameStage.Double duration, double maxDuration ) {
-		this( groupName, effect, new GameStage.Integer( amplifier, amplifier, amplifier ), duration, maxDuration );
+	public ProgressiveEffectConfig( RegistryObject< ? extends MobEffect > effect, int amplifier, double duration ) {
+		this( effect, new GameStage.Integer( amplifier ), new GameStage.Double( duration ) );
 	}
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, int amplifier, GameStage.Double duration ) {
-		this( groupName, effect, new GameStage.Integer( amplifier, amplifier, amplifier ), duration );
+	public ProgressiveEffectConfig( MobEffect effect, int amplifier, double duration ) {
+		this( effect, new GameStage.Integer( amplifier ), new GameStage.Double( duration ) );
 	}
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, GameStage.Integer amplifier, double duration, double maxDuration ) {
-		this( groupName, effect, amplifier, new GameStage.Double( duration, duration, duration ), maxDuration );
-	}
+	public ProgressiveEffectConfig stackable( double maxDuration ) {
+		this.maxDuration = new DoubleConfig( maxDuration, MAX_DURATION );
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, GameStage.Integer amplifier, double duration ) {
-		this( groupName, effect, amplifier, new GameStage.Double( duration, duration, duration ) );
-	}
+		this.addConfig( this.maxDuration.name( "maximum_duration" ).comment( "Maximum duration in seconds it can reach." ) );
 
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, int amplifier, double duration, double maxDuration ) {
-		this( groupName, effect, new GameStage.Integer( amplifier, amplifier, amplifier ), new GameStage.Double( duration, duration, duration ), maxDuration );
-	}
-
-	public ProgressiveEffectConfig( String groupName, Supplier< MobEffect > effect, int amplifier, double duration ) {
-		this( groupName, effect, new GameStage.Integer( amplifier, amplifier, amplifier ), new GameStage.Double( duration, duration, duration ) );
+		return this;
 	}
 
 	public void apply( LivingEntity entity ) {
-		if( this.maxDuration.isPresent() ) {
-			MobEffectHelper.tryToStack( entity, getEffect(), getDuration(), getAmplifier(), getMaxDuration() );
+		if( this.isStackable() ) {
+			MobEffectHelper.tryToStack( entity, this.getEffect(), this.getDuration(), this.getAmplifier(), this.getMaxDuration() );
 		} else {
-			MobEffectHelper.tryToApply( entity, getEffect(), getDuration(), getAmplifier() );
+			MobEffectHelper.tryToApply( entity, this.getEffect(), this.getDuration(), this.getAmplifier() );
 		}
 	}
 
@@ -88,9 +76,11 @@ public class ProgressiveEffectConfig extends ConfigGroup {
 		return Utility.secondsToTicks( this.duration.getCurrentGameStageValue() );
 	}
 
-	public int getMaxDuration() {
-		assert this.maxDuration.isPresent();
+	public boolean isStackable() {
+		return this.maxDuration != null;
+	}
 
-		return this.maxDuration.get().asTicks();
+	public int getMaxDuration() {
+		return this.isStackable() ? this.maxDuration.asTicks() : 0;
 	}
 }

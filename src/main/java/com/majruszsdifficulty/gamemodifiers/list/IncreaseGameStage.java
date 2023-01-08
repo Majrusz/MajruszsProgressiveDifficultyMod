@@ -1,11 +1,12 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnDimensionChanged;
 import net.minecraft.ChatFormatting;
@@ -19,44 +20,51 @@ import javax.annotation.Nullable;
 
 @AutoInstance
 public class IncreaseGameStage extends GameModifier {
-	static final EnumConfig< GameStage.Stage > DEFAULT_GAME_STAGE = new EnumConfig<>( "default_mode", "Game stage set at the beginning of a new world.", false, GameStage.Stage.NORMAL );
-	final StageProgressConfig expertMode = new StageProgressConfig( "ExpertMode", "Determines what starts the Expert Mode.", "none", "minecraft:the_nether" );
-	final StageProgressConfig masterMode = new StageProgressConfig( "MasterMode", "Determines what starts the Master Mode.", "minecraft:ender_dragon", "none" );
-	final BooleanConfig enteringAnyDimensionStartsExpertMode = new BooleanConfig( "any_dimension_expert", "Determines whether any dimension should start Expert Mode (useful for integration with other mods).", false, true );
+	static final EnumConfig< GameStage.Stage > DEFAULT_GAME_STAGE = new EnumConfig<>( GameStage.Stage.NORMAL );
+	final StageProgressConfig expertMode = new StageProgressConfig( "none", "minecraft:the_nether" );
+	final StageProgressConfig masterMode = new StageProgressConfig( "minecraft:ender_dragon", "none" );
+	final BooleanConfig enteringAnyDimensionStartsExpertMode = new BooleanConfig( true );
 
 	public static GameStage.Stage getDefaultGameStage() {
 		return DEFAULT_GAME_STAGE.get();
 	}
 
 	public IncreaseGameStage() {
-		super( Registries.Modifiers.GAME_STAGE, "", "" );
+		super( Registries.Modifiers.GAME_STAGE );
 
-		OnDimensionChanged.Context onExpertDimension = new OnDimensionChanged.Context( this::startExpertMode );
-		onExpertDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
-			.addCondition( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() );
+		new OnDimensionChanged.Context( this::startExpertMode )
+			.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
+			.addCondition( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() )
+			.insertTo( this );
 
-		OnDimensionChanged.Context onMasterDimension = new OnDimensionChanged.Context( this::startMasterMode );
-		onMasterDimension.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
-			.addCondition( data->this.masterMode.dimensionTriggersChange( data.to.location() ) );
+		new OnDimensionChanged.Context( this::startMasterMode )
+			.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
+			.addCondition( data->this.masterMode.dimensionTriggersChange( data.to.location() ) )
+			.insertTo( this );
 
-		OnDeath.Context onExpertKill = new OnDeath.Context( this::startExpertMode );
-		onExpertKill.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
-			.addCondition( data->this.expertMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) );
+		new OnDeath.Context( this::startExpertMode )
+			.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
+			.addCondition( data->this.expertMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) )
+			.insertTo( this );
 
-		OnDeath.Context onMasterKill = new OnDeath.Context( this::startMasterMode );
-		onMasterKill.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
-			.addCondition( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) );
+		new OnDeath.Context( this::startMasterMode )
+			.addCondition( data->GameStage.getCurrentStage() == GameStage.Stage.EXPERT )
+			.addCondition( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) )
+			.insertTo( this );
 
-		this.addContexts( onExpertDimension, onMasterDimension, onExpertKill, onMasterKill );
-		this.addConfigs( DEFAULT_GAME_STAGE, this.enteringAnyDimensionStartsExpertMode, this.expertMode, this.masterMode );
+		this.addConfig( DEFAULT_GAME_STAGE.name( "default_mode" ).comment( "Game stage set at the beginning of a new world." ) )
+			.addConfig( this.enteringAnyDimensionStartsExpertMode.name( "any_dimension_expert" )
+				.comment( "Determines whether any dimension should start Expert Mode (useful for integration with other mods)." )
+			).addConfig( this.expertMode.name( "ExpertMode" ).comment( "Determines what starts the Expert Mode." ) )
+			.addConfig( this.masterMode.name( "MasterMode" ).comment( "Determines what starts the Master Mode." ) );
 	}
 
 	private void startExpertMode( OnDimensionChanged.Data data ) {
-		startExpertMode( data.entity.getServer() );
+		this.startExpertMode( data.entity.getServer() );
 	}
 
 	private void startExpertMode( OnDeath.Data data ) {
-		startExpertMode( data.target.getServer() );
+		this.startExpertMode( data.target.getServer() );
 	}
 
 	private void startExpertMode( @Nullable MinecraftServer minecraftServer ) {
@@ -68,11 +76,11 @@ public class IncreaseGameStage extends GameModifier {
 	}
 
 	private void startMasterMode( OnDimensionChanged.Data data ) {
-		startMasterMode( data.entity.getServer() );
+		this.startMasterMode( data.entity.getServer() );
 	}
 
 	private void startMasterMode( OnDeath.Data data ) {
-		startMasterMode( data.target.getServer() );
+		this.startMasterMode( data.target.getServer() );
 	}
 
 	private void startMasterMode( @Nullable MinecraftServer minecraftServer ) {
@@ -85,6 +93,6 @@ public class IncreaseGameStage extends GameModifier {
 
 	private static void sendMessageToAllPlayers( PlayerList playerList, String translationKey, ChatFormatting textColor ) {
 		MutableComponent message = Component.translatable( translationKey ).withStyle( textColor, ChatFormatting.BOLD );
-		playerList.getPlayers().forEach( player -> player.displayClientMessage( message, false ) );
+		playerList.getPlayers().forEach( player->player.displayClientMessage( message, false ) );
 	}
 }

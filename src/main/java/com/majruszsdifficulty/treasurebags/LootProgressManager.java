@@ -11,7 +11,6 @@ import com.mlib.gamemodifiers.contexts.OnPlayerLogged;
 import com.mlib.network.NetworkMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -88,9 +87,12 @@ public class LootProgressManager extends GameModifier {
 	}
 
 	public LootProgressManager() {
-		super( Registries.Modifiers.TREASURE_BAG, "LootProgressManager", "" );
+		super( Registries.Modifiers.TREASURE_BAG );
 
-		this.addContext( new OnPlayerLogged.Context( this::onLogged ) );
+		new OnPlayerLogged.Context( this::onLogged )
+			.insertTo( this );
+
+		this.name( "LootProgressManager" );
 	}
 
 	private void onLogged( OnPlayerLogged.Data data ) {

@@ -5,19 +5,31 @@ import com.mlib.config.StringListConfig;
 import java.util.List;
 
 public class GameStageStringListConfig extends GameStageConfig< List< ? extends String > > {
-	public GameStageStringListConfig( String name, String comment, String[] defaultNormal, String[] defaultExpert, String[] defaultMaster ) {
-		super( name, comment, normalMode( defaultNormal ), expertMode( defaultExpert ), masterMode( defaultMaster ) );
+	public GameStageStringListConfig( String[] defaultNormal, String[] defaultExpert, String[] defaultMaster ) {
+		super( new NormalConfig( defaultNormal ), new ExpertConfig( defaultExpert ), new MasterConfig( defaultMaster ) );
 	}
 
-	private static StringListConfig normalMode( String[] values ) {
-		return new StringListConfig( "normal", "Normal Mode", false, values );
+	static class NormalConfig extends StringListConfig {
+		public NormalConfig( String[] defaultValue ) {
+			super( defaultValue );
+
+			this.name( "normal" ).comment( "Normal Mode" );
+		}
 	}
 
-	private static StringListConfig expertMode( String[] values ) {
-		return new StringListConfig( "expert", "Expert Mode", false, values );
+	static class ExpertConfig extends StringListConfig {
+		public ExpertConfig( String[] defaultValue ) {
+			super( defaultValue );
+
+			this.name( "expert" ).comment( "Expert Mode" );
+		}
 	}
 
-	private static StringListConfig masterMode( String[] values ) {
-		return new StringListConfig( "master", "Master Mode", false, values );
+	static class MasterConfig extends StringListConfig {
+		public MasterConfig( String[] defaultValue ) {
+			super( defaultValue );
+
+			this.name( "master" ).comment( "Master Mode" );
+		}
 	}
 }

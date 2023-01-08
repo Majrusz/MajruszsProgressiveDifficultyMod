@@ -1,11 +1,12 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.ParticleHandler;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemStack;
@@ -13,31 +14,35 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.majruszsdifficulty.GameStage.Stage;
 
 @AutoInstance
 public class DoubleLoot extends GameModifier {
 	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, ()->new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
-	final StringListConfig forbiddenItems = new StringListConfig( "forbidden_items", "List of items that cannot be duplicated.", false, "minecraft:nether_star", "minecraft:totem_of_undying" );
+	final StringListConfig forbiddenItems = new StringListConfig( "minecraft:nether_star", "minecraft:totem_of_undying" );
 
 	public DoubleLoot() {
-		super( Registries.Modifiers.DEFAULT, "DoubleLoot", "Gives a chance to double the loot." );
+		super( Registries.Modifiers.DEFAULT );
 
-		this.generateContext( 0.0, Stage.NORMAL, "NormalMode", "Determines the chance on Normal Mode." );
-		this.generateContext( 0.2, Stage.EXPERT, "ExpertMode", "Determines the chance on Expert Mode." );
-		this.generateContext( 0.4, Stage.MASTER, "MasterMode", "Determines the chance on Master Mode." );
-		this.addConfig( this.forbiddenItems );
-	}
+		new OnDoubleLootContext( this::doubleLoot, 0.0, Stage.NORMAL )
+			.name( "NormalMode" )
+			.comment( "Determines the chance on Normal Mode." )
+			.insertTo( this );
 
-	private void generateContext( double chance, Stage stage, String configName, String configComment ) {
-		OnLoot.Context onLoot = new OnLoot.Context( this::doubleLoot, configName, configComment );
-		onLoot.addCondition( new CustomConditions.GameStageExact<>( stage ) )
-			.addCondition( new CustomConditions.CRDChance<>( chance, false ) )
-			.addCondition( OnLoot.HAS_LAST_DAMAGE_PLAYER )
-			.addCondition( OnLoot.HAS_ENTITY );
+		new OnDoubleLootContext( this::doubleLoot, 0.2, Stage.EXPERT )
+			.name( "ExpertMode" )
+			.comment( "Determines the chance on Expert Mode." )
+			.insertTo( this );
 
-		this.addContext( onLoot );
+		new OnDoubleLootContext( this::doubleLoot, 0.4, Stage.MASTER )
+			.name( "MasterMode" )
+			.comment( "Determines the chance on Master Mode." )
+			.insertTo( this );
+
+		this.addConfig( this.forbiddenItems.name( "forbidden_items" ).comment( "List of items that cannot be duplicated." ) );
+		this.name( "DoubleLoot" ).comment( "Gives a chance to double the loot." );
 	}
 
 	private void doubleLoot( OnLoot.Data data ) {
@@ -67,5 +72,16 @@ public class DoubleLoot extends GameModifier {
 
 	private boolean isAllowed( ItemStack itemStack ) {
 		return !itemStack.isEmpty() && !this.forbiddenItems.contains( Utility.getRegistryString( itemStack ) );
+	}
+
+	private static class OnDoubleLootContext extends OnLoot.Context {
+		public OnDoubleLootContext( Consumer< OnLoot.Data > consumer, double chance, Stage stage ) {
+			super( consumer );
+
+			this.addCondition( new CustomConditions.GameStageExact<>( stage ) )
+				.addCondition( new CustomConditions.CRDChance<>( chance, false ) )
+				.addCondition( OnLoot.HAS_LAST_DAMAGE_PLAYER )
+				.addCondition( OnLoot.HAS_ENTITY );
+		}
 	}
 }

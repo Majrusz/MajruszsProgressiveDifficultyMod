@@ -65,32 +65,33 @@ public class TreasureBagManager extends GameModifier {
 	}
 
 	public TreasureBagManager() {
-		super( Registries.Modifiers.TREASURE_BAG, "", "" );
+		super( Registries.Modifiers.TREASURE_BAG );
 
-		OnDamaged.Context onDamaged = new OnDamaged.Context( this::addPlayerToParticipantList );
-		onDamaged.addCondition( data->data.attacker instanceof Player )
-			.addCondition( data->hasTreasureBag( data.target.getType() ) );
+		new OnDamaged.Context( this::addPlayerToParticipantList )
+			.addCondition( data->data.attacker instanceof Player )
+			.addCondition( data->hasTreasureBag( data.target.getType() ) )
+			.insertTo( this );
 
-		OnDeath.Context onDeath = new OnDeath.Context( this::rewardAllParticipants );
-		onDeath.addCondition( data->hasTreasureBag( data.target.getType() ) )
+		new OnDeath.Context( this::rewardAllParticipants )
+			.addCondition( data->hasTreasureBag( data.target.getType() ) )
 			.addCondition( data->{
 				TreasureBagItem treasureBag = getTreasureBag( data.target.getType() );
 				return treasureBag != null && treasureBag.isEnabled();
-			} );
+			} ).insertTo( this );
 
-		OnItemFished.Context onFished = new OnItemFished.Context( this::giveTreasureBagToAngler );
-		onFished.addCondition( data->data.level != null )
+		new OnItemFished.Context( this::giveTreasureBagToAngler )
+			.addCondition( data->data.level != null )
 			.addCondition( data->{
 				int requiredFishCount = TreasureBagItem.Fishing.REQUIRED_FISH_COUNT.getCurrentGameStageValue();
 				NBTHelper.IntegerData fishedItems = new NBTHelper.IntegerData( data.player, FISHING_TAG );
 				fishedItems.set( x->( x + 1 ) % requiredFishCount );
 
 				return fishedItems.get() == 0;
-			} )
-			.addCondition( data->TreasureBagItem.Fishing.CONFIG.isEnabled() );
+			} ).addCondition( data->TreasureBagItem.Fishing.CONFIG.isEnabled() )
+			.insertTo( this );
 
-		OnPlayerTick.Context onTick = new OnPlayerTick.Context( this::giveTreasureBagToHero );
-		onTick.addCondition( data->data.level != null )
+		new OnPlayerTick.Context( this::giveTreasureBagToHero )
+			.addCondition( data->data.level != null )
 			.addCondition( data->TimeHelper.hasServerTicksPassed( 20 ) )
 			.addCondition( data->{
 				assert data.level != null;
@@ -104,9 +105,8 @@ public class TreasureBagManager extends GameModifier {
 
 				lastRaidId.set( raid.getId() );
 				return true;
-			} );
+			} ).insertTo( this );
 
-		this.addContexts( onDamaged, onDeath, onFished, onTick );
 		this.addConfigs( TreasureBagItem.getConfigs() );
 	}
 

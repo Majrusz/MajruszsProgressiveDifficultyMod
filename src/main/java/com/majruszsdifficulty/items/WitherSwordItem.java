@@ -24,29 +24,31 @@ public class WitherSwordItem extends SwordItem {
 	@AutoInstance
 	public static class Effect extends GameModifier {
 		static final String ATTRIBUTE_ID = "item.majruszsdifficulty.wither_sword.effect";
-		static final EffectConfig WITHER = new EffectConfig( "", ()->MobEffects.WITHER, 1, 6.0 );
+		final EffectConfig wither = new EffectConfig( MobEffects.WITHER, 1, 6.0 );
 
 		public Effect() {
-			super( Registries.Modifiers.DEFAULT, "WitherSwordEffect", "Wither Sword inflicts wither effect." );
+			super( Registries.Modifiers.DEFAULT );
 
-			OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyWither );
-			onDamaged.addCondition( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) )
+			new OnDamaged.Context( this::applyWither )
+				.addCondition( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) )
 				.addCondition( data->data.source.getDirectEntity() == data.attacker )
-				.addConfig( WITHER );
+				.addConfig( this.wither )
+				.insertTo( this );
 
 			new OnItemAttributeTooltip.Context( this::addTooltip )
-				.addCondition( data->data.item instanceof WitherSwordItem );
+				.addCondition( data->data.item instanceof WitherSwordItem )
+				.insertTo( this );
 
-			this.addContext( onDamaged );
+			this.name( "WitherSwordEffect" ).comment( "Wither Sword inflicts wither effect." );
 		}
 
 		private void applyWither( OnDamaged.Data data ) {
-			MobEffectHelper.tryToApply( data.target, MobEffects.WITHER, WITHER.getDuration(), WITHER.getAmplifier() );
+			MobEffectHelper.tryToApply( data.target, MobEffects.WITHER, this.wither.getDuration(), this.wither.getAmplifier() );
 		}
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
 			String chance = TextHelper.percent( 1.0f );
-			String amplifier = TextHelper.toRoman( Effect.WITHER.getAmplifier() + 1 );
+			String amplifier = TextHelper.toRoman( this.wither.getAmplifier() + 1 );
 			data.add( EquipmentSlot.MAINHAND, Component.translatable( ATTRIBUTE_ID, chance, amplifier )
 				.withStyle( ChatFormatting.DARK_GREEN ) );
 		}

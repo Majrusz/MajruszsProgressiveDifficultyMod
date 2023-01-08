@@ -1,29 +1,32 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
+import com.mlib.math.Range;
 import net.minecraft.world.entity.monster.Creeper;
 
 @AutoInstance
 public class CreeperExplosionImmunity extends GameModifier {
-	final DoubleConfig damageMultiplier = new DoubleConfig( "damage_multiplier", "", false, 0.2, 0.0, 0.99 );
+	final DoubleConfig damageMultiplier = new DoubleConfig( 0.2, new Range<>( 0.0, 0.99 ) );
 
 	public CreeperExplosionImmunity() {
-		super( Registries.Modifiers.DEFAULT, "CreeperExplosionImmunity", "Makes a Creeper take less damage from explosions." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnDamaged.Context onDamaged = new OnDamaged.Context( this::reduceExplosionDamage );
-		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+		new OnDamaged.Context( this::reduceExplosionDamage )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.target instanceof Creeper )
 			.addCondition( data->data.source.isExplosion() )
-			.addConfig( this.damageMultiplier );
+			.addConfig( this.damageMultiplier.name( "damage_multiplier" ) )
+			.insertTo( this );
 
-		this.addContext( onDamaged );
+		this.name( "CreeperExplosionImmunity" ).comment( "Decreases damage taken by Creepers from explosions." );
 	}
 
 	private void reduceExplosionDamage( OnDamaged.Data data ) {

@@ -19,7 +19,7 @@ import static com.majruszsdifficulty.undeadarmy.UndeadArmyManager.belongsToUndea
 @AutoInstance
 public class UndeadArmyEventsHandler extends GameModifier {
 	public UndeadArmyEventsHandler() {
-		super( Registries.Modifiers.UNDEAD_ARMY, "UndeadArmyEventsHandler", "" );
+		super( Registries.Modifiers.UNDEAD_ARMY );
 
 		OnSpawned.Context onLoaded = new OnSpawned.Context( this::resetUndeadArmyGoals );
 		onLoaded.addCondition( data->data.loadedFromDisk && belongsToUndeadArmy( data.entity ) );
@@ -39,10 +39,11 @@ public class UndeadArmyEventsHandler extends GameModifier {
 		onServerTick.addCondition( data->data.event.phase == TickEvent.Phase.END && Registries.UNDEAD_ARMY_MANAGER != null );
 
 		OnLoot.Context onLoot = new OnLoot.Context( this::addCloth );
-		onLoot.addCondition( new Condition.Chance< OnLoot.Data >( 0.67 ).setConfigurable( false ) )
+		onLoot.addCondition( new Condition.Chance< OnLoot.Data >( 0.67 ).configurable( false ) )
 			.addCondition( data->belongsToUndeadArmyPatrol( data.entity ) );
 
 		this.addContexts( onLoaded, onTick, onArmyProgress, onUndeadKill, onServerTick, onLoot );
+		this.name( "UndeadArmyEventsHandler" );
 	}
 
 	private void resetUndeadArmyGoals( OnSpawned.Data data ) {

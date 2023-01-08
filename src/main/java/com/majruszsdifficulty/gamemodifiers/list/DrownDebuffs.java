@@ -1,31 +1,34 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
 @AutoInstance
 public class DrownDebuffs extends GameModifier {
-	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 2.0, 60.0 );
-	final ProgressiveEffectConfig weakness = new ProgressiveEffectConfig( "Weakness", ()->MobEffects.WEAKNESS, 0, 10.0, 60.0 );
+	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( MobEffects.CONFUSION, new GameStage.Integer( 0 ), new GameStage.Double( 2.0 ) ).stackable( 60.0 );
+	final ProgressiveEffectConfig weakness = new ProgressiveEffectConfig( MobEffects.WEAKNESS, new GameStage.Integer( 0 ), new GameStage.Double( 10.0 ) ).stackable( 60.0 );
 
 	public DrownDebuffs() {
-		super( Registries.Modifiers.DEFAULT, "DrownDebuffs", "Inflicts several debuffs when taking drown damage (these debuffs stack)." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyDebuffs );
-		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+		new OnDamaged.Context( this::applyDebuffs )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.source.equals( DamageSource.DROWN ) )
-			.addConfigs( this.nausea, this.weakness );
+			.addConfig( this.nausea.name( "Nausea" ) )
+			.addConfig( this.weakness.name( "Weakness" ) )
+			.insertTo( this );
 
-		this.addContext( onDamaged );
+		this.name( "DrownDebuffs" ).comment( "Inflicts several debuffs when taking drown damage (these debuffs stack)." );
 	}
 
 	private void applyDebuffs( OnDamaged.Data data ) {

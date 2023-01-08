@@ -15,17 +15,18 @@ import net.minecraft.world.entity.monster.Spider;
 @AutoInstance
 public class JockeySpawn extends GameModifier {
 	public JockeySpawn() {
-		super( Registries.Modifiers.DEFAULT, "JockeySpawn", "Jockey is more likely to spawn." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnSpawned.Context onSpawned = new OnSpawned.Context( this::spawnSkeletonOnSpider );
-		onSpawned.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+		new OnSpawned.Context( this::spawnSkeletonOnSpider )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.125, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 			.addCondition( data->data.level != null )
-			.addCondition( data->Spider.class.equals( data.target.getClass() ) );
+			.addCondition( data->Spider.class.equals( data.target.getClass() ) )
+			.insertTo( this );
 
-		this.addContext( onSpawned );
+		this.name( "JockeySpawn" ).comment( "Jockey is more likely to spawn." );
 	}
 
 	private void spawnSkeletonOnSpider( OnSpawned.Data data ) {

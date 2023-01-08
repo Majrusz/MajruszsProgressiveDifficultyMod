@@ -18,6 +18,7 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ContextBase;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.math.Range;
 import com.mlib.math.VectorHelper;
 import com.mlib.network.NetworkMessage;
 import com.mlib.text.TextHelper;
@@ -72,7 +73,7 @@ public class CursedArmorEntity extends Monster {
 	int assembleTicksLeft = 0;
 
 	static {
-		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID, "CursedArmor", "" );
+		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID ).name( "CursedArmor" );
 	}
 
 	public static Supplier< EntityType< CursedArmorEntity > > createSupplier() {
@@ -165,42 +166,48 @@ public class CursedArmorEntity extends Monster {
 		static final String SOUND_TAG = "sound";
 		static final String CHANCE_TAG = "chance";
 		static final Map< ResourceLocation, Data > DATA_MAP = new HashMap<>();
-		final DoubleConfig dropChance = new DoubleConfig( "drop_chance", "Chance for each equipped item to drop when killed.", false, 0.1, 0.0, 1.0 );
-		final StringConfig name = new StringConfig( "name", "", false, "Freshah" );
+		final DoubleConfig dropChance = new DoubleConfig( 0.1, Range.CHANCE );
+		final StringConfig name = new StringConfig( "Freshah" );
 
 		public Spawn() {
-			super( GROUP_ID, "", "" );
+			super( GROUP_ID );
 
-			OnLoot.Context onLoot = new OnLoot.Context( this::spawnCursedArmor );
-			onLoot.addCondition( new Condition.IsServer<>() )
+			new OnLoot.Context( this::spawnCursedArmor )
+				.addCondition( new Condition.IsServer<>() )
 				.addCondition( OnLoot.HAS_ORIGIN )
 				.addCondition( data->BlockHelper.getBlockEntity( data.level, data.origin ) instanceof ChestBlockEntity )
 				.addCondition( this::hasLootDefined )
-				.addConfig( this.dropChance );
+				.addConfig( this.dropChance.name( "drop_chance" ).comment( "Chance for each equipped item to drop when killed." ) )
+				.insertTo( this );
 
-			OnLootTableCustomLoad.Context onLootTableLoad = new OnLootTableCustomLoad.Context( this::loadCursedArmorLoot );
-			onLootTableLoad.addCondition( data->data.jsonObject.has( MAIN_TAG ) );
+			new OnLootTableCustomLoad.Context( this::loadCursedArmorLoot )
+				.addCondition( data->data.jsonObject.has( MAIN_TAG ) )
+				.insertTo( this );
 
-			OnSpawned.Context onSpawned1 = new OnSpawned.Context( this::setCustomName, "CustomName", "Makes some Cursed Armors have a custom name." );
-			onSpawned1.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Chance<>( 0.025, "chance", "" ) )
+			new OnSpawned.Context( this::setCustomName )
+				.name( "CustomName" )
+				.comment( "Makes some Cursed Armors have a custom name." )
+				.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Chance<>( 0.025 ) )
 				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
 				.addCondition( data->data.target instanceof CursedArmorEntity )
-				.addConfigs( this.name );
+				.addConfigs( this.name.name( "name" ) )
+				.insertTo( this );
 
-			OnSpawned.Context onSpawned2 = new OnSpawned.Context( this::giveRandomArmor );
-			onSpawned2.addCondition( new Condition.IsServer<>() )
+			new OnSpawned.Context( this::giveRandomArmor )
+				.addCondition( new Condition.IsServer<>() )
 				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-				.addCondition( data->data.target instanceof CursedArmorEntity );
+				.addCondition( data->data.target instanceof CursedArmorEntity )
+				.insertTo( this );
 
-			OnSpawned.Context onSpawned3 = new OnSpawned.Context( this::startAssembling );
-			onSpawned3.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() );
+			new OnSpawned.Context( this::startAssembling )
+				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() )
+				.insertTo( this );
 
-			OnPreDamaged.Context onDamaged = new OnPreDamaged.Context( OnPreDamaged.CANCEL );
-			onDamaged.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
-
-			this.addContexts( onLoot, onLootTableLoad, onSpawned1, onSpawned2, onSpawned3, onDamaged );
+			new OnPreDamaged.Context( OnPreDamaged.CANCEL )
+				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() )
+				.insertTo( this );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
@@ -299,7 +306,7 @@ public class CursedArmorEntity extends Monster {
 		private ContextBase< OnEntityTick.Data > createOnTick( Consumer< OnEntityTick.Data > consumer ) {
 			return new OnEntityTick.Context( consumer )
 				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.2, Dist.DEDICATED_SERVER ).setConfigurable( false ) )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.2, Dist.DEDICATED_SERVER ).configurable( false ) )
 				.addCondition( data->data.entity instanceof CursedArmorEntity );
 		}
 

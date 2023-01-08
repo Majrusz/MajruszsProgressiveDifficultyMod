@@ -1,26 +1,28 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.goals.CreeperExplodeWallsGoal;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import net.minecraft.world.entity.monster.Creeper;
 
 @AutoInstance
 public class CreeperExplodeBehindWall extends GameModifier {
 	public CreeperExplodeBehindWall() {
-		super( Registries.Modifiers.DEFAULT, "CreeperExplodeBehindWall", "Creeper explodes when the player is behind the wall." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnSpawned.Context onSpawned = new OnSpawned.Context( this::addNewGoal );
-		onSpawned.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+		new OnSpawned.Context( this::addNewGoal )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.target instanceof Creeper );
+			.addCondition( data->data.target instanceof Creeper )
+			.insertTo( this );
 
-		this.addContext( onSpawned );
+		this.name( "CreeperExplodeBehindWall" ).comment( "Creeper explodes when the player is behind the wall." );
 	}
 
 	private void addNewGoal( OnSpawned.Data data ) {

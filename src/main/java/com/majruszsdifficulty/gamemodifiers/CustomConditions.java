@@ -16,14 +16,18 @@ import static com.majruszsdifficulty.GameStage.Stage;
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
 
 public class CustomConditions {
+	// TODO: MOVE TO THE LIBRARY
 	public static class CRDChance< DataType extends ContextData > extends Condition.Chance< DataType > {
 		final BooleanConfig scaledByCRD;
 
 		public CRDChance( double defaultChance, boolean scaledByCRD ) {
 			super( defaultChance );
 
-			this.scaledByCRD = new BooleanConfig( "scaled_by_crd", "Specifies whether the chance should be scaled by Clamped Regional Difficulty.", false, scaledByCRD );
-			this.addConfig( this.scaledByCRD );
+			this.scaledByCRD = new BooleanConfig( scaledByCRD );
+
+			this.addConfig( this.scaledByCRD.name( "scaled_by_crd" )
+				.comment( "Specifies whether the chance should be scaled by Clamped Regional Difficulty." )
+			);
 		}
 
 		@Override
@@ -34,13 +38,15 @@ public class CustomConditions {
 		}
 	}
 
+	// TODO: ACCEPT LIST OF GAME STAGES
 	public static class GameStage< DataType extends ContextData > extends Condition< DataType > {
 		final EnumConfig< Stage > minimumStage;
 
 		public GameStage( Stage minimumStage ) {
-			this.minimumStage = new EnumConfig<>( "minimum_stage", "Minimum game stage required for that to happen.", false, minimumStage );
-			this.addConfig( this.minimumStage );
-			this.apply( params->params.setConfigurable( true ) );
+			this.minimumStage = new EnumConfig<>( minimumStage );
+
+			this.addConfig( this.minimumStage.name( "minimum_stage" ).comment( "Minimum game stage required for that to happen." ) );
+			this.apply( params->params.configurable( true ) );
 		}
 
 		@Override
@@ -49,6 +55,7 @@ public class CustomConditions {
 		}
 	}
 
+	// TODO: REMOVE
 	public static class GameStageExact< DataType extends ContextData > extends Condition< DataType > {
 		final Stage stage;
 
@@ -64,7 +71,7 @@ public class CustomConditions {
 
 	public static class IsNotSidekick< DataType extends ContextData > extends Condition< DataType > {
 		public IsNotSidekick() {
-			this.apply( params->params.setPriority( Priority.HIGH ) );
+			this.apply( params->params.priority( Priority.HIGH ) );
 		}
 
 		@Override
@@ -75,7 +82,7 @@ public class CustomConditions {
 
 	public static class IsNotUndeadArmy< DataType extends ContextData > extends Condition< DataType > {
 		public IsNotUndeadArmy() {
-			this.apply( params->params.setPriority( Priority.HIGH ) );
+			this.apply( params->params.priority( Priority.HIGH ) );
 		}
 
 		@Override
@@ -86,7 +93,7 @@ public class CustomConditions {
 
 	public static class IsNotTooManyMobsNearby< DataType extends ContextData > extends Condition< DataType > {
 		public IsNotTooManyMobsNearby() {
-			this.apply( params->params.setPriority( Priority.LOWEST ) ); // it can significantly affect the performance
+			this.apply( params->params.priority( Priority.LOWEST ) ); // it can significantly affect the performance
 		}
 
 		@Override

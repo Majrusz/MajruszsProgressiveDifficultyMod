@@ -9,6 +9,7 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
+import com.mlib.math.Range;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -26,27 +27,31 @@ import javax.annotation.Nullable;
 
 @AutoInstance
 public class SpawnPlayerZombie extends GameModifier {
-	final DoubleConfig headChance = new DoubleConfig( "head_chance", "Chance for a zombie to have player's head.", false, 1.0, 0.0, 1.0 );
-	final DoubleConfig headDropChance = new DoubleConfig( "head_drop_chance", "Chance for a zombie to drop player's head.", false, 0.1, 0.0, 1.0 );
+	final DoubleConfig headChance = new DoubleConfig( 1.0, Range.CHANCE );
+	final DoubleConfig headDropChance = new DoubleConfig( 0.1, Range.CHANCE );
 
 	public SpawnPlayerZombie() {
-		super( Registries.Modifiers.DEFAULT, "SpawnPlayerZombie", "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnDeath.Context onDeath1 = new OnDeath.Context( this::spawnZombie );
-		onDeath1.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+		new OnDeath.Context( this::spawnZombie )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Player )
 			.addCondition( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie )
-			.addConfigs( this.headChance, this.headDropChance );
+			.addConfig( this.headChance.name( "head_chance" ).comment( "Chance for a zombie to have player's head." ) )
+			.addConfig( this.headDropChance.name( "head_drop_chance" ).comment( "Chance for a zombie to drop player's head." ) )
+			.insertTo( this );
 
-		OnDeath.Context onDeath2 = new OnDeath.Context( this::giveAdvancement );
-		onDeath2.addCondition( data->data.target instanceof Zombie )
+		new OnDeath.Context( this::giveAdvancement )
+			.addCondition( data->data.target instanceof Zombie )
 			.addCondition( data->data.attacker instanceof ServerPlayer )
-			.addCondition( data->data.target.getName().equals( data.attacker.getName() ) );
+			.addCondition( data->data.target.getName().equals( data.attacker.getName() ) )
+			.insertTo( this );
 
-		this.addContexts( onDeath1, onDeath2 );
+		this.name( "SpawnPlayerZombie" )
+			.comment( "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
 	}
 
 	private void spawnZombie( OnDeath.Data data ) {

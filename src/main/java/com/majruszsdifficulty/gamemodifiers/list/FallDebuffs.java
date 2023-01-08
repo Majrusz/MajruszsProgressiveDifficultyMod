@@ -14,21 +14,23 @@ import net.minecraft.world.effect.MobEffects;
 
 @AutoInstance
 public class FallDebuffs extends GameModifier {
-	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( "Nausea", ()->MobEffects.CONFUSION, 0, 8.0 );
-	final ProgressiveEffectConfig slowness = new ProgressiveEffectConfig( "Slowness", ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 6.0 );
+	final ProgressiveEffectConfig nausea = new ProgressiveEffectConfig( MobEffects.CONFUSION, new GameStage.Integer( 0 ), new GameStage.Double( 8.0 ) );
+	final ProgressiveEffectConfig slowness = new ProgressiveEffectConfig( MobEffects.MOVEMENT_SLOWDOWN, new GameStage.Integer( 0 ), new GameStage.Double( 6.0 ) );
 
 	public FallDebuffs() {
-		super( Registries.Modifiers.DEFAULT, "FallDebuffs", "Inflicts several debuffs when taking fall damage." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnDamaged.Context onDamaged = new OnDamaged.Context( this::applyDebuffs );
-		onDamaged.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+		new OnDamaged.Context( this::applyDebuffs )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f )
 			.addCondition( data->EntityHelper.isHuman( data.target ) )
-			.addConfigs( this.nausea, this.slowness );
+			.addConfig( this.nausea.name( "Nausea" ) )
+			.addConfig( this.slowness.name( "Slowness" ) )
+			.insertTo( this );
 
-		this.addContext( onDamaged );
+		this.name( "FallDebuffs" ).comment( "Inflicts several debuffs when taking fall damage." );
 	}
 
 	private void applyDebuffs( OnDamaged.Data data ) {

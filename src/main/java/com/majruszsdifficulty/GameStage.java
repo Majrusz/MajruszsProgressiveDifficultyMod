@@ -118,7 +118,27 @@ public class GameStage {
 		NORMAL, EXPERT, MASTER
 	}
 
-	public record Integer( int normal, int expert, int master ) {}
+	public record Integer( int normal, int expert, int master ) {
+		public Integer( int normal, int expert, int master ) {
+			this.normal = normal;
+			this.expert = expert;
+			this.master = master;
+		}
 
-	public record Double( double normal, double expert, double master ) {}
+		public Integer( int value ) {
+			this( value, value, value );
+		}
+	}
+
+	public record Double( double normal, double expert, double master ) {
+		public Double( double normal, double expert, double master ) {
+			this.normal = normal;
+			this.expert = expert;
+			this.master = master;
+		}
+
+		public Double( double value ) {
+			this( value, value, value );
+		}
+	}
 }

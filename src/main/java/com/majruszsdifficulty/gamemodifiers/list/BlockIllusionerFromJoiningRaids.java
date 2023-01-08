@@ -4,20 +4,18 @@ import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Illusioner;
 
 @AutoInstance
 public class BlockIllusionerFromJoiningRaids extends GameModifier {
 	public BlockIllusionerFromJoiningRaids() {
-		super( Registries.Modifiers.DEFAULT, "BlockIllusionerFromJoiningRaids", "Makes the Illusioner be unable to join any raid." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnSpawned.Context onSpawned = new OnSpawned.Context( this::blockJoiningRaids );
-		onSpawned.addCondition( data->data.target instanceof Illusioner );
+		new OnSpawned.Context( this::blockJoiningRaids )
+			.addCondition( data->data.target instanceof Illusioner )
+			.insertTo( this );
 
-		this.addContext( onSpawned );
+		this.name( "BlockIllusionerFromJoiningRaids" ).comment( "Makes the Illusioner be unable to join any raid." );
 	}
 
 	private void blockJoiningRaids( OnSpawned.Data data ) {

@@ -66,15 +66,13 @@ import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
 
 public class Registries {
 	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
-	public static final ConfigGroup UNDEAD_ARMY_GROUP;
-	public static final ConfigGroup MOBS_GROUP;
 
 	static {
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.DEFAULT );
-		UNDEAD_ARMY_GROUP = GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.UNDEAD_ARMY, "UndeadArmy", "" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.GAME_STAGE, "GameStage", "" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.TREASURE_BAG, "TreasureBag", "" );
-		MOBS_GROUP = GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.MOBS, "Mobs", "" );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.DEFAULT ).name( "GameModifiers" );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.UNDEAD_ARMY ).name( "UndeadArmy" );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.GAME_STAGE ).name( "GameStage" );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.TREASURE_BAG ).name( "TreasureBag" );
+		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.MOBS ).name( "Mobs" );
 	}
 
 	// Groups

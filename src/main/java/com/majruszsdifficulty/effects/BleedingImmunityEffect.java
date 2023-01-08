@@ -36,13 +36,14 @@ public class BleedingImmunityEffect extends MobEffect {
 	@AutoInstance
 	public static class BleedingImmunity extends GameModifier {
 		public BleedingImmunity() {
-			super( Registries.Modifiers.DEFAULT, "BleedingImmunity", "Config for Bleeding Immunity effect." );
+			super( Registries.Modifiers.DEFAULT );
 
-			OnEffectApplicable.Context onEffectApplicable = new OnEffectApplicable.Context( this::cancelBleeding );
-			onEffectApplicable.addCondition( new Condition.HasEffect<>( Registries.BLEEDING_IMMUNITY ) )
-				.addCondition( data->data.effect.equals( Registries.BLEEDING.get() ) );
+			new OnEffectApplicable.Context( this::cancelBleeding )
+				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING_IMMUNITY ) )
+				.addCondition( data->data.effect.equals( Registries.BLEEDING.get() ) )
+				.insertTo( this );
 
-			this.addContexts( onEffectApplicable );
+			this.name( "BleedingImmunity" ).comment( "Config for Bleeding Immunity effect." );
 		}
 
 		private void cancelBleeding( OnEffectApplicable.Data data ) {

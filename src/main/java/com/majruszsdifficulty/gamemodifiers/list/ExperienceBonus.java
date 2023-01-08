@@ -1,23 +1,27 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
+import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnPickupXp;
+import com.mlib.math.Range;
 
 @AutoInstance
 public class ExperienceBonus extends GameModifier {
-	final GameStageDoubleConfig bonusMultiplier = new GameStageDoubleConfig( "BonusMultiplier", "Extra bonus multiplier to experience gathered from any source.", 0.0, 0.2, 0.4, 0.0, 10.0 );
+	final GameStageDoubleConfig bonusMultiplier = new GameStageDoubleConfig( 0.0, 0.2, 0.4, new Range<>( 0.0, 10.0 ) );
 
 	public ExperienceBonus() {
-		super( Registries.Modifiers.DEFAULT, "ExperienceBonus", "Gives extra experience as the difficulty increases." );
+		super( Registries.Modifiers.DEFAULT );
 
-		OnPickupXp.Context onPickup = new OnPickupXp.Context( this::giveExtraExperience );
-		onPickup.addCondition( new Condition.Excludable<>() ).addConfig( this.bonusMultiplier );
+		new OnPickupXp.Context( this::giveExtraExperience )
+			.addCondition( new Condition.Excludable<>() )
+			.addConfig( this.bonusMultiplier.name( "BonusMultiplier" ).comment( "Extra bonus multiplier to experience gathered from any source." ) )
+			.insertTo( this );
 
-		this.addContext( onPickup );
+		this.name( "ExperienceBonus" ).comment( "Gives extra experience as the difficulty increases." );
 	}
 
 	private void giveExtraExperience( OnPickupXp.Data data ) {
