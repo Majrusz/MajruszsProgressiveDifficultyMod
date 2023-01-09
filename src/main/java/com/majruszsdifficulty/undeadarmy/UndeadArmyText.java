@@ -5,22 +5,35 @@ import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.MutableComponent;
 
 public class UndeadArmyText {
-	public static final MutableComponent TITLE = new TranslatableComponent( "majruszsdifficulty.undead_army.title" );
-	public static final MutableComponent WAVE = new TranslatableComponent( "majruszsdifficulty.undead_army.wave" );
-	public static final MutableComponent BETWEEN_WAVES = new TranslatableComponent( "majruszsdifficulty.undead_army.between_waves" );
-	public static final MutableComponent VICTORY = new TranslatableComponent( "majruszsdifficulty.undead_army.victory" );
-	public static final MutableComponent FAILED = new TranslatableComponent( "majruszsdifficulty.undead_army.failed" );
-	public static final MutableComponent APPROACHING = new TranslatableComponent( "majruszsdifficulty.undead_army.approaching" );
+	static final String TITLE_ID = "majruszsdifficulty.undead_army.title";
+	static final String WAVE_ID = "majruszsdifficulty.undead_army.wave";
+	static final String BETWEEN_WAVES_ID = "majruszsdifficulty.undead_army.between_waves";
+	static final String VICTORY_ID = "majruszsdifficulty.undead_army.victory";
+	static final String FAILED_ID = "majruszsdifficulty.undead_army.failed";
+	static final String APPROACHING_ID = "majruszsdifficulty.undead_army.approaching";
 
-	public static MutableComponent constructWaveMessage( int currentWave ) {
-		return new TextComponent( "" ).append( TITLE ).append( " (" ).append( WAVE ).append( " " + currentWave + ")" );
+	public static MutableComponent buildWaveMessage( int currentWave ) {
+		MutableComponent message = Component.translatable( TITLE_ID );
+
+		return currentWave > 0 ? message.append( " " ).append( Component.translatable( WAVE_ID, currentWave ) ) : message;
 	}
 
-	public static MutableComponent constructDirectionMessage( Direction direction ) {
-		return APPROACHING.copy()
-			.append( " " )
-			.append( new TranslatableComponent( "majruszsdifficulty.undead_army." + direction.toString().toLowerCase() ) )
-			.append( "!" )
+	public static MutableComponent buildBetweenWavesMessage() {
+		return Component.translatable( BETWEEN_WAVES_ID );
+	}
+
+	public static MutableComponent buildVictoryMessage() {
+		return Component.translatable( VICTORY_ID );
+	}
+
+	public static MutableComponent buildFailedMessage() {
+		return Component.translatable( FAILED_ID );
+	}
+
+	public static MutableComponent buildApproachingMessage( Direction direction ) {
+		String directionId = String.format( "majruszsdifficulty.undead_army.%s", direction.toString().toLowerCase() );
+
+		return Component.translatable( APPROACHING_ID, Component.translatable( directionId ) )
 			.withStyle( ChatFormatting.BOLD )
 			.withStyle( ChatFormatting.DARK_PURPLE );
 	}
