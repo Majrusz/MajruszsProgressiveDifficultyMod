@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerBossEvent;
@@ -47,7 +48,7 @@ public class UndeadArmy {
 	private final static int SAFE_SPAWN_RADIUS = 90;
 	private final static int SPAWN_RADIUS = 70;
 	private final ServerLevel level;
-	private final ServerBossEvent bossInfo = new ServerBossEvent( UndeadArmyText.TITLE, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
+	private final ServerBossEvent bossInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
 	private final List< Pair< BlockPos, EntityType< ? > > > spawnInfoList = new ArrayList<>();
 	private final BlockPos positionToAttack;
 	private final Direction direction;
@@ -132,10 +133,10 @@ public class UndeadArmy {
 
 	public void updateProgressBarText() {
 		switch( this.status ) {
-			case ONGOING -> this.bossInfo.setName( this.currentWave == 0 ? UndeadArmyText.TITLE : UndeadArmyText.constructWaveMessage( this.currentWave ) );
-			case BETWEEN_WAVES -> this.bossInfo.setName( UndeadArmyText.BETWEEN_WAVES );
-			case VICTORY -> this.bossInfo.setName( UndeadArmyText.VICTORY );
-			case FAILED -> this.bossInfo.setName( UndeadArmyText.FAILED );
+			case ONGOING -> this.bossInfo.setName( UndeadArmyText.buildWaveMessage( this.currentWave ) );
+			case BETWEEN_WAVES -> this.bossInfo.setName( UndeadArmyText.buildBetweenWavesMessage() );
+			case VICTORY -> this.bossInfo.setName( UndeadArmyText.buildVictoryMessage() );
+			case FAILED -> this.bossInfo.setName( UndeadArmyText.buildFailedMessage() );
 		}
 	}
 
@@ -144,7 +145,7 @@ public class UndeadArmy {
 			return;
 
 		if( this.ticksActive++ == 0 ) {
-			MutableComponent message = UndeadArmyText.constructDirectionMessage( this.direction );
+			MutableComponent message = UndeadArmyText.buildApproachingMessage( this.direction );
 			List< ServerPlayer > players = getNearbyPlayers();
 			players.forEach( player->player.displayClientMessage( message, false ) );
 		}
