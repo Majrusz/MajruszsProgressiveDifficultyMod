@@ -10,8 +10,8 @@ import net.minecraft.world.phys.Vec3;
 public enum Direction {
 	WEST( -1, 0 ), EAST( 1, 0 ), NORTH( 0, -1 ), SOUTH( 0, 1 );
 
-	private static final int DISTANCE_MULTIPLIER = 10;
-	private final int xFactor, zFactor;
+	static final int DISTANCE_MULTIPLIER = 10;
+	final int xFactor, zFactor;
 	public final int x, z;
 
 	Direction( int x, int z ) {
