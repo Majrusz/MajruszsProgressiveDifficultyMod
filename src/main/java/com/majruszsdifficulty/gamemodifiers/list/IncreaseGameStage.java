@@ -53,7 +53,8 @@ public class IncreaseGameStage extends GameModifier {
 			.insertTo( this );
 
 		this.addConfig( DEFAULT_GAME_STAGE.name( "default_mode" ).comment( "Game stage set at the beginning of a new world." ) )
-			.addConfig( this.enteringAnyDimensionStartsExpertMode.name( "any_dimension_expert" )
+			.addConfig( this.enteringAnyDimensionStartsExpertMode
+				.name( "any_dimension_expert" )
 				.comment( "Determines whether any dimension should start Expert Mode (useful for integration with other mods)." )
 			).addConfig( this.expertMode.name( "ExpertMode" ).comment( "Determines what starts the Expert Mode." ) )
 			.addConfig( this.masterMode.name( "MasterMode" ).comment( "Determines what starts the Master Mode." ) );
