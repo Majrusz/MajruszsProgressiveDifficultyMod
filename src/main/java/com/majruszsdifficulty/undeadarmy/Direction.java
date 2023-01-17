@@ -2,48 +2,56 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Random;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.phys.Vec3;
 
 /** Possible directions where Undead Army can spawn. */
 public enum Direction {
-	WEST( -1, 0 ), EAST( 1, 0 ), NORTH( 0, -1 ), SOUTH( 0, 1 );
+	WEST( -1, 0 ),
+	EAST( 1, 0 ),
+	NORTH( 0, -1 ),
+	SOUTH( 0, 1 );
 
-	static final int DISTANCE_MULTIPLIER = 10;
-	final int xFactor, zFactor;
-	public final int x, z;
+	final int x, z;
 
 	Direction( int x, int z ) {
 		this.x = x;
 		this.z = z;
-		this.xFactor = ( this.z != 0 ? 5 : 1 ) * DISTANCE_MULTIPLIER;
-		this.zFactor = ( this.x != 0 ? 5 : 1 ) * DISTANCE_MULTIPLIER;
 	}
 
 	public static Direction getRandom() {
-		return Direction.values()[ Random.nextInt( 0, Direction.values().length ) ];
+		return Random.nextRandom( Direction.values() );
 	}
 
 	public static Direction getByName( String name ) {
-		for( Direction direction : Direction.values() )
-			if( name.equalsIgnoreCase( direction.name() ) )
+		for( Direction direction : Direction.values() ) {
+			if( name.equalsIgnoreCase( direction.name() ) ) {
 				return direction;
+			}
+		}
 
 		return WEST;
 	}
 
-	public BlockPos getRandomSpawnPosition( ServerLevel world, BlockPos positionToAttack, int spawnRadius ) {
+	public BlockPos getRandomSpawnPosition( ServerLevel level, BlockPos positionToAttack, int spawnRadius ) {
 		int tries = 0;
 		int x, y, z;
 		do {
-			Vec3 offset = Random.getRandomVector3d( -this.xFactor, this.xFactor, 0.0, 0.0, -this.zFactor, this.zFactor );
-			x = positionToAttack.getX() + this.x * spawnRadius + ( int )offset.x;
-			z = positionToAttack.getZ() + this.z * spawnRadius + ( int )offset.z;
-			y = world.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z );
-			++tries;
-		} while( y != world.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) && tries < 5 );
+			Vec3i offset = this.buildOffset( spawnRadius );
+			x = positionToAttack.getX() + offset.getX();
+			z = positionToAttack.getZ() + offset.getZ();
+			y = level.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z );
+		} while( y != level.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) && ++tries < 5 );
 
 		return new BlockPos( x, y + 1, z );
+	}
+
+	private Vec3i buildOffset( int spawnRadius ) {
+		int x = this.z != 0 ? 50 : 10 + this.x * spawnRadius;
+		int y = 0;
+		int z = this.x != 0 ? 50 : 10 + this.z * spawnRadius;
+
+		return Random.getRandomVector3i( -x, x, -y, y, -z, z );
 	}
 }
