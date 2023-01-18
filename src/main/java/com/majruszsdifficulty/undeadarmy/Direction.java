@@ -3,6 +3,7 @@ package com.majruszsdifficulty.undeadarmy;
 import com.mlib.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.Heightmap;
 
@@ -20,11 +21,12 @@ public enum Direction {
 		this.z = z;
 	}
 
-	public static Direction getRandom() {
-		return Random.nextRandom( Direction.values() );
+	public void write( CompoundTag nbt ) {
+		nbt.putString( Direction.class.getName(), this.toString() );
 	}
 
-	public static Direction getByName( String name ) {
+	public static Direction read( CompoundTag nbt ) {
+		String name = nbt.getString( Direction.class.getName() );
 		for( Direction direction : Direction.values() ) {
 			if( name.equalsIgnoreCase( direction.name() ) ) {
 				return direction;
@@ -32,6 +34,10 @@ public enum Direction {
 		}
 
 		return WEST;
+	}
+
+	public static Direction getRandom() {
+		return Random.nextRandom( Direction.values() );
 	}
 
 	public BlockPos getRandomSpawnPosition( ServerLevel level, BlockPos positionToAttack, int spawnRadius ) {

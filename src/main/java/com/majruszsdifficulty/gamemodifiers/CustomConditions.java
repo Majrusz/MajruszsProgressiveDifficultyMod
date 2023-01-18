@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers;
 
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+//import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
@@ -87,7 +87,7 @@ public class CustomConditions {
 
 		@Override
 		public boolean check( GameModifier gameModifier, DataType data ) {
-			return !UndeadArmyManager.belongsToUndeadArmy( data.entity );
+			return true;//!UndeadArmyManager.belongsToUndeadArmy( data.entity );
 		}
 	}
 

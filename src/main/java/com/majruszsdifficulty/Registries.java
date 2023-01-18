@@ -19,7 +19,6 @@ import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.annotations.AnnotationHandler;
 import com.mlib.commands.Command;
-import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.items.CreativeModeTabHelper;
 import com.mlib.registries.RegistryHelper;
@@ -167,7 +166,7 @@ public class Registries {
 	// Misc
 	static final List< Command > COMMANDS;
 	public static final CreativeModeTab ITEM_GROUP = CreativeModeTabHelper.newTab( "majruszsdifficulty.primary", BATTLE_STANDARD );
-	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
+	public static UndeadArmyManager UNDEAD_ARMY_MANAGER = UndeadArmyManager.NOT_LOADED;
 	public static GameDataSaver GAME_DATA_SAVER;
 
 	// Triggers
@@ -259,7 +258,7 @@ public class Registries {
 			return;
 
 		DimensionDataStorage manager = level.getDataStorage();
-		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->UndeadArmyManager.load( nbt, level ), ()->new UndeadArmyManager( level ), UndeadArmyManager.DATA_NAME );
+		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->new UndeadArmyManager( level, nbt ), ()->new UndeadArmyManager( level ), "undead_army" );
 		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
 
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
