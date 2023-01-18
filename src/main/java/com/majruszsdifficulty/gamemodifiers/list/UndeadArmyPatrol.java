@@ -37,8 +37,8 @@ public class UndeadArmyPatrol extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		this.mobGroups.onSpawn( mob->{
-			UndeadArmy.markAsUndeadArmyPatrol( mob );
-			UndeadArmy.equipWithUndeadArmyArmor( mob );
+			// UndeadArmy.markAsUndeadArmyPatrol( mob );
+			// UndeadArmy.equipWithUndeadArmyArmor( mob );
 			if( mob instanceof AbstractSkeleton ) {
 				mob.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.BOW ) );
 			}
