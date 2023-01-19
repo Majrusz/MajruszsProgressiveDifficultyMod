@@ -25,7 +25,7 @@ public class UndeadArmyManager extends SavedData {
 
 		ListTag tags = nbt.getList( Keys.ARMIES, 10 );
 		for( int i = 0; i < tags.size(); ++i ) {
-			this.undeadArmies.add( new UndeadArmy( this.level, tags.getCompound( i ) ) );
+			this.undeadArmies.add( new UndeadArmy( this.level, new Data( tags.getCompound( i ) ) ) );
 		}
 	}
 
@@ -39,7 +39,7 @@ public class UndeadArmyManager extends SavedData {
 	}
 
 	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
-		this.undeadArmies.add( new UndeadArmy( this.level, position, direction.orElseGet( Direction::getRandom ) ) );
+		this.undeadArmies.add( new UndeadArmy( this.level, new Data( position, direction.orElseGet( Direction::getRandom ) ) ) );
 
 		return true;
 	}
@@ -47,8 +47,11 @@ public class UndeadArmyManager extends SavedData {
 	@Nullable
 	public UndeadArmy findNearestUndeadArmy( BlockPos position ) {
 		UndeadArmy nearestArmy = null;
-		double minDistance = 12000.0f;
+		double minDistance = Double.MAX_VALUE;
 		for( UndeadArmy undeadArmy : this.undeadArmies ) {
+			if( !undeadArmy.isInRange( position ) )
+				continue;
+
 			double distance = undeadArmy.distanceTo( position );
 			if( distance < minDistance ) {
 				nearestArmy = undeadArmy;
@@ -60,7 +63,7 @@ public class UndeadArmyManager extends SavedData {
 	}
 
 	void tick() {
-		boolean hasAnyArmyFinished = this.undeadArmies.removeIf( UndeadArmy::hasFinished );
 		this.undeadArmies.forEach( UndeadArmy::tick );
+		boolean hasAnyArmyFinished = this.undeadArmies.removeIf( UndeadArmy::hasFinished );
 	}
 }
