@@ -5,20 +5,19 @@ import com.mlib.Utility;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+
+import java.util.List;
 
 public class UndeadArmy {
-	final ProgressIndicator progressIndicator = new ProgressIndicator();
 	final ServerLevel level;
 	final Data data;
+	final ProgressIndicator progressIndicator;
 
-	public UndeadArmy( ServerLevel level, BlockPos positionToAttack, Direction direction ) {
+	public UndeadArmy( ServerLevel level, Data data ) {
 		this.level = level;
-		this.data = new Data( positionToAttack, direction );
-	}
-
-	public UndeadArmy( ServerLevel level, CompoundTag nbt ) {
-		this.level = level;
-		this.data = new Data( nbt );
+		this.data = data;
+		this.progressIndicator = new ProgressIndicator( data );
 	}
 
 	public void highlightArmy() {
@@ -43,6 +42,7 @@ public class UndeadArmy {
 
 	void tick() {
 		MajruszLibrary.log( "Status: %s, Wave: %s, TicksLeft: %s", this.data.phase, this.data.currentWave, this.data.phaseTicksLeft );
+		this.progressIndicator.updateParticipants( this.getParticipants() ); // TODO: optimize
 		switch( this.data.phase ) {
 			case CREATED -> this.tickCreated();
 			case WAVE_PREPARING -> this.tickWavePreparing();
@@ -50,6 +50,7 @@ public class UndeadArmy {
 			case UNDEAD_DEFEATED -> this.tickUndeadDefeated();
 			case UNDEAD_WON -> this.tickUndeadWon();
 		}
+		this.progressIndicator.tick();
 		this.data.phaseTicksLeft = Math.max( this.data.phaseTicksLeft - 1, 0 );
 	}
 
@@ -58,7 +59,14 @@ public class UndeadArmy {
 	}
 
 	double distanceTo( BlockPos position ) {
-		return position.distSqr( this.data.positionToAttack );
+		int x = position.getX() - this.data.positionToAttack.getX();
+		int z = position.getZ() - this.data.positionToAttack.getZ();
+
+		return Math.sqrt( x * x + z * z );
+	}
+
+	boolean isInRange( BlockPos position ) {
+		return this.distanceTo( position ) < 100.0f;
 	}
 
 	private void tickCreated() {
@@ -95,7 +103,14 @@ public class UndeadArmy {
 	}
 
 	private void tickUndeadWon() {
+		if( this.isPhaseNotOver() )
+			return;
 
+		this.finish();
+	}
+
+	private List< ServerPlayer > getParticipants() {
+		return this.level.getPlayers( player->player.isAlive() && this.isInRange( player.blockPosition() ) );
 	}
 
 	private boolean isLastWave() {

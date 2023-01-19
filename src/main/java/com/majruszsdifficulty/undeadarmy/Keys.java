@@ -6,6 +6,7 @@ public class Keys {
 
 	// Undead Army
 	public static final String PHASE_TICKS_LEFT = "PhaseTicksLeft";
+	public static final String PHASE_TICKS_TOTAL = "PhaseTicksTotal";
 	public static final String TICKS_ACTIVE = "TicksActive";
 	public static final String TICKS_INACTIVE = "TicksInactive";
 	public static final String CURRENT_WAVE = "CurrentWave";
