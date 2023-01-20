@@ -12,8 +12,8 @@ public class Data {
 	public Phase phase;
 	public int phaseTicksLeft;
 	public int phaseTicksTotal;
-	public int ticksActive;
-	public int ticksInactive;
+	public int ticksActive; // TODO: optional?
+	public int ticksInactive; // TODO: optional?
 	public int currentWave;
 
 	public Data( BlockPos positionToAttack, Direction direction ) {
