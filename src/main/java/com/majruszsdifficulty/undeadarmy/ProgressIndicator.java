@@ -19,30 +19,34 @@ public class ProgressIndicator {
 		this.data = data;
 	}
 
-	public void tick() {
-		this.waveInfo.setVisible( this.data.phase != Phase.CREATED );
-		this.bossInfo.setVisible( this.data.currentWave == 3 );
-
+	public void tick( List< ServerPlayer > participants ) {
 		if( this.previousPhase != this.data.phase ) {
 			this.onPhaseChanged();
 			this.previousPhase = this.data.phase;
 		}
 
-		switch( this.data.phase ) {
-			case WAVE_PREPARING -> {
-				this.waveInfo.setProgress( 1.0f - this.data.getPhaseRatio() );
-				this.bossInfo.setProgress( 0.0f );
-			}
-			case WAVE_ONGOING -> this.waveInfo.setProgress( this.data.getPhaseRatio() );
-			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 1.0f );
-			case UNDEAD_WON -> this.waveInfo.setProgress( 0.0f );
-			case FINISHED -> this.removeParticipants();
+		this.updateVisibility();
+		this.updateParticipants( participants );
+		this.updateProgress();
+	}
+
+	private void onPhaseChanged() {
+		this.waveInfo.setName( this.getPhaseComponent() );
+		if( this.data.phase == Phase.FINISHED ) {
+			this.removeParticipants();
 		}
 	}
 
-	public void updateParticipants( List< ServerPlayer > participants ) {
-		Collection< ServerPlayer > currentParticipants = this.waveInfo.getPlayers();
+	private void updateVisibility() {
+		this.waveInfo.setVisible( this.data.phase != Phase.CREATED );
+		this.bossInfo.setVisible( this.data.currentWave == 3 );
+	}
 
+	private void updateParticipants( List< ServerPlayer > participants ) {
+		if( this.data.phase == Phase.FINISHED )
+			return;
+
+		Collection< ServerPlayer > currentParticipants = this.waveInfo.getPlayers();
 		participants.forEach( player->{
 			if( !currentParticipants.contains( player ) ) {
 				this.waveInfo.addPlayer( player );
@@ -57,16 +61,21 @@ public class ProgressIndicator {
 		} );
 	}
 
+	private void updateProgress() {
+		switch( this.data.phase ) {
+			case WAVE_PREPARING -> {
+				this.waveInfo.setProgress( 1.0f - this.data.getPhaseRatio() );
+				this.bossInfo.setProgress( 0.0f );
+			}
+			case WAVE_ONGOING -> this.waveInfo.setProgress( this.data.getPhaseRatio() );
+			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 1.0f );
+			case UNDEAD_WON -> this.waveInfo.setProgress( 0.0f );
+		}
+	}
+
 	private void removeParticipants() {
 		this.waveInfo.removeAllPlayers();
 		this.bossInfo.removeAllPlayers();
-	}
-
-	private void onPhaseChanged() {
-		this.waveInfo.setName( this.getPhaseComponent() );
-		if( this.data.phase == Phase.FINISHED ) {
-			this.removeParticipants();
-		}
 	}
 
 	private Component getPhaseComponent() {
