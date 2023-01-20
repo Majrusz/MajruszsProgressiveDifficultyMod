@@ -42,7 +42,7 @@ public class UndeadArmy {
 
 	void tick() {
 		MajruszLibrary.log( "Status: %s, Wave: %s, TicksLeft: %s", this.data.phase, this.data.currentWave, this.data.phaseTicksLeft );
-		this.progressIndicator.updateParticipants( this.getParticipants() ); // TODO: optimize
+		List< ServerPlayer > participants = this.getParticipants();
 		switch( this.data.phase ) {
 			case CREATED -> this.tickCreated();
 			case WAVE_PREPARING -> this.tickWavePreparing();
@@ -50,7 +50,7 @@ public class UndeadArmy {
 			case UNDEAD_DEFEATED -> this.tickUndeadDefeated();
 			case UNDEAD_WON -> this.tickUndeadWon();
 		}
-		this.progressIndicator.tick();
+		this.progressIndicator.tick( participants );
 		this.data.phaseTicksLeft = Math.max( this.data.phaseTicksLeft - 1, 0 );
 	}
 
