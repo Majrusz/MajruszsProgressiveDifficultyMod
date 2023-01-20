@@ -24,6 +24,7 @@ public class SharpToolsBleeding extends DifficultyModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )
+			.addCondition( data->data.event.getAmount() > 0.0f )
 			.addCondition( data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.bleeding );

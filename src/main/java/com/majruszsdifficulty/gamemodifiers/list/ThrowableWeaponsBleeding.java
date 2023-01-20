@@ -22,6 +22,7 @@ public class ThrowableWeaponsBleeding extends DifficultyModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )
+			.addCondition( data->data.event.getAmount() > 0.0f )
 			.addCondition( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident )
 			.addConfig( this.bleeding );
 

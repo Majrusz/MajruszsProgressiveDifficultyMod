@@ -27,6 +27,7 @@ public class BiteBleeding extends DifficultyModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )
+			.addCondition( data->data.event.getAmount() > 0.0f )
 			.addCondition( data->canBite( data.attacker ) )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.bleeding );

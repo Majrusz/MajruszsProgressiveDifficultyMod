@@ -21,6 +21,7 @@ public class CactusBleeding extends DifficultyModifier {
 			.addCondition( new Condition.Excludable() )
 			.addCondition( new Condition.IsLivingBeing() )
 			.addCondition( new Condition.ArmorDependentChance() )
+			.addCondition( data->data.event.getAmount() > 0.0f )
 			.addCondition( data->data.source.equals( DamageSource.CACTUS ) )
 			.addCondition( data->data.source.getDirectEntity() == data.attacker )
 			.addConfig( this.bleeding );
