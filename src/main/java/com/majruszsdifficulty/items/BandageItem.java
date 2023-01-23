@@ -13,7 +13,7 @@ import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringUtil;
@@ -53,16 +53,16 @@ public class BandageItem extends Item {
 			components.add( this.buildComponent( Effects.INSTANCE.regeneration ).withStyle( ChatFormatting.BLUE ) );
 		}
 
-		components.add( CommonComponents.EMPTY );
-		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
-		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
+		components.add( new TextComponent( "" ) );
+		components.add( new TranslatableComponent( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+		components.add( new TranslatableComponent( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
 	}
 
 	private MutableComponent buildComponent( EffectConfig config ) {
 		Component effectName = config.getEffect().getDisplayName();
-		Component fullName = config.getAmplifier() > 0 ? Component.translatable( "potion.withAmplifier", effectName.getString(), TextHelper.toRoman( config.getAmplifier() + 1 ) ) : Component.literal( effectName.getString() );
+		Component fullName = config.getAmplifier() > 0 ? new TranslatableComponent( "potion.withAmplifier", effectName.getString(), TextHelper.toRoman( config.getAmplifier() + 1 ) ) : new TextComponent( effectName.getString() );
 
-		return Component.translatable( "potion.withDuration", fullName.getString(), StringUtil.formatTickDuration( config.getDuration() ) );
+		return new TranslatableComponent( "potion.withDuration", fullName.getString(), StringUtil.formatTickDuration( config.getDuration() ) );
 	}
 
 	@AutoInstance

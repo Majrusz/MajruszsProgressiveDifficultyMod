@@ -13,7 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
@@ -189,7 +189,7 @@ public class LootProgressManager extends GameModifier {
 			if( minecraft.level != null && minecraft.player != null ) {
 				LootProgressClient.generateComponents( this.treasureBagID, this.lootDataList );
 				if( !this.onLogged && LootProgressClient.hasUnlockedNewItems( this.treasureBagID ) ) {
-					minecraft.player.sendSystemMessage( this.generateTreasureBagText() );
+					minecraft.player.sendMessage( this.generateTreasureBagText(), minecraft.player.getUUID() );
 				}
 			}
 		}
@@ -200,7 +200,7 @@ public class LootProgressManager extends GameModifier {
 			if( item instanceof TreasureBagItem treasureBagItem ) {
 				List< Component > list = new ArrayList<>();
 				LootProgressClient.addDropList( treasureBagItem, list, ()->true );
-				MutableComponent fullList = Component.literal( "" );
+				MutableComponent fullList = new TextComponent( "" );
 				for( int i = 0; i < list.size(); ++i ) {
 					fullList.append( list.get( i ) );
 					if( i < list.size() - 1 ) {
@@ -210,11 +210,11 @@ public class LootProgressManager extends GameModifier {
 				MutableComponent treasureBag = treasureBagItem.getDescription()
 					.copy()
 					.withStyle( style->style.withHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, fullList ) ) );
-				return Component.translatable( "majruszsdifficulty.treasure_bag.new_items", ComponentUtils.wrapInSquareBrackets( treasureBag )
+				return new TranslatableComponent( "majruszsdifficulty.treasure_bag.new_items", ComponentUtils.wrapInSquareBrackets( treasureBag )
 					.withStyle( treasureBagItem.getRarity( new ItemStack( treasureBagItem ) ).getStyleModifier() ) );
 			}
 
-			return Component.literal( "ERROR" ).withStyle( ChatFormatting.RED );
+			return new TextComponent( "ERROR" ).withStyle( ChatFormatting.RED );
 		}
 	}
 }

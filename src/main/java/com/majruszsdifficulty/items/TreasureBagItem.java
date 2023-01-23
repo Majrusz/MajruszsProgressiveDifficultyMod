@@ -11,7 +11,7 @@ import com.mlib.client.ClientHelper;
 import com.mlib.effects.SoundHandler;
 import com.mlib.items.ItemHelper;
 import com.mlib.math.Range;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,7 +45,7 @@ public class TreasureBagItem extends Item {
 
 	public static TreasureBagConfig[] getConfigs() {
 		return new TreasureBagConfig[]{
-			UndeadArmy.CONFIG, ElderGuardian.CONFIG, Wither.CONFIG, EnderDragon.CONFIG, Fishing.CONFIG, Pillager.CONFIG, Warden.CONFIG
+			UndeadArmy.CONFIG, ElderGuardian.CONFIG, Wither.CONFIG, EnderDragon.CONFIG, Fishing.CONFIG, Pillager.CONFIG
 		};
 	}
 
@@ -166,15 +166,6 @@ public class TreasureBagItem extends Item {
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "PillagerRaid" );
 
 		public Pillager() {
-			super( LOCATION, CONFIG );
-		}
-	}
-
-	public static class Warden extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/warden_treasure_loot" );
-		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden" );
-
-		public Warden() {
 			super( LOCATION, CONFIG );
 		}
 	}

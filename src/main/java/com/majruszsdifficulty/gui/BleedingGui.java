@@ -11,12 +11,8 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.IIngameOverlay;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +20,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Mod.EventBusSubscriber( value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD )
 public class BleedingGui {
 	static final Particles PARTICLES = new Particles();
 
@@ -37,11 +32,6 @@ public class BleedingGui {
 			.forEach( idx->PARTICLES.get().get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
 	}
 
-	@SubscribeEvent
-	public static void registerGui( RegisterGuiOverlaysEvent event ) {
-		event.registerBelowAll( "bleeding", new Overlay() );
-	}
-
 	private static List< Integer > randomizedCoordinates( int max ) {
 		List< Integer > list = IntStream.iterate( 0, i->i + 1 ).limit( max ).boxed().collect( Collectors.toList() );
 		Collections.shuffle( list );
@@ -49,9 +39,9 @@ public class BleedingGui {
 		return list;
 	}
 
-	static class Overlay implements IGuiOverlay {
+	public static class Overlay implements IIngameOverlay {
 		@Override
-		public void render( ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight ) {
+		public void render( ForgeIngameGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight ) {
 			RenderSystem.setShader( GameRenderer::getPositionTexShader );
 			RenderSystem.enableBlend();
 			for( Particle particle : PARTICLES.get() ) {

@@ -6,7 +6,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnExplosion;
-import net.minecraftforge.event.level.ExplosionEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 
 @AutoInstance
 public class CreeperlingsCannotDestroyBlocks extends GameModifier {

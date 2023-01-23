@@ -10,7 +10,7 @@ import com.mlib.items.ItemHelper;
 import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Rarity;
@@ -49,7 +49,7 @@ public class WitherSwordItem extends SwordItem {
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
 			String chance = TextHelper.percent( 1.0f );
 			String amplifier = TextHelper.toRoman( this.wither.getAmplifier() + 1 );
-			data.add( EquipmentSlot.MAINHAND, Component.translatable( ATTRIBUTE_ID, chance, amplifier )
+			data.add( EquipmentSlot.MAINHAND, new TranslatableComponent( ATTRIBUTE_ID, chance, amplifier )
 				.withStyle( ChatFormatting.DARK_GREEN ) );
 		}
 	}

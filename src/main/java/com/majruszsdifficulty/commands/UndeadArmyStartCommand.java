@@ -6,7 +6,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
@@ -29,11 +29,11 @@ public class UndeadArmyStartCommand extends DifficultyCommand {
 		Optional< Direction > direction = this.getOptionalEnumeration( data, Direction.class );
 		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
 		if( Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( new BlockPos( position ), direction ) ) {
-			data.source.sendSuccess( Component.translatable( "commands.undeadarmy.started", asVec3i( position ) ), true );
+			data.source.sendSuccess( new TranslatableComponent( "commands.undeadarmy.started", asVec3i( position ) ), true );
 			return 0;
 		}
 
-		data.source.sendSuccess( Component.translatable( "commands.undeadarmy.cannot_start", asVec3i( position ) ), true );
+		data.source.sendSuccess( new TranslatableComponent( "commands.undeadarmy.cannot_start", asVec3i( position ) ), true );
 		return -1;
 	}
 }

@@ -11,12 +11,13 @@ import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.gamemodifiers.contexts.OnItemTooltip;
 import com.mlib.math.Range;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
@@ -42,7 +43,7 @@ public class BlackWidowEntity extends Spider {
 	}
 
 	@Override
-	public int getExperienceReward() {
+	public int getExperienceReward( Player player ) {
 		return Random.nextInt( 3 );
 	}
 
@@ -101,7 +102,7 @@ public class BlackWidowEntity extends Spider {
 		}
 
 		private void addTooltip( OnItemTooltip.Data data ) {
-			data.tooltip.add( Component.literal( "This mob is not finished yet, coming soon in the next major update!" )
+			data.tooltip.add( new TextComponent( "This mob is not finished yet, coming soon in the next major update!" )
 				.withStyle( ChatFormatting.RED ) );
 		}
 	}

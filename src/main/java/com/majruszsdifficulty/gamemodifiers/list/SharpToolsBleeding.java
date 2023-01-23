@@ -12,7 +12,7 @@ import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
 import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.TieredItem;
@@ -49,7 +49,7 @@ public class SharpToolsBleeding extends GameModifier {
 	private void addTooltip( OnItemAttributeTooltip.Data data ) {
 		String chance = TextHelper.percent( GET_CHANCE.get() );
 		String amplifier = TextHelper.toRoman( BleedingEffect.getAmplifier() + 1 );
-		data.add( EquipmentSlot.MAINHAND, Component.translatable( ATTRIBUTE_ID, chance, amplifier )
+		data.add( EquipmentSlot.MAINHAND, new TranslatableComponent( ATTRIBUTE_ID, chance, amplifier )
 			.withStyle( ChatFormatting.DARK_GREEN ) );
 	}
 

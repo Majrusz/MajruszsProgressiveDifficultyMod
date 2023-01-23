@@ -5,7 +5,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.contexts.OnFarmlandTillCheck;
 import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Rarity;
@@ -29,7 +29,7 @@ public class EnderiumHoeItem extends HoeItem {
 		}
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
-			data.add( EquipmentSlot.MAINHAND, Component.translatable( ATTRIBUTE_ID ).withStyle( ChatFormatting.DARK_GREEN ) );
+			data.add( EquipmentSlot.MAINHAND, new TranslatableComponent( ATTRIBUTE_ID ).withStyle( ChatFormatting.DARK_GREEN ) );
 		}
 	}
 }

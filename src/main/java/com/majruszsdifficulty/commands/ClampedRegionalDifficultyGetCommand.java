@@ -5,7 +5,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 import com.mlib.levels.LevelHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
@@ -32,19 +32,19 @@ public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
 		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
 		String total = String.format( "%.2f", GameStage.getRegionalDifficulty( level, position ) );
 
-		return Component.translatable( "commands.clampedregionaldifficulty", asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
+		return new TranslatableComponent( "commands.clampedregionaldifficulty", asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
 	}
 
 	private MutableComponent buildFormula( ServerLevel level, Vec3 position ) {
 		if( GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
-			return Component.literal( "" );
+			return new TextComponent( "" );
 
 		String crd = String.format( "%.2f", LevelHelper.getClampedRegionalDifficulty( level, position ) );
 		String stageModifier = String.format( "%.2f", GameStage.getStageModifier() );
-		return Component.translatable( "commands.clampedregionaldifficulty.formula", crd, this.withStageStyle( stageModifier ) );
+		return new TranslatableComponent( "commands.clampedregionaldifficulty.formula", crd, this.withStageStyle( stageModifier ) );
 	}
 
 	private MutableComponent withStageStyle( String text ) {
-		return GameStage.withStyle( Component.literal( text ) );
+		return GameStage.withStyle( new TextComponent( text ) );
 	}
 }

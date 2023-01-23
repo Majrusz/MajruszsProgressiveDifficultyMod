@@ -1,5 +1,6 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.gui.BleedingGui;
 import com.majruszsdifficulty.items.EndShardLocatorItem;
 import com.majruszsdifficulty.models.BlackWidowModel;
 import com.majruszsdifficulty.models.CreeperlingModel;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.gui.OverlayRegistry;
 
 @OnlyIn( Dist.CLIENT )
 public class RegistriesClient {
@@ -35,5 +37,7 @@ public class RegistriesClient {
 		EntityRenderers.register( Registries.CURSED_ARMOR.get(), CursedArmorRenderer::new );
 
 		ItemProperties.register( Registries.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EndShardLocatorItem::calculateDistanceToEndShard );
+
+		OverlayRegistry.registerOverlayBottom( "bleeding", new BleedingGui.Overlay() );
 	}
 }

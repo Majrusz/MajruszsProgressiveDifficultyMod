@@ -9,7 +9,7 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnExplosion;
 import com.mlib.math.Range;
-import net.minecraftforge.event.level.ExplosionEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 
 @AutoInstance
 public class PowerfulExplosions extends GameModifier {

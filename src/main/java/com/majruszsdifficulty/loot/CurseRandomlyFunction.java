@@ -7,7 +7,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,7 +41,7 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 
 	@Override
 	public ItemStack run( ItemStack itemStack, LootContext context ) {
-		RandomSource randomSource = context.getRandom();
+		java.util.Random randomSource = context.getRandom();
 		List< Enchantment > randomEnchantments = new ArrayList<>();
 		List< Enchantment > enchantments = this.buildValidEnchantmentList( itemStack );
 		if( !enchantments.isEmpty() ) {
@@ -78,7 +77,7 @@ public class CurseRandomlyFunction extends LootItemConditionalFunction {
 			.toList();
 	}
 
-	private static ItemStack enchantItem( ItemStack itemStack, RandomSource randomSource,
+	private static ItemStack enchantItem( ItemStack itemStack, java.util.Random randomSource,
 		List< Enchantment > enchantments
 	) {
 		if( itemStack.is( Items.BOOK ) ) {

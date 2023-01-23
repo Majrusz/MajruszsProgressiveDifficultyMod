@@ -18,7 +18,7 @@ import com.mlib.levels.LevelHelper;
 import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.time.Time;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -47,7 +47,7 @@ public class EnderiumSet extends ItemSet {
 	static final ItemData ITEM_2 = new ItemData( Registries.ENDERIUM_CHESTPLATE, EquipmentSlot.CHEST );
 	static final ItemData ITEM_3 = new ItemData( Registries.ENDERIUM_LEGGINGS, EquipmentSlot.LEGS );
 	static final ItemData ITEM_4 = new ItemData( Registries.ENDERIUM_BOOTS, EquipmentSlot.FEET );
-	static final BonusData BONUS_1 = new BonusData( ( itemSet, entity )->ITEM_1.isEquipped( entity ), "majruszsdifficulty.sets.enderium.bonus_1", ( itemSet, entity )->Component.translatable( "item.majruszsdifficulty.enderium_helmet" ) );
+	static final BonusData BONUS_1 = new BonusData( ( itemSet, entity )->ITEM_1.isEquipped( entity ), "majruszsdifficulty.sets.enderium.bonus_1", ( itemSet, entity )->new TranslatableComponent( "item.majruszsdifficulty.enderium_helmet" ) );
 	static final BonusData BONUS_2 = new BonusData( 2, "majruszsdifficulty.sets.enderium.bonus_2" );
 	static final BonusData BONUS_3 = new BonusData( 3, "majruszsdifficulty.sets.enderium.bonus_3", Items.CHORUS_FRUIT.getDescription() );
 	static final BonusData BONUS_4 = new BonusData( 4, "majruszsdifficulty.sets.enderium.bonus_4" );

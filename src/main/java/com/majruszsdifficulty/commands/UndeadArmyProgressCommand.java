@@ -6,7 +6,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 import com.mlib.nbt.NBTHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.LivingEntity;
 
 @AutoInstance
@@ -27,7 +27,7 @@ public class UndeadArmyProgressCommand extends DifficultyCommand {
 			int undeadKilled = undeadKilledData.get();
 			int undeadKilledMax = UndeadArmyConfig.getRequiredKills();
 
-			data.source.sendSuccess( Component.translatable( "commands.undeadarmy.progress", entity.getName(), undeadKilled, undeadKilledMax ), true );
+			data.source.sendSuccess( new TranslatableComponent( "commands.undeadarmy.progress", entity.getName(), undeadKilled, undeadKilledMax ), true );
 			return 0;
 		}
 

@@ -8,7 +8,7 @@ import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -65,8 +65,8 @@ public class RecallPotionItem extends Item {
 
 	@Override
 	public void appendHoverText( ItemStack itemStack, @Nullable Level level, List< Component > components, TooltipFlag flag ) {
-		components.add( CommonComponents.EMPTY );
-		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
-		components.add( Component.translatable( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
+		components.add( new TextComponent( "" ) );
+		components.add( new TranslatableComponent( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+		components.add( new TranslatableComponent( TOOLTIP_ID ).withStyle( ChatFormatting.BLUE ) );
 	}
 }

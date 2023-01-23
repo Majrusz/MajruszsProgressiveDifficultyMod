@@ -27,7 +27,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -98,7 +98,7 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	@Override
-	public int getExperienceReward() {
+	public int getExperienceReward( Player player ) {
 		return Random.nextInt( 7 );
 	}
 
@@ -337,15 +337,15 @@ public class CursedArmorEntity extends Monster {
 
 		private void addSpawnInfo( OnItemTooltip.Data data ) {
 			List< Component > components = data.tooltip;
-			components.add( Component.translatable( "item.majruszsdifficulty.cursed_armor_spawn_egg.locations" )
+			components.add( new TranslatableComponent( "item.majruszsdifficulty.cursed_armor_spawn_egg.locations" )
 				.withStyle( ChatFormatting.GRAY ) );
 
 			Spawn.DATA_MAP.forEach( ( location, spawnData )->{
 				String chance = TextHelper.percent( ( float )spawnData.chance );
-				components.add( Component.literal( " - " )
-					.append( Component.literal( location.toString() ) )
-					.append( Component.literal( " " ) )
-					.append( Component.literal( chance ).withStyle( ChatFormatting.DARK_GRAY ) )
+				components.add( new TextComponent( " - " )
+					.append( new TextComponent( location.toString() ) )
+					.append( new TextComponent( " " ) )
+					.append( new TextComponent( chance ).withStyle( ChatFormatting.DARK_GRAY ) )
 					.withStyle( ChatFormatting.GRAY )
 				);
 			} );

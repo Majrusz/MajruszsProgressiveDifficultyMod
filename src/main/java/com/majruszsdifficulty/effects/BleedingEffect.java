@@ -16,7 +16,7 @@ import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -216,7 +216,7 @@ public class BleedingEffect extends MobEffect {
 					continue;
 
 				String multiplier = TextHelper.minPrecision( GET_ARMOR_MULTIPLIER.apply( slot ) );
-				data.add( slot, Component.translatable( ATTRIBUTE_ID, multiplier ).withStyle( ChatFormatting.BLUE ) );
+				data.add( slot, new TranslatableComponent( ATTRIBUTE_ID, multiplier ).withStyle( ChatFormatting.BLUE ) );
 			}
 		}
 

@@ -49,7 +49,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -124,7 +124,6 @@ public class Registries {
 	public static final RegistryObject< TreasureBagItem > ENDER_DRAGON_TREASURE_BAG = ITEMS.register( "ender_dragon_treasure_bag", TreasureBagItem.EnderDragon::new );
 	public static final RegistryObject< TreasureBagItem > FISHING_TREASURE_BAG = ITEMS.register( "fishing_treasure_bag", TreasureBagItem.Fishing::new );
 	public static final RegistryObject< TreasureBagItem > PILLAGER_TREASURE_BAG = ITEMS.register( "pillager_treasure_bag", TreasureBagItem.Pillager::new );
-	public static final RegistryObject< TreasureBagItem > WARDEN_TREASURE_BAG = ITEMS.register( "warden_treasure_bag", TreasureBagItem.Warden::new );
 
 	// Item Blocks
 	public static final RegistryObject< EndShardOre.EndShardOreItem > ENDERIUM_SHARD_ORE_ITEM = ITEMS.register( "enderium_shard_ore", EndShardOre.EndShardOreItem::new );
@@ -254,8 +253,8 @@ public class Registries {
 		SpawnPlacements.register( CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
 	}
 
-	public static void onLoadingLevel( LevelEvent.Load event ) {
-		ServerLevel level = getOverworld( event.getLevel() );
+	public static void onLoadingLevel( WorldEvent.Load event ) {
+		ServerLevel level = getOverworld( event.getWorld() );
 		if( level == null )
 			return;
 
@@ -266,11 +265,10 @@ public class Registries {
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get() );
-		TreasureBagManager.addTreasureBagTo( EntityType.WARDEN, WARDEN_TREASURE_BAG.get() );
 	}
 
-	public static void onSavingLevel( LevelEvent.Save event ) {
-		ServerLevel level = getOverworld( event.getLevel() );
+	public static void onSavingLevel( WorldEvent.Save event ) {
+		ServerLevel level = getOverworld( event.getWorld() );
 		if( level == null )
 			return;
 

@@ -17,7 +17,7 @@ public class ClothItem extends Item {
 
 	@Override
 	public void fillItemCategory( CreativeModeTab itemGroup, NonNullList< ItemStack > itemStacks ) {
-		if( !this.allowedIn( itemGroup ) )
+		if( !this.allowdedIn( itemGroup ) )
 			return;
 
 		Stream.of(
