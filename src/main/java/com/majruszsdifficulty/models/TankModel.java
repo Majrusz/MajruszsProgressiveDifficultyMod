@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
+import com.mojang.math.Vector3f;
 
 @OnlyIn( Dist.CLIENT )
 public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {

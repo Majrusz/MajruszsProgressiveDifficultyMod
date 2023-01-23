@@ -61,7 +61,7 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 		for( int i = 0; i < creeperlingsAmount; ++i ) {
 			BlockPos position = creeper.blockPosition().offset( Random.getRandomVector3i( -2, 2, -1, 1, -2, 2 ) );
 			CreeperlingEntity creeperling = Registries.CREEPERLING.get()
-				.spawn( level, ( CompoundTag )null, null, position, MobSpawnType.SPAWNER, true, true );
+				.spawn( level, ( CompoundTag )null, null, null, position, MobSpawnType.SPAWNER, true, true );
 			if( creeperling != null )
 				creeperling.setTarget( creeper.getTarget() );
 		}

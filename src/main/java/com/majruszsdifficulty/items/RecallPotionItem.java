@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.items;
 
+import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
 import com.mlib.items.ItemHelper;
 import com.mlib.levels.LevelHelper;
@@ -25,7 +26,7 @@ public class RecallPotionItem extends Item {
 	static final String TOOLTIP_ID = "item.majruszsdifficulty.recall_potion.effect";
 
 	public RecallPotionItem() {
-		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
 
 	@Override

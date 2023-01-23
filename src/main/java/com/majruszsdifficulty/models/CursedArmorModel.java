@@ -8,7 +8,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
+import com.mojang.math.Vector3f;
 
 @OnlyIn( Dist.CLIENT )
 public class CursedArmorModel< Type extends CursedArmorEntity > extends HumanoidModel< Type > {

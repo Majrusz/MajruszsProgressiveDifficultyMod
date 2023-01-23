@@ -37,7 +37,7 @@ public class BandageItem extends Item {
 	static final String TOOLTIP_ID = "item.majruszsdifficulty.bandage.effect";
 
 	public BandageItem( Rarity rarity ) {
-		super( new Properties().stacksTo( 16 ).rarity( rarity ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).stacksTo( 16 ).rarity( rarity ) );
 	}
 
 	public BandageItem() {

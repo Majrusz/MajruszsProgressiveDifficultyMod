@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.items;
 
+import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
 import com.mlib.items.ItemHelper;
 import com.mlib.mobeffects.MobEffectHelper;
@@ -24,7 +25,7 @@ public class BadOmenPotionItem extends Item {
 	static final String TOOLTIP_ID = "item.majruszsdifficulty.bad_omen_potion.effect";
 
 	public BadOmenPotionItem() {
-		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
 
 	@Override

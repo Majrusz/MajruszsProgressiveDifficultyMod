@@ -291,7 +291,7 @@ public class UndeadArmy {
 		for( Pair< BlockPos, EntityType< ? > > spawnInfo : this.spawnInfoList ) {
 			BlockPos randomPosition = spawnInfo.getFirst();
 			EntityType< ? > entityType = spawnInfo.getSecond();
-			Entity entity = entityType.create( this.level, null, null, randomPosition, MobSpawnType.EVENT, true, true );
+			Entity entity = entityType.create( this.level, null, null, null, randomPosition, MobSpawnType.EVENT, true, true );
 			if( !( entity instanceof Mob monster ) )
 				continue;
 
@@ -315,7 +315,7 @@ public class UndeadArmy {
 		int z = this.positionToAttack.getZ() + this.direction.z * SPAWN_RADIUS;
 
 		for( ServerPlayer player : getNearbyPlayers() )
-			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.getHolder().get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
+			player.connection.send( new ClientboundSoundPacket( Registries.UNDEAD_ARMY_WAVE_STARTED.getHolder().get().get(), SoundSource.NEUTRAL, x, player.getY(), z, 64.0f, 1.0f, Random.nextInt() ) );
 
 		this.undeadToKill = Math.max( this.undeadToKill, 1 );
 	}

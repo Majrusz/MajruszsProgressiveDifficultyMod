@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.items;
 
+import com.majruszsdifficulty.Registries;
 import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
 import net.minecraft.stats.Stats;
@@ -11,7 +12,7 @@ import net.minecraft.world.item.Rarity;
 
 public class EnderPouchItem extends Item {
 	public EnderPouchItem() {
-		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
 
 		new OnPlayerInteract.Context( this::openEnderChest )
 			.addCondition( data->data.itemStack.getItem() instanceof EnderPouchItem );

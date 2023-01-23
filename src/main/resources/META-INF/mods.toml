@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[44,)"
+loaderVersion = "[43,)"
 license = "MIT License"
 issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 
@@ -17,14 +17,14 @@ issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/i
 [[dependencies.majruszsdifficulty]]
     modId = "forge"
     mandatory = true
-    versionRange = "[44.0.0,)"
+    versionRange = "[43.2.0,)"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.majruszsdifficulty]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.19.3,1.20)"
+    versionRange = "[1.19.2,1.20)"
     ordering = "NONE"
     side = "BOTH"
 

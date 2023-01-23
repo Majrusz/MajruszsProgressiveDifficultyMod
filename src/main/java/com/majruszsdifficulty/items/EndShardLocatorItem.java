@@ -27,7 +27,7 @@ public class EndShardLocatorItem extends Item {
 	private static final float INVALID_DISTANCE = 9001.0f;
 
 	public EndShardLocatorItem() {
-		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
 	}
 
 	@OnlyIn( Dist.CLIENT )

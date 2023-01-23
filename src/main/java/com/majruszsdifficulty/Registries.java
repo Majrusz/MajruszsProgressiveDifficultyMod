@@ -21,6 +21,7 @@ import com.mlib.annotations.AnnotationHandler;
 import com.mlib.commands.Command;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.items.CreativeModeTabHelper;
 import com.mlib.registries.RegistryHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -36,6 +37,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
@@ -62,7 +64,10 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.majruszsdifficulty.MajruszsDifficulty.MOD_ID;
 import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
+import static net.minecraft.core.Registry.LOOT_FUNCTION_REGISTRY;
+import static net.minecraft.core.Registry.LOOT_FUNCTION_TYPE;
 
 public class Registries {
 	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
@@ -82,7 +87,7 @@ public class Registries {
 	static final DeferredRegister< MobEffect > MOB_EFFECTS = HELPER.create( ForgeRegistries.Keys.MOB_EFFECTS );
 	static final DeferredRegister< ParticleType< ? > > PARTICLE_TYPES = HELPER.create( ForgeRegistries.Keys.PARTICLE_TYPES );
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
-	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( net.minecraft.core.registries.Registries.LOOT_FUNCTION_TYPE );
+	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( LOOT_FUNCTION_REGISTRY );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -136,7 +141,7 @@ public class Registries {
 	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type,
 		int backgroundColor, int highlightColor
 	) {
-		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties() );
+		return ()->new ForgeSpawnEggItem( type, backgroundColor, highlightColor, new Item.Properties().tab( ITEM_GROUP ) );
 	}
 
 	// Fake items (just to display icons etc.)
@@ -162,6 +167,7 @@ public class Registries {
 
 	// Misc
 	static final List< Command > COMMANDS;
+	public static final CreativeModeTab ITEM_GROUP = CreativeModeTabHelper.newTab( "majruszsdifficulty.primary", BATTLE_STANDARD );
 	public static UndeadArmyManager UNDEAD_ARMY_MANAGER;
 	public static GameDataSaver GAME_DATA_SAVER;
 
@@ -177,7 +183,7 @@ public class Registries {
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_WAVE_STARTED = register( "undead_army.wave_started" );
 
 	static RegistryObject< SoundEvent > register( String name ) {
-		return SOUNDS_EVENTS.register( name, ()->SoundEvent.createVariableRangeEvent( getLocation( name ) ) );
+		return SOUNDS_EVENTS.register( name, ()->new SoundEvent( getLocation( name ) ) );
 	}
 
 	// Loot Functions

@@ -59,7 +59,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public TreasureBagItem( ResourceLocation location, TreasureBagConfig config ) {
-		super( new Properties().stacksTo( 16 ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).stacksTo( 16 ).rarity( Rarity.UNCOMMON ) );
 		this.lootTableLocation = location;
 		this.config = config;
 		TREASURE_BAGS.add( this );

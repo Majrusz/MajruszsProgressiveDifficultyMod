@@ -24,7 +24,7 @@ public class UndeadBattleStandardItem extends Item {
 	private final static String TOOLTIP_TRANSLATION_KEY_3 = "item.majruszsdifficulty.undead_battle_standard.item_tooltip3";
 
 	public UndeadBattleStandardItem() {
-		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().tab( Registries.ITEM_GROUP ).stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
 	}
 
 	@Override

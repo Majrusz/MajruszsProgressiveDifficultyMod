@@ -18,7 +18,7 @@ import net.minecraft.world.item.SwordItem;
 
 public class WitherSwordItem extends SwordItem {
 	public WitherSwordItem() {
-		super( CustomItemTier.WITHER, 3, -2.4f, new Properties().rarity( Rarity.UNCOMMON ) );
+		super( CustomItemTier.WITHER, 3, -2.4f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ) );
 	}
 
 	@AutoInstance

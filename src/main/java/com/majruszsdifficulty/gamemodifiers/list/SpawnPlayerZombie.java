@@ -58,7 +58,7 @@ public class SpawnPlayerZombie extends GameModifier {
 		assert data.level != null;
 		Player player = ( Player )data.target;
 		EntityType< ? extends Zombie > zombieType = getZombieType( data.attacker );
-		Zombie zombie = ( Zombie )zombieType.spawn( data.level, ( CompoundTag )null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
+		Zombie zombie = ( Zombie )zombieType.spawn( data.level, ( CompoundTag )null, null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
 		if( zombie == null )
 			return;
 

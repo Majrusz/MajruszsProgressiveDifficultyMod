@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.items;
 
+import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.contexts.OnFarmlandTillCheck;
 import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
@@ -11,7 +12,7 @@ import net.minecraft.world.item.Rarity;
 
 public class EnderiumHoeItem extends HoeItem {
 	public EnderiumHoeItem() {
-		super( CustomItemTier.END, -5, 0.0f, new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
+		super( CustomItemTier.END, -5, 0.0f, new Properties().tab( Registries.ITEM_GROUP ).rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 
 	@AutoInstance
