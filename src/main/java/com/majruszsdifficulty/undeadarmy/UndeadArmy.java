@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.mlib.MajruszLibrary;
 import com.mlib.Utility;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +40,6 @@ public class UndeadArmy {
 	}
 
 	void tick() {
-		MajruszLibrary.log( "Status: %s, Wave: %s, TicksLeft: %s", this.data.phase, this.data.currentWave, this.data.phaseTicksLeft );
 		List< ServerPlayer > participants = this.getParticipants();
 		switch( this.data.phase ) {
 			case CREATED -> this.tickCreated();

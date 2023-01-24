@@ -1,13 +1,17 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.mlib.text.TextHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class ProgressIndicator {
 	final ServerBossEvent waveInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
@@ -21,7 +25,7 @@ public class ProgressIndicator {
 
 	public void tick( List< ServerPlayer > participants ) {
 		if( this.previousPhase != this.data.phase ) {
-			this.onPhaseChanged();
+			this.onPhaseChanged( participants );
 			this.previousPhase = this.data.phase;
 		}
 
@@ -30,10 +34,12 @@ public class ProgressIndicator {
 		this.updateProgress();
 	}
 
-	private void onPhaseChanged() {
+	private void onPhaseChanged( List< ServerPlayer > participants ) {
 		this.waveInfo.setName( this.getPhaseComponent() );
 		if( this.data.phase == Phase.FINISHED ) {
 			this.removeParticipants();
+		} else {
+			this.sendChatMessage( participants );
 		}
 	}
 
@@ -64,12 +70,12 @@ public class ProgressIndicator {
 	private void updateProgress() {
 		switch( this.data.phase ) {
 			case WAVE_PREPARING -> {
-				this.waveInfo.setProgress( 1.0f - this.data.getPhaseRatio() );
+				this.waveInfo.setProgress( this.data.getPhaseRatio() );
 				this.bossInfo.setProgress( 0.0f );
 			}
-			case WAVE_ONGOING -> this.waveInfo.setProgress( this.data.getPhaseRatio() );
-			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 1.0f );
-			case UNDEAD_WON -> this.waveInfo.setProgress( 0.0f );
+			case WAVE_ONGOING -> this.waveInfo.setProgress( 1.0f - this.data.getPhaseRatio() );
+			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 0.0f );
+			case UNDEAD_WON -> this.waveInfo.setProgress( 1.0f );
 		}
 	}
 
@@ -83,10 +89,31 @@ public class ProgressIndicator {
 			case WAVE_PREPARING -> Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", this.data.currentWave > 0 ? "between_waves" : "title" ) );
 			case WAVE_ONGOING -> Component.translatable( "majruszsdifficulty.undead_army.title" )
 				.append( " " )
-				.append( Component.translatable( "majruszsdifficulty.undead_army.wave", this.data.currentWave ) );
+				.append( Component.translatable( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( this.data.currentWave ) ) );
 			case UNDEAD_DEFEATED -> Component.translatable( "majruszsdifficulty.undead_army.victory" );
 			case UNDEAD_WON -> Component.translatable( "majruszsdifficulty.undead_army.failed" );
 			default -> CommonComponents.EMPTY;
 		};
+	}
+
+	private void sendChatMessage( List< ServerPlayer > participants ) {
+		this.getChatMessageId()
+			.ifPresent( message->participants.forEach( participant->participant.displayClientMessage( message, false ) ) );
+	}
+
+	private Optional< MutableComponent > getChatMessageId() {
+		if( this.data.phase == Phase.WAVE_PREPARING && this.data.currentWave == 0 ) {
+			String directionId = this.data.direction.toString().toLowerCase();
+			MutableComponent direction = Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", directionId ) );
+			MutableComponent approaching = Component.translatable( "majruszsdifficulty.undead_army.approaching", direction );
+
+			return Optional.of( approaching.withStyle( ChatFormatting.DARK_PURPLE ) );
+		} else if( this.data.phase == Phase.WAVE_ONGOING && this.data.currentWave == 1 ) {
+			MutableComponent approached = Component.translatable( "majruszsdifficulty.undead_army.approached" );
+
+			return Optional.of( approached.withStyle( ChatFormatting.BOLD, ChatFormatting.DARK_PURPLE ) );
+		} else {
+			return Optional.empty();
+		}
 	}
 }
