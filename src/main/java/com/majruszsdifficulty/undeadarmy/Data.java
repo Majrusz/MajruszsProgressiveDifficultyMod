@@ -12,8 +12,6 @@ public class Data {
 	public Phase phase;
 	public int phaseTicksLeft;
 	public int phaseTicksTotal;
-	public int ticksActive; // TODO: optional?
-	public int ticksInactive; // TODO: optional?
 	public int currentWave;
 
 	public Data( BlockPos positionToAttack, Direction direction ) {
@@ -22,8 +20,6 @@ public class Data {
 		this.phase = Phase.CREATED;
 		this.phaseTicksLeft = Utility.secondsToTicks( 2.0 );
 		this.phaseTicksTotal = this.phaseTicksLeft;
-		this.ticksActive = 0;
-		this.ticksInactive = 0;
 		this.currentWave = 0;
 	}
 
@@ -33,8 +29,6 @@ public class Data {
 		this.phase = Phase.read( nbt );
 		this.phaseTicksLeft = nbt.getInt( Keys.PHASE_TICKS_LEFT );
 		this.phaseTicksTotal = nbt.getInt( Keys.PHASE_TICKS_TOTAL );
-		this.ticksActive = nbt.getInt( Keys.TICKS_ACTIVE );
-		this.ticksInactive = nbt.getInt( Keys.TICKS_INACTIVE );
 		this.currentWave = nbt.getInt( Keys.CURRENT_WAVE );
 	}
 
@@ -44,8 +38,6 @@ public class Data {
 		this.phase.write( nbt );
 		nbt.putInt( Keys.PHASE_TICKS_LEFT, this.phaseTicksLeft );
 		nbt.putInt( Keys.PHASE_TICKS_TOTAL, this.phaseTicksTotal );
-		nbt.putInt( Keys.TICKS_ACTIVE, this.ticksActive );
-		nbt.putInt( Keys.TICKS_INACTIVE, this.ticksInactive );
 		nbt.putInt( Keys.CURRENT_WAVE, this.currentWave );
 
 		return nbt;

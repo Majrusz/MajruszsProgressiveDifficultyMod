@@ -84,6 +84,7 @@
   "majruszsdifficulty.undead_army.failed": "Undead Army won",
   "majruszsdifficulty.undead_army.between_waves": "Wave Defeated",
   "majruszsdifficulty.undead_army.approaching": "An Undead Army is approaching from the %1$s!",
+  "majruszsdifficulty.undead_army.approached": "An Undead Army has arrived!",
   "majruszsdifficulty.undead_army.west": "west",
   "majruszsdifficulty.undead_army.east": "east",
   "majruszsdifficulty.undead_army.north": "north",
