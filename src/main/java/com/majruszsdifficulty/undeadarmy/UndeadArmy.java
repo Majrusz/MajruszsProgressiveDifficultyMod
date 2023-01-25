@@ -10,11 +10,13 @@ import java.util.List;
 
 public class UndeadArmy {
 	final ServerLevel level;
+	final Config config;
 	final Data data;
 	final ProgressIndicator progressIndicator;
 
-	public UndeadArmy( ServerLevel level, Data data ) {
+	public UndeadArmy( ServerLevel level, Config config, Data data ) {
 		this.level = level;
+		this.config = config;
 		this.data = data;
 		this.progressIndicator = new ProgressIndicator( data );
 	}
