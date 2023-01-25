@@ -24,7 +24,7 @@ public class BloodParticle extends ConfigurableParticle {
 		this.yd = this.yd * 0.0200 + Random.nextDouble( -ySpeed, ySpeed );
 		this.zd = this.zd * 0.0025 + Random.nextDouble( -zSpeed, zSpeed );
 		this.lifetime = Utility.secondsToTicks( 38.0 );
-		this.age = Random.nextInt( ( int )( this.lifetime * 0.75 ) );
+		this.age = ( int )( this.lifetime * Mth.lerp( randomRatio,  0.75f, 0.0f ) );
 		this.scaleFormula = lifetime->1.5f;
 		this.yOffset = Mth.lerp( randomRatio, 0.001f, 0.005f ); // random required to minimize z-fighting
 
