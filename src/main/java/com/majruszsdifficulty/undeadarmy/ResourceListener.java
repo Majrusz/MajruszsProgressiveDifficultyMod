@@ -37,15 +37,33 @@ public class ResourceListener extends SimpleJsonResourceReloadListener {
 		final List< Mob > mobs = new ArrayList<>();
 		Mob boss = null;
 
-		public void addMob( EntityType< ? > entityType, int count, ResourceLocation equipmentLocation ) {
-			this.mobs.add( new Mob( entityType, count, equipmentLocation ) );
+		public WaveInfo( JsonObject object ) {
+			this.addMobs( object );
+			this.tryToAddBoss( object );
 		}
 
-		record Mob( EntityType< ? > entityType, int count, ResourceLocation equipmentLocation ) {
+		private void addMobs( JsonObject object ) {
+			object.getAsJsonArray( "mobs" )
+				.forEach( mobElement->{
+					JsonObject mobObject = mobElement.getAsJsonObject();
+					Mob mob = new Mob( mobObject );
+					int count = JsonHelper.getAsInt( mobObject, "count", 1 );
+					for( int i = 0; i < count; ++i ) {
+						this.mobs.add( mob );
+					}
+				} );
+		}
+
+		private void tryToAddBoss( JsonObject object ) {
+			if( object.has( "boss" ) ) {
+				this.boss = new Mob( object.getAsJsonObject( "boss" ) );
+			}
+		}
+
+		record Mob( EntityType< ? > entityType, ResourceLocation equipmentLocation ) {
 			public Mob( JsonObject object ) {
 				this(
 					JsonHelper.getAsEntity( object, "id" ),
-					JsonHelper.getAsInt( object, "count", 1 ),
 					JsonHelper.getAsLocation( object, "equipment", LootTable.EMPTY.getLootTableId() )
 				);
 			}
@@ -58,17 +76,7 @@ public class ResourceListener extends SimpleJsonResourceReloadListener {
 		@Override
 		public WavesInfo deserialize( JsonElement element, Type type, JsonDeserializationContext context ) throws JsonParseException {
 			List< WaveInfo > wavesInfo = new ArrayList<>();
-			element.getAsJsonArray()
-				.forEach( waveElement->{
-					WaveInfo waveInfo = new WaveInfo();
-					JsonObject waveObject = waveElement.getAsJsonObject();
-					waveObject.getAsJsonArray( "mobs" )
-						.forEach( mobElement->waveInfo.mobs.add( new WaveInfo.Mob( mobElement.getAsJsonObject() ) ) );
-					if( waveObject.has( "boss" ) ) {
-						waveInfo.boss = new WaveInfo.Mob( waveObject.getAsJsonObject( "boss" ) );
-					}
-					wavesInfo.add( waveInfo );
-				} );
+			element.getAsJsonArray().forEach( waveElement->wavesInfo.add( new WaveInfo( waveElement.getAsJsonObject() ) ) );
 
 			return new WavesInfo( wavesInfo );
 		}
