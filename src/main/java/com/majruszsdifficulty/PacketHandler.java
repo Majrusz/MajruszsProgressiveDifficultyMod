@@ -1,5 +1,6 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.entities.CursedArmorEntity;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
@@ -18,5 +19,6 @@ public class PacketHandler {
 		CHANNEL.registerMessage( 0, TankEntity.TankAttackMessage.class, TankEntity.TankAttackMessage::encode, TankEntity.TankAttackMessage::new, TankEntity.TankAttackMessage::handle );
 		CHANNEL.registerMessage( 1, CursedArmorEntity.AssembleMessage.class, CursedArmorEntity.AssembleMessage::encode, CursedArmorEntity.AssembleMessage::new, CursedArmorEntity.AssembleMessage::handle );
 		CHANNEL.registerMessage( 2, LootProgressManager.ProgressMessage.class, LootProgressManager.ProgressMessage::encode, LootProgressManager.ProgressMessage::new, LootProgressManager.ProgressMessage::handle );
+		CHANNEL.registerMessage( 3, BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::encode, BleedingEffect.BloodMessage::new, BleedingEffect.BloodMessage::handle );
 	}
 }
