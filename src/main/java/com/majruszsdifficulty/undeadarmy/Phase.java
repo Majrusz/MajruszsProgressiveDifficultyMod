@@ -2,7 +2,7 @@ package com.majruszsdifficulty.undeadarmy;
 
 import net.minecraft.nbt.CompoundTag;
 
-public enum Phase {
+enum Phase {
 	CREATED, WAVE_PREPARING, WAVE_ONGOING, UNDEAD_DEFEATED, UNDEAD_WON, FINISHED;
 
 	public void write( CompoundTag nbt ) {

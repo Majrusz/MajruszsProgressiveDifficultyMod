@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 
-public class Data {
+class Data {
 	public final BlockPos positionToAttack;
 	public final Direction direction;
 	public Phase phase;
