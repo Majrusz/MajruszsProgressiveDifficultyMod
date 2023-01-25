@@ -114,7 +114,7 @@ public class UndeadArmy {
 	}
 
 	private boolean isLastWave() {
-		return this.data.currentWave == 3;
+		return this.data.currentWave == this.config.getWavesNum();
 	}
 
 	private boolean isPhaseNotOver() {

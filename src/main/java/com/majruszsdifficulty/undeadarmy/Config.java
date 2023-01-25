@@ -8,11 +8,15 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 
 @AutoInstance
 public class Config extends GameModifier {
-	final ResourceListener resourceListener = new ResourceListener();
+	private final ResourceListener resourceListener = new ResourceListener();
 
 	public Config() {
 		super( Registries.Modifiers.UNDEAD_ARMY );
 
 		MinecraftForge.EVENT_BUS.addListener( ( AddReloadListenerEvent event )->event.addListener( this.resourceListener ) );
+	}
+
+	public int getWavesNum() {
+		return this.resourceListener.getWavesNum();
 	}
 }
