@@ -35,7 +35,6 @@ public class ResourceListener extends SimpleJsonResourceReloadListener {
 
 	static class WaveConfig {
 		final List< Mob > mobs = new ArrayList<>();
-		Mob boss = null;
 
 		public WaveConfig( JsonObject object ) {
 			this.addMobs( object );
@@ -46,7 +45,7 @@ public class ResourceListener extends SimpleJsonResourceReloadListener {
 			object.getAsJsonArray( "mobs" )
 				.forEach( mobElement->{
 					JsonObject mobObject = mobElement.getAsJsonObject();
-					Mob mob = new Mob( mobObject );
+					Mob mob = new Mob( mobObject, false );
 					int count = JsonHelper.getAsInt( mobObject, "count", 1 );
 					for( int i = 0; i < count; ++i ) {
 						this.mobs.add( mob );
@@ -56,15 +55,16 @@ public class ResourceListener extends SimpleJsonResourceReloadListener {
 
 		private void tryToAddBoss( JsonObject object ) {
 			if( object.has( "boss" ) ) {
-				this.boss = new Mob( object.getAsJsonObject( "boss" ) );
+				this.mobs.add( new Mob( object.getAsJsonObject( "boss" ), true ) );
 			}
 		}
 
-		record Mob( EntityType< ? > entityType, ResourceLocation equipmentLocation ) {
-			public Mob( JsonObject object ) {
+		record Mob( EntityType< ? > entityType, ResourceLocation equipmentLocation, boolean isBoss ) {
+			public Mob( JsonObject object, boolean isBoss ) {
 				this(
 					JsonHelper.getAsEntity( object, "id" ),
-					JsonHelper.getAsLocation( object, "equipment", LootTable.EMPTY.getLootTableId() )
+					JsonHelper.getAsLocation( object, "equipment", LootTable.EMPTY.getLootTableId() ),
+					isBoss
 				);
 			}
 		}
