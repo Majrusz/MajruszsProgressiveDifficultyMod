@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:iron_helmet",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
