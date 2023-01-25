@@ -12,20 +12,22 @@ import java.util.List;
 import java.util.Optional;
 
 public class UndeadArmyManager extends SavedData {
-	public static final UndeadArmyManager NOT_LOADED = new UndeadArmyManager( null );
+	public static final UndeadArmyManager NOT_LOADED = new UndeadArmyManager( null, null );
 	final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	final ServerLevel level;
+	final Config config;
 
-	public UndeadArmyManager( ServerLevel level ) {
+	public UndeadArmyManager( ServerLevel level, Config config ) {
 		this.level = level;
+		this.config = config;
 	}
 
-	public UndeadArmyManager( ServerLevel level, CompoundTag nbt ) {
-		this( level );
+	public UndeadArmyManager( ServerLevel level, Config config, CompoundTag nbt ) {
+		this( level, config );
 
 		ListTag tags = nbt.getList( Keys.ARMIES, 10 );
 		for( int i = 0; i < tags.size(); ++i ) {
-			this.undeadArmies.add( new UndeadArmy( this.level, new Data( tags.getCompound( i ) ) ) );
+			this.undeadArmies.add( new UndeadArmy( level, config, new Data( tags.getCompound( i ) ) ) );
 		}
 	}
 
@@ -39,7 +41,7 @@ public class UndeadArmyManager extends SavedData {
 	}
 
 	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
-		this.undeadArmies.add( new UndeadArmy( this.level, new Data( position, direction.orElseGet( Direction::getRandom ) ) ) );
+		this.undeadArmies.add( new UndeadArmy( this.level, this.config, new Data( position, direction.orElseGet( Direction::getRandom ) ) ) );
 
 		return true;
 	}

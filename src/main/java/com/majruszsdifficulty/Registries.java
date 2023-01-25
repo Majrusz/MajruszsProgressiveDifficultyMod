@@ -160,7 +160,6 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Misc
-	static final List< Command > COMMANDS;
 	public static UndeadArmyManager UNDEAD_ARMY_MANAGER = UndeadArmyManager.NOT_LOADED;
 	public static GameDataSaver GAME_DATA_SAVER;
 
@@ -183,13 +182,7 @@ public class Registries {
 	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY = LOOT_FUNCTIONS.register( "curse_randomly", CurseRandomlyFunction::newType );
 
 	// Game Modifiers
-	public static final List< GameModifier > GAME_MODIFIERS;
-
-	static {
-		AnnotationHandler annotationHandler = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
-		COMMANDS = annotationHandler.getInstances( Command.class );
-		GAME_MODIFIERS = annotationHandler.getInstances( GameModifier.class );
-	}
+	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
 
 	public static ResourceLocation getLocation( String register ) {
 		return HELPER.getLocation( register );
@@ -253,7 +246,8 @@ public class Registries {
 			return;
 
 		DimensionDataStorage manager = level.getDataStorage();
-		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->new UndeadArmyManager( level, nbt ), ()->new UndeadArmyManager( level ), "undead_army" );
+		var config = ANNOTATION_HANDLER.getInstance( com.majruszsdifficulty.undeadarmy.Config.class );
+		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->new UndeadArmyManager( level, config, nbt ), ()->new UndeadArmyManager( level, config ), "undead_army" );
 		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
 
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
