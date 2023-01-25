@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ResourceListener extends SimpleJsonResourceReloadListener {
+class ResourceListener extends SimpleJsonResourceReloadListener {
 	static final Gson GSON = Deserializers.createFunctionSerializer().registerTypeAdapter( WaveConfigs.class, new Serializer() ).create();
 	WaveConfigs waveConfigs = null;
 
