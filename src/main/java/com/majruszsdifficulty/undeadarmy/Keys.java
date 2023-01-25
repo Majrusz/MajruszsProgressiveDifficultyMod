@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.undeadarmy;
 
-public class Keys {
+class Keys {
 	// Entity
 	public static final String POSITION = "UndeadArmyPosition";
 
