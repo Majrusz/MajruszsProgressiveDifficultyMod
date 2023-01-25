@@ -17,27 +17,27 @@ import java.util.List;
 import java.util.Map;
 
 public class ResourceListener extends SimpleJsonResourceReloadListener {
-	static final Gson GSON = Deserializers.createFunctionSerializer().registerTypeAdapter( WavesInfo.class, new Serializer() ).create();
-	WavesInfo wavesInfo = null;
+	static final Gson GSON = Deserializers.createFunctionSerializer().registerTypeAdapter( WaveConfigs.class, new Serializer() ).create();
+	WaveConfigs waveConfigs = null;
 
 	public ResourceListener() {
 		super( GSON, "undead_army" );
 	}
 
 	public int getWavesNum() {
-		return this.wavesInfo.list.size();
+		return this.waveConfigs.list.size();
 	}
 
 	@Override
 	protected void apply( Map< ResourceLocation, JsonElement > elements, ResourceManager manager, ProfilerFiller filler ) {
-		this.wavesInfo = GSON.fromJson( elements.get( Registries.getLocation( "waves" ) ), WavesInfo.class );
+		this.waveConfigs = GSON.fromJson( elements.get( Registries.getLocation( "waves" ) ), WaveConfigs.class );
 	}
 
-	static class WaveInfo {
+	static class WaveConfig {
 		final List< Mob > mobs = new ArrayList<>();
 		Mob boss = null;
 
-		public WaveInfo( JsonObject object ) {
+		public WaveConfig( JsonObject object ) {
 			this.addMobs( object );
 			this.tryToAddBoss( object );
 		}
@@ -70,15 +70,15 @@ public class ResourceListener extends SimpleJsonResourceReloadListener {
 		}
 	}
 
-	record WavesInfo( List< WaveInfo > list ) {}
+	record WaveConfigs( List< WaveConfig > list ) {}
 
-	static class Serializer implements JsonDeserializer< WavesInfo > {
+	static class Serializer implements JsonDeserializer< WaveConfigs > {
 		@Override
-		public WavesInfo deserialize( JsonElement element, Type type, JsonDeserializationContext context ) throws JsonParseException {
-			List< WaveInfo > wavesInfo = new ArrayList<>();
-			element.getAsJsonArray().forEach( waveElement->wavesInfo.add( new WaveInfo( waveElement.getAsJsonObject() ) ) );
+		public WaveConfigs deserialize( JsonElement element, Type type, JsonDeserializationContext context ) throws JsonParseException {
+			List< WaveConfig > wavesInfo = new ArrayList<>();
+			element.getAsJsonArray().forEach( waveElement->wavesInfo.add( new WaveConfig( waveElement.getAsJsonObject() ) ) );
 
-			return new WavesInfo( wavesInfo );
+			return new WaveConfigs( wavesInfo );
 		}
 	}
 }
