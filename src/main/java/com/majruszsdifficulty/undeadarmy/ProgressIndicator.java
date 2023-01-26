@@ -16,17 +16,17 @@ import java.util.Optional;
 class ProgressIndicator {
 	final ServerBossEvent waveInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
 	final ServerBossEvent bossInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6 );
-	final Data data;
+	final UndeadArmyData data;
 	Phase previousPhase = null;
 
-	public ProgressIndicator( Data data ) {
+	public ProgressIndicator( UndeadArmyData data ) {
 		this.data = data;
 	}
 
 	public void tick( List< ServerPlayer > participants ) {
-		if( this.previousPhase != this.data.phase ) {
+		if( this.previousPhase != this.data.getPhase() ) {
 			this.onPhaseChanged( participants );
-			this.previousPhase = this.data.phase;
+			this.previousPhase = this.data.getPhase();
 		}
 
 		this.updateVisibility();
@@ -36,7 +36,7 @@ class ProgressIndicator {
 
 	private void onPhaseChanged( List< ServerPlayer > participants ) {
 		this.waveInfo.setName( this.getPhaseComponent() );
-		if( this.data.phase == Phase.FINISHED ) {
+		if( this.data.getPhase() == Phase.FINISHED ) {
 			this.removeParticipants();
 		} else {
 			this.sendChatMessage( participants );
@@ -44,12 +44,12 @@ class ProgressIndicator {
 	}
 
 	private void updateVisibility() {
-		this.waveInfo.setVisible( this.data.phase != Phase.CREATED );
-		this.bossInfo.setVisible( this.data.currentWave == 3 );
+		this.waveInfo.setVisible( this.data.getPhase() != Phase.CREATED );
+		this.bossInfo.setVisible( this.data.getCurrentWave() == 3 );
 	}
 
 	private void updateParticipants( List< ServerPlayer > participants ) {
-		if( this.data.phase == Phase.FINISHED )
+		if( this.data.getPhase() == Phase.FINISHED )
 			return;
 
 		Collection< ServerPlayer > currentParticipants = this.waveInfo.getPlayers();
@@ -68,7 +68,7 @@ class ProgressIndicator {
 	}
 
 	private void updateProgress() {
-		switch( this.data.phase ) {
+		switch( this.data.getPhase() ) {
 			case WAVE_PREPARING -> {
 				this.waveInfo.setProgress( this.data.getPhaseRatio() );
 				this.bossInfo.setProgress( 0.0f );
@@ -85,11 +85,11 @@ class ProgressIndicator {
 	}
 
 	private Component getPhaseComponent() {
-		return switch( this.data.phase ) {
-			case WAVE_PREPARING -> Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", this.data.currentWave > 0 ? "between_waves" : "title" ) );
+		return switch( this.data.getPhase() ) {
+			case WAVE_PREPARING -> Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", this.data.getCurrentWave() > 0 ? "between_waves" : "title" ) );
 			case WAVE_ONGOING -> Component.translatable( "majruszsdifficulty.undead_army.title" )
 				.append( " " )
-				.append( Component.translatable( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( this.data.currentWave ) ) );
+				.append( Component.translatable( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( this.data.getCurrentWave() ) ) );
 			case UNDEAD_DEFEATED -> Component.translatable( "majruszsdifficulty.undead_army.victory" );
 			case UNDEAD_WON -> Component.translatable( "majruszsdifficulty.undead_army.failed" );
 			default -> CommonComponents.EMPTY;
@@ -102,13 +102,13 @@ class ProgressIndicator {
 	}
 
 	private Optional< MutableComponent > getChatMessageId() {
-		if( this.data.phase == Phase.WAVE_PREPARING && this.data.currentWave == 0 ) {
-			String directionId = this.data.direction.toString().toLowerCase();
+		if( this.data.getPhase() == Phase.WAVE_PREPARING && this.data.getCurrentWave() == 0 ) {
+			String directionId = this.data.getDirection().toString().toLowerCase();
 			MutableComponent direction = Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", directionId ) );
 			MutableComponent approaching = Component.translatable( "majruszsdifficulty.undead_army.approaching", direction );
 
 			return Optional.of( approaching.withStyle( ChatFormatting.DARK_PURPLE ) );
-		} else if( this.data.phase == Phase.WAVE_ONGOING && this.data.currentWave == 1 ) {
+		} else if( this.data.getPhase() == Phase.WAVE_ONGOING && this.data.getCurrentWave() == 1 ) {
 			MutableComponent approached = Component.translatable( "majruszsdifficulty.undead_army.approached" );
 
 			return Optional.of( approached.withStyle( ChatFormatting.BOLD, ChatFormatting.DARK_PURPLE ) );
