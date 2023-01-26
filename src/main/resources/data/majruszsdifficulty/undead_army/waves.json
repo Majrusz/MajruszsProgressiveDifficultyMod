@@ -36,10 +36,7 @@
         "count": 4,
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_3"
       }
-    ],
-    "boss": {
-      "id": "majruszsdifficulty:tank"
-    }
+    ]
   },
   {
     "mobs": [

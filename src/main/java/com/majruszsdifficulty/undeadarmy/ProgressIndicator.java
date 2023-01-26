@@ -16,10 +16,12 @@ import java.util.Optional;
 class ProgressIndicator {
 	final ServerBossEvent waveInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
 	final ServerBossEvent bossInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6 );
+	final Config config;
 	final UndeadArmyData data;
 	Phase previousPhase = null;
 
-	public ProgressIndicator( UndeadArmyData data ) {
+	public ProgressIndicator( Config config, UndeadArmyData data ) {
+		this.config = config;
 		this.data = data;
 	}
 
@@ -29,7 +31,6 @@ class ProgressIndicator {
 			this.previousPhase = this.data.getPhase();
 		}
 
-		this.updateVisibility();
 		this.updateParticipants( participants );
 		this.updateProgress();
 	}
@@ -41,11 +42,12 @@ class ProgressIndicator {
 		} else {
 			this.sendChatMessage( participants );
 		}
+		this.updateVisibility();
 	}
 
 	private void updateVisibility() {
 		this.waveInfo.setVisible( this.data.getPhase() != Phase.CREATED );
-		this.bossInfo.setVisible( this.data.getCurrentWave() == 3 );
+		this.bossInfo.setVisible( this.config.hasBoss( this.data.getCurrentWave() ) );
 	}
 
 	private void updateParticipants( List< ServerPlayer > participants ) {
