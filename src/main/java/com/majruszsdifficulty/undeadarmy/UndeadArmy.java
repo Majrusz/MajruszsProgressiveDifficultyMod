@@ -19,7 +19,7 @@ public class UndeadArmy {
 		this.level = level;
 		this.config = config;
 		this.data = data;
-		this.progressIndicator = new ProgressIndicator( data );
+		this.progressIndicator = new ProgressIndicator( config, data );
 	}
 
 	public void highlightArmy() {
