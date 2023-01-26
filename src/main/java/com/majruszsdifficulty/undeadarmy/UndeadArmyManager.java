@@ -27,21 +27,26 @@ public class UndeadArmyManager extends SavedData {
 
 		ListTag tags = nbt.getList( Keys.ARMIES, 10 );
 		for( int i = 0; i < tags.size(); ++i ) {
-			this.undeadArmies.add( new UndeadArmy( level, config, new Data( tags.getCompound( i ) ) ) );
+			this.undeadArmies.add( new UndeadArmy( level, config, new UndeadArmyData( tags.getCompound( i ) ) ) );
 		}
 	}
 
 	@Override
 	public CompoundTag save( CompoundTag nbt ) {
 		ListTag tags = new ListTag();
-		this.undeadArmies.forEach( undeadArmy->tags.add( undeadArmy.write( new CompoundTag() ) ) );
+		this.undeadArmies.forEach( undeadArmy->{
+			CompoundTag tag = new CompoundTag();
+			undeadArmy.getData().write( tag );
+
+			tags.add( tag );
+		} );
 		nbt.put( Keys.ARMIES, tags );
 
 		return nbt;
 	}
 
 	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
-		this.undeadArmies.add( new UndeadArmy( this.level, this.config, new Data( position, direction.orElseGet( Direction::getRandom ) ) ) );
+		this.undeadArmies.add( new UndeadArmy( this.level, this.config, new UndeadArmyData( position, direction.orElseGet( Direction::getRandom ) ) ) );
 
 		return true;
 	}

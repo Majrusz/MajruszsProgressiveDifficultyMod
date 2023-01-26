@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Utility;
+import com.mlib.math.VectorHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -11,10 +12,10 @@ import java.util.List;
 public class UndeadArmy {
 	final ServerLevel level;
 	final Config config;
-	final Data data;
+	final UndeadArmyData data;
 	final ProgressIndicator progressIndicator;
 
-	public UndeadArmy( ServerLevel level, Config config, Data data ) {
+	public UndeadArmy( ServerLevel level, Config config, UndeadArmyData data ) {
 		this.level = level;
 		this.config = config;
 		this.data = data;
@@ -37,13 +38,9 @@ public class UndeadArmy {
 		this.data.setPhase( Phase.FINISHED );
 	}
 
-	CompoundTag write( CompoundTag nbt ) {
-		return this.data.write( nbt );
-	}
-
 	void tick() {
 		List< ServerPlayer > participants = this.getParticipants();
-		switch( this.data.phase ) {
+		switch( this.data.getPhase() ) {
 			case CREATED -> this.tickCreated();
 			case WAVE_PREPARING -> this.tickWavePreparing();
 			case WAVE_ONGOING -> this.tickWaveOngoing();
@@ -51,22 +48,23 @@ public class UndeadArmy {
 			case UNDEAD_WON -> this.tickUndeadWon();
 		}
 		this.progressIndicator.tick( participants );
-		this.data.phaseTicksLeft = Math.max( this.data.phaseTicksLeft - 1, 0 );
+		this.data.decreaseTicksLeft();
 	}
 
 	boolean hasFinished() {
-		return this.data.phase == Phase.FINISHED;
+		return this.data.getPhase() == Phase.FINISHED;
 	}
 
 	double distanceTo( BlockPos position ) {
-		int x = position.getX() - this.data.positionToAttack.getX();
-		int z = position.getZ() - this.data.positionToAttack.getZ();
-
-		return Math.sqrt( x * x + z * z );
+		return VectorHelper.distanceHorizontal( position.getCenter(), this.data.getPosition().getCenter() );
 	}
 
 	boolean isInRange( BlockPos position ) {
 		return this.distanceTo( position ) < 100.0f;
+	}
+
+	UndeadArmyData getData() {
+		return this.data;
 	}
 
 	private void tickCreated() {
@@ -81,7 +79,7 @@ public class UndeadArmy {
 			return;
 
 		this.data.setPhase( Phase.WAVE_ONGOING, Utility.secondsToTicks( 2.0 ) );
-		++this.data.currentWave;
+		this.data.increaseWave();
 	}
 
 	private void tickWaveOngoing() {
@@ -114,10 +112,10 @@ public class UndeadArmy {
 	}
 
 	private boolean isLastWave() {
-		return this.data.currentWave == this.config.getWavesNum();
+		return this.data.getCurrentWave() == this.config.getWavesNum();
 	}
 
 	private boolean isPhaseNotOver() {
-		return this.data.phaseTicksLeft > 0;
+		return this.data.getPhaseRatio() < 1.0f;
 	}
 }
