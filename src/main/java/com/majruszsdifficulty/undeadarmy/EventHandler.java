@@ -7,7 +7,7 @@ import com.mlib.gamemodifiers.contexts.OnServerTick;
 import net.minecraftforge.event.TickEvent;
 
 @AutoInstance
-class EventHandler extends GameModifier {
+public class EventHandler extends GameModifier {
 	public EventHandler() {
 		super( Registries.Modifiers.UNDEAD_ARMY );
 

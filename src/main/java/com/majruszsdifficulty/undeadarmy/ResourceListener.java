@@ -2,7 +2,9 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.google.gson.*;
 import com.majruszsdifficulty.Registries;
-import com.mlib.json.JsonHelper;
+import com.mlib.data.Data;
+import com.mlib.data.ISerializable;
+import com.mlib.data.SerializableStructure;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -12,73 +14,48 @@ import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 class ResourceListener extends SimpleJsonResourceReloadListener {
-	static final Gson GSON = Deserializers.createFunctionSerializer().registerTypeAdapter( WaveConfigs.class, new Serializer() ).create();
-	WaveConfigs waveConfigs = null;
+	static final Gson GSON = Deserializers.createFunctionSerializer().registerTypeAdapter( Resource.class, new Serializer() ).create();
+	Resource resource = null;
 
 	public ResourceListener() {
 		super( GSON, "undead_army" );
 	}
 
 	public int getWavesNum() {
-		return this.waveConfigs.list.size();
+		return this.resource.waves.get().size();
 	}
 
 	@Override
 	protected void apply( Map< ResourceLocation, JsonElement > elements, ResourceManager manager, ProfilerFiller filler ) {
-		this.waveConfigs = GSON.fromJson( elements.get( Registries.getLocation( "waves" ) ), WaveConfigs.class );
+		this.resource = GSON.fromJson( elements.get( Registries.getLocation( "waves" ) ), Resource.class );
 	}
 
-	static class WaveConfig {
-		final List< Mob > mobs = new ArrayList<>();
+	static class Resource extends SerializableStructure {
+		final Data< List< Wave > > waves = this.addList( Wave::new );
 
-		public WaveConfig( JsonObject object ) {
-			this.addMobs( object );
-			this.tryToAddBoss( object );
-		}
+		static class Wave extends SerializableStructure {
+			final Data< List< Mob > > mobs = this.addList( Mob::new ).key( "mobs" );
+			final Data< Mob > boss = this.addStructure( Mob::new ).key( "boss" );
 
-		private void addMobs( JsonObject object ) {
-			object.getAsJsonArray( "mobs" )
-				.forEach( mobElement->{
-					JsonObject mobObject = mobElement.getAsJsonObject();
-					Mob mob = new Mob( mobObject, false );
-					int count = JsonHelper.getAsInt( mobObject, "count", 1 );
-					for( int i = 0; i < count; ++i ) {
-						this.mobs.add( mob );
-					}
-				} );
-		}
-
-		private void tryToAddBoss( JsonObject object ) {
-			if( object.has( "boss" ) ) {
-				this.mobs.add( new Mob( object.getAsJsonObject( "boss" ), true ) );
-			}
-		}
-
-		record Mob( EntityType< ? > entityType, ResourceLocation equipmentLocation, boolean isBoss ) {
-			public Mob( JsonObject object, boolean isBoss ) {
-				this(
-					JsonHelper.getAsEntity( object, "id" ),
-					JsonHelper.getAsLocation( object, "equipment", LootTable.EMPTY.getLootTableId() ),
-					isBoss
-				);
+			static class Mob extends SerializableStructure {
+				final Data< EntityType< ? > > type = this.addEntityType().key( "id" );
+				final Data< Integer > count = this.addInteger().key( "count" ).or( 1 );
+				final Data< ResourceLocation > equipment = this.addResourceLocation().key( "equipment" ).or( LootTable.EMPTY.getLootTableId() );
 			}
 		}
 	}
 
-	record WaveConfigs( List< WaveConfig > list ) {}
-
-	static class Serializer implements JsonDeserializer< WaveConfigs > {
+	static class Serializer implements JsonDeserializer< Resource > {
 		@Override
-		public WaveConfigs deserialize( JsonElement element, Type type, JsonDeserializationContext context ) throws JsonParseException {
-			List< WaveConfig > wavesInfo = new ArrayList<>();
-			element.getAsJsonArray().forEach( waveElement->wavesInfo.add( new WaveConfig( waveElement.getAsJsonObject() ) ) );
+		public Resource deserialize( JsonElement element, Type type, JsonDeserializationContext context ) throws JsonParseException {
+			Resource structure = new Resource();
+			structure.read( element );
 
-			return new WaveConfigs( wavesInfo );
+			return structure;
 		}
 	}
 }
