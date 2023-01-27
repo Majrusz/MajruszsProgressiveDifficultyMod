@@ -1,17 +1,13 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.text.TextHelper;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 class ProgressIndicator implements IComponent {
 	final ServerBossEvent waveInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
@@ -34,8 +30,6 @@ class ProgressIndicator implements IComponent {
 		this.waveInfo.setName( this.getPhaseComponent() );
 		if( this.undeadArmy.phase == Phase.FINISHED ) {
 			this.removeParticipants();
-		} else {
-			this.sendChatMessage();
 		}
 	}
 
@@ -91,26 +85,4 @@ class ProgressIndicator implements IComponent {
 			default -> CommonComponents.EMPTY;
 		};
 	}
-
-	private void sendChatMessage() {
-		this.getChatMessageId()
-			.ifPresent( message->this.undeadArmy.participants.forEach( participant->participant.displayClientMessage( message, false ) ) );
-	}
-
-	private Optional< MutableComponent > getChatMessageId() {
-		if( this.undeadArmy.phase == Phase.WAVE_PREPARING && this.undeadArmy.currentWave == 0 ) {
-			String directionId = this.undeadArmy.direction.toString().toLowerCase();
-			MutableComponent direction = Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", directionId ) );
-			MutableComponent approaching = Component.translatable( "majruszsdifficulty.undead_army.approaching", direction );
-
-			return Optional.of( approaching.withStyle( ChatFormatting.DARK_PURPLE ) );
-		} else if( this.undeadArmy.phase == Phase.WAVE_ONGOING && this.undeadArmy.currentWave == 1 ) {
-			MutableComponent approached = Component.translatable( "majruszsdifficulty.undead_army.approached" );
-
-			return Optional.of( approached.withStyle( ChatFormatting.BOLD, ChatFormatting.DARK_PURPLE ) );
-		} else {
-			return Optional.empty();
-		}
-	}
-
 }
