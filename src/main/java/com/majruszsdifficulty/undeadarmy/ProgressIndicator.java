@@ -5,6 +5,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 
 import java.util.Collection;
@@ -63,7 +64,7 @@ class ProgressIndicator implements IComponent {
 				this.waveInfo.setProgress( this.undeadArmy.getPhaseRatio() );
 				this.bossInfo.setProgress( 0.0f );
 			}
-			case WAVE_ONGOING -> this.waveInfo.setProgress( 1.0f - this.undeadArmy.getPhaseRatio() );
+			case WAVE_ONGOING -> this.waveInfo.setProgress( this.getHealthRatioLeft() );
 			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 0.0f );
 			case UNDEAD_WON -> this.waveInfo.setProgress( 1.0f );
 		}
@@ -84,5 +85,15 @@ class ProgressIndicator implements IComponent {
 			case UNDEAD_WON -> Component.translatable( "majruszsdifficulty.undead_army.failed" );
 			default -> CommonComponents.EMPTY;
 		};
+	}
+
+	private float getHealthRatioLeft() {
+		float healthLeft = 0.0f;
+		float healthTotal = Math.max( this.undeadArmy.phaseHealthTotal, 1.0f );
+		for( UndeadArmy.MobInfo mobInfo : this.undeadArmy.mobsLeft ) {
+			healthLeft += mobInfo.getHealth( this.undeadArmy.level );
+		}
+
+		return Mth.clamp( healthLeft / healthTotal, 0.0f, 1.0f );
 	}
 }
