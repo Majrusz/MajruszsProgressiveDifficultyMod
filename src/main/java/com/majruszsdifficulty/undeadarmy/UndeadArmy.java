@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -21,24 +22,26 @@ public class UndeadArmy extends SerializableStructure {
 	final Config config;
 	final List< IComponent > components = new ArrayList<>();
 	final List< ServerPlayer > participants = new ArrayList<>();
-	final List< MobInfo > pendingMobs = new ArrayList<>();
+	final List< MobInfo > mobsLeft = new ArrayList<>();
 	BlockPos positionToAttack;
 	Direction direction;
 	Phase phase = Phase.CREATED;
 	int phaseTicksLeft = Utility.secondsToTicks( 2.0 );
 	int phaseTicksTotal = Utility.secondsToTicks( 2.0 );
+	int phaseHealthTotal = 0;
 	int currentWave = 0;
 
 	public UndeadArmy( ServerLevel level, Config config ) {
 		this.level = level;
 		this.config = config;
 
-		this.define( "mobs_left", ()->this.pendingMobs, this.pendingMobs::addAll, MobInfo::new );
+		this.define( "mobs_left", ()->this.mobsLeft, this.mobsLeft::addAll, MobInfo::new );
 		this.define( "position", ()->this.positionToAttack, x->this.positionToAttack = x );
 		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
 		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::values );
 		this.define( "phase_ticks_left", ()->this.phaseTicksLeft, x->this.phaseTicksLeft = x );
 		this.define( "phase_ticks_total", ()->this.phaseTicksTotal, x->this.phaseTicksTotal = x );
+		this.define( "phase_health_total", ()->this.phaseHealthTotal, x->this.phaseHealthTotal = x );
 		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( WaveController::new );
@@ -140,6 +143,14 @@ public class UndeadArmy extends SerializableStructure {
 		@Nullable
 		public Entity toEntity( ServerLevel level ) {
 			return this.id != null ? level.getEntity( this.id ) : null;
+		}
+
+		public float getHealth( ServerLevel level ) {
+			return this.toEntity( level ) instanceof LivingEntity entity ? entity.getHealth() : 0.0f;
+		}
+
+		public float getMaxHealth( ServerLevel level ) {
+			return this.toEntity( level ) instanceof LivingEntity entity ? entity.getMaxHealth() : 0.0f;
 		}
 	}
 }
