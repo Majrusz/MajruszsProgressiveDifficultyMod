@@ -36,6 +36,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( WaveController::new );
+		this.addComponent( MessageSender::new );
 	}
 
 	public void highlightArmy() {

@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.undeadarmy;
 
 interface IComponent {
-	void tick();
+	default void tick() {}
 
-	void onPhaseChanged();
+	default void onPhaseChanged() {}
 }
