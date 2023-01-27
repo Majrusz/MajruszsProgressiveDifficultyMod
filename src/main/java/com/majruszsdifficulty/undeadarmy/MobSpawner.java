@@ -22,7 +22,7 @@ public class MobSpawner implements IComponent {
 		if( ++this.counter % 10 != 0 || this.undeadArmy.phase != Phase.WAVE_ONGOING )
 			return;
 
-		UndeadArmy.PendingMobDef mobDef = this.getNextMobToSpawn();
+		UndeadArmy.MobInfo mobDef = this.getNextMobToSpawn();
 		if( mobDef != null ) {
 			Entity entity = EntityHelper.spawn( mobDef.type, this.undeadArmy.level, this.getRandomSpawnPosition().getCenter() );
 			if( entity == null )
@@ -41,7 +41,7 @@ public class MobSpawner implements IComponent {
 	}
 
 	@Nullable
-	private UndeadArmy.PendingMobDef getNextMobToSpawn() {
+	private UndeadArmy.MobInfo getNextMobToSpawn() {
 		return this.undeadArmy.pendingMobs.stream()
 			.filter( mobDef->mobDef.id == null )
 			.findFirst()
@@ -61,7 +61,7 @@ public class MobSpawner implements IComponent {
 	}
 
 	private void addToPendingMobs( Config.MobDef def, boolean isBoss ) {
-		this.undeadArmy.pendingMobs.add( new UndeadArmy.PendingMobDef( def, this.getRandomSpawnPosition(), isBoss ) );
+		this.undeadArmy.pendingMobs.add( new UndeadArmy.MobInfo( def, this.getRandomSpawnPosition(), isBoss ) );
 	}
 
 	private BlockPos getRandomSpawnPosition() {

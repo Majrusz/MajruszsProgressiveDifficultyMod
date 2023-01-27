@@ -43,12 +43,9 @@ class WaveController implements IComponent {
 	}
 
 	private void tickWaveOngoing() {
-		/*if( this.undeadArmy.phaseTicksLeft % 10 == 0 && this.undeadArmy.tryToSpawnNextMob( this.level ) ) {
-			;
-			// MajruszLibrary.log( "%s %s", mob.type.get().toString(), mob.isBoss.get().toString() );
-		}*/
+		this.undeadArmy.pendingMobs.removeIf( mobInfo->mobInfo.id != null && mobInfo.toEntity( this.undeadArmy.level ) == null );
 
-		if( this.undeadArmy.pendingMobs.stream().allMatch( mobDef->mobDef.id != null ) ) {
+		if( this.undeadArmy.pendingMobs.isEmpty() ) {
 			// this.data.setPhase( Phase.UNDEAD_WON, Utility.secondsToTicks( 2.0 ) );
 			if( this.undeadArmy.isLastWave() ) {
 				this.undeadArmy.setPhase( Phase.UNDEAD_DEFEATED, Utility.secondsToTicks( 2.0 ) );
