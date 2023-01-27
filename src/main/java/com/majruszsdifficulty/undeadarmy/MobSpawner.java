@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.Heightmap;
+import org.jetbrains.annotations.Nullable;
 
 public class MobSpawner implements IComponent {
 	final UndeadArmy undeadArmy;
@@ -18,13 +19,17 @@ public class MobSpawner implements IComponent {
 
 	@Override
 	public void tick() {
-		if( ++this.counter % 10 == 0 && this.undeadArmy.phase == Phase.WAVE_ONGOING && !this.undeadArmy.pendingMobs.isEmpty() ) {
-			Config.MobDef mobDef = this.undeadArmy.pendingMobs.remove( 0 );
+		if( ++this.counter % 10 != 0 || this.undeadArmy.phase != Phase.WAVE_ONGOING )
+			return;
+
+		UndeadArmy.PendingMobDef mobDef = this.getNextMobToSpawn();
+		if( mobDef != null ) {
 			Entity entity = EntityHelper.spawn( mobDef.type, this.undeadArmy.level, this.getRandomSpawnPosition().getCenter() );
 			if( entity == null )
 				return;
 
-			MajruszLibrary.log( "%s %s (%s left) ", mobDef.type, entity.position(), this.undeadArmy.pendingMobs.size() );
+			mobDef.id = entity.getId();
+			MajruszLibrary.log( "%s %s %s (%s left) ", mobDef.type, mobDef.isBoss, entity.position(), this.undeadArmy.pendingMobs.size() );
 		}
 	}
 
@@ -35,25 +40,28 @@ public class MobSpawner implements IComponent {
 		}
 	}
 
+	@Nullable
+	private UndeadArmy.PendingMobDef getNextMobToSpawn() {
+		return this.undeadArmy.pendingMobs.stream()
+			.filter( mobDef->mobDef.id == null )
+			.findFirst()
+			.orElse( null );
+	}
+
 	private void generateMobList() {
 		Config.WaveDef waveDef = this.undeadArmy.config.getWave( this.undeadArmy.currentWave + 1 );
 		waveDef.mobDefs.forEach( mobDef->{
 			for( int i = 0; i < mobDef.count; ++i ) {
-				this.undeadArmy.pendingMobs.add( this.copySingle( mobDef ) );
+				this.addToPendingMobs( mobDef, false );
 			}
 		} );
 		if( waveDef.boss != null ) {
-			this.undeadArmy.pendingMobs.add( waveDef.boss );
+			this.addToPendingMobs( waveDef.boss, true );
 		}
 	}
 
-	private Config.MobDef copySingle( Config.MobDef def ) {
-		Config.MobDef copy = new Config.MobDef();
-		copy.type = def.type;
-		copy.equipment = def.equipment;
-		copy.count = 1;
-
-		return copy;
+	private void addToPendingMobs( Config.MobDef def, boolean isBoss ) {
+		this.undeadArmy.pendingMobs.add( new UndeadArmy.PendingMobDef( def, this.getRandomSpawnPosition(), isBoss ) );
 	}
 
 	private BlockPos getRandomSpawnPosition() {

@@ -2,7 +2,7 @@
   {
     "mobs": [
       {
-        "id": "minecraft:zombie",
+        "type": "minecraft:zombie",
         "count": 1,
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_1"
       }
@@ -11,7 +11,7 @@
   {
     "mobs": [
       {
-        "id": "minecraft:zombie",
+        "type": "minecraft:zombie",
         "count": 2,
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_2"
       }
@@ -20,19 +20,19 @@
   {
     "mobs": [
       {
-        "id": "minecraft:zombie",
+        "type": "minecraft:zombie",
         "count": 3,
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_3"
       }
     ],
     "boss": {
-      "id": "majruszsdifficulty:tank"
+      "type": "majruszsdifficulty:tank"
     }
   },
   {
     "mobs": [
       {
-        "id": "minecraft:zombie",
+        "type": "minecraft:zombie",
         "count": 4,
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_3"
       }
@@ -41,13 +41,13 @@
   {
     "mobs": [
       {
-        "id": "minecraft:zombie",
+        "type": "minecraft:zombie",
         "count": 5,
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_3"
       }
     ],
     "boss": {
-      "id": "majruszsdifficulty:tank"
+      "type": "majruszsdifficulty:tank"
     }
   }
 ]

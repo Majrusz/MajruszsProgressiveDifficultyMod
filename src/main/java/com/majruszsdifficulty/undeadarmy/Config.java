@@ -74,11 +74,11 @@ public class Config extends GameModifier {
 
 	static class WaveDef extends SerializableStructure {
 		final List< MobDef > mobDefs = new ArrayList<>();
-		BossDef boss;
+		MobDef boss;
 
 		public WaveDef() {
 			this.define( "mobs", ()->this.mobDefs, this.mobDefs::addAll, MobDef::new );
-			this.define( "boss", ()->this.boss, x->this.boss = x, BossDef::new );
+			this.define( "boss", ()->this.boss, x->this.boss = x, MobDef::new );
 		}
 	}
 
@@ -86,18 +86,11 @@ public class Config extends GameModifier {
 		EntityType< ? > type;
 		int count = 1;
 		ResourceLocation equipment = LootTable.EMPTY.getLootTableId();
-		boolean isBoss = false;
 
 		public MobDef() {
-			this.define( "id", ()->this.type, x->this.type = x );
+			this.define( "type", ()->this.type, x->this.type = x );
 			this.define( "count", ()->this.count, x->this.count = x );
 			this.define( "equipment", ()->this.equipment, x->this.equipment = x );
-		}
-	}
-
-	static class BossDef extends MobDef {
-		public BossDef() {
-			this.isBoss = true;
 		}
 	}
 }
