@@ -16,7 +16,8 @@ public class UndeadArmy extends SerializableStructure {
 	final ServerLevel level;
 	final Config config;
 	final List< IComponent > components = new ArrayList<>();
-	List< ServerPlayer > participants = new ArrayList<>();
+	final List< ServerPlayer > participants = new ArrayList<>();
+	final List< Config.MobDef > pendingMobs = new ArrayList<>();
 	BlockPos positionToAttack;
 	Direction direction;
 	Phase phase = Phase.CREATED;
@@ -28,6 +29,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.level = level;
 		this.config = config;
 
+		this.define( "mobs_left", ()->this.pendingMobs, this.pendingMobs::addAll, Config.MobDef::new );
 		this.define( "position", ()->this.positionToAttack, x->this.positionToAttack = x );
 		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
 		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::values );
@@ -37,6 +39,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( WaveController::new );
 		this.addComponent( MessageSender::new );
+		this.addComponent( MobSpawner::new );
 	}
 
 	public void highlightArmy() {
@@ -56,7 +59,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	void tick() {
-		this.participants = this.determineParticipants();
+		this.updateParticipants();
 
 		this.components.forEach( IComponent::tick );
 	}
@@ -101,7 +104,8 @@ public class UndeadArmy extends SerializableStructure {
 		this.components.add( provider.apply( this ) );
 	}
 
-	private List< ServerPlayer > determineParticipants() {
-		return this.level.getPlayers( player->player.isAlive() && this.isInRange( player.blockPosition() ) );
+	private void updateParticipants() {
+		this.participants.clear();
+		this.participants.addAll( this.level.getPlayers( player->player.isAlive() && this.isInRange( player.blockPosition() ) ) );
 	}
 }
