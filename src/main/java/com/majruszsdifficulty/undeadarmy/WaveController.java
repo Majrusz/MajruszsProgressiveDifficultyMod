@@ -1,18 +1,6 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Utility;
-import com.mlib.text.TextHelper;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.BossEvent;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 class WaveController implements IComponent {
 	final UndeadArmy undeadArmy;
@@ -50,8 +38,8 @@ class WaveController implements IComponent {
 		if( !this.undeadArmy.isPhaseOver() )
 			return;
 
-		this.undeadArmy.setPhase( Phase.WAVE_ONGOING, Utility.secondsToTicks( 5.0 ) );
 		++this.undeadArmy.currentWave;
+		this.undeadArmy.setPhase( Phase.WAVE_ONGOING, Utility.secondsToTicks( 5.0 ) );
 	}
 
 	private void tickWaveOngoing() {
@@ -60,7 +48,7 @@ class WaveController implements IComponent {
 			// MajruszLibrary.log( "%s %s", mob.type.get().toString(), mob.isBoss.get().toString() );
 		}*/
 
-		if( this.undeadArmy.isPhaseOver() ) {
+		if( this.undeadArmy.pendingMobs.isEmpty() ) {
 			// this.data.setPhase( Phase.UNDEAD_WON, Utility.secondsToTicks( 2.0 ) );
 			if( this.undeadArmy.isLastWave() ) {
 				this.undeadArmy.setPhase( Phase.UNDEAD_DEFEATED, Utility.secondsToTicks( 2.0 ) );
