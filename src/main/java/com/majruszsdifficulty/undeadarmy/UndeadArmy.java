@@ -8,9 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.storage.loot.LootTable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -20,7 +21,7 @@ public class UndeadArmy extends SerializableStructure {
 	final Config config;
 	final List< IComponent > components = new ArrayList<>();
 	final List< ServerPlayer > participants = new ArrayList<>();
-	final List< PendingMobDef > pendingMobs = new ArrayList<>();
+	final List< MobInfo > pendingMobs = new ArrayList<>();
 	BlockPos positionToAttack;
 	Direction direction;
 	Phase phase = Phase.CREATED;
@@ -32,7 +33,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.level = level;
 		this.config = config;
 
-		this.define( "mobs_left", ()->this.pendingMobs, this.pendingMobs::addAll, PendingMobDef::new );
+		this.define( "mobs_left", ()->this.pendingMobs, this.pendingMobs::addAll, MobInfo::new );
 		this.define( "position", ()->this.positionToAttack, x->this.positionToAttack = x );
 		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
 		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::values );
@@ -112,14 +113,14 @@ public class UndeadArmy extends SerializableStructure {
 		this.participants.addAll( this.level.getPlayers( player->player.isAlive() && this.isInRange( player.blockPosition() ) ) );
 	}
 
-	static class PendingMobDef extends SerializableStructure {
+	static class MobInfo extends SerializableStructure {
 		EntityType< ? > type;
 		ResourceLocation equipment;
 		BlockPos position;
 		boolean isBoss = false;
 		Integer id = null;
 
-		public PendingMobDef() {
+		public MobInfo() {
 			this.define( "type", ()->this.type, x->this.type = x );
 			this.define( "equipment", ()->this.equipment, x->this.equipment = x );
 			this.define( "position", ()->this.position, x->this.position = x );
@@ -127,13 +128,18 @@ public class UndeadArmy extends SerializableStructure {
 			this.define( "id", ()->this.id, x->this.id = x );
 		}
 
-		public PendingMobDef( Config.MobDef def, BlockPos position, boolean isBoss ) {
+		public MobInfo( Config.MobDef def, BlockPos position, boolean isBoss ) {
 			this();
 
 			this.type = def.type;
 			this.equipment = def.equipment;
 			this.position = position;
 			this.isBoss = isBoss;
+		}
+
+		@Nullable
+		public Entity toEntity( ServerLevel level ) {
+			return this.id != null ? level.getEntity( this.id ) : null;
 		}
 	}
 }
