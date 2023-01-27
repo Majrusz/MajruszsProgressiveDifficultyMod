@@ -3,11 +3,9 @@ package com.majruszsdifficulty.undeadarmy;
 import com.mlib.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-/** Possible directions where Undead Army can spawn. */
 public enum Direction {
 	WEST( -1, 0 ),
 	EAST( 1, 0 ),
@@ -19,25 +17,6 @@ public enum Direction {
 	Direction( int x, int z ) {
 		this.x = x;
 		this.z = z;
-	}
-
-	public void write( CompoundTag nbt ) {
-		nbt.putString( Direction.class.getName(), this.toString() );
-	}
-
-	public static Direction read( CompoundTag nbt ) {
-		String name = nbt.getString( Direction.class.getName() );
-		for( Direction direction : Direction.values() ) {
-			if( name.equalsIgnoreCase( direction.name() ) ) {
-				return direction;
-			}
-		}
-
-		return WEST;
-	}
-
-	public static Direction getRandom() {
-		return Random.nextRandom( Direction.values() );
 	}
 
 	public BlockPos getRandomSpawnPosition( ServerLevel level, BlockPos positionToAttack, int spawnRadius ) {
