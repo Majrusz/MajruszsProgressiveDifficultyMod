@@ -1,11 +1,5 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.mlib.Random;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.levelgen.Heightmap;
-
 public enum Direction {
 	WEST( -1, 0 ),
 	EAST( 1, 0 ),

@@ -48,7 +48,7 @@ class WaveController implements IComponent {
 			// MajruszLibrary.log( "%s %s", mob.type.get().toString(), mob.isBoss.get().toString() );
 		}*/
 
-		if( this.undeadArmy.pendingMobs.isEmpty() ) {
+		if( this.undeadArmy.pendingMobs.stream().allMatch( mobDef->mobDef.id != null ) ) {
 			// this.data.setPhase( Phase.UNDEAD_WON, Utility.secondsToTicks( 2.0 ) );
 			if( this.undeadArmy.isLastWave() ) {
 				this.undeadArmy.setPhase( Phase.UNDEAD_DEFEATED, Utility.secondsToTicks( 2.0 ) );
