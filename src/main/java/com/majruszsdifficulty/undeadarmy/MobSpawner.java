@@ -22,14 +22,15 @@ public class MobSpawner implements IComponent {
 		if( ++this.counter % 10 != 0 || this.undeadArmy.phase != Phase.WAVE_ONGOING )
 			return;
 
-		UndeadArmy.MobInfo mobDef = this.getNextMobToSpawn();
-		if( mobDef != null ) {
-			Entity entity = EntityHelper.spawn( mobDef.type, this.undeadArmy.level, this.getRandomSpawnPosition().getCenter() );
+		UndeadArmy.MobInfo mobInfo = this.getNextMobToSpawn();
+		if( mobInfo != null ) {
+			Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, this.getRandomSpawnPosition().getCenter() );
 			if( entity == null )
 				return;
 
-			mobDef.id = entity.getId();
-			MajruszLibrary.log( "%s %s %s (%s left) ", mobDef.type, mobDef.isBoss, entity.position(), this.undeadArmy.pendingMobs.size() );
+			mobInfo.id = entity.getId();
+			this.undeadArmy.phaseHealthTotal += mobInfo.getMaxHealth( this.undeadArmy.level );
+			MajruszLibrary.log( "%s %s %s (%s left) ", mobInfo.type, mobInfo.isBoss, entity.position(), this.undeadArmy.mobsLeft.size() );
 		}
 	}
 
@@ -37,12 +38,13 @@ public class MobSpawner implements IComponent {
 	public void onPhaseChanged() {
 		if( this.undeadArmy.phase == Phase.WAVE_PREPARING ) {
 			this.generateMobList();
+			this.undeadArmy.phaseHealthTotal = 0;
 		}
 	}
 
 	@Nullable
 	private UndeadArmy.MobInfo getNextMobToSpawn() {
-		return this.undeadArmy.pendingMobs.stream()
+		return this.undeadArmy.mobsLeft.stream()
 			.filter( mobDef->mobDef.id == null )
 			.findFirst()
 			.orElse( null );
@@ -61,14 +63,14 @@ public class MobSpawner implements IComponent {
 	}
 
 	private void addToPendingMobs( Config.MobDef def, boolean isBoss ) {
-		this.undeadArmy.pendingMobs.add( new UndeadArmy.MobInfo( def, this.getRandomSpawnPosition(), isBoss ) );
+		this.undeadArmy.mobsLeft.add( new UndeadArmy.MobInfo( def, this.getRandomSpawnPosition(), isBoss ) );
 	}
 
 	private BlockPos getRandomSpawnPosition() {
 		int tries = 0;
 		int x, y, z;
 		do {
-			Vec3i offset = this.buildOffset( 50 );
+			Vec3i offset = this.buildOffset( 30 );
 			x = this.undeadArmy.positionToAttack.getX() + offset.getX();
 			z = this.undeadArmy.positionToAttack.getZ() + offset.getZ();
 			y = this.undeadArmy.level.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z );
@@ -79,9 +81,9 @@ public class MobSpawner implements IComponent {
 
 	private Vec3i buildOffset( int spawnRadius ) {
 		Direction direction = this.undeadArmy.direction;
-		int x = direction.z != 0 ? 50 : 10 + direction.x * spawnRadius;
+		int x = direction.z != 0 ? 20 : 10 + direction.x * spawnRadius;
 		int y = 0;
-		int z = direction.x != 0 ? 50 : 10 + direction.z * spawnRadius;
+		int z = direction.x != 0 ? 20 : 10 + direction.z * spawnRadius;
 
 		return Random.getRandomVector3i( -x, x, -y, y, -z, z );
 	}

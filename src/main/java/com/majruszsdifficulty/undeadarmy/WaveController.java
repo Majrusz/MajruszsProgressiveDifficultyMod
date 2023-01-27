@@ -43,9 +43,9 @@ class WaveController implements IComponent {
 	}
 
 	private void tickWaveOngoing() {
-		this.undeadArmy.pendingMobs.removeIf( mobInfo->mobInfo.id != null && mobInfo.toEntity( this.undeadArmy.level ) == null );
+		this.undeadArmy.mobsLeft.removeIf( mobInfo->mobInfo.id != null && mobInfo.toEntity( this.undeadArmy.level ) == null );
 
-		if( this.undeadArmy.pendingMobs.isEmpty() ) {
+		if( this.undeadArmy.mobsLeft.isEmpty() ) {
 			// this.data.setPhase( Phase.UNDEAD_WON, Utility.secondsToTicks( 2.0 ) );
 			if( this.undeadArmy.isLastWave() ) {
 				this.undeadArmy.setPhase( Phase.UNDEAD_DEFEATED, Utility.secondsToTicks( 2.0 ) );
