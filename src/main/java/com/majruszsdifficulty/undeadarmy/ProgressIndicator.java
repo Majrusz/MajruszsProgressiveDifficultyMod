@@ -34,6 +34,11 @@ class ProgressIndicator implements IComponent {
 		}
 	}
 
+	@Override
+	public void onGameReload() {
+		this.waveInfo.setName( this.getPhaseComponent() );
+	}
+
 	private void updateVisibility() {
 		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.CREATED );
 		this.bossInfo.setVisible( false );
