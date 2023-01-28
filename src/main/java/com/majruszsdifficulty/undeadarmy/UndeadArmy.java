@@ -58,10 +58,6 @@ public class UndeadArmy extends SerializableStructure {
 
 	}
 
-	public int countMobsLeft() {
-		return 0;
-	}
-
 	public void finish() {
 		this.setState( Phase.State.FINISHED );
 	}

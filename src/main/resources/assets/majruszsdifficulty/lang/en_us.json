@@ -64,7 +64,6 @@
   "commands.undeadarmy.cannot_start": "An Undead Army cannot be spawned at position: %s",
   "commands.undeadarmy.killed": "All Undead Army units were killed at position: %s",
   "commands.undeadarmy.highlighted": "All Undead Army units were highlighted at position: %s",
-  "commands.undeadarmy.undeadleft": "Undead Army has %d unit(s) left at position: %s",
   "commands.undeadarmy.progress": "%s killed %d/%d undead mobs before the Undead Army starts.",
   "commands.treasurebag.reset": "Progress of all treasure bags has been restarted for %1$s.",
   "commands.clampedregionaldifficulty": "Clamped regional difficulty at %1$s is %2$s.%3$s",

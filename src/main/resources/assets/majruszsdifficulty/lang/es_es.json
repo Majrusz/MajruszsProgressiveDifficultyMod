@@ -49,7 +49,6 @@
   "commands.undeadarmy.cannot_start": "No se puede Iniciar un Ejercito No Muerto en la posición %s",
   "commands.undeadarmy.killed": "Todas las tropas del Ejercito No Muerto fueron Terminadas en la posición %s",
   "commands.undeadarmy.highlighted": "Todas las tropas del Ejercito No Muerto fueron resaltadas en la posición %s",
-  "commands.undeadarmy.undeadleft": "Quedan %d No Muertos en la posición %s",
   "commands.undeadarmy.progress": "%s asesino %d/%d no muertos antes de que el ejercito No Muerto ataque",
   "commands.treasurebag.reset": "Progreso de Recompensas Reiniciado por %s",
   "commands.clampedregionaldifficulty": "La Dificultad Regional es %s%s (%s)",
