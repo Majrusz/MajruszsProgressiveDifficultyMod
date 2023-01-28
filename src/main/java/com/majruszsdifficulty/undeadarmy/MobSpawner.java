@@ -2,22 +2,25 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
+import com.mlib.math.VectorHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
 	public void tick() {
-		if( !TimeHelper.hasServerTicksPassed( 10 ) || this.undeadArmy.phase.state != Phase.State.WAVE_ONGOING )
+		if( !TimeHelper.hasServerTicksPassed( 20 ) || this.undeadArmy.phase.state != Phase.State.WAVE_ONGOING )
 			return;
 
 		MobInfo mobInfo = this.getNextMobToSpawn();
 		if( mobInfo != null ) {
-			Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, this.getRandomSpawnPosition().getCenter() );
+			Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
+			Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
 			if( entity == null )
 				return;
 
