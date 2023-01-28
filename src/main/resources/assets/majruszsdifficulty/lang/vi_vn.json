@@ -50,7 +50,6 @@
   "commands.undeadarmy.cannot_start": "Đội quân Thây ma không thể được triệu hồi tại vị trí: %s",
   "commands.undeadarmy.killed": "Mọi đơn vị đội quân Thây ma đã bị giết tại vị trí: %s",
   "commands.undeadarmy.highlighted": "Mọi đơn vị đội quân Thây ma đã được đánh dấu tại vị trí: %s",
-  "commands.undeadarmy.undeadleft": "Đội quân Thây ma còn lại %d đơn vị tại vị trí: %s",
   "commands.undeadarmy.progress": "%s đã giết %d/%d lính thây ma trước khi đội quân Thây ma bắt đầu.",
   "commands.treasurebag.reset": "Quá trình rơi túi kho báu đã được bắt đầu lại cho %s.",
   "commands.clampedregionaldifficulty": "Độ khó của khu vực hiện tại là %s%s (vị trí: %s)",
