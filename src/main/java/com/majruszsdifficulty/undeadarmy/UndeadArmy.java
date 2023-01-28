@@ -37,6 +37,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
 		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::new );
 		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
+		this.addComponent( ParticipantsUpdater::new );
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( WaveController::new );
 		this.addComponent( MessageSender::new );
@@ -60,8 +61,6 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	void tick() {
-		this.updateParticipants();
-
 		this.components.forEach( IComponent::tick );
 	}
 
@@ -103,11 +102,6 @@ public class UndeadArmy extends SerializableStructure {
 
 	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
 		this.components.add( provider.apply( this ) );
-	}
-
-	private void updateParticipants() {
-		this.participants.clear();
-		this.participants.addAll( this.level.getPlayers( player->player.isAlive() && this.isInRange( player.blockPosition() ) ) );
 	}
 
 	static class MobInfo extends SerializableStructure {
