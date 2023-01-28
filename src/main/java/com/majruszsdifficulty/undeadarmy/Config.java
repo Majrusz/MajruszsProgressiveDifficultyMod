@@ -47,7 +47,7 @@ public class Config extends GameModifier {
 	}
 
 	public WaveDef getWave( int waveIdx ) {
-		return this.wavesDef.get().get( Mth.clamp( waveIdx - 1, 0, this.getWavesNum() ) );
+		return this.wavesDef.get().get( Mth.clamp( waveIdx - 1, 0, this.getWavesNum() - 1 ) );
 	}
 
 	static class WavesDef extends SerializableStructure {

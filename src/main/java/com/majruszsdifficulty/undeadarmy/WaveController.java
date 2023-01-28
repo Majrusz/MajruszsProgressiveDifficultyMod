@@ -11,14 +11,14 @@ class WaveController implements IComponent {
 
 	@Override
 	public void tick() {
-		switch( this.undeadArmy.phase ) {
+		switch( this.undeadArmy.phase.state ) {
 			case CREATED -> this.tickCreated();
 			case WAVE_PREPARING -> this.tickWavePreparing();
 			case WAVE_ONGOING -> this.tickWaveOngoing();
 			case UNDEAD_DEFEATED -> this.tickUndeadDefeated();
 			case UNDEAD_WON -> this.tickUndeadWon();
 		}
-		this.undeadArmy.phaseTicksLeft = Math.max( this.undeadArmy.phaseTicksLeft - 1, 0 );
+		this.undeadArmy.phase.ticksLeft = Math.max( this.undeadArmy.phase.ticksLeft - 1, 0 );
 	}
 
 	@Override
@@ -30,7 +30,7 @@ class WaveController implements IComponent {
 		if( !this.undeadArmy.isPhaseOver() )
 			return;
 
-		this.undeadArmy.setPhase( Phase.WAVE_PREPARING, Utility.secondsToTicks( 2.0 ) );
+		this.undeadArmy.setState( Phase.State.WAVE_PREPARING, Utility.secondsToTicks( 2.0 ) );
 		// this.undeadArmy.generateWaveMobs( this.config, this.level );
 	}
 
@@ -39,18 +39,18 @@ class WaveController implements IComponent {
 			return;
 
 		++this.undeadArmy.currentWave;
-		this.undeadArmy.setPhase( Phase.WAVE_ONGOING, Utility.secondsToTicks( 5.0 ) );
+		this.undeadArmy.setState( Phase.State.WAVE_ONGOING, Utility.secondsToTicks( 5.0 ) );
 	}
 
 	private void tickWaveOngoing() {
-		this.undeadArmy.mobsLeft.removeIf( mobInfo->mobInfo.id != null && mobInfo.toEntity( this.undeadArmy.level ) == null );
+		this.undeadArmy.mobsLeft.removeIf( mobInfo->mobInfo.uuid != null && mobInfo.toEntity( this.undeadArmy.level ) == null );
 
 		if( this.undeadArmy.mobsLeft.isEmpty() ) {
-			// this.data.setPhase( Phase.UNDEAD_WON, Utility.secondsToTicks( 2.0 ) );
+			// this.data.setPhase( Phase.State.UNDEAD_WON, Utility.secondsToTicks( 2.0 ) );
 			if( this.undeadArmy.isLastWave() ) {
-				this.undeadArmy.setPhase( Phase.UNDEAD_DEFEATED, Utility.secondsToTicks( 2.0 ) );
+				this.undeadArmy.setState( Phase.State.UNDEAD_DEFEATED, Utility.secondsToTicks( 2.0 ) );
 			} else {
-				this.undeadArmy.setPhase( Phase.WAVE_PREPARING, Utility.secondsToTicks( 2.0 ) );
+				this.undeadArmy.setState( Phase.State.WAVE_PREPARING, Utility.secondsToTicks( 2.0 ) );
 				// this.undeadArmy.generateWaveMobs( this.config, this.level );
 			}
 		}

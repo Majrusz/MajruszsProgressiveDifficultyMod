@@ -19,7 +19,7 @@ public class MobSpawner implements IComponent {
 
 	@Override
 	public void tick() {
-		if( ++this.counter % 10 != 0 || this.undeadArmy.phase != Phase.WAVE_ONGOING )
+		if( ++this.counter % 10 != 0 || this.undeadArmy.phase.state != Phase.State.WAVE_ONGOING )
 			return;
 
 		UndeadArmy.MobInfo mobInfo = this.getNextMobToSpawn();
@@ -28,24 +28,24 @@ public class MobSpawner implements IComponent {
 			if( entity == null )
 				return;
 
-			mobInfo.id = entity.getId();
-			this.undeadArmy.phaseHealthTotal += mobInfo.getMaxHealth( this.undeadArmy.level );
+			mobInfo.uuid = entity.getUUID();
+			this.undeadArmy.phase.healthTotal += mobInfo.getMaxHealth( this.undeadArmy.level );
 			MajruszLibrary.log( "%s %s %s (%s left) ", mobInfo.type, mobInfo.isBoss, entity.position(), this.undeadArmy.mobsLeft.size() );
 		}
 	}
 
 	@Override
 	public void onPhaseChanged() {
-		if( this.undeadArmy.phase == Phase.WAVE_PREPARING ) {
+		if( this.undeadArmy.phase.state == Phase.State.WAVE_PREPARING ) {
 			this.generateMobList();
-			this.undeadArmy.phaseHealthTotal = 0;
+			this.undeadArmy.phase.healthTotal = 0;
 		}
 	}
 
 	@Nullable
 	private UndeadArmy.MobInfo getNextMobToSpawn() {
 		return this.undeadArmy.mobsLeft.stream()
-			.filter( mobDef->mobDef.id == null )
+			.filter( mobDef->mobDef.uuid == null )
 			.findFirst()
 			.orElse( null );
 	}
