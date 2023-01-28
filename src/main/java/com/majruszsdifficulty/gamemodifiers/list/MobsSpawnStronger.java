@@ -32,7 +32,7 @@ public class MobsSpawnStronger extends GameModifier {
 		new OnSpawned.Context( this::makeMobsStronger )
 			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 			.addCondition( data->this.canMobAttack( data.target ) )
 			.addCondition( data->this.isNotDimensionExcluded( data.level ) )
 			.addCondition( data->this.isNotMobExcluded( data.target ) )
@@ -53,8 +53,8 @@ public class MobsSpawnStronger extends GameModifier {
 		LivingEntity entity = data.target;
 		double nightMultiplier = data.level.isNight() ? this.nightMultiplier.get() : 1.0;
 
-		MAX_HEALTH_ATTRIBUTE.setValue( this.healthBonus.getCurrentGameStageValue() * nightMultiplier ).apply( entity );
-		DAMAGE_ATTRIBUTE.setValue( this.damageBonus.getCurrentGameStageValue() * nightMultiplier ).apply( entity );
+		MAX_HEALTH_ATTRIBUTE.setValueAndApply( entity, this.healthBonus.getCurrentGameStageValue() * nightMultiplier );
+		DAMAGE_ATTRIBUTE.setValueAndApply( entity, this.damageBonus.getCurrentGameStageValue() * nightMultiplier );
 		entity.setHealth( entity.getMaxHealth() );
 	}
 

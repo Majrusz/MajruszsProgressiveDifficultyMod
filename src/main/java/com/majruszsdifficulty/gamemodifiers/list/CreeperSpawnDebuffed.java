@@ -24,11 +24,12 @@ public class CreeperSpawnDebuffed extends GameModifier {
 	public CreeperSpawnDebuffed() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.Context( this::applyRandomEffect )
+		new OnSpawned.ContextSafe( this::applyRandomEffect )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.375, true ) )
+			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 			.addCondition( data->data.target instanceof Creeper )
 			.addConfig( this.effects[ 0 ].name( "Weakness" ) )
 			.addConfig( this.effects[ 1 ].name( "Slowness" ) )

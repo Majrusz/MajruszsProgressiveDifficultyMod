@@ -16,11 +16,12 @@ public class CreeperSpawnCharged extends GameModifier {
 	public CreeperSpawnCharged() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.Context( this::chargeCreeper )
+		new OnSpawned.ContextSafe( this::chargeCreeper )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.125, true ) )
+			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 			.addCondition( data->data.level != null )
 			.addCondition( data->data.target instanceof Creeper )
 			.insertTo( this );
