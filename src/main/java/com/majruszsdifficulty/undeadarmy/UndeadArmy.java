@@ -1,16 +1,20 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
 import com.mlib.math.VectorHelper;
+import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class UndeadArmy extends SerializableStructure {
@@ -51,11 +55,12 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	public void highlightArmy() {
-
+		this.forEachSpawnedUndead( entity->MobEffectHelper.tryToApply( entity, MobEffects.GLOWING, Utility.secondsToTicks( 15.0 ), 0 ) );
 	}
 
 	public void killAllUndeadArmyMobs() {
-
+		this.forEachSpawnedUndead( Entity::kill );
+		this.mobsLeft.clear();
 	}
 
 	public void finish() {
@@ -100,5 +105,11 @@ public class UndeadArmy extends SerializableStructure {
 
 	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
 		this.components.add( provider.apply( this ) );
+	}
+
+	private void forEachSpawnedUndead( Consumer< LivingEntity > consumer ) {
+		this.mobsLeft.stream()
+			.filter( mobInfo->mobInfo.uuid != null )
+			.forEach( mobInfo->consumer.accept( ( LivingEntity )mobInfo.toEntity( this.level ) ) );
 	}
 }
