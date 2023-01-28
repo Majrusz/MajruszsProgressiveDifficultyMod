@@ -24,18 +24,18 @@ import java.util.Map;
 @AutoInstance
 public class Config extends GameModifier {
 	static final Gson GSON = Deserializers.createFunctionSerializer().registerTypeAdapter( WavesDef.class, new WavesDef.Serializer() ).create();
-	private final SimpleJsonResourceReloadListener resourceListener = new SimpleJsonResourceReloadListener( GSON, "undead_army" ) {
-		@Override
-		protected void apply( Map< ResourceLocation, JsonElement > elements, ResourceManager manager, ProfilerFiller filler ) {
-			Config.this.wavesDef = GSON.fromJson( elements.get( Registries.getLocation( "waves" ) ), WavesDef.class );
-		}
-	};
 	private WavesDef wavesDef = null;
 
 	public Config() {
 		super( Registries.Modifiers.UNDEAD_ARMY );
 
-		MinecraftForge.EVENT_BUS.addListener( ( AddReloadListenerEvent event )->event.addListener( this.resourceListener ) );
+		var listener = new SimpleJsonResourceReloadListener( GSON, "undead_army" ) {
+			@Override
+			protected void apply( Map< ResourceLocation, JsonElement > elements, ResourceManager manager, ProfilerFiller filler ) {
+				Config.this.wavesDef = GSON.fromJson( elements.get( Registries.getLocation( "waves" ) ), WavesDef.class );
+			}
+		};
+		MinecraftForge.EVENT_BUS.addListener( ( AddReloadListenerEvent event )->event.addListener( listener ) );
 	}
 
 	public int getWavesNum() {
