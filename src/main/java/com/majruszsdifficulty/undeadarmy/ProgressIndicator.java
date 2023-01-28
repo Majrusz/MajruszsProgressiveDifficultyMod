@@ -19,6 +19,9 @@ class ProgressIndicator implements IComponent {
 
 	public ProgressIndicator( UndeadArmy undeadArmy ) {
 		this.undeadArmy = undeadArmy;
+
+		this.waveInfo.setVisible( false );
+		this.bossInfo.setVisible( false );
 	}
 
 	@Override
