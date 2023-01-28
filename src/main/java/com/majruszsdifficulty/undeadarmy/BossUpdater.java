@@ -1,12 +1,6 @@
 package com.majruszsdifficulty.undeadarmy;
 
-public class BossUpdater implements IComponent {
-	final UndeadArmy undeadArmy;
-
-	public BossUpdater( UndeadArmy undeadArmy ) {
-		this.undeadArmy = undeadArmy;
-	}
-
+record BossUpdater( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
 	public void tick() {
 		for( MobInfo mobInfo : this.undeadArmy.mobsLeft ) {
