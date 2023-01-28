@@ -1,6 +1,9 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.data.SerializableStructure;
@@ -23,16 +26,16 @@ import java.util.Map;
 
 @AutoInstance
 public class Config extends GameModifier {
-	static final Gson GSON = Deserializers.createFunctionSerializer().registerTypeAdapter( WavesDef.class, new WavesDef.Serializer() ).create();
 	private WavesDef wavesDef = null;
 
 	public Config() {
 		super( Registries.Modifiers.UNDEAD_ARMY );
 
-		var listener = new SimpleJsonResourceReloadListener( GSON, "undead_army" ) {
+		var gson = Deserializers.createFunctionSerializer().registerTypeAdapter( WavesDef.class, new WavesDef.Serializer() ).create();
+		var listener = new SimpleJsonResourceReloadListener( gson, "undead_army" ) {
 			@Override
 			protected void apply( Map< ResourceLocation, JsonElement > elements, ResourceManager manager, ProfilerFiller filler ) {
-				Config.this.wavesDef = GSON.fromJson( elements.get( Registries.getLocation( "waves" ) ), WavesDef.class );
+				Config.this.wavesDef = gson.fromJson( elements.get( Registries.getLocation( "waves" ) ), WavesDef.class );
 			}
 		};
 		MinecraftForge.EVENT_BUS.addListener( ( AddReloadListenerEvent event )->event.addListener( listener ) );
@@ -40,10 +43,6 @@ public class Config extends GameModifier {
 
 	public int getWavesNum() {
 		return this.wavesDef.get().size();
-	}
-
-	public List< MobDef > getWaveMobs( int waveIdx ) {
-		return this.getWave( waveIdx ).mobDefs;
 	}
 
 	public WaveDef getWave( int waveIdx ) {
