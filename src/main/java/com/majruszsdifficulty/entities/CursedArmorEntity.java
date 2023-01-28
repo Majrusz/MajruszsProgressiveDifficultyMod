@@ -189,19 +189,19 @@ public class CursedArmorEntity extends Monster {
 				.comment( "Makes some Cursed Armors have a custom name." )
 				.addCondition( new Condition.IsServer<>() )
 				.addCondition( new Condition.Chance<>( 0.025 ) )
-				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+				.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 				.addCondition( data->data.target instanceof CursedArmorEntity )
 				.addConfigs( this.name.name( "name" ) )
 				.insertTo( this );
 
-			new OnSpawned.Context( this::giveRandomArmor )
+			new OnSpawned.ContextSafe( this::giveRandomArmor )
 				.addCondition( new Condition.IsServer<>() )
-				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+				.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 				.addCondition( data->data.target instanceof CursedArmorEntity )
 				.insertTo( this );
 
 			new OnSpawned.Context( this::startAssembling )
-				.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+				.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() )
 				.insertTo( this );
 
@@ -262,13 +262,11 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void giveRandomArmor( OnSpawned.Data data ) {
-			Time.nextTick( ()->{
-				CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
-				if( cursedArmor.getArmorCoverPercentage() > 0.0f )
-					return;
+			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
+			if( cursedArmor.getArmorCoverPercentage() > 0.0f )
+				return;
 
-				this.equipSet( Random.nextRandom( DATA_MAP ).getValue(), cursedArmor, cursedArmor.position() );
-			} );
+			this.equipSet( Random.nextRandom( DATA_MAP ).getValue(), cursedArmor, cursedArmor.position() );
 		}
 
 		private void equipSet( Data data, CursedArmorEntity cursedArmor, Vec3 position ) {

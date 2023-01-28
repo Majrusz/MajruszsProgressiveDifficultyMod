@@ -23,15 +23,14 @@ public class SkeletonsInGroup extends GameModifier {
 	public SkeletonsInGroup() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.Context( this::spawnGroup )
+		new OnSpawned.ContextSafe( this::spawnGroup )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
-			.addCondition( new CustomConditions.IsNotSidekick<>() )
+			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )
-			.addCondition( new CustomConditions.IsNotTooManyMobsNearby<>() )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-			.addCondition( data->data.level != null )
+			.addCondition( new Condition.IsServer<>() )
+			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 			.addCondition( data->data.target instanceof Skeleton )
 			.addConfig( this.mobGroups.name( "Skeletons" ) )
 			.insertTo( this );

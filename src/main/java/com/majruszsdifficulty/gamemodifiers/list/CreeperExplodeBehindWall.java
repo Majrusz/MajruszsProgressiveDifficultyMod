@@ -15,9 +15,10 @@ public class CreeperExplodeBehindWall extends GameModifier {
 	public CreeperExplodeBehindWall() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.Context( this::addNewGoal )
+		new OnSpawned.ContextSafe( this::addNewGoal )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
+			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.target instanceof Creeper )
 			.insertTo( this );
