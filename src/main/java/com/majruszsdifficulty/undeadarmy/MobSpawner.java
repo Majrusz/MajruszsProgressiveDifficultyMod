@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
 import net.minecraft.core.BlockPos;
@@ -29,8 +28,7 @@ public class MobSpawner implements IComponent {
 				return;
 
 			mobInfo.uuid = entity.getUUID();
-			this.undeadArmy.phase.healthTotal += mobInfo.getMaxHealth( this.undeadArmy.level );
-			MajruszLibrary.log( "%s %s %s (%s left) ", mobInfo.type, mobInfo.isBoss, entity.position(), this.undeadArmy.mobsLeft.size() );
+			this.updateWaveHealth( mobInfo );
 		}
 	}
 
@@ -64,6 +62,10 @@ public class MobSpawner implements IComponent {
 
 	private void addToPendingMobs( Config.MobDef def, boolean isBoss ) {
 		this.undeadArmy.mobsLeft.add( new MobInfo( def, this.getRandomSpawnPosition(), isBoss ) );
+	}
+
+	private void updateWaveHealth( MobInfo mobInfo ) {
+		this.undeadArmy.phase.healthTotal += mobInfo.getMaxHealth( this.undeadArmy.level );
 	}
 
 	private BlockPos getRandomSpawnPosition() {

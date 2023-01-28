@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class UndeadArmy extends SerializableStructure {
 	Direction direction;
 	Phase phase = new Phase();
 	int currentWave = 0;
+	Entity boss = null;
 
 	public UndeadArmy( ServerLevel level, Config config ) {
 		this.level = level;
@@ -33,6 +35,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::new );
 		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
 		this.addComponent( ParticipantsUpdater::new );
+		this.addComponent( BossUpdater::new );
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( WaveController::new );
 		this.addComponent( MessageSender::new );
