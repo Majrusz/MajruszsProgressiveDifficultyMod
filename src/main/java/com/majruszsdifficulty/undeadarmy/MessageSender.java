@@ -6,13 +6,7 @@ import net.minecraft.network.chat.MutableComponent;
 
 import java.util.Optional;
 
-class MessageSender implements IComponent {
-	final UndeadArmy undeadArmy;
-
-	public MessageSender( UndeadArmy undeadArmy ) {
-		this.undeadArmy = undeadArmy;
-	}
-
+record MessageSender( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
 	public void onPhaseChanged() {
 		if( this.undeadArmy.phase.state != Phase.State.FINISHED ) {
