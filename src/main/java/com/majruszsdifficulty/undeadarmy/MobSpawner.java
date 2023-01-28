@@ -2,23 +2,17 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
+import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.Nullable;
 
-public class MobSpawner implements IComponent {
-	final UndeadArmy undeadArmy;
-	int counter = 0;
-
-	public MobSpawner( UndeadArmy undeadArmy ) {
-		this.undeadArmy = undeadArmy;
-	}
-
+record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
 	public void tick() {
-		if( ++this.counter % 10 != 0 || this.undeadArmy.phase.state != Phase.State.WAVE_ONGOING )
+		if( !TimeHelper.hasServerTicksPassed( 10 ) || this.undeadArmy.phase.state != Phase.State.WAVE_ONGOING )
 			return;
 
 		MobInfo mobInfo = this.getNextMobToSpawn();

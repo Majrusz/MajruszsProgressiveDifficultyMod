@@ -2,13 +2,7 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Utility;
 
-class WaveController implements IComponent {
-	final UndeadArmy undeadArmy;
-
-	public WaveController( UndeadArmy undeadArmy ) {
-		this.undeadArmy = undeadArmy;
-	}
-
+record WaveController( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
 	public void tick() {
 		switch( this.undeadArmy.phase.state ) {
