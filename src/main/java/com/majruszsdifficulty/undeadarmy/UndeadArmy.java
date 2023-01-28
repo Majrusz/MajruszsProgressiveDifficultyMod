@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
 import com.mlib.math.VectorHelper;
 import net.minecraft.core.BlockPos;
@@ -15,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
 public class UndeadArmy extends SerializableStructure {
@@ -25,10 +25,7 @@ public class UndeadArmy extends SerializableStructure {
 	final List< MobInfo > mobsLeft = new ArrayList<>();
 	BlockPos positionToAttack;
 	Direction direction;
-	Phase phase = Phase.CREATED;
-	int phaseTicksLeft = Utility.secondsToTicks( 2.0 );
-	int phaseTicksTotal = Utility.secondsToTicks( 2.0 );
-	int phaseHealthTotal = 0;
+	Phase phase = new Phase();
 	int currentWave = 0;
 
 	public UndeadArmy( ServerLevel level, Config config ) {
@@ -38,10 +35,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.define( "mobs_left", ()->this.mobsLeft, this.mobsLeft::addAll, MobInfo::new );
 		this.define( "position", ()->this.positionToAttack, x->this.positionToAttack = x );
 		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
-		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::values );
-		this.define( "phase_ticks_left", ()->this.phaseTicksLeft, x->this.phaseTicksLeft = x );
-		this.define( "phase_ticks_total", ()->this.phaseTicksTotal, x->this.phaseTicksTotal = x );
-		this.define( "phase_health_total", ()->this.phaseHealthTotal, x->this.phaseHealthTotal = x );
+		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::new );
 		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( WaveController::new );
@@ -62,7 +56,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	public void finish() {
-		this.setPhase( Phase.FINISHED );
+		this.setState( Phase.State.FINISHED );
 	}
 
 	void tick() {
@@ -71,16 +65,16 @@ public class UndeadArmy extends SerializableStructure {
 		this.components.forEach( IComponent::tick );
 	}
 
-	void setPhase( Phase phase, int ticksLeft ) {
-		this.phase = phase;
-		this.phaseTicksLeft = ticksLeft;
-		this.phaseTicksTotal = Math.max( ticksLeft, 1 );
+	void setState( Phase.State state, int ticksLeft ) {
+		this.phase.state = state;
+		this.phase.ticksLeft = ticksLeft;
+		this.phase.ticksTotal = Math.max( ticksLeft, 1 );
 
 		this.components.forEach( IComponent::onPhaseChanged );
 	}
 
-	void setPhase( Phase phase ) {
-		this.setPhase( phase, 0 );
+	void setState( Phase.State state ) {
+		this.setState( state, 0 );
 	}
 
 	double distanceTo( BlockPos position ) {
@@ -88,7 +82,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	boolean hasFinished() {
-		return this.phase == Phase.FINISHED;
+		return this.phase.state == Phase.State.FINISHED;
 	}
 
 	boolean isInRange( BlockPos position ) {
@@ -104,7 +98,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	float getPhaseRatio() {
-		return Mth.clamp( 1.0f - ( float )this.phaseTicksLeft / this.phaseTicksTotal, 0.0f, 1.0f );
+		return Mth.clamp( 1.0f - ( float )this.phase.ticksLeft / this.phase.ticksTotal, 0.0f, 1.0f );
 	}
 
 	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
@@ -121,14 +115,14 @@ public class UndeadArmy extends SerializableStructure {
 		ResourceLocation equipment;
 		BlockPos position;
 		boolean isBoss = false;
-		Integer id = null;
+		UUID uuid = null;
 
 		public MobInfo() {
 			this.define( "type", ()->this.type, x->this.type = x );
 			this.define( "equipment", ()->this.equipment, x->this.equipment = x );
 			this.define( "position", ()->this.position, x->this.position = x );
 			this.define( "is_boss", ()->this.isBoss, x->this.isBoss = x );
-			this.define( "id", ()->this.id, x->this.id = x );
+			this.define( "uuid", ()->this.uuid, x->this.uuid = x );
 		}
 
 		public MobInfo( Config.MobDef def, BlockPos position, boolean isBoss ) {
@@ -142,7 +136,7 @@ public class UndeadArmy extends SerializableStructure {
 
 		@Nullable
 		public Entity toEntity( ServerLevel level ) {
-			return this.id != null ? level.getEntity( this.id ) : null;
+			return this.uuid != null ? level.getEntity( this.uuid ) : null;
 		}
 
 		public float getHealth( ServerLevel level ) {

@@ -29,18 +29,18 @@ class ProgressIndicator implements IComponent {
 	@Override
 	public void onPhaseChanged() {
 		this.waveInfo.setName( this.getPhaseComponent() );
-		if( this.undeadArmy.phase == Phase.FINISHED ) {
+		if( this.undeadArmy.phase.state == Phase.State.FINISHED ) {
 			this.removeParticipants();
 		}
 	}
 
 	private void updateVisibility() {
-		this.waveInfo.setVisible( this.undeadArmy.phase != Phase.CREATED );
+		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.CREATED );
 		this.bossInfo.setVisible( false );
 	}
 
 	private void updateParticipants() {
-		if( this.undeadArmy.phase == Phase.FINISHED )
+		if( this.undeadArmy.phase.state == Phase.State.FINISHED )
 			return;
 
 		Collection< ServerPlayer > currentParticipants = this.waveInfo.getPlayers();
@@ -59,7 +59,7 @@ class ProgressIndicator implements IComponent {
 	}
 
 	private void updateProgress() {
-		switch( this.undeadArmy.phase ) {
+		switch( this.undeadArmy.phase.state ) {
 			case WAVE_PREPARING -> {
 				this.waveInfo.setProgress( this.undeadArmy.getPhaseRatio() );
 				this.bossInfo.setProgress( 0.0f );
@@ -76,7 +76,7 @@ class ProgressIndicator implements IComponent {
 	}
 
 	private Component getPhaseComponent() {
-		return switch( this.undeadArmy.phase ) {
+		return switch( this.undeadArmy.phase.state ) {
 			case WAVE_PREPARING -> Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", this.undeadArmy.currentWave > 0 ? "between_waves" : "title" ) );
 			case WAVE_ONGOING -> Component.translatable( "majruszsdifficulty.undead_army.title" )
 				.append( " " )
@@ -93,7 +93,7 @@ class ProgressIndicator implements IComponent {
 			return 1.0f;
 
 		float healthLeft = 0.0f;
-		float healthTotal = Math.max( this.undeadArmy.phaseHealthTotal, 1.0f );
+		float healthTotal = Math.max( this.undeadArmy.phase.healthTotal, 1.0f );
 		for( UndeadArmy.MobInfo mobInfo : this.undeadArmy.mobsLeft ) {
 			healthLeft += mobInfo.getHealth( this.undeadArmy.level );
 		}
