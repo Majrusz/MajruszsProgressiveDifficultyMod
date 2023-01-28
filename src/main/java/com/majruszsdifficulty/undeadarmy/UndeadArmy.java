@@ -3,6 +3,7 @@ package com.majruszsdifficulty.undeadarmy;
 import com.mlib.data.SerializableStructure;
 import com.mlib.math.VectorHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -36,6 +37,13 @@ public class UndeadArmy extends SerializableStructure {
 		this.addComponent( WaveController::new );
 		this.addComponent( MessageSender::new );
 		this.addComponent( MobSpawner::new );
+	}
+
+	@Override
+	public void read( CompoundTag tag ) {
+		super.read( tag );
+
+		this.components.forEach( IComponent::onGameReload );
 	}
 
 	public void highlightArmy() {
