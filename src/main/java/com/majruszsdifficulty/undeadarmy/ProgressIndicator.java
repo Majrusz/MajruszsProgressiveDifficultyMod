@@ -94,7 +94,7 @@ class ProgressIndicator implements IComponent {
 
 		float healthLeft = 0.0f;
 		float healthTotal = Math.max( this.undeadArmy.phase.healthTotal, 1.0f );
-		for( UndeadArmy.MobInfo mobInfo : this.undeadArmy.mobsLeft ) {
+		for( MobInfo mobInfo : this.undeadArmy.mobsLeft ) {
 			healthLeft += mobInfo.getHealth( this.undeadArmy.level );
 		}
 
