@@ -88,6 +88,10 @@ class ProgressIndicator implements IComponent {
 	}
 
 	private float getHealthRatioLeft() {
+		boolean hasNotAnyMobSpawned = this.undeadArmy.mobsLeft.stream().allMatch( mob->mob.toEntity( this.undeadArmy.level ) == null );
+		if( hasNotAnyMobSpawned )
+			return 1.0f;
+
 		float healthLeft = 0.0f;
 		float healthTotal = Math.max( this.undeadArmy.phaseHealthTotal, 1.0f );
 		for( UndeadArmy.MobInfo mobInfo : this.undeadArmy.mobsLeft ) {
