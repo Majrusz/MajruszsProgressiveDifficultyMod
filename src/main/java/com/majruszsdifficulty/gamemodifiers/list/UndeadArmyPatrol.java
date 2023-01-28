@@ -5,7 +5,6 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.majruszsdifficulty.goals.ForgiveUndeadArmyTargetGoal;
-import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -46,15 +44,14 @@ public class UndeadArmyPatrol extends GameModifier {
 			mob.targetSelector.addGoal( 1, new ForgiveUndeadArmyTargetGoal( mob ) );
 		} );
 
-		new OnSpawned.Context( this::spawnGroup )
+		new OnSpawned.ContextSafe( this::spawnGroup )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.0625, true ) )
-			.addCondition( new CustomConditions.IsNotSidekick<>() )
+			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )
-			.addCondition( new CustomConditions.IsNotTooManyMobsNearby<>() )
+			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-			.addCondition( data->data.level != null )
+			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 			.addCondition( data->ENTITIES.stream().anyMatch( type->type.equals( data.target.getType() ) ) )
 			.addConfigs( this.mobGroups.name( "Undead" ) )
 			.insertTo( this );

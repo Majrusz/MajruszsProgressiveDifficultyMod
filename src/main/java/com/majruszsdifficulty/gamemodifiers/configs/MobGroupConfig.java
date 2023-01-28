@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 
 public class MobGroupConfig extends ConfigGroup {
 	public static final String SIDEKICK_TAG = "MajruszsDifficultySidekick";
+	public static final String LEADER_TAG = "MajruszsDifficultyLeader";
 	static final Range< Integer > RANGE = new Range<>( 1, 9 );
 	final List< Consumer< PathfinderMob > > onSpawnConsumers = new ArrayList<>();
 	final Supplier< EntityType< ? extends PathfinderMob > > mob;
@@ -64,6 +65,7 @@ public class MobGroupConfig extends ConfigGroup {
 			sidekicks.add( sidekick );
 			this.onSpawnConsumers.forEach( consumer->consumer.accept( sidekick ) );
 		}
+		this.markAsLeader( leader );
 		this.applyArmorSet( this.leaderSet, leader );
 		this.onSpawnConsumers.forEach( consumer->consumer.accept( leader ) );
 
@@ -89,6 +91,10 @@ public class MobGroupConfig extends ConfigGroup {
 
 	private void markAsSidekick( PathfinderMob sidekick ) {
 		sidekick.getPersistentData().putBoolean( SIDEKICK_TAG, true );
+	}
+
+	private void markAsLeader( PathfinderMob leader ) {
+		leader.getPersistentData().putBoolean( LEADER_TAG, true );
 	}
 
 	private void applyArmorSet( ResourceLocation location, PathfinderMob mob ) {
