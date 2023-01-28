@@ -1,12 +1,14 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.text.TextHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
 
@@ -40,8 +42,13 @@ class ProgressIndicator implements IComponent {
 	}
 
 	private void updateVisibility() {
+		boolean isBossAlive = this.undeadArmy.boss != null;
+
 		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.CREATED );
-		this.bossInfo.setVisible( false );
+		if( !this.bossInfo.isVisible() && isBossAlive ) {
+			this.bossInfo.setName( this.getBossName() );
+		}
+		this.bossInfo.setVisible( isBossAlive );
 	}
 
 	private void updateParticipants() {
@@ -69,7 +76,10 @@ class ProgressIndicator implements IComponent {
 				this.waveInfo.setProgress( this.undeadArmy.getPhaseRatio() );
 				this.bossInfo.setProgress( 0.0f );
 			}
-			case WAVE_ONGOING -> this.waveInfo.setProgress( this.getHealthRatioLeft() );
+			case WAVE_ONGOING -> {
+				this.waveInfo.setProgress( this.getHealthRatioLeft() );
+				this.bossInfo.setProgress( this.getBossHealthRatioLeft() );
+			}
 			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 0.0f );
 			case UNDEAD_WON -> this.waveInfo.setProgress( 1.0f );
 		}
@@ -104,5 +114,13 @@ class ProgressIndicator implements IComponent {
 		}
 
 		return Mth.clamp( healthLeft / healthTotal, 0.0f, 1.0f );
+	}
+
+	private float getBossHealthRatioLeft() {
+		return this.undeadArmy.boss instanceof LivingEntity boss ? Mth.clamp( boss.getHealth() / boss.getMaxHealth(), 0.0f, 1.0f ) : 0.0f;
+	}
+
+	private Component getBossName() {
+		return this.undeadArmy.boss.getDisplayName().copy().withStyle( ChatFormatting.RED );
 	}
 }

@@ -8,14 +8,12 @@ class Phase extends SerializableStructure {
 	int ticksLeft = Utility.secondsToTicks( 2.0 );
 	int ticksTotal = Utility.secondsToTicks( 2.0 );
 	int healthTotal = 0;
-	int bossHealthTotal = 0;
 
 	public Phase() {
 		this.define( "state", ()->this.state, x->this.state = x, State::values );
 		this.define( "ticks_left", ()->this.ticksLeft, x->this.ticksLeft = x );
 		this.define( "ticks_total", ()->this.ticksTotal, x->this.ticksTotal = x );
 		this.define( "health_total", ()->this.healthTotal, x->this.healthTotal = x );
-		this.define( "boss_health_total", ()->this.bossHealthTotal, x->this.bossHealthTotal = x );
 	}
 
 	enum State {
