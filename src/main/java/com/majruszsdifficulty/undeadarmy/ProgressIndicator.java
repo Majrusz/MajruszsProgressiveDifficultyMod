@@ -11,7 +11,7 @@ import net.minecraft.world.BossEvent;
 import java.util.Collection;
 
 class ProgressIndicator implements IComponent {
-	final ServerBossEvent waveInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
+	final ServerBossEvent waveInfo = ( ServerBossEvent )new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 ).setCreateWorldFog( true );
 	final ServerBossEvent bossInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6 );
 	final UndeadArmy undeadArmy;
 
