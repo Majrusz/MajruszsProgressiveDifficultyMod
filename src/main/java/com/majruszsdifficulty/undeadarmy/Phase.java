@@ -2,6 +2,7 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
+import net.minecraft.util.Mth;
 
 class Phase extends SerializableStructure {
 	State state = State.CREATED;
@@ -14,6 +15,10 @@ class Phase extends SerializableStructure {
 		this.define( "ticks_left", ()->this.ticksLeft, x->this.ticksLeft = x );
 		this.define( "ticks_total", ()->this.ticksTotal, x->this.ticksTotal = x );
 		this.define( "health_total", ()->this.healthTotal, x->this.healthTotal = x );
+	}
+
+	float getRatioLeft() {
+		return Mth.clamp( 1.0f - ( float )this.ticksLeft / this.ticksTotal, 0.0f, 1.0f );
 	}
 
 	enum State {

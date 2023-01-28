@@ -99,11 +99,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	boolean isPhaseOver() {
-		return this.getPhaseRatio() == 1.0f;
-	}
-
-	float getPhaseRatio() {
-		return Mth.clamp( 1.0f - ( float )this.phase.ticksLeft / this.phase.ticksTotal, 0.0f, 1.0f );
+		return this.phase.getRatioLeft() == 1.0f;
 	}
 
 	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
