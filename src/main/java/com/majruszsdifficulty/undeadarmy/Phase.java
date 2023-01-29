@@ -20,6 +20,10 @@ class Phase extends SerializableStructure {
 		return Mth.clamp( 1.0f - ( float )this.ticksLeft / this.ticksTotal, 0.0f, 1.0f );
 	}
 
+	float getTicksActive() {
+		return this.ticksTotal - this.ticksLeft;
+	}
+
 	enum State {
 		CREATED, STARTED, WAVE_PREPARING, WAVE_ONGOING, UNDEAD_DEFEATED, UNDEAD_WON, FINISHED
 	}
