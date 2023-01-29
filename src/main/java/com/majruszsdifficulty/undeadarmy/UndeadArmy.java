@@ -7,6 +7,7 @@ import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -70,6 +71,11 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	void tick() {
+		if( this.level.getDifficulty() == Difficulty.PEACEFUL ) {
+			this.finish();
+			return;
+		}
+
 		this.components.forEach( IComponent::tick );
 	}
 
