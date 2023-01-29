@@ -45,6 +45,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.addComponent( MobSpawner::new );
 		this.addComponent( WaveController::new );
 		this.addComponent( WeatherController::new );
+		this.addComponent( MobHighlighter::new );
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( MessageSender::new );
 		this.addComponent( ParticleSpawner::new );
