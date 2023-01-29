@@ -15,21 +15,16 @@ record WaveController( UndeadArmy undeadArmy ) implements IComponent {
 		this.undeadArmy.phase.ticksLeft = Math.max( this.undeadArmy.phase.ticksLeft - 1, 0 );
 	}
 
-	@Override
-	public void onPhaseChanged() {
-
-	}
-
 	private void tickCreated() {
 		if( this.isPhaseOver() ) {
-			this.undeadArmy.setState( Phase.State.WAVE_PREPARING, Utility.secondsToTicks( 2.0 ) );
+			this.undeadArmy.setState( Phase.State.WAVE_PREPARING, this.undeadArmy.config.getPreparationDuration() );
 		}
 	}
 
 	private void tickWavePreparing() {
 		if( this.isPhaseOver() ) {
 			++this.undeadArmy.currentWave;
-			this.undeadArmy.setState( Phase.State.WAVE_ONGOING, Utility.secondsToTicks( 5.0 ) );
+			this.undeadArmy.setState( Phase.State.WAVE_ONGOING, this.undeadArmy.config.getWaveDuration() );
 		}
 	}
 
@@ -40,7 +35,7 @@ record WaveController( UndeadArmy undeadArmy ) implements IComponent {
 			if( this.undeadArmy.isLastWave() ) {
 				this.undeadArmy.setState( Phase.State.UNDEAD_DEFEATED, Utility.secondsToTicks( 30.0 ) );
 			} else {
-				this.undeadArmy.setState( Phase.State.WAVE_PREPARING, Utility.secondsToTicks( 5.0 ) );
+				this.undeadArmy.setState( Phase.State.WAVE_PREPARING, this.undeadArmy.config.getPreparationDuration() );
 			}
 		} else if( this.isPhaseOver() ) {
 			this.undeadArmy.setState( Phase.State.UNDEAD_WON, Utility.secondsToTicks( 30.0 ) );

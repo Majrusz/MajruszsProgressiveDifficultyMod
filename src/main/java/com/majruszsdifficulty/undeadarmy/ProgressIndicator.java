@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.mlib.MajruszLibrary;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
@@ -76,10 +77,12 @@ class ProgressIndicator implements IComponent {
 	private void updateProgress() {
 		switch( this.undeadArmy.phase.state ) {
 			case WAVE_PREPARING -> {
+				MajruszLibrary.log( "PREPARING %s", this.undeadArmy.phase.getRatio() );
 				this.waveInfo.setProgress( this.undeadArmy.phase.getRatio() );
 				this.bossInfo.setProgress( 0.0f );
 			}
 			case WAVE_ONGOING -> {
+				MajruszLibrary.log( "ONGOING %s", this.getHealthRatioLeft() );
 				this.waveInfo.setProgress( this.getHealthRatioLeft() );
 				this.bossInfo.setProgress( this.getBossHealthRatioLeft() );
 			}
@@ -106,8 +109,7 @@ class ProgressIndicator implements IComponent {
 	}
 
 	private float getHealthRatioLeft() {
-		boolean hasNotAnyMobSpawned = this.undeadArmy.mobsLeft.stream().allMatch( mob->mob.toEntity( this.undeadArmy.level ) == null );
-		if( hasNotAnyMobSpawned )
+		if( this.hasAnyNotYetSpawnedMobs() )
 			return 1.0f;
 
 		float healthLeft = 0.0f;
@@ -117,6 +119,10 @@ class ProgressIndicator implements IComponent {
 		}
 
 		return Mth.clamp( healthLeft / healthTotal, 0.0f, 1.0f );
+	}
+
+	private boolean hasAnyNotYetSpawnedMobs() {
+		return this.undeadArmy.mobsLeft.stream().allMatch( mob->mob.toEntity( this.undeadArmy.level ) == null );
 	}
 
 	private float getBossHealthRatioLeft() {
