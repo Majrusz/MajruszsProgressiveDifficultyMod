@@ -67,9 +67,11 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	}
 
 	private void generateMobList() {
+		float sizeMultiplier = this.undeadArmy.config.getSizeMultiplier( this.undeadArmy.participants.size() );
 		Config.WaveDef waveDef = this.undeadArmy.config.getWave( this.undeadArmy.currentWave + 1 );
 		waveDef.mobDefs.forEach( mobDef->{
-			for( int i = 0; i < mobDef.count; ++i ) {
+			int totalCount = Random.roundRandomly( mobDef.count * sizeMultiplier );
+			for( int i = 0; i < totalCount; ++i ) {
 				this.addToPendingMobs( mobDef, false );
 			}
 		} );
