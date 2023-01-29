@@ -1,9 +1,10 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.mlib.Utility;
 import com.mlib.levels.LevelHelper;
 import net.minecraft.world.entity.PathfinderMob;
 
-record WaterFreezer( UndeadArmy undeadArmy ) implements IComponent {
+record WeatherController( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
 	public void tick() {
 		this.undeadArmy.mobsLeft.forEach( mobInfo->{
@@ -11,5 +12,10 @@ record WaterFreezer( UndeadArmy undeadArmy ) implements IComponent {
 				LevelHelper.freezeWater( mob, 4.0, 30, 60, false );
 			}
 		} );
+	}
+
+	@Override
+	public void onStart() {
+		LevelHelper.startRaining( this.undeadArmy.level, Utility.minutesToTicks( 30.0 ), true );
 	}
 }
