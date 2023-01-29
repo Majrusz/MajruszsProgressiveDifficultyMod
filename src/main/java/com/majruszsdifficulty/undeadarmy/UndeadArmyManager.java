@@ -42,8 +42,7 @@ public class UndeadArmyManager extends SavedData {
 
 	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
 		UndeadArmy undeadArmy = new UndeadArmy( this.level, this.config );
-		undeadArmy.positionToAttack = position;
-		undeadArmy.direction = direction.orElse( Random.nextRandom( Direction.values() ) );
+		undeadArmy.start( position, direction.orElse( Random.nextRandom( Direction.values() ) ) );
 
 		return this.undeadArmies.add( undeadArmy );
 	}

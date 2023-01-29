@@ -45,6 +45,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( MessageSender::new );
 		this.addComponent( ParticleSpawner::new );
+		this.addComponent( SoundPlayer::new );
 	}
 
 	public void highlightArmy() {
@@ -58,6 +59,14 @@ public class UndeadArmy extends SerializableStructure {
 
 	public void finish() {
 		this.setState( Phase.State.FINISHED );
+	}
+
+	void start( BlockPos positionToAttack, Direction direction ) {
+		this.positionToAttack = positionToAttack;
+		this.direction = direction;
+		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.5 ) );
+
+		this.components.forEach( IComponent::onStart );
 	}
 
 	void tick() {
@@ -93,7 +102,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	boolean isPartOfWave( Entity entity ) {
-		return this.mobsLeft.stream().anyMatch( mobInfo -> mobInfo.uuid.equals( entity.getUUID() ) );
+		return this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid.equals( entity.getUUID() ) );
 	}
 
 	@Override
