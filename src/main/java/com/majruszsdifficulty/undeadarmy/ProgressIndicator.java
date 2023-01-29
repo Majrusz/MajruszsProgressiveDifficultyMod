@@ -75,6 +75,7 @@ class ProgressIndicator implements IComponent {
 
 	private void updateProgress() {
 		switch( this.undeadArmy.phase.state ) {
+			case STARTED -> this.waveInfo.setProgress( 0.0f );
 			case WAVE_PREPARING -> {
 				this.waveInfo.setProgress( this.undeadArmy.phase.getRatio() );
 				this.bossInfo.setProgress( 0.0f );
