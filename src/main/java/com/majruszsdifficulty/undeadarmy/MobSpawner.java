@@ -4,15 +4,19 @@ import com.majruszsdifficulty.goals.UndeadArmyAttackPositionGoal;
 import com.majruszsdifficulty.goals.UndeadArmyForgiveTeammateGoal;
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
+import com.mlib.loot.LootHelper;
 import com.mlib.math.VectorHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
 
 record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
@@ -61,6 +65,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 
 		mobInfo.uuid = mob.getUUID();
 		this.updateWaveHealth( mobInfo );
+		this.loadEquipment( mob, mobInfo );
 		this.addGoals( mob );
 		this.makePersistent( mob );
 	}
@@ -111,6 +116,15 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 			new Vec3( direction.x * spawnRadius, 0, direction.z * spawnRadius ),
 			Random.getRandomVector3d( -x, x, -y, y, -z, z )
 		);
+	}
+
+	private void loadEquipment( PathfinderMob mob, MobInfo mobInfo ) {
+		LootHelper.getLootTable( mobInfo.equipment )
+			.getRandomItems( LootHelper.toGiftContext( mob ) )
+			.forEach( mob::equipItemIfPossible );
+
+		Arrays.stream( EquipmentSlot.values() )
+			.forEach( slot->mob.setDropChance( slot, 0.025f ) );
 	}
 
 	private void addGoals( PathfinderMob mob ) {
