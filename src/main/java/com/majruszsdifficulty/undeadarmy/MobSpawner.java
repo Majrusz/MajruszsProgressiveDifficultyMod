@@ -1,5 +1,7 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.majruszsdifficulty.goals.UndeadArmyAttackPositionGoal;
+import com.majruszsdifficulty.goals.UndeadArmyForgiveTeammateGoal;
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
 import com.mlib.math.VectorHelper;
@@ -7,6 +9,8 @@ import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -18,15 +22,18 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 			return;
 
 		MobInfo mobInfo = this.getNextMobToSpawn();
-		if( mobInfo != null ) {
-			Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
-			Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
-			if( entity == null )
-				return;
+		if( mobInfo == null )
+			return;
 
-			mobInfo.uuid = entity.getUUID();
-			this.updateWaveHealth( mobInfo );
-		}
+		Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
+		Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
+		if( !( entity instanceof PathfinderMob mob ) )
+			return;
+
+		mobInfo.uuid = mob.getUUID();
+		this.updateWaveHealth( mobInfo );
+		this.addGoals( mob );
+		this.makePersistent( mob );
 	}
 
 	@Override
@@ -35,6 +42,15 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 			this.generateMobList();
 			this.undeadArmy.phase.healthTotal = 0;
 		}
+	}
+
+	@Override
+	public void onGameReload() {
+		this.undeadArmy.mobsLeft.forEach( mobInfo->{
+			if( mobInfo.toEntity( this.undeadArmy.level ) instanceof PathfinderMob mob ) {
+				this.addGoals( mob );
+			}
+		} );
 	}
 
 	@Nullable
@@ -85,5 +101,15 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		int z = direction.x != 0 ? 20 : 10 + direction.z * spawnRadius;
 
 		return Random.getRandomVector3i( -x, x, -y, y, -z, z );
+	}
+
+	private void addGoals( PathfinderMob mob ) {
+		mob.goalSelector.addGoal( 4, new UndeadArmyAttackPositionGoal( mob, this.undeadArmy.positionToAttack ) );
+		mob.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
+		mob.targetSelector.addGoal( 1, new UndeadArmyForgiveTeammateGoal( mob ) );
+	}
+
+	private void makePersistent( PathfinderMob mob ) {
+		mob.setPersistenceRequired();
 	}
 }
