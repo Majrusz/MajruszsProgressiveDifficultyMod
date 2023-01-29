@@ -5,7 +5,6 @@ import com.mlib.data.SerializableStructure;
 import com.mlib.math.VectorHelper;
 import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
@@ -94,10 +93,6 @@ public class UndeadArmy extends SerializableStructure {
 
 	boolean isPartOfWave( Entity entity ) {
 		return this.mobsLeft.stream().anyMatch( mobInfo -> mobInfo.uuid.equals( entity.getUUID() ) );
-	}
-
-	boolean isPhaseOver() {
-		return this.phase.getRatioLeft() == 1.0f;
 	}
 
 	@Override

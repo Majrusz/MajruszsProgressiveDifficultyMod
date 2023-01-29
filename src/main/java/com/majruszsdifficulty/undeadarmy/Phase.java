@@ -17,7 +17,7 @@ class Phase extends SerializableStructure {
 		this.define( "health_total", ()->this.healthTotal, x->this.healthTotal = x );
 	}
 
-	float getRatioLeft() {
+	float getRatio() {
 		return Mth.clamp( 1.0f - ( float )this.ticksLeft / this.ticksTotal, 0.0f, 1.0f );
 	}
 
