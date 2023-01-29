@@ -2,6 +2,7 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
+import com.mlib.entities.EntityHelper;
 import com.mlib.math.VectorHelper;
 import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,7 @@ public class UndeadArmy extends SerializableStructure {
 	Phase phase = new Phase();
 	int currentWave = 0;
 	Entity boss = null;
+	boolean areEntitiesLoaded = true;
 
 	public UndeadArmy( ServerLevel level, Config config ) {
 		this.level = level;
@@ -71,6 +73,14 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	void tick() {
+		if( !this.areEntitiesLoaded ) {
+			this.areEntitiesLoaded = this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid == null || EntityHelper.isLoaded( this.level, mobInfo.uuid ) );
+			if( this.areEntitiesLoaded ) {
+				this.components.forEach( IComponent::onGameReload );
+			} else {
+				return;
+			}
+		}
 		if( this.level.getDifficulty() == Difficulty.PEACEFUL ) {
 			this.finish();
 			return;
@@ -113,7 +123,7 @@ public class UndeadArmy extends SerializableStructure {
 
 	@Override
 	protected void onRead() {
-		this.components.forEach( IComponent::onGameReload );
+		this.areEntitiesLoaded = false;
 	}
 
 	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
