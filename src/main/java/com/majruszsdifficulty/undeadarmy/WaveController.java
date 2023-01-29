@@ -6,7 +6,7 @@ record WaveController( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
 	public void tick() {
 		switch( this.undeadArmy.phase.state ) {
-			case CREATED -> this.tickCreated();
+			case STARTED -> this.tickStarted();
 			case WAVE_PREPARING -> this.tickWavePreparing();
 			case WAVE_ONGOING -> this.tickWaveOngoing();
 			case UNDEAD_DEFEATED -> this.tickUndeadDefeated();
@@ -15,7 +15,7 @@ record WaveController( UndeadArmy undeadArmy ) implements IComponent {
 		this.undeadArmy.phase.ticksLeft = Math.max( this.undeadArmy.phase.ticksLeft - 1, 0 );
 	}
 
-	private void tickCreated() {
+	private void tickStarted() {
 		if( this.isPhaseOver() ) {
 			this.undeadArmy.setState( Phase.State.WAVE_PREPARING, this.undeadArmy.config.getPreparationDuration() );
 		}
