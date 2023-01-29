@@ -7,7 +7,6 @@ import com.mlib.entities.EntityHelper;
 import com.mlib.math.VectorHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -92,22 +91,26 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		int tries = 0;
 		int x, y, z;
 		do {
-			Vec3i offset = this.buildOffset( 30 );
-			x = this.undeadArmy.positionToAttack.getX() + offset.getX();
-			z = this.undeadArmy.positionToAttack.getZ() + offset.getZ();
+			Vec3 offset = this.buildOffset();
+			x = this.undeadArmy.positionToAttack.getX() + ( int )offset.x;
+			z = this.undeadArmy.positionToAttack.getZ() + ( int )offset.z;
 			y = this.undeadArmy.level.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z );
 		} while( y != this.undeadArmy.level.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) && ++tries < 5 );
 
 		return new BlockPos( x, y, z );
 	}
 
-	private Vec3i buildOffset( int spawnRadius ) {
+	private Vec3 buildOffset() {
+		int spawnRadius = this.undeadArmy.config.getSpawnRadius();
 		Direction direction = this.undeadArmy.direction;
-		int x = direction.z != 0 ? 20 : 10 + direction.x * spawnRadius;
+		int x = direction.z != 0 ? 24 : 8;
 		int y = 0;
-		int z = direction.x != 0 ? 20 : 10 + direction.z * spawnRadius;
+		int z = direction.x != 0 ? 24 : 8;
 
-		return Random.getRandomVector3i( -x, x, -y, y, -z, z );
+		return VectorHelper.add(
+			new Vec3( direction.x * spawnRadius, 0, direction.z * spawnRadius ),
+			Random.getRandomVector3d( -x, x, -y, y, -z, z )
+		);
 	}
 
 	private void addGoals( PathfinderMob mob ) {

@@ -94,7 +94,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	boolean isInRange( BlockPos position ) {
-		return this.distanceTo( position ) < 100.0f;
+		return this.distanceTo( position ) < this.config.getArmyRadius();
 	}
 
 	boolean isLastWave() {
