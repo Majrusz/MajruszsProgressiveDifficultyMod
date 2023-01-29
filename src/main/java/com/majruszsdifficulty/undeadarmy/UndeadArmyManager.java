@@ -1,7 +1,9 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.mlib.Random;
+import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
+import com.mlib.levels.LevelHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -72,6 +74,9 @@ public class UndeadArmyManager extends SavedData {
 	void tick() {
 		this.undeadArmies.forEach( UndeadArmy::tick );
 		boolean hasAnyArmyFinished = this.undeadArmies.removeIf( UndeadArmy::hasFinished );
+		if( hasAnyArmyFinished && this.undeadArmies.get().isEmpty() ) {
+			LevelHelper.setClearWeather( this.level, Utility.minutesToTicks( 0.5 ) );
+		}
 	}
 
 	static class UndeadArmies extends SerializableStructure {
