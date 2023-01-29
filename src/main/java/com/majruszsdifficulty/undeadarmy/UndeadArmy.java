@@ -102,7 +102,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	boolean isPartOfWave( Entity entity ) {
-		return this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid.equals( entity.getUUID() ) );
+		return this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid != null && mobInfo.uuid.equals( entity.getUUID() ) );
 	}
 
 	@Override
