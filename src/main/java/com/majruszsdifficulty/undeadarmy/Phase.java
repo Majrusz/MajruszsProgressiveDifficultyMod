@@ -1,13 +1,12 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
 import net.minecraft.util.Mth;
 
 class Phase extends SerializableStructure {
 	State state = State.CREATED;
-	int ticksLeft = Utility.secondsToTicks( 2.0 );
-	int ticksTotal = Utility.secondsToTicks( 2.0 );
+	int ticksLeft = 0;
+	int ticksTotal = 1;
 	int healthTotal = 0;
 
 	public Phase() {
@@ -22,6 +21,6 @@ class Phase extends SerializableStructure {
 	}
 
 	enum State {
-		CREATED, WAVE_PREPARING, WAVE_ONGOING, UNDEAD_DEFEATED, UNDEAD_WON, FINISHED
+		CREATED, STARTED, WAVE_PREPARING, WAVE_ONGOING, UNDEAD_DEFEATED, UNDEAD_WON, FINISHED
 	}
 }

@@ -47,7 +47,7 @@ class ProgressIndicator implements IComponent {
 	private void updateVisibility() {
 		boolean isBossAlive = this.undeadArmy.boss != null;
 
-		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.CREATED );
+		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.STARTED );
 		if( !this.bossInfo.isVisible() && isBossAlive ) {
 			this.bossInfo.setName( this.getBossName() );
 		}
