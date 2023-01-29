@@ -6,8 +6,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.BooleanConfig;
+import com.mlib.config.DoubleConfig;
 import com.mlib.data.SerializableStructure;
 import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.math.Range;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -26,6 +29,9 @@ import java.util.Map;
 
 @AutoInstance
 public class Config extends GameModifier {
+	private final BooleanConfig availability = new BooleanConfig( true );
+	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
+	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 4.0, 30.0 ) );
 	private WavesDef wavesDef = null;
 
 	public Config() {
@@ -39,6 +45,22 @@ public class Config extends GameModifier {
 			}
 		};
 		MinecraftForge.EVENT_BUS.addListener( ( AddReloadListenerEvent event )->event.addListener( listener ) );
+
+		this.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
+			.addConfig( this.waveDuration.name( "wave_duration" ).comment( "Duration that players have to defeat a single wave (in seconds)." ) )
+			.addConfig( this.preparationDuration.name( "preparation_duration" ).comment( "Duration before the next wave arrives (in seconds).") );
+	}
+
+	public boolean isDisabled() {
+		return this.availability.isDisabled();
+	}
+
+	public int getWaveDuration() {
+		return this.waveDuration.asTicks();
+	}
+
+	public int getPreparationDuration() {
+		return this.preparationDuration.asTicks();
 	}
 
 	public int getWavesNum() {
