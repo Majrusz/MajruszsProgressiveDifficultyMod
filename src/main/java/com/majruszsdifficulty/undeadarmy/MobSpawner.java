@@ -22,18 +22,9 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 			return;
 
 		MobInfo mobInfo = this.getNextMobToSpawn();
-		if( mobInfo == null )
-			return;
-
-		Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
-		Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
-		if( !( entity instanceof PathfinderMob mob ) )
-			return;
-
-		mobInfo.uuid = mob.getUUID();
-		this.updateWaveHealth( mobInfo );
-		this.addGoals( mob );
-		this.makePersistent( mob );
+		if( mobInfo != null ) {
+			this.spawnMob( mobInfo );
+		}
 	}
 
 	@Override
@@ -59,6 +50,20 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 			.filter( mobDef->mobDef.uuid == null )
 			.findFirst()
 			.orElse( null );
+	}
+
+	private void spawnMob( MobInfo mobInfo ) {
+		Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
+		Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
+		if( !( entity instanceof PathfinderMob mob ) ) {
+			this.undeadArmy.mobsLeft.remove( mobInfo ); // something went wrong, mob could not spawn, and we do not want to block the Undead Army
+			return;
+		}
+
+		mobInfo.uuid = mob.getUUID();
+		this.updateWaveHealth( mobInfo );
+		this.addGoals( mob );
+		this.makePersistent( mob );
 	}
 
 	private void generateMobList() {
