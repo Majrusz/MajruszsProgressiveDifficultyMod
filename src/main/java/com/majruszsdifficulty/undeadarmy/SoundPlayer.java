@@ -22,9 +22,9 @@ record SoundPlayer( UndeadArmy undeadArmy ) implements IComponent {
 	public void onPhaseChanged() {
 		if( this.undeadArmy.phase.state == Phase.State.WAVE_ONGOING ) {
 			Vec3 position = new Vec3(
-				this.undeadArmy.positionToAttack.getX() + this.undeadArmy.direction.x * 50,
+				this.undeadArmy.positionToAttack.getX() + this.undeadArmy.direction.x * this.undeadArmy.config.getSpawnRadius(),
 				0,
-				this.undeadArmy.positionToAttack.getZ() + this.undeadArmy.direction.z * 50
+				this.undeadArmy.positionToAttack.getZ() + this.undeadArmy.direction.z * this.undeadArmy.config.getSpawnRadius()
 			);
 
 			this.undeadArmy.participants.forEach( player->WAVE_STARTED.send( player, new Vec3( position.x, player.getY(), position.z ) ) );
