@@ -11,7 +11,7 @@ public class UndeadArmyAttackPositionGoal extends Goal {
 	final BlockPos attackPosition;
 	final PathNavigation navigation;
 	final float speedModifier = 1.25f;
-	final float maxDistanceFromPosition = 20.0f;
+	final float maxDistanceFromPosition = 16.0f;
 	int ticksToRecalculatePath = 0;
 
 	public UndeadArmyAttackPositionGoal( Mob mob, BlockPos attackPosition ) {
