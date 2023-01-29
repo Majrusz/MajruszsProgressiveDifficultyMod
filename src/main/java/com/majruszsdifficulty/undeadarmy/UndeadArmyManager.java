@@ -5,6 +5,7 @@ import com.mlib.data.SerializableStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.saveddata.SavedData;
 
 import javax.annotation.Nullable;
@@ -63,6 +64,10 @@ public class UndeadArmyManager extends SavedData {
 		}
 
 		return nearestArmy;
+	}
+
+	public boolean isPartOfUndeadArmy( Entity entity ) {
+		return this.undeadArmies.get().stream().anyMatch( undeadArmy->undeadArmy.isPartOfWave( entity ) );
 	}
 
 	void tick() {

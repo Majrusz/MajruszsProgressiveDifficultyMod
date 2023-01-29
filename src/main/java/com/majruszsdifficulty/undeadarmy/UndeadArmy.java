@@ -47,13 +47,6 @@ public class UndeadArmy extends SerializableStructure {
 		this.addComponent( ParticleSpawner::new );
 	}
 
-	@Override
-	public void read( CompoundTag tag ) {
-		super.read( tag );
-
-		this.components.forEach( IComponent::onGameReload );
-	}
-
 	public void highlightArmy() {
 		this.forEachSpawnedUndead( entity->MobEffectHelper.tryToApply( entity, MobEffects.GLOWING, Utility.secondsToTicks( 15.0 ), 0 ) );
 	}
@@ -99,8 +92,17 @@ public class UndeadArmy extends SerializableStructure {
 		return this.currentWave == this.config.getWavesNum();
 	}
 
+	boolean isPartOfWave( Entity entity ) {
+		return this.mobsLeft.stream().anyMatch( mobInfo -> mobInfo.uuid.equals( entity.getUUID() ) );
+	}
+
 	boolean isPhaseOver() {
 		return this.phase.getRatioLeft() == 1.0f;
+	}
+
+	@Override
+	protected void onRead() {
+		this.components.forEach( IComponent::onGameReload );
 	}
 
 	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
