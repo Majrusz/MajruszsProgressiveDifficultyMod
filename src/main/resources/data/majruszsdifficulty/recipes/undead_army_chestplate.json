@@ -12,14 +12,7 @@
     }
   },
   "result": {
-    "item": "minecraft:leather_chestplate",
-    "count": 1,
-    "nbt": {
-      "display": {
-        "color": 10516872,
-        "Name": "{\"translate\":\"majruszsdifficulty.items.undead_chestplate\",\"italic\":false}"
-      },
-      "UndeadArmySet": true
-    }
+    "item": "majruszsdifficulty:undead_army_chestplate",
+    "count": 1
   }
 }
