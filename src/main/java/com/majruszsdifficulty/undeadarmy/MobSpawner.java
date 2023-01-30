@@ -1,15 +1,22 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.majruszsdifficulty.goals.UndeadArmyAttackPositionGoal;
+import com.majruszsdifficulty.goals.UndeadArmyForgiveTeammateGoal;
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
+import com.mlib.loot.LootHelper;
 import com.mlib.math.VectorHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
 
 record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
@@ -19,13 +26,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 
 		MobInfo mobInfo = this.getNextMobToSpawn();
 		if( mobInfo != null ) {
-			Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
-			Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
-			if( entity == null )
-				return;
-
-			mobInfo.uuid = entity.getUUID();
-			this.updateWaveHealth( mobInfo );
+			this.spawnMob( mobInfo );
 		}
 	}
 
@@ -37,6 +38,15 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		}
 	}
 
+	@Override
+	public void onGameReload() {
+		this.undeadArmy.mobsLeft.forEach( mobInfo->{
+			if( mobInfo.toEntity( this.undeadArmy.level ) instanceof PathfinderMob mob ) {
+				this.addGoals( mob );
+			}
+		} );
+	}
+
 	@Nullable
 	private MobInfo getNextMobToSpawn() {
 		return this.undeadArmy.mobsLeft.stream()
@@ -45,10 +55,27 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 			.orElse( null );
 	}
 
+	private void spawnMob( MobInfo mobInfo ) {
+		Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
+		Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
+		if( !( entity instanceof PathfinderMob mob ) ) {
+			this.undeadArmy.mobsLeft.remove( mobInfo ); // something went wrong, mob could not spawn, and we do not want to block the Undead Army
+			return;
+		}
+
+		mobInfo.uuid = mob.getUUID();
+		this.updateWaveHealth( mobInfo );
+		this.loadEquipment( mob, mobInfo );
+		this.addGoals( mob );
+		this.makePersistent( mob );
+	}
+
 	private void generateMobList() {
+		float sizeMultiplier = this.undeadArmy.config.getSizeMultiplier( this.undeadArmy.participants.size() );
 		Config.WaveDef waveDef = this.undeadArmy.config.getWave( this.undeadArmy.currentWave + 1 );
 		waveDef.mobDefs.forEach( mobDef->{
-			for( int i = 0; i < mobDef.count; ++i ) {
+			int totalCount = Random.roundRandomly( mobDef.count * sizeMultiplier );
+			for( int i = 0; i < totalCount; ++i ) {
 				this.addToPendingMobs( mobDef, false );
 			}
 		} );
@@ -69,21 +96,44 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		int tries = 0;
 		int x, y, z;
 		do {
-			Vec3i offset = this.buildOffset( 30 );
-			x = this.undeadArmy.positionToAttack.getX() + offset.getX();
-			z = this.undeadArmy.positionToAttack.getZ() + offset.getZ();
+			Vec3 offset = this.buildOffset();
+			x = this.undeadArmy.positionToAttack.getX() + ( int )offset.x;
+			z = this.undeadArmy.positionToAttack.getZ() + ( int )offset.z;
 			y = this.undeadArmy.level.getHeight( Heightmap.Types.MOTION_BLOCKING, x, z );
 		} while( y != this.undeadArmy.level.getHeight( Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z ) && ++tries < 5 );
 
 		return new BlockPos( x, y, z );
 	}
 
-	private Vec3i buildOffset( int spawnRadius ) {
+	private Vec3 buildOffset() {
+		int spawnRadius = this.undeadArmy.config.getSpawnRadius();
 		Direction direction = this.undeadArmy.direction;
-		int x = direction.z != 0 ? 20 : 10 + direction.x * spawnRadius;
+		int x = direction.z != 0 ? 24 : 8;
 		int y = 0;
-		int z = direction.x != 0 ? 20 : 10 + direction.z * spawnRadius;
+		int z = direction.x != 0 ? 24 : 8;
 
-		return Random.getRandomVector3i( -x, x, -y, y, -z, z );
+		return VectorHelper.add(
+			new Vec3( direction.x * spawnRadius, 0, direction.z * spawnRadius ),
+			Random.getRandomVector3d( -x, x, -y, y, -z, z )
+		);
+	}
+
+	private void loadEquipment( PathfinderMob mob, MobInfo mobInfo ) {
+		LootHelper.getLootTable( mobInfo.equipment )
+			.getRandomItems( LootHelper.toGiftContext( mob ) )
+			.forEach( mob::equipItemIfPossible );
+
+		Arrays.stream( EquipmentSlot.values() )
+			.forEach( slot->mob.setDropChance( slot, 0.025f ) );
+	}
+
+	private void addGoals( PathfinderMob mob ) {
+		mob.goalSelector.addGoal( 4, new UndeadArmyAttackPositionGoal( mob, this.undeadArmy.positionToAttack ) );
+		mob.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
+		mob.targetSelector.addGoal( 1, new UndeadArmyForgiveTeammateGoal( mob ) );
+	}
+
+	private void makePersistent( PathfinderMob mob ) {
+		mob.setPersistenceRequired();
 	}
 }

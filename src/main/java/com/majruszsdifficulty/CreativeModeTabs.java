@@ -1,6 +1,5 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.items.UndeadArmorItem;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.items.CreativeModeTabHelper;
 import net.minecraft.network.chat.Component;
@@ -34,10 +33,10 @@ public class CreativeModeTabs {
 
 			new ItemStack( Registries.CLOTH.get() ),
 			new ItemStack( Registries.BATTLE_STANDARD.get() ),
-			UndeadArmorItem.constructItem( UndeadArmorItem.HELMET_ID ),
-			UndeadArmorItem.constructItem( UndeadArmorItem.CHESTPLATE_ID ),
-			UndeadArmorItem.constructItem( UndeadArmorItem.LEGGINGS_ID ),
-			UndeadArmorItem.constructItem( UndeadArmorItem.BOOTS_ID ),
+			new ItemStack( Registries.UNDEAD_ARMY_HELMET.get() ),
+			new ItemStack( Registries.UNDEAD_ARMY_CHESTPLATE.get() ),
+			new ItemStack( Registries.UNDEAD_ARMY_LEGGINGS.get() ),
+			new ItemStack( Registries.UNDEAD_ARMY_BOOTS.get() ),
 
 			new ItemStack( Registries.INFESTED_END_STONE_ITEM.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD_ORE_ITEM.get() ),

@@ -1,16 +1,21 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
+import com.mlib.entities.EntityHelper;
 import com.mlib.math.VectorHelper;
+import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class UndeadArmy extends SerializableStructure {
@@ -24,6 +29,7 @@ public class UndeadArmy extends SerializableStructure {
 	Phase phase = new Phase();
 	int currentWave = 0;
 	Entity boss = null;
+	boolean areEntitiesLoaded = true;
 
 	public UndeadArmy( ServerLevel level, Config config ) {
 		this.level = level;
@@ -36,33 +42,51 @@ public class UndeadArmy extends SerializableStructure {
 		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
 		this.addComponent( ParticipantsUpdater::new );
 		this.addComponent( BossUpdater::new );
-		this.addComponent( ProgressIndicator::new );
-		this.addComponent( WaveController::new );
-		this.addComponent( MessageSender::new );
 		this.addComponent( MobSpawner::new );
+		this.addComponent( WaveController::new );
+		this.addComponent( WeatherController::new );
+		this.addComponent( MobHighlighter::new );
+		this.addComponent( ProgressIndicator::new );
+		this.addComponent( MessageSender::new );
 		this.addComponent( ParticleSpawner::new );
-	}
-
-	@Override
-	public void read( CompoundTag tag ) {
-		super.read( tag );
-
-		this.components.forEach( IComponent::onGameReload );
+		this.addComponent( SoundPlayer::new );
 	}
 
 	public void highlightArmy() {
-
+		this.forEachSpawnedUndead( entity->MobEffectHelper.tryToApply( entity, MobEffects.GLOWING, Utility.secondsToTicks( 15.0 ), 0 ) );
 	}
 
 	public void killAllUndeadArmyMobs() {
-
+		this.forEachSpawnedUndead( Entity::kill );
+		this.mobsLeft.clear();
 	}
 
 	public void finish() {
 		this.setState( Phase.State.FINISHED );
 	}
 
+	void start( BlockPos positionToAttack, Direction direction ) {
+		this.positionToAttack = positionToAttack;
+		this.direction = direction;
+		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.5 ) );
+
+		this.components.forEach( IComponent::onStart );
+	}
+
 	void tick() {
+		if( !this.areEntitiesLoaded ) {
+			this.areEntitiesLoaded = this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid == null || EntityHelper.isLoaded( this.level, mobInfo.uuid ) );
+			if( this.areEntitiesLoaded ) {
+				this.components.forEach( IComponent::onGameReload );
+			} else {
+				return;
+			}
+		}
+		if( this.level.getDifficulty() == Difficulty.PEACEFUL ) {
+			this.finish();
+			return;
+		}
+
 		this.components.forEach( IComponent::tick );
 	}
 
@@ -87,18 +111,29 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	boolean isInRange( BlockPos position ) {
-		return this.distanceTo( position ) < 100.0f;
+		return this.distanceTo( position ) < this.config.getArmyRadius();
 	}
 
 	boolean isLastWave() {
 		return this.currentWave == this.config.getWavesNum();
 	}
 
-	boolean isPhaseOver() {
-		return this.phase.getRatioLeft() == 1.0f;
+	boolean isPartOfWave( Entity entity ) {
+		return this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid != null && mobInfo.uuid.equals( entity.getUUID() ) );
+	}
+
+	@Override
+	protected void onRead() {
+		this.areEntitiesLoaded = false;
 	}
 
 	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
 		this.components.add( provider.apply( this ) );
+	}
+
+	private void forEachSpawnedUndead( Consumer< LivingEntity > consumer ) {
+		this.mobsLeft.stream()
+			.filter( mobInfo->mobInfo.uuid != null )
+			.forEach( mobInfo->consumer.accept( ( LivingEntity )mobInfo.toEntity( this.level ) ) );
 	}
 }

@@ -4,7 +4,7 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
-import com.majruszsdifficulty.goals.ForgiveUndeadArmyTargetGoal;
+import com.majruszsdifficulty.goals.UndeadArmyForgiveTeammateGoal;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
@@ -41,7 +41,7 @@ public class UndeadArmyPatrol extends GameModifier {
 				mob.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.BOW ) );
 			}
 			mob.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
-			mob.targetSelector.addGoal( 1, new ForgiveUndeadArmyTargetGoal( mob ) );
+			mob.targetSelector.addGoal( 1, new UndeadArmyForgiveTeammateGoal( mob ) );
 		} );
 
 		new OnSpawned.ContextSafe( this::spawnGroup )

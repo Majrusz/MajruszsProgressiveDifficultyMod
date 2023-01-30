@@ -47,7 +47,7 @@ class ProgressIndicator implements IComponent {
 	private void updateVisibility() {
 		boolean isBossAlive = this.undeadArmy.boss != null;
 
-		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.CREATED );
+		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.STARTED );
 		if( !this.bossInfo.isVisible() && isBossAlive ) {
 			this.bossInfo.setName( this.getBossName() );
 		}
@@ -75,8 +75,9 @@ class ProgressIndicator implements IComponent {
 
 	private void updateProgress() {
 		switch( this.undeadArmy.phase.state ) {
+			case STARTED -> this.waveInfo.setProgress( 0.0f );
 			case WAVE_PREPARING -> {
-				this.waveInfo.setProgress( this.undeadArmy.phase.getRatioLeft() );
+				this.waveInfo.setProgress( this.undeadArmy.phase.getRatio() );
 				this.bossInfo.setProgress( 0.0f );
 			}
 			case WAVE_ONGOING -> {
@@ -106,8 +107,7 @@ class ProgressIndicator implements IComponent {
 	}
 
 	private float getHealthRatioLeft() {
-		boolean hasNotAnyMobSpawned = this.undeadArmy.mobsLeft.stream().allMatch( mob->mob.toEntity( this.undeadArmy.level ) == null );
-		if( hasNotAnyMobSpawned )
+		if( this.hasAnyNotYetSpawnedMobs() )
 			return 1.0f;
 
 		float healthLeft = 0.0f;
@@ -117,6 +117,10 @@ class ProgressIndicator implements IComponent {
 		}
 
 		return Mth.clamp( healthLeft / healthTotal, 0.0f, 1.0f );
+	}
+
+	private boolean hasAnyNotYetSpawnedMobs() {
+		return this.undeadArmy.mobsLeft.stream().allMatch( mob->mob.toEntity( this.undeadArmy.level ) == null );
 	}
 
 	private float getBossHealthRatioLeft() {

@@ -12,14 +12,7 @@
     }
   },
   "result": {
-    "item": "minecraft:leather_leggings",
-    "count": 1,
-    "nbt": {
-      "display": {
-        "color": 10516872,
-        "Name": "{\"translate\":\"majruszsdifficulty.items.undead_leggings\",\"italic\":false}"
-      },
-      "UndeadArmySet": true
-    }
+    "item": "majruszsdifficulty:undead_army_leggings",
+    "count": 1
   }
 }
