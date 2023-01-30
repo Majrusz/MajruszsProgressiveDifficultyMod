@@ -11,14 +11,7 @@
     }
   },
   "result": {
-    "item": "minecraft:leather_helmet",
-    "count": 1,
-    "nbt": {
-      "display": {
-        "color": 10516872,
-        "Name": "{\"translate\":\"majruszsdifficulty.items.undead_helmet\",\"italic\":false}"
-      },
-      "UndeadArmySet": true
-    }
+    "item": "majruszsdifficulty:undead_army_helmet",
+    "count": 1
   }
 }

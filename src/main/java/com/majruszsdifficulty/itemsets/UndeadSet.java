@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.itemsets;
 
-import com.majruszsdifficulty.items.UndeadArmorItem;
+import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
@@ -10,7 +10,6 @@ import com.mlib.itemsets.ItemData;
 import com.mlib.itemsets.ItemSet;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -25,10 +24,10 @@ public class UndeadSet extends ItemSet {
 	static final float BONUS_VALUE_1 = 0.05f;
 	static final float BONUS_VALUE_2 = 0.15f;
 	static final float BONUS_VALUE_3 = 0.30f;
-	static final ItemData ITEM_1 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.HELMET_ID ), EquipmentSlot.HEAD );
-	static final ItemData ITEM_2 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.CHESTPLATE_ID ), EquipmentSlot.CHEST );
-	static final ItemData ITEM_3 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.LEGGINGS_ID ), EquipmentSlot.LEGS );
-	static final ItemData ITEM_4 = new ItemData( UndeadArmorItem.IS_SET_ITEM, ()->new TranslatableComponent( UndeadArmorItem.BOOTS_ID ), EquipmentSlot.FEET );
+	static final ItemData ITEM_1 = new ItemData( Registries.UNDEAD_ARMY_HELMET, EquipmentSlot.HEAD );
+	static final ItemData ITEM_2 = new ItemData( Registries.UNDEAD_ARMY_CHESTPLATE, EquipmentSlot.CHEST );
+	static final ItemData ITEM_3 = new ItemData( Registries.UNDEAD_ARMY_LEGGINGS, EquipmentSlot.LEGS );
+	static final ItemData ITEM_4 = new ItemData( Registries.UNDEAD_ARMY_BOOTS, EquipmentSlot.FEET );
 	static final BonusData BONUS_1 = new BonusData( 2, "majruszsdifficulty.sets.undead.bonus_2", TextHelper.percent( BONUS_VALUE_1 ) );
 	static final BonusData BONUS_2 = new BonusData( 3, "majruszsdifficulty.sets.undead.bonus_3", TextHelper.percent( BONUS_VALUE_2 - BONUS_VALUE_1 ), TextHelper.percent( BONUS_VALUE_2 ) );
 	static final BonusData BONUS_3 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_4", TextHelper.percent( BONUS_VALUE_3 - BONUS_VALUE_2 ), TextHelper.percent( BONUS_VALUE_3 ) );

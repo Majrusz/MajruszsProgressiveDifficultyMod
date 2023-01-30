@@ -18,7 +18,6 @@ import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.triggers.UndeadArmyDefeatedTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.annotations.AnnotationHandler;
-import com.mlib.commands.Command;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.items.CreativeModeTabHelper;
 import com.mlib.registries.RegistryHelper;
@@ -59,7 +58,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -99,6 +97,10 @@ public class Registries {
 	public static final RegistryObject< GoldenBandageItem > GOLDEN_BANDAGE = ITEMS.register( "golden_bandage", GoldenBandageItem::new );
 	public static final RegistryObject< ClothItem > CLOTH = ITEMS.register( "cloth", ClothItem::new );
 	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
+	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_HELMET = ITEMS.register( "undead_army_helmet", UndeadArmorItem.Helmet::new );
+	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_CHESTPLATE = ITEMS.register( "undead_army_chestplate", UndeadArmorItem.Chestplate::new );
+	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_LEGGINGS = ITEMS.register( "undead_army_leggings", UndeadArmorItem.Leggings::new);
+	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_BOOTS = ITEMS.register( "undead_army_boots", UndeadArmorItem.Boots::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_HELMET = ITEMS.register( "enderium_helmet", EnderiumArmorItem.Helmet::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_CHESTPLATE = ITEMS.register( "enderium_chestplate", EnderiumArmorItem.Chestplate::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_LEGGINGS = ITEMS.register( "enderium_leggings", EnderiumArmorItem.Leggings::new );
