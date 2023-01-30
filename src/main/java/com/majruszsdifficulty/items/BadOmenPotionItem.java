@@ -39,7 +39,7 @@ public class BadOmenPotionItem extends Item {
 		}
 		if( entity instanceof ServerPlayer serverPlayer ) {
 			CriteriaTriggers.CONSUME_ITEM.trigger( serverPlayer, itemStack );
-			MobEffectHelper.tryToStackAmplifier( serverPlayer, MobEffects.BAD_OMEN, Utility.minutesToTicks( 30.0 ), 0, 5 );
+			MobEffectHelper.tryToStackAmplifier( serverPlayer, MobEffects.BAD_OMEN, Utility.minutesToTicks( 90.0 ), 0, 5 );
 		}
 
 		return itemStack;
