@@ -25,15 +25,14 @@ public class ZombiesInGroup extends GameModifier {
 	public ZombiesInGroup() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.Context( this::spawnGroup )
+		new OnSpawned.ContextSafe( this::spawnGroup )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
-			.addCondition( new CustomConditions.IsNotSidekick<>() )
+			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )
-			.addCondition( new CustomConditions.IsNotTooManyMobsNearby<>() )
+			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
-			.addCondition( data->data.level != null )
+			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 			.addCondition( data->data.target instanceof Zombie && !( data.target instanceof ZombifiedPiglin ) )
 			.addCondition( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f )
 			.addConfig( this.mobGroups.name( "Zombies" ) )

@@ -1,60 +1,72 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.mlib.text.TextHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
-import java.util.List;
 
-public class ProgressIndicator {
-	final ServerBossEvent waveInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 );
+class ProgressIndicator implements IComponent {
+	final ServerBossEvent waveInfo = ( ServerBossEvent )new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 ).setCreateWorldFog( true );
 	final ServerBossEvent bossInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6 );
-	final Data data;
-	Phase previousPhase = null;
+	final UndeadArmy undeadArmy;
 
-	public ProgressIndicator( Data data ) {
-		this.data = data;
+	public ProgressIndicator( UndeadArmy undeadArmy ) {
+		this.undeadArmy = undeadArmy;
+
+		this.waveInfo.setVisible( false );
+		this.bossInfo.setVisible( false );
 	}
 
-	public void tick( List< ServerPlayer > participants ) {
-		if( this.previousPhase != this.data.phase ) {
-			this.onPhaseChanged();
-			this.previousPhase = this.data.phase;
-		}
-
+	@Override
+	public void tick() {
 		this.updateVisibility();
-		this.updateParticipants( participants );
+		this.updateParticipants();
 		this.updateProgress();
 	}
 
-	private void onPhaseChanged() {
+	@Override
+	public void onPhaseChanged() {
 		this.waveInfo.setName( this.getPhaseComponent() );
-		if( this.data.phase == Phase.FINISHED ) {
+		if( this.undeadArmy.phase.state == Phase.State.FINISHED ) {
 			this.removeParticipants();
 		}
 	}
 
-	private void updateVisibility() {
-		this.waveInfo.setVisible( this.data.phase != Phase.CREATED );
-		this.bossInfo.setVisible( this.data.currentWave == 3 );
+	@Override
+	public void onGameReload() {
+		this.waveInfo.setName( this.getPhaseComponent() );
 	}
 
-	private void updateParticipants( List< ServerPlayer > participants ) {
-		if( this.data.phase == Phase.FINISHED )
+	private void updateVisibility() {
+		boolean isBossAlive = this.undeadArmy.boss != null;
+
+		this.waveInfo.setVisible( this.undeadArmy.phase.state != Phase.State.CREATED );
+		if( !this.bossInfo.isVisible() && isBossAlive ) {
+			this.bossInfo.setName( this.getBossName() );
+		}
+		this.bossInfo.setVisible( isBossAlive );
+	}
+
+	private void updateParticipants() {
+		if( this.undeadArmy.phase.state == Phase.State.FINISHED )
 			return;
 
 		Collection< ServerPlayer > currentParticipants = this.waveInfo.getPlayers();
-		participants.forEach( player->{
+		this.undeadArmy.participants.forEach( player->{
 			if( !currentParticipants.contains( player ) ) {
 				this.waveInfo.addPlayer( player );
 				this.bossInfo.addPlayer( player );
 			}
 		} );
 		currentParticipants.forEach( player->{
-			if( !participants.contains( player ) ) {
+			if( !this.undeadArmy.participants.contains( player ) ) {
 				this.waveInfo.removePlayer( player );
 				this.bossInfo.removePlayer( player );
 			}
@@ -62,14 +74,17 @@ public class ProgressIndicator {
 	}
 
 	private void updateProgress() {
-		switch( this.data.phase ) {
+		switch( this.undeadArmy.phase.state ) {
 			case WAVE_PREPARING -> {
-				this.waveInfo.setProgress( 1.0f - this.data.getPhaseRatio() );
+				this.waveInfo.setProgress( this.undeadArmy.phase.getRatioLeft() );
 				this.bossInfo.setProgress( 0.0f );
 			}
-			case WAVE_ONGOING -> this.waveInfo.setProgress( this.data.getPhaseRatio() );
-			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 1.0f );
-			case UNDEAD_WON -> this.waveInfo.setProgress( 0.0f );
+			case WAVE_ONGOING -> {
+				this.waveInfo.setProgress( this.getHealthRatioLeft() );
+				this.bossInfo.setProgress( this.getBossHealthRatioLeft() );
+			}
+			case UNDEAD_DEFEATED -> this.waveInfo.setProgress( 0.0f );
+			case UNDEAD_WON -> this.waveInfo.setProgress( 1.0f );
 		}
 	}
 
@@ -79,14 +94,36 @@ public class ProgressIndicator {
 	}
 
 	private Component getPhaseComponent() {
-		return switch( this.data.phase ) {
-			case WAVE_PREPARING -> Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", this.data.currentWave > 0 ? "between_waves" : "title" ) );
+		return switch( this.undeadArmy.phase.state ) {
+			case WAVE_PREPARING -> Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", this.undeadArmy.currentWave > 0 ? "between_waves" : "title" ) );
 			case WAVE_ONGOING -> Component.translatable( "majruszsdifficulty.undead_army.title" )
 				.append( " " )
-				.append( Component.translatable( "majruszsdifficulty.undead_army.wave", this.data.currentWave ) );
+				.append( Component.translatable( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( this.undeadArmy.currentWave ) ) );
 			case UNDEAD_DEFEATED -> Component.translatable( "majruszsdifficulty.undead_army.victory" );
 			case UNDEAD_WON -> Component.translatable( "majruszsdifficulty.undead_army.failed" );
 			default -> CommonComponents.EMPTY;
 		};
+	}
+
+	private float getHealthRatioLeft() {
+		boolean hasNotAnyMobSpawned = this.undeadArmy.mobsLeft.stream().allMatch( mob->mob.toEntity( this.undeadArmy.level ) == null );
+		if( hasNotAnyMobSpawned )
+			return 1.0f;
+
+		float healthLeft = 0.0f;
+		float healthTotal = Math.max( this.undeadArmy.phase.healthTotal, 1.0f );
+		for( MobInfo mobInfo : this.undeadArmy.mobsLeft ) {
+			healthLeft += mobInfo.getHealth( this.undeadArmy.level );
+		}
+
+		return Mth.clamp( healthLeft / healthTotal, 0.0f, 1.0f );
+	}
+
+	private float getBossHealthRatioLeft() {
+		return this.undeadArmy.boss instanceof LivingEntity boss ? Mth.clamp( boss.getHealth() / boss.getMaxHealth(), 0.0f, 1.0f ) : 0.0f;
+	}
+
+	private Component getBossName() {
+		return this.undeadArmy.boss.getDisplayName().copy().withStyle( ChatFormatting.RED );
 	}
 }

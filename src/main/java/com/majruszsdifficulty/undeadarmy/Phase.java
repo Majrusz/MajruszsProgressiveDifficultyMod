@@ -1,22 +1,27 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import net.minecraft.nbt.CompoundTag;
+import com.mlib.Utility;
+import com.mlib.data.SerializableStructure;
+import net.minecraft.util.Mth;
 
-public enum Phase {
-	CREATED, WAVE_PREPARING, WAVE_ONGOING, UNDEAD_DEFEATED, UNDEAD_WON, FINISHED;
+class Phase extends SerializableStructure {
+	State state = State.CREATED;
+	int ticksLeft = Utility.secondsToTicks( 2.0 );
+	int ticksTotal = Utility.secondsToTicks( 2.0 );
+	int healthTotal = 0;
 
-	public void write( CompoundTag nbt ) {
-		nbt.putString( Phase.class.getName(), this.toString() );
+	public Phase() {
+		this.define( "state", ()->this.state, x->this.state = x, State::values );
+		this.define( "ticks_left", ()->this.ticksLeft, x->this.ticksLeft = x );
+		this.define( "ticks_total", ()->this.ticksTotal, x->this.ticksTotal = x );
+		this.define( "health_total", ()->this.healthTotal, x->this.healthTotal = x );
 	}
 
-	public static Phase read( CompoundTag nbt ) {
-		String name = nbt.getString( Phase.class.getName() );
-		for( Phase phase : Phase.values() ) {
-			if( name.equalsIgnoreCase( phase.name() ) ) {
-				return phase;
-			}
-		}
+	float getRatioLeft() {
+		return Mth.clamp( 1.0f - ( float )this.ticksLeft / this.ticksTotal, 0.0f, 1.0f );
+	}
 
-		return CREATED;
+	enum State {
+		CREATED, WAVE_PREPARING, WAVE_ONGOING, UNDEAD_DEFEATED, UNDEAD_WON, FINISHED
 	}
 }

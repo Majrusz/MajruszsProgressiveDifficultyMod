@@ -17,11 +17,12 @@ public class EvokerWithTotem extends GameModifier {
 	public EvokerWithTotem() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.Context( this::giveTotemOfUndying )
+		new OnSpawned.ContextSafe( this::giveTotemOfUndying )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, true ) )
+			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
-			.addCondition( OnSpawned.IS_NOT_LOADED_FROM_DISK )
+			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
 			.addCondition( data->data.target instanceof Evoker )
 			.insertTo( this );
 

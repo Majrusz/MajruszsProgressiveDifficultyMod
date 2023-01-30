@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers;
 
 //import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+
 import com.mlib.Random;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
@@ -8,15 +9,14 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ContextData;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.parameters.Priority;
-import com.mlib.math.AABBHelper;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 
 import static com.majruszsdifficulty.GameStage.Stage;
+import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.LEADER_TAG;
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
 
 public class CustomConditions {
-	// TODO: MOVE TO THE LIBRARY
+	/** WARNING: This condition cannot be used with OnSpawned.Context! (use OnSpawned.ContextSafe) */
 	public static class CRDChance< DataType extends ContextData > extends Condition.Chance< DataType > {
 		final BooleanConfig scaledByCRD;
 
@@ -69,14 +69,16 @@ public class CustomConditions {
 		}
 	}
 
-	public static class IsNotSidekick< DataType extends ContextData > extends Condition< DataType > {
-		public IsNotSidekick() {
+	public static class IsNotPartOfGroup< DataType extends ContextData > extends Condition< DataType > {
+		public IsNotPartOfGroup() {
 			this.apply( params->params.priority( Priority.HIGH ) );
 		}
 
 		@Override
 		public boolean check( GameModifier gameModifier, DataType data ) {
-			return data.entity instanceof PathfinderMob && !data.entity.getPersistentData().getBoolean( SIDEKICK_TAG );
+			return data.entity instanceof PathfinderMob mob
+				&& !mob.getPersistentData().getBoolean( SIDEKICK_TAG )
+				&& !mob.getPersistentData().getBoolean( LEADER_TAG );
 		}
 	}
 
@@ -88,22 +90,6 @@ public class CustomConditions {
 		@Override
 		public boolean check( GameModifier gameModifier, DataType data ) {
 			return true;//!UndeadArmyManager.belongsToUndeadArmy( data.entity );
-		}
-	}
-
-	public static class IsNotTooManyMobsNearby< DataType extends ContextData > extends Condition< DataType > {
-		public IsNotTooManyMobsNearby() {
-			this.apply( params->params.priority( Priority.LOWEST ) ); // it can significantly affect the performance
-		}
-
-		@Override
-		public boolean check( GameModifier gameModifier, ContextData data ) {
-			if( data.level == null || data.entity == null ) {
-				return false;
-			}
-
-			return data.level.getEntities( data.entity, AABBHelper.createInflatedAABB( data.entity.position(), 10.0 ), entity->entity instanceof LivingEntity )
-				.size() < 15;
 		}
 	}
 }

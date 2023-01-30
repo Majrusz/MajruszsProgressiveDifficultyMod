@@ -24,12 +24,12 @@ public class BleedingConfig extends ProgressiveEffectConfig {
 		this( 24.0 );
 	}
 
-	public void apply( OnDamaged.Data data ) {
+	public boolean apply( OnDamaged.Data data ) {
 		LivingEntity target = data.target;
 		@Nullable LivingEntity attacker = data.attacker;
 		BleedingEffect.MobEffectInstance effectInstance = new BleedingEffect.MobEffectInstance( getDuration(), getAmplifier(), false, attacker );
 		if( !MobEffectHelper.tryToApply( target, effectInstance ) )
-			return;
+			return false;
 
 		if( target instanceof ServerPlayer targetPlayer ) {
 			Registries.BASIC_TRIGGER.trigger( targetPlayer, "bleeding_received" );
@@ -40,5 +40,7 @@ public class BleedingConfig extends ProgressiveEffectConfig {
 		if( attacker instanceof ServerPlayer attackerPlayer ) {
 			Registries.BASIC_TRIGGER.trigger( attackerPlayer, "bleeding_inflicted" );
 		}
+
+		return true;
 	}
 }

@@ -1,23 +1,53 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.mlib.MajruszLibrary;
-import com.mlib.Utility;
+import com.mlib.data.SerializableStructure;
+import com.mlib.math.VectorHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
-public class UndeadArmy {
+public class UndeadArmy extends SerializableStructure {
 	final ServerLevel level;
-	final Data data;
-	final ProgressIndicator progressIndicator;
+	final Config config;
+	final List< IComponent > components = new ArrayList<>();
+	final List< ServerPlayer > participants = new ArrayList<>();
+	final List< MobInfo > mobsLeft = new ArrayList<>();
+	BlockPos positionToAttack;
+	Direction direction;
+	Phase phase = new Phase();
+	int currentWave = 0;
+	Entity boss = null;
 
-	public UndeadArmy( ServerLevel level, Data data ) {
+	public UndeadArmy( ServerLevel level, Config config ) {
 		this.level = level;
-		this.data = data;
-		this.progressIndicator = new ProgressIndicator( data );
+		this.config = config;
+
+		this.define( "mobs_left", ()->this.mobsLeft, this.mobsLeft::addAll, MobInfo::new );
+		this.define( "position", ()->this.positionToAttack, x->this.positionToAttack = x );
+		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
+		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::new );
+		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
+		this.addComponent( ParticipantsUpdater::new );
+		this.addComponent( BossUpdater::new );
+		this.addComponent( ProgressIndicator::new );
+		this.addComponent( WaveController::new );
+		this.addComponent( MessageSender::new );
+		this.addComponent( MobSpawner::new );
+		this.addComponent( ParticleSpawner::new );
+	}
+
+	@Override
+	public void read( CompoundTag tag ) {
+		super.read( tag );
+
+		this.components.forEach( IComponent::onGameReload );
 	}
 
 	public void highlightArmy() {
@@ -28,96 +58,47 @@ public class UndeadArmy {
 
 	}
 
-	public int countMobsLeft() {
-		return 0;
-	}
-
 	public void finish() {
-		this.data.setPhase( Phase.FINISHED );
-	}
-
-	CompoundTag write( CompoundTag nbt ) {
-		return this.data.write( nbt );
+		this.setState( Phase.State.FINISHED );
 	}
 
 	void tick() {
-		MajruszLibrary.log( "Status: %s, Wave: %s, TicksLeft: %s", this.data.phase, this.data.currentWave, this.data.phaseTicksLeft );
-		List< ServerPlayer > participants = this.getParticipants();
-		switch( this.data.phase ) {
-			case CREATED -> this.tickCreated();
-			case WAVE_PREPARING -> this.tickWavePreparing();
-			case WAVE_ONGOING -> this.tickWaveOngoing();
-			case UNDEAD_DEFEATED -> this.tickUndeadDefeated();
-			case UNDEAD_WON -> this.tickUndeadWon();
-		}
-		this.progressIndicator.tick( participants );
-		this.data.phaseTicksLeft = Math.max( this.data.phaseTicksLeft - 1, 0 );
+		this.components.forEach( IComponent::tick );
 	}
 
-	boolean hasFinished() {
-		return this.data.phase == Phase.FINISHED;
+	void setState( Phase.State state, int ticksLeft ) {
+		this.phase.state = state;
+		this.phase.ticksLeft = ticksLeft;
+		this.phase.ticksTotal = Math.max( ticksLeft, 1 );
+
+		this.components.forEach( IComponent::onPhaseChanged );
+	}
+
+	void setState( Phase.State state ) {
+		this.setState( state, 0 );
 	}
 
 	double distanceTo( BlockPos position ) {
-		int x = position.getX() - this.data.positionToAttack.getX();
-		int z = position.getZ() - this.data.positionToAttack.getZ();
+		return VectorHelper.distanceHorizontal( position.getCenter(), this.positionToAttack.getCenter() );
+	}
 
-		return Math.sqrt( x * x + z * z );
+	boolean hasFinished() {
+		return this.phase.state == Phase.State.FINISHED;
 	}
 
 	boolean isInRange( BlockPos position ) {
 		return this.distanceTo( position ) < 100.0f;
 	}
 
-	private void tickCreated() {
-		if( this.isPhaseNotOver() )
-			return;
-
-		this.data.setPhase( Phase.WAVE_PREPARING, Utility.secondsToTicks( 2.0 ) );
+	boolean isLastWave() {
+		return this.currentWave == this.config.getWavesNum();
 	}
 
-	private void tickWavePreparing() {
-		if( this.isPhaseNotOver() )
-			return;
-
-		this.data.setPhase( Phase.WAVE_ONGOING, Utility.secondsToTicks( 2.0 ) );
-		++this.data.currentWave;
+	boolean isPhaseOver() {
+		return this.phase.getRatioLeft() == 1.0f;
 	}
 
-	private void tickWaveOngoing() {
-		if( this.isPhaseNotOver() )
-			return;
-
-		if( this.isLastWave() ) {
-			this.data.setPhase( Phase.UNDEAD_DEFEATED, Utility.secondsToTicks( 2.0 ) );
-		} else {
-			this.data.setPhase( Phase.WAVE_PREPARING, Utility.secondsToTicks( 2.0 ) );
-		}
-	}
-
-	private void tickUndeadDefeated() {
-		if( this.isPhaseNotOver() )
-			return;
-
-		this.finish();
-	}
-
-	private void tickUndeadWon() {
-		if( this.isPhaseNotOver() )
-			return;
-
-		this.finish();
-	}
-
-	private List< ServerPlayer > getParticipants() {
-		return this.level.getPlayers( player->player.isAlive() && this.isInRange( player.blockPosition() ) );
-	}
-
-	private boolean isLastWave() {
-		return this.data.currentWave == 3;
-	}
-
-	private boolean isPhaseNotOver() {
-		return this.data.phaseTicksLeft > 0;
+	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
+		this.components.add( provider.apply( this ) );
 	}
 }
