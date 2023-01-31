@@ -7,7 +7,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_helmet",
-          "weight": 70,
+          "weight": 60,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -23,7 +23,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_helmet",
-          "weight": 30,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -43,7 +43,7 @@
       "conditions": [
         {
           "condition": "minecraft:random_chance",
-          "chance": 0.8
+          "chance": 0.85
         }
       ]
     },
@@ -53,7 +53,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_chestplate",
-          "weight": 70,
+          "weight": 60,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -69,7 +69,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_chestplate",
-          "weight": 30,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -89,7 +89,7 @@
       "conditions": [
         {
           "condition": "minecraft:random_chance",
-          "chance": 0.8
+          "chance": 0.85
         }
       ]
     },
@@ -99,7 +99,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_leggings",
-          "weight": 70,
+          "weight": 60,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -115,7 +115,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_leggings",
-          "weight": 30,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -135,7 +135,7 @@
       "conditions": [
         {
           "condition": "minecraft:random_chance",
-          "chance": 0.8
+          "chance": 0.85
         }
       ]
     },
@@ -145,7 +145,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_boots",
-          "weight": 70,
+          "weight": 60,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -161,7 +161,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:undead_army_boots",
-          "weight": 30,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -181,7 +181,7 @@
       "conditions": [
         {
           "condition": "minecraft:random_chance",
-          "chance": 0.8
+          "chance": 0.85
         }
       ]
     }
