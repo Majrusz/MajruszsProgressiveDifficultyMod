@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_helmet",
+          "name": "majruszsdifficulty:undead_army_helmet",
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -19,6 +19,12 @@
             }
           ]
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.7
+        }
       ]
     },
     {
@@ -26,7 +32,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_chestplate",
+          "name": "majruszsdifficulty:undead_army_chestplate",
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -39,6 +45,12 @@
             }
           ]
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.7
+        }
       ]
     },
     {
@@ -46,7 +58,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_leggings",
+          "name": "majruszsdifficulty:undead_army_leggings",
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -59,6 +71,12 @@
             }
           ]
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.7
+        }
       ]
     },
     {
@@ -66,7 +84,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_boots",
+          "name": "majruszsdifficulty:undead_army_boots",
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -78,6 +96,12 @@
               "add": false
             }
           ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.7
         }
       ]
     }
