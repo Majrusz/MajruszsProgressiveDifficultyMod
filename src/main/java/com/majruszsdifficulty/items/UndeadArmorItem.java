@@ -17,7 +17,7 @@ public class UndeadArmorItem extends ArmorItem {
 	@Nullable
 	@Override
 	public String getArmorTexture( ItemStack stack, Entity entity, EquipmentSlot slot, String type ) {
-		return Registries.getLocationString( String.format( "textures/models/armor/undead_layer_%d.png", slot == EquipmentSlot.LEGS ? 2 : 1 ) );
+		return Registries.getLocationString( String.format( "textures/models/armor/undead_army_layer_%d.png", slot == EquipmentSlot.LEGS ? 2 : 1 ) );
 	}
 
 	public static class Boots extends UndeadArmorItem {
