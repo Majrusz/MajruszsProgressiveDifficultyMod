@@ -8,6 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.saveddata.SavedData;
 
 import javax.annotation.Nullable;
@@ -42,11 +45,16 @@ public class UndeadArmyManager extends SavedData {
 		return nbt;
 	}
 
-	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
-		UndeadArmy undeadArmy = new UndeadArmy( this.level, this.config );
-		undeadArmy.start( position, direction.orElse( Random.nextRandom( Direction.values() ) ) );
+	public boolean tryToSpawn( Player player ) {
+		return LevelHelper.isEntityOutside( player )
+			&& LevelHelper.isEntityIn( player, Level.OVERWORLD )
+			&& this.tryToSpawn( this.getAttackPosition( player ), Optional.empty() );
+	}
 
-		return this.undeadArmies.add( undeadArmy );
+	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
+		return this.config.isEnabled()
+			&& this.findNearestUndeadArmy( position ) == null
+			&& this.undeadArmies.add( this.setupNewArmy( position, direction ) );
 	}
 
 	@Nullable
@@ -77,6 +85,20 @@ public class UndeadArmyManager extends SavedData {
 		if( hasAnyArmyFinished && this.undeadArmies.get().isEmpty() ) {
 			LevelHelper.setClearWeather( this.level, Utility.minutesToTicks( 0.5 ) );
 		}
+	}
+
+	private UndeadArmy setupNewArmy( BlockPos position, Optional< Direction > direction ) {
+		UndeadArmy undeadArmy = new UndeadArmy( this.level, this.config );
+		undeadArmy.start( position, direction.orElse( Random.nextRandom( Direction.values() ) ) );
+
+		return undeadArmy;
+	}
+
+	private BlockPos getAttackPosition( Player player ) {
+		int x = ( int )player.getX();
+		int z = ( int )player.getZ();
+
+		return new BlockPos( x, this.level.getHeight( Heightmap.Types.WORLD_SURFACE, x, z ), z );
 	}
 
 	static class UndeadArmies extends SerializableStructure {
