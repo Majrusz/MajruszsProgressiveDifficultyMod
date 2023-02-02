@@ -119,10 +119,12 @@ public class Config extends GameModifier {
 	static class WaveDef extends SerializableStructure {
 		final List< MobDef > mobDefs = new ArrayList<>();
 		MobDef boss;
+		int experience = 0;
 
 		public WaveDef() {
 			this.define( "mobs", ()->this.mobDefs, this.mobDefs::addAll, MobDef::new );
 			this.define( "boss", ()->this.boss, x->this.boss = x, MobDef::new );
+			this.define( "exp", ()->this.experience, x->this.experience = x );
 		}
 	}
 
