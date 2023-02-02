@@ -37,6 +37,7 @@ record WaveController( UndeadArmy undeadArmy ) implements IComponent {
 			} else {
 				this.undeadArmy.setState( Phase.State.WAVE_PREPARING, this.undeadArmy.config.getPreparationDuration() );
 			}
+			this.undeadArmy.dispatch( IComponent::onWaveFinished );
 		} else if( this.isPhaseOver() ) {
 			this.undeadArmy.setState( Phase.State.UNDEAD_WON, Utility.secondsToTicks( 30.0 ) );
 		}

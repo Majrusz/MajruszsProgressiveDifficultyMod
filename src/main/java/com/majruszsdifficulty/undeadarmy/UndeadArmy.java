@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -46,6 +47,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.addComponent( WaveController::new );
 		this.addComponent( WeatherController::new );
 		this.addComponent( MobHighlighter::new );
+		this.addComponent( RewardsController::new );
 		this.addComponent( ProgressIndicator::new );
 		this.addComponent( MessageSender::new );
 		this.addComponent( ParticleSpawner::new );
@@ -120,6 +122,10 @@ public class UndeadArmy extends SerializableStructure {
 
 	boolean isPartOfWave( Entity entity ) {
 		return this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid != null && mobInfo.uuid.equals( entity.getUUID() ) );
+	}
+
+	void dispatch( Consumer< IComponent > consumer ) {
+		this.components.forEach( consumer );
 	}
 
 	@Override

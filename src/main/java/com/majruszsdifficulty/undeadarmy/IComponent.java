@@ -7,5 +7,7 @@ interface IComponent {
 
 	default void onPhaseChanged() {}
 
+	default void onWaveFinished() {}
+
 	default void onGameReload() {}
 }
