@@ -17,9 +17,9 @@
   },
   "criteria": {
     "army_defeated": {
-      "trigger": "majruszsdifficulty:undead_army_defeated",
+      "trigger": "majruszsdifficulty:basic_trigger",
       "conditions": {
-        "wave": 3
+        "type": "army_defeated"
       }
     }
   },
