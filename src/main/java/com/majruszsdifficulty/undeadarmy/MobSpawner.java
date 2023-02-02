@@ -31,7 +31,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	}
 
 	@Override
-	public void onPhaseChanged() {
+	public void onStateChanged() {
 		if( this.undeadArmy.phase.state == Phase.State.WAVE_PREPARING ) {
 			this.generateMobList();
 			this.undeadArmy.phase.healthTotal = 0;
