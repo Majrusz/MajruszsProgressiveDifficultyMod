@@ -5,7 +5,7 @@ interface IComponent {
 
 	default void onStart() {}
 
-	default void onPhaseChanged() {}
+	default void onStateChanged() {}
 
 	default void onWaveFinished() {}
 

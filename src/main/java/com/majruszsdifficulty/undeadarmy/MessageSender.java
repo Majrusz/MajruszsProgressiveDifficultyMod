@@ -8,7 +8,7 @@ import java.util.Optional;
 
 record MessageSender( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
-	public void onPhaseChanged() {
+	public void onStateChanged() {
 		if( this.undeadArmy.phase.state != Phase.State.FINISHED ) {
 			this.sendChatMessage();
 		}

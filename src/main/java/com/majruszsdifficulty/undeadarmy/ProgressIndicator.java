@@ -32,7 +32,7 @@ class ProgressIndicator implements IComponent {
 	}
 
 	@Override
-	public void onPhaseChanged() {
+	public void onStateChanged() {
 		this.waveInfo.setName( this.getPhaseComponent() );
 		if( this.undeadArmy.phase.state == Phase.State.FINISHED ) {
 			this.removeParticipants();

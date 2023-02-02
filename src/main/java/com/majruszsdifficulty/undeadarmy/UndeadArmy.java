@@ -15,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -97,7 +96,7 @@ public class UndeadArmy extends SerializableStructure {
 		this.phase.ticksLeft = ticksLeft;
 		this.phase.ticksTotal = Math.max( ticksLeft, 1 );
 
-		this.components.forEach( IComponent::onPhaseChanged );
+		this.components.forEach( IComponent::onStateChanged );
 	}
 
 	void setState( Phase.State state ) {
