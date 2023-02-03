@@ -3,11 +3,11 @@
   "group": "string",
   "ingredients": [
     {
-      "item": "majruszsdifficulty:cloth"
+      "item": "majruszsdifficulty:tattered_boots"
     }
   ],
   "result": {
-    "item": "minecraft:string",
+    "item": "majruszsdifficulty:cloth",
     "count": 1
   }
 }
