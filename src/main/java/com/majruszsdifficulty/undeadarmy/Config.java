@@ -5,7 +5,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.majruszsdifficulty.Registries;
-import com.mlib.MajruszLibrary;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.DoubleConfig;
@@ -26,7 +25,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.common.MinecraftForge;
@@ -126,13 +124,13 @@ public class Config extends GameModifier {
 	private void updateKilledUndead( OnDeath.Data data ) {
 		ServerPlayer player = ( ServerPlayer )data.attacker;
 		CompoundTag tag = player.getPersistentData();
-		PlayerInfo info = new PlayerInfo();
+		UndeadArmyInfo info = new UndeadArmyInfo();
 		info.read( tag );
 
-		++info.killedUndead;
-		if( info.killedUndead >= this.getRequiredKills() && Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( player ) ) {
-			info.killedUndead = 0;
-		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {
+		++info.data.killedUndead;
+		if( info.data.killedUndead >= this.getRequiredKills() && Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( player ) ) {
+			info.data.killedUndead = 0;
+		} else if( info.data.killedUndead == this.getRequiredKills() - 3 ) {
 			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
 		}
 
@@ -185,11 +183,19 @@ public class Config extends GameModifier {
 		}
 	}
 
-	static class PlayerInfo extends SerializableStructure {
-		int killedUndead = 0;
+	static class UndeadArmyInfo extends SerializableStructure {
+		Data data = new Data();
 
-		public PlayerInfo() {
-			this.define( "undeadArmyKilledUndead", ()->this.killedUndead, x->this.killedUndead = x );
+		public UndeadArmyInfo() {
+			this.define( "UndeadArmy", ()->this.data, x->this.data = x, Data::new );
+		}
+
+		static class Data extends SerializableStructure {
+			int killedUndead = 0;
+
+			public Data() {
+				this.define( "killed_undead", ()->this.killedUndead, x->this.killedUndead = x );
+			}
 		}
 	}
 }
