@@ -33,10 +33,10 @@ public class CreativeModeTabs {
 
 			new ItemStack( Registries.CLOTH.get() ),
 			new ItemStack( Registries.BATTLE_STANDARD.get() ),
-			new ItemStack( Registries.UNDEAD_ARMY_HELMET.get() ),
-			new ItemStack( Registries.UNDEAD_ARMY_CHESTPLATE.get() ),
-			new ItemStack( Registries.UNDEAD_ARMY_LEGGINGS.get() ),
-			new ItemStack( Registries.UNDEAD_ARMY_BOOTS.get() ),
+			new ItemStack( Registries.TATTERED_HELMET.get() ),
+			new ItemStack( Registries.TATTERED_CHESTPLATE.get() ),
+			new ItemStack( Registries.TATTERED_LEGGINGS.get() ),
+			new ItemStack( Registries.TATTERED_BOOTS.get() ),
 
 			new ItemStack( Registries.INFESTED_END_STONE_ITEM.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD_ORE_ITEM.get() ),
