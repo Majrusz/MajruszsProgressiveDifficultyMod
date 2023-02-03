@@ -24,10 +24,10 @@ public class UndeadSet extends ItemSet {
 	static final float BONUS_VALUE_1 = 0.05f;
 	static final float BONUS_VALUE_2 = 0.15f;
 	static final float BONUS_VALUE_3 = 0.30f;
-	static final ItemData ITEM_1 = new ItemData( Registries.UNDEAD_ARMY_HELMET, EquipmentSlot.HEAD );
-	static final ItemData ITEM_2 = new ItemData( Registries.UNDEAD_ARMY_CHESTPLATE, EquipmentSlot.CHEST );
-	static final ItemData ITEM_3 = new ItemData( Registries.UNDEAD_ARMY_LEGGINGS, EquipmentSlot.LEGS );
-	static final ItemData ITEM_4 = new ItemData( Registries.UNDEAD_ARMY_BOOTS, EquipmentSlot.FEET );
+	static final ItemData ITEM_1 = new ItemData( Registries.TATTERED_HELMET, EquipmentSlot.HEAD );
+	static final ItemData ITEM_2 = new ItemData( Registries.TATTERED_CHESTPLATE, EquipmentSlot.CHEST );
+	static final ItemData ITEM_3 = new ItemData( Registries.TATTERED_LEGGINGS, EquipmentSlot.LEGS );
+	static final ItemData ITEM_4 = new ItemData( Registries.TATTERED_BOOTS, EquipmentSlot.FEET );
 	static final BonusData BONUS_1 = new BonusData( 2, "majruszsdifficulty.sets.undead.bonus_2", TextHelper.percent( BONUS_VALUE_1 ) );
 	static final BonusData BONUS_2 = new BonusData( 3, "majruszsdifficulty.sets.undead.bonus_3", TextHelper.percent( BONUS_VALUE_2 - BONUS_VALUE_1 ), TextHelper.percent( BONUS_VALUE_2 ) );
 	static final BonusData BONUS_3 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_4", TextHelper.percent( BONUS_VALUE_3 - BONUS_VALUE_2 ), TextHelper.percent( BONUS_VALUE_3 ) );

@@ -3,6 +3,7 @@
   "group": "cloth",
   "pattern": [
     "ccc",
+    "c c",
     "c c"
   ],
   "key": {
@@ -11,7 +12,7 @@
     }
   },
   "result": {
-    "item": "majruszsdifficulty:undead_army_helmet",
+    "item": "majruszsdifficulty:tattered_leggings",
     "count": 1
   }
 }
