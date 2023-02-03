@@ -2,14 +2,11 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "majruszsdifficulty:cloth_from_tattered_boots",
-      "majruszsdifficulty:cloth_from_tattered_chestplate",
-      "majruszsdifficulty:cloth_from_tattered_helmet",
-      "majruszsdifficulty:cloth_from_tattered_leggings"
+      "majruszsdifficulty:cloth_from_tattered_armor"
     ]
   },
   "criteria": {
-    "has_cloth": {
+    "has_tattered_armor": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -27,7 +24,7 @@
   },
   "requirements": [
     [
-      "has_cloth"
+      "has_tattered_armor"
     ]
   ]
 }
