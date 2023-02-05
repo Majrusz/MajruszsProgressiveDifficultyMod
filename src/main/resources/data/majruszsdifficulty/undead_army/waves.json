@@ -119,7 +119,8 @@
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
       }
     ],
-    "exp": 32
+    "exp": 32,
+    "game_stage": "EXPERT"
   },
   {
     "mobs": [
@@ -155,6 +156,7 @@
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_5"
       }
     ],
-    "exp": 40
+    "exp": 40,
+    "game_stage": "MASTER"
   }
 ]
