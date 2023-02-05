@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 public class CerberusEntity extends Monster {
 	public static Supplier< EntityType< CerberusEntity > > createSupplier() {
-		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 2.0f, 2.0f ).build( "cerberus" );
+		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.4f, 1.99f ).build( "cerberus" );
 	}
 
 	public static AttributeSupplier getAttributeMap() {
@@ -73,7 +73,7 @@ public class CerberusEntity extends Monster {
 
 	@Override
 	protected float getStandingEyeHeight( Pose poseIn, EntityDimensions sizeIn ) {
-		return 2.35f;
+		return 1.8f;
 	}
 
 	@Override
