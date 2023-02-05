@@ -1,13 +1,13 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.data;
 
 import com.mlib.data.SerializableStructure;
 import net.minecraft.util.Mth;
 
-class Phase extends SerializableStructure {
-	State state = State.CREATED;
-	int ticksLeft = 0;
-	int ticksTotal = 1;
-	int healthTotal = 0;
+public class Phase extends SerializableStructure {
+	public State state = State.CREATED;
+	public int ticksLeft = 0;
+	public int ticksTotal = 1;
+	public int healthTotal = 0;
 
 	public Phase() {
 		this.define( "state", ()->this.state, x->this.state = x, State::values );
@@ -16,15 +16,15 @@ class Phase extends SerializableStructure {
 		this.define( "health_total", ()->this.healthTotal, x->this.healthTotal = x );
 	}
 
-	float getRatio() {
+	public float getRatio() {
 		return Mth.clamp( 1.0f - ( float )this.ticksLeft / this.ticksTotal, 0.0f, 1.0f );
 	}
 
-	float getTicksActive() {
+	public float getTicksActive() {
 		return this.ticksTotal - this.ticksLeft;
 	}
 
-	enum State {
+	public enum State {
 		CREATED, STARTED, WAVE_PREPARING, WAVE_ONGOING, UNDEAD_DEFEATED, UNDEAD_WON, FINISHED
 	}
 }

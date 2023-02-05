@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.majruszsdifficulty.undeadarmy.data.Direction;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;

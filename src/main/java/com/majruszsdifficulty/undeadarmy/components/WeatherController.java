@@ -1,5 +1,6 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
 
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.mlib.Utility;
 import com.mlib.levels.LevelHelper;
 import net.minecraft.world.entity.PathfinderMob;

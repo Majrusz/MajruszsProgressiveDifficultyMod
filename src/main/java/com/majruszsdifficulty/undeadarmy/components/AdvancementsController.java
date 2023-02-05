@@ -1,6 +1,7 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
 
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 
 record AdvancementsController( UndeadArmy undeadArmy ) implements IComponent {
 	@Override

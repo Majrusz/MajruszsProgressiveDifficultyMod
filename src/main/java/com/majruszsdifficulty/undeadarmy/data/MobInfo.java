@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.data;
 
 import com.mlib.data.SerializableStructure;
 import net.minecraft.core.BlockPos;
@@ -11,12 +11,12 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-class MobInfo extends SerializableStructure {
-	EntityType< ? > type;
-	ResourceLocation equipment;
-	BlockPos position;
-	boolean isBoss = false;
-	UUID uuid = null;
+public class MobInfo extends SerializableStructure {
+	public EntityType< ? > type;
+	public ResourceLocation equipment;
+	public BlockPos position;
+	public boolean isBoss = false;
+	public UUID uuid = null;
 
 	public MobInfo() {
 		this.define( "type", ()->this.type, x->this.type = x );
@@ -26,7 +26,7 @@ class MobInfo extends SerializableStructure {
 		this.define( "uuid", ()->this.uuid, x->this.uuid = x );
 	}
 
-	public MobInfo( Config.MobDef def, BlockPos position, boolean isBoss ) {
+	public MobInfo( MobDef def, BlockPos position, boolean isBoss ) {
 		this();
 
 		this.type = def.type;

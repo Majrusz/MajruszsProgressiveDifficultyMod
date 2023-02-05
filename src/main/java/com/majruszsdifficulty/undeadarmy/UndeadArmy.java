@@ -1,5 +1,10 @@
 package com.majruszsdifficulty.undeadarmy;
 
+import com.majruszsdifficulty.undeadarmy.components.Components;
+import com.majruszsdifficulty.undeadarmy.components.IComponent;
+import com.majruszsdifficulty.undeadarmy.data.Direction;
+import com.majruszsdifficulty.undeadarmy.data.MobInfo;
+import com.majruszsdifficulty.undeadarmy.data.Phase;
 import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
 import com.mlib.entities.EntityHelper;
@@ -16,20 +21,19 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class UndeadArmy extends SerializableStructure {
-	final ServerLevel level;
-	final Config config;
-	final List< IComponent > components = new ArrayList<>();
-	final List< ServerPlayer > participants = new ArrayList<>();
-	final List< MobInfo > mobsLeft = new ArrayList<>();
-	BlockPos positionToAttack;
-	Direction direction;
-	Phase phase = new Phase();
-	int currentWave = 0;
-	Entity boss = null;
-	boolean areEntitiesLoaded = true;
+	public final Components components = new Components( this );
+	public final List< ServerPlayer > participants = new ArrayList<>();
+	public final List< MobInfo > mobsLeft = new ArrayList<>();
+	public final ServerLevel level;
+	public final Config config;
+	public BlockPos positionToAttack;
+	public Direction direction;
+	public Phase phase = new Phase();
+	public int currentWave = 0;
+	public Entity boss = null;
+	public boolean areEntitiesLoaded = true;
 
 	public UndeadArmy( ServerLevel level, Config config ) {
 		this.level = level;
@@ -40,18 +44,35 @@ public class UndeadArmy extends SerializableStructure {
 		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
 		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::new );
 		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
-		this.addComponent( ParticipantsUpdater::new );
-		this.addComponent( BossUpdater::new );
-		this.addComponent( MobSpawner::new );
-		this.addComponent( WaveController::new );
-		this.addComponent( WeatherController::new );
-		this.addComponent( MobHighlighter::new );
-		this.addComponent( RewardsController::new );
-		this.addComponent( AdvancementsController::new );
-		this.addComponent( ProgressIndicator::new );
-		this.addComponent( MessageSender::new );
-		this.addComponent( ParticleSpawner::new );
-		this.addComponent( SoundPlayer::new );
+	}
+
+	public void start( BlockPos positionToAttack, Direction direction ) {
+		this.positionToAttack = positionToAttack;
+		this.direction = direction;
+		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.5 ) );
+
+		this.components.dispatch( IComponent::onStart );
+	}
+
+	public void finish() {
+		this.setState( Phase.State.FINISHED, 0 );
+	}
+
+	public void tick() {
+		if( !this.areEntitiesLoaded ) {
+			this.areEntitiesLoaded = this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid == null || EntityHelper.isLoaded( this.level, mobInfo.uuid ) );
+			if( this.areEntitiesLoaded ) {
+				this.components.dispatch( IComponent::onGameReload );
+			} else {
+				return;
+			}
+		}
+		if( this.level.getDifficulty() == Difficulty.PEACEFUL ) {
+			this.finish();
+			return;
+		}
+
+		this.components.dispatch( IComponent::tick );
 	}
 
 	public void highlightArmy() {
@@ -63,78 +84,40 @@ public class UndeadArmy extends SerializableStructure {
 		this.mobsLeft.clear();
 	}
 
-	public void finish() {
-		this.setState( Phase.State.FINISHED );
-	}
-
-	void start( BlockPos positionToAttack, Direction direction ) {
-		this.positionToAttack = positionToAttack;
-		this.direction = direction;
-		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.5 ) );
-
-		this.components.forEach( IComponent::onStart );
-	}
-
-	void tick() {
-		if( !this.areEntitiesLoaded ) {
-			this.areEntitiesLoaded = this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid == null || EntityHelper.isLoaded( this.level, mobInfo.uuid ) );
-			if( this.areEntitiesLoaded ) {
-				this.components.forEach( IComponent::onGameReload );
-			} else {
-				return;
-			}
-		}
-		if( this.level.getDifficulty() == Difficulty.PEACEFUL ) {
-			this.finish();
-			return;
-		}
-
-		this.components.forEach( IComponent::tick );
-	}
-
-	void setState( Phase.State state, int ticksLeft ) {
+	public void setState( Phase.State state, int ticksLeft ) {
 		this.phase.state = state;
 		this.phase.ticksLeft = ticksLeft;
 		this.phase.ticksTotal = Math.max( ticksLeft, 1 );
 
-		this.components.forEach( IComponent::onStateChanged );
+		this.components.dispatch( IComponent::onStateChanged );
+		if( this.phase.state == Phase.State.WAVE_PREPARING && this.currentWave > 0 || this.phase.state == Phase.State.UNDEAD_DEFEATED && this.isLastWave() ) {
+			this.components.dispatch( IComponent::onWaveFinished );
+		}
 	}
 
-	void setState( Phase.State state ) {
-		this.setState( state, 0 );
-	}
-
-	double distanceTo( BlockPos position ) {
+	public double distanceTo( BlockPos position ) {
 		return VectorHelper.distanceHorizontal( position.getCenter(), this.positionToAttack.getCenter() );
 	}
 
-	boolean hasFinished() {
+	public boolean hasFinished() {
 		return this.phase.state == Phase.State.FINISHED;
 	}
 
-	boolean isInRange( BlockPos position ) {
+	public boolean isInRange( BlockPos position ) {
 		return this.distanceTo( position ) < this.config.getArmyRadius();
 	}
 
-	boolean isLastWave() {
+	public boolean isLastWave() {
 		return this.currentWave == this.config.getWavesNum();
 	}
 
-	boolean isPartOfWave( Entity entity ) {
+	public boolean isPartOfWave( Entity entity ) {
 		return this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid != null && mobInfo.uuid.equals( entity.getUUID() ) );
-	}
-
-	void dispatch( Consumer< IComponent > consumer ) {
-		this.components.forEach( consumer );
 	}
 
 	@Override
 	protected void onRead() {
 		this.areEntitiesLoaded = false;
-	}
-
-	private void addComponent( Function< UndeadArmy, IComponent > provider ) {
-		this.components.add( provider.apply( this ) );
 	}
 
 	private void forEachSpawnedUndead( Consumer< LivingEntity > consumer ) {
