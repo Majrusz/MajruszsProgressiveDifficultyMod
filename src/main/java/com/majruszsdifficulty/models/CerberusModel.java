@@ -34,11 +34,11 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition neck1 = necks.addOrReplaceChild( "neck1", CubeListBuilder.create()
 			.texOffs( 0, 45 )
-			.addBox( -2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 6.0F, new CubeDeformation( -0.1F ) ), PartPose.offsetAndRotation( -4.0F, 2.0F, -1.0F, 0.0F, 0.5236F, 0.0F ) );
+			.addBox( -2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 6.0F, new CubeDeformation( -0.1F ) ), PartPose.offsetAndRotation( -4.0F, 2.0F, -1.0F, 0.0F, 0.6109F, 0.0F ) );
 
 		PartDefinition head1 = neck1.addOrReplaceChild( "head1", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, 0.1745F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, -0.1745F, 0.0F ) );
 
 		PartDefinition leftEar1 = head1.addOrReplaceChild( "leftEar1", CubeListBuilder.create()
 			.texOffs( 22, 0 )
@@ -98,11 +98,11 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition neck3 = necks.addOrReplaceChild( "neck3", CubeListBuilder.create()
 			.texOffs( 0, 45 )
-			.addBox( -2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 6.0F, new CubeDeformation( -0.1F ) ), PartPose.offsetAndRotation( 4.0F, 2.0F, -1.0F, 0.0F, -0.5236F, 0.0F ) );
+			.addBox( -2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 6.0F, new CubeDeformation( -0.1F ) ), PartPose.offsetAndRotation( 4.0F, 2.0F, -1.0F, 0.0F, -0.6109F, 0.0F ) );
 
 		PartDefinition head3 = neck3.addOrReplaceChild( "head3", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, -0.1745F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, 0.1745F, 0.0F ) );
 
 		PartDefinition leftEar3 = head3.addOrReplaceChild( "leftEar3", CubeListBuilder.create()
 			.texOffs( 22, 0 )
