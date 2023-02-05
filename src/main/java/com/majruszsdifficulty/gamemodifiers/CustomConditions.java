@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers;
 
-//import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 
 import com.mlib.Random;
 import com.mlib.config.BooleanConfig;
@@ -89,7 +90,7 @@ public class CustomConditions {
 
 		@Override
 		public boolean check( GameModifier gameModifier, DataType data ) {
-			return true;//!UndeadArmyManager.belongsToUndeadArmy( data.entity );
+			return !Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( data.entity );
 		}
 	}
 }
