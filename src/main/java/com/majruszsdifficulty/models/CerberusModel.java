@@ -1,8 +1,6 @@
 package com.majruszsdifficulty.models;
 
 import com.majruszsdifficulty.entities.CerberusEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,10 +12,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CerberusModel< Type extends CerberusEntity > extends HierarchicalModel< Type > {
 	private final ModelPart root;
 	private final ModelPart body;
+	private final ModelPart spine;
+	private final ModelPart necks;
 
 	public CerberusModel( ModelPart root ) {
 		this.root = root;
 		this.body = root.getChild( "body" );
+		this.spine = this.body.getChild( "spine" );
+		this.necks = this.spine.getChild( "necks" );
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -28,7 +30,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition spine = body.addOrReplaceChild( "spine", CubeListBuilder.create()
 			.texOffs( 28, 23 )
-			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 25.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -25.0F, 2.0F, 0.0873F, 0.0F, 0.0F ) );
+			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 25.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -25.0F, 2.0F, 0.0436F, 0.0F, 0.0F ) );
 
 		PartDefinition necks = spine.addOrReplaceChild( "necks", CubeListBuilder.create(), PartPose.offset( 0.0F, -2.0F, -10.0F ) );
 
@@ -38,7 +40,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition head1 = neck1.addOrReplaceChild( "head1", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, -0.1745F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.0F, -0.1745F, 0.0F ) );
 
 		PartDefinition leftEar1 = head1.addOrReplaceChild( "leftEar1", CubeListBuilder.create()
 			.texOffs( 22, 0 )
@@ -70,7 +72,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition head2 = neck2.addOrReplaceChild( "head2", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -3.5F, -7.0F, 0.6981F, 0.0F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -3.5F, -7.0F, 0.5236F, 0.0F, 0.0F ) );
 
 		PartDefinition leftEar2 = head2.addOrReplaceChild( "leftEar2", CubeListBuilder.create()
 			.texOffs( 22, 0 )
@@ -102,7 +104,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition head3 = neck3.addOrReplaceChild( "head3", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, 0.1745F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.0F, 0.1745F, 0.0F ) );
 
 		PartDefinition leftEar3 = head3.addOrReplaceChild( "leftEar3", CubeListBuilder.create()
 			.texOffs( 22, 0 )
@@ -172,19 +174,18 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 	}
 
 	@Override
-	public void renderToBuffer( PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue,
-		float alpha
-	) {
-		body.render( poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha );
-	}
-
-	@Override
 	public ModelPart root() {
 		return this.root;
 	}
 
 	@Override
-	public void setupAnim( Type p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_ ) {
+	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
+		float headPitch
+	) {
+		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
 
+		// head rotation when looking around
+		this.necks.yRot = ( float )Math.toRadians( netHeadYaw );
+		this.necks.xRot = ( float )Math.toRadians( headPitch ) + 0.0873f;
 	}
 }
