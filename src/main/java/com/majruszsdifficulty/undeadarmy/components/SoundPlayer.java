@@ -1,6 +1,8 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
 
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.data.Phase;
 import com.mlib.effects.SoundHandler;
 import com.mlib.math.VectorHelper;
 import net.minecraft.sounds.SoundSource;

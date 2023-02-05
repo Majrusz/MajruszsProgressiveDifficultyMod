@@ -1,6 +1,6 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
 
-interface IComponent {
+public interface IComponent {
 	default void tick() {}
 
 	default void onStart() {}

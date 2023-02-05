@@ -1,5 +1,7 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
 
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.data.MobInfo;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.math.VectorHelper;
 import net.minecraft.world.phys.Vec3;

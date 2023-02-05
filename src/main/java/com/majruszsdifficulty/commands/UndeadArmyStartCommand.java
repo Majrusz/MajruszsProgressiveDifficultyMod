@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.undeadarmy.Direction;
+import com.majruszsdifficulty.undeadarmy.data.Direction;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

@@ -1,4 +1,6 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
+
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 
 record ParticipantsUpdater( UndeadArmy undeadArmy ) implements IComponent {
 	@Override
