@@ -18,7 +18,7 @@ public class CerberusRenderer extends MobRenderer< CerberusEntity, CerberusModel
 	static final ResourceLocation TEXTURE = Registries.getLocation( "textures/entity/cerberus.png" );
 
 	public CerberusRenderer( EntityRendererProvider.Context context ) {
-		super( context, new CerberusModel<>( context.bakeLayer( LAYER ) ), 1.0f );
+		super( context, new CerberusModel<>( context.bakeLayer( LAYER ) ), 0.75f );
 
 		this.addLayer( new CerberusEyesLayer( this ) );
 	}
