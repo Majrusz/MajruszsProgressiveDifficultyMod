@@ -94,10 +94,10 @@ public class Registries {
 	public static final RegistryObject< GoldenBandageItem > GOLDEN_BANDAGE = ITEMS.register( "golden_bandage", GoldenBandageItem::new );
 	public static final RegistryObject< ClothItem > CLOTH = ITEMS.register( "cloth", ClothItem::new );
 	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
-	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_HELMET = ITEMS.register( "undead_army_helmet", UndeadArmorItem.Helmet::new );
-	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_CHESTPLATE = ITEMS.register( "undead_army_chestplate", UndeadArmorItem.Chestplate::new );
-	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_LEGGINGS = ITEMS.register( "undead_army_leggings", UndeadArmorItem.Leggings::new);
-	public static final RegistryObject< UndeadArmorItem > UNDEAD_ARMY_BOOTS = ITEMS.register( "undead_army_boots", UndeadArmorItem.Boots::new );
+	public static final RegistryObject< TatteredArmorItem > TATTERED_HELMET = ITEMS.register( "tattered_helmet", TatteredArmorItem.Helmet::new );
+	public static final RegistryObject< TatteredArmorItem > TATTERED_CHESTPLATE = ITEMS.register( "tattered_chestplate", TatteredArmorItem.Chestplate::new );
+	public static final RegistryObject< TatteredArmorItem > TATTERED_LEGGINGS = ITEMS.register( "tattered_leggings", TatteredArmorItem.Leggings::new);
+	public static final RegistryObject< TatteredArmorItem > TATTERED_BOOTS = ITEMS.register( "tattered_boots", TatteredArmorItem.Boots::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_HELMET = ITEMS.register( "enderium_helmet", EnderiumArmorItem.Helmet::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_CHESTPLATE = ITEMS.register( "enderium_chestplate", EnderiumArmorItem.Chestplate::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_LEGGINGS = ITEMS.register( "enderium_leggings", EnderiumArmorItem.Leggings::new );
