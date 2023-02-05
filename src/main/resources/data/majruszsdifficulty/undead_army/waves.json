@@ -9,7 +9,7 @@
       {
         "type": "minecraft:skeleton",
         "count": 2,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_1"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_1_skeleton"
       },
       {
         "type": "minecraft:zombie",
@@ -19,7 +19,7 @@
       {
         "type": "minecraft:skeleton",
         "count": 2,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_1"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_1_skeleton"
       }
     ],
     "exp": 8
@@ -34,7 +34,7 @@
       {
         "type": "minecraft:skeleton",
         "count": 3,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_2"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_2_skeleton"
       },
       {
         "type": "minecraft:zombie",
@@ -44,7 +44,7 @@
       {
         "type": "minecraft:skeleton",
         "count": 2,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_2"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_2_skeleton"
       }
     ],
     "exp": 16
@@ -59,7 +59,7 @@
       {
         "type": "minecraft:skeleton",
         "count": 3,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_3"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_3_skeleton"
       },
       {
         "type": "minecraft:husk",
@@ -69,7 +69,7 @@
       {
         "type": "minecraft:stray",
         "count": 3,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_3"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_3_skeleton"
       }
     ],
     "boss": {
@@ -86,16 +86,16 @@
       },
       {
         "type": "minecraft:wither_skeleton",
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4_wither_skeleton"
       },
       {
         "type": "minecraft:skeleton",
         "count": 2,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4_skeleton"
       },
       {
         "type": "minecraft:wither_skeleton",
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4_wither_skeleton"
       },
       {
         "type": "majruszsdifficulty:tank"
@@ -107,16 +107,16 @@
       },
       {
         "type": "minecraft:wither_skeleton",
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4_wither_skeleton"
       },
       {
         "type": "minecraft:stray",
         "count": 3,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4_skeleton"
       },
       {
         "type": "minecraft:wither_skeleton",
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4_wither_skeleton"
       }
     ],
     "exp": 32,
@@ -130,17 +130,17 @@
       },
       {
         "type": "minecraft:skeleton",
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_5"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_5_skeleton"
       },
       {
         "type": "minecraft:stray",
         "count": 3,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_4"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_5_skeleton"
       },
       {
         "type": "minecraft:wither_skeleton",
         "count": 2,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_5"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_5_wither_skeleton"
       },
       {
         "type": "majruszsdifficulty:tank"
@@ -153,7 +153,7 @@
       {
         "type": "minecraft:wither_skeleton",
         "count": 2,
-        "equipment": "majruszsdifficulty:undead_army/equipment_wave_5"
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_5_wither_skeleton"
       }
     ],
     "exp": 40,
