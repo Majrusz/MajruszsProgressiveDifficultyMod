@@ -1,7 +1,9 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
 
 import com.majruszsdifficulty.goals.UndeadArmyAttackPositionGoal;
 import com.majruszsdifficulty.goals.UndeadArmyForgiveTeammateGoal;
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.data.*;
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
 import com.mlib.loot.LootHelper;
@@ -72,7 +74,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 
 	private void generateMobList() {
 		float sizeMultiplier = this.undeadArmy.config.getSizeMultiplier( this.undeadArmy.participants.size() );
-		Config.WaveDef waveDef = this.undeadArmy.config.getWave( this.undeadArmy.currentWave + 1 );
+		WaveDef waveDef = this.undeadArmy.config.getWave( this.undeadArmy.currentWave + 1 );
 		waveDef.mobDefs.forEach( mobDef->{
 			int totalCount = Random.roundRandomly( mobDef.count * sizeMultiplier );
 			for( int i = 0; i < totalCount; ++i ) {
@@ -84,7 +86,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		}
 	}
 
-	private void addToPendingMobs( Config.MobDef def, boolean isBoss ) {
+	private void addToPendingMobs( MobDef def, boolean isBoss ) {
 		this.undeadArmy.mobsLeft.add( new MobInfo( def, this.getRandomSpawnPosition(), isBoss ) );
 	}
 

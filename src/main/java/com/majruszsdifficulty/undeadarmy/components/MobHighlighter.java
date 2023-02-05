@@ -1,5 +1,7 @@
-package com.majruszsdifficulty.undeadarmy;
+package com.majruszsdifficulty.undeadarmy.components;
 
+import com.majruszsdifficulty.undeadarmy.UndeadArmy;
+import com.majruszsdifficulty.undeadarmy.data.Phase;
 import com.mlib.time.TimeHelper;
 
 record MobHighlighter( UndeadArmy undeadArmy ) implements IComponent {

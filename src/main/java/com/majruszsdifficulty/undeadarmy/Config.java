@@ -1,15 +1,14 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
+import com.majruszsdifficulty.undeadarmy.data.WaveDef;
+import com.majruszsdifficulty.undeadarmy.data.WavesDef;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
-import com.mlib.data.SerializableStructure;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnServerTick;
@@ -23,17 +22,12 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.storage.loot.Deserializers;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @AutoInstance
@@ -135,67 +129,5 @@ public class Config extends GameModifier {
 		}
 
 		info.write( tag );
-	}
-
-	static class WavesDef extends SerializableStructure {
-		final List< WaveDef > waveDefs = new ArrayList<>();
-
-		public WavesDef() {
-			this.define( null, ()->this.waveDefs, this.waveDefs::addAll, WaveDef::new );
-		}
-
-		public List< WaveDef > get() {
-			return this.waveDefs;
-		}
-
-		static class Serializer implements JsonDeserializer< WavesDef > {
-			@Override
-			public WavesDef deserialize( JsonElement element, Type type, JsonDeserializationContext context ) throws JsonParseException {
-				WavesDef wavesDef = new WavesDef();
-				wavesDef.read( element );
-
-				return wavesDef;
-			}
-		}
-	}
-
-	static class WaveDef extends SerializableStructure {
-		final List< MobDef > mobDefs = new ArrayList<>();
-		MobDef boss;
-		int experience = 0;
-
-		public WaveDef() {
-			this.define( "mobs", ()->this.mobDefs, this.mobDefs::addAll, MobDef::new );
-			this.define( "boss", ()->this.boss, x->this.boss = x, MobDef::new );
-			this.define( "exp", ()->this.experience, x->this.experience = x );
-		}
-	}
-
-	static class MobDef extends SerializableStructure {
-		EntityType< ? > type;
-		int count = 1;
-		ResourceLocation equipment = LootTable.EMPTY.getLootTableId();
-
-		public MobDef() {
-			this.define( "type", ()->this.type, x->this.type = x );
-			this.define( "count", ()->this.count, x->this.count = x );
-			this.define( "equipment", ()->this.equipment, x->this.equipment = x );
-		}
-	}
-
-	static class UndeadArmyInfo extends SerializableStructure {
-		Data data = new Data();
-
-		public UndeadArmyInfo() {
-			this.define( "UndeadArmy", ()->this.data, x->this.data = x, Data::new );
-		}
-
-		static class Data extends SerializableStructure {
-			int killedUndead = 0;
-
-			public Data() {
-				this.define( "killed_undead", ()->this.killedUndead, x->this.killedUndead = x );
-			}
-		}
 	}
 }
