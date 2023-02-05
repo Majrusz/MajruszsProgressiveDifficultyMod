@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.google.gson.JsonElement;
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
@@ -28,6 +29,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 
+import java.util.List;
 import java.util.Map;
 
 @AutoInstance
@@ -92,7 +94,7 @@ public class Config extends GameModifier {
 	}
 
 	public int getWavesNum() {
-		return this.wavesDef.get().size();
+		return this.getWaves().size();
 	}
 
 	public int getArmyRadius() {
@@ -112,7 +114,16 @@ public class Config extends GameModifier {
 	}
 
 	public WaveDef getWave( int waveIdx ) {
-		return this.wavesDef.get().get( Mth.clamp( waveIdx - 1, 0, this.getWavesNum() - 1 ) );
+		List< WaveDef > waves = this.getWaves();
+
+		return waves.get( Mth.clamp( waveIdx - 1, 0, waves.size() - 1 ) );
+	}
+
+	public List< WaveDef > getWaves() {
+		return this.wavesDef.get()
+			.stream()
+			.filter( waveDef->GameStage.atLeast( waveDef.gameStage ) )
+			.toList();
 	}
 
 	private void updateKilledUndead( OnDeath.Data data ) {
