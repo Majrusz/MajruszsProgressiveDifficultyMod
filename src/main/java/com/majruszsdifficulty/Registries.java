@@ -5,10 +5,7 @@ import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
-import com.majruszsdifficulty.entities.BlackWidowEntity;
-import com.majruszsdifficulty.entities.CreeperlingEntity;
-import com.majruszsdifficulty.entities.CursedArmorEntity;
-import com.majruszsdifficulty.entities.TankEntity;
+import com.majruszsdifficulty.entities.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
@@ -85,6 +82,7 @@ public class Registries {
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
 	public static final RegistryObject< EntityType< BlackWidowEntity > > BLACK_WIDOW = ENTITY_TYPES.register( "black_widow", BlackWidowEntity.createSupplier() );
 	public static final RegistryObject< EntityType< CursedArmorEntity > > CURSED_ARMOR = ENTITY_TYPES.register( "cursed_armor", CursedArmorEntity.createSupplier() );
+	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.register( "cerberus", CerberusEntity.createSupplier() );
 
 	// Items
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
@@ -132,6 +130,7 @@ public class Registries {
 	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( TANK, 0xc1c1c1, 0x949494 ) );
 	public static final RegistryObject< SpawnEggItem > BLACK_WIDOW_SPAWN_EGG = ITEMS.register( "black_widow_spawn_egg", createEggSupplier( BLACK_WIDOW, 0x212121, 0xe12121 ) );
 	public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.register( "cursed_armor_spawn_egg", createEggSupplier( CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
+	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.register( "cerberus_spawn_egg", createEggSupplier( CERBERUS, 0x808080, 0xe1e1e1 ) );
 
 	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type,
 		int backgroundColor, int highlightColor
@@ -230,6 +229,7 @@ public class Registries {
 		event.put( TANK.get(), TankEntity.getAttributeMap() );
 		event.put( BLACK_WIDOW.get(), BlackWidowEntity.getAttributeMap() );
 		event.put( CURSED_ARMOR.get(), CursedArmorEntity.getAttributeMap() );
+		event.put( CERBERUS.get(), CerberusEntity.getAttributeMap() );
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
@@ -238,6 +238,7 @@ public class Registries {
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( BLACK_WIDOW.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlackWidowEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
+		SpawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
 	}
 
 	public static void onLoadingLevel( LevelEvent.Load event ) {

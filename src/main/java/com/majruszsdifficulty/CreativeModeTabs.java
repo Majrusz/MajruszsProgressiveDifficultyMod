@@ -57,7 +57,8 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.CREEPERLING_SPAWN_EGG.get() ),
 			new ItemStack( Registries.TANK_SPAWN_EGG.get() ),
 			new ItemStack( Registries.CURSED_ARMOR_SPAWN_EGG.get() ),
-			new ItemStack( Registries.BLACK_WIDOW_SPAWN_EGG.get() )
+			new ItemStack( Registries.BLACK_WIDOW_SPAWN_EGG.get() ),
+			new ItemStack( Registries.CERBERUS_SPAWN_EGG.get() )
 		).forEach( output::accept );
 	}
 
