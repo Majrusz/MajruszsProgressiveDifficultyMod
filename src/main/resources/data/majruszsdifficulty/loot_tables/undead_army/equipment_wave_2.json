@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_helmet",
+          "name": "majruszsdifficulty:tattered_helmet",
           "weight": 80,
           "functions": [
             {
@@ -22,7 +22,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_helmet",
+          "name": "majruszsdifficulty:tattered_helmet",
           "weight": 20,
           "functions": [
             {
@@ -52,7 +52,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_chestplate",
+          "name": "majruszsdifficulty:tattered_chestplate",
           "weight": 80,
           "functions": [
             {
@@ -68,7 +68,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_chestplate",
+          "name": "majruszsdifficulty:tattered_chestplate",
           "weight": 20,
           "functions": [
             {
@@ -98,7 +98,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_leggings",
+          "name": "majruszsdifficulty:tattered_leggings",
           "weight": 80,
           "functions": [
             {
@@ -114,7 +114,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_leggings",
+          "name": "majruszsdifficulty:tattered_leggings",
           "weight": 20,
           "functions": [
             {
@@ -144,7 +144,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_boots",
+          "name": "majruszsdifficulty:tattered_boots",
           "weight": 80,
           "functions": [
             {
@@ -160,7 +160,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_boots",
+          "name": "majruszsdifficulty:tattered_boots",
           "weight": 20,
           "functions": [
             {

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_helmet",
+          "name": "majruszsdifficulty:tattered_helmet",
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -32,7 +32,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_chestplate",
+          "name": "majruszsdifficulty:tattered_chestplate",
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -58,7 +58,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_leggings",
+          "name": "majruszsdifficulty:tattered_leggings",
           "functions": [
             {
               "function": "minecraft:set_damage",
@@ -84,7 +84,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:undead_army_boots",
+          "name": "majruszsdifficulty:tattered_boots",
           "functions": [
             {
               "function": "minecraft:set_damage",
