@@ -1,10 +1,14 @@
 package com.majruszsdifficulty.models;
 
 import com.majruszsdifficulty.entities.CerberusEntity;
+import com.mlib.math.VectorHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -14,12 +18,30 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 	private final ModelPart body;
 	private final ModelPart spine;
 	private final ModelPart necks;
+	private final ModelPart neck1, head1, jawUpper1, jawLower1;
+	private final ModelPart neck2, head2, jawUpper2, jawLower2;
+	private final ModelPart neck3, head3, jawUpper3, jawLower3;
 
 	public CerberusModel( ModelPart root ) {
 		this.root = root;
 		this.body = root.getChild( "body" );
 		this.spine = this.body.getChild( "spine" );
 		this.necks = this.spine.getChild( "necks" );
+
+		this.neck1 = this.necks.getChild( "neck1" );
+		this.head1 = this.neck1.getChild( "head1" );
+		this.jawUpper1 = this.head1.getChild( "jawUpper1" );
+		this.jawLower1 = this.head1.getChild( "jawLower1" );
+
+		this.neck2 = this.necks.getChild( "neck2" );
+		this.head2 = this.neck2.getChild( "head2" );
+		this.jawUpper2 = this.head2.getChild( "jawUpper2" );
+		this.jawLower2 = this.head2.getChild( "jawLower2" );
+
+		this.neck3 = this.necks.getChild( "neck3" );
+		this.head3 = this.neck3.getChild( "head3" );
+		this.jawUpper3 = this.head3.getChild( "jawUpper3" );
+		this.jawLower3 = this.head3.getChild( "jawLower3" );
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -179,7 +201,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 	}
 
 	@Override
-	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
+	public void setupAnim( Type cerberus, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
 		float headPitch
 	) {
 		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
@@ -187,5 +209,16 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		// head rotation when looking around
 		this.necks.yRot = ( float )Math.toRadians( netHeadYaw );
 		this.necks.xRot = ( float )Math.toRadians( headPitch ) + 0.0873f;
+
+		// jaw rotation dependent on players distance
+		float jawRotation = ( float )Math.toRadians( -20.0f * Mth.clamp( 1.25f - this.getPlayerDistance( cerberus ) / 4.0f, 0.0f, 1.0f ) );
+		this.jawUpper1.xRot = this.jawUpper2.xRot = this.jawUpper3.xRot = jawRotation;
+		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = jawRotation;
+	}
+
+	private float getPlayerDistance( Type cerberus ) {
+		LocalPlayer player = Minecraft.getInstance().player;
+
+		return player != null && !player.isSpectator() ? ( float )VectorHelper.distance( player.position(), cerberus.position() ) : Float.MAX_VALUE;
 	}
 }
