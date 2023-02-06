@@ -211,7 +211,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.necks.xRot = ( float )Math.toRadians( headPitch ) + 0.0873f;
 
 		// jaw rotation dependent on players distance
-		float jawRotation = ( float )Math.toRadians( -20.0f * Mth.clamp( 1.25f - this.getPlayerDistance( cerberus ) / 4.0f, 0.0f, 1.0f ) );
+		float jawRotation = ( float )Math.toRadians( -1.0f * Math.sin( ageInTicks / 10.0f ) - 20.0f * Mth.clamp( 1.25f - this.getPlayerDistance( cerberus ) / 4.0f, 0.0f, 1.0f ) );
 		this.jawUpper1.xRot = this.jawUpper2.xRot = this.jawUpper3.xRot = jawRotation;
 		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = jawRotation;
 	}
