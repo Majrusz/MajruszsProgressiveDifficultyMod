@@ -156,6 +156,9 @@
         "equipment": "majruszsdifficulty:undead_army/equipment_wave_5_wither_skeleton"
       }
     ],
+    "boss": {
+      "type": "majruszsdifficulty:cerberus"
+    },
     "exp": 40,
     "game_stage": "MASTER"
   }
