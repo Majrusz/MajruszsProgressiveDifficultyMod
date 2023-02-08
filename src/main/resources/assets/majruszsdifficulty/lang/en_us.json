@@ -3,6 +3,7 @@
   "entity.majruszsdifficulty.tank": "Tank",
   "entity.majruszsdifficulty.black_widow": "Black Widow",
   "entity.majruszsdifficulty.cursed_armor": "Cursed Armor",
+  "entity.majruszsdifficulty.cerberus": "Cerberus",
   "effect.majruszsdifficulty.bleeding": "Bleeding",
   "effect.majruszsdifficulty.bleeding.description": "Inflicts lethal damage over time. It is mainly caused by sharp tools, zombies and spiders. Does not affect undead.",
   "effect.majruszsdifficulty.bleeding.item_tooltip": " %1$s Chance To Inflict Bleeding %2$s",
