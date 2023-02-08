@@ -62,7 +62,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition head1 = neck1.addOrReplaceChild( "head1", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.0F, -0.1745F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, -0.1745F, 0.0F ) );
 
 		PartDefinition leftEar1 = head1.addOrReplaceChild( "leftEar1", CubeListBuilder.create()
 			.texOffs( 22, 0 )
@@ -94,7 +94,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition head2 = neck2.addOrReplaceChild( "head2", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -3.5F, -7.0F, 0.5236F, 0.0F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -3.5F, -7.0F, 0.6981F, 0.0F, 0.0F ) );
 
 		PartDefinition leftEar2 = head2.addOrReplaceChild( "leftEar2", CubeListBuilder.create()
 			.texOffs( 22, 0 )
@@ -126,7 +126,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition head3 = neck3.addOrReplaceChild( "head3", CubeListBuilder.create()
 			.texOffs( 0, 31 )
-			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.0F, 0.1745F, 0.0F ) );
+			.addBox( -4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.5F, -6.0F, 0.1745F, 0.1745F, 0.0F ) );
 
 		PartDefinition leftEar3 = head3.addOrReplaceChild( "leftEar3", CubeListBuilder.create()
 			.texOffs( 22, 0 )
@@ -211,7 +211,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.necks.xRot = ( float )Math.toRadians( headPitch ) + 0.0873f;
 
 		// jaw rotation dependent on players distance
-		float jawRotation = ( float )Math.toRadians( -1.0f * Math.sin( ageInTicks / 10.0f ) - 20.0f * Mth.clamp( 1.25f - this.getPlayerDistance( cerberus ) / 4.0f, 0.0f, 1.0f ) );
+		float jawRotation = ( float )Math.toRadians( -1.0f * Math.sin( ageInTicks / 10.0f ) - 15.0f * Mth.clamp( 1.20f - this.getPlayerDistance( cerberus ) / 5.0f, 0.0f, 1.0f ) );
 		this.jawUpper1.xRot = this.jawUpper2.xRot = this.jawUpper3.xRot = jawRotation;
 		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = jawRotation;
 	}
