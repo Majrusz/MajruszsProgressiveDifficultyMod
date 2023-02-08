@@ -36,7 +36,7 @@ public class CerberusEntity extends Monster {
 			.add( Attributes.ATTACK_DAMAGE, 14.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
-			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 2.0 )
+			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
 			.build();
 	}
 
