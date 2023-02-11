@@ -1,10 +1,9 @@
-package com.majruszsdifficulty.gamemodifiers.list;
+package com.majruszsdifficulty.gamemodifiers.list.groups;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
-import com.majruszsdifficulty.goals.UndeadArmyForgiveTeammateGoal;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
@@ -12,37 +11,25 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.math.Range;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.monster.Husk;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Stray;
+import net.minecraft.world.entity.monster.Zombie;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 @AutoInstance
 public class UndeadArmyPatrol extends GameModifier {
-	static final List< EntityType< ? extends PathfinderMob > > ENTITIES = List.of( EntityType.ZOMBIE, EntityType.HUSK, EntityType.SKELETON, EntityType.STRAY );
-	final MobGroupConfig mobGroups = new MobGroupConfig( getMobTypes(), new Range<>( 2, 4 ), null, null );
-
-	private static Supplier< EntityType< ? extends PathfinderMob > > getMobTypes() {
-		return ()->Random.nextRandom( ENTITIES );
-	}
+	final MobGroupConfig mobGroups = new MobGroupConfig(
+		()->Random.nextRandom( List.of( EntityType.ZOMBIE, EntityType.HUSK ) ),
+		new Range<>( 2, 4 ),
+		Registries.getLocation( "undead_army/equipment_wave_3" ),
+		Registries.getLocation( "undead_army/equipment_wave_2" )
+	);
 
 	public UndeadArmyPatrol() {
 		super( Registries.Modifiers.DEFAULT );
-
-		this.mobGroups.onSpawn( mob->{
-			// UndeadArmy.markAsUndeadArmyPatrol( mob );
-			// UndeadArmy.equipWithUndeadArmyArmor( mob );
-			if( mob instanceof AbstractSkeleton ) {
-				mob.setItemSlot( EquipmentSlot.MAINHAND, new ItemStack( Items.BOW ) );
-			}
-			mob.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
-			mob.targetSelector.addGoal( 1, new UndeadArmyForgiveTeammateGoal( mob ) );
-		} );
 
 		new OnSpawned.ContextSafe( this::spawnGroup )
 			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
@@ -52,7 +39,7 @@ public class UndeadArmyPatrol extends GameModifier {
 			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( data->ENTITIES.stream().anyMatch( type->type.equals( data.target.getType() ) ) )
+			.addCondition( new OnSpawned.Is<>( Zombie.class, Skeleton.class, Husk.class, Stray.class ) )
 			.addConfigs( this.mobGroups.name( "Undead" ) )
 			.insertTo( this );
 

@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.gamemodifiers.list;
+package com.majruszsdifficulty.gamemodifiers.list.groups;
 
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
@@ -9,16 +9,18 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.math.Range;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Skeleton;
 
 @AutoInstance
 public class SkeletonsInGroup extends GameModifier {
-	final ResourceLocation LEADER_SET_LOCATION = Registries.getLocation( "gameplay/skeleton_group_leader" );
-	final ResourceLocation SIDEKICK_SET_LOCATION = Registries.getLocation( "gameplay/skeleton_group_sidekick" );
-	final MobGroupConfig mobGroups = new MobGroupConfig( ()->EntityType.SKELETON, new Range<>( 1, 3 ), LEADER_SET_LOCATION, SIDEKICK_SET_LOCATION );
+	final MobGroupConfig mobGroups = new MobGroupConfig(
+		()->EntityType.SKELETON,
+		new Range<>( 1, 3 ),
+		Registries.getLocation( "mob_groups/skeleton_leader" ),
+		Registries.getLocation( "mob_groups/skeleton_sidekick" )
+	);
 
 	public SkeletonsInGroup() {
 		super( Registries.Modifiers.DEFAULT );
@@ -31,7 +33,7 @@ public class SkeletonsInGroup extends GameModifier {
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( data->data.target instanceof Skeleton )
+			.addCondition( new OnSpawned.Is<>( Skeleton.class ) )
 			.addConfig( this.mobGroups.name( "Skeletons" ) )
 			.insertTo( this );
 

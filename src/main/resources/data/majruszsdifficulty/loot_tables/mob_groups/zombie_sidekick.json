@@ -1,5 +1,5 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/zombie_group_sidekick",
+  "mlib": "majruszsdifficulty:mob_groups/zombie_sidekick",
   "type": "minecraft:gift",
   "pools": [
     {
