@@ -25,6 +25,7 @@ import net.minecraftforge.common.ForgeMod;
 import java.util.function.Supplier;
 
 public class CerberusEntity extends Monster {
+
 	public static Supplier< EntityType< CerberusEntity > > createSupplier() {
 		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.4f, 1.99f ).build( "cerberus" );
 	}
@@ -42,6 +43,7 @@ public class CerberusEntity extends Monster {
 
 	public CerberusEntity( EntityType< ? extends CerberusEntity > type, Level world ) {
 		super( type, world );
+
 		this.xpReward = 17;
 	}
 
