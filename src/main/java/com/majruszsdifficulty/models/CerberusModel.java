@@ -1,6 +1,9 @@
 package com.majruszsdifficulty.models;
 
 import com.majruszsdifficulty.entities.CerberusEntity;
+import com.mlib.animations.Animation;
+import com.mlib.animations.Frame;
+import com.mlib.animations.InterpolationType;
 import com.mlib.math.VectorHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
@@ -11,18 +14,34 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
 @OnlyIn( Dist.CLIENT )
 public class CerberusModel< Type extends CerberusEntity > extends HierarchicalModel< Type > {
-	private final ModelPart root;
-	private final ModelPart body;
-	private final ModelPart spine;
-	private final ModelPart necks;
-	private final ModelPart neck1, head1, jawUpper1, jawLower1;
-	private final ModelPart neck2, head2, jawUpper2, jawLower2;
-	private final ModelPart neck3, head3, jawUpper3, jawLower3;
-	private final ModelPart frontThigh1, frontThigh2;
-	private final ModelPart hindThigh1, hindThigh2;
+	static final Animation< Float > BITE_JAW_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Vector3f > BITE_NECK_ROTATION = new Animation<>( 1.0f );
+
+	static {
+		BITE_JAW_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
+			.add( 0.30f, new Frame.Degrees( 20.0f, InterpolationType.SQUARE ) )
+			.add( 0.70f, new Frame.Degrees( -20.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 0.0f ) );
+
+		BITE_NECK_ROTATION.add( 0.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) )
+			.add( 0.30f, new Frame.Vector( -15.0f, 0.0f, -30.0f, InterpolationType.SQUARE ) )
+			.add( 0.70f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) );
+	}
+
+	final ModelPart root;
+	final ModelPart body;
+	final ModelPart spine;
+	final ModelPart necks;
+	final ModelPart neck1, head1, jawUpper1, jawLower1;
+	final ModelPart neck2, head2, jawUpper2, jawLower2;
+	final ModelPart neck3, head3, jawUpper3, jawLower3;
+	final ModelPart frontThigh1, frontThigh2;
+	final ModelPart hindThigh1, hindThigh2;
 
 	public CerberusModel( ModelPart root ) {
 		this.root = root;
@@ -59,7 +78,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition spine = body.addOrReplaceChild( "spine", CubeListBuilder.create()
 			.texOffs( 28, 23 )
-			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 25.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -25.0F, 2.0F, 0.0436F, 0.0F, 0.0F ) );
+			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 25.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -25.0F, 2.0F, 0.0872F, 0.0F, 0.0F ) );
 
 		PartDefinition necks = spine.addOrReplaceChild( "necks", CubeListBuilder.create(), PartPose.offset( 0.0F, -2.0F, -10.0F ) );
 
@@ -215,6 +234,8 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 	public void setupAnim( Type cerberus, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
 		float headPitch
 	) {
+		CerberusEntity.Skills skills = cerberus.getCustomSkills();
+
 		// head rotation when looking around
 		this.necks.yRot = ( float )Math.toRadians( netHeadYaw );
 		this.necks.xRot = ( float )Math.toRadians( headPitch ) + 0.0873f;
@@ -231,6 +252,18 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f - 30.0f * swingRatio );
 		this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f - 30.0f * swingRatio );
 		this.body.y = 25.0f + 1.0f * Math.abs( swingRatio );
+
+		// bite anims
+		float biteRatio = skills.getRatio( CerberusEntity.SkillType.BITE );
+		float biteJawRotation = ( float )Mth.clamp( jawRotation - BITE_JAW_ROTATION_X.apply( biteRatio, ageInTicks ), Math.toRadians( -30.0 ), 0.0 );
+		this.jawUpper1.xRot = this.jawUpper2.xRot = this.jawUpper3.xRot = biteJawRotation;
+		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = biteJawRotation;
+
+		Vector3f neckRotation = new Vector3f( BITE_NECK_ROTATION.apply( biteRatio, ageInTicks ) ).mul( ( float )Math.PI / 180.0f );
+		this.neck1.xRot = neckRotation.x;
+		this.neck1.zRot = neckRotation.z;
+		this.neck3.xRot = neckRotation.x;
+		this.neck3.zRot = -neckRotation.z;
 	}
 
 	private float getPlayerDistance( Type cerberus ) {

@@ -1,9 +1,18 @@
 package com.majruszsdifficulty.entities;
 
+import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
+import com.mlib.Utility;
 import com.mlib.effects.SoundHandler;
+import com.mlib.entities.CustomSkills;
+import com.mlib.entities.EntityHelper;
+import com.mlib.entities.ICustomSkillProvider;
+import com.mlib.goals.CustomMeleeGoal;
+import com.mlib.math.VectorHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,7 +20,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -20,11 +28,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-public class CerberusEntity extends Monster {
+public class CerberusEntity extends Monster implements ICustomSkillProvider< CerberusEntity.Skills > {
+	public final Skills skills = new Skills( this );
 
 	public static Supplier< EntityType< CerberusEntity > > createSupplier() {
 		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.4f, 1.99f ).build( "cerberus" );
@@ -43,8 +54,11 @@ public class CerberusEntity extends Monster {
 
 	public CerberusEntity( EntityType< ? extends CerberusEntity > type, Level world ) {
 		super( type, world );
+	}
 
-		this.xpReward = 17;
+	@Override
+	public Skills getCustomSkills() {
+		return this.skills;
 	}
 
 	@Override
@@ -69,8 +83,15 @@ public class CerberusEntity extends Monster {
 	}
 
 	@Override
+	public void tick() {
+		super.tick();
+
+		this.skills.tick();
+	}
+
+	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal( 1, new MeleeAttackGoal( this, 1.5, false ) );
+		this.goalSelector.addGoal( 1, new CustomMeleeGoal<>( this, 1.5, false ) );
 		this.goalSelector.addGoal( 7, new WaterAvoidingRandomStrollGoal( this, 1.0 ) );
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f, 1.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );
@@ -108,5 +129,63 @@ public class CerberusEntity extends Monster {
 	private static boolean isValidTarget( LivingEntity entity ) {
 		return !Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( entity )
 			&& !( entity instanceof CerberusEntity );
+	}
+
+	public static class Skills extends CustomSkills< SkillType > {
+		public Skills( PathfinderMob mob ) {
+			super( mob, PacketHandler.CHANNEL, CerberusEntity.Message::new );
+		}
+
+		@Override
+		public boolean tryToStart( LivingEntity entity, double distanceSquared ) {
+			if( Math.sqrt( distanceSquared ) >= 3.5 ) {
+				return false;
+			}
+
+			this.pushMobTowards( entity );
+			this.start( SkillType.BITE, Utility.secondsToTicks( 0.5 ) )
+				.onRatio( 0.55f, ()->{
+					if( !( this.mob.level instanceof ServerLevel level ) )
+						return;
+
+					Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
+					this.hurtAllEntitiesInRange( level, position );
+				} );
+
+			return true;
+		}
+
+		private void pushMobTowards( LivingEntity entity ) {
+			Vec3 direction = VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( entity.position(), this.mob.position() ) ), 0.5 );
+			this.mob.push( direction.x, direction.y + 0.1, direction.z );
+		}
+
+		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
+			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 1.5, entity->!entity.is( this.mob ) );
+			for( LivingEntity entity : entities ) {
+				this.mob.doHurtTarget( entity );
+				if( entity instanceof ServerPlayer player && player.isBlocking() ) {
+					player.disableShield( true );
+				}
+			}
+		}
+
+		private Vec3 getAttackPosition( Vec3 pos1, Vec3 pos2 ) {
+			return VectorHelper.add( pos1, VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( pos2, pos1 ) ), 1.75 ) );
+		}
+	}
+
+	public static class Message extends CustomSkills.Message< SkillType > {
+		public Message( Entity entity, int ticks, SkillType skillType ) {
+			super( entity, ticks, skillType, SkillType::values );
+		}
+
+		public Message() {
+			super( SkillType::values );
+		}
+	}
+
+	public enum SkillType {
+		BITE
 	}
 }
