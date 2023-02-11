@@ -6,6 +6,7 @@ import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.majruszsdifficulty.undeadarmy.data.*;
 import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
+import com.mlib.items.ItemHelper;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.VectorHelper;
 import com.mlib.time.TimeHelper;
@@ -123,7 +124,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	private void loadEquipment( PathfinderMob mob, MobInfo mobInfo ) {
 		LootHelper.getLootTable( mobInfo.equipment )
 			.getRandomItems( LootHelper.toGiftContext( mob ) )
-			.forEach( mob::equipItemIfPossible );
+			.forEach( itemStack->ItemHelper.equip( mob, itemStack ) );
 
 		Arrays.stream( EquipmentSlot.values() )
 			.forEach( slot->mob.setDropChance( slot, 0.025f ) );
