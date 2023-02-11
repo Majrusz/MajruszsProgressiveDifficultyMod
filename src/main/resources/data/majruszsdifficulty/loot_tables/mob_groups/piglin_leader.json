@@ -1,5 +1,5 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/piglin_group_leader",
+  "mlib": "majruszsdifficulty:mob_groups/piglin_leader",
   "type": "minecraft:gift",
   "pools": [
     {

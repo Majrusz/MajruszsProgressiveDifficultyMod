@@ -1,5 +1,5 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/piglin_group_sidekick",
+  "mlib": "majruszsdifficulty:mob_groups/piglin_sidekick",
   "type": "minecraft:gift",
   "pools": [
     {
