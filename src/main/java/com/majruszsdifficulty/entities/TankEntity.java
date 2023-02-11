@@ -127,6 +127,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		this.playSound( SoundEvents.SKELETON_STEP, 0.15f, 1.0f );
 	}
 
+	@Override
 	public void tick() {
 		super.tick();
 
