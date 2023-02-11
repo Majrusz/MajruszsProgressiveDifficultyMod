@@ -130,7 +130,7 @@ public class BleedingEffect extends MobEffect {
 
 			new OnEntityTick.Context( this::spawnParticles )
 				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.25, Dist.DEDICATED_SERVER ).configurable( false ) )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 3, Dist.DEDICATED_SERVER ).configurable( false ) )
 				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
 				.insertTo( this );
 
@@ -175,7 +175,7 @@ public class BleedingEffect extends MobEffect {
 			int amplifier = MobEffectHelper.getAmplifier( data.entity, Registries.BLEEDING.get() );
 			float walkDistanceDelta = EntityHelper.getWalkDistanceDelta( data.entity );
 
-			this.spawnParticles( data.level, data.entity, Random.roundRandomly( 2.0 + ( 30.0 + amplifier ) * walkDistanceDelta ) );
+			this.spawnParticles( data.level, data.entity, Random.roundRandomly( 1.0 + ( 15.0 + amplifier ) * walkDistanceDelta ) );
 		}
 
 		private void tick( OnEntityTick.Data data ) {
