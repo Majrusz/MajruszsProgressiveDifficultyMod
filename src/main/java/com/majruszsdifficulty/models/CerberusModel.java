@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.models;
 
 import com.majruszsdifficulty.entities.CerberusEntity;
+import com.mlib.MajruszLibrary;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
 import com.mlib.animations.InterpolationType;
@@ -21,21 +22,44 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 	static final Animation< Float > BITE_JAW_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Float > BITE_NECKS_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Vector3f > BITE_SIDE_NECK_ROTATION = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_FRONT_LEG_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_HIND_LEG_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_SPINE_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_BODY_POSITION_Y = new Animation<>( 1.0f );
 
 	static {
 		BITE_JAW_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
 			.add( 0.30f, new Frame.Degrees( 20.0f, InterpolationType.SQUARE ) )
 			.add( 0.70f, new Frame.Degrees( -20.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 0.0f ) );
+			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
 
 		BITE_NECKS_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
 			.add( 0.30f, new Frame.Degrees( 20.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 0.0f ) );
+			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
 
 		BITE_SIDE_NECK_ROTATION.add( 0.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) )
 			.add( 0.30f, new Frame.Vector( -15.0f, 0.0f, -30.0f, InterpolationType.SQUARE ) )
 			.add( 0.70f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) );
+
+		GALLOP_FRONT_LEG_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
+			.add( 0.25f, new Frame.Degrees( 45.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( 45.0f ) )
+			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
+
+		GALLOP_HIND_LEG_ROTATION_X.add( 0.00f, new Frame.Degrees( 30.0f ) )
+			.add( 0.50f, new Frame.Degrees( -30.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) );
+
+		GALLOP_SPINE_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
+			.add( 0.25f, new Frame.Degrees( 10.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( 5.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( -10.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
+
+		GALLOP_BODY_POSITION_Y.add( 0.00f, new Frame.Value( 0.0f ) )
+			.add( 0.50f, new Frame.Value( -3.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Value( 0.0f, InterpolationType.SQUARE ) );
 	}
 
 	final ModelPart root;
@@ -240,6 +264,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		float headPitch
 	) {
 		CerberusEntity.Skills skills = cerberus.getCustomSkills();
+		this.spine.xRot = ( float )Math.toRadians( 5.0f );
 
 		// head rotation when looking around
 		this.necks.yRot = ( float )Math.toRadians( netHeadYaw );
@@ -251,12 +276,24 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = jawRotation;
 
 		// movement anims
-		float swingRatio = ( float )( Math.cos( 0.4f * limbSwing ) * limbSwingAmount );
-		this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f + 30.0f * swingRatio );
-		this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f + 30.0f * swingRatio );
-		this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f - 30.0f * swingRatio );
-		this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f - 30.0f * swingRatio );
-		this.body.y = 25.0f + 1.0f * Math.abs( swingRatio );
+		if( cerberus.hasTarget ) {
+			// gallop anims
+			float swingRatio = ( limbSwing * 0.1f ) % 1.0f;
+			float frontLegRotation = GALLOP_FRONT_LEG_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
+			float hindLegRotation = GALLOP_HIND_LEG_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
+			this.frontThigh1.xRot = this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f ) - frontLegRotation;
+			this.hindThigh1.xRot = this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f ) - hindLegRotation;
+			this.spine.xRot -= GALLOP_SPINE_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
+			this.body.y = 25.0f - GALLOP_BODY_POSITION_Y.apply( swingRatio, ageInTicks ) * limbSwingAmount;
+		} else {
+			// walk anims
+			float swingRatio = ( float )( Math.cos( 0.4f * limbSwing ) * limbSwingAmount );
+			this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f + 30.0f * swingRatio );
+			this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f + 30.0f * swingRatio );
+			this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f - 30.0f * swingRatio );
+			this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f - 30.0f * swingRatio );
+			this.body.y = 25.0f + 1.0f * Math.abs( swingRatio );
+		}
 
 		// bite anims (jaw)
 		float biteRatio = skills.getRatio( CerberusEntity.SkillType.BITE );

@@ -5,9 +5,7 @@ import com.majruszsdifficulty.entities.CerberusEntity;
 import com.majruszsdifficulty.entities.CursedArmorEntity;
 import com.majruszsdifficulty.entities.TankEntity;
 import com.majruszsdifficulty.treasurebags.LootProgressManager;
-import com.mlib.NetworkHandler;
 import com.mlib.data.SerializableStructure;
-import com.mlib.network.NetworkMessage;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -19,10 +17,11 @@ public class PacketHandler {
 
 	public static void registerPacket( final FMLCommonSetupEvent event ) {
 		CHANNEL = NetworkRegistry.newSimpleChannel( Registries.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals );
-		SerializableStructure.register( CHANNEL, 0, TankEntity.Message.class, TankEntity.Message::new );
+		SerializableStructure.register( CHANNEL, 0, TankEntity.SkillMessage.class, TankEntity.SkillMessage::new );
 		CHANNEL.registerMessage( 1, CursedArmorEntity.AssembleMessage.class, CursedArmorEntity.AssembleMessage::encode, CursedArmorEntity.AssembleMessage::new, CursedArmorEntity.AssembleMessage::handle );
 		CHANNEL.registerMessage( 2, LootProgressManager.ProgressMessage.class, LootProgressManager.ProgressMessage::encode, LootProgressManager.ProgressMessage::new, LootProgressManager.ProgressMessage::handle );
 		CHANNEL.registerMessage( 3, BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::encode, BleedingEffect.BloodMessage::new, BleedingEffect.BloodMessage::handle );
-		SerializableStructure.register( CHANNEL, 4, CerberusEntity.Message.class, CerberusEntity.Message::new );
+		SerializableStructure.register( CHANNEL, 4, CerberusEntity.SkillMessage.class, CerberusEntity.SkillMessage::new );
+		SerializableStructure.register( CHANNEL, 5, CerberusEntity.TargetMessage.class, CerberusEntity.TargetMessage::new );
 	}
 }
