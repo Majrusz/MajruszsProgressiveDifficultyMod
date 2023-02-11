@@ -1,5 +1,5 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/zombie_group_leader",
+  "mlib": "majruszsdifficulty:mob_groups/zombie_leader",
   "type": "minecraft:gift",
   "pools": [
     {
@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "majruszsdifficulty:gameplay/zombie_group_sidekick"
+          "name": "majruszsdifficulty:mob_groups/zombie_sidekick"
         }
       ]
     }

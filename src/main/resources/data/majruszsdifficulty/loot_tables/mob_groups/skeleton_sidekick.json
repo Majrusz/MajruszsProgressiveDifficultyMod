@@ -1,5 +1,5 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/skeleton_group_sidekick",
+  "mlib": "majruszsdifficulty:mob_groups/skeleton_sidekick",
   "type": "minecraft:gift",
   "pools": [
     {
@@ -7,13 +7,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:wooden_sword",
-          "weight": 54
+          "name": "minecraft:bow",
+          "weight": 50
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:wooden_sword",
-          "weight": 13,
+          "name": "minecraft:bow",
+          "weight": 17,
           "functions": [
             {
               "function": "minecraft:enchant_randomly"
@@ -22,24 +22,33 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:stone_sword",
-          "weight": 26
+          "name": "minecraft:wooden_sword",
+          "weight": 15
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:stone_sword",
+          "name": "minecraft:wooden_sword",
           "weight": 7,
           "functions": [
             {
               "function": "minecraft:enchant_randomly"
             }
           ]
-        }
-      ],
-      "conditions": [
+        },
         {
-          "chance": 0.75,
-          "condition": "minecraft:random_chance"
+          "type": "minecraft:item",
+          "name": "minecraft:stone_sword",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stone_sword",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ]
         }
       ]
     }
