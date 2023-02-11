@@ -35,7 +35,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /** A new tough undead similar to the Iron Golem. */
@@ -144,10 +143,13 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 
 		@Override
 		public boolean tryToStart( LivingEntity entity, double distanceSquared ) {
-			if( Math.sqrt( distanceSquared ) < 2.5 ) {
-				if( Random.tryChance( 0.25 ) ) {
-					this.start( SkillType.HEAVY_ATTACK, HEAVY_ATTACK_DURATION );
-					this.onRatio( 0.55f, ()->{
+			if( Math.sqrt( distanceSquared ) >= 2.5 ) {
+				return false;
+			}
+
+			if( Random.tryChance( 0.25 ) ) {
+				this.start( SkillType.HEAVY_ATTACK, HEAVY_ATTACK_DURATION )
+					.onRatio( 0.55f, ()->{
 						if( !( this.mob.level instanceof ServerLevel level ) )
 							return;
 
@@ -156,20 +158,17 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 						this.spawnGroundParticles( level, position );
 						this.playHitSound();
 					} );
-				} else {
-					this.start( Random.tryChance( 0.5 ) ? SkillType.STANDARD_LEFT_ATTACK : SkillType.STANDARD_RIGHT_ATTACK, NORMAL_ATTACK_DURATION );
-					this.onRatio( 0.45f, ()->{
+			} else {
+				this.start( Random.tryChance( 0.5 ) ? SkillType.STANDARD_LEFT_ATTACK : SkillType.STANDARD_RIGHT_ATTACK, NORMAL_ATTACK_DURATION )
+					.onRatio( 0.45f, ()->{
 						if( Math.sqrt( this.mob.distanceTo( entity ) ) < 2.5 ) {
 							this.hitEntity( entity );
 							this.playHitSound();
 						}
 					} );
-				}
-
-				return true;
 			}
 
-			return false;
+			return true;
 		}
 
 		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
