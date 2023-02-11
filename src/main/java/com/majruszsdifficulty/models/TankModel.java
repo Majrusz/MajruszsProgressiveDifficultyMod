@@ -16,8 +16,8 @@ import org.joml.Vector3f;
 
 @OnlyIn( Dist.CLIENT )
 public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {
-	static final Animation< Float > SPECIAL_ATTACK_BODY_X = new Animation<>( TankEntity.SPECIAL_ATTACK_DURATION );
-	static final Animation< Float > SPECIAL_ATTACK_ARMS_X = new Animation<>( TankEntity.SPECIAL_ATTACK_DURATION );
+	static final Animation< Float > SPECIAL_ATTACK_BODY_X = new Animation<>( TankEntity.HEAVY_ATTACK_DURATION );
+	static final Animation< Float > SPECIAL_ATTACK_ARMS_X = new Animation<>( TankEntity.HEAVY_ATTACK_DURATION );
 	static final Animation< Float > NORMAL_ATTACK_BODY_Y = new Animation<>( TankEntity.NORMAL_ATTACK_DURATION );
 	static final Animation< Vector3f > NORMAL_ATTACK_ARM = new Animation<>( TankEntity.NORMAL_ATTACK_DURATION );
 
@@ -53,9 +53,6 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 	}
 
 	public ModelPart root, body, head, arms, leftArm, leftForearm, rightArm, rightForearm, leftLeg, rightLeg;
-	protected float normalAttackDurationRatioLeft = 0.0f;
-	protected float specialAttackDurationRatioLeft = 0.0f;
-	protected boolean isLeftHandAttack = false;
 
 	public TankModel( ModelPart modelPart ) {
 		this.root = modelPart;
@@ -71,9 +68,10 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 	}
 
 	@Override
-	public void setupAnim( Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
+	public void setupAnim( Type tank, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
 		float headPitch
 	) {
+		TankEntity.Skills skills = tank.getCustomSkills();
 		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
 
 		// head rotation when looking around
@@ -86,32 +84,23 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		this.body.zRot = Mth.cos( limbFactor1 ) * bodyFactor;
 
 		// body animations when the Tank is using standard attack
-		float handMultiplier = this.isLeftHandAttack ? -1.0f : 1.0f;
-		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( this.normalAttackDurationRatioLeft, ageInTicks );
+		boolean isLeftHandAttack = skills.isUsing( TankEntity.SkillType.STANDARD_LEFT_ATTACK );
+		float handMultiplier = isLeftHandAttack ? -1.0f : 1.0f;
+		float standardAttackRatio = skills.getRatio( isLeftHandAttack ? TankEntity.SkillType.STANDARD_LEFT_ATTACK : TankEntity.SkillType.STANDARD_RIGHT_ATTACK );
+		this.body.yRot = this.head.yRot * 0.4f + handMultiplier * NORMAL_ATTACK_BODY_Y.apply( standardAttackRatio, ageInTicks );
 
-		// arms animations when the Tank is using standard attack (we need to update both hands because model parts share reference between all instances)
+		// left arm animations when a Tank is using standard attack
 		float extraLeftArmRotationX = ( float )( Math.cos( limbFactor1 ) * limbSwingAmount ) * 20.0f;
+		rotateArm( this.leftArm, ageInTicks, skills.getRatio( TankEntity.SkillType.STANDARD_LEFT_ATTACK ), extraLeftArmRotationX );
+
+		// right arm animations when a Tank is using standard attack (we need to update both hands because model parts share reference between all instances)
 		float extraRightArmRotationX = ( float )( Math.cos( limbFactor1 + ( float )Math.PI ) * limbSwingAmount ) * 20.0f;
-		if( this.isLeftHandAttack ) {
-			rotateArm( this.leftArm, ageInTicks, this.normalAttackDurationRatioLeft, extraLeftArmRotationX );
-			rotateArm( this.rightArm, ageInTicks, 1.0f, extraRightArmRotationX );
-		} else {
-			rotateArm( this.leftArm, ageInTicks, 1.0f, extraLeftArmRotationX );
-			rotateArm( this.rightArm, ageInTicks, this.normalAttackDurationRatioLeft, extraRightArmRotationX );
-		}
+		rotateArm( this.rightArm, ageInTicks, skills.getRatio( TankEntity.SkillType.STANDARD_RIGHT_ATTACK ), extraRightArmRotationX );
 
 		// body and arms animations when Tank is using special attack
-		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( this.specialAttackDurationRatioLeft, ageInTicks );
-		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( this.specialAttackDurationRatioLeft, ageInTicks );
-	}
-
-	@Override
-	public void prepareMobModel( Type tank, float p_102862_, float p_102863_, float packedLight ) {
-		this.normalAttackDurationRatioLeft = tank.isAttacking( TankEntity.AttackType.NORMAL ) ? tank.calculateAttackDurationRatioLeft() : 1.0f;
-		this.specialAttackDurationRatioLeft = tank.isAttacking( TankEntity.AttackType.SPECIAL ) ? tank.calculateAttackDurationRatioLeft() : 1.0f;
-		this.isLeftHandAttack = tank.isLeftHandAttack;
-
-		super.prepareMobModel( tank, p_102862_, p_102863_, packedLight );
+		float heavyAttackRatio = skills.getRatio( TankEntity.SkillType.HEAVY_ATTACK );
+		this.body.xRot = SPECIAL_ATTACK_BODY_X.apply( heavyAttackRatio, ageInTicks );
+		this.arms.xRot = SPECIAL_ATTACK_ARMS_X.apply( heavyAttackRatio, ageInTicks );
 	}
 
 	@Override

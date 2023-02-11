@@ -1,19 +1,21 @@
 package com.majruszsdifficulty.entities;
 
 import com.majruszsdifficulty.PacketHandler;
-import com.majruszsdifficulty.goals.TankAttackGoal;
-//  import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.effects.SoundHandler;
-import com.mlib.network.NetworkMessage;
-import net.minecraft.client.Minecraft;
+import com.mlib.entities.CustomSkills;
+import com.mlib.entities.EntityHelper;
+import com.mlib.entities.ICustomSkillProvider;
+import com.mlib.goals.CustomMeleeGoal;
+import com.mlib.math.VectorHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -28,20 +30,20 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /** A new tough undead similar to the Iron Golem. */
-@Mod.EventBusSubscriber
-public class TankEntity extends Monster {
-	public static final int SPECIAL_ATTACK_DURATION = Utility.secondsToTicks( 0.9 );
+public class TankEntity extends Monster implements ICustomSkillProvider< TankEntity.Skills > {
+	public static final int HEAVY_ATTACK_DURATION = Utility.secondsToTicks( 0.9 );
 	public static final int NORMAL_ATTACK_DURATION = Utility.secondsToTicks( 0.6 );
+	public final Skills skills = new Skills( this );
 
 	public static Supplier< EntityType< TankEntity > > createSupplier() {
 		return ()->EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER ).sized( 0.99f, 2.7f ).build( "tank" );
@@ -58,18 +60,39 @@ public class TankEntity extends Monster {
 			.build();
 	}
 
-	public boolean isLeftHandAttack;
-	private int specialAttackTicksLeft;
-	private int normalAttackTicksLeft;
-
 	public TankEntity( EntityType< ? extends TankEntity > type, Level world ) {
 		super( type, world );
-		this.xpReward = 17;
+	}
+
+	@Override
+	public Skills getCustomSkills() {
+		return this.skills;
+	}
+
+	@Override
+	public int getExperienceReward() {
+		return Random.nextInt( 10, 17 );
+	}
+
+	@Override
+	public MobType getMobType() {
+		return MobType.UNDEAD;
+	}
+
+	@Override
+	public void playSound( SoundEvent sound, float volume, float pitch ) {
+		if( this.isSilent() ) {
+			return;
+		}
+		float randomizedVolume = SoundHandler.randomized( volume * 1.25f ).get();
+		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
+
+		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal( 2, new TankAttackGoal( this ) );
+		this.goalSelector.addGoal( 1, new CustomMeleeGoal<>( this, 1.0, true ) );
 		this.goalSelector.addGoal( 7, new WaterAvoidingRandomStrollGoal( this, 1.0 ) );
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );
@@ -81,18 +104,8 @@ public class TankEntity extends Monster {
 	}
 
 	@Override
-	public int getExperienceReward() {
-		return Random.nextInt( 17 );
-	}
-
-	@Override
 	protected SoundEvent getAmbientSound() {
 		return SoundEvents.SKELETON_AMBIENT;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.UNDEAD;
 	}
 
 	@Override
@@ -115,96 +128,103 @@ public class TankEntity extends Monster {
 		this.playSound( SoundEvents.SKELETON_STEP, 0.15f, 1.0f );
 	}
 
-	@Override
-	public void playSound( SoundEvent sound, float volume, float pitch ) {
-		if( this.isSilent() ) {
-			return;
-		}
-		float randomizedVolume = SoundHandler.randomized( volume * 1.25f ).get();
-		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
-
-		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
-	}
-
-	@Override
-	public void aiStep() {
-		// if( this.isSunBurnTick() && !UndeadArmyManager.belongsToUndeadArmy( this ) )
-			// this.setSecondsOnFire( 8 );
-
-		super.aiStep();
-	}
-
 	public void tick() {
 		super.tick();
-		this.specialAttackTicksLeft = Math.max( this.specialAttackTicksLeft - 1, 0 );
-		this.normalAttackTicksLeft = Math.max( this.normalAttackTicksLeft - 1, 0 );
+
+		this.skills.tick();
 	}
 
-	public void useAttack( AttackType attackType ) {
-		switch( attackType ) {
-			case NORMAL -> this.normalAttackTicksLeft = NORMAL_ATTACK_DURATION;
-			case SPECIAL -> this.specialAttackTicksLeft = SPECIAL_ATTACK_DURATION;
-		}
-
-		this.isLeftHandAttack = Random.nextBoolean();
-		if( this.level instanceof ServerLevel )
-			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new TankAttackMessage( this, attackType ) );
-	}
-
-	public boolean isAttacking() {
-		return ( this.normalAttackTicksLeft + this.specialAttackTicksLeft ) > 0;
-	}
-
-	public boolean isAttacking( AttackType attackType ) {
-		return switch( attackType ) {
-			case NORMAL -> this.normalAttackTicksLeft > 0;
-			case SPECIAL -> this.specialAttackTicksLeft > 0;
-		};
-	}
-
-	public boolean isAttackLastTick() {
-		return this.specialAttackTicksLeft == 1 || this.normalAttackTicksLeft == 1;
-	}
-
-	public float calculateAttackDurationRatioLeft() {
-		float ratio;
-		if( this.specialAttackTicksLeft > this.normalAttackTicksLeft ) {
-			ratio = ( float )this.specialAttackTicksLeft / SPECIAL_ATTACK_DURATION;
-		} else {
-			ratio = ( float )this.normalAttackTicksLeft / NORMAL_ATTACK_DURATION;
-		}
-
-		return 1.0f - Mth.clamp( ratio, 0.0f, 1.0f );
-	}
-
-	public enum AttackType {
-		NORMAL, SPECIAL
-	}
-
-	public static class TankAttackMessage extends NetworkMessage {
-		final int entityId;
-		final AttackType attackType;
-
-		public TankAttackMessage( Entity entity, AttackType attackType ) {
-			this.entityId = this.write( entity );
-			this.attackType = this.write( attackType );
-		}
-
-		public TankAttackMessage( FriendlyByteBuf buffer ) {
-			this.entityId = this.readEntity( buffer );
-			this.attackType = this.readEnum( buffer, AttackType.class );
+	public static class Skills extends CustomSkills< SkillType > {
+		public Skills( PathfinderMob mob ) {
+			super( mob, PacketHandler.CHANNEL, TankEntity.Message::new );
 		}
 
 		@Override
-		@OnlyIn( Dist.CLIENT )
-		public void receiveMessage( NetworkEvent.Context context ) {
-			Level level = Minecraft.getInstance().level;
-			if( level == null )
-				return;
+		public boolean tryToStart( LivingEntity entity, double distanceSquared ) {
+			if( Math.sqrt( distanceSquared ) < 2.5 ) {
+				if( Random.tryChance( 0.25 ) ) {
+					this.start( SkillType.HEAVY_ATTACK, HEAVY_ATTACK_DURATION );
+					this.onRatio( 0.55f, ()->{
+						if( !( this.mob.level instanceof ServerLevel level ) )
+							return;
 
-			TankEntity tank = Utility.castIfPossible( TankEntity.class, level.getEntity( this.entityId ) );
-			if( tank != null )
-				tank.useAttack( this.attackType );
+						Vec3 position = this.getSpecialAttackPosition( this.mob.position(), entity.position() );
+						this.hurtAllEntitiesInRange( level, position );
+						this.spawnGroundParticles( level, position );
+						this.playHitSound();
+					} );
+				} else {
+					this.start( Random.tryChance( 0.5 ) ? SkillType.STANDARD_LEFT_ATTACK : SkillType.STANDARD_RIGHT_ATTACK, NORMAL_ATTACK_DURATION );
+					this.onRatio( 0.45f, ()->{
+						if( Math.sqrt( this.mob.distanceTo( entity ) ) < 2.5 ) {
+							this.hitEntity( entity );
+							this.playHitSound();
+						}
+					} );
+				}
+
+				return true;
+			}
+
+			return false;
 		}
+
+		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
+			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 3.0, entity->!entity.is( this.mob ) );
+			for( LivingEntity entity : entities ) {
+				this.mob.doHurtTarget( entity );
+				if( entity instanceof ServerPlayer player && player.isBlocking() ) {
+					player.disableShield( true );
+				}
+			}
+		}
+
+		private void spawnGroundParticles( ServerLevel level, Vec3 position ) {
+			Optional< BlockState > blockState = this.getBlockStateBelowPosition( level, position );
+			BlockParticleOption blockParticleOption = new BlockParticleOption( ParticleTypes.BLOCK, blockState.orElse( Blocks.DIRT.defaultBlockState() ) ).setPos( new BlockPos( position ) );
+
+			level.sendParticles( blockParticleOption, position.x, position.y + 0.25, position.z, 120, 1.0, 0.25, 1.0, 0.5 );
+		}
+
+		protected Vec3 getSpecialAttackPosition( Vec3 tankPosition, Vec3 targetPosition ) {
+			return VectorHelper.add( tankPosition, VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( targetPosition, tankPosition ) ), 1.75 ) );
+		}
+
+		private Optional< BlockState > getBlockStateBelowPosition( Level level, Vec3 position ) {
+			int y = ( int )position.y;
+			while( y > level.getMinBuildHeight() ) {
+				BlockState blockState = level.getBlockState( new BlockPos( position.x, y, position.z ) );
+				if( !blockState.isAir() )
+					return Optional.of( blockState );
+
+				--y;
+			}
+
+			return Optional.empty();
+		}
+
+		private void hitEntity( LivingEntity entity ) {
+			this.mob.doHurtTarget( entity );
+		}
+
+		private void playHitSound() {
+			this.mob.playSound( SoundEvents.SKELETON_HURT, 0.75f, 0.9f );
+		}
+	}
+
+	public static class Message extends CustomSkills.Message< SkillType > {
+		public Message( Entity entity, int ticks, SkillType skillType ) {
+			super( entity, ticks, skillType, SkillType::values );
+		}
+
+		public Message() {
+			super( SkillType::values );
+		}
+	}
+
+	public enum SkillType {
+		STANDARD_LEFT_ATTACK,
+		STANDARD_RIGHT_ATTACK,
+		HEAVY_ATTACK
 	}
 }
