@@ -136,7 +136,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 
 	public static class Skills extends CustomSkills< SkillType > {
 		public Skills( PathfinderMob mob ) {
-			super( mob, PacketHandler.CHANNEL, TankEntity.Message::new );
+			super( mob, PacketHandler.CHANNEL, SkillMessage::new );
 		}
 
 		@Override
@@ -212,12 +212,12 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		}
 	}
 
-	public static class Message extends CustomSkills.Message< SkillType > {
-		public Message( Entity entity, int ticks, SkillType skillType ) {
+	public static class SkillMessage extends CustomSkills.Message< SkillType > {
+		public SkillMessage( Entity entity, int ticks, SkillType skillType ) {
 			super( entity, ticks, skillType, SkillType::values );
 		}
 
-		public Message() {
+		public SkillMessage() {
 			super( SkillType::values );
 		}
 	}
