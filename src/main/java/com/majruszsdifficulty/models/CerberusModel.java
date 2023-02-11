@@ -226,10 +226,10 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		// movement anims
 		float swingRatio = ( float )( Math.cos( 0.4f * limbSwing ) * limbSwingAmount );
-		this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f + 20.0f * swingRatio );
-		this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f + 20.0f * swingRatio );
-		this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f - 20.0f * swingRatio );
-		this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f - 20.0f * swingRatio );
+		this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f + 30.0f * swingRatio );
+		this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f + 30.0f * swingRatio );
+		this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f - 30.0f * swingRatio );
+		this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f - 30.0f * swingRatio );
 		this.body.y = 25.0f + 1.0f * Math.abs( swingRatio );
 	}
 
