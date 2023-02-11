@@ -50,7 +50,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	public static AttributeSupplier getAttributeMap() {
 		return Mob.createMobAttributes()
-			.add( Attributes.MAX_HEALTH, 140.0 )
+			.add( Attributes.MAX_HEALTH, 240.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.3 )
 			.add( Attributes.ATTACK_DAMAGE, 14.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
@@ -70,7 +70,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	public int getExperienceReward() {
-		return Random.nextInt( 17 );
+		return Random.nextInt( 60, 90 );
 	}
 
 	@Override
