@@ -20,7 +20,6 @@ import org.joml.Vector3f;
 @OnlyIn( Dist.CLIENT )
 public class CerberusModel< Type extends CerberusEntity > extends HierarchicalModel< Type > {
 	static final Animation< Float > BITE_JAW_ROTATION_X = new Animation<>( 1.0f );
-	static final Animation< Float > BITE_NECKS_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Vector3f > BITE_SIDE_NECK_ROTATION = new Animation<>( 1.0f );
 	static final Animation< Float > GALLOP_FRONT_LEG_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Float > GALLOP_HIND_LEG_ROTATION_X = new Animation<>( 1.0f );
@@ -31,10 +30,6 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		BITE_JAW_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
 			.add( 0.30f, new Frame.Degrees( 20.0f, InterpolationType.SQUARE ) )
 			.add( 0.70f, new Frame.Degrees( -20.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
-
-		BITE_NECKS_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
-			.add( 0.30f, new Frame.Degrees( 20.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
 
 		BITE_SIDE_NECK_ROTATION.add( 0.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) )
@@ -308,8 +303,6 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.neck3.xRot = neckRotation.x;
 		this.neck3.zRot = -neckRotation.z;
 
-		// bite anims (necks)
-		this.necks.xRot += BITE_NECKS_ROTATION_X.apply( biteRatio, ageInTicks );
 	}
 
 	private float getPlayerDistance( Type cerberus ) {
