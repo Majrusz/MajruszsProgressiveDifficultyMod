@@ -39,8 +39,6 @@ import java.util.function.Supplier;
 
 /** A new tough undead similar to the Iron Golem. */
 public class TankEntity extends Monster implements ICustomSkillProvider< TankEntity.Skills > {
-	public static final int HEAVY_ATTACK_DURATION = Utility.secondsToTicks( 0.9 );
-	public static final int NORMAL_ATTACK_DURATION = Utility.secondsToTicks( 0.6 );
 	public final Skills skills = new Skills( this );
 
 	public static Supplier< EntityType< TankEntity > > createSupplier() {
@@ -149,7 +147,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 			}
 
 			if( Random.tryChance( 0.25 ) ) {
-				this.start( SkillType.HEAVY_ATTACK, HEAVY_ATTACK_DURATION )
+				this.start( SkillType.HEAVY_ATTACK, Utility.secondsToTicks( 0.9 ) )
 					.onRatio( 0.55f, ()->{
 						if( !( this.mob.level instanceof ServerLevel level ) )
 							return;
@@ -160,7 +158,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 						this.playHitSound();
 					} );
 			} else {
-				this.start( Random.tryChance( 0.5 ) ? SkillType.STANDARD_LEFT_ATTACK : SkillType.STANDARD_RIGHT_ATTACK, NORMAL_ATTACK_DURATION )
+				this.start( Random.tryChance( 0.5 ) ? SkillType.STANDARD_LEFT_ATTACK : SkillType.STANDARD_RIGHT_ATTACK, Utility.secondsToTicks( 0.6 ) )
 					.onRatio( 0.45f, ()->{
 						if( Math.sqrt( this.mob.distanceTo( entity ) ) < 2.5 ) {
 							this.hitEntity( entity );
