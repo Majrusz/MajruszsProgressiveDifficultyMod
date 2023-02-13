@@ -5,6 +5,7 @@ import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
+import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
 import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
@@ -45,14 +46,14 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	public boolean hasTarget = false;
 
 	public static Supplier< EntityType< CerberusEntity > > createSupplier() {
-		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.4f, 1.99f ).build( "cerberus" );
+		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.0f, 1.99f ).build( "cerberus" );
 	}
 
 	public static AttributeSupplier getAttributeMap() {
 		return Mob.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 240.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.3 )
-			.add( Attributes.ATTACK_DAMAGE, 14.0 )
+			.add( Attributes.ATTACK_DAMAGE, 10.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
 			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
@@ -150,30 +151,25 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		@Override
 		public boolean tryToStart( LivingEntity entity, double distanceSquared ) {
-			if( Math.sqrt( distanceSquared ) >= 3.5 ) {
+			if( Math.sqrt( distanceSquared ) >= 3.5 || !( this.mob.level instanceof ServerLevel level ) ) {
 				return false;
 			}
 
+			Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
 			this.pushMobTowards( entity );
-			this.start( SkillType.BITE, Utility.secondsToTicks( 0.5 ) )
-				.onRatio( 0.55f, ()->{
-					if( !( this.mob.level instanceof ServerLevel level ) )
-						return;
-
-					Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
-					this.hurtAllEntitiesInRange( level, position );
-				} );
+			this.start( SkillType.BITE, Utility.secondsToTicks( 0.7 ) )
+				.onRatio( 0.55f, ()->this.hurtAllEntitiesInRange( level, position ) );
 
 			return true;
 		}
 
 		private void pushMobTowards( LivingEntity entity ) {
-			Vec3 direction = VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( entity.position(), this.mob.position() ) ), 0.5 );
+			Vec3 direction = VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( entity.position(), this.mob.position() ) ), 0.9 );
 			this.mob.push( direction.x, direction.y + 0.1, direction.z );
 		}
 
 		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
-			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 1.5, entity->!entity.is( this.mob ) );
+			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 2.5, entity->!entity.is( this.mob ) );
 			for( LivingEntity entity : entities ) {
 				this.mob.doHurtTarget( entity );
 				if( entity instanceof ServerPlayer player && player.isBlocking() ) {
