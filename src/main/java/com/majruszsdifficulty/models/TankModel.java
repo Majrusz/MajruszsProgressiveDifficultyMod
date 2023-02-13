@@ -16,10 +16,10 @@ import com.mojang.math.Vector3f;
 
 @OnlyIn( Dist.CLIENT )
 public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {
-	static final Animation< Float > SPECIAL_ATTACK_BODY_X = new Animation<>( TankEntity.HEAVY_ATTACK_DURATION );
-	static final Animation< Float > SPECIAL_ATTACK_ARMS_X = new Animation<>( TankEntity.HEAVY_ATTACK_DURATION );
-	static final Animation< Float > NORMAL_ATTACK_BODY_Y = new Animation<>( TankEntity.NORMAL_ATTACK_DURATION );
-	static final Animation< Vector3f > NORMAL_ATTACK_ARM = new Animation<>( TankEntity.NORMAL_ATTACK_DURATION );
+	static final Animation< Float > SPECIAL_ATTACK_BODY_X = new Animation<>( 1.0f );
+	static final Animation< Float > SPECIAL_ATTACK_ARMS_X = new Animation<>( 1.0f );
+	static final Animation< Float > NORMAL_ATTACK_BODY_Y = new Animation<>( 1.0f );
+	static final Animation< Vector3f > NORMAL_ATTACK_ARM = new Animation<>( 1.0f );
 
 	static {
 		SPECIAL_ATTACK_BODY_X.add( 0.00f, new Frame.Degrees( 10.0f ) )
