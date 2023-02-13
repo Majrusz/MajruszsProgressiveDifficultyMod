@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.models;
 
 import com.majruszsdifficulty.entities.CerberusEntity;
-import com.mlib.MajruszLibrary;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
 import com.mlib.animations.InterpolationType;
@@ -28,8 +27,8 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 	static {
 		BITE_JAW_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
-			.add( 0.30f, new Frame.Degrees( 20.0f, InterpolationType.SQUARE ) )
-			.add( 0.70f, new Frame.Degrees( -20.0f, InterpolationType.SQUARE ) )
+			.add( 0.30f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
+			.add( 0.70f, new Frame.Degrees( -30.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
 
 		BITE_SIDE_NECK_ROTATION.add( 0.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) )
@@ -37,24 +36,24 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 			.add( 0.70f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) );
 
-		GALLOP_FRONT_LEG_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
+		GALLOP_FRONT_LEG_ROTATION_X.add( -15.00f, new Frame.Degrees( 0.0f ) )
 			.add( 0.25f, new Frame.Degrees( 45.0f, InterpolationType.SQUARE ) )
 			.add( 0.50f, new Frame.Degrees( 45.0f ) )
-			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
+			.add( 1.00f, new Frame.Degrees( -15.00f, InterpolationType.SQUARE ) );
 
 		GALLOP_HIND_LEG_ROTATION_X.add( 0.00f, new Frame.Degrees( 30.0f ) )
-			.add( 0.50f, new Frame.Degrees( -30.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) );
+			.add( 0.50f, new Frame.Degrees( -30.00f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 30.00f, InterpolationType.SQUARE ) );
 
 		GALLOP_SPINE_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
-			.add( 0.25f, new Frame.Degrees( 10.0f, InterpolationType.SQUARE ) )
-			.add( 0.50f, new Frame.Degrees( 5.0f, InterpolationType.SQUARE ) )
-			.add( 0.75f, new Frame.Degrees( -10.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
+			.add( 0.25f, new Frame.Degrees( 10.00f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( 5.00f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( -10.00f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 0.00f, InterpolationType.SQUARE ) );
 
 		GALLOP_BODY_POSITION_Y.add( 0.00f, new Frame.Value( 0.0f ) )
 			.add( 0.50f, new Frame.Value( -3.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Value( 0.0f, InterpolationType.SQUARE ) );
+			.add( 1.00f, new Frame.Value( 0.00f, InterpolationType.SQUARE ) );
 	}
 
 	final ModelPart root;
@@ -273,7 +272,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		// movement anims
 		if( cerberus.hasTarget ) {
 			// gallop anims
-			float swingRatio = ( limbSwing * 0.125f ) % 1.0f;
+			float swingRatio = ( limbSwing * 0.15f ) % 1.0f;
 			float frontLegRotation = GALLOP_FRONT_LEG_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			float hindLegRotation = GALLOP_HIND_LEG_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			this.frontThigh1.xRot = this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f ) - frontLegRotation;
@@ -282,7 +281,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 			this.body.y = 25.0f - GALLOP_BODY_POSITION_Y.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 		} else {
 			// walk anims
-			float swingRatio = ( float )( Math.cos( 0.35f * limbSwing ) * limbSwingAmount );
+			float swingRatio = ( float )( Math.cos( 0.37f * limbSwing ) * limbSwingAmount );
 			this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f + 30.0f * swingRatio );
 			this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f + 30.0f * swingRatio );
 			this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f - 30.0f * swingRatio );
