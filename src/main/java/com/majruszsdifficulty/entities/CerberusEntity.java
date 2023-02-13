@@ -115,7 +115,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.SKELETON_AMBIENT;
+		return SoundEvents.WITHER_SKELETON_AMBIENT;
 	}
 
 	@Override
@@ -125,17 +125,17 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected SoundEvent getHurtSound( DamageSource damageSource ) {
-		return SoundEvents.SKELETON_HURT;
+		return SoundEvents.WITHER_SKELETON_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.SKELETON_DEATH;
+		return SoundEvents.WITHER_SKELETON_DEATH;
 	}
 
 	@Override
 	protected void playStepSound( BlockPos blockPos, BlockState blockState ) {
-		this.playSound( SoundEvents.SKELETON_STEP, 0.15f, 1.0f );
+		this.playSound( SoundEvents.WITHER_SKELETON_STEP, 0.15f, 1.0f );
 	}
 
 	private static boolean isValidTarget( LivingEntity entity ) {
