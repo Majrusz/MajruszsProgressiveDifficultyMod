@@ -4,12 +4,15 @@ import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
+import com.mlib.annotations.AutoInstance;
 import com.mlib.data.SerializableStructure;
-import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
 import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
 import com.mlib.entities.ICustomSkillProvider;
+import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.configs.EffectConfig;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.goals.CustomMeleeGoal;
 import com.mlib.math.VectorHelper;
 import net.minecraft.client.Minecraft;
@@ -19,6 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -42,6 +46,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class CerberusEntity extends Monster implements ICustomSkillProvider< CerberusEntity.Skills > {
+	public static final String GROUP_ID = "Cerberus";
+
+	static {
+		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID ).name( "Cerberus" );
+	}
+
 	public final Skills skills = new Skills( this );
 	public boolean hasTarget = false;
 
@@ -213,8 +223,26 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		public void onClient( NetworkEvent.Context context ) {
 			Level level = Minecraft.getInstance().level;
 			if( level != null && level.getEntity( this.entityId ) instanceof CerberusEntity cerberus ) {
- 				cerberus.hasTarget = this.hasTarget;
+				cerberus.hasTarget = this.hasTarget;
 			}
+		}
+	}
+
+	@AutoInstance
+	public static class WitherAttack extends GameModifier {
+		final EffectConfig wither = new EffectConfig( MobEffects.WITHER, 1, 10.0 );
+
+		public WitherAttack() {
+			super( GROUP_ID );
+
+			new OnDamaged.Context( this::applyWither )
+				.addCondition( data->data.attacker instanceof CerberusEntity )
+				.addConfig( this.wither.name( "Wither" ) )
+				.insertTo( this );
+		}
+
+		private void applyWither( OnDamaged.Data data ) {
+			this.wither.apply( data.target );
 		}
 	}
 
