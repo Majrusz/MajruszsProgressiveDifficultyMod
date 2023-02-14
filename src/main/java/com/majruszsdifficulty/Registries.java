@@ -13,6 +13,7 @@ import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+import com.mlib.Utility;
 import com.mlib.annotations.AnnotationHandler;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.registries.RegistryHelper;
@@ -27,11 +28,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -40,6 +48,8 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -76,6 +86,7 @@ public class Registries {
 	static final DeferredRegister< ParticleType< ? > > PARTICLE_TYPES = HELPER.create( ForgeRegistries.Keys.PARTICLE_TYPES );
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
 	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( net.minecraft.core.registries.Registries.LOOT_FUNCTION_TYPE );
+	static final DeferredRegister< Potion > POTIONS = HELPER.create( ForgeRegistries.Keys.POTIONS );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -91,7 +102,7 @@ public class Registries {
 	public static final RegistryObject< UndeadBattleStandardItem > BATTLE_STANDARD = ITEMS.register( "undead_battle_standard", UndeadBattleStandardItem::new );
 	public static final RegistryObject< TatteredArmorItem > TATTERED_HELMET = ITEMS.register( "tattered_helmet", TatteredArmorItem.Helmet::new );
 	public static final RegistryObject< TatteredArmorItem > TATTERED_CHESTPLATE = ITEMS.register( "tattered_chestplate", TatteredArmorItem.Chestplate::new );
-	public static final RegistryObject< TatteredArmorItem > TATTERED_LEGGINGS = ITEMS.register( "tattered_leggings", TatteredArmorItem.Leggings::new);
+	public static final RegistryObject< TatteredArmorItem > TATTERED_LEGGINGS = ITEMS.register( "tattered_leggings", TatteredArmorItem.Leggings::new );
 	public static final RegistryObject< TatteredArmorItem > TATTERED_BOOTS = ITEMS.register( "tattered_boots", TatteredArmorItem.Boots::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_HELMET = ITEMS.register( "enderium_helmet", EnderiumArmorItem.Helmet::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_CHESTPLATE = ITEMS.register( "enderium_chestplate", EnderiumArmorItem.Chestplate::new );
@@ -110,6 +121,11 @@ public class Registries {
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 	public static final RegistryObject< BadOmenPotionItem > BAD_OMEN_POTION = ITEMS.register( "bad_omen_potion", BadOmenPotionItem::new );
 	public static final RegistryObject< CerberusFangItem > CERBERUS_FANG = ITEMS.register( "cerberus_fang", CerberusFangItem::new );
+
+	// Potions
+	public static final RegistryObject< Potion > WITHER_POTION = POTIONS.register( "wither", ()->new Potion( new MobEffectInstance( MobEffects.WITHER, Utility.secondsToTicks( 40.0 ) ) ) );
+	public static final RegistryObject< Potion > WITHER_POTION_LONG = POTIONS.register( "long_wither", ()->new Potion( "wither", new MobEffectInstance( MobEffects.WITHER, Utility.secondsToTicks( 80.0 ) ) ) );
+	public static final RegistryObject< Potion > WITHER_POTION_STRONG = POTIONS.register( "strong_wither", ()->new Potion( "wither", new MobEffectInstance( MobEffects.WITHER, Utility.secondsToTicks( 20.0 ), 1 ) ) );
 
 	// Treasure Bags
 	public static final RegistryObject< TreasureBagItem > UNDEAD_ARMY_TREASURE_BAG = ITEMS.register( "undead_army_treasure_bag", TreasureBagItem.UndeadArmy::new );
@@ -240,6 +256,32 @@ public class Registries {
 		SpawnPlacements.register( BLACK_WIDOW.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlackWidowEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
+
+		event.enqueueWork( ()->{
+			addPotionRecipe( ()->Potions.WATER, CERBERUS_FANG, ()->Potions.MUNDANE );
+			addPotionRecipe( ()->Potions.AWKWARD, CERBERUS_FANG, WITHER_POTION );
+			addPotionRecipe( WITHER_POTION, ()->Items.REDSTONE, WITHER_POTION_LONG );
+			addPotionRecipe( WITHER_POTION, ()->Items.GLOWSTONE_DUST, WITHER_POTION_STRONG );
+		} );
+	}
+
+	private static void addPotionRecipe( Supplier< ? extends Potion > input, Supplier< ? extends Item > item, Supplier< ? extends Potion > output ) {
+		BrewingRecipeRegistry.addRecipe( new IBrewingRecipe() {
+			@Override
+			public boolean isInput( ItemStack itemStack ) {
+				return PotionUtils.getPotion( itemStack ).equals( input.get() );
+			}
+
+			@Override
+			public boolean isIngredient( ItemStack itemStack ) {
+				return itemStack.getItem().equals( item.get() );
+			}
+
+			@Override
+			public ItemStack getOutput( ItemStack input, ItemStack ingredient ) {
+				return this.isInput( input ) && this.isIngredient( ingredient ) ? PotionUtils.setPotion( new ItemStack( input.getItem() ), output.get() ) : ItemStack.EMPTY;
+			}
+		} );
 	}
 
 	public static void onLoadingLevel( LevelEvent.Load event ) {
