@@ -6,13 +6,16 @@ import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.data.SerializableStructure;
+import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
 import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
 import com.mlib.entities.ICustomSkillProvider;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
+import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.goals.CustomMeleeGoal;
 import com.mlib.math.VectorHelper;
 import net.minecraft.client.Minecraft;
@@ -239,10 +242,20 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 				.addCondition( data->data.attacker instanceof CerberusEntity )
 				.addConfig( this.wither.name( "Wither" ) )
 				.insertTo( this );
+
+			new OnEntityTick.Context( this::spawnParticle )
+				.addCondition( new Condition.IsServer<>() )
+				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 4, Dist.DEDICATED_SERVER ).configurable( false ) )
+				.addCondition( data->data.entity instanceof CerberusEntity )
+				.insertTo( this );
 		}
 
 		private void applyWither( OnDamaged.Data data ) {
 			this.wither.apply( data.target );
+		}
+
+		private void spawnParticle( OnEntityTick.Data data ) {
+			ParticleHandler.SMOKE.spawn( data.level, data.entity.position().add( 0.0, 0.75, 0.0 ), 3, ()->new Vec3( 0.25, 0.5, 0.25 ) );
 		}
 	}
 
