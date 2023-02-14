@@ -5,8 +5,11 @@ import com.mlib.items.CreativeModeTabHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.function.Supplier;
@@ -24,6 +27,10 @@ public class CreativeModeTabs {
 		treasureBags.accept( builder->builder.title( Component.translatable( "itemGroup.majruszsdifficulty.treasure_bags" ) )
 			.displayItems( this::defineTreasureBagItems )
 			.withTabFactory( TreasureBag::new ) );
+	}
+
+	private static ItemStack newItemStackWithPotion( Item item, Potion potion ) {
+		return PotionUtils.setPotion( new ItemStack( item ), potion );
 	}
 
 	private void definePrimaryItems( FeatureFlagSet flagSet, CreativeModeTab.Output output, boolean hasPermissions ) {
@@ -53,7 +60,32 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.ENDERIUM_AXE.get() ),
 			new ItemStack( Registries.ENDERIUM_SHOVEL.get() ),
 			new ItemStack( Registries.ENDERIUM_HOE.get() ),
+			newItemStackWithPotion( Items.TIPPED_ARROW, Registries.WITHER_POTION.get() ),
+			newItemStackWithPotion( Items.TIPPED_ARROW, Registries.WITHER_POTION_LONG.get() ),
+			newItemStackWithPotion( Items.TIPPED_ARROW, Registries.WITHER_POTION_STRONG.get() ),
+			newItemStackWithPotion( Items.POTION, Registries.WITHER_POTION.get() ),
+			newItemStackWithPotion( Items.POTION, Registries.WITHER_POTION_LONG.get() ),
+			newItemStackWithPotion( Items.POTION, Registries.WITHER_POTION_STRONG.get() ),
+			newItemStackWithPotion( Items.SPLASH_POTION, Registries.WITHER_POTION.get() ),
+			newItemStackWithPotion( Items.SPLASH_POTION, Registries.WITHER_POTION_LONG.get() ),
+			newItemStackWithPotion( Items.SPLASH_POTION, Registries.WITHER_POTION_STRONG.get() ),
+			newItemStackWithPotion( Items.LINGERING_POTION, Registries.WITHER_POTION.get() ),
+			newItemStackWithPotion( Items.LINGERING_POTION, Registries.WITHER_POTION_LONG.get() ),
+			newItemStackWithPotion( Items.LINGERING_POTION, Registries.WITHER_POTION_STRONG.get() )
+		).forEach( output::accept );
 
+		Stream.of(
+			Items.TIPPED_ARROW,
+			Items.POTION,
+			Items.SPLASH_POTION,
+			Items.LINGERING_POTION
+		).forEach( item->Stream.of(
+			Registries.WITHER_POTION,
+			Registries.WITHER_POTION_LONG,
+			Registries.WITHER_POTION_STRONG
+		).forEach( potion->PotionUtils.setPotion( new ItemStack( item ), potion.get() ) ) );
+
+		Stream.of(
 			new ItemStack( Registries.ILLUSIONER_SPAWN_EGG.get() ),
 			new ItemStack( Registries.CREEPERLING_SPAWN_EGG.get() ),
 			new ItemStack( Registries.TANK_SPAWN_EGG.get() ),
@@ -96,6 +128,7 @@ public class CreativeModeTabs {
 	}
 
 	int counter = 0;
+
 	private ItemStack notImplemented() {
 		ItemStack itemStack = new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Coming soon..." ) );
 		itemStack.getOrCreateTagElement( String.format( "dirt_%d", ++counter ) ); // items must be unique, so well...
