@@ -104,6 +104,9 @@ public class Registries {
 	public static final RegistryObject< TatteredArmorItem > TATTERED_CHESTPLATE = ITEMS.register( "tattered_chestplate", TatteredArmorItem.Chestplate::new );
 	public static final RegistryObject< TatteredArmorItem > TATTERED_LEGGINGS = ITEMS.register( "tattered_leggings", TatteredArmorItem.Leggings::new );
 	public static final RegistryObject< TatteredArmorItem > TATTERED_BOOTS = ITEMS.register( "tattered_boots", TatteredArmorItem.Boots::new );
+	public static final RegistryObject< TatteredEnhancedArmorItem > TATTERED_ENHANCED_CHESTPLATE = ITEMS.register( "tattered_enhanced_chestplate", TatteredEnhancedArmorItem.Chestplate::new );
+	public static final RegistryObject< TatteredEnhancedArmorItem > TATTERED_ENHANCED_LEGGINGS = ITEMS.register( "tattered_enhanced_leggings", TatteredEnhancedArmorItem.Leggings::new );
+	public static final RegistryObject< CerberusFangItem > CERBERUS_FANG = ITEMS.register( "cerberus_fang", CerberusFangItem::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_HELMET = ITEMS.register( "enderium_helmet", EnderiumArmorItem.Helmet::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_CHESTPLATE = ITEMS.register( "enderium_chestplate", EnderiumArmorItem.Chestplate::new );
 	public static final RegistryObject< EnderiumArmorItem > ENDERIUM_LEGGINGS = ITEMS.register( "enderium_leggings", EnderiumArmorItem.Leggings::new );
@@ -120,7 +123,6 @@ public class Registries {
 	public static final RegistryObject< WitherSwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 	public static final RegistryObject< BadOmenPotionItem > BAD_OMEN_POTION = ITEMS.register( "bad_omen_potion", BadOmenPotionItem::new );
-	public static final RegistryObject< CerberusFangItem > CERBERUS_FANG = ITEMS.register( "cerberus_fang", CerberusFangItem::new );
 
 	// Potions
 	public static final RegistryObject< Potion > WITHER_POTION = POTIONS.register( "wither", ()->new Potion( new MobEffectInstance( MobEffects.WITHER, Utility.secondsToTicks( 40.0 ) ) ) );
