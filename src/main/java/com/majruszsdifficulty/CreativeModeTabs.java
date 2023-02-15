@@ -42,10 +42,10 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.BATTLE_STANDARD.get() ),
 			new ItemStack( Registries.TATTERED_HELMET.get() ),
 			new ItemStack( Registries.TATTERED_CHESTPLATE.get() ),
-			new ItemStack( Registries.TATTERED_LEGGINGS.get() ),
-			new ItemStack( Registries.TATTERED_BOOTS.get() ),
 			new ItemStack( Registries.TATTERED_ENHANCED_CHESTPLATE.get() ),
+			new ItemStack( Registries.TATTERED_LEGGINGS.get() ),
 			new ItemStack( Registries.TATTERED_ENHANCED_LEGGINGS.get() ),
+			new ItemStack( Registries.TATTERED_BOOTS.get() ),
 			new ItemStack( Registries.CERBERUS_FANG.get() ),
 
 			new ItemStack( Registries.INFESTED_END_STONE_ITEM.get() ),
