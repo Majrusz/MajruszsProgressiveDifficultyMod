@@ -49,6 +49,8 @@
   "item.majruszsdifficulty.tattered_chestplate": "Tattered Tunic",
   "item.majruszsdifficulty.tattered_leggings": "Tattered Pants",
   "item.majruszsdifficulty.tattered_boots": "Tattered Boots",
+  "item.majruszsdifficulty.tattered_enhanced_chestplate": "Tattered Tunic",
+  "item.majruszsdifficulty.tattered_enhanced_leggings": "Tattered Pants",
   "item.majruszsdifficulty.wither_sword": "Wither Sword",
   "item.majruszsdifficulty.wither_sword.effect": " %1$s Chance To Inflict Wither %2$s",
   "item.majruszsdifficulty.enderium_shard_locator": "Enderium Shard Locator",
