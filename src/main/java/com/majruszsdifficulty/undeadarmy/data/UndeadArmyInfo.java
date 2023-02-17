@@ -3,17 +3,11 @@ package com.majruszsdifficulty.undeadarmy.data;
 import com.mlib.data.SerializableStructure;
 
 public class UndeadArmyInfo extends SerializableStructure {
-	public Data data = new Data();
+	public int killedUndead = 0;
 
 	public UndeadArmyInfo() {
-		this.define( "UndeadArmy", ()->this.data, x->this.data = x, Data::new );
-	}
+		super( "UndeadArmy" );
 
-	public static class Data extends SerializableStructure {
-		public int killedUndead = 0;
-
-		public Data() {
-			this.define( "killed_undead", ()->this.killedUndead, x->this.killedUndead = x );
-		}
+		this.define( "killed_undead", ()->this.killedUndead, x->this.killedUndead = x );
 	}
 }

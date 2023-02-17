@@ -132,10 +132,10 @@ public class Config extends GameModifier {
 		UndeadArmyInfo info = new UndeadArmyInfo();
 		info.read( tag );
 
-		++info.data.killedUndead;
-		if( info.data.killedUndead >= this.getRequiredKills() && Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( player ) ) {
-			info.data.killedUndead = 0;
-		} else if( info.data.killedUndead == this.getRequiredKills() - 3 ) {
+		++info.killedUndead;
+		if( info.killedUndead >= this.getRequiredKills() && Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( player ) ) {
+			info.killedUndead = 0;
+		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {
 			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
 		}
 
