@@ -2,7 +2,6 @@ package com.majruszsdifficulty.itemsets;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TatteredArmorItem;
-import com.majruszsdifficulty.items.TatteredEnhancedArmorItem;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.gamemodifiers.contexts.OnFoodPropertiesGet;
@@ -34,56 +33,33 @@ import java.util.stream.Stream;
 
 @AutoInstance
 public class UndeadSet extends ItemSet {
-	static final float SPEED_BONUS = 0.25f;
-	static final int SMITE_BONUS = 2;
+	static final float SPEED_BONUS = 0.25f; // TextHelper.percent( SPEED_BONUS )
+	static final int SMITE_BONUS = 2; // Enchantments.SMITE.getFullname( SMITE_BONUS )
 	static final FoodProperties FLESH_NO_EFFECT = new FoodProperties.Builder().nutrition( 4 ).saturationMod( 0.1f ).meat().build();
 	static final FoodProperties FLESH_EXTRA_HUNGER = new FoodProperties.Builder().nutrition( 4 * 2 ).saturationMod( 0.1f ).meat().build();
 	static final AttributeHandler MOVEMENT_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "UndeadSetMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
 	static final ItemData ITEM_1 = new ItemData( Registries.TATTERED_HELMET, EquipmentSlot.HEAD );
-	static final ItemData ITEM_2 = new ItemData( UndeadSet::isAnyTatteredChestplate, asDescription( Registries.TATTERED_CHESTPLATE ), EquipmentSlot.CHEST );
-	static final ItemData ITEM_3 = new ItemData( UndeadSet::isAnyTatteredLeggings, asDescription( Registries.TATTERED_LEGGINGS ), EquipmentSlot.LEGS );
+	static final ItemData ITEM_2 = new ItemData( Registries.TATTERED_CHESTPLATE, EquipmentSlot.CHEST );
+	static final ItemData ITEM_3 = new ItemData( Registries.TATTERED_LEGGINGS, EquipmentSlot.LEGS );
 	static final ItemData ITEM_4 = new ItemData( Registries.TATTERED_BOOTS, EquipmentSlot.FEET );
-	static final BonusData BONUS_1 = new BonusData( 3, "majruszsdifficulty.sets.undead.bonus_1", MobEffects.HUNGER.getDisplayName(), Items.ROTTEN_FLESH.getDescription() );
-	static final BonusData BONUS_2 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_2", Items.ROTTEN_FLESH.getDescription() );
-	static final BonusData BONUS_3 = new BonusData( UndeadSet::hasEnhancedTatteredLeggings, "majruszsdifficulty.sets.undead.bonus_3", ( set, bonus )->Component.translatable( "item.majruszsdifficulty.undead_army_belt" ), TextHelper.percent( SPEED_BONUS ) );
-	static final BonusData BONUS_4 = new BonusData( UndeadSet::hasEnhancedTatteredChestplate, "majruszsdifficulty.sets.undead.bonus_4", ( set, bonus )->Component.translatable( "item.majruszsdifficulty.undead_army_necklace" ), Enchantments.SMITE.getFullname( SMITE_BONUS ) );
+	static final BonusData BONUS_1 = new BonusData( 2, "majruszsdifficulty.sets.undead.bonus_1", MobEffects.HUNGER.getDisplayName(), Items.ROTTEN_FLESH.getDescription() );
+	static final BonusData BONUS_2 = new BonusData( 3, "majruszsdifficulty.sets.undead.bonus_2", Items.ROTTEN_FLESH.getDescription() );
+	static final BonusData BONUS_3 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_3", Component.translatable( "item.majruszsdifficulty.soul_jar" ) );
 
 	public UndeadSet() {
-		super( ()->Stream.of( ITEM_1, ITEM_2, ITEM_3, ITEM_4 ), ()->Stream.of( BONUS_1, BONUS_2, BONUS_3, BONUS_4 ), ChatFormatting.LIGHT_PURPLE, "majruszsdifficulty.sets.undead.name" );
+		super( ()->Stream.of( ITEM_1, ITEM_2, ITEM_3, ITEM_4 ), ()->Stream.of( BONUS_1, BONUS_2, BONUS_3 ), ChatFormatting.LIGHT_PURPLE, "majruszsdifficulty.sets.undead.name" );
 
 		new OnFoodPropertiesGet.Context( this::applyRottenFleshBoost )
 			.addCondition( data->data.itemStack.getItem().equals( Items.ROTTEN_FLESH ) )
 			.addCondition( data->data.entity != null );
 
-		new OnItemEquipped.Context( this::updateMovementSpeedBonus )
+		/*new OnItemEquipped.Context( this::updateMovementSpeedBonus )
 			.addCondition( data->data.entity instanceof LivingEntity );
 
 		new OnPreDamaged.Context( this::increaseDamage )
 			.addCondition( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
 			.addCondition( data->data.attacker != null )
-			.addCondition( data->BONUS_4.isConditionMet( this, data.attacker ) );
-	}
-
-	private static boolean isAnyTatteredChestplate( ItemStack itemStack ) {
-		return itemStack.getItem() instanceof TatteredArmorItem.Chestplate
-			|| itemStack.getItem() instanceof TatteredEnhancedArmorItem.Chestplate;
-	}
-
-	private static boolean isAnyTatteredLeggings( ItemStack itemStack ) {
-		return itemStack.getItem() instanceof TatteredArmorItem.Leggings
-			|| itemStack.getItem() instanceof TatteredEnhancedArmorItem.Leggings;
-	}
-
-	private static Supplier< MutableComponent > asDescription( RegistryObject< ? extends Item > item ) {
-		return ()->item.get().getDescription().copy();
-	}
-
-	private static boolean hasEnhancedTatteredChestplate( ItemSet set, LivingEntity entity ) {
-		return entity.getItemBySlot( EquipmentSlot.CHEST ).getItem() instanceof TatteredEnhancedArmorItem.Chestplate;
-	}
-
-	private static boolean hasEnhancedTatteredLeggings( ItemSet set, LivingEntity entity ) {
-		return entity.getItemBySlot( EquipmentSlot.LEGS ).getItem() instanceof TatteredEnhancedArmorItem.Leggings;
+			.addCondition( data->BONUS_4.isConditionMet( this, data.attacker ) );*/
 	}
 
 	private void applyRottenFleshBoost( OnFoodPropertiesGet.Data data ) {
