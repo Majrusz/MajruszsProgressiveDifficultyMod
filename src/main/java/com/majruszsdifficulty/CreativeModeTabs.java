@@ -1,5 +1,6 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.items.SoulJarItem;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.items.CreativeModeTabHelper;
 import net.minecraft.network.chat.Component;
@@ -102,8 +103,8 @@ public class CreativeModeTabs {
 			notImplemented(),
 
 			new ItemStack( Registries.UNDEAD_ARMY_TREASURE_BAG.get() ),
-			new ItemStack( Registries.SOUL_JAR.get() ),
-			notImplemented(),
+			SoulJarItem.randomItemStack( 2 ),
+			SoulJarItem.randomItemStack( 3 ),
 
 			new ItemStack( Registries.PILLAGER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.RECALL_POTION.get() ),
