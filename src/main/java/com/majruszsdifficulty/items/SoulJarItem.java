@@ -59,6 +59,11 @@ public class SoulJarItem extends Item {
 	}
 
 	@Override
+	public boolean isFoil( ItemStack itemStack ) {
+		return new BonusInfo( itemStack.getOrCreateTag() ).bonusMask != 0b0;
+	}
+
+	@Override
 	public InteractionResultHolder< ItemStack > use( Level level, Player player, InteractionHand hand ) {
 		ItemStack itemStack = player.getItemInHand( hand );
 		BonusInfo bonusInfo = new BonusInfo( itemStack.getOrCreateTag() );
