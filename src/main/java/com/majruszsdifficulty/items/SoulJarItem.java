@@ -1,21 +1,16 @@
 package com.majruszsdifficulty.items;
 
-import com.google.common.collect.ImmutableList;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
-import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.contexts.*;
-import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
@@ -27,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -38,16 +32,18 @@ import java.util.function.Function;
 
 public class SoulJarItem extends Item {
 	static final float DAMAGE_BONUS = 2.5f;
-	static final float MOVEMENT_BONUS = 0.15f;
+	static final float MOVE_BONUS = 0.15f;
 	static final float RANGE_BONUS = 0.5f;
 	static final int ARMOR_BONUS = 2;
-	static final float MINING_BONUS = 0.15f;
+	static final float MINE_BONUS = 0.15f;
 	static final int LUCK_BONUS = 1;
-	static final AttributeHandler MOVEMENT_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "SoulJarMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
+	static final float SWIM_BONUS = 0.25f;
+	static final AttributeHandler MOVE_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "SoulJarMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
 	static final AttributeHandler ARMOR_ATTRIBUTE = new AttributeHandler( "7d2d7767-51da-46cc-8081-80fda32d4126", "SoulJarArmorBonus", Attributes.ARMOR, AttributeModifier.Operation.ADDITION );
 	static final AttributeHandler REACH_ATTRIBUTE = new AttributeHandler( "23868877-961b-44c9-89c3-376e5c06dbd1", "SoulJarReachBonus", ForgeMod.REACH_DISTANCE.get(), AttributeModifier.Operation.ADDITION );
 	static final AttributeHandler RANGE_ATTRIBUTE = new AttributeHandler( "a45d6f34-5b78-4d7c-b60a-03fe6400f8cd", "SoulJarRangeBonus", ForgeMod.ATTACK_RANGE.get(), AttributeModifier.Operation.ADDITION );
 	static final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "a2a496f4-3799-46eb-856c-1ba992f67912", "SoulJarLuckBonus", Attributes.LUCK, AttributeModifier.Operation.ADDITION );
+	static final AttributeHandler SWIM_ATTRIBUTE = new AttributeHandler( "f404c216-a758-404f-ba95-5a53d3974b44", "SoulJarSwimmingBonus", ForgeMod.SWIM_SPEED.get(), AttributeModifier.Operation.MULTIPLY_TOTAL );
 
 	public static ItemStack randomItemStack( int bonusCount ) {
 		ItemStack itemStack = new ItemStack( Registries.SOUL_JAR.get() );
@@ -110,16 +106,18 @@ public class SoulJarItem extends Item {
 
 		private void updateAttributes( OnItemEquipped.Data data ) {
 			LivingEntity entity = ( LivingEntity )data.entity;
-			float speedBonus = hasBonus( data.entity, BonusType.MOVEMENT ) ? MOVEMENT_BONUS : 0.0f;
+			float moveBonus = hasBonus( data.entity, BonusType.MOVE ) ? MOVE_BONUS : 0.0f;
 			float armorBonus = hasBonus( data.entity, BonusType.ARMOR ) ? ARMOR_BONUS : 0.0f;
 			float rangeBonus = hasBonus( data.entity, BonusType.RANGE ) ? RANGE_BONUS : 0.0f;
 			float luckBonus = hasBonus( data.entity, BonusType.LUCK ) ? LUCK_BONUS : 0.0f;
+			float swimBonus = hasBonus( data.entity, BonusType.SWIM ) ? SWIM_BONUS : 0.0f;
 
-			MOVEMENT_ATTRIBUTE.setValueAndApply( entity, speedBonus );
+			MOVE_ATTRIBUTE.setValueAndApply( entity, moveBonus );
 			ARMOR_ATTRIBUTE.setValueAndApply( entity, armorBonus );
 			REACH_ATTRIBUTE.setValueAndApply( entity, rangeBonus );
 			RANGE_ATTRIBUTE.setValueAndApply( entity, rangeBonus );
 			LUCK_ATTRIBUTE.setValueAndApply( entity, luckBonus );
+			SWIM_ATTRIBUTE.setValueAndApply( entity, swimBonus );
 		}
 
 		private void increaseDamage( OnPreDamaged.Data data ) {
@@ -128,7 +126,7 @@ public class SoulJarItem extends Item {
 		}
 
 		private void increaseSpeed( OnBreakSpeed.Data data ) {
-			data.event.setNewSpeed( data.event.getNewSpeed() + MINING_BONUS * data.event.getOriginalSpeed() );
+			data.event.setNewSpeed( data.event.getNewSpeed() + MINE_BONUS * data.event.getOriginalSpeed() );
 		}
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
@@ -142,9 +140,14 @@ public class SoulJarItem extends Item {
 
 		private void addTooltip( OnItemTooltip.Data data ) {
 			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
-			for( BonusType bonusType : ImmutableList.copyOf( bonusInfo.getBonusTypes() ).reverse() ) {
-				data.tooltip.add( 1, bonusType.getSoulComponent() );
+			if( bonusInfo.bonusMask != 0b0 ) {
+				MutableComponent souls = Component.literal( "" );
+				for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
+					souls.append( souls.getString().equals( "" ) ? "" : " " ).append( bonusType.getSoulComponent() );
+				}
+				data.tooltip.add( 1, souls );
 			}
+
 			data.tooltip.addAll( 1, bonusInfo.getHintComponents() );
 		}
 	}
@@ -192,32 +195,35 @@ public class SoulJarItem extends Item {
 	}
 
 	public enum BonusType {
-		DAMAGE( 1 << 0, "item.majruszsdifficulty.soul_jar.smite", ChatFormatting.RED, multiplier->TextHelper.signed( DAMAGE_BONUS * multiplier ) ),
-		MOVEMENT( 1 << 1, "item.majruszsdifficulty.soul_jar.movement", ChatFormatting.YELLOW, multiplier->TextHelper.signedPercent( MOVEMENT_BONUS * multiplier ) ),
-		RANGE( 1 << 2, "item.majruszsdifficulty.soul_jar.range", ChatFormatting.LIGHT_PURPLE, multiplier->TextHelper.signed( RANGE_BONUS * multiplier ) ),
-		ARMOR( 1 << 3, "item.majruszsdifficulty.soul_jar.armor", ChatFormatting.BLUE, multiplier->TextHelper.signed( ( int )( ARMOR_BONUS * multiplier ) ) ),
-		MINING( 1 << 4, "item.majruszsdifficulty.soul_jar.mining", ChatFormatting.AQUA, multiplier->TextHelper.signedPercent( MINING_BONUS * multiplier ) ),
-		LUCK( 1 << 5, "item.majruszsdifficulty.soul_jar.luck", ChatFormatting.GREEN, multiplier->TextHelper.signed( ( int )( LUCK_BONUS * multiplier ) ) );
+		DAMAGE( 1 << 0, "item.majruszsdifficulty.soul_jar.smite", "entity.minecraft.wolf", ChatFormatting.RED, multiplier->TextHelper.signed( DAMAGE_BONUS * multiplier ) ),
+		MOVE( 1 << 1, "item.majruszsdifficulty.soul_jar.move", "entity.minecraft.horse", ChatFormatting.WHITE, multiplier->TextHelper.signedPercent( MOVE_BONUS * multiplier ) ),
+		RANGE( 1 << 2, "item.majruszsdifficulty.soul_jar.range", "entity.minecraft.enderman", ChatFormatting.LIGHT_PURPLE, multiplier->TextHelper.signed( RANGE_BONUS * multiplier ) ),
+		ARMOR( 1 << 3, "item.majruszsdifficulty.soul_jar.armor", "entity.majruszsdifficulty.tank", ChatFormatting.BLUE, multiplier->TextHelper.signed( ( int )( ARMOR_BONUS * multiplier ) ) ),
+		MINING( 1 << 4, "item.majruszsdifficulty.soul_jar.mine", "entity.minecraft.sniffer", ChatFormatting.YELLOW, multiplier->TextHelper.signedPercent( MINE_BONUS * multiplier ) ),
+		LUCK( 1 << 5, "item.majruszsdifficulty.soul_jar.luck", "entity.minecraft.rabbit", ChatFormatting.GREEN, multiplier->TextHelper.signed( ( int )( LUCK_BONUS * multiplier ) ) ),
+		SWIM( 1 << 6, "item.majruszsdifficulty.soul_jar.swim", "entity.minecraft.dolphin", ChatFormatting.AQUA, multiplier->TextHelper.signedPercent( SWIM_BONUS * multiplier ) );
 
 		final int bit;
-		final String id;
+		final String bonusId;
+		final String mobId;
 		final ChatFormatting soulFormatting;
 		final Function< Float, String > valueProvider;
 
-		BonusType( int bit, String id, ChatFormatting soulFormatting, Function< Float, String > valueProvider ) {
+		BonusType( int bit, String bonusId, String mobId, ChatFormatting soulFormatting, Function< Float, String > valueProvider ) {
 			this.bit = bit;
-			this.id = id;
+			this.bonusId = bonusId;
+			this.mobId = mobId;
 			this.soulFormatting = soulFormatting;
 			this.valueProvider = valueProvider;
 		}
 
 		public Component getBonusComponent( float multiplier ) {
-			return Component.translatable( String.format( "%s.bonus", this.id ), this.valueProvider.apply( multiplier ) )
+			return Component.translatable( this.bonusId, this.valueProvider.apply( multiplier ) )
 				.withStyle( ChatFormatting.BLUE );
 		}
 
 		public Component getSoulComponent() {
-			return Component.translatable( String.format( "%s.soul", this.id ) )
+			return Component.translatable( this.mobId )
 				.withStyle( this.soulFormatting );
 		}
 	}
