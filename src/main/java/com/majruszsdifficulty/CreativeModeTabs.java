@@ -103,8 +103,8 @@ public class CreativeModeTabs {
 			notImplemented(),
 
 			new ItemStack( Registries.UNDEAD_ARMY_TREASURE_BAG.get() ),
-			SoulJarItem.randomItemStack( 2 ),
 			SoulJarItem.randomItemStack( 3 ),
+			notImplemented(),
 
 			new ItemStack( Registries.PILLAGER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.RECALL_POTION.get() ),
