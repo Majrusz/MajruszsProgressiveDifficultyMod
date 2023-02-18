@@ -33,11 +33,8 @@ import java.util.stream.Stream;
 
 @AutoInstance
 public class UndeadSet extends ItemSet {
-	static final float SPEED_BONUS = 0.25f; // TextHelper.percent( SPEED_BONUS )
-	static final int SMITE_BONUS = 2; // Enchantments.SMITE.getFullname( SMITE_BONUS )
 	static final FoodProperties FLESH_NO_EFFECT = new FoodProperties.Builder().nutrition( 4 ).saturationMod( 0.1f ).meat().build();
 	static final FoodProperties FLESH_EXTRA_HUNGER = new FoodProperties.Builder().nutrition( 4 * 2 ).saturationMod( 0.1f ).meat().build();
-	static final AttributeHandler MOVEMENT_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "UndeadSetMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
 	static final ItemData ITEM_1 = new ItemData( Registries.TATTERED_HELMET, EquipmentSlot.HEAD );
 	static final ItemData ITEM_2 = new ItemData( Registries.TATTERED_CHESTPLATE, EquipmentSlot.CHEST );
 	static final ItemData ITEM_3 = new ItemData( Registries.TATTERED_LEGGINGS, EquipmentSlot.LEGS );
@@ -52,14 +49,6 @@ public class UndeadSet extends ItemSet {
 		new OnFoodPropertiesGet.Context( this::applyRottenFleshBoost )
 			.addCondition( data->data.itemStack.getItem().equals( Items.ROTTEN_FLESH ) )
 			.addCondition( data->data.entity != null );
-
-		/*new OnItemEquipped.Context( this::updateMovementSpeedBonus )
-			.addCondition( data->data.entity instanceof LivingEntity );
-
-		new OnPreDamaged.Context( this::increaseDamage )
-			.addCondition( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
-			.addCondition( data->data.attacker != null )
-			.addCondition( data->BONUS_4.isConditionMet( this, data.attacker ) );*/
 	}
 
 	private void applyRottenFleshBoost( OnFoodPropertiesGet.Data data ) {
@@ -68,16 +57,5 @@ public class UndeadSet extends ItemSet {
 		} else if( BONUS_1.isConditionMet( this, data.entity ) ) {
 			data.properties = FLESH_NO_EFFECT;
 		}
-	}
-
-	private void increaseDamage( OnPreDamaged.Data data ) {
-		data.extraDamage += SMITE_BONUS * 2.5f;
-		data.spawnMagicParticles = true;
-	}
-
-	private void updateMovementSpeedBonus( OnItemEquipped.Data data ) {
-		float speedBonus = BONUS_3.isConditionMet( this, ( LivingEntity )data.entity ) ? SPEED_BONUS : 0.0f;
-
-		MOVEMENT_ATTRIBUTE.setValueAndApply( ( LivingEntity )data.entity, speedBonus );
 	}
 }
