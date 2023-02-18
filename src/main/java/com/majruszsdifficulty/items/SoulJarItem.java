@@ -1,26 +1,38 @@
 package com.majruszsdifficulty.items;
 
+import com.google.common.collect.ImmutableList;
+import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
+import com.majruszsdifficulty.treasurebags.LootProgressManager;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.data.SerializableStructure;
-import com.mlib.gamemodifiers.contexts.OnBreakSpeed;
-import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
-import com.mlib.gamemodifiers.contexts.OnItemEquipped;
-import com.mlib.gamemodifiers.contexts.OnPreDamaged;
+import com.mlib.effects.SoundHandler;
+import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -37,8 +49,32 @@ public class SoulJarItem extends Item {
 	static final AttributeHandler RANGE_ATTRIBUTE = new AttributeHandler( "a45d6f34-5b78-4d7c-b60a-03fe6400f8cd", "SoulJarRangeBonus", ForgeMod.ATTACK_RANGE.get(), AttributeModifier.Operation.ADDITION );
 	static final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "a2a496f4-3799-46eb-856c-1ba992f67912", "SoulJarLuckBonus", Attributes.LUCK, AttributeModifier.Operation.ADDITION );
 
+	public static ItemStack randomItemStack( int bonusCount ) {
+		ItemStack itemStack = new ItemStack( Registries.SOUL_JAR.get() );
+		BonusInfo bonusInfo = new BonusInfo( itemStack.getOrCreateTag() );
+		bonusInfo.bonusCount = bonusCount;
+		bonusInfo.write( itemStack.getOrCreateTag() );
+
+		return itemStack;
+	}
+
 	public SoulJarItem() {
 		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
+	}
+
+	@Override
+	public InteractionResultHolder< ItemStack > use( Level level, Player player, InteractionHand hand ) {
+		ItemStack itemStack = player.getItemInHand( hand );
+		BonusInfo bonusInfo = new BonusInfo( itemStack.getOrCreateTag() );
+		if( bonusInfo.bonusMask == 0b0 ) {
+			bonusInfo.randomize();
+			bonusInfo.write( itemStack.getOrCreateTag() );
+			SoundHandler.ENCHANT.play( level, player.position() );
+
+			return InteractionResultHolder.sidedSuccess( itemStack, level.isClientSide() );
+		}
+
+		return InteractionResultHolder.pass( itemStack );
 	}
 
 	@AutoInstance
@@ -56,6 +92,9 @@ public class SoulJarItem extends Item {
 				.addCondition( data->hasBonus( data.player, BonusType.MINING ) );
 
 			new OnItemAttributeTooltip.Context( this::addTooltip )
+				.addCondition( data->data.itemStack.getItem() instanceof SoulJarItem );
+
+			new OnItemTooltip.Context( this::addTooltip )
 				.addCondition( data->data.itemStack.getItem() instanceof SoulJarItem );
 		}
 
@@ -94,23 +133,42 @@ public class SoulJarItem extends Item {
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
 			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
-			for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
-				data.add( EquipmentSlot.OFFHAND, bonusType.getComponent( 1.0f ) );
+			if( bonusInfo.bonusMask != 0b0 ) {
+				for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
+					data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( 1.0f ) );
+				}
 			}
+		}
 
-			bonusInfo.write( data.itemStack.getOrCreateTag() );
+		private void addTooltip( OnItemTooltip.Data data ) {
+			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
+			for( BonusType bonusType : ImmutableList.copyOf( bonusInfo.getBonusTypes() ).reverse() ) {
+				data.tooltip.add( 1, bonusType.getSoulComponent() );
+			}
+			data.tooltip.addAll( 1, bonusInfo.getHintComponents() );
 		}
 	}
 
 	public static class BonusInfo extends SerializableStructure {
 		public int bonusMask = 0b0;
+		public int bonusCount = 2;
 
 		public BonusInfo( CompoundTag tag ) {
 			super( "SoulJar" );
 
 			this.define( "BonusMask", ()->this.bonusMask, x->this.bonusMask = x );
+			this.define( "BonusCount", ()->this.bonusCount, x->this.bonusCount = x );
 
 			this.read( tag );
+		}
+
+		public void randomize() {
+			this.bonusMask = 0b0;
+			List< BonusType > bonusTypes = new ArrayList<>( Arrays.stream( BonusType.values() ).toList() );
+			Collections.shuffle( bonusTypes );
+			bonusTypes.stream()
+				.limit( this.bonusCount )
+				.forEach( bonusType->this.bonusMask |= bonusType.bit );
 		}
 
 		public List< BonusType > getBonusTypes() {
@@ -118,28 +176,49 @@ public class SoulJarItem extends Item {
 				.filter( bonusType->( bonusType.bit & this.bonusMask ) != 0 )
 				.toList();
 		}
+
+		public List< Component > getHintComponents() {
+			List< Component > components = new ArrayList<>();
+			if( this.bonusMask == 0b0 ) {
+				Component bonusCount = Component.literal( "" + this.bonusCount ).withStyle( ChatFormatting.GREEN );
+				components.add( Component.translatable( "item.majruszsdifficulty.soul_jar.item_tooltip1", bonusCount ).withStyle( ChatFormatting.GRAY ) );
+				components.add( Component.translatable( "item.majruszsdifficulty.soul_jar.item_tooltip2" ).withStyle( ChatFormatting.GRAY ) );
+			} else {
+				components.add( Component.translatable( "item.majruszsdifficulty.soul_jar.item_tooltip3" ).withStyle( ChatFormatting.GRAY ) );
+			}
+
+			return components;
+		}
 	}
 
 	public enum BonusType {
-		DAMAGE( 1 << 0, "item.majruszsdifficulty.soul_jar.smite", multiplier->TextHelper.signed( DAMAGE_BONUS * multiplier ) ),
-		MOVEMENT( 1 << 1, "item.majruszsdifficulty.soul_jar.movement", multiplier->TextHelper.signedPercent( MOVEMENT_BONUS * multiplier ) ),
-		RANGE( 1 << 2, "item.majruszsdifficulty.soul_jar.range", multiplier->TextHelper.signed( RANGE_BONUS * multiplier ) ),
-		ARMOR( 1 << 3, "item.majruszsdifficulty.soul_jar.armor", multiplier->TextHelper.signed( ( int )( ARMOR_BONUS * multiplier ) ) ),
-		MINING( 1 << 4, "item.majruszsdifficulty.soul_jar.mining", multiplier->TextHelper.signedPercent( MINING_BONUS * multiplier ) ),
-		LUCK( 1 << 5, "item.majruszsdifficulty.soul_jar.luck", multiplier->TextHelper.signed( ( int )( LUCK_BONUS * multiplier ) ) );
+		DAMAGE( 1 << 0, "item.majruszsdifficulty.soul_jar.smite", ChatFormatting.RED, multiplier->TextHelper.signed( DAMAGE_BONUS * multiplier ) ),
+		MOVEMENT( 1 << 1, "item.majruszsdifficulty.soul_jar.movement", ChatFormatting.YELLOW, multiplier->TextHelper.signedPercent( MOVEMENT_BONUS * multiplier ) ),
+		RANGE( 1 << 2, "item.majruszsdifficulty.soul_jar.range", ChatFormatting.LIGHT_PURPLE, multiplier->TextHelper.signed( RANGE_BONUS * multiplier ) ),
+		ARMOR( 1 << 3, "item.majruszsdifficulty.soul_jar.armor", ChatFormatting.BLUE, multiplier->TextHelper.signed( ( int )( ARMOR_BONUS * multiplier ) ) ),
+		MINING( 1 << 4, "item.majruszsdifficulty.soul_jar.mining", ChatFormatting.AQUA, multiplier->TextHelper.signedPercent( MINING_BONUS * multiplier ) ),
+		LUCK( 1 << 5, "item.majruszsdifficulty.soul_jar.luck", ChatFormatting.GREEN, multiplier->TextHelper.signed( ( int )( LUCK_BONUS * multiplier ) ) );
 
 		final int bit;
 		final String id;
+		final ChatFormatting soulFormatting;
 		final Function< Float, String > valueProvider;
 
-		BonusType( int bit, String id, Function< Float, String > valueProvider ) {
+		BonusType( int bit, String id, ChatFormatting soulFormatting, Function< Float, String > valueProvider ) {
 			this.bit = bit;
 			this.id = id;
+			this.soulFormatting = soulFormatting;
 			this.valueProvider = valueProvider;
 		}
 
-		Component getComponent( float multiplier ) {
-			return Component.translatable( this.id, this.valueProvider.apply( multiplier ) ).withStyle( ChatFormatting.BLUE );
+		public Component getBonusComponent( float multiplier ) {
+			return Component.translatable( String.format( "%s.bonus", this.id ), this.valueProvider.apply( multiplier ) )
+				.withStyle( ChatFormatting.BLUE );
+		}
+
+		public Component getSoulComponent() {
+			return Component.translatable( String.format( "%s.soul", this.id ) )
+				.withStyle( this.soulFormatting );
 		}
 	}
 }
