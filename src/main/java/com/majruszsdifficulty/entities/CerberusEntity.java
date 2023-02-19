@@ -248,6 +248,11 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 				.addConfig( this.wither.name( "Wither" ) )
 				.insertTo( this );
 
+			new OnEffectApplicable.Context( this::cancelEffect )
+				.addCondition( data->data.effect.equals( MobEffects.WITHER ) )
+				.addCondition( data->data.entity instanceof CerberusEntity )
+				.insertTo( this );
+
 			new OnEntityTick.Context( this::spawnParticle )
 				.addCondition( new Condition.IsServer<>() )
 				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 4, Dist.DEDICATED_SERVER ).configurable( false ) )
@@ -257,6 +262,10 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		private void applyWither( OnDamaged.Data data ) {
 			this.wither.apply( data.target );
+		}
+
+		private void cancelEffect( OnEffectApplicable.Data data ) {
+			data.event.setResult( Event.Result.DENY );
 		}
 
 		private void spawnParticle( OnEntityTick.Data data ) {
