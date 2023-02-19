@@ -13,16 +13,17 @@
       ]
     },
     {
-      "rolls": {
-        "min": 6.0,
-        "max": 12.0,
-        "type": "minecraft:uniform"
-      },
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:bandage",
-          "quality": 1
+          "name": "minecraft:book",
+          "quality": 3,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ]
         }
       ]
     },
@@ -53,33 +54,41 @@
     },
     {
       "rolls": {
-        "min": 24.0,
-        "max": 29.0,
+        "min": 6.0,
+        "max": 12.0,
+        "type": "minecraft:uniform"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszsdifficulty:bandage",
+          "quality": 1
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "min": 29.0,
+        "max": 39.0,
         "type": "minecraft:uniform"
       },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "minecraft:bone",
-          "weight": 25,
+          "weight": 35,
           "quality": 0
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:rotten_flesh",
-          "weight": 25,
-          "quality": 0
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:emerald",
-          "weight": 20,
+          "weight": 35,
           "quality": 0
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:arrow",
-          "weight": 15,
+          "weight": 19,
           "quality": 0
         },
         {
@@ -91,7 +100,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:book",
-          "weight": 5,
+          "weight": 1,
           "quality": 3,
           "functions": [
             {
