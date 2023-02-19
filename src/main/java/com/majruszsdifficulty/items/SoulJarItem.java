@@ -62,7 +62,7 @@ public class SoulJarItem extends Item {
 
 	@Override
 	public boolean isFoil( ItemStack itemStack ) {
-		return new BonusInfo( itemStack.getOrCreateTag() ).bonusMask != 0b0;
+		return new BonusInfo( itemStack.getOrCreateTag() ).hasBonuses();
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class SoulJarItem extends Item {
 
 		private void addTooltip( OnItemTooltip.Data data ) {
 			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
-			if( bonusInfo.bonusMask != 0b0 ) {
+			if( bonusInfo.hasBonuses() ) {
 				MutableComponent souls = Component.literal( "" );
 				for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
 					souls.append( souls.getString().equals( "" ) ? "" : " " ).append( bonusType.getSoulComponent() );
@@ -190,6 +190,10 @@ public class SoulJarItem extends Item {
 			bonusTypes.stream()
 				.limit( this.bonusCount )
 				.forEach( bonusType->this.bonusMask |= bonusType.bit );
+		}
+
+		public boolean hasBonuses() {
+			return this.bonusMask != 0b0;
 		}
 
 		public List< BonusType > getBonusTypes() {
