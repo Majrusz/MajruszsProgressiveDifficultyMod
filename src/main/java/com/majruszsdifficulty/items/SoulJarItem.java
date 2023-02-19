@@ -136,10 +136,8 @@ public class SoulJarItem extends Item {
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
 			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
-			if( bonusInfo.bonusMask != 0b0 ) {
-				for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
-					data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( 1.0f ) );
-				}
+			for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
+				data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( 1.0f ) );
 			}
 		}
 
@@ -202,7 +200,7 @@ public class SoulJarItem extends Item {
 	public enum BonusType {
 		DAMAGE( 1 << 0, "item.majruszsdifficulty.soul_jar.smite", "entity.minecraft.wolf", ChatFormatting.RED, multiplier->TextHelper.signed( DAMAGE_BONUS * multiplier ) ),
 		MOVE( 1 << 1, "item.majruszsdifficulty.soul_jar.move", "entity.minecraft.horse", ChatFormatting.WHITE, multiplier->TextHelper.signedPercent( MOVE_BONUS * multiplier ) ),
-		RANGE( 1 << 2, "item.majruszsdifficulty.soul_jar.range", "entity.minecraft.enderman", ChatFormatting.LIGHT_PURPLE, multiplier->TextHelper.signed( RANGE_BONUS * multiplier ) ),
+		RANGE( 1 << 2, "item.majruszsdifficulty.soul_jar.range", "entity.minecraft.enderman", ChatFormatting.DARK_PURPLE, multiplier->TextHelper.signed( RANGE_BONUS * multiplier ) ),
 		ARMOR( 1 << 3, "item.majruszsdifficulty.soul_jar.armor", "entity.majruszsdifficulty.tank", ChatFormatting.BLUE, multiplier->TextHelper.signed( ( int )( ARMOR_BONUS * multiplier ) ) ),
 		MINING( 1 << 4, "item.majruszsdifficulty.soul_jar.mine", "entity.minecraft.sniffer", ChatFormatting.YELLOW, multiplier->TextHelper.signedPercent( MINE_BONUS * multiplier ) ),
 		LUCK( 1 << 5, "item.majruszsdifficulty.soul_jar.luck", "entity.minecraft.rabbit", ChatFormatting.GREEN, multiplier->TextHelper.signed( ( int )( LUCK_BONUS * multiplier ) ) ),
