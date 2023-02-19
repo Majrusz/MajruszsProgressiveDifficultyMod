@@ -172,7 +172,7 @@ public class SoulJarItem extends Item {
 
 	public static class BonusInfo extends SerializableStructure {
 		public int bonusMask = 0b0;
-		public int bonusCount = 2;
+		public int bonusCount = 3;
 
 		public BonusInfo( CompoundTag tag ) {
 			super( "SoulJar" );
