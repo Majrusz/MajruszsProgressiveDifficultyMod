@@ -1,16 +1,26 @@
 {
   "undead_army.approaching": {
-    "category": "ambient",
     "subtitle": "majruszsdifficulty.subtitle.undead_army.approaching",
     "sounds": [
       "majruszsdifficulty:undead_army/approaching"
     ]
   },
   "undead_army.wave_started": {
-    "category": "ambient",
     "subtitle": "majruszsdifficulty.subtitle.undead_army.wave_started",
     "sounds": [
       "majruszsdifficulty:undead_army/wave_started"
+    ]
+  },
+  "entity.cerberus_growl": {
+    "subtitle": "majruszsdifficulty.subtitle.entity.cerberus_growl",
+    "sounds": [
+      "majruszsdifficulty:entity/cerberus_growl"
+    ]
+  },
+  "entity.cerberus_bite": {
+    "subtitle": "majruszsdifficulty.subtitle.entity.cerberus_bite",
+    "sounds": [
+      "majruszsdifficulty:entity/cerberus_bite"
     ]
   }
 }
