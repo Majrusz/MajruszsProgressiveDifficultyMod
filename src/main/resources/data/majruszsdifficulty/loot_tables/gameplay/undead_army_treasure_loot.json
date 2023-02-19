@@ -3,6 +3,16 @@
   "type": "minecraft:gift",
   "pools": [
     {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszsdifficulty:soul_jar",
+          "quality": 4
+        }
+      ]
+    },
+    {
       "rolls": {
         "min": 6.0,
         "max": 12.0,
