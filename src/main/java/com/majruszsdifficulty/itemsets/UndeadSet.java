@@ -1,34 +1,20 @@
 package com.majruszsdifficulty.itemsets;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.items.TatteredArmorItem;
+import com.majruszsdifficulty.gamemodifiers.contexts.OnSoulJarMultiplier;
 import com.mlib.annotations.AutoInstance;
-import com.mlib.attributes.AttributeHandler;
 import com.mlib.gamemodifiers.contexts.OnFoodPropertiesGet;
-import com.mlib.gamemodifiers.contexts.OnItemEquipped;
-import com.mlib.gamemodifiers.contexts.OnPreDamaged;
 import com.mlib.itemsets.BonusData;
 import com.mlib.itemsets.ItemData;
 import com.mlib.itemsets.ItemSet;
-import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.registries.RegistryObject;
 
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 @AutoInstance
@@ -49,6 +35,10 @@ public class UndeadSet extends ItemSet {
 		new OnFoodPropertiesGet.Context( this::applyRottenFleshBoost )
 			.addCondition( data->data.itemStack.getItem().equals( Items.ROTTEN_FLESH ) )
 			.addCondition( data->data.entity != null );
+
+		new OnSoulJarMultiplier.Context( this::increaseMultiplier )
+			.addCondition( data->data.entity instanceof LivingEntity )
+			.addCondition( data->BONUS_3.isConditionMet( this, ( LivingEntity )data.entity ) );
 	}
 
 	private void applyRottenFleshBoost( OnFoodPropertiesGet.Data data ) {
@@ -57,5 +47,9 @@ public class UndeadSet extends ItemSet {
 		} else if( BONUS_1.isConditionMet( this, data.entity ) ) {
 			data.properties = FLESH_NO_EFFECT;
 		}
+	}
+
+	private void increaseMultiplier( OnSoulJarMultiplier.Data data ) {
+		data.multiplier *= 2.0f;
 	}
 }

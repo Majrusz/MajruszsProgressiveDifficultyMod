@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.gamemodifiers.contexts.OnSoulJarMultiplier;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.data.SerializableStructure;
@@ -8,6 +9,7 @@ import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -37,7 +39,7 @@ public class SoulJarItem extends Item {
 	static final int ARMOR_BONUS = 2;
 	static final float MINE_BONUS = 0.15f;
 	static final int LUCK_BONUS = 1;
-	static final float SWIM_BONUS = 0.25f;
+	static final float SWIM_BONUS = 0.30f;
 	static final AttributeHandler MOVE_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "SoulJarMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
 	static final AttributeHandler ARMOR_ATTRIBUTE = new AttributeHandler( "7d2d7767-51da-46cc-8081-80fda32d4126", "SoulJarArmorBonus", Attributes.ARMOR, AttributeModifier.Operation.ADDITION );
 	static final AttributeHandler REACH_ATTRIBUTE = new AttributeHandler( "23868877-961b-44c9-89c3-376e5c06dbd1", "SoulJarReachBonus", ForgeMod.REACH_DISTANCE.get(), AttributeModifier.Operation.ADDITION );
@@ -109,35 +111,48 @@ public class SoulJarItem extends Item {
 				.contains( bonusType );
 		}
 
+		private static float getMultiplier( @Nullable Entity entity, ItemStack itemStack ) {
+			if( !( itemStack.getItem() instanceof SoulJarItem ) )
+				return 0.0f;
+
+			return OnSoulJarMultiplier.broadcast( new OnSoulJarMultiplier.Data( entity, itemStack ) ).getMultiplier();
+		}
+
+		private static float getMultiplier( @Nullable Entity entity ) {
+			return entity instanceof LivingEntity livingEntity ? getMultiplier( entity, livingEntity.getItemBySlot( EquipmentSlot.OFFHAND ) ) : 0.0f;
+		}
+
 		private void updateAttributes( OnItemEquipped.Data data ) {
 			LivingEntity entity = ( LivingEntity )data.entity;
+			float multiplier = getMultiplier( entity );
 			float moveBonus = hasBonus( data.entity, BonusType.MOVE ) ? MOVE_BONUS : 0.0f;
 			float armorBonus = hasBonus( data.entity, BonusType.ARMOR ) ? ARMOR_BONUS : 0.0f;
 			float rangeBonus = hasBonus( data.entity, BonusType.RANGE ) ? RANGE_BONUS : 0.0f;
 			float luckBonus = hasBonus( data.entity, BonusType.LUCK ) ? LUCK_BONUS : 0.0f;
 			float swimBonus = hasBonus( data.entity, BonusType.SWIM ) ? SWIM_BONUS : 0.0f;
 
-			MOVE_ATTRIBUTE.setValueAndApply( entity, moveBonus );
-			ARMOR_ATTRIBUTE.setValueAndApply( entity, armorBonus );
-			REACH_ATTRIBUTE.setValueAndApply( entity, rangeBonus );
-			RANGE_ATTRIBUTE.setValueAndApply( entity, rangeBonus );
-			LUCK_ATTRIBUTE.setValueAndApply( entity, luckBonus );
-			SWIM_ATTRIBUTE.setValueAndApply( entity, swimBonus );
+			MOVE_ATTRIBUTE.setValueAndApply( entity, multiplier * moveBonus );
+			ARMOR_ATTRIBUTE.setValueAndApply( entity, multiplier * armorBonus );
+			REACH_ATTRIBUTE.setValueAndApply( entity, multiplier * rangeBonus );
+			RANGE_ATTRIBUTE.setValueAndApply( entity, multiplier * rangeBonus );
+			LUCK_ATTRIBUTE.setValueAndApply( entity, multiplier * luckBonus );
+			SWIM_ATTRIBUTE.setValueAndApply( entity, multiplier * swimBonus );
 		}
 
 		private void increaseDamage( OnPreDamaged.Data data ) {
-			data.extraDamage += DAMAGE_BONUS * 2.5f;
+			data.extraDamage += DAMAGE_BONUS * 2.5f * getMultiplier( data.attacker );
 			data.spawnMagicParticles = true;
 		}
 
 		private void increaseSpeed( OnBreakSpeed.Data data ) {
-			data.event.setNewSpeed( data.event.getNewSpeed() + MINE_BONUS * data.event.getOriginalSpeed() );
+			data.event.setNewSpeed( data.event.getNewSpeed() + data.event.getOriginalSpeed() * MINE_BONUS * getMultiplier( data.player ) );
 		}
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
 			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
+			float multiplier = getMultiplier( Minecraft.getInstance().player, data.itemStack );
 			for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
-				data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( 1.0f ) );
+				data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( multiplier ) );
 			}
 		}
 
