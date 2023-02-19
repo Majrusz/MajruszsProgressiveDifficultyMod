@@ -190,6 +190,8 @@ public class Registries {
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_WAVE_STARTED = register( "undead_army.wave_started" );
+	public static final RegistryObject< SoundEvent > CERBERUS_GROWL = register( "entity.cerberus_growl" );
+	public static final RegistryObject< SoundEvent > CERBERUS_BITE = register( "entity.cerberus_bite" );
 
 	static RegistryObject< SoundEvent > register( String name ) {
 		return SOUNDS_EVENTS.register( name, ()->SoundEvent.createVariableRangeEvent( getLocation( name ) ) );

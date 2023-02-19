@@ -15,6 +15,7 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
+import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.goals.CustomMeleeGoal;
 import com.mlib.math.VectorHelper;
@@ -24,6 +25,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -42,6 +44,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -49,7 +52,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class CerberusEntity extends Monster implements ICustomSkillProvider< CerberusEntity.Skills > {
-	public static final String GROUP_ID = "Cerberus";
+	static final String GROUP_ID = "Cerberus";
 
 	static {
 		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID ).name( "Cerberus" );
@@ -97,8 +100,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		if( this.isSilent() ) {
 			return;
 		}
+		boolean isCustomSound = sound == Registries.CERBERUS_GROWL.get() || sound == Registries.CERBERUS_BITE.get();
 		float randomizedVolume = SoundHandler.randomized( volume * 1.25f ).get();
-		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
+		float randomizedPitch = SoundHandler.randomized( isCustomSound ? pitch : pitch * 0.75f ).get();
 
 		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
@@ -129,7 +133,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.WITHER_SKELETON_AMBIENT;
+		return Registries.CERBERUS_GROWL.get();
 	}
 
 	@Override
@@ -170,6 +174,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 			Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
 			this.pushMobTowards( entity );
+			this.mob.playSound( Registries.CERBERUS_BITE.get(), 1.0f, 1.0f );
 			this.start( SkillType.BITE, Utility.secondsToTicks( 0.7 ) )
 				.onRatio( 0.55f, ()->this.hurtAllEntitiesInRange( level, position ) );
 
