@@ -114,6 +114,8 @@
   "majruszsdifficulty.undead_army.south": "south",
   "majruszsdifficulty.subtitle.undead_army.approaching": "Undead Army Approaching",
   "majruszsdifficulty.subtitle.undead_army.wave_started": "Wave Started",
+  "majruszsdifficulty.subtitle.entity.cerberus_growl": "Cerberus growls",
+  "majruszsdifficulty.subtitle.entity.cerberus_bite": "Cerberus bites",
   "majruszsdifficulty.sets.enderium.name": "Set of the End",
   "majruszsdifficulty.sets.enderium.bonus_1": "Makes all Endermans less hostile.",
   "majruszsdifficulty.sets.enderium.bonus_2": "Gives an extra Looting level in the End.",
