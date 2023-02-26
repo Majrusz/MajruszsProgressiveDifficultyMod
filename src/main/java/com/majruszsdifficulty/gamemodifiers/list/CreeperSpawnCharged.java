@@ -17,7 +17,7 @@ public class CreeperSpawnCharged extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnSpawned.ContextSafe( this::chargeCreeper )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.125, true ) )
 			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )

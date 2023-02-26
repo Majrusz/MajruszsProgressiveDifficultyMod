@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
+import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Utility;
@@ -16,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.majruszsdifficulty.GameStage.Stage;
-
 @AutoInstance
 public class DoubleLoot extends GameModifier {
 	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, ()->new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
@@ -26,17 +25,17 @@ public class DoubleLoot extends GameModifier {
 	public DoubleLoot() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDoubleLootContext( this::doubleLoot, 0.0, Stage.NORMAL )
+		new OnDoubleLootContext( this::doubleLoot, 0.0, GameStage.NORMAL )
 			.name( "NormalMode" )
 			.comment( "Determines the chance on Normal Mode." )
 			.insertTo( this );
 
-		new OnDoubleLootContext( this::doubleLoot, 0.2, Stage.EXPERT )
+		new OnDoubleLootContext( this::doubleLoot, 0.2, GameStage.EXPERT )
 			.name( "ExpertMode" )
 			.comment( "Determines the chance on Expert Mode." )
 			.insertTo( this );
 
-		new OnDoubleLootContext( this::doubleLoot, 0.4, Stage.MASTER )
+		new OnDoubleLootContext( this::doubleLoot, 0.4, GameStage.MASTER )
 			.name( "MasterMode" )
 			.comment( "Determines the chance on Master Mode." )
 			.insertTo( this );
@@ -75,7 +74,7 @@ public class DoubleLoot extends GameModifier {
 	}
 
 	private static class OnDoubleLootContext extends OnLoot.Context {
-		public OnDoubleLootContext( Consumer< OnLoot.Data > consumer, double chance, Stage stage ) {
+		public OnDoubleLootContext( Consumer< OnLoot.Data > consumer, double chance, GameStage stage ) {
 			super( consumer );
 
 			this.addCondition( new CustomConditions.GameStageExact<>( stage ) )

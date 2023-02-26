@@ -36,7 +36,7 @@ public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
 	}
 
 	private MutableComponent buildFormula( ServerLevel level, Vec3 position ) {
-		if( GameStage.getCurrentStage() == GameStage.Stage.NORMAL )
+		if( GameStage.getCurrentStage() == GameStage.NORMAL )
 			return Component.literal( "" );
 
 		String crd = String.format( "%.2f", LevelHelper.getClampedRegionalDifficulty( level, position ) );
@@ -45,6 +45,6 @@ public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
 	}
 
 	private MutableComponent withStageStyle( String text ) {
-		return GameStage.withStyle( Component.literal( text ) );
+		return Component.literal( text ).withStyle( GameStage.getCurrentStage().getChatFormatting() );
 	}
 }

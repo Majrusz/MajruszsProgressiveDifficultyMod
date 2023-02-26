@@ -18,7 +18,7 @@ public class JockeySpawn extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnSpawned.ContextSafe( this::spawnSkeletonOnSpider )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.125, false ) )
 			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )

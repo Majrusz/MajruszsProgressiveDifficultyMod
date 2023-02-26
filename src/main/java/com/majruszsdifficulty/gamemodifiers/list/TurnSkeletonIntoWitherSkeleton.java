@@ -33,7 +33,7 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 
 		new OnDeath.Context( this::spawnWitherSkeleton )
 			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.MASTER ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.MASTER ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.5, true ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( this::hasWitherTag )

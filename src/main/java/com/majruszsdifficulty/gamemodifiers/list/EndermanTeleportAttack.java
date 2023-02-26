@@ -18,7 +18,7 @@ public class EndermanTeleportAttack extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDamaged.Context( this::teleportPlayerRandomly )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.MASTER ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.MASTER ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.5, true ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.level != null )

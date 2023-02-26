@@ -20,7 +20,7 @@ public class DrownDebuffs extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDamaged.Context( this::applyDebuffs )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.source.equals( DamageSource.DROWN ) )

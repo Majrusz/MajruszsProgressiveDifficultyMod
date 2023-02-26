@@ -34,7 +34,7 @@ public class SpawnPlayerZombie extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDeath.Context( this::spawnZombie )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.level != null )

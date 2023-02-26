@@ -26,7 +26,7 @@ public class PiglinsInGroup extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnSpawned.ContextSafe( this::spawnGroup )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
 			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
 			.addCondition( new Condition.IsServer<>() )

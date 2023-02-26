@@ -19,7 +19,7 @@ public class SlimeSlownessAttack extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDamaged.Context( this::applyEffect )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.5, true ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.attacker instanceof Slime )

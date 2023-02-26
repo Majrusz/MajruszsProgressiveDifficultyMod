@@ -32,7 +32,7 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnExplosion.Context( this::spawnCreeperlings )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.666, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) )

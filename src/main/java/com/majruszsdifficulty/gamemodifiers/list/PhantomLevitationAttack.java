@@ -19,7 +19,7 @@ public class PhantomLevitationAttack extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDamaged.Context( this::applyEffect )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.MASTER ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.MASTER ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.75, true ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.attacker instanceof Phantom )

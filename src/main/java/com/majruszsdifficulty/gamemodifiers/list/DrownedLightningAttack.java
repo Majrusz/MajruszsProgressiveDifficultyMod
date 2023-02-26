@@ -19,7 +19,7 @@ public class DrownedLightningAttack extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDamaged.Context( this::spawnLightningBolt )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.attacker instanceof Drowned )
 			.addCondition( data->data.source.getDirectEntity() instanceof ThrownTrident )

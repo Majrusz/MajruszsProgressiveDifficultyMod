@@ -25,7 +25,7 @@ public class CreeperSpawnDebuffed extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnSpawned.ContextSafe( this::applyRandomEffect )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.375, true ) )
 			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
