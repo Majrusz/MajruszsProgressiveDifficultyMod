@@ -35,7 +35,7 @@ public class UndeadArmyCommand extends DifficultyCommand {
 
 	private int handle( CommandData data ) throws CommandSyntaxException {
 		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
-		UndeadArmy undeadArmy = Registries.UNDEAD_ARMY_MANAGER.findNearestUndeadArmy( new BlockPos( position ) );
+		UndeadArmy undeadArmy = Registries.getUndeadArmyManager().findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			data.source.sendSuccess( this.componentSupplier.apply( undeadArmy, position ), true );
 			return 0;
