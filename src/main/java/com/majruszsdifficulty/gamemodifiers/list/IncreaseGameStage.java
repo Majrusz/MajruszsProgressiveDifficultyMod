@@ -10,6 +10,7 @@ import com.mlib.config.EnumConfig;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnDimensionChanged;
+import com.mlib.gamemodifiers.parameters.Priority;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
@@ -50,6 +51,7 @@ public class IncreaseGameStage extends GameModifier {
 			.insertTo( this );
 
 		new OnGameStageChange.Context( this::notifyPlayers )
+			.priority( Priority.HIGHEST )
 			.addCondition( data->!data.isLoadedFromDisk() )
 			.addCondition( data->data.previous == GameStage.NORMAL && data.current == GameStage.EXPERT || data.current == GameStage.MASTER )
 			.insertTo( this );
