@@ -9,6 +9,7 @@ import com.majruszsdifficulty.entities.*;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
+import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
 import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
@@ -204,6 +205,10 @@ public class Registries {
 
 	public static UndeadArmyManager getUndeadArmyManager() {
 		return GAME_DATA_SAVER.getUndeadArmyManager();
+	}
+
+	public static TreasureBagProgressManager getTreasureBagProgressManager() {
+		return GAME_DATA_SAVER.getTreasureBagProgressManager();
 	}
 
 	public static ResourceLocation getLocation( String register ) {
