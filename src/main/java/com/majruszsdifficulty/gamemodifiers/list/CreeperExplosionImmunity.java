@@ -19,7 +19,7 @@ public class CreeperExplosionImmunity extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDamaged.Context( this::reduceExplosionDamage )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.EXPERT ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.target instanceof Creeper )
 			.addCondition( data->data.source.isExplosion() )
