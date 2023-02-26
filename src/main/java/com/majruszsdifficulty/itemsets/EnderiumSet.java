@@ -93,6 +93,7 @@ public class EnderiumSet extends ItemSet {
 
 	private void cancelDeath( OnDeath.Data data ) {
 		EntityHelper.cheatDeath( data.target, 1.0f, false );
+		data.target.setDeltaMovement( 0.0, 0.2, 0.0 );
 		LevelHelper.teleportToSpawnPosition( ( ServerPlayer )data.target );
 		Time.slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
 		data.event.setCanceled( true );
