@@ -9,6 +9,7 @@ import net.minecraftforge.fml.event.IModBusEvent;
 import java.util.List;
 
 /** Event called when the player opens any treasure bag. */
+@Deprecated( since = "1.7.0 use OnTreasureBagOpened instead" )
 public class TreasureBagOpenedEvent extends PlayerEvent implements IModBusEvent {
 	public final TreasureBagItem treasureBagItem;
 	public final List< ItemStack > generatedLoot;
