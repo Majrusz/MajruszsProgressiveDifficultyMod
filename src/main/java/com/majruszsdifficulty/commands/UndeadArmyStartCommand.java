@@ -28,7 +28,7 @@ public class UndeadArmyStartCommand extends DifficultyCommand {
 	private int handle( CommandData data ) throws CommandSyntaxException {
 		Optional< Direction > direction = this.getOptionalEnumeration( data, Direction.class );
 		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
-		if( Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( new BlockPos( position ), direction ) ) {
+		if( Registries.getUndeadArmyManager().tryToSpawn( new BlockPos( position ), direction ) ) {
 			data.source.sendSuccess( new TranslatableComponent( "commands.undeadarmy.started", asVec3i( position ) ), true );
 			return 0;
 		}

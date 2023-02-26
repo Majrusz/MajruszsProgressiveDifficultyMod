@@ -157,7 +157,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	private static boolean isValidTarget( LivingEntity entity ) {
-		return !Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( entity )
+		return !Registries.getUndeadArmyManager().isPartOfUndeadArmy( entity )
 			&& !( entity instanceof CerberusEntity );
 	}
 

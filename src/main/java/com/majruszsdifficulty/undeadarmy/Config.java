@@ -70,14 +70,14 @@ public class Config extends GameModifier {
 		};
 		MinecraftForge.EVENT_BUS.addListener( ( AddReloadListenerEvent event )->event.addListener( listener ) );
 
-		new OnServerTick.Context( data->Registries.UNDEAD_ARMY_MANAGER.tick() )
+		new OnServerTick.Context( data->Registries.getUndeadArmyManager().tick() )
 			.addCondition( data->data.event.phase == TickEvent.Phase.END )
 			.insertTo( this );
 
 		new OnDeath.Context( this::updateKilledUndead )
 			.addCondition( data->this.getRequiredKills() > 0 )
 			.addCondition( data->data.target.getMobType() == MobType.UNDEAD )
-			.addCondition( data->!Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( data.target ) )
+			.addCondition( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) )
 			.addCondition( data->data.attacker instanceof ServerPlayer )
 			.insertTo( this );
 
@@ -86,7 +86,7 @@ public class Config extends GameModifier {
 			.addCondition( OnLoot.HAS_DAMAGE_SOURCE )
 			.addCondition( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) )
 			.addCondition( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
-			.addCondition( data->Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( data.entity ) )
+			.addCondition( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity ) )
 			.insertTo( this );
 
 		new OnGameStageChange.Context( this::notifyPlayers )
@@ -161,7 +161,7 @@ public class Config extends GameModifier {
 		info.read( tag );
 
 		++info.killedUndead;
-		if( info.killedUndead >= this.getRequiredKills() && Registries.UNDEAD_ARMY_MANAGER.tryToSpawn( player ) ) {
+		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
 			info.killedUndead = 0;
 		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {
 			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
