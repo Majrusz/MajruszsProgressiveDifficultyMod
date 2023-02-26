@@ -301,7 +301,7 @@ public class Registries {
 		DimensionDataStorage manager = level.getDataStorage();
 		var config = ANNOTATION_HANDLER.getInstance( com.majruszsdifficulty.undeadarmy.Config.class );
 		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->new UndeadArmyManager( level, config, nbt ), ()->new UndeadArmyManager( level, config ), "undead_army" );
-		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::load, GameDataSaver::new, GameDataSaver.DATA_NAME );
+		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::new, GameDataSaver::new, MajruszsDifficulty.MOD_ID );
 
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
