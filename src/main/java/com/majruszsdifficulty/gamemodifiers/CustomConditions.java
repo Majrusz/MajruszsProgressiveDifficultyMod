@@ -87,7 +87,7 @@ public class CustomConditions {
 
 		@Override
 		public boolean check( GameModifier gameModifier, DataType data ) {
-			return !Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( data.entity );
+			return !Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity );
 		}
 	}
 }

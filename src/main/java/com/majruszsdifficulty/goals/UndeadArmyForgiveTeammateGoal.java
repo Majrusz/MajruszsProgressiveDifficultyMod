@@ -18,7 +18,7 @@ public class UndeadArmyForgiveTeammateGoal extends HurtByTargetGoal {
 	}
 
 	private boolean areFromTheSameTeam( LivingEntity target, LivingEntity attacker ) {
-		return Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( target )
-			&& Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( attacker );
+		return Registries.getUndeadArmyManager().isPartOfUndeadArmy( target )
+			&& Registries.getUndeadArmyManager().isPartOfUndeadArmy( attacker );
 	}
 }

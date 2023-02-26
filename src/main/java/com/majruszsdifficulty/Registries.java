@@ -184,7 +184,6 @@ public class Registries {
 
 	// Misc
 	public static final CreativeModeTab ITEM_GROUP = CreativeModeTabHelper.newTab( "majruszsdifficulty.primary", BATTLE_STANDARD );
-	public static UndeadArmyManager UNDEAD_ARMY_MANAGER = UndeadArmyManager.NOT_LOADED;
 	public static GameDataSaver GAME_DATA_SAVER;
 
 	// Triggers
@@ -208,6 +207,10 @@ public class Registries {
 
 	// Game Modifiers
 	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
+
+	public static UndeadArmyManager getUndeadArmyManager() {
+		return GAME_DATA_SAVER.getUndeadArmyManager();
+	}
 
 	public static ResourceLocation getLocation( String register ) {
 		return HELPER.getLocation( register );
@@ -294,14 +297,16 @@ public class Registries {
 	}
 
 	public static void onLoadingLevel( LevelEvent.Load event ) {
-		ServerLevel level = getOverworld( event.getLevel() );
-		if( level == null )
+		ServerLevel overworld = getOverworld( event.getLevel() );
+		if( overworld == null )
 			return;
 
-		DimensionDataStorage manager = level.getDataStorage();
-		var config = ANNOTATION_HANDLER.getInstance( com.majruszsdifficulty.undeadarmy.Config.class );
-		UNDEAD_ARMY_MANAGER = manager.computeIfAbsent( nbt->new UndeadArmyManager( level, config, nbt ), ()->new UndeadArmyManager( level, config ), "undead_army" );
-		GAME_DATA_SAVER = manager.computeIfAbsent( GameDataSaver::new, GameDataSaver::new, MajruszsDifficulty.MOD_ID );
+		GAME_DATA_SAVER = overworld.getDataStorage()
+			.computeIfAbsent(
+				nbt->new GameDataSaver( overworld, nbt ),
+				()->new GameDataSaver( overworld ),
+				MajruszsDifficulty.MOD_ID
+			);
 
 		TreasureBagManager.addTreasureBagTo( EntityType.ELDER_GUARDIAN, ELDER_GUARDIAN_TREASURE_BAG.get() );
 		TreasureBagManager.addTreasureBagTo( EntityType.WITHER, WITHER_TREASURE_BAG.get() );
@@ -310,12 +315,10 @@ public class Registries {
 	}
 
 	public static void onSavingLevel( LevelEvent.Save event ) {
-		ServerLevel level = getOverworld( event.getLevel() );
-		if( level == null )
-			return;
-
-		GAME_DATA_SAVER.setDirty();
-		UNDEAD_ARMY_MANAGER.setDirty();
+		ServerLevel overworld = getOverworld( event.getLevel() );
+		if( overworld != null ) {
+			GAME_DATA_SAVER.setDirty();
+		}
 	}
 
 	@Nullable
