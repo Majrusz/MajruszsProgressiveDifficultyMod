@@ -1,6 +1,7 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.gamemodifiers.list.IncreaseGameStage;
+import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
 import com.majruszsdifficulty.undeadarmy.Config;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.data.SerializableStructure;
@@ -34,16 +35,23 @@ public class GameDataSaver extends SavedData {
 		return this.data.undeadArmyManager;
 	}
 
+	public TreasureBagProgressManager getTreasureBagProgressManager() {
+		return this.data.treasureBagProgressManager;
+	}
+
 	public static class Data extends SerializableStructure {
 		final UndeadArmyManager undeadArmyManager;
+		final TreasureBagProgressManager treasureBagProgressManager;
 
 		public Data( ServerLevel overworld ) {
 			super( "MajruszsDifficulty" );
 
 			this.undeadArmyManager = new UndeadArmyManager( overworld, Registries.ANNOTATION_HANDLER.getInstance( Config.class ) );
+			this.treasureBagProgressManager = new TreasureBagProgressManager();
 
 			this.define( "GameStage", GameStage::getCurrentStage, gameStage->GameStage.changeStage( gameStage, null ), GameStage::values );
 			this.define( "UndeadArmy", ()->this.undeadArmyManager );
+			this.define( "TreasureBags", ()->this.treasureBagProgressManager );
 		}
 	}
 }
