@@ -30,7 +30,7 @@ public class SharpToolsBleeding extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new BleedingChance( 0.25, false ) )
 			.addCondition( new ExcludableBleeding() )
 			.addCondition( new Condition.IsLivingBeing<>() )

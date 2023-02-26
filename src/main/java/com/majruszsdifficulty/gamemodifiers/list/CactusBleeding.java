@@ -15,7 +15,7 @@ public class CactusBleeding extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.5, false ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( new Condition.IsLivingBeing<>() )

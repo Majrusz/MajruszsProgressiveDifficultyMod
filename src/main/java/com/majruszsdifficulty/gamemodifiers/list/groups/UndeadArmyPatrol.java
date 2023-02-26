@@ -32,7 +32,7 @@ public class UndeadArmyPatrol extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnSpawned.ContextSafe( this::spawnGroup )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.0625, true ) )
 			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )

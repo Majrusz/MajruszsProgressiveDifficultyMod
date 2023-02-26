@@ -1,5 +1,6 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
 import com.mlib.levels.LevelHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -8,67 +9,55 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class GameStage {
-	public static final ChatFormatting NORMAL_MODE_COLOR = ChatFormatting.WHITE;
-	public static final ChatFormatting EXPERT_MODE_COLOR = ChatFormatting.RED;
-	public static final ChatFormatting MASTER_MODE_COLOR = ChatFormatting.DARK_PURPLE;
-	private static Stage CURRENT = Stage.NORMAL;
+public enum GameStage {
+	NORMAL( ChatFormatting.WHITE ),
+	EXPERT( ChatFormatting.RED, ChatFormatting.BOLD ),
+	MASTER( ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD );
 
-	/** Changes current game stage globally. */
-	public static boolean changeMode( Stage stage ) {
-		if( stage == CURRENT )
-			return false;
+	private static GameStage CURRENT = GameStage.NORMAL;
+	final ChatFormatting[] formatting;
 
-		CURRENT = stage;
-		return true;
+	GameStage( ChatFormatting... formatting ) {
+		this.formatting = formatting;
 	}
 
-	/** Changes current game stage globally and triggers the advancement if possible. */
-	public static boolean changeModeWithAdvancement( Stage stage, MinecraftServer minecraftServer ) {
-		if( !changeMode( stage ) )
-			return false;
-
-		triggerAdvancementForAllPlayers( minecraftServer );
-		return true;
+	public ChatFormatting[] getChatFormatting() {
+		return this.formatting;
 	}
 
-	public static void triggerAdvancementForAllPlayers( MinecraftServer minecraftServer ) {
-		minecraftServer.getPlayerList().getPlayers().forEach( GameStage::triggerAdvancement );
+	public static boolean changeStage( GameStage stage, @Nullable MinecraftServer server ) {
+		if( stage != CURRENT ) {
+			GameStage previous = CURRENT;
+			CURRENT = stage;
+
+			OnGameStageChange.accept( new OnGameStageChange.Data( server, previous, CURRENT ) );
+			return true;
+		}
+
+		return false;
 	}
 
-	public static void triggerAdvancement( ServerPlayer player ) {
-		Registries.GAME_STATE_TRIGGER.trigger( player, CURRENT );
-	}
-
-	public static Stage getCurrentStage() {
+	public static GameStage getCurrentStage() {
 		return CURRENT;
 	}
 
-	public static boolean atLeast( Stage stage ) {
-		return getGameStageDependentValue( stage, true, CURRENT == Stage.EXPERT || CURRENT == Stage.MASTER, CURRENT == Stage.MASTER );
+	public static boolean atLeast( GameStage stage ) {
+		return CURRENT.ordinal() >= stage.ordinal();
 	}
 
-	public static int convertStageToInteger( Stage stage ) {
-		return getGameStageDependentValue( stage, 0, 1, 2 );
-	}
-
-	public static Stage convertIntegerToStage( int mode ) {
+	public static GameStage convertIntegerToStage( int mode ) {
 		return switch( mode ) {
-			default -> Stage.NORMAL;
-			case 1 -> Stage.EXPERT;
-			case 2 -> Stage.MASTER;
+			default -> NORMAL;
+			case 1 -> EXPERT;
+			case 2 -> MASTER;
 		};
 	}
 
-	public static ChatFormatting getChatFormatting( Stage stage ) {
-		return getGameStageDependentValue( stage, ChatFormatting.WHITE, ChatFormatting.RED, ChatFormatting.DARK_PURPLE );
-	}
-
-	public static < ConfigType > ConfigType getGameStageDependentValue( Stage stage, ConfigType normal, ConfigType expert, ConfigType master ) {
+	public static < Type > Type getGameStageDependentValue( GameStage stage, Type normal, Type expert, Type master ) {
 		return switch( stage ) {
 			default -> normal;
 			case EXPERT -> expert;
@@ -76,14 +65,12 @@ public class GameStage {
 		};
 	}
 
-	public static < ConfigType > ConfigType getCurrentGameStageDependentValue( ConfigType normal, ConfigType expert, ConfigType master ) {
+	public static < Type > Type getCurrentGameStageDependentValue( Type normal, Type expert, Type master ) {
 		return getGameStageDependentValue( CURRENT, normal, expert, master );
 	}
 
-	public static MutableComponent getGameStageText( Stage stage ) {
-		String gameStageId = getGameStageDependentValue( stage, "normal", "expert", "master" );
-
-		return constructGameStageText( gameStageId, getChatFormatting( stage ) );
+	public static MutableComponent getGameStageText( GameStage stage ) {
+		return Component.translatable( "majruszsdifficulty.stages." + stage.name().toLowerCase() ).withStyle( stage.formatting );
 	}
 
 	public static double getRegionalDifficulty( Entity target ) {
@@ -100,22 +87,6 @@ public class GameStage {
 
 	public static double getStageModifier() {
 		return getCurrentGameStageDependentValue( 0.0, 0.15, 0.3 );
-	}
-
-	public static MutableComponent withStyle( MutableComponent component ) {
-		return switch( CURRENT ) {
-			case MASTER -> component.withStyle( GameStage.MASTER_MODE_COLOR, ChatFormatting.BOLD );
-			case EXPERT -> component.withStyle( GameStage.EXPERT_MODE_COLOR, ChatFormatting.BOLD );
-			default -> component;
-		};
-	}
-
-	private static MutableComponent constructGameStageText( String stage, ChatFormatting color ) {
-		return Component.translatable( "majruszsdifficulty.stages." + stage ).withStyle( color, ChatFormatting.BOLD );
-	}
-
-	public enum Stage {
-		NORMAL, EXPERT, MASTER
 	}
 
 	public record Integer( int normal, int expert, int master ) {

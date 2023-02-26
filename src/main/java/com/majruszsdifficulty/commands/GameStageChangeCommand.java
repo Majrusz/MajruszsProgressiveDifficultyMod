@@ -9,17 +9,17 @@ public class GameStageChangeCommand extends DifficultyCommand {
 	public GameStageChangeCommand() {
 		this.newBuilder()
 			.literal( "gamestage", "gamestate" )
-			.enumeration( GameStage.Stage.class )
+			.enumeration( GameStage.class )
 			.hasPermission( 4 )
 			.execute( this::handle );
 	}
 
 	private int handle( CommandData data ) {
-		GameStage.Stage gameStage = this.getEnumeration( data, GameStage.Stage.class );
-		boolean hasGameStageChanged = GameStage.changeModeWithAdvancement( gameStage, data.source.getServer() );
+		GameStage gameStage = this.getEnumeration( data, GameStage.class );
+		boolean hasGameStageChanged = GameStage.changeStage( gameStage, data.source.getServer() );
 		String translationKey = hasGameStageChanged ? "changed" : "cannot_change";
 		data.source.sendSuccess( createGameStageMessage( gameStage, translationKey ), true );
 
-		return GameStage.convertStageToInteger( gameStage );
+		return gameStage.ordinal();
 	}
 }

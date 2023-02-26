@@ -12,8 +12,9 @@ public class GameDataSaver extends SavedData {
 	private CompoundTag DATA = new CompoundTag();
 
 	public GameDataSaver( boolean loadDefaultStateFromConfig ) {
-		if( loadDefaultStateFromConfig )
-			GameStage.changeMode( IncreaseGameStage.getDefaultGameStage() );
+		if( loadDefaultStateFromConfig ) {
+			GameStage.changeStage( IncreaseGameStage.getDefaultGameStage(), null );
+		}
 	}
 
 	public GameDataSaver() {
@@ -22,7 +23,7 @@ public class GameDataSaver extends SavedData {
 
 	@Override
 	public CompoundTag save( CompoundTag nbt ) {
-		this.DATA.putInt( DIFFICULTY_STATE_TAG, GameStage.convertStageToInteger( GameStage.getCurrentStage() ) );
+		this.DATA.putInt( DIFFICULTY_STATE_TAG, GameStage.getCurrentStage().ordinal() );
 
 		nbt.put( COMPOUND_STATE_TAG, this.DATA );
 		return nbt;
@@ -37,6 +38,6 @@ public class GameDataSaver extends SavedData {
 	}
 
 	public void updateGameStage() {
-		GameStage.changeMode( GameStage.convertIntegerToStage( this.DATA.getInt( DIFFICULTY_STATE_TAG ) ) );
+		GameStage.changeStage( GameStage.convertIntegerToStage( this.DATA.getInt( DIFFICULTY_STATE_TAG ) ), null );
 	}
 }

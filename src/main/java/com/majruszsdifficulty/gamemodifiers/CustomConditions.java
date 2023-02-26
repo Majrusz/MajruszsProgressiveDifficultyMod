@@ -1,8 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
-
 import com.mlib.Random;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
@@ -12,7 +10,6 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.parameters.Priority;
 import net.minecraft.world.entity.PathfinderMob;
 
-import static com.majruszsdifficulty.GameStage.Stage;
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.LEADER_TAG;
 import static com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig.SIDEKICK_TAG;
 
@@ -41,9 +38,9 @@ public class CustomConditions {
 
 	// TODO: ACCEPT LIST OF GAME STAGES
 	public static class GameStage< DataType extends ContextData > extends Condition< DataType > {
-		final EnumConfig< Stage > minimumStage;
+		final EnumConfig< com.majruszsdifficulty.GameStage > minimumStage;
 
-		public GameStage( Stage minimumStage ) {
+		public GameStage( com.majruszsdifficulty.GameStage minimumStage ) {
 			this.minimumStage = new EnumConfig<>( minimumStage );
 
 			this.addConfig( this.minimumStage.name( "minimum_stage" ).comment( "Minimum game stage required for that to happen." ) );
@@ -58,9 +55,9 @@ public class CustomConditions {
 
 	// TODO: REMOVE
 	public static class GameStageExact< DataType extends ContextData > extends Condition< DataType > {
-		final Stage stage;
+		final com.majruszsdifficulty.GameStage stage;
 
-		public GameStageExact( Stage stage ) {
+		public GameStageExact( com.majruszsdifficulty.GameStage stage ) {
 			this.stage = stage;
 		}
 

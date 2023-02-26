@@ -19,7 +19,7 @@ public class SpiderPoisonAttack extends GameModifier {
 		super( Registries.Modifiers.DEFAULT );
 
 		new OnDamaged.Context( this::applyEffect )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.Stage.NORMAL ) )
+			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
 			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( data->data.attacker instanceof Spider )
