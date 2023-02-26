@@ -10,30 +10,43 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
+import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnServerTick;
+import com.mlib.items.ItemHelper;
+import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.Deserializers;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 @AutoInstance
 public class Config extends GameModifier {
+	static ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
 	private final BooleanConfig availability = new BooleanConfig( true );
 	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
 	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 4.0, 30.0 ) );
@@ -64,6 +77,14 @@ public class Config extends GameModifier {
 			.addCondition( data->data.target.getMobType() == MobType.UNDEAD )
 			.addCondition( data->!Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( data.target ) )
 			.addCondition( data->data.attacker instanceof ServerPlayer )
+			.insertTo( this );
+
+		new OnLoot.Context( this::giveExtraLoot )
+			.addCondition( new Condition.IsServer<>() )
+			.addCondition( OnLoot.HAS_DAMAGE_SOURCE )
+			.addCondition( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) )
+			.addCondition( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
+			.addCondition( data->Registries.UNDEAD_ARMY_MANAGER.isPartOfUndeadArmy( data.entity ) )
 			.insertTo( this );
 
 		this.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
@@ -140,5 +161,21 @@ public class Config extends GameModifier {
 		}
 
 		info.write( tag );
+	}
+
+	private void giveExtraLoot( OnLoot.Data data ) {
+		List< ItemStack > extraLoot = LootHelper.getLootTable( EXTRA_LOOT_ID )
+			.getRandomItems( this.toExtraLootContext( data ) );
+
+		data.generatedLoot.addAll( extraLoot );
+	}
+
+	private LootContext toExtraLootContext( OnLoot.Data data ) {
+		return new LootContext.Builder( data.level )
+			.withParameter( LootContextParams.ORIGIN, data.entity.position() )
+			.withParameter( LootContextParams.THIS_ENTITY, data.entity )
+			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )
+			.withOptionalParameter( LootContextParams.KILLER_ENTITY, data.killer )
+			.create( LootContextParamSets.ENTITY );
 	}
 }
