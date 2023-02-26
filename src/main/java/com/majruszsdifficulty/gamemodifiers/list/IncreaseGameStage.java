@@ -51,6 +51,7 @@ public class IncreaseGameStage extends GameModifier {
 			.insertTo( this );
 
 		new OnGameStageChange.Context( this::notifyPlayers )
+			.priority( Priority.HIGHEST )
 			.addCondition( data->!data.isLoadedFromDisk() )
 			.addCondition( data->data.previous == GameStage.NORMAL && data.current == GameStage.EXPERT || data.current == GameStage.MASTER )
 			.insertTo( this );
