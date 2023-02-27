@@ -15,6 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.gui.OverlayRegistry;
 
+@Deprecated( forRemoval = true )
 @OnlyIn( Dist.CLIENT )
 public class RegistriesClient {
 	public static void setup() {

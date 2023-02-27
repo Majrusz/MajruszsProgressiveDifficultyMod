@@ -7,6 +7,7 @@ import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
+@Deprecated( forRemoval = true )
 public class MajruszsHelper {
 	public static void addTranslatableText( List< Component > tooltip, String translationKey ) {
 		tooltip.add( new TranslatableComponent( translationKey ).withStyle( ChatFormatting.GRAY ) );
