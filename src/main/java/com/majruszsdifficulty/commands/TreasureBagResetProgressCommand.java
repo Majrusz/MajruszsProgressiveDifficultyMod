@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.treasurebags.LootProgressManager;
+import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
@@ -18,13 +19,12 @@ public class TreasureBagResetProgressCommand extends DifficultyCommand {
 			.execute( this::handle )
 			.entity()
 			.execute( this::handle );
-
 	}
 
 	private int handle( CommandData data ) throws CommandSyntaxException {
 		Player player = Utility.castIfPossible( Player.class, this.getOptionalEntityOrPlayer( data ) );
 		if( player != null ) {
-			LootProgressManager.cleanProgress( player );
+			Registries.getTreasureBagProgressManager().clearProgress( player );
 			data.source.sendSuccess( Component.translatable( "commands.treasurebag.reset", player.getName() ), true );
 			return 0;
 		}
