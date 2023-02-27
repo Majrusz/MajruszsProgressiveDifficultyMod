@@ -20,8 +20,10 @@ import org.joml.Vector3f;
 public class CerberusModel< Type extends CerberusEntity > extends HierarchicalModel< Type > {
 	static final Animation< Float > BITE_JAW_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Vector3f > BITE_SIDE_NECK_ROTATION = new Animation<>( 1.0f );
-	static final Animation< Float > GALLOP_FRONT_LEG_ROTATION_X = new Animation<>( 1.0f );
-	static final Animation< Float > GALLOP_HIND_LEG_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_FRONT_LEG_1_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_FRONT_LEG_2_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_HIND_LEG_1_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > GALLOP_HIND_LEG_2_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Float > GALLOP_SPINE_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Float > GALLOP_BODY_POSITION_Y = new Animation<>( 1.0f );
 
@@ -36,23 +38,40 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 			.add( 0.70f, new Frame.Vector( 0.0f, 0.0f, 0.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) );
 
-		GALLOP_FRONT_LEG_ROTATION_X.add( -15.00f, new Frame.Degrees( 0.0f ) )
-			.add( 0.25f, new Frame.Degrees( 45.0f, InterpolationType.SQUARE ) )
-			.add( 0.50f, new Frame.Degrees( 45.0f ) )
+		GALLOP_FRONT_LEG_1_ROTATION_X.add( 0.00f, new Frame.Degrees( 45.0f ) )
+			.add( 0.25f, new Frame.Degrees( 15.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 45.00f, InterpolationType.SQUARE ) );
+
+		GALLOP_FRONT_LEG_2_ROTATION_X.add( 0.00f, new Frame.Degrees( 15.0f ) )
+			.add( 0.25f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( 45.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 15.00f, InterpolationType.SQUARE ) );
+
+		GALLOP_HIND_LEG_1_ROTATION_X.add( 0.00f, new Frame.Degrees( -15.0f ) )
+			.add( 0.25f, new Frame.Degrees( 15.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( -45.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Degrees( -15.00f, InterpolationType.SQUARE ) );
 
-		GALLOP_HIND_LEG_ROTATION_X.add( 0.00f, new Frame.Degrees( 30.0f ) )
-			.add( 0.50f, new Frame.Degrees( -30.00f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 30.00f, InterpolationType.SQUARE ) );
+		GALLOP_HIND_LEG_2_ROTATION_X.add( 0.00f, new Frame.Degrees( -45.0f ) )
+			.add( 0.25f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( 15.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( -45.00f, InterpolationType.SQUARE ) );
 
 		GALLOP_SPINE_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
-			.add( 0.25f, new Frame.Degrees( 10.00f, InterpolationType.SQUARE ) )
+			.add( 0.25f, new Frame.Degrees( -5.00f, InterpolationType.SQUARE ) )
 			.add( 0.50f, new Frame.Degrees( 5.00f, InterpolationType.SQUARE ) )
-			.add( 0.75f, new Frame.Degrees( -10.00f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( 10.00f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Degrees( 0.00f, InterpolationType.SQUARE ) );
 
 		GALLOP_BODY_POSITION_Y.add( 0.00f, new Frame.Value( 0.0f ) )
-			.add( 0.50f, new Frame.Value( -3.0f, InterpolationType.SQUARE ) )
+			.add( 0.25f, new Frame.Value( 0.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Value( 0.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Value( -2.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Value( 0.00f, InterpolationType.SQUARE ) );
 	}
 
@@ -101,7 +120,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition spine = body.addOrReplaceChild( "spine", CubeListBuilder.create()
 			.texOffs( 28, 23 )
-			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 25.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -25.0F, 2.0F, 0.0872F, 0.0F, 0.0F ) );
+			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 25.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -25.0F, 2.0F, 0.0F, 0.0F, 0.0F ) );
 
 		PartDefinition necks = spine.addOrReplaceChild( "necks", CubeListBuilder.create(), PartPose.offset( 0.0F, -2.0F, -10.0F ) );
 
@@ -258,7 +277,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		float headPitch
 	) {
 		CerberusEntity.Skills skills = cerberus.getCustomSkills();
-		this.spine.xRot = ( float )Math.toRadians( 5.0f );
+		this.spine.xRot = ( float )Math.toRadians( 0.0f );
 
 		// head rotation when looking around
 		this.necks.yRot = ( float )Math.toRadians( netHeadYaw );
@@ -273,15 +292,15 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		if( cerberus.hasTarget ) {
 			// gallop anims
 			float swingRatio = ( limbSwing * 0.15f ) % 1.0f;
-			float frontLegRotation = GALLOP_FRONT_LEG_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
-			float hindLegRotation = GALLOP_HIND_LEG_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
-			this.frontThigh1.xRot = this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f ) - frontLegRotation;
-			this.hindThigh1.xRot = this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f ) - hindLegRotation;
+			this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f ) - GALLOP_FRONT_LEG_1_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
+			this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f ) - GALLOP_FRONT_LEG_2_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
+			this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f ) - GALLOP_HIND_LEG_1_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
+			this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f ) - GALLOP_HIND_LEG_2_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			this.spine.xRot -= GALLOP_SPINE_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			this.body.y = 25.0f - GALLOP_BODY_POSITION_Y.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 		} else {
 			// walk anims
-			float swingRatio = ( float )( Math.cos( 0.37f * limbSwing ) * limbSwingAmount );
+			float swingRatio = ( float )( Math.cos( 0.4f * limbSwing ) * limbSwingAmount );
 			this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f + 30.0f * swingRatio );
 			this.hindThigh2.xRot = ( float )Math.toRadians( -20.0f + 30.0f * swingRatio );
 			this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f - 30.0f * swingRatio );
