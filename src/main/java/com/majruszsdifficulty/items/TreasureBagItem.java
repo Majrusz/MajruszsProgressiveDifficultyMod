@@ -6,9 +6,7 @@ import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
 import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnTreasureBagOpened;
-import com.majruszsdifficulty.treasurebags.LootProgressClient;
-import com.majruszsdifficulty.treasurebags.LootProgressManager;
-import com.mlib.client.ClientHelper;
+import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
 import com.mlib.effects.SoundHandler;
 import com.mlib.items.ItemHelper;
 import com.mlib.math.Range;
@@ -91,7 +89,7 @@ public class TreasureBagItem extends Item {
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY, " " );
 
-		LootProgressClient.addDropList( this, tooltip, ClientHelper::isShiftDown );
+		tooltip.addAll( TreasureBagProgressClient.getTextComponents( this ) );
 	}
 
 	public boolean isEnabled() {
