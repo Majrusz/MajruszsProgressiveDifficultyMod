@@ -19,6 +19,7 @@ import org.joml.Vector3f;
 @OnlyIn( Dist.CLIENT )
 public class CerberusModel< Type extends CerberusEntity > extends HierarchicalModel< Type > {
 	static final Animation< Float > BITE_JAW_ROTATION_X = new Animation<>( 1.0f );
+	static final Animation< Float > BREATH_JAW_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Vector3f > BITE_SIDE_NECK_ROTATION = new Animation<>( 1.0f );
 	static final Animation< Float > GALLOP_FRONT_LEG_1_ROTATION_X = new Animation<>( 1.0f );
 	static final Animation< Float > GALLOP_FRONT_LEG_2_ROTATION_X = new Animation<>( 1.0f );
@@ -32,6 +33,16 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 			.add( 0.30f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
 			.add( 0.70f, new Frame.Degrees( -30.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) );
+
+		BREATH_JAW_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
+			.add( 0.15f, new Frame.Degrees( 0.0f ) )
+			.add( 0.25f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
+			.add( 0.40f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) )
+			.add( 0.50f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
+			.add( 0.65f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
+			.add( 0.90f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) )
+			.add( 1.00f, new Frame.Degrees( 0.0f ) );
 
 		BITE_SIDE_NECK_ROTATION.add( 0.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) )
 			.add( 0.30f, new Frame.Vector( -15.0f, 0.0f, -30.0f, InterpolationType.SQUARE ) )
@@ -314,13 +325,18 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.jawUpper1.xRot = this.jawUpper2.xRot = this.jawUpper3.xRot = biteJawRotation;
 		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = biteJawRotation;
 
+		// bite anims (fire breath)
+		float breathRatio = skills.getRatio( CerberusEntity.SkillType.FIRE_BREATH );
+		float breathJawRotation = ( float )Mth.clamp( biteJawRotation - BREATH_JAW_ROTATION_X.apply( breathRatio, ageInTicks ), Math.toRadians( -30.0 ), 0.0 );
+		this.jawUpper1.xRot = this.jawUpper2.xRot = this.jawUpper3.xRot = breathJawRotation;
+		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = breathJawRotation;
+
 		// bite anims (side necks)
 		Vector3f neckRotation = new Vector3f( BITE_SIDE_NECK_ROTATION.apply( biteRatio, ageInTicks ) ).mul( ( float )Math.PI / 180.0f );
 		this.neck1.xRot = neckRotation.x;
 		this.neck1.zRot = neckRotation.z;
 		this.neck3.xRot = neckRotation.x;
 		this.neck3.zRot = -neckRotation.z;
-
 	}
 
 	private float getPlayerDistance( Type cerberus ) {
