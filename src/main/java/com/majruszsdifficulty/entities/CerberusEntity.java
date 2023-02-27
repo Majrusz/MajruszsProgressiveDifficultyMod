@@ -25,7 +25,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -38,6 +38,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -162,23 +163,46 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	public static class Skills extends CustomSkills< SkillType > {
+		int fireballCooldownLeft = 0;
+
 		public Skills( PathfinderMob mob ) {
 			super( mob, PacketHandler.CHANNEL, SkillMessage::new );
 		}
 
 		@Override
 		public boolean tryToStart( LivingEntity entity, double distanceSquared ) {
-			if( Math.sqrt( distanceSquared ) >= 3.5 || !( this.mob.level instanceof ServerLevel level ) ) {
+			if( !( this.mob.level instanceof ServerLevel level ) )
 				return false;
+
+			double distance = Math.sqrt( distanceSquared );
+			if( distance < 3.5 ) {
+				Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
+				if( distance > 2.0 ) {
+					this.pushMobTowards( entity );
+				}
+				this.mob.playSound( Registries.CERBERUS_BITE.get(), 1.0f, 1.0f );
+				this.start( SkillType.BITE, Utility.secondsToTicks( 0.7 ) )
+					.onRatio( 0.55f, ()->this.hurtAllEntitiesInRange( level, position ) );
+
+				return true;
+			} else if( distance >= 10.0 && this.fireballCooldownLeft == 0 ) {
+				this.start( SkillType.FIRE_BREATH, Utility.secondsToTicks( 1.4 ) )
+					.onRatio( 0.25f, ()->this.spawnFireballTowards( entity ) )
+					.onRatio( 0.5f, ()->this.spawnFireballTowards( entity ) )
+					.onRatio( 0.75f, ()->this.spawnFireballTowards( entity ) );
+				this.fireballCooldownLeft = Utility.secondsToTicks( 10.0 );
+
+				return true;
 			}
 
-			Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
-			this.pushMobTowards( entity );
-			this.mob.playSound( Registries.CERBERUS_BITE.get(), 1.0f, 1.0f );
-			this.start( SkillType.BITE, Utility.secondsToTicks( 0.7 ) )
-				.onRatio( 0.55f, ()->this.hurtAllEntitiesInRange( level, position ) );
+			return false;
+		}
 
-			return true;
+		@Override
+		public void tick() {
+			super.tick();
+
+			this.fireballCooldownLeft = Math.max( this.fireballCooldownLeft - 1, 0 );
 		}
 
 		private void pushMobTowards( LivingEntity entity ) {
@@ -198,6 +222,24 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		private Vec3 getAttackPosition( Vec3 pos1, Vec3 pos2 ) {
 			return VectorHelper.add( pos1, VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( pos2, pos1 ) ), 1.75 ) );
+		}
+
+		private void spawnFireballTowards( LivingEntity target ) {
+			Vec3 offset = VectorHelper.subtract( target.position(), this.mob.position() );
+			for( double angle : new double[]{ -30.0, 0.0, 30.0 } ) {
+				Vec3 power = VectorHelper.multiply( offset, Random.getRandomVector3d( 0.8, 1.2, 0.8, 1.2, 0.8, 1.2 ) );
+				double cos = Math.cos( Math.toRadians( angle ) ), sin = Math.sin( Math.toRadians( angle ) );
+				Vec3 normalized = VectorHelper.normalize( offset );
+				normalized = new Vec3( cos * normalized.x - sin * normalized.z, normalized.y, sin * normalized.x + cos * normalized.z );
+				Vec3 spawnPosition = VectorHelper.add( VectorHelper.add( this.mob.position(), normalized ), new Vec3( 0.0, Random.nextDouble( 1.2, 1.5 ), 0.0 ) );
+				SmallFireball fireball = new SmallFireball( this.mob.level, this.mob, power.x, power.y, power.z );
+				fireball.setPos( spawnPosition.x, spawnPosition.y, spawnPosition.z );
+				fireball.setDeltaMovement( VectorHelper.normalize( power ).multiply( 0.25, 0.25, 0.25 ) );
+
+				this.mob.level.addFreshEntity( fireball );
+			}
+
+			SoundHandler.SMELT.play( this.mob.level, this.mob.position() );
 		}
 	}
 
@@ -244,6 +286,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			super( GROUP_ID );
 
 			new OnDamaged.Context( this::applyWither )
+				.addCondition( OnDamaged.DIRECT_DAMAGE )
 				.addCondition( data->data.attacker instanceof CerberusEntity )
 				.addConfig( this.wither.name( "Wither" ) )
 				.insertTo( this );
@@ -274,6 +317,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	public enum SkillType {
-		BITE
+		BITE,
+		FIRE_BREATH
 	}
 }
