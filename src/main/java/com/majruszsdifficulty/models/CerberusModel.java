@@ -50,28 +50,28 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 			.add( 1.00f, new Frame.Vector( 0.0f, 0.0f, 0.0f ) );
 
 		GALLOP_FRONT_LEG_1_ROTATION_X.add( 0.00f, new Frame.Degrees( 45.0f ) )
-			.add( 0.25f, new Frame.Degrees( 15.0f, InterpolationType.SQUARE ) )
-			.add( 0.50f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
-			.add( 0.75f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 45.00f, InterpolationType.SQUARE ) );
+			.add( 0.25f, new Frame.Degrees( 15.0f ) )
+			.add( 0.50f, new Frame.Degrees( -15.0f ) )
+			.add( 0.75f, new Frame.Degrees( 30.0f ) )
+			.add( 1.00f, new Frame.Degrees( 45.00f ) );
 
 		GALLOP_FRONT_LEG_2_ROTATION_X.add( 0.00f, new Frame.Degrees( 15.0f ) )
-			.add( 0.25f, new Frame.Degrees( 0.0f, InterpolationType.SQUARE ) )
-			.add( 0.50f, new Frame.Degrees( 30.0f, InterpolationType.SQUARE ) )
-			.add( 0.75f, new Frame.Degrees( 45.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( 15.00f, InterpolationType.SQUARE ) );
+			.add( 0.25f, new Frame.Degrees( 0.0f ) )
+			.add( 0.50f, new Frame.Degrees( 30.0f ) )
+			.add( 0.75f, new Frame.Degrees( 45.0f ) )
+			.add( 1.00f, new Frame.Degrees( 15.00f ) );
 
 		GALLOP_HIND_LEG_1_ROTATION_X.add( 0.00f, new Frame.Degrees( -15.0f ) )
-			.add( 0.25f, new Frame.Degrees( 15.0f, InterpolationType.SQUARE ) )
-			.add( 0.50f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
-			.add( 0.75f, new Frame.Degrees( -45.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( -15.00f, InterpolationType.SQUARE ) );
+			.add( 0.25f, new Frame.Degrees( 15.0f ) )
+			.add( 0.50f, new Frame.Degrees( -15.0f ) )
+			.add( 0.75f, new Frame.Degrees( -45.0f ) )
+			.add( 1.00f, new Frame.Degrees( -15.00f ) );
 
 		GALLOP_HIND_LEG_2_ROTATION_X.add( 0.00f, new Frame.Degrees( -45.0f ) )
-			.add( 0.25f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
-			.add( 0.50f, new Frame.Degrees( 15.0f, InterpolationType.SQUARE ) )
-			.add( 0.75f, new Frame.Degrees( -15.0f, InterpolationType.SQUARE ) )
-			.add( 1.00f, new Frame.Degrees( -45.00f, InterpolationType.SQUARE ) );
+			.add( 0.25f, new Frame.Degrees( -15.0f ) )
+			.add( 0.50f, new Frame.Degrees( 15.0f ) )
+			.add( 0.75f, new Frame.Degrees( -15.0f ) )
+			.add( 1.00f, new Frame.Degrees( -45.00f ) );
 
 		GALLOP_SPINE_ROTATION_X.add( 0.00f, new Frame.Degrees( 0.0f ) )
 			.add( 0.25f, new Frame.Degrees( -5.00f, InterpolationType.SQUARE ) )
@@ -82,7 +82,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		GALLOP_BODY_POSITION_Y.add( 0.00f, new Frame.Value( 0.0f ) )
 			.add( 0.25f, new Frame.Value( 0.0f, InterpolationType.SQUARE ) )
 			.add( 0.50f, new Frame.Value( 0.0f, InterpolationType.SQUARE ) )
-			.add( 0.75f, new Frame.Value( -2.0f, InterpolationType.SQUARE ) )
+			.add( 0.75f, new Frame.Value( 2.0f, InterpolationType.SQUARE ) )
 			.add( 1.00f, new Frame.Value( 0.00f, InterpolationType.SQUARE ) );
 	}
 
