@@ -23,7 +23,7 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 		SoundEvents.ARMOR_EQUIP_LEATHER,
 		0.0f,
 		0.0f,
-		()->Ingredient.of( Items.BONE )
+		()->Ingredient.of( Registries.CLOTH.get() )
 	),
 	END(
 		"end",
