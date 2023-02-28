@@ -23,7 +23,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -149,8 +151,9 @@ public class SoulJarItem extends Item {
 		}
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
+			Player player = DistExecutor.unsafeCallWhenOn( Dist.CLIENT, ()->()->Minecraft.getInstance().player );
 			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
-			float multiplier = getMultiplier( Minecraft.getInstance().player, data.itemStack );
+			float multiplier = getMultiplier( player, data.itemStack );
 			for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
 				data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( multiplier ) );
 			}
