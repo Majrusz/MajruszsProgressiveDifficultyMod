@@ -101,9 +101,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		if( this.isSilent() ) {
 			return;
 		}
-		boolean isCustomSound = sound == Registries.CERBERUS_GROWL.get() || sound == Registries.CERBERUS_BITE.get();
-		float randomizedVolume = SoundHandler.randomized( volume * 1.25f ).get();
-		float randomizedPitch = SoundHandler.randomized( isCustomSound ? pitch : pitch * 0.75f ).get();
+		// boolean isCustomSound = sound == SoundEvents.WOLF_GROWL || sound == SoundEvents.WOLF_AMBIENT;
+		float randomizedVolume = SoundHandler.randomized( volume ).get();
+		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
 
 		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
@@ -134,7 +134,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return Registries.CERBERUS_GROWL.get();
+		return SoundEvents.WOLF_GROWL;
 	}
 
 	@Override
@@ -180,8 +180,10 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 				if( distance > 2.0 ) {
 					this.pushMobTowards( entity );
 				}
-				this.mob.playSound( Registries.CERBERUS_BITE.get(), 1.0f, 1.0f );
 				this.start( SkillType.BITE, Utility.secondsToTicks( 0.7 ) )
+					.onTick( 2, ()->this.mob.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.85f ) )
+					.onTick( 3, ()->this.mob.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.7f ) )
+					.onTick( 4, ()->this.mob.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 1.0f ) )
 					.onRatio( 0.55f, ()->this.hurtAllEntitiesInRange( level, position ) );
 
 				return true;
