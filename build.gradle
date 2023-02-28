@@ -14,7 +14,11 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
+<<<<<<< HEAD
 version = '1.6.1'
+=======
+version = '1.7.0'
+>>>>>>> 5bfad34a (Removed unfinished tag)
 group = 'com.majruszsdifficulty'
 archivesBaseName = 'majruszs-difficulty-1.19.2'
 
