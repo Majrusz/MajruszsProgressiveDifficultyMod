@@ -90,4 +90,12 @@ public class CustomConditions {
 			return !Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity );
 		}
 	}
+
+	public static class IsNotNearUndeadArmy< DataType extends ContextData > extends Condition< DataType > {
+		@Override
+		public boolean check( GameModifier gameModifier, DataType data ) {
+			return data.entity != null
+				&& Registries.getUndeadArmyManager().findNearestUndeadArmy( data.entity.blockPosition() ) == null;
+		}
+	}
 }
