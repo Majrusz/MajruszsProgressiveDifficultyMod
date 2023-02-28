@@ -5,14 +5,13 @@ import com.majruszsdifficulty.treasurebags.data.LootData;
 import com.majruszsdifficulty.treasurebags.data.LootProgressData;
 import com.mlib.Utility;
 import com.mlib.client.ClientHelper;
-import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,7 +28,7 @@ public class TreasureBagProgressClient {
 	static final Map< String, List< Component > > TREASURE_BAG_COMPONENTS = new HashMap<>();
 	static LootProgressData LOOT_PROGRESS_DATA = new LootProgressData();
 
-	public static void handle( LocalPlayer player, LootProgressData data ) {
+	public static void handle( Player player, LootProgressData data ) {
 		generateTextComponents( data );
 		if( LOOT_PROGRESS_DATA.treasureBags.size() == data.treasureBags.size() ) {
 			tryToSendNewLootMessage( player, data );
@@ -96,7 +95,7 @@ public class TreasureBagProgressClient {
 		};
 	}
 
-	private static void tryToSendNewLootMessage( LocalPlayer player, LootProgressData data ) {
+	private static void tryToSendNewLootMessage( Player player, LootProgressData data ) {
 		for( String treasureBagId : data.treasureBags.keySet() ) {
 			List< LootData > lootDataList = data.treasureBags.get( treasureBagId ).lootDataList;
 			List< LootData > lootDataOldList = LOOT_PROGRESS_DATA.treasureBags.get( treasureBagId ).lootDataList;
