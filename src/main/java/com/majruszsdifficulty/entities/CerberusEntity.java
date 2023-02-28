@@ -69,7 +69,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	public static AttributeSupplier getAttributeMap() {
 		return Mob.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 240.0 )
-			.add( Attributes.MOVEMENT_SPEED, 0.3 )
+			.add( Attributes.MOVEMENT_SPEED, 0.28 )
 			.add( Attributes.ATTACK_DAMAGE, 10.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
