@@ -36,6 +36,7 @@ public class UndeadArmyPatrol extends GameModifier {
 			.addCondition( new CustomConditions.CRDChance<>( 0.0625, true ) )
 			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
 			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )
+			.addCondition( new CustomConditions.IsNotNearUndeadArmy<>() )
 			.addCondition( new Condition.IsServer<>() )
 			.addCondition( new Condition.Excludable<>() )
 			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
