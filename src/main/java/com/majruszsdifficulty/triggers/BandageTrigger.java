@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/** Trigger called when player uses any Bandage on himself or on someone else. */
+@Deprecated( forRemoval = true )
 public class BandageTrigger extends SimpleCriterionTrigger< BandageTrigger.Instance > {
 	private static final ResourceLocation ID = Registries.getLocation( "bandage_used" );
 

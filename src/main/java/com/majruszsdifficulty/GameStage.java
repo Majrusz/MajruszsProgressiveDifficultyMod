@@ -79,6 +79,7 @@ public enum GameStage {
 		return Mth.clamp( clampedRegionalDifficulty + getStageModifier(), 0.0, 1.0 );
 	}
 
+	// TODO: replace with mixin
 	public static double getRegionalDifficulty( Level level, Vec3 position ) {
 		double clampedRegionalDifficulty = LevelHelper.getClampedRegionalDifficulty( level, position );
 
