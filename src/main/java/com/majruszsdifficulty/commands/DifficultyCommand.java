@@ -6,6 +6,7 @@ import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
 
+// TODO: move all commands to separate packages
 public class DifficultyCommand extends Command {
 	protected static MutableComponent createGameStageMessage( GameStage stage, String translationKey ) {
 		return Component.translatable( "commands.gamestage." + translationKey, GameStage.getGameStageText( stage ) );
