@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 public class TatteredArmorItem extends ArmorItem {
 	public TatteredArmorItem( EquipmentSlot slot ) {
-		super( CustomArmorMaterial.UNDEAD, slot, new Item.Properties().rarity( Rarity.UNCOMMON ) );
+		super( CustomArmorMaterial.UNDEAD, slot, new Item.Properties().rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ) );
 	}
 
 	@Nullable

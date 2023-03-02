@@ -59,7 +59,7 @@ public class SoulJarItem extends Item {
 	}
 
 	public SoulJarItem() {
-		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ) );
 	}
 
 	@Override

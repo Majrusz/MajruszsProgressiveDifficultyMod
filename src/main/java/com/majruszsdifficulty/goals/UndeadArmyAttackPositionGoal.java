@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.phys.Vec3;
 
 public class UndeadArmyAttackPositionGoal extends Goal {
 	final Mob undead;
@@ -55,7 +56,7 @@ public class UndeadArmyAttackPositionGoal extends Goal {
 	}
 
 	private double getDistanceToAttackPosition() {
-		return VectorHelper.distanceHorizontal( this.undead.position(), this.attackPosition.getCenter() );
+		return VectorHelper.distanceHorizontal( this.undead.position(), new Vec3( this.attackPosition.getX() + 0.5, this.attackPosition.getY() + 0.5, this.attackPosition.getZ() + 0.5 ) );
 	}
 }
 
