@@ -17,6 +17,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,10 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	public double distanceTo( BlockPos position ) {
-		return VectorHelper.distanceHorizontal( position.getCenter(), this.positionToAttack.getCenter() );
+		return VectorHelper.distanceHorizontal(
+			new Vec3( position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5 ),
+			new Vec3( this.positionToAttack.getX() + 0.5, this.positionToAttack.getY() + 0.5, this.positionToAttack.getZ() + 0.5 )
+		);
 	}
 
 	public boolean hasFinished() {

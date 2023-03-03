@@ -23,6 +23,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -164,7 +165,7 @@ public class Config extends GameModifier {
 		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
 			info.killedUndead = 0;
 		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {
-			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+			player.displayClientMessage( new TranslatableComponent( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ), false );
 		}
 
 		info.write( tag );
@@ -187,7 +188,7 @@ public class Config extends GameModifier {
 	}
 
 	private void notifyPlayers( OnGameStageChange.Data data ) {
-		MutableComponent message = Component.translatable( "majruszsdifficulty.undead_army.on_expert" ).withStyle( ChatFormatting.DARK_PURPLE );
+		MutableComponent message = new TranslatableComponent( "majruszsdifficulty.undead_army.on_expert" ).withStyle( ChatFormatting.DARK_PURPLE );
 
 		data.server.getPlayerList()
 			.getPlayers()

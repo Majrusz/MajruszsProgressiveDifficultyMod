@@ -6,6 +6,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
 @AutoInstance
@@ -24,7 +25,7 @@ public class TreasureBagUnlockAllCommand extends DifficultyCommand {
 		Player player = Utility.castIfPossible( Player.class, this.getOptionalEntityOrPlayer( data ) );
 		if( player != null ) {
 			Registries.getTreasureBagProgressManager().unlockAll( player );
-			data.source.sendSuccess( Component.translatable( "commands.treasurebag.unlockall", player.getName() ), true );
+			data.source.sendSuccess( new TranslatableComponent( "commands.treasurebag.unlockall", player.getName() ), true );
 			return 0;
 		}
 

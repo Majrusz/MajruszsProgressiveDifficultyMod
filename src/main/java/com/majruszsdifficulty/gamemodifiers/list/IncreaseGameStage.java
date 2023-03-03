@@ -10,6 +10,7 @@ import com.mlib.config.EnumConfig;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnDimensionChanged;
+import com.mlib.gamemodifiers.parameters.Priority;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.MutableComponent;
@@ -94,7 +95,7 @@ public class IncreaseGameStage extends GameModifier {
 	}
 
 	private static void sendMessageToAllPlayers( MinecraftServer server, GameStage current, String messageId ) {
-		MutableComponent message = Component.translatable( messageId ).withStyle( current.getChatFormatting() );
+		MutableComponent message = new TranslatableComponent( messageId ).withStyle( current.getChatFormatting() );
 
 		server.getPlayerList()
 			.getPlayers()

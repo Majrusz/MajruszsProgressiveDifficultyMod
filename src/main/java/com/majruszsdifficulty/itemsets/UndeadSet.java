@@ -11,6 +11,7 @@ import com.mlib.itemsets.ItemData;
 import com.mlib.itemsets.ItemSet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,7 +35,7 @@ public class UndeadSet extends ItemSet {
 	static final BonusData BONUS_1 = new BonusData( 2, "majruszsdifficulty.sets.undead.bonus_1", MobEffects.HUNGER.getDisplayName(), Items.ROTTEN_FLESH.getDescription() );
 	static final BonusData BONUS_2 = new BonusData( 3, "majruszsdifficulty.sets.undead.bonus_2", Items.ROTTEN_FLESH.getDescription() );
 	static final BonusData BONUS_3 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_3", EXTRA_ARMOR );
-	static final BonusData BONUS_4 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_4", Component.translatable( "item.majruszsdifficulty.soul_jar" ) );
+	static final BonusData BONUS_4 = new BonusData( 4, "majruszsdifficulty.sets.undead.bonus_4", new TranslatableComponent( "item.majruszsdifficulty.soul_jar" ) );
 
 	public UndeadSet() {
 		super( ()->Stream.of( ITEM_1, ITEM_2, ITEM_3, ITEM_4 ), ()->Stream.of( BONUS_1, BONUS_2, BONUS_3, BONUS_4 ), ChatFormatting.LIGHT_PURPLE, "majruszsdifficulty.sets.undead.name" );

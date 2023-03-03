@@ -66,7 +66,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 	}
 
 	@Override
-	public int getExperienceReward() {
+	public int getExperienceReward( Player p_34322_ ) {
 		return Random.nextInt( 10, 17 );
 	}
 
@@ -96,11 +96,6 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		this.targetSelector.addGoal( 1, new HurtByTargetGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
-	}
-
-	@Override
-	public int getExperienceReward( Player player ) {
-		return Random.nextInt( 17 );
 	}
 
 	@Override

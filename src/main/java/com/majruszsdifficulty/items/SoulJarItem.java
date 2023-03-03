@@ -13,6 +13,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
@@ -42,12 +44,6 @@ public class SoulJarItem extends Item {
 	static final float MINE_BONUS = 0.15f;
 	static final int LUCK_BONUS = 1;
 	static final float SWIM_BONUS = 0.30f;
-	static final AttributeHandler MOVE_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "SoulJarMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
-	static final AttributeHandler ARMOR_ATTRIBUTE = new AttributeHandler( "7d2d7767-51da-46cc-8081-80fda32d4126", "SoulJarArmorBonus", Attributes.ARMOR, AttributeModifier.Operation.ADDITION );
-	static final AttributeHandler REACH_ATTRIBUTE = new AttributeHandler( "23868877-961b-44c9-89c3-376e5c06dbd1", "SoulJarReachBonus", ForgeMod.REACH_DISTANCE.get(), AttributeModifier.Operation.ADDITION );
-	static final AttributeHandler RANGE_ATTRIBUTE = new AttributeHandler( "a45d6f34-5b78-4d7c-b60a-03fe6400f8cd", "SoulJarRangeBonus", ForgeMod.ATTACK_RANGE.get(), AttributeModifier.Operation.ADDITION );
-	static final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "a2a496f4-3799-46eb-856c-1ba992f67912", "SoulJarLuckBonus", Attributes.LUCK, AttributeModifier.Operation.ADDITION );
-	static final AttributeHandler SWIM_ATTRIBUTE = new AttributeHandler( "f404c216-a758-404f-ba95-5a53d3974b44", "SoulJarSwimmingBonus", ForgeMod.SWIM_SPEED.get(), AttributeModifier.Operation.MULTIPLY_TOTAL );
 
 	public static ItemStack randomItemStack( int bonusCount ) {
 		ItemStack itemStack = new ItemStack( Registries.SOUL_JAR.get() );
@@ -59,7 +55,7 @@ public class SoulJarItem extends Item {
 	}
 
 	public SoulJarItem() {
-		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ) );
+		super( new Properties().stacksTo( 1 ).rarity( Rarity.UNCOMMON ).tab( Registries.ITEM_GROUP ) );
 	}
 
 	@Override
@@ -133,6 +129,14 @@ public class SoulJarItem extends Item {
 			float luckBonus = hasBonus( data.entity, BonusType.LUCK ) ? LUCK_BONUS : 0.0f;
 			float swimBonus = hasBonus( data.entity, BonusType.SWIM ) ? SWIM_BONUS : 0.0f;
 
+
+			final AttributeHandler MOVE_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "SoulJarMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
+			final AttributeHandler ARMOR_ATTRIBUTE = new AttributeHandler( "7d2d7767-51da-46cc-8081-80fda32d4126", "SoulJarArmorBonus", Attributes.ARMOR, AttributeModifier.Operation.ADDITION );
+			final AttributeHandler REACH_ATTRIBUTE = new AttributeHandler( "23868877-961b-44c9-89c3-376e5c06dbd1", "SoulJarReachBonus", ForgeMod.REACH_DISTANCE.get(), AttributeModifier.Operation.ADDITION );
+			final AttributeHandler RANGE_ATTRIBUTE = new AttributeHandler( "a45d6f34-5b78-4d7c-b60a-03fe6400f8cd", "SoulJarRangeBonus", ForgeMod.ATTACK_RANGE.get(), AttributeModifier.Operation.ADDITION );
+			final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "a2a496f4-3799-46eb-856c-1ba992f67912", "SoulJarLuckBonus", Attributes.LUCK, AttributeModifier.Operation.ADDITION );
+			final AttributeHandler SWIM_ATTRIBUTE = new AttributeHandler( "f404c216-a758-404f-ba95-5a53d3974b44", "SoulJarSwimmingBonus", ForgeMod.SWIM_SPEED.get(), AttributeModifier.Operation.MULTIPLY_TOTAL );
+
 			MOVE_ATTRIBUTE.setValueAndApply( entity, multiplier * moveBonus );
 			ARMOR_ATTRIBUTE.setValueAndApply( entity, multiplier * armorBonus );
 			REACH_ATTRIBUTE.setValueAndApply( entity, multiplier * rangeBonus );
@@ -162,7 +166,7 @@ public class SoulJarItem extends Item {
 		private void addTooltip( OnItemTooltip.Data data ) {
 			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
 			if( bonusInfo.hasBonuses() ) {
-				MutableComponent souls = Component.literal( "" );
+				MutableComponent souls = new TextComponent( "" );
 				for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
 					souls.append( souls.getString().equals( "" ) ? "" : " " ).append( bonusType.getSoulComponent() );
 				}
@@ -208,11 +212,11 @@ public class SoulJarItem extends Item {
 		public List< Component > getHintComponents() {
 			List< Component > components = new ArrayList<>();
 			if( this.bonusMask == 0b0 ) {
-				Component bonusCount = Component.literal( "" + this.bonusCount ).withStyle( ChatFormatting.GREEN );
-				components.add( Component.translatable( "item.majruszsdifficulty.soul_jar.item_tooltip1", bonusCount ).withStyle( ChatFormatting.GRAY ) );
-				components.add( Component.translatable( "item.majruszsdifficulty.soul_jar.item_tooltip2" ).withStyle( ChatFormatting.GRAY ) );
+				Component bonusCount = new TextComponent( "" + this.bonusCount ).withStyle( ChatFormatting.GREEN );
+				components.add( new TranslatableComponent( "item.majruszsdifficulty.soul_jar.item_tooltip1", bonusCount ).withStyle( ChatFormatting.GRAY ) );
+				components.add( new TranslatableComponent( "item.majruszsdifficulty.soul_jar.item_tooltip2" ).withStyle( ChatFormatting.GRAY ) );
 			} else {
-				components.add( Component.translatable( "item.majruszsdifficulty.soul_jar.item_tooltip3" ).withStyle( ChatFormatting.GRAY ) );
+				components.add( new TranslatableComponent( "item.majruszsdifficulty.soul_jar.item_tooltip3" ).withStyle( ChatFormatting.GRAY ) );
 			}
 
 			return components;
@@ -243,12 +247,12 @@ public class SoulJarItem extends Item {
 		}
 
 		public Component getBonusComponent( float multiplier ) {
-			return Component.translatable( this.bonusId, this.valueProvider.apply( multiplier ) )
+			return new TranslatableComponent( this.bonusId, this.valueProvider.apply( multiplier ) )
 				.withStyle( ChatFormatting.BLUE );
 		}
 
 		public Component getSoulComponent() {
-			return Component.translatable( this.mobId )
+			return new TranslatableComponent( this.mobId )
 				.withStyle( this.soulFormatting );
 		}
 	}

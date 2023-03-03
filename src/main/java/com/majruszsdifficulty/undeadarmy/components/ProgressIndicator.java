@@ -7,6 +7,8 @@ import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -16,8 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.Collection;
 
 class ProgressIndicator implements IComponent {
-	final ServerBossEvent waveInfo = ( ServerBossEvent )new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 ).setCreateWorldFog( true );
-	final ServerBossEvent bossInfo = new ServerBossEvent( CommonComponents.EMPTY, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6 );
+	final ServerBossEvent waveInfo = ( ServerBossEvent )new ServerBossEvent( new TextComponent( "" ), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10 ).setCreateWorldFog( true );
+	final ServerBossEvent bossInfo = new ServerBossEvent( new TextComponent( "" ), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6 );
 	final UndeadArmy undeadArmy;
 
 	public ProgressIndicator( UndeadArmy undeadArmy ) {
@@ -99,13 +101,13 @@ class ProgressIndicator implements IComponent {
 
 	private Component getPhaseComponent() {
 		return switch( this.undeadArmy.phase.state ) {
-			case WAVE_PREPARING -> Component.translatable( String.format( "majruszsdifficulty.undead_army.%s", this.undeadArmy.currentWave > 0 ? "between_waves" : "title" ) );
-			case WAVE_ONGOING -> Component.translatable( "majruszsdifficulty.undead_army.title" )
+			case WAVE_PREPARING -> new TranslatableComponent( String.format( "majruszsdifficulty.undead_army.%s", this.undeadArmy.currentWave > 0 ? "between_waves" : "title" ) );
+			case WAVE_ONGOING -> new TranslatableComponent( "majruszsdifficulty.undead_army.title" )
 				.append( " " )
-				.append( Component.translatable( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( this.undeadArmy.currentWave ) ) );
-			case UNDEAD_DEFEATED -> Component.translatable( "majruszsdifficulty.undead_army.victory" );
-			case UNDEAD_WON -> Component.translatable( "majruszsdifficulty.undead_army.failed" );
-			default -> CommonComponents.EMPTY;
+				.append( new TranslatableComponent( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( this.undeadArmy.currentWave ) ) );
+			case UNDEAD_DEFEATED -> new TranslatableComponent( "majruszsdifficulty.undead_army.victory" );
+			case UNDEAD_WON -> new TranslatableComponent( "majruszsdifficulty.undead_army.failed" );
+			default -> new TextComponent( "" );
 		};
 	}
 

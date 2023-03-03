@@ -87,7 +87,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	@Override
-	public int getExperienceReward() {
+	public int getExperienceReward( Player p_34322_ ) {
 		return Random.nextInt( 60, 90 );
 	}
 

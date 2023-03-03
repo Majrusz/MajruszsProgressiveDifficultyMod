@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 // TODO: move all commands to separate packages
 public class DifficultyCommand extends Command {
 	protected static MutableComponent createGameStageMessage( GameStage stage, String translationKey ) {
-		return Component.translatable( "commands.gamestage." + translationKey, GameStage.getGameStageText( stage ) );
+		return new TranslatableComponent( "commands.gamestage." + translationKey, GameStage.getGameStageText( stage ) );
 	}
 
 	protected static String asVec3i( Vec3 position ) {

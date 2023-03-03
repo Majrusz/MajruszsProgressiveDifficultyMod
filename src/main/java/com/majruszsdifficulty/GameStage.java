@@ -70,7 +70,7 @@ public enum GameStage {
 	}
 
 	public static MutableComponent getGameStageText( GameStage stage ) {
-		return Component.translatable( "majruszsdifficulty.stages." + stage.name().toLowerCase() ).withStyle( stage.formatting );
+		return new TranslatableComponent( "majruszsdifficulty.stages." + stage.name().toLowerCase() ).withStyle( stage.formatting );
 	}
 
 	public static double getRegionalDifficulty( Entity target ) {

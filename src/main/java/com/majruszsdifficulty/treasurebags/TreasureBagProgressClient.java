@@ -6,10 +6,7 @@ import com.majruszsdifficulty.treasurebags.data.LootProgressData;
 import com.mlib.Utility;
 import com.mlib.client.ClientHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -41,7 +38,7 @@ public class TreasureBagProgressClient {
 		if( ClientHelper.isShiftDown() ) {
 			return TREASURE_BAG_COMPONENTS.get( Utility.getRegistryString( item ) );
 		} else {
-			return List.of( Component.translatable( "majruszsdifficulty.treasure_bag.hint_tooltip" ).withStyle( ChatFormatting.GRAY ) );
+			return List.of( new TranslatableComponent( "majruszsdifficulty.treasure_bag.hint_tooltip" ).withStyle( ChatFormatting.GRAY ) );
 		}
 	}
 
@@ -49,7 +46,7 @@ public class TreasureBagProgressClient {
 		for( String treasureBagId : data.treasureBags.keySet() ) {
 			List< LootData > lootDataList = data.treasureBags.get( treasureBagId ).lootDataList;
 			List< Component > tooltip = new ArrayList<>();
-			lootDataList.forEach( lootData->tooltip.add( Component.literal( " " ).append( getTextComponent( lootData ) ) ) );
+			lootDataList.forEach( lootData->tooltip.add( new TextComponent( " " ).append( getTextComponent( lootData ) ) ) );
 			tooltip.add( 0, getProgressComponent( lootDataList ) );
 
 			TREASURE_BAG_COMPONENTS.put( treasureBagId, tooltip );
@@ -63,7 +60,7 @@ public class TreasureBagProgressClient {
 				.copy()
 				.withStyle( getUnlockedItemFormat( lootData.quality ) );
 		} else {
-			return Component.literal( "???" ).withStyle( getLockedItemFormat( lootData.quality ) );
+			return new TextComponent( "???" ).withStyle( getLockedItemFormat( lootData.quality ) );
 		}
 	}
 
@@ -71,7 +68,7 @@ public class TreasureBagProgressClient {
 		int unlockedItems = ( int )lootDataList.stream().filter( data->data.isUnlocked ).count();
 		int totalItems = lootDataList.size();
 
-		return Component.translatable( "majruszsdifficulty.treasure_bag.list_tooltip", unlockedItems, totalItems )
+		return new TranslatableComponent( "majruszsdifficulty.treasure_bag.list_tooltip", unlockedItems, totalItems )
 			.withStyle( ChatFormatting.GRAY );
 	}
 
@@ -104,7 +101,7 @@ public class TreasureBagProgressClient {
 
 			for( int i = 0; i < lootDataList.size(); ++i ) {
 				if( lootDataList.get( i ).isUnlocked && !lootDataOldList.get( i ).isUnlocked ) {
-					player.sendSystemMessage( getMessageComponent( treasureBagId, lootDataList, lootDataOldList ) );
+					player.displayClientMessage( getMessageComponent( treasureBagId, lootDataList, lootDataOldList ), false );
 					break;
 				}
 			}
@@ -118,11 +115,11 @@ public class TreasureBagProgressClient {
 				.copy()
 				.withStyle( style->style.withHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, getHoverComponent( treasureBagId, lootDataList, lootDataOldList ) ) ) );
 
-			return Component.translatable( "majruszsdifficulty.treasure_bag.new_items", ComponentUtils.wrapInSquareBrackets( treasureBag )
+			return new TranslatableComponent( "majruszsdifficulty.treasure_bag.new_items", ComponentUtils.wrapInSquareBrackets( treasureBag )
 				.withStyle( treasureBagItem.getRarity( new ItemStack( treasureBagItem ) ).getStyleModifier() ) );
 		}
 
-		return Component.literal( "ERROR" ).withStyle( ChatFormatting.RED );
+		return new TextComponent( "ERROR" ).withStyle( ChatFormatting.RED );
 	}
 
 	private static MutableComponent getHoverComponent( String treasureBagId, List< LootData > lootDataList, List< LootData > lootDataOldList ) {

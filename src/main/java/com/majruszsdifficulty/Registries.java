@@ -184,6 +184,7 @@ public class Registries {
 
 	// Misc
 	public static final CreativeModeTab ITEM_GROUP = CreativeModeTabHelper.newTab( "majruszsdifficulty.primary", BATTLE_STANDARD );
+	public static GameDataSaver GAME_DATA_SAVER;
 
 	// Triggers
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
@@ -297,15 +298,9 @@ public class Registries {
 		} );
 	}
 
-<<<<<<< HEAD
 	public static void onLoadingLevel( WorldEvent.Load event ) {
-		ServerLevel level = getOverworld( event.getWorld() );
-		if( level == null )
-=======
-	public static void onLoadingLevel( LevelEvent.Load event ) {
-		ServerLevel overworld = getOverworld( event.getLevel() );
+		ServerLevel overworld = getOverworld( event.getWorld() );
 		if( overworld == null )
->>>>>>> 255577cf (Made Undead Army Manager be part of GameDataSaver)
 			return;
 
 		GAME_DATA_SAVER = overworld.getDataStorage()
@@ -320,21 +315,11 @@ public class Registries {
 		TreasureBagManager.addTreasureBagTo( EntityType.ENDER_DRAGON, ENDER_DRAGON_TREASURE_BAG.get() );
 	}
 
-<<<<<<< HEAD
 	public static void onSavingLevel( WorldEvent.Save event ) {
-		ServerLevel level = getOverworld( event.getWorld() );
-		if( level == null )
-			return;
-
-		GAME_DATA_SAVER.setDirty();
-		UNDEAD_ARMY_MANAGER.setDirty();
-=======
-	public static void onSavingLevel( LevelEvent.Save event ) {
-		ServerLevel overworld = getOverworld( event.getLevel() );
+		ServerLevel overworld = getOverworld( event.getWorld() );
 		if( overworld != null ) {
 			GAME_DATA_SAVER.setDirty();
 		}
->>>>>>> 255577cf (Made Undead Army Manager be part of GameDataSaver)
 	}
 
 	@Nullable

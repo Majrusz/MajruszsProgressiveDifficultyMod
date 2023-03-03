@@ -5,6 +5,7 @@ import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
 import com.mlib.animations.InterpolationType;
 import com.mlib.math.VectorHelper;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +15,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
 
 @OnlyIn( Dist.CLIENT )
 public class CerberusModel< Type extends CerberusEntity > extends HierarchicalModel< Type > {
@@ -332,11 +332,12 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = breathJawRotation;
 
 		// bite anims (side necks)
-		Vector3f neckRotation = new Vector3f( BITE_SIDE_NECK_ROTATION.apply( biteRatio, ageInTicks ) ).mul( ( float )Math.PI / 180.0f );
-		this.neck1.xRot = neckRotation.x;
-		this.neck1.zRot = neckRotation.z;
-		this.neck3.xRot = neckRotation.x;
-		this.neck3.zRot = -neckRotation.z;
+		Vector3f neckRotation = BITE_SIDE_NECK_ROTATION.apply( biteRatio, ageInTicks );
+		neckRotation.mul( ( float )Math.PI / 180.0f );
+		this.neck1.xRot = neckRotation.x();
+		this.neck1.zRot = neckRotation.z();
+		this.neck3.xRot = neckRotation.x();
+		this.neck3.zRot = -neckRotation.z();
 	}
 
 	private float getPlayerDistance( Type cerberus ) {
