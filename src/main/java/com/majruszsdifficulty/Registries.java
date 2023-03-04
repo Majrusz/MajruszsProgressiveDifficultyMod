@@ -179,7 +179,7 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Misc
-	public static GameDataSaver GAME_DATA_SAVER = GameDataSaver.NOT_LOADED;
+	public static GameDataSaver GAME_DATA_SAVER;
 
 	// Triggers
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
@@ -202,7 +202,7 @@ public class Registries {
 	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
 
 	public static UndeadArmyManager getUndeadArmyManager() {
-		return GAME_DATA_SAVER.getUndeadArmyManager();
+		return GAME_DATA_SAVER != null ? GAME_DATA_SAVER.getUndeadArmyManager() : UndeadArmyManager.NOT_LOADED;
 	}
 
 	public static TreasureBagProgressManager getTreasureBagProgressManager() {

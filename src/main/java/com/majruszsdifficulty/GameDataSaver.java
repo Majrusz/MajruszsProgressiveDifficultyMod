@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class GameDataSaver extends SavedData {
-	public static final GameDataSaver NOT_LOADED = new GameDataSaver();
 	final Data data;
 
 	public GameDataSaver( ServerLevel overworld ) {
@@ -23,10 +22,6 @@ public class GameDataSaver extends SavedData {
 		this.data = new Data( overworld );
 
 		this.data.read( tag );
-	}
-
-	private GameDataSaver() {
-		this.data = new Data();
 	}
 
 	@Override
@@ -57,11 +52,6 @@ public class GameDataSaver extends SavedData {
 			this.define( "GameStage", GameStage::getCurrentStage, gameStage->GameStage.changeStage( gameStage, null ), GameStage::values );
 			this.define( "UndeadArmy", ()->this.undeadArmyManager );
 			this.define( "TreasureBags", ()->this.treasureBagProgressManager );
-		}
-
-		private Data() {
-			this.undeadArmyManager = UndeadArmyManager.NOT_LOADED;
-			this.treasureBagProgressManager = new TreasureBagProgressManager();
 		}
 	}
 }
