@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UndeadArmyManager extends SerializableStructure {
+	public static final UndeadArmyManager NOT_LOADED = new UndeadArmyManager();
 	final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	final ServerLevel level;
 	final Config config;
@@ -28,6 +29,11 @@ public class UndeadArmyManager extends SerializableStructure {
 		this.config = config;
 
 		this.define( "undead_armies", ()->this.undeadArmies, this.undeadArmies::addAll, ()->new UndeadArmy( level, config ) );
+	}
+
+	private UndeadArmyManager() {
+		this.level = null;
+		this.config = null;
 	}
 
 	public boolean tryToSpawn( Player player ) {

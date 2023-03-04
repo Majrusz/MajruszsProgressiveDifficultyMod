@@ -179,7 +179,7 @@ public class Registries {
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
 
 	// Misc
-	public static GameDataSaver GAME_DATA_SAVER;
+	public static GameDataSaver GAME_DATA_SAVER = GameDataSaver.NOT_LOADED;
 
 	// Triggers
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
