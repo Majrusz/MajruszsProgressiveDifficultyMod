@@ -202,7 +202,7 @@ public class Registries {
 	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
 
 	public static UndeadArmyManager getUndeadArmyManager() {
-		return GAME_DATA_SAVER.getUndeadArmyManager();
+		return GAME_DATA_SAVER != null ? GAME_DATA_SAVER.getUndeadArmyManager() : UndeadArmyManager.NOT_LOADED;
 	}
 
 	public static TreasureBagProgressManager getTreasureBagProgressManager() {
