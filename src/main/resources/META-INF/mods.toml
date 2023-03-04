@@ -5,7 +5,7 @@ issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/i
 
 [[mods]]
     modId = "majruszsdifficulty"
-    version = "1.7.0"
+    version = "1.7.1-unfinished"
     displayName = "Majrusz's Progressive Difficulty"
     updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MinecraftCommon/main/ProgressiveDifficulty/update.json"
     displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
