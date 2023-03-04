@@ -61,7 +61,7 @@ public class UndeadArmy extends SerializableStructure {
 
 	public void tick() {
 		if( !this.areEntitiesLoaded ) {
-			this.areEntitiesLoaded = this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid == null || EntityHelper.isLoaded( this.level, mobInfo.uuid ) );
+			this.areEntitiesLoaded = this.mobsLeft.stream().allMatch( mobInfo->mobInfo.uuid == null || EntityHelper.isLoaded( this.level, mobInfo.uuid ) );
 			if( this.areEntitiesLoaded ) {
 				this.components.dispatch( IComponent::onGameReload );
 			} else {

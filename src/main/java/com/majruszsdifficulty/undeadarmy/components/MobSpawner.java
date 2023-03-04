@@ -131,9 +131,8 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	}
 
 	private void addGoals( PathfinderMob mob ) {
+		mob.targetSelector.addGoal( 11, new UndeadArmyForgiveTeammateGoal( mob ) );
 		mob.goalSelector.addGoal( 4, new UndeadArmyAttackPositionGoal( mob, this.undeadArmy.positionToAttack ) );
-		mob.targetSelector.getAvailableGoals().removeIf( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal );
-		mob.targetSelector.addGoal( 1, new UndeadArmyForgiveTeammateGoal( mob ) );
 	}
 
 	private void makePersistent( PathfinderMob mob ) {

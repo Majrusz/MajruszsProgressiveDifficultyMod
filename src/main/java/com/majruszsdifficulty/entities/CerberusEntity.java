@@ -2,6 +2,7 @@ package com.majruszsdifficulty.entities;
 
 import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
@@ -129,7 +130,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		this.targetSelector.addGoal( 1, new HurtByTargetGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
-		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, Mob.class, 2, true, false, CerberusEntity::isValidTarget ) );
+		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, Mob.class, 2, true, false, this::isValidTarget ) );
 	}
 
 	@Override
@@ -157,9 +158,11 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		this.playSound( SoundEvents.WITHER_SKELETON_STEP, 0.15f, 1.0f );
 	}
 
-	private static boolean isValidTarget( LivingEntity entity ) {
-		return !Registries.getUndeadArmyManager().isPartOfUndeadArmy( entity )
-			&& !( entity instanceof CerberusEntity );
+	private boolean isValidTarget( LivingEntity entity ) {
+		UndeadArmyManager undeadArmyManager = Registries.getUndeadArmyManager();
+
+		return !undeadArmyManager.isPartOfUndeadArmy( this )
+			|| !undeadArmyManager.isPartOfUndeadArmy( entity ) && undeadArmyManager.findNearestUndeadArmy( entity.blockPosition() ) != null;
 	}
 
 	public static class Skills extends CustomSkills< SkillType > {
