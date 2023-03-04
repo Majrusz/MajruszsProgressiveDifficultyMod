@@ -81,10 +81,6 @@ public class CustomConditions {
 	}
 
 	public static class IsNotUndeadArmy< DataType extends ContextData > extends Condition< DataType > {
-		public IsNotUndeadArmy() {
-			this.apply( params->params.priority( Priority.HIGH ) );
-		}
-
 		@Override
 		public boolean check( GameModifier gameModifier, DataType data ) {
 			return !Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity );
