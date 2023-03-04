@@ -119,7 +119,8 @@ public class TreasureBagProgressManager extends SerializableStructure {
 			new OnPlayerLogged.Context( data->Registries.getTreasureBagProgressManager().onLogged( data ) )
 				.addCondition( new Condition.IsServer<>() );
 
-			new OnTreasureBagOpened.Context( data->Registries.getTreasureBagProgressManager().updateProgress( data ) );
+			new OnTreasureBagOpened.Context( data->Registries.getTreasureBagProgressManager().updateProgress( data ) )
+				.addCondition( new Condition.IsServer<>() );
 		}
 	}
 }
