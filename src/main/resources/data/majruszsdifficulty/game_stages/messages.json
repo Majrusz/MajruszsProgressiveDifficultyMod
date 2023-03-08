@@ -1,0 +1,20 @@
+[
+  {
+    "id": "majruszsdifficulty.on_expert_mode_start",
+    "game_stage": "EXPERT"
+  },
+  {
+    "id": "majruszsdifficulty.undead_army.on_expert",
+    "game_stage": "EXPERT",
+    "style": "DARK_PURPLE"
+  },
+  {
+    "id": "majruszsdifficulty.on_master_mode_start",
+    "game_stage": "MASTER"
+  },
+  {
+    "id": "Custom message!",
+    "game_stage": "MASTER",
+    "style": "AQUA"
+  }
+]

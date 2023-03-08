@@ -3,7 +3,6 @@ package com.majruszsdifficulty.undeadarmy;
 import com.google.gson.JsonElement;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
 import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
 import com.majruszsdifficulty.undeadarmy.data.WavesDef;
@@ -16,21 +15,17 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnServerTick;
-import com.mlib.items.ItemHelper;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +37,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -87,11 +81,6 @@ public class Config extends GameModifier {
 			.addCondition( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) )
 			.addCondition( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
 			.addCondition( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity ) )
-			.insertTo( this );
-
-		new OnGameStageChange.Context( this::notifyPlayers )
-			.addCondition( data->!data.isLoadedFromDisk() )
-			.addCondition( data->data.previous == GameStage.NORMAL && data.current == GameStage.EXPERT )
 			.insertTo( this );
 
 		this.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
@@ -184,13 +173,5 @@ public class Config extends GameModifier {
 			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )
 			.withOptionalParameter( LootContextParams.KILLER_ENTITY, data.killer )
 			.create( LootContextParamSets.ENTITY );
-	}
-
-	private void notifyPlayers( OnGameStageChange.Data data ) {
-		MutableComponent message = Component.translatable( "majruszsdifficulty.undead_army.on_expert" ).withStyle( ChatFormatting.DARK_PURPLE );
-
-		data.server.getPlayerList()
-			.getPlayers()
-			.forEach( player->player.displayClientMessage( message, false ) );
 	}
 }
