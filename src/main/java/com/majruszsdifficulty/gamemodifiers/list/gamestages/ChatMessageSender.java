@@ -14,6 +14,7 @@ import net.minecraft.network.chat.MutableComponent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 @AutoInstance
 public class ChatMessageSender extends GameModifier {
@@ -29,7 +30,7 @@ public class ChatMessageSender extends GameModifier {
 	}
 
 	private void sendMessage( OnGameStageChange.Data data ) {
-		this.messages.get().messages.stream()
+		this.messages.get().stream()
 			.filter( message->data.current == message.gameStage )
 			.forEach( message->{
 				MutableComponent component = Component.translatable( message.id )
@@ -46,6 +47,10 @@ public class ChatMessageSender extends GameModifier {
 
 		public Messages() {
 			this.define( null, ()->this.messages, x->this.messages = x, Message::new );
+		}
+
+		public Stream< Message > stream() {
+			return this.messages.stream();
 		}
 	}
 
