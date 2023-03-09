@@ -3,18 +3,12 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnDimensionChanged;
-import com.mlib.gamemodifiers.parameters.Priority;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.*;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
 
 @AutoInstance
@@ -51,12 +45,6 @@ public class IncreaseGameStage extends GameModifier {
 			.addCondition( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) )
 			.insertTo( this );
 
-		new OnGameStageChange.Context( this::notifyPlayers )
-			.priority( Priority.HIGHEST )
-			.addCondition( data->!data.isLoadedFromDisk() )
-			.addCondition( data->data.previous == GameStage.NORMAL && data.current == GameStage.EXPERT || data.current == GameStage.MASTER )
-			.insertTo( this );
-
 		this.addConfig( DEFAULT_GAME_STAGE.name( "default_mode" ).comment( "Game stage set at the beginning of a new world." ) )
 			.addConfig( this.enteringAnyDimensionStartsExpertMode
 				.name( "any_dimension_expert" )
@@ -79,26 +67,5 @@ public class IncreaseGameStage extends GameModifier {
 
 	private void startMasterMode( OnDeath.Data data ) {
 		GameStage.changeStage( GameStage.MASTER, data.target.getServer() );
-	}
-
-	private void notifyPlayers( OnGameStageChange.Data data ) {
-		String messageId = data.current == GameStage.EXPERT ? "majruszsdifficulty.on_expert_mode_start" : "majruszsdifficulty.on_master_mode_start";
-
-		sendMessageToAllPlayers( data.server, data.current, messageId );
-		triggerAdvancement( data.server, data.current );
-	}
-
-	private static void triggerAdvancement( MinecraftServer server, GameStage current ) {
-		server.getPlayerList()
-			.getPlayers()
-			.forEach( player->Registries.GAME_STATE_TRIGGER.trigger( player, current ) );
-	}
-
-	private static void sendMessageToAllPlayers( MinecraftServer server, GameStage current, String messageId ) {
-		MutableComponent message = new TranslatableComponent( messageId ).withStyle( current.getChatFormatting() );
-
-		server.getPlayerList()
-			.getPlayers()
-			.forEach( player->player.displayClientMessage( message, false ) );
 	}
 }
