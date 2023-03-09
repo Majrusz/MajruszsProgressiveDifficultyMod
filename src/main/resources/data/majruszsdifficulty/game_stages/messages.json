@@ -11,10 +11,5 @@
   {
     "id": "majruszsdifficulty.on_master_mode_start",
     "game_stage": "MASTER"
-  },
-  {
-    "id": "Custom message!",
-    "game_stage": "MASTER",
-    "style": "AQUA"
   }
 ]
