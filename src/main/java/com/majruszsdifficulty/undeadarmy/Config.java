@@ -1,9 +1,7 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.google.gson.JsonElement;
 import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
 import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
 import com.majruszsdifficulty.undeadarmy.data.WavesDef;
@@ -11,40 +9,30 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
+import com.mlib.data.JsonListener;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnServerTick;
-import com.mlib.items.ItemHelper;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.Mth;
-import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Supplier;
 
 @AutoInstance
 public class Config extends GameModifier {
@@ -56,19 +44,12 @@ public class Config extends GameModifier {
 	private final DoubleConfig extraSizePerPlayer = new DoubleConfig( 0.5, new Range<>( 0.0, 1.0 ) );
 	private final IntegerConfig armyRadius = new IntegerConfig( 70, new Range<>( 35, 140 ) );
 	private final IntegerConfig killRequirement = new IntegerConfig( 75, new Range<>( 0, 1000 ) );
-	private WavesDef wavesDef = null;
+	private final Supplier< WavesDef > wavesDef;
 
 	public Config() {
 		super( Registries.Modifiers.UNDEAD_ARMY );
 
-		var gson = Deserializers.createFunctionSerializer().registerTypeAdapter( WavesDef.class, new WavesDef.Serializer() ).create();
-		var listener = new SimpleJsonResourceReloadListener( gson, "undead_army" ) {
-			@Override
-			protected void apply( Map< ResourceLocation, JsonElement > elements, ResourceManager manager, ProfilerFiller filler ) {
-				Config.this.wavesDef = gson.fromJson( elements.get( Registries.getLocation( "waves" ) ), WavesDef.class );
-			}
-		};
-		MinecraftForge.EVENT_BUS.addListener( ( AddReloadListenerEvent event )->event.addListener( listener ) );
+		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
 
 		new OnServerTick.Context( data->Registries.getUndeadArmyManager().tick() )
 			.addCondition( data->data.event.phase == TickEvent.Phase.END )
@@ -87,11 +68,6 @@ public class Config extends GameModifier {
 			.addCondition( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) )
 			.addCondition( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
 			.addCondition( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity ) )
-			.insertTo( this );
-
-		new OnGameStageChange.Context( this::notifyPlayers )
-			.addCondition( data->!data.isLoadedFromDisk() )
-			.addCondition( data->data.previous == GameStage.NORMAL && data.current == GameStage.EXPERT )
 			.insertTo( this );
 
 		this.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
@@ -184,13 +160,5 @@ public class Config extends GameModifier {
 			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )
 			.withOptionalParameter( LootContextParams.KILLER_ENTITY, data.killer )
 			.create( LootContextParamSets.ENTITY );
-	}
-
-	private void notifyPlayers( OnGameStageChange.Data data ) {
-		MutableComponent message = Component.translatable( "majruszsdifficulty.undead_army.on_expert" ).withStyle( ChatFormatting.DARK_PURPLE );
-
-		data.server.getPlayerList()
-			.getPlayers()
-			.forEach( player->player.displayClientMessage( message, false ) );
 	}
 }

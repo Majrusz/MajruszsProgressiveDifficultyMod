@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 class ProgressIndicator implements IComponent {
@@ -61,7 +62,7 @@ class ProgressIndicator implements IComponent {
 		if( this.undeadArmy.phase.state == Phase.State.FINISHED )
 			return;
 
-		Collection< ServerPlayer > currentParticipants = this.waveInfo.getPlayers();
+		Collection< ServerPlayer > currentParticipants = new ArrayList<>( this.waveInfo.getPlayers() );
 		this.undeadArmy.participants.forEach( player->{
 			if( !currentParticipants.contains( player ) ) {
 				this.waveInfo.addPlayer( player );
