@@ -8,8 +8,8 @@ import com.mlib.data.JsonListener;
 import com.mlib.data.SerializableStructure;
 import com.mlib.gamemodifiers.GameModifier;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,8 @@ public class ChatMessageSender extends GameModifier {
 	final Supplier< Messages > messages;
 
 	public ChatMessageSender() {
+		super( Registries.Modifiers.DEFAULT );
+
 		this.messages = JsonListener.add( "game_stages", Registries.getLocation( "messages" ), Messages.class, Messages::new );
 
 		new OnGameStageChange.Context( this::sendMessage )
@@ -33,7 +35,7 @@ public class ChatMessageSender extends GameModifier {
 		this.messages.get().stream()
 			.filter( message->data.current == message.gameStage )
 			.forEach( message->{
-				MutableComponent component = Component.translatable( message.id )
+				MutableComponent component = new TranslatableComponent( message.id )
 					.withStyle( message.chatFormatting != null ? new ChatFormatting[]{ message.chatFormatting } : data.current.getChatFormatting() );
 
 				data.server.getPlayerList()
