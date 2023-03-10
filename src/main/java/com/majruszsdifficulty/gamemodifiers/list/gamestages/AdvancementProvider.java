@@ -8,6 +8,8 @@ import com.mlib.gamemodifiers.GameModifier;
 @AutoInstance
 public class AdvancementProvider extends GameModifier {
 	public AdvancementProvider() {
+		super( Registries.Modifiers.DEFAULT );
+
 		new OnGameStageChange.Context( this::giveAdvancement )
 			.addCondition( data->!data.isLoadedFromDisk() )
 			.addCondition( data->data.previous.ordinal() < data.current.ordinal() )

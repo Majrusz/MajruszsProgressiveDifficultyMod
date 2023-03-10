@@ -21,6 +21,8 @@ public class ChatMessageSender extends GameModifier {
 	final Supplier< Messages > messages;
 
 	public ChatMessageSender() {
+		super( Registries.Modifiers.DEFAULT );
+
 		this.messages = JsonListener.add( "game_stages", Registries.getLocation( "messages" ), Messages.class, Messages::new );
 
 		new OnGameStageChange.Context( this::sendMessage )
