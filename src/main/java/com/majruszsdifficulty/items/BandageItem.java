@@ -8,7 +8,7 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.EffectConfig;
 import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
 import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
@@ -67,7 +67,7 @@ public class BandageItem extends Item {
 	}
 
 	@AutoInstance
-	public static class Effects extends GameModifier {
+	public static class Effects {
 		static Effects INSTANCE = null;
 		final ConfigGroup bandageGroup = new ConfigGroup();
 		final EffectConfig regeneration = new EffectConfig( MobEffects.REGENERATION, 0, 4.0 );
@@ -76,7 +76,7 @@ public class BandageItem extends Item {
 		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 60.0 );
 
 		public Effects() {
-			super( Registries.Modifiers.DEFAULT );
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT ).name( "Bandages" );
 
 			INSTANCE = this;
 
@@ -91,9 +91,7 @@ public class BandageItem extends Item {
 				.addCondition( Condition.predicate( Effects::canUse ) )
 				.addConfig( this.bandageGroup.name( "Bandage" ).comment( "Config for a Bandage item." ) )
 				.addConfig( this.goldenBandageGroup.name( "GoldenBandage" ).comment( "Config for a Golden Bandage item." ) )
-				.insertTo( this );
-
-			this.name( "Bandages" );
+				.insertTo( group );
 		}
 
 		private void useBandage( OnPlayerInteract.Data data ) {

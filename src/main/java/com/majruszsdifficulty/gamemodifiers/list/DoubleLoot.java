@@ -5,11 +5,12 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.Context;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemStack;
@@ -19,31 +20,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Deprecated( forRemoval = true )
 @AutoInstance
-public class DoubleLoot extends GameModifier {
+public class DoubleLoot {
 	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, ()->new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
 	final StringListConfig forbiddenItems = new StringListConfig( "minecraft:nether_star", "minecraft:totem_of_undying" );
 
 	public DoubleLoot() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "DoubleLoot" )
+			.comment( "Gives a chance to double the loot." )
+			.addConfig( this.forbiddenItems.name( "forbidden_items" ).comment( "List of items that cannot be duplicated." ) );
 
 		OnDoubleLoot.listen( this::doubleLoot, 0.0, GameStage.NORMAL )
 			.name( "NormalMode" )
 			.comment( "Determines the chance on Normal Mode." )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnDoubleLoot.listen( this::doubleLoot, 0.2, GameStage.EXPERT )
 			.name( "ExpertMode" )
 			.comment( "Determines the chance on Expert Mode." )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnDoubleLoot.listen( this::doubleLoot, 0.4, GameStage.MASTER )
 			.name( "MasterMode" )
 			.comment( "Determines the chance on Master Mode." )
-			.insertTo( this );
-
-		this.addConfig( this.forbiddenItems.name( "forbidden_items" ).comment( "List of items that cannot be duplicated." ) );
-		this.name( "DoubleLoot" ).comment( "Gives a chance to double the loot." );
+			.insertTo( group );
 	}
 
 	private void doubleLoot( OnLoot.Data data ) {

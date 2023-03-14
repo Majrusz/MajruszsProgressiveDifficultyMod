@@ -3,10 +3,11 @@ package com.majruszsdifficulty.entities;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.effects.SoundHandler;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.gamemodifiers.contexts.OnItemTooltip;
 import com.mlib.math.Range;
@@ -63,11 +64,13 @@ public class BlackWidowEntity extends Spider {
 	}
 
 	@AutoInstance
-	public static class WebAbility extends GameModifier {
+	public static class WebAbility {
 		final DoubleConfig delay = new DoubleConfig( 30.0, new Range<>( 5.0, 600.0 ) );
 
 		public WebAbility() {
-			super( Registries.Modifiers.DEFAULT );
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+				.name( "BlackWidowWebAbility" )
+				.comment( "Black Widow spawns the web when in combat." );
 
 			OnEntityTick.listen( this::spawnWeb )
 				.addCondition( Condition.isServer() )
@@ -75,9 +78,7 @@ public class BlackWidowEntity extends Spider {
 				.addCondition( Condition.predicate( data->data.entity instanceof BlackWidowEntity ) )
 				.addCondition( Condition.predicate( this::ticksHavePassed ) )
 				.addConfig( this.delay.name( "delay" ).comment( "Duration between creating a new web (in seconds)." ) )
-				.insertTo( this );
-
-			this.name( "BlackWidowWebAbility" ).comment( "Black Widow spawns the web when in combat." );
+				.insertTo( group );
 		}
 
 		private void spawnWeb( OnEntityTick.Data data ) {
@@ -91,13 +92,10 @@ public class BlackWidowEntity extends Spider {
 
 	@Deprecated
 	@AutoInstance
-	public static class TempTooltip extends GameModifier {
+	public static class TempTooltip {
 		public TempTooltip() {
-			super( Registries.Modifiers.DEFAULT );
-
 			OnItemTooltip.listen( this::addTooltip )
-				.addCondition( Condition.predicate( data->data.itemStack.getItem().equals( Registries.BLACK_WIDOW_SPAWN_EGG.get() ) ) )
-				.insertTo( this );
+				.addCondition( Condition.predicate( data->data.itemStack.getItem().equals( Registries.BLACK_WIDOW_SPAWN_EGG.get() ) ) );
 		}
 
 		private void addTooltip( OnItemTooltip.Data data ) {

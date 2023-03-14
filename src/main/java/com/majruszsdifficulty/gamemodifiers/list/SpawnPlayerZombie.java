@@ -5,9 +5,10 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.math.Range;
 import net.minecraft.nbt.CompoundTag;
@@ -26,12 +27,14 @@ import net.minecraft.world.item.Items;
 import javax.annotation.Nullable;
 
 @AutoInstance
-public class SpawnPlayerZombie extends GameModifier {
+public class SpawnPlayerZombie {
 	final DoubleConfig headChance = new DoubleConfig( 1.0, Range.CHANCE );
 	final DoubleConfig headDropChance = new DoubleConfig( 0.1, Range.CHANCE );
 
 	public SpawnPlayerZombie() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "SpawnPlayerZombie" )
+			.comment( "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
 
 		OnDeath.listen( this::spawnZombie )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
@@ -42,16 +45,13 @@ public class SpawnPlayerZombie extends GameModifier {
 			.addCondition( Condition.predicate( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie ) )
 			.addConfig( this.headChance.name( "head_chance" ).comment( "Chance for a zombie to have player's head." ) )
 			.addConfig( this.headDropChance.name( "head_drop_chance" ).comment( "Chance for a zombie to drop player's head." ) )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnDeath.listen( this::giveAdvancement )
 			.addCondition( Condition.predicate( data->data.target instanceof Zombie ) )
 			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
 			.addCondition( Condition.predicate( data->data.target.getName().equals( data.attacker.getName() ) ) )
-			.insertTo( this );
-
-		this.name( "SpawnPlayerZombie" )
-			.comment( "If the player dies from a zombie or bleeding, then a zombie with player's name spawns in the same place." );
+			.insertTo( group );
 	}
 
 	private void spawnZombie( OnDeath.Data data ) {

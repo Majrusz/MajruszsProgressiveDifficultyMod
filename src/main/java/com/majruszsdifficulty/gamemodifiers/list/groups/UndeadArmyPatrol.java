@@ -6,8 +6,9 @@ import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.math.Range;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +21,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import java.util.List;
 
 @AutoInstance
-public class UndeadArmyPatrol extends GameModifier {
+public class UndeadArmyPatrol {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
 		()->Random.nextRandom( List.of( EntityType.ZOMBIE, EntityType.HUSK ) ),
 		new Range<>( 2, 4 ),
@@ -29,7 +30,9 @@ public class UndeadArmyPatrol extends GameModifier {
 	);
 
 	public UndeadArmyPatrol() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "UndeadArmyPatrol" )
+			.comment( "Undead may spawn in groups as the Undead Army Patrol." );
 
 		OnSpawned.listenSafe( this::spawnGroup )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
@@ -42,9 +45,7 @@ public class UndeadArmyPatrol extends GameModifier {
 			.addCondition( OnSpawned.isNotLoadedFromDisk() )
 			.addCondition( OnSpawned.is( Zombie.class, Skeleton.class, Husk.class, Stray.class ) )
 			.addConfigs( this.mobGroups.name( "Undead" ) )
-			.insertTo( this );
-
-		this.name( "UndeadArmyPatrol" ).comment( "Undead may spawn in groups as the Undead Army Patrol." );
+			.insertTo( group );
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {

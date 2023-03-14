@@ -17,7 +17,7 @@ import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.text.TextHelper;
@@ -118,7 +118,7 @@ public class BleedingEffect extends MobEffect {
 	}
 
 	@AutoInstance
-	public static class Bleeding extends GameModifier {
+	public static class Bleeding {
 		static final ParticleHandler PARTICLES = new ParticleHandler( Registries.BLOOD, ()->new Vec3( 0.2, 0.5, 0.2 ), ParticleHandler.speed( 0.075f ) );
 		static final String ATTRIBUTE_ID = "effect.majruszsdifficulty.bleeding.armor_tooltip";
 		static final int BLOOD_TICK_COOLDOWN = Utility.secondsToTicks( 4.0 );
@@ -127,35 +127,37 @@ public class BleedingEffect extends MobEffect {
 		final HashMap< Integer, Integer > entityTicks = new HashMap<>();
 
 		public Bleeding() {
-			super( Registries.Modifiers.DEFAULT );
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+				.name( "Bleeding" )
+				.comment( "Common config for all Bleeding effects." );
 
 			OnEntityTick.listen( this::spawnParticles )
 				.addCondition( Condition.isServer() )
 				.addCondition( Condition.< OnEntityTick.Data > cooldown( 3, Dist.DEDICATED_SERVER ).configurable( false ) )
 				.addCondition( Condition.hasEffect( Registries.BLEEDING, data->data.entity ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnEntityTick.listen( this::tick )
 				.addCondition( Condition.isServer() )
 				.addCondition( Condition.hasEffect( Registries.BLEEDING, data->data.entity ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnDeath.listen( this::spawnParticles )
 				.addCondition( Condition.isServer() )
 				.addCondition( Condition.hasEffect( Registries.BLEEDING, data->data.target ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnEffectApplicable.listen( this::cancelEffect )
 				.addCondition( Condition.predicate( data->!BleedingEffect.isEnabled() ) )
 				.addCondition( Condition.predicate( data->data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			var excludable = Condition.< OnDamaged.Data > excludable();
-			IS_ENABLED = ()->( ( BooleanConfig )excludable.getConfigs().get( 0 ) ).isEnabled();
+			IS_ENABLED = ()->( ( BooleanConfig )excludable.getConfigs().get( 0 ) ).isEnabled(); // TODO: refactor
 			var armorChance = Condition.< OnDamaged.Data > armorDependentChance( 0.8, 0.6, 0.7, 0.9, data->data.target );
 			GET_ARMOR_MULTIPLIER = slot->( ( DoubleConfig )( ( ConfigGroup )armorChance.getConfigs().get( 0 ) ).getConfigs()
 				.get( 3 - slot.getIndex() )
-			).asFloat();
+			).asFloat(); // TODO: refactor
 			OnDamaged.listen( this::applyBleeding )
 				.addCondition( Condition.isServer() )
 				.addCondition( excludable )
@@ -166,16 +168,14 @@ public class BleedingEffect extends MobEffect {
 					.name( "immune_mobs" )
 					.comment( "Specifies which mobs should not be affected by Bleeding (all undead mobs are immune by default)." )
 				).addConfig( this.effect )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnItemAttributeTooltip.listen( this::addChanceTooltip )
 				.addCondition( Condition.predicate( data->data.item instanceof ArmorItem ) )
 				.addCondition( Condition.predicate( data->BleedingEffect.isEnabled() ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			GET_AMPLIFIER = this.effect::getAmplifier;
-
-			this.name( "Bleeding" ).comment( "Common config for all Bleeding effects." );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {

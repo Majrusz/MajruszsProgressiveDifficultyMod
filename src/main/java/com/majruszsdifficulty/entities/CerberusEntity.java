@@ -6,6 +6,7 @@ import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.config.EffectConfig;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
@@ -14,7 +15,6 @@ import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
 import com.mlib.entities.ICustomSkillProvider;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
@@ -57,7 +57,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	static final String GROUP_ID = "Cerberus";
 
 	static {
-		ModConfigs.setup( Registries.Modifiers.MOBS, GROUP_ID ).name( "Cerberus" );
+		ModConfigs.init( Registries.Groups.MOBS, GROUP_ID ).name( "Cerberus" );
 	}
 
 	public final Skills skills = new Skills( this );
@@ -284,28 +284,28 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	@AutoInstance
-	public static class WitherAttack extends GameModifier {
+	public static class WitherAttack {
 		final EffectConfig wither = new EffectConfig( MobEffects.WITHER, 1, 10.0 );
 
 		public WitherAttack() {
-			super( GROUP_ID );
+			ConfigGroup group = ModConfigs.registerSubgroup( GROUP_ID );
 
 			OnDamaged.listen( this::applyWither )
 				.addCondition( OnDamaged.isDirect() )
 				.addCondition( Condition.predicate( data->data.attacker instanceof CerberusEntity ) )
 				.addConfig( this.wither.name( "Wither" ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnEffectApplicable.listen( this::cancelEffect )
 				.addCondition( Condition.predicate( data->data.effect.equals( MobEffects.WITHER ) ) )
 				.addCondition( Condition.predicate( data->data.entity instanceof CerberusEntity ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnEntityTick.listen( this::spawnParticle )
 				.addCondition( Condition.isServer() )
 				.addCondition( Condition.< OnEntityTick.Data > cooldown( 4, Dist.DEDICATED_SERVER ).configurable( false ) )
 				.addCondition( Condition.predicate( data->data.entity instanceof CerberusEntity ) )
-				.insertTo( this );
+				.insertTo( group );
 		}
 
 		private void applyWither( OnDamaged.Data data ) {

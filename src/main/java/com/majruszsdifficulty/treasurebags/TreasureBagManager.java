@@ -4,8 +4,9 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnItemFished;
@@ -26,7 +27,7 @@ import java.util.UUID;
 
 /** Responsible for awarding the player with Treasure Bags. */
 @AutoInstance
-public class TreasureBagManager extends GameModifier {
+public class TreasureBagManager {
 	static final String PARTICIPANT_LIST_TAG = "TreasureBagPlayersToReward";
 	static final String PLAYER_TAG = "TreasureBagPlayerUUID";
 	static final String FISHING_TAG = "TreasureBagFishingCounter";
@@ -62,19 +63,20 @@ public class TreasureBagManager extends GameModifier {
 	}
 
 	public TreasureBagManager() {
-		super( Registries.Modifiers.TREASURE_BAG );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.TREASURE_BAG )
+			.addConfigs( TreasureBagItem.getConfigs() );
 
 		OnDamaged.listen( this::addPlayerToParticipantList )
 			.addCondition( Condition.predicate( data->data.attacker instanceof Player ) )
 			.addCondition( Condition.predicate( data->hasTreasureBag( data.target.getType() ) ) )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnDeath.listen( this::rewardAllParticipants )
 			.addCondition( Condition.predicate( data->hasTreasureBag( data.target.getType() ) ) )
 			.addCondition( Condition.predicate( data->{
 				TreasureBagItem treasureBag = getTreasureBag( data.target.getType() );
 				return treasureBag != null && treasureBag.isEnabled();
-			} ) ).insertTo( this );
+			} ) ).insertTo( group );
 
 		/*OnItemFished.listen( this::giveTreasureBagToAngler )
 			.addCondition( Condition.isServer() )
@@ -85,7 +87,7 @@ public class TreasureBagManager extends GameModifier {
 
 				return fishedItems.get() == 0;
 			} ) ).addCondition( Condition.predicate( data->TreasureBagItem.Fishing.CONFIG.isEnabled() ) )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnPlayerTick.listen( this::giveTreasureBagToHero )
 			.addCondition( Condition.isServer() )
@@ -102,9 +104,7 @@ public class TreasureBagManager extends GameModifier {
 
 				lastRaidId.set( raid.getId() );
 				return true;
-			} ) ).insertTo( this );*/
-
-		this.addConfigs( TreasureBagItem.getConfigs() );
+			} ) ).insertTo( group );*/
 	}
 
 	private void addPlayerToParticipantList( OnDamaged.Data damagedData ) {

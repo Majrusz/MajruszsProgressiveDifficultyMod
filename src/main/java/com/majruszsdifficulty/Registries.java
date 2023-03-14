@@ -16,7 +16,6 @@ import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Utility;
 import com.mlib.annotations.AnnotationHandler;
-import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.registries.RegistryHelper;
 import com.mlib.triggers.BasicTrigger;
@@ -46,7 +45,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
@@ -73,11 +71,11 @@ public class Registries {
 	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
 
 	static {
-		ModConfigs.setup( SERVER_CONFIG, Modifiers.DEFAULT ).name( "GameModifiers" );
-		ModConfigs.setup( SERVER_CONFIG, Modifiers.UNDEAD_ARMY ).name( "UndeadArmy" );
-		ModConfigs.setup( SERVER_CONFIG, Modifiers.GAME_STAGE ).name( "GameStage" );
-		ModConfigs.setup( SERVER_CONFIG, Modifiers.TREASURE_BAG ).name( "TreasureBag" );
-		ModConfigs.setup( SERVER_CONFIG, Modifiers.MOBS ).name( "Mobs" );
+		ModConfigs.init( SERVER_CONFIG, Groups.DEFAULT ).name( "GameModifiers" );
+		ModConfigs.init( SERVER_CONFIG, Groups.UNDEAD_ARMY ).name( "UndeadArmy" );
+		ModConfigs.init( SERVER_CONFIG, Groups.GAME_STAGE ).name( "GameStage" );
+		ModConfigs.init( SERVER_CONFIG, Groups.TREASURE_BAG ).name( "TreasureBag" );
+		ModConfigs.init( SERVER_CONFIG, Groups.MOBS ).name( "Mobs" );
 	}
 
 	// Groups
@@ -325,7 +323,7 @@ public class Registries {
 		return levelAccessor.equals( overworld ) ? overworld : null;
 	}
 
-	public static class Modifiers {
+	public static class Groups {
 		public static final String DEFAULT = Registries.getLocationString( "default" );
 		public static final String UNDEAD_ARMY = Registries.getLocationString( "undead_army" );
 		public static final String GAME_STAGE = Registries.getLocationString( "game_stage" );

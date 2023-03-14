@@ -4,8 +4,9 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.levels.LevelHelper;
 import net.minecraft.world.entity.EntityType;
@@ -14,9 +15,11 @@ import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 
 @AutoInstance
-public class DrownedLightningAttack extends GameModifier {
+public class DrownedLightningAttack {
 	public DrownedLightningAttack() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "DrownedLightningAttack" )
+			.comment( "Drowned trident throw may spawn a lightning bolt when it rains." );
 
 		OnDamaged.listen( this::spawnLightningBolt )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
@@ -24,9 +27,7 @@ public class DrownedLightningAttack extends GameModifier {
 			.addCondition( Condition.predicate( data->data.attacker instanceof Drowned ) )
 			.addCondition( Condition.predicate( data->data.source.getDirectEntity() instanceof ThrownTrident ) )
 			.addCondition( Condition.predicate( data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) ) )
-			.insertTo( this );
-
-		this.name( "DrownedLightningAttack" ).comment( "Drowned trident throw may spawn a lightning bolt when it rains." );
+			.insertTo( group );
 	}
 
 	private void spawnLightningBolt( OnDamaged.Data data ) {

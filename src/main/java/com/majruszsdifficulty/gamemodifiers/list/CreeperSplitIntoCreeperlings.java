@@ -7,8 +7,9 @@ import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnExplosionDetonate;
 import com.mlib.math.Range;
@@ -24,11 +25,13 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 @AutoInstance
-public class CreeperSplitIntoCreeperlings extends GameModifier {
+public class CreeperSplitIntoCreeperlings {
 	final GameStageIntegerConfig creeperlingsAmount = new GameStageIntegerConfig( 2, 4, 6, new Range<>( 1, 10 ) );
 
 	public CreeperSplitIntoCreeperlings() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "CreeperSplitIntoCreeperlings" )
+			.comment( "When the Creeper explode it may spawn a few Creeperlings." );
 
 		OnExplosionDetonate.listen( this::spawnCreeperlings )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
@@ -36,19 +39,17 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 			.addCondition( Condition.excludable() )
 			.addCondition( Condition.predicate( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) ) )
 			.addConfig( this.creeperlingsAmount.name( "MaxCreeperlings" ).comment( "Maximum amount of Creeperlings to spawn." ) )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnExplosionDetonate.listen( this::giveAdvancement )
 			.addCondition( Condition.isServer() )
 			.addCondition( Condition.predicate( data->data.explosion.getExploder() instanceof CreeperlingEntity ) )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnDeath.listen( this::giveAdvancement )
 			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
 			.addCondition( Condition.predicate( data->data.target instanceof CreeperlingEntity ) )
-			.insertTo( this );
-
-		this.name( "CreeperSplitIntoCreeperlings" ).comment( "When the Creeper explode it may spawn a few Creeperlings." );
+			.insertTo( group );
 	}
 
 	private void spawnCreeperlings( OnExplosionDetonate.Data data ) {

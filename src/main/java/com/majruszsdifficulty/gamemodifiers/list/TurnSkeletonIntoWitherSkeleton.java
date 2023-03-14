@@ -5,9 +5,10 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.items.WitherSwordItem;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.time.Time;
@@ -19,18 +20,21 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.phys.Vec3;
 
+// TODO: move to WitherSwordItem
 @AutoInstance
-public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
+public class TurnSkeletonIntoWitherSkeleton {
 	static final String WITHER_TAG = "MajruszsDifficultyWitherTag";
 
 	public TurnSkeletonIntoWitherSkeleton() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "TurnSkeletonIntoWitherSkeleton" )
+			.comment( "If the Skeleton dies from Wither Sword it will respawn as Wither Skeleton in a few seconds." );
 
 		OnDamaged.listen( this::applyWitherTag )
 			.addCondition( Condition.predicate( data->data.attacker != null ) )
 			.addCondition( Condition.predicate( data->data.attacker.getMainHandItem().getItem() instanceof WitherSwordItem ) )
 			.addCondition( Condition.predicate( data->data.target instanceof Skeleton ) )
-			.insertTo( this );
+			.insertTo( group );
 
 		OnDeath.listen( this::spawnWitherSkeleton )
 			.addCondition( Condition.isServer() )
@@ -38,10 +42,7 @@ public class TurnSkeletonIntoWitherSkeleton extends GameModifier {
 			.addCondition( Condition.chanceCRD( 0.5, true ) )
 			.addCondition( Condition.excludable() )
 			.addCondition( Condition.predicate( this::hasWitherTag ) )
-			.insertTo( this );
-
-		this.name( "TurnSkeletonIntoWitherSkeleton" )
-			.comment( "If the Skeleton dies from Wither Sword it will respawn as Wither Skeleton in a few seconds." );
+			.insertTo( group );
 	}
 
 	private void applyWitherTag( OnDamaged.Data data ) {

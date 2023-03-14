@@ -4,18 +4,21 @@ import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 
 @AutoInstance
-public class JockeySpawn extends GameModifier {
+public class JockeySpawn {
 	public JockeySpawn() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "JockeySpawn" )
+			.comment( "Jockey is more likely to spawn." );
 
 		OnSpawned.listenSafe( this::spawnSkeletonOnSpider )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
@@ -24,9 +27,7 @@ public class JockeySpawn extends GameModifier {
 			.addCondition( Condition.excludable() )
 			.addCondition( OnSpawned.isNotLoadedFromDisk() )
 			.addCondition( OnSpawned.is( Spider.class ) )
-			.insertTo( this );
-
-		this.name( "JockeySpawn" ).comment( "Jockey is more likely to spawn." );
+			.insertTo( group );
 	}
 
 	private void spawnSkeletonOnSpider( OnSpawned.Data data ) {

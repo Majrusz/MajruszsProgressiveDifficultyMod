@@ -5,8 +5,9 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.math.Range;
 import net.minecraft.world.entity.EntityType;
@@ -14,7 +15,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Skeleton;
 
 @AutoInstance
-public class SkeletonsInGroup extends GameModifier {
+public class SkeletonsInGroup {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
 		()->EntityType.SKELETON,
 		new Range<>( 1, 3 ),
@@ -23,7 +24,9 @@ public class SkeletonsInGroup extends GameModifier {
 	);
 
 	public SkeletonsInGroup() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "SkeletonsInGroup" )
+			.comment( "Skeletons may spawn in groups." );
 
 		OnSpawned.listenSafe( this::spawnGroup )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
@@ -35,9 +38,7 @@ public class SkeletonsInGroup extends GameModifier {
 			.addCondition( OnSpawned.isNotLoadedFromDisk() )
 			.addCondition( OnSpawned.is( Skeleton.class ) )
 			.addConfig( this.mobGroups.name( "Skeletons" ) )
-			.insertTo( this );
-
-		this.name( "SkeletonsInGroup" ).comment( "Skeletons may spawn in groups." );
+			.insertTo( group );
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {

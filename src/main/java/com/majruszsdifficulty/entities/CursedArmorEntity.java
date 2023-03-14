@@ -9,6 +9,7 @@ import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.blocks.BlockHelper;
+import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.StringConfig;
 import com.mlib.data.SerializableStructure;
@@ -17,7 +18,6 @@ import com.mlib.effects.SoundHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.Context;
-import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.math.AnyPos;
@@ -73,7 +73,7 @@ public class CursedArmorEntity extends Monster {
 	int assembleTicksLeft = 0;
 
 	static {
-		ModConfigs.setup( Registries.Modifiers.MOBS, GROUP_ID ).name( "CursedArmor" );
+		ModConfigs.init( Registries.Groups.MOBS, GROUP_ID ).name( "CursedArmor" );
 	}
 
 	public static Supplier< EntityType< CursedArmorEntity > > createSupplier() {
@@ -160,7 +160,7 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	@AutoInstance
-	public static class Spawn extends GameModifier {
+	public static class Spawn {
 		static final String MAIN_TAG = "cursed_armor";
 		static final String LOOT_TABLE_TAG = "loot";
 		static final String SOUND_TAG = "sound";
@@ -170,7 +170,7 @@ public class CursedArmorEntity extends Monster {
 		final StringConfig name = new StringConfig( "Freshah" );
 
 		public Spawn() {
-			super( GROUP_ID );
+			ConfigGroup group = ModConfigs.registerSubgroup( GROUP_ID );
 
 			OnLoot.listen( this::spawnCursedArmor )
 				.addCondition( Condition.isServer() )
@@ -178,11 +178,11 @@ public class CursedArmorEntity extends Monster {
 				.addCondition( Condition.predicate( data->BlockHelper.getBlockEntity( data.getLevel(), data.origin ) instanceof ChestBlockEntity ) )
 				.addCondition( Condition.predicate( this::hasLootDefined ) )
 				.addConfig( this.dropChance.name( "drop_chance" ).comment( "Chance for each equipped item to drop when killed." ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnLootTableCustomLoad.listen( this::loadCursedArmorLoot )
 				.addCondition( Condition.predicate( data->data.jsonObject.has( MAIN_TAG ) ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnSpawned.listen( this::setCustomName )
 				.name( "CustomName" )
@@ -192,22 +192,22 @@ public class CursedArmorEntity extends Monster {
 				.addCondition( OnSpawned.isNotLoadedFromDisk() )
 				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity ) )
 				.addConfigs( this.name.name( "name" ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnSpawned.listenSafe( this::giveRandomArmor )
 				.addCondition( Condition.isServer() )
 				.addCondition( OnSpawned.isNotLoadedFromDisk() )
 				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnSpawned.listen( this::startAssembling )
 				.addCondition( OnSpawned.isNotLoadedFromDisk() )
 				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() ) )
-				.insertTo( this );
+				.insertTo( group );
 
 			OnPreDamaged.listen( OnPreDamaged.CANCEL )
 				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() ) )
-				.insertTo( this );
+				.insertTo( group );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
