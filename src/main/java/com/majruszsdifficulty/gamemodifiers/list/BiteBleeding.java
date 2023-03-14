@@ -20,13 +20,13 @@ public class BiteBleeding extends GameModifier {
 	public BiteBleeding() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.5, false ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new Condition.IsLivingBeing<>() )
-			.addCondition( data->canBite( data.attacker ) )
-			.addCondition( data->data.source.getDirectEntity() == data.attacker )
+		OnBleedingCheck.listen( OnBleedingCheck.Data::trigger )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.5, false ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.isLivingBeing( data->data.target ) )
+			.addCondition( Condition.predicate( data->canBite( data.attacker ) ) )
+			.addCondition( Condition.predicate( data->data.source.getDirectEntity() == data.attacker ) )
 			.insertTo( this );
 
 		this.name( "BiteBleeding" ).comment( "Animals (wolfs and from other mods), zombies and spiders may inflict bleeding." );

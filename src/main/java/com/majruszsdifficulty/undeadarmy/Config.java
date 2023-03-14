@@ -29,7 +29,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.event.TickEvent;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -51,23 +50,23 @@ public class Config extends GameModifier {
 
 		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
 
-		new OnServerTick.Context( data->Registries.getUndeadArmyManager().tick() )
-			.addCondition( data->data.event.phase == TickEvent.Phase.END )
+		OnServerTick.listen( data->Registries.getUndeadArmyManager().tick() )
+			.addCondition( Condition.isEndPhase() )
 			.insertTo( this );
 
-		new OnDeath.Context( this::updateKilledUndead )
-			.addCondition( data->this.getRequiredKills() > 0 )
-			.addCondition( data->data.target.getMobType() == MobType.UNDEAD )
-			.addCondition( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) )
-			.addCondition( data->data.attacker instanceof ServerPlayer )
+		OnDeath.listen( this::updateKilledUndead )
+			.addCondition( Condition.predicate( data->this.getRequiredKills() > 0 ) )
+			.addCondition( Condition.predicate( data->data.target.getMobType() == MobType.UNDEAD ) )
+			.addCondition( Condition.predicate( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) ) )
+			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
 			.insertTo( this );
 
-		new OnLoot.Context( this::giveExtraLoot )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( OnLoot.HAS_DAMAGE_SOURCE )
-			.addCondition( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) )
-			.addCondition( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
-			.addCondition( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity ) )
+		OnLoot.listen( this::giveExtraLoot )
+			.addCondition( Condition.isServer() )
+			.addCondition( OnLoot.hasDamageSource() )
+			.addCondition( Condition.predicate( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) ) )
+			.addCondition( Condition.predicate( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) )
+			.addCondition( Condition.predicate( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity ) ) )
 			.insertTo( this );
 
 		this.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
@@ -154,7 +153,7 @@ public class Config extends GameModifier {
 	}
 
 	private LootContext toExtraLootContext( OnLoot.Data data ) {
-		return new LootContext.Builder( data.level )
+		return new LootContext.Builder( data.getServerLevel() )
 			.withParameter( LootContextParams.ORIGIN, data.entity.position() )
 			.withParameter( LootContextParams.THIS_ENTITY, data.entity )
 			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )

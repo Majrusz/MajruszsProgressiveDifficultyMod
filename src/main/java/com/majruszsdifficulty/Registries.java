@@ -17,6 +17,7 @@ import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Utility;
 import com.mlib.annotations.AnnotationHandler;
 import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.registries.RegistryHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -72,11 +73,11 @@ public class Registries {
 	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
 
 	static {
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.DEFAULT ).name( "GameModifiers" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.UNDEAD_ARMY ).name( "UndeadArmy" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.GAME_STAGE ).name( "GameStage" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.TREASURE_BAG ).name( "TreasureBag" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.MOBS ).name( "Mobs" );
+		ModConfigs.setup( SERVER_CONFIG, Modifiers.DEFAULT ).name( "GameModifiers" );
+		ModConfigs.setup( SERVER_CONFIG, Modifiers.UNDEAD_ARMY ).name( "UndeadArmy" );
+		ModConfigs.setup( SERVER_CONFIG, Modifiers.GAME_STAGE ).name( "GameStage" );
+		ModConfigs.setup( SERVER_CONFIG, Modifiers.TREASURE_BAG ).name( "TreasureBag" );
+		ModConfigs.setup( SERVER_CONFIG, Modifiers.MOBS ).name( "Mobs" );
 	}
 
 	// Groups
@@ -185,7 +186,7 @@ public class Registries {
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
-	public static final BasicTrigger BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( HELPER );
+	public static final BasicTrigger BASIC_TRIGGER = HELPER.registerBasicTrigger();
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );

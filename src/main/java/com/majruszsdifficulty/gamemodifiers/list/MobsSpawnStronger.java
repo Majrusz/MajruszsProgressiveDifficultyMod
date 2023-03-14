@@ -29,13 +29,13 @@ public class MobsSpawnStronger extends GameModifier {
 	public MobsSpawnStronger() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.Context( this::makeMobsStronger )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( data->this.canMobAttack( data.target ) )
-			.addCondition( data->this.isNotDimensionExcluded( data.level ) )
-			.addCondition( data->this.isNotMobExcluded( data.target ) )
+		OnSpawned.listen( this::makeMobsStronger )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( Condition.predicate( data->this.canMobAttack( data.target ) ) )
+			.addCondition( Condition.predicate( data->this.isNotDimensionExcluded( data.getServerLevel() ) ) )
+			.addCondition( Condition.predicate( data->this.isNotMobExcluded( data.target ) ) )
 			.addConfigs( this.healthBonus.name( "HealthBonusMultiplier" ) )
 			.addConfigs( this.damageBonus.name( "DamageBonusMultiplier" ) )
 			.addConfigs( this.nightMultiplier.name( "NightMultiplier" ).comment( "Multiplies health and damage bonuses at night." ) )
@@ -49,12 +49,11 @@ public class MobsSpawnStronger extends GameModifier {
 	}
 
 	private void makeMobsStronger( OnSpawned.Data data ) {
-		assert data.level != null;
 		LivingEntity entity = data.target;
-		double nightMultiplier = data.level.isNight() ? this.nightMultiplier.get() : 1.0;
+		double nightMultiplier = data.getServerLevel().isNight() ? this.nightMultiplier.get() : 1.0;
 
-		MAX_HEALTH_ATTRIBUTE.setValueAndApply( entity, this.healthBonus.getCurrentGameStageValue() * nightMultiplier );
-		DAMAGE_ATTRIBUTE.setValueAndApply( entity, this.damageBonus.getCurrentGameStageValue() * nightMultiplier );
+		MAX_HEALTH_ATTRIBUTE.apply( entity ).setValue( this.healthBonus.getCurrentGameStageValue() * nightMultiplier );
+		DAMAGE_ATTRIBUTE.apply( entity ).setValue( this.damageBonus.getCurrentGameStageValue() * nightMultiplier );
 		entity.setHealth( entity.getMaxHealth() );
 	}
 

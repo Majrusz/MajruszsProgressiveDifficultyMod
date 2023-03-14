@@ -25,14 +25,14 @@ public class PiglinsInGroup extends GameModifier {
 	public PiglinsInGroup() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.ContextSafe( this::spawnGroup )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
-			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( new OnSpawned.Is<>( Piglin.class ) )
+		OnSpawned.listenSafe( this::spawnGroup )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.chanceCRD( 0.25, true ) )
+			.addCondition( CustomConditions.isNotPartOfGroup( data->data.target ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( OnSpawned.is( Piglin.class ) )
 			.addConfig( this.mobGroups.name( "Piglins" ) )
 			.insertTo( this );
 

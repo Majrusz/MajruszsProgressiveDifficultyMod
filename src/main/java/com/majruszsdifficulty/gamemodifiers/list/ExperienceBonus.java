@@ -16,8 +16,8 @@ public class ExperienceBonus extends GameModifier {
 	public ExperienceBonus() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnPickupXp.Context( this::giveExtraExperience )
-			.addCondition( new Condition.Excludable<>() )
+		OnPickupXp.listen( this::giveExtraExperience )
+			.addCondition( Condition.excludable() )
 			.addConfig( this.bonusMultiplier.name( "BonusMultiplier" ).comment( "Extra bonus multiplier to experience gathered from any source." ) )
 			.insertTo( this );
 

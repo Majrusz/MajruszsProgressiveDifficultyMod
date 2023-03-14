@@ -18,12 +18,12 @@ public class DrownedLightningAttack extends GameModifier {
 	public DrownedLightningAttack() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDamaged.Context( this::spawnLightningBolt )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.attacker instanceof Drowned )
-			.addCondition( data->data.source.getDirectEntity() instanceof ThrownTrident )
-			.addCondition( data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) )
+		OnDamaged.listen( this::spawnLightningBolt )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.attacker instanceof Drowned ) )
+			.addCondition( Condition.predicate( data->data.source.getDirectEntity() instanceof ThrownTrident ) )
+			.addCondition( Condition.predicate( data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) ) )
 			.insertTo( this );
 
 		this.name( "DrownedLightningAttack" ).comment( "Drowned trident throw may spawn a lightning bolt when it rains." );

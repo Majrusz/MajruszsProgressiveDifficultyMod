@@ -33,21 +33,21 @@ public class SpawnPlayerZombie extends GameModifier {
 	public SpawnPlayerZombie() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDeath.Context( this::spawnZombie )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.level != null )
-			.addCondition( data->data.target instanceof Player )
-			.addCondition( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie )
+		OnDeath.listen( this::spawnZombie )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.chanceCRD( 1.0, false ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.target instanceof Player ) )
+			.addCondition( Condition.predicate( data->data.target.hasEffect( Registries.BLEEDING.get() ) || data.attacker instanceof Zombie ) )
 			.addConfig( this.headChance.name( "head_chance" ).comment( "Chance for a zombie to have player's head." ) )
 			.addConfig( this.headDropChance.name( "head_drop_chance" ).comment( "Chance for a zombie to drop player's head." ) )
 			.insertTo( this );
 
-		new OnDeath.Context( this::giveAdvancement )
-			.addCondition( data->data.target instanceof Zombie )
-			.addCondition( data->data.attacker instanceof ServerPlayer )
-			.addCondition( data->data.target.getName().equals( data.attacker.getName() ) )
+		OnDeath.listen( this::giveAdvancement )
+			.addCondition( Condition.predicate( data->data.target instanceof Zombie ) )
+			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
+			.addCondition( Condition.predicate( data->data.target.getName().equals( data.attacker.getName() ) ) )
 			.insertTo( this );
 
 		this.name( "SpawnPlayerZombie" )
@@ -55,10 +55,9 @@ public class SpawnPlayerZombie extends GameModifier {
 	}
 
 	private void spawnZombie( OnDeath.Data data ) {
-		assert data.level != null;
 		Player player = ( Player )data.target;
 		EntityType< ? extends Zombie > zombieType = getZombieType( data.attacker );
-		Zombie zombie = ( Zombie )zombieType.spawn( data.level, ( CompoundTag )null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
+		Zombie zombie = zombieType.spawn( data.getServerLevel(), ( CompoundTag )null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
 		if( zombie == null )
 			return;
 

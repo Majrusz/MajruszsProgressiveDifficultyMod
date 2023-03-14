@@ -20,12 +20,12 @@ public class FallDebuffs extends GameModifier {
 	public FallDebuffs() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDamaged.Context( this::applyDebuffs )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f )
-			.addCondition( data->EntityHelper.isHuman( data.target ) )
+		OnDamaged.listen( this::applyDebuffs )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 1.0, false ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f ) )
+			.addCondition( Condition.predicate( data->EntityHelper.isHuman( data.target ) ) )
 			.addConfig( this.nausea.name( "Nausea" ) )
 			.addConfig( this.slowness.name( "Slowness" ) )
 			.insertTo( this );

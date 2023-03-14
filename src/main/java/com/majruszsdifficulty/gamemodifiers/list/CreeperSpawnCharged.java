@@ -16,25 +16,23 @@ public class CreeperSpawnCharged extends GameModifier {
 	public CreeperSpawnCharged() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.ContextSafe( this::chargeCreeper )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.125, true ) )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( data->data.level != null )
-			.addCondition( data->data.target instanceof Creeper )
+		OnSpawned.listenSafe( this::chargeCreeper )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.125, true ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( Condition.predicate( data->data.target instanceof Creeper ) )
 			.insertTo( this );
 
 		this.name( "CreeperSpawnCharged" ).comment( "Creeper may spawn charged." );
 	}
 
 	private void chargeCreeper( OnSpawned.Data data ) {
-		assert data.level != null;
 		Creeper creeper = ( Creeper )data.target;
-		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.level );
+		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.getServerLevel() );
 		if( lightningBolt != null ) {
-			creeper.thunderHit( data.level, lightningBolt );
+			creeper.thunderHit( data.getServerLevel(), lightningBolt );
 			creeper.clearFire();
 		}
 	}

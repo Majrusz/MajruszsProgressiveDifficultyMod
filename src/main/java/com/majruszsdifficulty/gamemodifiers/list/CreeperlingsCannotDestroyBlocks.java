@@ -5,24 +5,22 @@ import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.contexts.OnExplosion;
-import net.minecraftforge.event.level.ExplosionEvent;
+import com.mlib.gamemodifiers.contexts.OnExplosionDetonate;
 
 @AutoInstance
 public class CreeperlingsCannotDestroyBlocks extends GameModifier {
 	public CreeperlingsCannotDestroyBlocks() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnExplosion.Context( this::revertBlocksToDestroy )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.explosion.getExploder() instanceof CreeperlingEntity )
-			.addCondition( data->data.event instanceof ExplosionEvent.Detonate )
+		OnExplosionDetonate.listen( this::revertBlocksToDestroy )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.explosion.getExploder() instanceof CreeperlingEntity ) )
 			.insertTo( this );
 
 		this.name( "CreeperlingsCannotDestroyBlocks" ).comment( "Make the Creeperling do not destroy block on explosion." );
 	}
 
-	private void revertBlocksToDestroy( OnExplosion.Data data ) {
+	private void revertBlocksToDestroy( OnExplosionDetonate.Data data ) {
 		data.explosion.clearToBlow();
 	}
 }

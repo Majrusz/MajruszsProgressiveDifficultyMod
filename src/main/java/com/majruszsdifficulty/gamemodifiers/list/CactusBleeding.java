@@ -14,13 +14,13 @@ public class CactusBleeding extends GameModifier {
 	public CactusBleeding() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.5, false ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new Condition.IsLivingBeing<>() )
-			.addCondition( data->data.source.equals( DamageSource.CACTUS ) )
-			.addCondition( data->data.source.getDirectEntity() == data.attacker )
+		OnBleedingCheck.listen( OnBleedingCheck.Data::trigger )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.5, false ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.isLivingBeing( data->data.target ) )
+			.addCondition( Condition.predicate( data->data.source.equals( DamageSource.CACTUS ) ) )
+			.addCondition( Condition.predicate( data->data.source.getDirectEntity() == data.attacker ) )
 			.insertTo( this );
 
 		this.name( "CactusBleeding" ).comment( "Cactus damage may inflict bleeding." );

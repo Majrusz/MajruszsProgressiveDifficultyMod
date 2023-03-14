@@ -8,7 +8,7 @@ import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
 import com.mlib.entities.ICustomSkillProvider;
 import com.mlib.goals.CustomMeleeGoal;
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -185,7 +185,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		}
 
 		protected Vec3 getSpecialAttackPosition( Vec3 tankPosition, Vec3 targetPosition ) {
-			return VectorHelper.add( tankPosition, VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( targetPosition, tankPosition ) ), 1.75 ) );
+			return AnyPos.from( targetPosition ).sub( tankPosition ).norm().mul( 1.75 ).add( tankPosition ).vec3();
 		}
 
 		private Optional< BlockState > getBlockStateBelowPosition( Level level, Vec3 position ) {

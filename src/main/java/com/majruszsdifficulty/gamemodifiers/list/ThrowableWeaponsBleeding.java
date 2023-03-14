@@ -15,12 +15,12 @@ public class ThrowableWeaponsBleeding extends GameModifier {
 	public ThrowableWeaponsBleeding() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.4, false ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new Condition.IsLivingBeing<>() )
-			.addCondition( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident )
+		OnBleedingCheck.listen( OnBleedingCheck.Data::trigger )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.4, false ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.isLivingBeing( data->data.target ) )
+			.addCondition( Condition.predicate( data->data.source.getDirectEntity() instanceof Arrow || data.source.getDirectEntity() instanceof ThrownTrident ) )
 			.insertTo( this );
 
 		this.name( "ThrowableWeaponsBleeding" ).comment( "All throwable sharp items (arrows, trident etc.) may inflict bleeding." );

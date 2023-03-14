@@ -34,7 +34,7 @@ public enum GameStage {
 			GameStage previous = CURRENT;
 			CURRENT = stage;
 
-			OnGameStageChange.accept( new OnGameStageChange.Data( server, previous, CURRENT ) );
+			OnGameStageChange.dispatch( server, previous, CURRENT );
 			return true;
 		}
 

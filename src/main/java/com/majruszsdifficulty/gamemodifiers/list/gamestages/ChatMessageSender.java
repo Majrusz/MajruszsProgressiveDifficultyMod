@@ -6,6 +6,7 @@ import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.data.JsonListener;
 import com.mlib.data.SerializableStructure;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -25,9 +26,9 @@ public class ChatMessageSender extends GameModifier {
 
 		this.messages = JsonListener.add( "game_stages", Registries.getLocation( "messages" ), Messages.class, Messages::new );
 
-		new OnGameStageChange.Context( this::sendMessage )
-			.addCondition( data->!data.isLoadedFromDisk() )
-			.addCondition( data->data.previous.ordinal() < data.current.ordinal() )
+		OnGameStageChange.listen( this::sendMessage )
+			.addCondition( Condition.predicate( data->!data.isLoadedFromDisk() ) )
+			.addCondition( Condition.predicate( data->data.previous.ordinal() < data.current.ordinal() ) )
 			.insertTo( this );
 	}
 

@@ -4,6 +4,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageStringListConfig;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
 import net.minecraft.world.entity.Entity;
@@ -19,8 +20,8 @@ public class SpawnBlocker extends GameModifier {
 	public SpawnBlocker() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnCheckSpawn.Context( this::blockSpawn )
-			.addCondition( data->this.isForbidden( data.entity ) )
+		OnCheckSpawn.listen( this::blockSpawn )
+			.addCondition( Condition.predicate( data->this.isForbidden( data.mob ) ) )
 			.addConfig( this.forbiddenEntities )
 			.insertTo( this );
 

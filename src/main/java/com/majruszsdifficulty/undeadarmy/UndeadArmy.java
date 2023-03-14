@@ -8,7 +8,7 @@ import com.majruszsdifficulty.undeadarmy.data.Phase;
 import com.mlib.Utility;
 import com.mlib.data.SerializableStructure;
 import com.mlib.entities.EntityHelper;
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -96,7 +96,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	public double distanceTo( BlockPos position ) {
-		return VectorHelper.distanceHorizontal( position.getCenter(), this.positionToAttack.getCenter() );
+		return AnyPos.from( position.getCenter() ).dist2d( this.positionToAttack.getCenter() ).doubleValue();
 	}
 
 	public boolean hasFinished() {

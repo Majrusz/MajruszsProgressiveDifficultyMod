@@ -5,9 +5,9 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.EffectConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
@@ -24,13 +24,13 @@ public class CreeperSpawnDebuffed extends GameModifier {
 	public CreeperSpawnDebuffed() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.ContextSafe( this::applyRandomEffect )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.375, true ) )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( data->data.target instanceof Creeper )
+		OnSpawned.listenSafe( this::applyRandomEffect )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.375, true ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( Condition.predicate( data->data.target instanceof Creeper ) )
 			.addConfig( this.effects[ 0 ].name( "Weakness" ) )
 			.addConfig( this.effects[ 1 ].name( "Slowness" ) )
 			.addConfig( this.effects[ 2 ].name( "MiningFatigue" ) )

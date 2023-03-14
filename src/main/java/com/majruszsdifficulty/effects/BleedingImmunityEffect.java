@@ -38,9 +38,9 @@ public class BleedingImmunityEffect extends MobEffect {
 		public BleedingImmunity() {
 			super( Registries.Modifiers.DEFAULT );
 
-			new OnEffectApplicable.Context( this::cancelBleeding )
-				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING_IMMUNITY ) )
-				.addCondition( data->data.effect.equals( Registries.BLEEDING.get() ) )
+			OnEffectApplicable.listen( this::cancelBleeding )
+				.addCondition( Condition.hasEffect( Registries.BLEEDING_IMMUNITY, data->data.entity ) )
+				.addCondition( Condition.predicate( data->data.effect.equals( Registries.BLEEDING.get() ) ) )
 				.insertTo( this );
 
 			this.name( "BleedingImmunity" ).comment( "Config for Bleeding Immunity effect." );

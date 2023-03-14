@@ -31,16 +31,16 @@ public class UndeadArmyPatrol extends GameModifier {
 	public UndeadArmyPatrol() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.ContextSafe( this::spawnGroup )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.0625, true ) )
-			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
-			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )
-			.addCondition( new CustomConditions.IsNotNearUndeadArmy<>() )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( new OnSpawned.Is<>( Zombie.class, Skeleton.class, Husk.class, Stray.class ) )
+		OnSpawned.listenSafe( this::spawnGroup )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.0625, true ) )
+			.addCondition( CustomConditions.isNotPartOfGroup( data->data.target ) )
+			.addCondition( CustomConditions.isNotPartOfUndeadArmy( data->data.target ) )
+			.addCondition( CustomConditions.isNotNearUndeadArmy( data->data.target ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( OnSpawned.is( Zombie.class, Skeleton.class, Husk.class, Stray.class ) )
 			.addConfigs( this.mobGroups.name( "Undead" ) )
 			.insertTo( this );
 

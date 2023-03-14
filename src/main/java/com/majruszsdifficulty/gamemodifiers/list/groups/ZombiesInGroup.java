@@ -10,11 +10,9 @@ import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import com.mlib.levels.LevelHelper;
 import com.mlib.math.Range;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.monster.ZombifiedPiglin;
 
 @AutoInstance
 public class ZombiesInGroup extends GameModifier {
@@ -28,16 +26,16 @@ public class ZombiesInGroup extends GameModifier {
 	public ZombiesInGroup() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.ContextSafe( this::spawnGroup )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.25, true ) )
-			.addCondition( new CustomConditions.IsNotPartOfGroup<>() )
-			.addCondition( new CustomConditions.IsNotUndeadArmy<>() )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( new OnSpawned.Is<>( Zombie.class ) )
-			.addCondition( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f )
+		OnSpawned.listenSafe( this::spawnGroup )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.chanceCRD( 0.25, true ) )
+			.addCondition( CustomConditions.isNotPartOfGroup( data->data.target ) )
+			.addCondition( CustomConditions.isNotPartOfUndeadArmy( data->data.target ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( OnSpawned.is( Zombie.class ) )
+			.addCondition( Condition.predicate( data->!LevelHelper.isEntityOutside( data.target ) && data.target.position().y < 50.0f ) )
 			.addConfig( this.mobGroups.name( "Zombies" ) )
 			.insertTo( this );
 

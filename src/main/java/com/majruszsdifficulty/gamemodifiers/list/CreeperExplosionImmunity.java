@@ -18,11 +18,11 @@ public class CreeperExplosionImmunity extends GameModifier {
 	public CreeperExplosionImmunity() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDamaged.Context( this::reduceExplosionDamage )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.target instanceof Creeper )
-			.addCondition( data->data.source.isExplosion() )
+		OnDamaged.listen( this::reduceExplosionDamage )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.target instanceof Creeper ) )
+			.addCondition( Condition.predicate( data->data.source.isExplosion() ) )
 			.addConfig( this.damageMultiplier.name( "damage_multiplier" ) )
 			.insertTo( this );
 

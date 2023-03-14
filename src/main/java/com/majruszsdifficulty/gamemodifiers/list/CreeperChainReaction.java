@@ -14,10 +14,10 @@ public class CreeperChainReaction extends GameModifier {
 	public CreeperChainReaction() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDamaged.Context( this::igniteCreeper )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.target instanceof Creeper && data.attacker instanceof Creeper )
+		OnDamaged.listen( this::igniteCreeper )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.target instanceof Creeper && data.attacker instanceof Creeper ) )
 			.insertTo( this );
 
 		this.name( "CreeperChainReaction" ).comment( "Makes a Creeper ignite once any other Creeper explode nearby." );

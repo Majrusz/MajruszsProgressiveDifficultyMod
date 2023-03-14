@@ -6,6 +6,7 @@ import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.EnumConfig;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnDimensionChanged;
@@ -25,24 +26,24 @@ public class IncreaseGameStage extends GameModifier {
 	public IncreaseGameStage() {
 		super( Registries.Modifiers.GAME_STAGE );
 
-		new OnDimensionChanged.Context( this::startExpertMode )
-			.addCondition( data->GameStage.getCurrentStage() == GameStage.NORMAL )
-			.addCondition( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() )
+		OnDimensionChanged.listen( this::startExpertMode )
+			.addCondition( Condition.predicate( data->GameStage.getCurrentStage() == GameStage.NORMAL ) )
+			.addCondition( Condition.predicate( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() ) )
 			.insertTo( this );
 
-		new OnDimensionChanged.Context( this::startMasterMode )
-			.addCondition( data->GameStage.getCurrentStage() == GameStage.EXPERT )
-			.addCondition( data->this.masterMode.dimensionTriggersChange( data.to.location() ) )
+		OnDimensionChanged.listen( this::startMasterMode )
+			.addCondition( Condition.predicate( data->GameStage.getCurrentStage() == GameStage.EXPERT ) )
+			.addCondition( Condition.predicate( data->this.masterMode.dimensionTriggersChange( data.to.location() ) ) )
 			.insertTo( this );
 
-		new OnDeath.Context( this::startExpertMode )
-			.addCondition( data->GameStage.getCurrentStage() == GameStage.NORMAL )
-			.addCondition( data->this.expertMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) )
+		OnDeath.listen( this::startExpertMode )
+			.addCondition( Condition.predicate( data->GameStage.getCurrentStage() == GameStage.NORMAL ) )
+			.addCondition( Condition.predicate( data->this.expertMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) ) )
 			.insertTo( this );
 
-		new OnDeath.Context( this::startMasterMode )
-			.addCondition( data->GameStage.getCurrentStage() == GameStage.EXPERT )
-			.addCondition( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) )
+		OnDeath.listen( this::startMasterMode )
+			.addCondition( Condition.predicate( data->GameStage.getCurrentStage() == GameStage.EXPERT ) )
+			.addCondition( Condition.predicate( data->this.masterMode.entityTriggersChange( EntityType.getKey( data.target.getType() ) ) ) )
 			.insertTo( this );
 
 		this.addConfig( DEFAULT_GAME_STAGE.name( "default_mode" ).comment( "Game stage set at the beginning of a new world." ) )

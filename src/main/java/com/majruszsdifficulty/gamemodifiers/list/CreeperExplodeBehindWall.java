@@ -15,12 +15,12 @@ public class CreeperExplodeBehindWall extends GameModifier {
 	public CreeperExplodeBehindWall() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.ContextSafe( this::addNewGoal )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance<>( 1.0, false ) )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.target instanceof Creeper )
+		OnSpawned.listenSafe( this::addNewGoal )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.chanceCRD( 1.0, false ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.target instanceof Creeper ) )
 			.insertTo( this );
 
 		this.name( "CreeperExplodeBehindWall" ).comment( "Creeper explodes when the player is behind the wall." );

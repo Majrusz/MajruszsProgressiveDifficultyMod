@@ -6,8 +6,11 @@ import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.BooleanConfig;
+import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
 import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
@@ -29,18 +32,22 @@ public class SharpToolsBleeding extends GameModifier {
 	public SharpToolsBleeding() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnBleedingCheck.Context( OnBleedingCheck.Data::trigger )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new BleedingChance( 0.25, false ) )
-			.addCondition( new ExcludableBleeding() )
-			.addCondition( new Condition.IsLivingBeing<>() )
-			.addCondition( data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) )
-			.addCondition( data->data.source.getDirectEntity() == data.attacker )
+		var chance = Condition.< OnBleedingCheck.Data > chanceCRD( 0.25, false );
+		GET_CHANCE = ()->( ( DoubleConfig )chance.getConfigs().get( 0 ) ).asFloat();
+		var excludable = Condition.< OnBleedingCheck.Data > excludable();
+		IS_ENABLED = ()->( ( BooleanConfig )excludable.getConfigs().get( 0 ) ).isEnabled() && BleedingEffect.isEnabled();
+		OnBleedingCheck.listen( OnBleedingCheck.Data::trigger )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( chance )
+			.addCondition( excludable )
+			.addCondition( Condition.isLivingBeing( data->data.target ) )
+			.addCondition( Condition.predicate( data->ItemHelper.hasInMainHand( data.attacker, TieredItem.class, TridentItem.class, ShearsItem.class ) ) )
+			.addCondition( Condition.predicate( data->data.source.getDirectEntity() == data.attacker ) )
 			.insertTo( this );
 
-		new OnItemAttributeTooltip.Context( this::addTooltip )
-			.addCondition( data->data.item instanceof TieredItem || data.item instanceof TridentItem || data.item instanceof ShearsItem )
-			.addCondition( IS_ENABLED )
+		OnItemAttributeTooltip.listen( this::addTooltip )
+			.addCondition( Condition.predicate( data->data.item instanceof TieredItem || data.item instanceof TridentItem || data.item instanceof ShearsItem ) )
+			.addCondition( Condition.predicate( IS_ENABLED ) )
 			.insertTo( this );
 
 		this.name( "SharpToolsBleeding" ).comment( "All sharp items (tools, shears etc.) may inflict bleeding." );
@@ -51,21 +58,5 @@ public class SharpToolsBleeding extends GameModifier {
 		String amplifier = TextHelper.toRoman( BleedingEffect.getAmplifier() + 1 );
 		data.add( EquipmentSlot.MAINHAND, Component.translatable( ATTRIBUTE_ID, chance, amplifier )
 			.withStyle( ChatFormatting.DARK_GREEN ) );
-	}
-
-	private static class BleedingChance extends CustomConditions.CRDChance< OnBleedingCheck.Data > {
-		BleedingChance( double chance, boolean scaledByCRD ) {
-			super( chance, scaledByCRD );
-
-			GET_CHANCE = this.chance::asFloat;
-		}
-	}
-
-	private static class ExcludableBleeding extends Condition.Excludable< OnBleedingCheck.Data > {
-		ExcludableBleeding() {
-			super();
-
-			IS_ENABLED = ()->this.availability.isEnabled() && BleedingEffect.isEnabled();
-		}
 	}
 }

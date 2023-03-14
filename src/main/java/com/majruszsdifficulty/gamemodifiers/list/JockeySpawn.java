@@ -17,20 +17,20 @@ public class JockeySpawn extends GameModifier {
 	public JockeySpawn() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnSpawned.ContextSafe( this::spawnSkeletonOnSpider )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.EXPERT ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.125, false ) )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( data->Spider.class.equals( data.target.getClass() ) )
+		OnSpawned.listenSafe( this::spawnSkeletonOnSpider )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
+			.addCondition( Condition.chanceCRD( 0.125, false ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( OnSpawned.is( Spider.class ) )
 			.insertTo( this );
 
 		this.name( "JockeySpawn" ).comment( "Jockey is more likely to spawn." );
 	}
 
 	private void spawnSkeletonOnSpider( OnSpawned.Data data ) {
-		Skeleton skeleton = EntityHelper.spawn( EntityType.SKELETON, data.level, data.target.position() );
+		Skeleton skeleton = EntityHelper.spawn( EntityType.SKELETON, data.getServerLevel(), data.target.position() );
 		if( skeleton != null ) {
 			skeleton.startRiding( data.target );
 		}

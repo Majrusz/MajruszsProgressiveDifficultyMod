@@ -69,11 +69,11 @@ public class BlackWidowEntity extends Spider {
 		public WebAbility() {
 			super( Registries.Modifiers.DEFAULT );
 
-			new OnEntityTick.Context( this::spawnWeb )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Excludable<>() )
-				.addCondition( data->data.entity instanceof BlackWidowEntity )
-				.addCondition( this::ticksHavePassed )
+			OnEntityTick.listen( this::spawnWeb )
+				.addCondition( Condition.isServer() )
+				.addCondition( Condition.excludable() )
+				.addCondition( Condition.predicate( data->data.entity instanceof BlackWidowEntity ) )
+				.addCondition( Condition.predicate( this::ticksHavePassed ) )
 				.addConfig( this.delay.name( "delay" ).comment( "Duration between creating a new web (in seconds)." ) )
 				.insertTo( this );
 
@@ -81,7 +81,7 @@ public class BlackWidowEntity extends Spider {
 		}
 
 		private void spawnWeb( OnEntityTick.Data data ) {
-			data.level.setBlock( data.entity.blockPosition(), Blocks.COBWEB.defaultBlockState(), 3 );
+			data.getServerLevel().setBlock( data.entity.blockPosition(), Blocks.COBWEB.defaultBlockState(), 3 );
 		}
 
 		private boolean ticksHavePassed( OnEntityTick.Data data ) {
@@ -95,8 +95,8 @@ public class BlackWidowEntity extends Spider {
 		public TempTooltip() {
 			super( Registries.Modifiers.DEFAULT );
 
-			new OnItemTooltip.Context( this::addTooltip )
-				.addCondition( data->data.itemStack.getItem().equals( Registries.BLACK_WIDOW_SPAWN_EGG.get() ) )
+			OnItemTooltip.listen( this::addTooltip )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem().equals( Registries.BLACK_WIDOW_SPAWN_EGG.get() ) ) )
 				.insertTo( this );
 		}
 

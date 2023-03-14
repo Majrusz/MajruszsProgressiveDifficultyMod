@@ -18,11 +18,11 @@ public class ShulkerBlindnessAttack extends GameModifier {
 	public ShulkerBlindnessAttack() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDamaged.Context( this::applyEffect )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.MASTER ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.5, true ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.attacker instanceof Shulker )
+		OnDamaged.listen( this::applyEffect )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.MASTER ) )
+			.addCondition( Condition.chanceCRD( 0.5, true ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.attacker instanceof Shulker ) )
 			.addConfig( this.blindness )
 			.insertTo( this );
 

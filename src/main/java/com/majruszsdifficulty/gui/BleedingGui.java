@@ -78,7 +78,7 @@ public class BleedingGui {
 				}
 			}
 
-			new OnClientTick.Context( this::updateParticles );
+			OnClientTick.listen( this::updateParticles );
 		}
 
 		public List< Particle > get() {

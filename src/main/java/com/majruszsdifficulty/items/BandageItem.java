@@ -5,9 +5,10 @@ import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
+import com.mlib.config.EffectConfig;
 import com.mlib.effects.SoundHandler;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.configs.EffectConfig;
 import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
 import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
@@ -83,11 +84,11 @@ public class BandageItem extends Item {
 			this.goldenBandageGroup.addConfig( this.goldenRegeneration.name( "Regeneration" ) )
 				.addConfig( this.goldenImmunity.name( "Immunity" ) );
 
-			new OnPlayerInteract.Context( this::useBandage )
-				.addCondition( data->data.itemStack.getItem() instanceof BandageItem )
-				.addCondition( data->data.target != null )
-				.addCondition( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) )
-				.addCondition( Effects::canUse )
+			OnPlayerInteract.listen( this::useBandage )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof BandageItem ) )
+				.addCondition( Condition.predicate( data->data.target != null ) )
+				.addCondition( Condition.predicate( data->!( data.event instanceof PlayerInteractEvent.RightClickBlock ) ) )
+				.addCondition( Condition.predicate( Effects::canUse ) )
 				.addConfig( this.bandageGroup.name( "Bandage" ).comment( "Config for a Bandage item." ) )
 				.addConfig( this.goldenBandageGroup.name( "GoldenBandage" ).comment( "Config for a Golden Bandage item." ) )
 				.insertTo( this );

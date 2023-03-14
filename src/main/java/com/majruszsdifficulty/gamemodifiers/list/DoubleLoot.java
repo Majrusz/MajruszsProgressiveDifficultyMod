@@ -7,6 +7,8 @@ import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.StringListConfig;
 import com.mlib.effects.ParticleHandler;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.Context;
 import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,17 +27,17 @@ public class DoubleLoot extends GameModifier {
 	public DoubleLoot() {
 		super( Registries.Modifiers.DEFAULT );
 
-		new OnDoubleLootContext( this::doubleLoot, 0.0, GameStage.NORMAL )
+		OnDoubleLoot.listen( this::doubleLoot, 0.0, GameStage.NORMAL )
 			.name( "NormalMode" )
 			.comment( "Determines the chance on Normal Mode." )
 			.insertTo( this );
 
-		new OnDoubleLootContext( this::doubleLoot, 0.2, GameStage.EXPERT )
+		OnDoubleLoot.listen( this::doubleLoot, 0.2, GameStage.EXPERT )
 			.name( "ExpertMode" )
 			.comment( "Determines the chance on Expert Mode." )
 			.insertTo( this );
 
-		new OnDoubleLootContext( this::doubleLoot, 0.4, GameStage.MASTER )
+		OnDoubleLoot.listen( this::doubleLoot, 0.4, GameStage.MASTER )
 			.name( "MasterMode" )
 			.comment( "Determines the chance on Master Mode." )
 			.insertTo( this );
@@ -48,8 +50,8 @@ public class DoubleLoot extends GameModifier {
 		assert data.entity != null && data.lastDamagePlayer != null;
 
 		boolean doubledAtLeastOneItem = replaceLoot( data.generatedLoot );
-		if( doubledAtLeastOneItem && data.level != null ) {
-			AWARD.spawn( data.level, data.entity.position().add( 0.0, 0.5, 0.0 ), 12 );
+		if( doubledAtLeastOneItem && data.getServerLevel() != null ) {
+			AWARD.spawn( data.getServerLevel(), data.entity.position().add( 0.0, 0.5, 0.0 ), 12 );
 		}
 	}
 
@@ -73,14 +75,13 @@ public class DoubleLoot extends GameModifier {
 		return !itemStack.isEmpty() && !this.forbiddenItems.contains( Utility.getRegistryString( itemStack ) );
 	}
 
-	private static class OnDoubleLootContext extends OnLoot.Context {
-		public OnDoubleLootContext( Consumer< OnLoot.Data > consumer, double chance, GameStage stage ) {
-			super( consumer );
-
-			this.addCondition( new CustomConditions.GameStageExact<>( stage ) )
-				.addCondition( new CustomConditions.CRDChance<>( chance, false ) )
-				.addCondition( OnLoot.HAS_LAST_DAMAGE_PLAYER )
-				.addCondition( OnLoot.HAS_ENTITY );
+	private static class OnDoubleLoot {
+		public static Context< OnLoot.Data > listen( Consumer< OnLoot.Data > consumer, double chance, GameStage stage ) {
+			return OnLoot.listen( consumer )
+				.addCondition( CustomConditions.gameStage( stage ) )
+				.addCondition( Condition.chanceCRD( chance, false ) )
+				.addCondition( OnLoot.hasLastDamagePlayer() )
+				.addCondition( OnLoot.hasEntity() );
 		}
 	}
 }
