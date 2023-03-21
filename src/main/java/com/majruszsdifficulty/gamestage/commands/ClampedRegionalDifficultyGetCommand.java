@@ -1,7 +1,8 @@
-package com.majruszsdifficulty.commands;
+package com.majruszsdifficulty.gamestage.commands;
 
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import com.mlib.levels.LevelHelper;
 import com.mlib.math.AnyPos;
@@ -12,7 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 
 @AutoInstance
-public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
+public class ClampedRegionalDifficultyGetCommand extends Command {
 	public ClampedRegionalDifficultyGetCommand() {
 		this.newBuilder()
 			.literal( "crd", "clampedregionaldifficulty" )
@@ -33,7 +34,7 @@ public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
 		BlockPos position = this.getOptionalEntityOrPlayer( data ).blockPosition();
 		String total = String.format( "%.2f", GameStage.getRegionalDifficulty( level, AnyPos.from( position ).vec3() ) );
 
-		return Component.translatable( "commands.clampedregionaldifficulty", asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
+		return Component.translatable( "commands.clampedregionaldifficulty", String.format( "(%s)", position.toShortString() ), this.withStageStyle( total ), this.buildFormula( level, position ) );
 	}
 
 	private MutableComponent buildFormula( ServerLevel level, BlockPos position ) {
