@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers.configs;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.mlib.Utility;

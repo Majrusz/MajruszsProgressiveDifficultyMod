@@ -1,8 +1,8 @@
-package com.majruszsdifficulty.gamemodifiers.list.gamestages;
+package com.majruszsdifficulty.gamestage.handlers;
 
-import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.data.JsonListener;
 import com.mlib.data.SerializableStructure;

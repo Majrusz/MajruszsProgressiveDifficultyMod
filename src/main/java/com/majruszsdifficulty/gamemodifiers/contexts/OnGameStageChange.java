@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.gamemodifiers.Context;
 import com.mlib.gamemodifiers.Contexts;
 import net.minecraft.server.MinecraftServer;

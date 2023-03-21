@@ -1,11 +1,10 @@
 package com.majruszsdifficulty.commands;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.commands.Command;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.phys.Vec3;
 
 // TODO: move all commands to separate packages
 public class DifficultyCommand extends Command {

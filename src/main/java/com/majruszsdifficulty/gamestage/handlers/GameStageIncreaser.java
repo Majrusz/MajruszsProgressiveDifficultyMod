@@ -1,8 +1,8 @@
-package com.majruszsdifficulty.gamemodifiers.list;
+package com.majruszsdifficulty.gamestage.handlers;
 
-import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
@@ -14,7 +14,7 @@ import com.mlib.gamemodifiers.contexts.OnDimensionChanged;
 import net.minecraft.world.entity.EntityType;
 
 @AutoInstance
-public class IncreaseGameStage {
+public class GameStageIncreaser {
 	static final EnumConfig< GameStage > DEFAULT_GAME_STAGE = new EnumConfig<>( GameStage.NORMAL );
 	final StageProgressConfig expertMode = new StageProgressConfig( "none", "minecraft:the_nether" );
 	final StageProgressConfig masterMode = new StageProgressConfig( "minecraft:ender_dragon", "none" );
@@ -24,7 +24,7 @@ public class IncreaseGameStage {
 		return DEFAULT_GAME_STAGE.get();
 	}
 
-	public IncreaseGameStage() {
+	public GameStageIncreaser() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.GAME_STAGE )
 			.addConfig( DEFAULT_GAME_STAGE.name( "default_mode" ).comment( "Game stage set at the beginning of a new world." ) )
 			.addConfig( this.enteringAnyDimensionStartsExpertMode

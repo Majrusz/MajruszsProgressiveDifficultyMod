@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.gamemodifiers.list.gamestages;
+package com.majruszsdifficulty.gamestage.handlers;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;

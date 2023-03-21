@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers.configs;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.mobeffects.MobEffectHelper;
