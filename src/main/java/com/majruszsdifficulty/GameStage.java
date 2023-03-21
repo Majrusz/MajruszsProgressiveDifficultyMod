@@ -2,6 +2,7 @@ package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
 import com.mlib.levels.LevelHelper;
+import com.mlib.math.AnyPos;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -74,14 +75,14 @@ public enum GameStage {
 	}
 
 	public static double getRegionalDifficulty( Entity target ) {
-		double clampedRegionalDifficulty = target != null ? LevelHelper.getClampedRegionalDifficulty( target ) : 0.25;
+		double clampedRegionalDifficulty = target != null ? LevelHelper.getClampedRegionalDifficultyAt( target ) : 0.25;
 
 		return Mth.clamp( clampedRegionalDifficulty + getStageModifier(), 0.0, 1.0 );
 	}
 
 	// TODO: replace with mixin
 	public static double getRegionalDifficulty( Level level, Vec3 position ) {
-		double clampedRegionalDifficulty = LevelHelper.getClampedRegionalDifficulty( level, position );
+		double clampedRegionalDifficulty = LevelHelper.getClampedRegionalDifficultyAt( level, AnyPos.from( position ).block() );
 
 		return Mth.clamp( clampedRegionalDifficulty + getStageModifier(), 0.0, 1.0 );
 	}

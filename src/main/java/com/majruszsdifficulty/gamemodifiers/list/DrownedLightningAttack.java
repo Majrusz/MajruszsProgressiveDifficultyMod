@@ -26,7 +26,8 @@ public class DrownedLightningAttack {
 			.addCondition( Condition.excludable() )
 			.addCondition( Condition.predicate( data->data.attacker instanceof Drowned ) )
 			.addCondition( Condition.predicate( data->data.source.getDirectEntity() instanceof ThrownTrident ) )
-			.addCondition( Condition.predicate( data->LevelHelper.isEntityOutsideWhenItIsRaining( data.target ) ) )
+			.addCondition( Condition.predicate( data->LevelHelper.isEntityOutside( data.target ) ) )
+			.addCondition( Condition.predicate( data->LevelHelper.isRainingAt( data.target ) ) )
 			.insertTo( group );
 	}
 

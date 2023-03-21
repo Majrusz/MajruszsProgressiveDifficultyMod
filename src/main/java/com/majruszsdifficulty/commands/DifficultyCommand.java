@@ -2,6 +2,7 @@ package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.GameStage;
 import com.mlib.commands.Command;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
@@ -12,7 +13,7 @@ public class DifficultyCommand extends Command {
 		return Component.translatable( "commands.gamestage." + translationKey, GameStage.getGameStageText( stage ) );
 	}
 
-	protected static String asVec3i( Vec3 position ) {
-		return String.format( "(%d, %d, %d)", ( int )( position.x ), ( int )( position.y ), ( int )( position.z ) );
+	protected static String asVec3i( BlockPos position ) {
+		return String.format( "(%d, %d, %d)", ( int )( position.getX() ), ( int )( position.getY() ), ( int )( position.getZ() ) );
 	}
 }

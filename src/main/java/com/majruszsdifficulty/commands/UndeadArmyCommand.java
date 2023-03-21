@@ -12,9 +12,9 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public class UndeadArmyCommand extends DifficultyCommand {
-	final BiFunction< UndeadArmy, Vec3, Component > componentSupplier;
+	final BiFunction< UndeadArmy, BlockPos, Component > componentSupplier;
 
-	public UndeadArmyCommand( String command, BiFunction< UndeadArmy, Vec3, Component > componentSupplier ) {
+	public UndeadArmyCommand( String command, BiFunction< UndeadArmy, BlockPos, Component > componentSupplier ) {
 		this.componentSupplier = componentSupplier;
 
 		this.newBuilder()
@@ -34,7 +34,7 @@ public class UndeadArmyCommand extends DifficultyCommand {
 	}
 
 	private int handle( CommandData data ) throws CommandSyntaxException {
-		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
+		BlockPos position = this.getOptionalEntityOrPlayer( data ).blockPosition();
 		UndeadArmy undeadArmy = Registries.getUndeadArmyManager().findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
 			data.source.sendSuccess( this.componentSupplier.apply( undeadArmy, position ), true );
