@@ -1,16 +1,16 @@
-package com.majruszsdifficulty.commands;
+package com.majruszsdifficulty.treasurebags.commands;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 @AutoInstance
-public class TreasureBagResetProgressCommand extends DifficultyCommand {
+public class TreasureBagResetProgressCommand extends Command {
 	public TreasureBagResetProgressCommand() {
 		this.newBuilder()
 			.literal( "treasurebag" )
