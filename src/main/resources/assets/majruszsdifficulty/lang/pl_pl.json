@@ -86,6 +86,8 @@
   "commands.undeadarmy.cannot_start": "Armia nieumarłych nie może zostać uruchomiona na pozycji: %s",
   "commands.undeadarmy.killed": "Wszystkie jednostki armii nieumarłych zostały zabite na pozycji: %s",
   "commands.undeadarmy.highlighted": "Wszystkie jednostki armii nieumarłych zostały podświetlone na pozycji: %s",
+  "commands.undeadarmy.list": "Lista wszystkich trwających najazdów armii nieumarłych:",
+  "commands.undeadarmy.list_empty": "Aktualnie nie trwa żaden najazd armii nieumarłych!",
   "commands.treasurebag.reset": "Progres wszystkich worków ze skarbami został zresetowany dla %1$s.",
   "commands.treasurebag.unlockall": "Progres wszystkich worków ze skarbami został ustawiony na maksimum dla %1$s.",
   "commands.clampedregionaldifficulty": "Poziom regionalnej trudności na %1$s wynosi %2$s.%3$s",
