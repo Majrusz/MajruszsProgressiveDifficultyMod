@@ -50,7 +50,6 @@
   "commands.undeadarmy.highlighted": "此位置的所有亡灵军团生物已高亮：%s",
   "commands.treasurebag.reset": "宝藏袋掉落进度已被重置为 %s",
   "commands.clampedregionaldifficulty": "当前副区域难度为：%s%s （位置：%s）",
-  "commands.clampedregionaldifficulty.formula": " （+%s = %s）",
   "majruszsdifficulty.states.normal": "普通模式",
   "majruszsdifficulty.states.expert": "专家模式",
   "majruszsdifficulty.states.master": "大师模式",

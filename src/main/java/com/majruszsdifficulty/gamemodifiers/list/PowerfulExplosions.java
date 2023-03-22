@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
@@ -9,7 +8,10 @@ import com.mlib.config.DoubleConfig;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnExplosionStart;
+import com.mlib.levels.LevelHelper;
+import com.mlib.math.AnyPos;
 import com.mlib.math.Range;
+import net.minecraft.core.BlockPos;
 
 @AutoInstance
 public class PowerfulExplosions {
@@ -34,7 +36,8 @@ public class PowerfulExplosions {
 	}
 
 	private void modifyExplosion( OnExplosionStart.Data data ) {
-		double clampedRegionalDifficulty = GameStage.getRegionalDifficulty( data.getServerLevel(), data.explosion.getPosition() );
+		BlockPos position = AnyPos.from( data.explosion.getPosition() ).block();
+		double clampedRegionalDifficulty = LevelHelper.getClampedRegionalDifficultyAt( data.getServerLevel(), position );
 		double radiusMultiplier = clampedRegionalDifficulty * ( this.radiusMultiplier.get() - 1.0 ) + 1.0;
 		data.radius.setValue( radiusMultiplier * data.radius.getValue() );
 		if( Random.tryChance( clampedRegionalDifficulty * this.fireChance.get() ) ) {
