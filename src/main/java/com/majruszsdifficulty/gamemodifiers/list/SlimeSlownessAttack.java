@@ -19,7 +19,7 @@ public class SlimeSlownessAttack {
 	public SlimeSlownessAttack() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
 			.name( "SlimeSlownessAttack" )
-			.comment( "Shulker attack may inflict stackable blindness effect." );
+			.comment( "Slime attack may inflict slowness effect." );
 
 		OnDamaged.listen( this::applyEffect )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
