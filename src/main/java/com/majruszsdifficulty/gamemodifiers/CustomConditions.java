@@ -41,7 +41,7 @@ public class CustomConditions {
 	}
 
 	public static < DataType > Condition< DataType > isNotPartOfUndeadArmy( Function< DataType, Entity > entity ) {
-		return new Condition< DataType >( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( entity.apply( data ) ) );
+		return new Condition< DataType >( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( entity.apply( data ) ) );
 	}
 
 	public static < DataType > Condition< DataType > isNotNearUndeadArmy( Function< DataType, Entity > entity ) {
