@@ -48,7 +48,6 @@
   "commands.undeadarmy.cannot_start": "一支亡灵军团无法在这个位置生成：%s",
   "commands.undeadarmy.killed": "此位置的所有亡灵军团生物已被杀死：%s",
   "commands.undeadarmy.highlighted": "此位置的所有亡灵军团生物已高亮：%s",
-  "commands.undeadarmy.progress": "%s 在亡灵军团前来前杀死了 %d/%d 亡灵生物",
   "commands.treasurebag.reset": "宝藏袋掉落进度已被重置为 %s",
   "commands.clampedregionaldifficulty": "当前副区域难度为：%s%s （位置：%s）",
   "commands.clampedregionaldifficulty.formula": " （+%s = %s）",
