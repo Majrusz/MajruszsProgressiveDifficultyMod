@@ -69,6 +69,7 @@ import java.util.function.Supplier;
 public class CursedArmorEntity extends Monster {
 	public static final String GROUP_ID = "CursedArmor";
 	public static final int ASSEMBLE_DURATION = Utility.secondsToTicks( 2.5 );
+	boolean areGoalsRegistered = false;
 	SoundHandler assembleSound = null;
 	int assembleTicksLeft = 0;
 
@@ -108,7 +109,7 @@ public class CursedArmorEntity extends Monster {
 
 		this.tryToPlaySfx();
 		this.assembleTicksLeft = Math.max( this.assembleTicksLeft - 1, 0 );
-		if( this.goalSelector.getAvailableGoals().isEmpty() ) {
+		if( !this.areGoalsRegistered ) {
 			this.registerGoals();
 		}
 	}
@@ -146,6 +147,7 @@ public class CursedArmorEntity extends Monster {
 		this.goalSelector.addGoal( 4, new RandomLookAroundGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
+		this.areGoalsRegistered = true;
 	}
 
 	private void tryToPlaySfx() {
