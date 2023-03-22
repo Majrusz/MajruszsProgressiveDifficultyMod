@@ -22,7 +22,7 @@ public class CustomConditions {
 		return new Condition< DataType >( data->gameStages.contains( GameStage.getCurrentStage().name() ) )
 			.priority( Priority.HIGH )
 			.configurable( true )
-			.addConfig( gameStages.name( "game_stages" ).comment( "Determines in which game stages it can happen." ) );
+			.addConfig( gameStages.name( "game_stages" ).comment( "Determines during which game stages it can happen." ) );
 	}
 
 	public static < DataType > Condition< DataType > gameStageAtLeast( GameStage defaultGameStage ) {
