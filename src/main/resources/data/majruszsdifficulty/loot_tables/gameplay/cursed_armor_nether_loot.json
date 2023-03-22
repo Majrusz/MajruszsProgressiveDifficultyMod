@@ -1,0 +1,125 @@
+{
+  "mlib": "majruszsdifficulty:gameplay/cursed_armor_portal_loot",
+  "cursed_armor": {
+    "loot": [
+      "minecraft:chests/bastion_bridge",
+      "minecraft:chests/bastion_hoglin_stable",
+      "minecraft:chests/bastion_other",
+      "minecraft:chests/bastion_treasure",
+      "minecraft:chests/nether_bridge"
+    ],
+    "sound": "minecraft:item.armor.equip_gold",
+    "chance": 0.25
+  },
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_helmet",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_chestplate",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_leggings",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_boots",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_sword",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:shield",
+          "functions": [
+            {
+              "function": "majruszsdifficulty:curse_randomly",
+              "excluding": [
+                "minecraft:vanishing_curse"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
