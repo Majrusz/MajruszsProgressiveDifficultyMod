@@ -302,7 +302,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		// movement anims
 		if( cerberus.hasTarget ) {
 			// gallop anims
-			float swingRatio = ( limbSwing * 0.15f ) % 1.0f;
+			float swingRatio = ( limbSwing * 0.175f ) % 1.0f;
 			this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f ) - GALLOP_FRONT_LEG_1_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f ) - GALLOP_FRONT_LEG_2_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f ) - GALLOP_HIND_LEG_1_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
