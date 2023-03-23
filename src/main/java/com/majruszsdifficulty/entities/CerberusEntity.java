@@ -71,7 +71,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		return Mob.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 240.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.28 )
-			.add( Attributes.ATTACK_DAMAGE, 10.0 )
+			.add( Attributes.ATTACK_DAMAGE, 8.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
 			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
@@ -102,10 +102,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		if( this.isSilent() ) {
 			return;
 		}
-		// boolean isCustomSound = sound == SoundEvents.WOLF_GROWL || sound == SoundEvents.WOLF_AMBIENT;
+
 		float randomizedVolume = SoundHandler.randomized( volume ).get();
 		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
-
 		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
