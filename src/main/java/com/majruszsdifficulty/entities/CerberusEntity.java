@@ -292,6 +292,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 			OnDamaged.listen( this::applyWither )
 				.addCondition( OnDamaged.isDirect() )
+				.addCondition( OnDamaged.dealtAnyDamage() )
 				.addCondition( Condition.predicate( data->data.attacker instanceof CerberusEntity ) )
 				.addConfig( this.wither.name( "Wither" ) )
 				.insertTo( group );
