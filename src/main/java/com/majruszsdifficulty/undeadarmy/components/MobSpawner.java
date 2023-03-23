@@ -70,6 +70,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		this.loadEquipment( mob, mobInfo );
 		this.addGoals( mob );
 		this.makePersistent( mob );
+		ExtraLootInfo.addExtraLootTag( mob );
 	}
 
 	private void generateMobList() {

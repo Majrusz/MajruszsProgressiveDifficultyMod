@@ -1,7 +1,8 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.undeadarmy.data.ExtraLootInfo;
 import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
 import com.majruszsdifficulty.undeadarmy.data.WavesDef;
@@ -36,7 +37,7 @@ import java.util.function.Supplier;
 
 @AutoInstance
 public class Config {
-	static ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
+	static final ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
 	private final BooleanConfig availability = new BooleanConfig( true );
 	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
 	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 4.0, 30.0 ) );
@@ -76,7 +77,7 @@ public class Config {
 			.addCondition( OnLoot.hasDamageSource() )
 			.addCondition( Condition.predicate( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) ) )
 			.addCondition( Condition.predicate( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) )
-			.addCondition( Condition.predicate( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity ) ) )
+			.addCondition( Condition.predicate( data->ExtraLootInfo.hasExtraLootTag( data.entity ) ) )
 			.insertTo( group );
 	}
 

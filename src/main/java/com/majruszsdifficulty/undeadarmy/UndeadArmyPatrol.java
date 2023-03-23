@@ -1,9 +1,10 @@
-package com.majruszsdifficulty.gamemodifiers.list.groups;
+package com.majruszsdifficulty.undeadarmy;
 
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.undeadarmy.data.ExtraLootInfo;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
@@ -32,7 +33,7 @@ public class UndeadArmyPatrol {
 	public UndeadArmyPatrol() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
 			.name( "UndeadArmyPatrol" )
-			.comment( "Undead may spawn in groups as the Undead Army Patrol." );
+			.comment( "Undead mobs may spawn in groups as the Undead Army Patrol." );
 
 		OnSpawned.listenSafe( this::spawnGroup )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
@@ -49,6 +50,9 @@ public class UndeadArmyPatrol {
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {
-		this.mobGroups.spawn( ( PathfinderMob )data.target );
+		PathfinderMob leader = ( PathfinderMob )data.target;
+		List< PathfinderMob > mobs = this.mobGroups.spawn( leader );
+		mobs.add( leader );
+		mobs.forEach( ExtraLootInfo::addExtraLootTag );
 	}
 }
