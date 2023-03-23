@@ -67,15 +67,17 @@ public class TreasureBagItem extends Item {
 		ItemStack itemStack = player.getItemInHand( hand );
 
 		if( !level.isClientSide ) {
-			ItemHelper.consumeItemOnUse( itemStack, player );
-			if( player instanceof ServerPlayer serverPlayer )
-				triggerTreasureBagAdvancement( serverPlayer );
+			if( player instanceof ServerPlayer serverPlayer ) {
+				this.triggerTreasureBagAdvancement( serverPlayer );
+			}
 
 			SoundHandler.ITEM_PICKUP.play( level, player.position() );
 			List< ItemStack > loot = generateLoot( player );
 			OnTreasureBagOpened.dispatch( player, this, loot );
-			if( level instanceof ServerLevel serverLevel )
+			if( level instanceof ServerLevel serverLevel ) {
 				loot.forEach( reward->ItemHelper.giveItemStackToPlayer( reward, player, serverLevel ) );
+			}
+			ItemHelper.consumeItemOnUse( itemStack, player );
 		}
 
 		return InteractionResultHolder.sidedSuccess( itemStack, level.isClientSide() );
