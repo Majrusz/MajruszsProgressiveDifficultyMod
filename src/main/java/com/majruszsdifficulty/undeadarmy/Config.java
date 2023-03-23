@@ -45,6 +45,7 @@ public class Config {
 	private final DoubleConfig extraSizePerPlayer = new DoubleConfig( 0.5, new Range<>( 0.0, 1.0 ) );
 	private final IntegerConfig armyRadius = new IntegerConfig( 70, new Range<>( 35, 140 ) );
 	private final IntegerConfig killRequirement = new IntegerConfig( 75, new Range<>( 0, 1000 ) );
+	private final IntegerConfig killRequirementFirst = new IntegerConfig( 25, new Range<>( 0, 1000 ) );
 	private final Supplier< WavesDef > wavesDef;
 
 	public Config() {
@@ -57,7 +58,9 @@ public class Config {
 				.comment( "Extra size ratio per each additional player on multiplayer (0.25 means ~25% bigger army per player)." ) )
 			.addConfig( this.armyRadius.name( "army_radius" ).comment( "Radius, which determines how big is the raid circle (in blocks)." ) )
 			.addConfig( this.killRequirement.name( "kill_requirement" )
-				.comment( "Required amount of killed undead to start the Undead Army. (set to 0 if you want to disable this)" ) );
+				.comment( "Required amount of killed undead to start the Undead Army. (set to 0 if you want to disable this)" ) )
+			.addConfig( this.killRequirementFirst.name( "kill_requirement_first" )
+				.comment( "Required amount of killed undead to start the first Undead Army." ) );
 
 		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
 
@@ -113,6 +116,10 @@ public class Config {
 		return this.killRequirement.get();
 	}
 
+	public int getInitialKillsCount() {
+		return this.killRequirement.get() - this.killRequirementFirst.get();
+	}
+
 	public int getSpawnRadius() {
 		return this.getArmyRadius() - 15; // maybe one day add a config
 	}
@@ -134,6 +141,7 @@ public class Config {
 		ServerPlayer player = ( ServerPlayer )data.attacker;
 		CompoundTag tag = player.getPersistentData();
 		UndeadArmyInfo info = new UndeadArmyInfo();
+		info.killedUndead = this.getInitialKillsCount();
 		info.read( tag );
 
 		++info.killedUndead;
