@@ -37,6 +37,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.SmallFireball;
@@ -177,7 +178,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 				return false;
 
 			double distance = Math.sqrt( distanceSquared );
-			if( distance < 3.5 ) {
+			if( distance < 3.5 && this.mob.canAttack( entity, TargetingConditions.DEFAULT ) ) {
 				Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
 				if( distance > 2.0 ) {
 					this.pushMobTowards( entity );
@@ -217,6 +218,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
 			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 2.5, entity->!entity.is( this.mob ) );
 			for( LivingEntity entity : entities ) {
+				if( !this.mob.canAttack( entity, TargetingConditions.DEFAULT ) )
+					continue;
+
 				this.mob.doHurtTarget( entity );
 				if( entity instanceof ServerPlayer player && player.isBlocking() ) {
 					player.disableShield( true );

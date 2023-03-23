@@ -25,6 +25,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.warden.Warden;
@@ -170,6 +171,9 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
 			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 3.0, entity->!entity.is( this.mob ) );
 			for( LivingEntity entity : entities ) {
+				if( !this.mob.canAttack( entity, TargetingConditions.DEFAULT ) )
+					continue;
+
 				this.mob.doHurtTarget( entity );
 				if( entity instanceof ServerPlayer player && player.isBlocking() ) {
 					player.disableShield( true );
