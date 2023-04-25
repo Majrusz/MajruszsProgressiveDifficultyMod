@@ -5,7 +5,7 @@ issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/i
 
 [[mods]]
     modId = "majruszsdifficulty"
-    version = "1.7.3"
+    version = "1.7.4-unfinished"
     displayName = "Majrusz's Progressive Difficulty"
     updateJSONURL = "https://raw.githubusercontent.com/Majrusz/MinecraftCommon/main/ProgressiveDifficulty/update.json"
     displayURL = "https://www.curseforge.com/minecraft/mc-mods/majruszs-progressive-difficulty"
@@ -31,6 +31,6 @@ issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/i
 [[dependencies.majruszsdifficulty]]
     modId = "mlib"
     mandatory = true
-    versionRange = "[3.3.0,4.0.0)"
+    versionRange = "[4.0.0,5.0.0)"
     ordering = "NONE"
     side = "BOTH"

@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.commands;
+package com.majruszsdifficulty.undeadarmy.commands;
 
 import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.mlib.annotations.AutoInstance;

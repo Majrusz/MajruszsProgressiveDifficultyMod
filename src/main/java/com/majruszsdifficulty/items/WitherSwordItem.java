@@ -2,8 +2,10 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.configs.EffectConfig;
+import com.mlib.config.ConfigGroup;
+import com.mlib.config.EffectConfig;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
 import com.mlib.items.ItemHelper;
@@ -22,24 +24,24 @@ public class WitherSwordItem extends SwordItem {
 	}
 
 	@AutoInstance
-	public static class Effect extends GameModifier {
+	public static class Effect {
 		static final String ATTRIBUTE_ID = "item.majruszsdifficulty.wither_sword.effect";
 		final EffectConfig wither = new EffectConfig( MobEffects.WITHER, 1, 6.0 );
 
 		public Effect() {
-			super( Registries.Modifiers.DEFAULT );
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+				.name( "WitherSwordEffect" )
+				.comment( "Wither Sword inflicts wither effect." );
 
-			new OnDamaged.Context( this::applyWither )
-				.addCondition( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) )
-				.addCondition( data->data.source.getDirectEntity() == data.attacker )
+			OnDamaged.listen( this::applyWither )
+				.addCondition( Condition.predicate( data->ItemHelper.hasInMainHand( data.attacker, WitherSwordItem.class ) ) )
+				.addCondition( Condition.predicate( data->data.source.getDirectEntity() == data.attacker ) )
 				.addConfig( this.wither )
-				.insertTo( this );
+				.insertTo( group );
 
-			new OnItemAttributeTooltip.Context( this::addTooltip )
-				.addCondition( data->data.item instanceof WitherSwordItem )
-				.insertTo( this );
-
-			this.name( "WitherSwordEffect" ).comment( "Wither Sword inflicts wither effect." );
+			OnItemAttributeTooltip.listen( this::addTooltip )
+				.addCondition( Condition.predicate( data->data.item instanceof WitherSwordItem ) )
+				.insertTo( group );
 		}
 
 		private void applyWither( OnDamaged.Data data ) {

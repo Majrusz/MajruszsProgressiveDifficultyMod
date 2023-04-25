@@ -1,17 +1,18 @@
-package com.majruszsdifficulty.commands;
+package com.majruszsdifficulty.gamestage.commands;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import com.mlib.levels.LevelHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.phys.Vec3;
 
 @AutoInstance
-public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
+public class ClampedRegionalDifficultyGetCommand extends Command {
 	public ClampedRegionalDifficultyGetCommand() {
 		this.newBuilder()
 			.literal( "crd", "clampedregionaldifficulty" )
@@ -29,19 +30,10 @@ public class ClampedRegionalDifficultyGetCommand extends DifficultyCommand {
 
 	private MutableComponent buildMessage( CommandData data ) throws CommandSyntaxException {
 		ServerLevel level = data.source.getLevel();
-		Vec3 position = this.getOptionalEntityOrPlayer( data ).position();
-		String total = String.format( "%.2f", GameStage.getRegionalDifficulty( level, position ) );
+		BlockPos position = this.getOptionalEntityOrPlayer( data ).blockPosition();
+		String total = String.format( "%.2f", LevelHelper.getClampedRegionalDifficultyAt( level, position ) );
 
-		return Component.translatable( "commands.clampedregionaldifficulty", asVec3i( position ), this.withStageStyle( total ), this.buildFormula( level, position ) );
-	}
-
-	private MutableComponent buildFormula( ServerLevel level, Vec3 position ) {
-		if( GameStage.getCurrentStage() == GameStage.NORMAL )
-			return Component.literal( "" );
-
-		String crd = String.format( "%.2f", LevelHelper.getClampedRegionalDifficulty( level, position ) );
-		String stageModifier = String.format( "%.2f", GameStage.getStageModifier() );
-		return Component.translatable( "commands.clampedregionaldifficulty.formula", crd, this.withStageStyle( stageModifier ) );
+		return Component.translatable( "commands.clampedregionaldifficulty", String.format( "(%s)", position.toShortString() ), this.withStageStyle( total ) );
 	}
 
 	private MutableComponent withStageStyle( String text ) {

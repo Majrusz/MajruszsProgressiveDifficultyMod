@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.goals;
 
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -55,7 +55,7 @@ public class UndeadArmyAttackPositionGoal extends Goal {
 	}
 
 	private double getDistanceToAttackPosition() {
-		return VectorHelper.distanceHorizontal( this.undead.position(), this.attackPosition.getCenter() );
+		return AnyPos.from( this.undead.position() ).dist2d( this.attackPosition.getCenter() ).doubleValue();
 	}
 }
 

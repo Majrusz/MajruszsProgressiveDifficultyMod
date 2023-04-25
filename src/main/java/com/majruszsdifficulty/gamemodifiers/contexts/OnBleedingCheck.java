@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
-import com.mlib.gamemodifiers.ContextBase;
+import com.mlib.gamemodifiers.Context;
 import com.mlib.gamemodifiers.Contexts;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -8,18 +8,12 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import java.util.function.Consumer;
 
 public class OnBleedingCheck {
-	public static class Context extends ContextBase< Data > {
-		static final Contexts< Data, Context > CONTEXTS = new Contexts<>();
+	public static Context< Data > listen( Consumer< Data > consumer ) {
+		return Contexts.get( Data.class ).add( consumer );
+	}
 
-		public static void accept( Data data ) {
-			CONTEXTS.accept( data );
-		}
-
-		public Context( Consumer< Data > consumer ) {
-			super( consumer );
-
-			CONTEXTS.add( this );
-		}
+	public static Data dispatch( LivingHurtEvent event ) {
+		return Contexts.get( Data.class ).dispatch( new Data( event ) );
 	}
 
 	public static class Data extends OnDamaged.Data {

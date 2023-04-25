@@ -6,6 +6,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.SoundHandler;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
@@ -85,22 +86,22 @@ public class SoulJarItem extends Item {
 	@AutoInstance
 	public static class Handler {
 		public Handler() {
-			new OnItemEquipped.Context( this::updateAttributes )
-				.addCondition( data->data.entity instanceof LivingEntity );
+			OnItemEquipped.listen( this::updateAttributes )
+				.addCondition( Condition.predicate( data->data.entity instanceof LivingEntity ) );
 
-			new OnPreDamaged.Context( this::increaseDamage )
-				.addCondition( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
-				.addCondition( data->data.attacker != null )
-				.addCondition( data->hasBonus( data.attacker, BonusType.DAMAGE ) );
+			OnPreDamaged.listen( this::increaseDamage )
+				.addCondition( Condition.predicate( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) )
+				.addCondition( Condition.predicate( data->data.attacker != null ) )
+				.addCondition( Condition.predicate( data->hasBonus( data.attacker, BonusType.DAMAGE ) ) );
 
-			new OnBreakSpeed.Context( this::increaseSpeed )
-				.addCondition( data->hasBonus( data.player, BonusType.MINING ) );
+			OnBreakSpeed.listen( this::increaseSpeed )
+				.addCondition( Condition.predicate( data->hasBonus( data.player, BonusType.MINING ) ) );
 
-			new OnItemAttributeTooltip.Context( this::addTooltip )
-				.addCondition( data->data.itemStack.getItem() instanceof SoulJarItem );
+			OnItemAttributeTooltip.listen( this::addTooltip )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof SoulJarItem ) );
 
-			new OnItemTooltip.Context( this::addTooltip )
-				.addCondition( data->data.itemStack.getItem() instanceof SoulJarItem );
+			OnItemTooltip.listen( this::addTooltip )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof SoulJarItem ) );
 		}
 
 		private static boolean hasBonus( @Nullable Entity entity, BonusType bonusType ) {
@@ -117,7 +118,7 @@ public class SoulJarItem extends Item {
 			if( !( itemStack.getItem() instanceof SoulJarItem ) )
 				return 0.0f;
 
-			return OnSoulJarMultiplier.broadcast( new OnSoulJarMultiplier.Data( entity, itemStack ) ).getMultiplier();
+			return OnSoulJarMultiplier.dispatch( entity, itemStack ).getMultiplier();
 		}
 
 		private static float getMultiplier( @Nullable Entity entity ) {
@@ -133,12 +134,12 @@ public class SoulJarItem extends Item {
 			float luckBonus = hasBonus( data.entity, BonusType.LUCK ) ? LUCK_BONUS : 0.0f;
 			float swimBonus = hasBonus( data.entity, BonusType.SWIM ) ? SWIM_BONUS : 0.0f;
 
-			MOVE_ATTRIBUTE.setValueAndApply( entity, multiplier * moveBonus );
-			ARMOR_ATTRIBUTE.setValueAndApply( entity, multiplier * armorBonus );
-			REACH_ATTRIBUTE.setValueAndApply( entity, multiplier * rangeBonus );
-			RANGE_ATTRIBUTE.setValueAndApply( entity, multiplier * rangeBonus );
-			LUCK_ATTRIBUTE.setValueAndApply( entity, multiplier * luckBonus );
-			SWIM_ATTRIBUTE.setValueAndApply( entity, multiplier * swimBonus );
+			MOVE_ATTRIBUTE.apply( entity ).setValue( multiplier * moveBonus );
+			ARMOR_ATTRIBUTE.apply( entity ).setValue( multiplier * armorBonus );
+			REACH_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
+			RANGE_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
+			LUCK_ATTRIBUTE.apply( entity ).setValue( multiplier * luckBonus );
+			SWIM_ATTRIBUTE.apply( entity ).setValue( multiplier * swimBonus );
 		}
 
 		private void increaseDamage( OnPreDamaged.Data data ) {

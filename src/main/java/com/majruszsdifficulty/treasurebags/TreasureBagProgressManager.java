@@ -116,11 +116,11 @@ public class TreasureBagProgressManager extends SerializableStructure {
 	@AutoInstance
 	public static class Handler {
 		public Handler() {
-			new OnPlayerLogged.Context( data->Registries.getTreasureBagProgressManager().onLogged( data ) )
-				.addCondition( new Condition.IsServer<>() );
+			OnPlayerLogged.listen( data->Registries.getTreasureBagProgressManager().onLogged( data ) )
+				.addCondition( Condition.isServer() );
 
-			new OnTreasureBagOpened.Context( data->Registries.getTreasureBagProgressManager().updateProgress( data ) )
-				.addCondition( new Condition.IsServer<>() );
+			OnTreasureBagOpened.listen( data->Registries.getTreasureBagProgressManager().updateProgress( data ) )
+				.addCondition( Condition.isServer() );
 		}
 	}
 }
