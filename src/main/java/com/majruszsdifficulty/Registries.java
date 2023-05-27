@@ -16,8 +16,8 @@ import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Utility;
 import com.mlib.annotations.AnnotationHandler;
-import com.mlib.gamemodifiers.GameModifier;
 import com.mlib.items.CreativeModeTabHelper;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.registries.RegistryHelper;
 import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -47,7 +47,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
@@ -77,11 +76,11 @@ public class Registries {
 	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
 
 	static {
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.DEFAULT ).name( "GameModifiers" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.UNDEAD_ARMY ).name( "UndeadArmy" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.GAME_STAGE ).name( "GameStage" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.TREASURE_BAG ).name( "TreasureBag" );
-		GameModifier.addNewGroup( SERVER_CONFIG, Modifiers.MOBS ).name( "Mobs" );
+		ModConfigs.init( SERVER_CONFIG, Groups.DEFAULT ).name( "GameModifiers" );
+		ModConfigs.init( SERVER_CONFIG, Groups.UNDEAD_ARMY ).name( "UndeadArmy" );
+		ModConfigs.init( SERVER_CONFIG, Groups.GAME_STAGE ).name( "GameStage" );
+		ModConfigs.init( SERVER_CONFIG, Groups.TREASURE_BAG ).name( "TreasureBag" );
+		ModConfigs.init( SERVER_CONFIG, Groups.MOBS ).name( "Mobs" );
 	}
 
 	// Groups
@@ -190,7 +189,7 @@ public class Registries {
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
-	public static final BasicTrigger BASIC_TRIGGER = BasicTrigger.createRegisteredInstance( HELPER );
+	public static final BasicTrigger BASIC_TRIGGER = HELPER.registerBasicTrigger();
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );
@@ -328,7 +327,7 @@ public class Registries {
 		return levelAccessor.equals( overworld ) ? overworld : null;
 	}
 
-	public static class Modifiers {
+	public static class Groups {
 		public static final String DEFAULT = Registries.getLocationString( "default" );
 		public static final String UNDEAD_ARMY = Registries.getLocationString( "undead_army" );
 		public static final String GAME_STAGE = Registries.getLocationString( "game_stage" );

@@ -4,27 +4,29 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageStringListConfig;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.config.ConfigGroup;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.eventbus.api.Event;
 
 @AutoInstance
-public class SpawnBlocker extends GameModifier {
+public class SpawnBlocker {
 	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( new String[]{
 		"minecraft:illusioner",
 		"majruszsdifficulty:tank"
 	}, new String[]{}, new String[]{} );
 
 	public SpawnBlocker() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "SpawnBlocker" )
+			.comment( "Blocks certain mobs from spawning when given game stage is active." );
 
-		new OnCheckSpawn.Context( this::blockSpawn )
-			.addCondition( data->this.isForbidden( data.entity ) )
+		OnCheckSpawn.listen( this::blockSpawn )
+			.addCondition( Condition.predicate( data->this.isForbidden( data.mob ) ) )
 			.addConfig( this.forbiddenEntities )
-			.insertTo( this );
-
-		this.name( "SpawnBlocker" ).comment( "Blocks certain mobs from spawning when given game stage is active." );
+			.insertTo( group );
 	}
 
 	private void blockSpawn( OnCheckSpawn.Data data ) {

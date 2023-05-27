@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +70,10 @@ public class UndeadArmyManager extends SerializableStructure {
 
 	public boolean isPartOfUndeadArmy( Entity entity ) {
 		return this.undeadArmies.stream().anyMatch( undeadArmy->undeadArmy.isPartOfWave( entity ) );
+	}
+
+	public List< UndeadArmy > getUndeadArmies() {
+		return Collections.unmodifiableList( this.undeadArmies );
 	}
 
 	void tick() {

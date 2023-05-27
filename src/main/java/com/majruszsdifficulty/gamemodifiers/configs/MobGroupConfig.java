@@ -9,10 +9,7 @@ import com.mlib.entities.EntityHelper;
 import com.mlib.items.ItemHelper;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.phys.Vec3;
 
@@ -54,7 +51,7 @@ public class MobGroupConfig extends ConfigGroup {
 				this.addSidekickGoals( mob, leader );
 				this.markAsSidekick( mob );
 				this.applyArmorSet( this.sidekickSet, mob );
-				this.addToLevel( mob, spawnPosition );
+				this.randomizePosition( mob, spawnPosition );
 			} );
 
 			if( sidekick != null ) {
@@ -104,8 +101,7 @@ public class MobGroupConfig extends ConfigGroup {
 			.forEach( slot->mob.setDropChance( slot, 0.05f ) );
 	}
 
-	private void addToLevel( PathfinderMob sidekick, Vec3 position ) {
+	private void randomizePosition( PathfinderMob sidekick, Vec3 position ) {
 		sidekick.setPos( position.x + Random.nextInt( -3, 4 ), position.y + 0.5, position.z + Random.nextInt( -3, 4 ) );
-		sidekick.level.addFreshEntity( sidekick );
 	}
 }

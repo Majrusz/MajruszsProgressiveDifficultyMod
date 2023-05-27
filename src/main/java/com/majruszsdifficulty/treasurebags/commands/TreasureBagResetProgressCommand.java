@@ -1,20 +1,20 @@
-package com.majruszsdifficulty.commands;
+package com.majruszsdifficulty.treasurebags.commands;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.player.Player;
 
 @AutoInstance
-public class TreasureBagUnlockAllCommand extends DifficultyCommand {
-	public TreasureBagUnlockAllCommand() {
+public class TreasureBagResetProgressCommand extends Command {
+	public TreasureBagResetProgressCommand() {
 		this.newBuilder()
 			.literal( "treasurebag" )
-			.literal( "unlockall" )
+			.literal( "reset" )
 			.hasPermission( 4 )
 			.execute( this::handle )
 			.entity()
@@ -24,8 +24,8 @@ public class TreasureBagUnlockAllCommand extends DifficultyCommand {
 	private int handle( CommandData data ) throws CommandSyntaxException {
 		Player player = Utility.castIfPossible( Player.class, this.getOptionalEntityOrPlayer( data ) );
 		if( player != null ) {
-			Registries.getTreasureBagProgressManager().unlockAll( player );
-			data.source.sendSuccess( new TranslatableComponent( "commands.treasurebag.unlockall", player.getName() ), true );
+			Registries.getTreasureBagProgressManager().clearProgress( player );
+			data.source.sendSuccess( new TranslatableComponent( "commands.treasurebag.reset", player.getName() ), true );
 			return 0;
 		}
 

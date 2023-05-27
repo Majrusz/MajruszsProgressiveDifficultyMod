@@ -9,24 +9,24 @@ import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.blocks.BlockHelper;
+import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.StringConfig;
+import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ContextBase;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.Context;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.math.AnyPos;
 import com.mlib.math.Range;
-import com.mlib.math.VectorHelper;
-import com.mlib.network.NetworkMessage;
 import com.mlib.text.TextHelper;
 import com.mlib.time.Time;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -69,11 +69,12 @@ import java.util.function.Supplier;
 public class CursedArmorEntity extends Monster {
 	public static final String GROUP_ID = "CursedArmor";
 	public static final int ASSEMBLE_DURATION = Utility.secondsToTicks( 2.5 );
+	boolean areGoalsRegistered = false;
 	SoundHandler assembleSound = null;
 	int assembleTicksLeft = 0;
 
 	static {
-		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID ).name( "CursedArmor" );
+		ModConfigs.init( Registries.Groups.MOBS, GROUP_ID ).name( "CursedArmor" );
 	}
 
 	public static Supplier< EntityType< CursedArmorEntity > > createSupplier() {
@@ -108,7 +109,7 @@ public class CursedArmorEntity extends Monster {
 
 		this.tryToPlaySfx();
 		this.assembleTicksLeft = Math.max( this.assembleTicksLeft - 1, 0 );
-		if( this.goalSelector.getAvailableGoals().isEmpty() ) {
+		if( !this.areGoalsRegistered ) {
 			this.registerGoals();
 		}
 	}
@@ -146,6 +147,7 @@ public class CursedArmorEntity extends Monster {
 		this.goalSelector.addGoal( 4, new RandomLookAroundGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
+		this.areGoalsRegistered = true;
 	}
 
 	private void tryToPlaySfx() {
@@ -160,7 +162,7 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	@AutoInstance
-	public static class Spawn extends GameModifier {
+	public static class Spawn {
 		static final String MAIN_TAG = "cursed_armor";
 		static final String LOOT_TABLE_TAG = "loot";
 		static final String SOUND_TAG = "sound";
@@ -170,50 +172,50 @@ public class CursedArmorEntity extends Monster {
 		final StringConfig name = new StringConfig( "Freshah" );
 
 		public Spawn() {
-			super( GROUP_ID );
+			ConfigGroup group = ModConfigs.registerSubgroup( GROUP_ID );
 
-			new OnLoot.Context( this::spawnCursedArmor )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( OnLoot.HAS_ORIGIN )
-				.addCondition( data->BlockHelper.getBlockEntity( data.level, data.origin ) instanceof ChestBlockEntity )
-				.addCondition( this::hasLootDefined )
+			OnLoot.listen( this::spawnCursedArmor )
+				.addCondition( Condition.isServer() )
+				.addCondition( OnLoot.hasOrigin() )
+				.addCondition( Condition.predicate( data->BlockHelper.getBlockEntity( data.getLevel(), data.origin ) instanceof ChestBlockEntity ) )
+				.addCondition( Condition.predicate( this::hasLootDefined ) )
 				.addConfig( this.dropChance.name( "drop_chance" ).comment( "Chance for each equipped item to drop when killed." ) )
-				.insertTo( this );
+				.insertTo( group );
 
-			new OnLootTableCustomLoad.Context( this::loadCursedArmorLoot )
-				.addCondition( data->data.jsonObject.has( MAIN_TAG ) )
-				.insertTo( this );
+			OnLootTableCustomLoad.listen( this::loadCursedArmorLoot )
+				.addCondition( Condition.predicate( data->data.jsonObject.has( MAIN_TAG ) ) )
+				.insertTo( group );
 
-			new OnSpawned.Context( this::setCustomName )
+			OnSpawned.listen( this::setCustomName )
 				.name( "CustomName" )
 				.comment( "Makes some Cursed Armors have a custom name." )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Chance<>( 0.025 ) )
-				.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-				.addCondition( data->data.target instanceof CursedArmorEntity )
+				.addCondition( Condition.isServer() )
+				.addCondition( Condition.chance( 0.025 ) )
+				.addCondition( OnSpawned.isNotLoadedFromDisk() )
+				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity ) )
 				.addConfigs( this.name.name( "name" ) )
-				.insertTo( this );
+				.insertTo( group );
 
-			new OnSpawned.ContextSafe( this::giveRandomArmor )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-				.addCondition( data->data.target instanceof CursedArmorEntity )
-				.insertTo( this );
+			OnSpawned.listenSafe( this::giveRandomArmor )
+				.addCondition( Condition.isServer() )
+				.addCondition( OnSpawned.isNotLoadedFromDisk() )
+				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity ) )
+				.insertTo( group );
 
-			new OnSpawned.Context( this::startAssembling )
-				.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() )
-				.insertTo( this );
+			OnSpawned.listen( this::startAssembling )
+				.addCondition( OnSpawned.isNotLoadedFromDisk() )
+				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity cursedArmor && !cursedArmor.isAssembling() ) )
+				.insertTo( group );
 
-			new OnPreDamaged.Context( OnPreDamaged.CANCEL )
-				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() )
-				.insertTo( this );
+			OnPreDamaged.listen( OnPreDamaged.CANCEL )
+				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() ) )
+				.insertTo( group );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
-			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.level, this.getSpawnPosition( data ) );
+			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.getLevel(), this.getSpawnPosition( data ) );
 			if( cursedArmor != null ) {
-				float yRot = BlockHelper.getBlockState( data.level, data.origin )
+				float yRot = BlockHelper.getBlockState( data.getLevel(), data.origin )
 					.getValue( ChestBlock.FACING )
 					.toYRot();
 
@@ -226,13 +228,13 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private Vec3 getSpawnPosition( OnLoot.Data data ) {
-			ServerLevel level = data.level;
+			ServerLevel level = data.getServerLevel();
 			Vec3 origin = data.origin;
 			Function< Float, Boolean > isAir = y->BlockHelper.getBlockState( level, origin.add( 0.0, y, 0.0 ) ).isAir();
 			if( isAir.apply( 1.0f ) && isAir.apply( 2.0f ) ) {
 				return origin.add( 0.0, 0.5, 0.0 );
 			} else {
-				Vec3i offset = BlockHelper.getBlockState( data.level, data.origin ).getValue( ChestBlock.FACING ).getNormal();
+				Vec3i offset = BlockHelper.getBlockState( level, data.origin ).getValue( ChestBlock.FACING ).getNormal();
 				return origin.add( offset.getX(), offset.getY(), offset.getZ() );
 			}
 		}
@@ -298,14 +300,14 @@ public class CursedArmorEntity extends Monster {
 			this.createOnTick( this::spawnIdleParticles );
 
 			this.createOnTick( this::spawnAssemblingParticles )
-				.addCondition( data->data.entity instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
+				.addCondition( Condition.predicate( data->data.entity instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() ) );
 		}
 
-		private ContextBase< OnEntityTick.Data > createOnTick( Consumer< OnEntityTick.Data > consumer ) {
-			return new OnEntityTick.Context( consumer )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 0.2, Dist.DEDICATED_SERVER ).configurable( false ) )
-				.addCondition( data->data.entity instanceof CursedArmorEntity );
+		private Context< OnEntityTick.Data > createOnTick( Consumer< OnEntityTick.Data > consumer ) {
+			return OnEntityTick.listen( consumer )
+				.addCondition( Condition.isServer() )
+				.addCondition( Condition.< OnEntityTick.Data > cooldown( 0.2, Dist.DEDICATED_SERVER ).configurable( false ) )
+				.addCondition( Condition.predicate( data->data.entity instanceof CursedArmorEntity ) );
 		}
 
 		private void spawnIdleParticles( OnEntityTick.Data data ) {
@@ -321,16 +323,16 @@ public class CursedArmorEntity extends Monster {
 		private void spawnParticles( OnEntityTick.Data data, Vec3 emitterOffset, double offsetMultiplier, int particlesCount ) {
 			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.entity;
 			Vec3 position = cursedArmor.position().add( emitterOffset );
-			Vec3 offset = VectorHelper.multiply( new Vec3( cursedArmor.getBbWidth(), cursedArmor.getBbHeight(), cursedArmor.getBbWidth() ), offsetMultiplier );
-			ParticleHandler.ENCHANTED_GLYPH.spawn( data.level, position, particlesCount, ()->offset, ()->0.5f );
+			Vec3 offset = AnyPos.from( cursedArmor.getBbWidth(), cursedArmor.getBbHeight(), cursedArmor.getBbWidth() ).mul( offsetMultiplier ).vec3();
+			ParticleHandler.ENCHANTED_GLYPH.spawn( data.getServerLevel(), position, particlesCount, ()->offset, ()->0.5f );
 		}
 	}
 
 	@AutoInstance
 	public static class TooltipUpdater {
 		public TooltipUpdater() {
-			new OnItemTooltip.Context( this::addSpawnInfo )
-				.addCondition( data->data.itemStack.getItem().equals( Registries.CURSED_ARMOR_SPAWN_EGG.get() ) );
+			OnItemTooltip.listen( this::addSpawnInfo )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem().equals( Registries.CURSED_ARMOR_SPAWN_EGG.get() ) ) );
 		}
 
 		private void addSpawnInfo( OnItemTooltip.Data data ) {
@@ -350,23 +352,25 @@ public class CursedArmorEntity extends Monster {
 		}
 	}
 
-	public static class AssembleMessage extends NetworkMessage {
-		final int entityId;
-		final float yRot;
+	public static class AssembleMessage extends SerializableStructure {
+		int entityId;
+		float yRot;
 
-		public AssembleMessage( Entity entity, float yRot ) {
-			this.entityId = this.write( entity );
-			this.yRot = this.write( yRot );
+		public AssembleMessage() {
+			this.define( null, ()->this.entityId, x->this.entityId = x );
+			this.define( null, ()->this.yRot, x->this.yRot = x );
 		}
 
-		public AssembleMessage( FriendlyByteBuf buffer ) {
-			this.entityId = this.readEntity( buffer );
-			this.yRot = this.readFloat( buffer );
+		public AssembleMessage( Entity entity, float yRot ) {
+			this();
+
+			this.entityId = entity.getId();
+			this.yRot = yRot;
 		}
 
 		@Override
 		@OnlyIn( Dist.CLIENT )
-		public void receiveMessage( NetworkEvent.Context context ) {
+		public void onClient( NetworkEvent.Context context ) {
 			Level level = Minecraft.getInstance().level;
 			if( level != null && level.getEntity( this.entityId ) instanceof CursedArmorEntity cursedArmor ) {
 				cursedArmor.startAssembling( this.yRot );

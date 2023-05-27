@@ -6,6 +6,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.SoundHandler;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
@@ -81,22 +82,22 @@ public class SoulJarItem extends Item {
 	@AutoInstance
 	public static class Handler {
 		public Handler() {
-			new OnItemEquipped.Context( this::updateAttributes )
-				.addCondition( data->data.entity instanceof LivingEntity );
+			OnItemEquipped.listen( this::updateAttributes )
+				.addCondition( Condition.predicate( data->data.entity instanceof LivingEntity ) );
 
-			new OnPreDamaged.Context( this::increaseDamage )
-				.addCondition( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
-				.addCondition( data->data.attacker != null )
-				.addCondition( data->hasBonus( data.attacker, BonusType.DAMAGE ) );
+			OnPreDamaged.listen( this::increaseDamage )
+				.addCondition( Condition.predicate( data->data.target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) )
+				.addCondition( Condition.predicate( data->data.attacker != null ) )
+				.addCondition( Condition.predicate( data->hasBonus( data.attacker, BonusType.DAMAGE ) ) );
 
-			new OnBreakSpeed.Context( this::increaseSpeed )
-				.addCondition( data->hasBonus( data.player, BonusType.MINING ) );
+			OnBreakSpeed.listen( this::increaseSpeed )
+				.addCondition( Condition.predicate( data->hasBonus( data.player, BonusType.MINING ) ) );
 
-			new OnItemAttributeTooltip.Context( this::addTooltip )
-				.addCondition( data->data.itemStack.getItem() instanceof SoulJarItem );
+			OnItemAttributeTooltip.listen( this::addTooltip )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof SoulJarItem ) );
 
-			new OnItemTooltip.Context( this::addTooltip )
-				.addCondition( data->data.itemStack.getItem() instanceof SoulJarItem );
+			OnItemTooltip.listen( this::addTooltip )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof SoulJarItem ) );
 		}
 
 		private static boolean hasBonus( @Nullable Entity entity, BonusType bonusType ) {
@@ -113,7 +114,7 @@ public class SoulJarItem extends Item {
 			if( !( itemStack.getItem() instanceof SoulJarItem ) )
 				return 0.0f;
 
-			return OnSoulJarMultiplier.broadcast( new OnSoulJarMultiplier.Data( entity, itemStack ) ).getMultiplier();
+			return OnSoulJarMultiplier.dispatch( entity, itemStack ).getMultiplier();
 		}
 
 		private static float getMultiplier( @Nullable Entity entity ) {
@@ -129,7 +130,6 @@ public class SoulJarItem extends Item {
 			float luckBonus = hasBonus( data.entity, BonusType.LUCK ) ? LUCK_BONUS : 0.0f;
 			float swimBonus = hasBonus( data.entity, BonusType.SWIM ) ? SWIM_BONUS : 0.0f;
 
-
 			final AttributeHandler MOVE_ATTRIBUTE = new AttributeHandler( "51e7e4fb-e8b4-4c90-ab8a-e8c334e206be", "SoulJarMovementBonus", Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL );
 			final AttributeHandler ARMOR_ATTRIBUTE = new AttributeHandler( "7d2d7767-51da-46cc-8081-80fda32d4126", "SoulJarArmorBonus", Attributes.ARMOR, AttributeModifier.Operation.ADDITION );
 			final AttributeHandler REACH_ATTRIBUTE = new AttributeHandler( "23868877-961b-44c9-89c3-376e5c06dbd1", "SoulJarReachBonus", ForgeMod.REACH_DISTANCE.get(), AttributeModifier.Operation.ADDITION );
@@ -137,12 +137,12 @@ public class SoulJarItem extends Item {
 			final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "a2a496f4-3799-46eb-856c-1ba992f67912", "SoulJarLuckBonus", Attributes.LUCK, AttributeModifier.Operation.ADDITION );
 			final AttributeHandler SWIM_ATTRIBUTE = new AttributeHandler( "f404c216-a758-404f-ba95-5a53d3974b44", "SoulJarSwimmingBonus", ForgeMod.SWIM_SPEED.get(), AttributeModifier.Operation.MULTIPLY_TOTAL );
 
-			MOVE_ATTRIBUTE.setValueAndApply( entity, multiplier * moveBonus );
-			ARMOR_ATTRIBUTE.setValueAndApply( entity, multiplier * armorBonus );
-			REACH_ATTRIBUTE.setValueAndApply( entity, multiplier * rangeBonus );
-			RANGE_ATTRIBUTE.setValueAndApply( entity, multiplier * rangeBonus );
-			LUCK_ATTRIBUTE.setValueAndApply( entity, multiplier * luckBonus );
-			SWIM_ATTRIBUTE.setValueAndApply( entity, multiplier * swimBonus );
+			MOVE_ATTRIBUTE.apply( entity ).setValue( multiplier * moveBonus );
+			ARMOR_ATTRIBUTE.apply( entity ).setValue( multiplier * armorBonus );
+			REACH_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
+			RANGE_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
+			LUCK_ATTRIBUTE.apply( entity ).setValue( multiplier * luckBonus );
+			SWIM_ATTRIBUTE.apply( entity ).setValue( multiplier * swimBonus );
 		}
 
 		private void increaseDamage( OnPreDamaged.Data data ) {

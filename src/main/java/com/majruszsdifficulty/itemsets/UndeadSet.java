@@ -4,6 +4,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnSoulJarMultiplier;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnFoodPropertiesGet;
 import com.mlib.gamemodifiers.contexts.OnItemEquipped;
 import com.mlib.itemsets.BonusData;
@@ -40,15 +41,15 @@ public class UndeadSet extends ItemSet {
 	public UndeadSet() {
 		super( ()->Stream.of( ITEM_1, ITEM_2, ITEM_3, ITEM_4 ), ()->Stream.of( BONUS_1, BONUS_2, BONUS_3, BONUS_4 ), ChatFormatting.LIGHT_PURPLE, "majruszsdifficulty.sets.undead.name" );
 
-		new OnFoodPropertiesGet.Context( this::applyRottenFleshBoost )
-			.addCondition( data->data.itemStack.getItem().equals( Items.ROTTEN_FLESH ) )
-			.addCondition( data->data.entity != null );
+		OnFoodPropertiesGet.listen( this::applyRottenFleshBoost )
+			.addCondition( Condition.predicate( data->data.itemStack.getItem().equals( Items.ROTTEN_FLESH ) ) )
+			.addCondition( Condition.predicate( data->data.entity != null ) );
 
-		new OnItemEquipped.Context( this::updateArmorBonus );
+		OnItemEquipped.listen( this::updateArmorBonus );
 
-		new OnSoulJarMultiplier.Context( this::increaseMultiplier )
-			.addCondition( data->data.entity instanceof LivingEntity )
-			.addCondition( data->BONUS_4.isConditionMet( this, ( LivingEntity )data.entity ) );
+		OnSoulJarMultiplier.listen( this::increaseMultiplier )
+			.addCondition( Condition.predicate( data->data.entity instanceof LivingEntity ) )
+			.addCondition( Condition.predicate( data->BONUS_4.isConditionMet( this, ( LivingEntity )data.entity ) ) );
 	}
 
 	private void applyRottenFleshBoost( OnFoodPropertiesGet.Data data ) {
@@ -62,7 +63,7 @@ public class UndeadSet extends ItemSet {
 	private void updateArmorBonus( OnItemEquipped.Data data ) {
 		int armorBonus = BONUS_3.isConditionMet( this, data.entity ) ? EXTRA_ARMOR : 0;
 
-		ARMOR_ATTRIBUTE.setValueAndApply( data.entity, armorBonus );
+		ARMOR_ATTRIBUTE.apply( data.entity ).setValue( armorBonus );
 	}
 
 	private void increaseMultiplier( OnSoulJarMultiplier.Data data ) {

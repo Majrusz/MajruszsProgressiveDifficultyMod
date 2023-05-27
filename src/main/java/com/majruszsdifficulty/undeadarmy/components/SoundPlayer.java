@@ -4,7 +4,7 @@ import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.majruszsdifficulty.undeadarmy.data.Phase;
 import com.mlib.effects.SoundHandler;
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.phys.Vec3;
 
@@ -17,7 +17,7 @@ record SoundPlayer( UndeadArmy undeadArmy ) implements IComponent {
 
 	@Override
 	public void onStart() {
-		APPROACHING.play( this.undeadArmy.level, VectorHelper.vec3( this.undeadArmy.positionToAttack ) );
+		APPROACHING.play( this.undeadArmy.level, AnyPos.from( this.undeadArmy.positionToAttack ).vec3() );
 	}
 
 	@Override

@@ -6,22 +6,23 @@ import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.gui.BleedingGui;
 import com.mlib.EquipmentSlots;
-import com.mlib.MajruszLibrary;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.BooleanConfig;
+import com.mlib.config.ConfigGroup;
+import com.mlib.config.DoubleConfig;
 import com.mlib.config.StringListConfig;
+import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.*;
 import com.mlib.mobeffects.MobEffectHelper;
-import com.mlib.network.NetworkMessage;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -117,7 +118,7 @@ public class BleedingEffect extends MobEffect {
 	}
 
 	@AutoInstance
-	public static class Bleeding extends GameModifier {
+	public static class Bleeding {
 		static final ParticleHandler PARTICLES = new ParticleHandler( Registries.BLOOD, ()->new Vec3( 0.2, 0.5, 0.2 ), ParticleHandler.speed( 0.075f ) );
 		static final String ATTRIBUTE_ID = "effect.majruszsdifficulty.bleeding.armor_tooltip";
 		static final int BLOOD_TICK_COOLDOWN = Utility.secondsToTicks( 4.0 );
@@ -126,56 +127,62 @@ public class BleedingEffect extends MobEffect {
 		final HashMap< Integer, Integer > entityTicks = new HashMap<>();
 
 		public Bleeding() {
-			super( Registries.Modifiers.DEFAULT );
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+				.name( "Bleeding" )
+				.comment( "Common config for all Bleeding effects." );
 
-			new OnEntityTick.Context( this::spawnParticles )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 3, Dist.DEDICATED_SERVER ).configurable( false ) )
-				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
-				.insertTo( this );
+			OnEntityTick.listen( this::spawnParticles )
+				.addCondition( Condition.isServer() )
+				.addCondition( Condition.< OnEntityTick.Data > cooldown( 3, Dist.DEDICATED_SERVER ).configurable( false ) )
+				.addCondition( Condition.hasEffect( Registries.BLEEDING, data->data.entity ) )
+				.insertTo( group );
 
-			new OnEntityTick.Context( this::tick )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
-				.insertTo( this );
+			OnEntityTick.listen( this::tick )
+				.addCondition( Condition.isServer() )
+				.addCondition( Condition.hasEffect( Registries.BLEEDING, data->data.entity ) )
+				.insertTo( group );
 
-			new OnDeath.Context( this::spawnParticles )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING ) )
-				.insertTo( this );
+			OnDeath.listen( this::spawnParticles )
+				.addCondition( Condition.isServer() )
+				.addCondition( Condition.hasEffect( Registries.BLEEDING, data->data.target ) )
+				.insertTo( group );
 
-			new OnEffectApplicable.Context( this::cancelEffect )
-				.addCondition( data->!BleedingEffect.isEnabled() )
-				.addCondition( data->data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) )
-				.insertTo( this );
+			OnEffectApplicable.listen( this::cancelEffect )
+				.addCondition( Condition.predicate( data->!BleedingEffect.isEnabled() ) )
+				.addCondition( Condition.predicate( data->data.effect.equals( Registries.BLEEDING_IMMUNITY.get() ) ) )
+				.insertTo( group );
 
-			new OnDamaged.Context( this::applyBleeding )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new ExcludableBleeding() )
-				.addCondition( new ArmorDependentBleedingChance( 0.8, 0.6, 0.7, 0.9 ) )
-				.addCondition( this::isNotImmune )
-				.addCondition( OnDamaged.DEALT_ANY_DAMAGE )
+			var excludable = Condition.< OnDamaged.Data > excludable();
+			IS_ENABLED = ()->( ( BooleanConfig )excludable.getConfigs().get( 0 ) ).isEnabled(); // TODO: refactor
+			var armorChance = Condition.< OnDamaged.Data > armorDependentChance( 0.8, 0.6, 0.7, 0.9, data->data.target );
+			GET_ARMOR_MULTIPLIER = slot->( ( DoubleConfig )( ( ConfigGroup )armorChance.getConfigs().get( 0 ) ).getConfigs()
+				.get( 3 - slot.getIndex() )
+			).asFloat(); // TODO: refactor
+			OnDamaged.listen( this::applyBleeding )
+				.addCondition( Condition.isServer() )
+				.addCondition( excludable )
+				.addCondition( armorChance )
+				.addCondition( Condition.predicate( this::isNotImmune ) )
+				.addCondition( OnDamaged.dealtAnyDamage() )
 				.addConfig( this.immuneMobs
 					.name( "immune_mobs" )
 					.comment( "Specifies which mobs should not be affected by Bleeding (all undead mobs are immune by default)." )
 				).addConfig( this.effect )
-				.insertTo( this );
+				.insertTo( group );
 
-			new OnItemAttributeTooltip.Context( this::addChanceTooltip )
-				.addCondition( data->data.item instanceof ArmorItem )
-				.addCondition( data->BleedingEffect.isEnabled() )
-				.insertTo( this );
+			OnItemAttributeTooltip.listen( this::addChanceTooltip )
+				.addCondition( Condition.predicate( data->data.item instanceof ArmorItem ) )
+				.addCondition( Condition.predicate( data->BleedingEffect.isEnabled() ) )
+				.insertTo( group );
 
 			GET_AMPLIFIER = this.effect::getAmplifier;
-
-			this.name( "Bleeding" ).comment( "Common config for all Bleeding effects." );
 		}
 
 		private void spawnParticles( OnEntityTick.Data data ) {
 			int amplifier = MobEffectHelper.getAmplifier( data.entity, Registries.BLEEDING.get() );
 			float walkDistanceDelta = EntityHelper.getWalkDistanceDelta( data.entity );
 
-			this.spawnParticles( data.level, data.entity, Random.roundRandomly( 1.0 + ( 15.0 + amplifier ) * walkDistanceDelta ) );
+			this.spawnParticles( data.getServerLevel(), data.entity, Random.roundRandomly( 1.0 + ( 15.0 + amplifier ) * walkDistanceDelta ) );
 		}
 
 		private void tick( OnEntityTick.Data data ) {
@@ -207,9 +214,7 @@ public class BleedingEffect extends MobEffect {
 		}
 
 		private void spawnParticles( OnDeath.Data data ) {
-			assert data.entity != null;
-
-			this.spawnParticles( data.level, data.entity, 100 );
+			this.spawnParticles( data.getServerLevel(), data.target, 100 );
 		}
 
 		private void spawnParticles( ServerLevel level, Entity entity, int amountOfParticles ) {
@@ -222,8 +227,7 @@ public class BleedingEffect extends MobEffect {
 		}
 
 		private void applyBleeding( OnDamaged.Data data ) {
-			OnBleedingCheck.Data bleedingData = new OnBleedingCheck.Data( data.event );
-			OnBleedingCheck.Context.accept( bleedingData );
+			OnBleedingCheck.Data bleedingData = OnBleedingCheck.dispatch( data.event );
 			if( bleedingData.isEffectTriggered() && this.effect.apply( data ) ) {
 				this.dealDamage( data.target );
 			}
@@ -242,38 +246,24 @@ public class BleedingEffect extends MobEffect {
 				data.add( slot, new TranslatableComponent( ATTRIBUTE_ID, multiplier ).withStyle( ChatFormatting.BLUE ) );
 			}
 		}
-
-		private static class ArmorDependentBleedingChance extends Condition.ArmorDependentChance< OnDamaged.Data > {
-			ArmorDependentBleedingChance( double headChance, double chestChance, double legsChance, double feetChance ) {
-				super( headChance, chestChance, legsChance, feetChance );
-
-				GET_ARMOR_MULTIPLIER = slot->this.multipliers.get( slot ).asFloat();
-			}
-		}
-
-		private static class ExcludableBleeding extends Condition.Excludable< OnDamaged.Data > {
-			ExcludableBleeding() {
-				super();
-
-				IS_ENABLED = this.availability::isEnabled;
-			}
-		}
 	}
 
-	public static class BloodMessage extends NetworkMessage {
-		final int entityId;
+	public static class BloodMessage extends SerializableStructure {
+		int entityId;
 
-		public BloodMessage( Entity entity ) {
-			this.entityId = this.write( entity );
+		public BloodMessage() {
+			this.define( null, ()->this.entityId, x->this.entityId = x );
 		}
 
-		public BloodMessage( FriendlyByteBuf buffer ) {
-			this.entityId = this.readEntity( buffer );
+		public BloodMessage( Entity entity ) {
+			this();
+
+			this.entityId = entity.getId();
 		}
 
 		@Override
 		@OnlyIn( Dist.CLIENT )
-		public void receiveMessage( NetworkEvent.Context context ) {
+		public void onClient( NetworkEvent.Context context ) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if( minecraft.level != null && minecraft.level.getEntity( this.entityId ) == minecraft.player ) {
 				BleedingGui.addBloodOnScreen( 3 );

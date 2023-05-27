@@ -3,7 +3,6 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
-import com.majruszsdifficulty.events.TreasureBagOpenedEvent;
 import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnTreasureBagOpened;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
@@ -69,16 +67,17 @@ public class TreasureBagItem extends Item {
 		ItemStack itemStack = player.getItemInHand( hand );
 
 		if( !level.isClientSide ) {
-			ItemHelper.consumeItemOnUse( itemStack, player );
-			if( player instanceof ServerPlayer serverPlayer )
-				triggerTreasureBagAdvancement( serverPlayer );
+			if( player instanceof ServerPlayer serverPlayer ) {
+				this.triggerTreasureBagAdvancement( serverPlayer );
+			}
 
 			SoundHandler.ITEM_PICKUP.play( level, player.position() );
 			List< ItemStack > loot = generateLoot( player );
-			MinecraftForge.EVENT_BUS.post( new TreasureBagOpenedEvent( player, this, loot ) ); // TODO: remove
-			OnTreasureBagOpened.accept( new OnTreasureBagOpened.Data( player, this, loot ) );
-			if( level instanceof ServerLevel serverLevel )
+			OnTreasureBagOpened.dispatch( player, this, loot );
+			if( level instanceof ServerLevel serverLevel ) {
 				loot.forEach( reward->ItemHelper.giveItemStackToPlayer( reward, player, serverLevel ) );
+			}
+			ItemHelper.consumeItemOnUse( itemStack, player );
 		}
 
 		return InteractionResultHolder.sidedSuccess( itemStack, level.isClientSide() );
