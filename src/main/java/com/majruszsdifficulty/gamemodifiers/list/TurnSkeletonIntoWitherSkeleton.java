@@ -61,7 +61,7 @@ public class TurnSkeletonIntoWitherSkeleton {
 				ParticleHandler.SOUL.spawn( level, position, 100, ParticleHandler.offset( 1.0f ) );
 			}
 			if( slider.isFinished() ) {
-				EntityType.WITHER_SKELETON.spawn( level, ( CompoundTag )null, null, new BlockPos( data.target.position() ), MobSpawnType.EVENT, true, true );
+				EntityType.WITHER_SKELETON.spawn( level, ( CompoundTag )null, null, null, new BlockPos( data.target.position() ), MobSpawnType.EVENT, true, true );
 			}
 		} );
 	}

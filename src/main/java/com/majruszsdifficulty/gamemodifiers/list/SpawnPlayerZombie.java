@@ -57,7 +57,7 @@ public class SpawnPlayerZombie {
 	private void spawnZombie( OnDeath.Data data ) {
 		Player player = ( Player )data.target;
 		EntityType< ? extends Zombie > zombieType = getZombieType( data.attacker );
-		Zombie zombie = zombieType.spawn( data.getServerLevel(), ( CompoundTag )null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
+		Zombie zombie = zombieType.spawn( data.getServerLevel(), ( CompoundTag )null, null, null, player.blockPosition(), MobSpawnType.EVENT, true, true );
 		if( zombie == null )
 			return;
 

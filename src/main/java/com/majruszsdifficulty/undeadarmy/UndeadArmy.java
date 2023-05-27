@@ -97,7 +97,7 @@ public class UndeadArmy extends SerializableStructure {
 	}
 
 	public double distanceTo( BlockPos position ) {
-		return AnyPos.from( position.getCenter() ).dist2d( this.positionToAttack.getCenter() ).doubleValue();
+		return AnyPos.from( position ).center().dist2d( AnyPos.from( this.positionToAttack ).center() ).doubleValue();
 	}
 
 	public boolean hasFinished() {
