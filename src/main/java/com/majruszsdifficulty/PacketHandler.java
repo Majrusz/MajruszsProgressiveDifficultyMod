@@ -18,9 +18,9 @@ public class PacketHandler {
 	public static void registerPacket( final FMLCommonSetupEvent event ) {
 		CHANNEL = NetworkRegistry.newSimpleChannel( Registries.getLocation( "main" ), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals );
 		SerializableStructure.register( CHANNEL, 0, TankEntity.SkillMessage.class, TankEntity.SkillMessage::new );
-		CHANNEL.registerMessage( 1, CursedArmorEntity.AssembleMessage.class, CursedArmorEntity.AssembleMessage::encode, CursedArmorEntity.AssembleMessage::new, CursedArmorEntity.AssembleMessage::handle );
+		SerializableStructure.register( CHANNEL, 1, CursedArmorEntity.AssembleMessage.class, CursedArmorEntity.AssembleMessage::new );
 		SerializableStructure.register( CHANNEL, 2, LootProgressData.class, LootProgressData::new );
-		CHANNEL.registerMessage( 3, BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::encode, BleedingEffect.BloodMessage::new, BleedingEffect.BloodMessage::handle );
+		SerializableStructure.register( CHANNEL, 3, BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::new );
 		SerializableStructure.register( CHANNEL, 4, CerberusEntity.SkillMessage.class, CerberusEntity.SkillMessage::new );
 		SerializableStructure.register( CHANNEL, 5, CerberusEntity.TargetMessage.class, CerberusEntity.TargetMessage::new );
 	}

@@ -55,23 +55,23 @@ public class EnderiumSet extends ItemSet {
 	public EnderiumSet() {
 		super( ()->Stream.of( ITEM_1, ITEM_2, ITEM_3, ITEM_4 ), ()->Stream.of( BONUS_1, BONUS_2, BONUS_3, BONUS_4 ), ChatFormatting.DARK_PURPLE, "majruszsdifficulty.sets.enderium.name" );
 
-		new OnEnderManAnger.Context( this::cancelAnger )
-			.addCondition( data->BONUS_1.isConditionMet( this, data.player ) );
+		OnEnderManAnger.listen( this::cancelAnger )
+			.addCondition( Condition.predicate( data->BONUS_1.isConditionMet( this, data.player ) ) );
 
-		new OnLootLevel.Context( this::increaseLuck )
-			.addCondition( data->data.entity instanceof LivingEntity )
-			.addCondition( data->data.entity.level.dimension() == Level.END )
-			.addCondition( data->BONUS_2.isConditionMet( this, ( LivingEntity )data.entity ) );
+		OnLootLevel.listen( this::increaseLuck )
+			.addCondition( Condition.predicate( data->data.attacker != null ) )
+			.addCondition( Condition.predicate( data->data.getLevel().dimension() == Level.END ) )
+			.addCondition( Condition.predicate( data->BONUS_2.isConditionMet( this, data.attacker ) ) );
 
-		new OnChorusFruitTeleport.Context( this::giveRandomPotionEffect )
-			.addCondition( data->BONUS_3.isConditionMet( this, data.event.getEntityLiving() ) );
+		OnChorusFruitTeleport.listen( this::giveRandomPotionEffect )
+			.addCondition( Condition.predicate( data->BONUS_3.isConditionMet( this, data.event.getEntityLiving() ) ) );
 
-		new OnDeath.Context( this::cancelDeath )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( data->BONUS_4.isConditionMet( this, data.target ) )
-			.addCondition( data->data.target.getY() < data.target.level.getMinBuildHeight() - 64 )
-			.addCondition( data->data.source.equals( DamageSource.OUT_OF_WORLD ) )
-			.addCondition( data->data.target instanceof ServerPlayer );
+		OnDeath.listen( this::cancelDeath )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.predicate( data->BONUS_4.isConditionMet( this, data.target ) ) )
+			.addCondition( Condition.predicate( data->data.target.getY() < data.target.level.getMinBuildHeight() - 64 ) )
+			.addCondition( Condition.predicate( data->data.source.equals( DamageSource.OUT_OF_WORLD ) ) )
+			.addCondition( Condition.predicate( data->data.target instanceof ServerPlayer ) );
 	}
 
 	private void cancelAnger( OnEnderManAnger.Data data ) {

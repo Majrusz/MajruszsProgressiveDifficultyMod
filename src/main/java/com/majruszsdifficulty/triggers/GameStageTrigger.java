@@ -2,7 +2,7 @@ package com.majruszsdifficulty.triggers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;

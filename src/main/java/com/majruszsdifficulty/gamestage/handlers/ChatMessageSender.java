@@ -1,12 +1,12 @@
-package com.majruszsdifficulty.gamemodifiers.list.gamestages;
+package com.majruszsdifficulty.gamestage.handlers;
 
-import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.data.JsonListener;
 import com.mlib.data.SerializableStructure;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.Condition;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -17,18 +17,15 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 @AutoInstance
-public class ChatMessageSender extends GameModifier {
+public class ChatMessageSender {
 	final Supplier< Messages > messages;
 
 	public ChatMessageSender() {
-		super( Registries.Modifiers.DEFAULT );
-
 		this.messages = JsonListener.add( "game_stages", Registries.getLocation( "messages" ), Messages.class, Messages::new );
 
-		new OnGameStageChange.Context( this::sendMessage )
-			.addCondition( data->!data.isLoadedFromDisk() )
-			.addCondition( data->data.previous.ordinal() < data.current.ordinal() )
-			.insertTo( this );
+		OnGameStageChange.listen( this::sendMessage )
+			.addCondition( Condition.predicate( data->!data.isLoadedFromDisk() ) )
+			.addCondition( Condition.predicate( data->data.previous.ordinal() < data.current.ordinal() ) );
 	}
 
 	private void sendMessage( OnGameStageChange.Data data ) {

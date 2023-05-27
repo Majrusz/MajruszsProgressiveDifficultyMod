@@ -1,40 +1,37 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnSpawned;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Creeper;
 
 @AutoInstance
-public class CreeperSpawnCharged extends GameModifier {
+public class CreeperSpawnCharged {
 	public CreeperSpawnCharged() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT ).name( "CreeperSpawnCharged" ).comment( "Creeper may spawn charged." );
 
-		new OnSpawned.ContextSafe( this::chargeCreeper )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.125, true ) )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( new OnSpawned.IsNotLoadedFromDisk<>() )
-			.addCondition( data->data.level != null )
-			.addCondition( data->data.target instanceof Creeper )
-			.insertTo( this );
-
-		this.name( "CreeperSpawnCharged" ).comment( "Creeper may spawn charged." );
+		OnSpawned.listenSafe( this::chargeCreeper )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.125, true ) )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.excludable() )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
+			.addCondition( Condition.predicate( data->data.target instanceof Creeper ) )
+			.insertTo( group );
 	}
 
 	private void chargeCreeper( OnSpawned.Data data ) {
-		assert data.level != null;
 		Creeper creeper = ( Creeper )data.target;
-		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.level );
+		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.getServerLevel() );
 		if( lightningBolt != null ) {
-			creeper.thunderHit( data.level, lightningBolt );
+			creeper.thunderHit( data.getServerLevel(), lightningBolt );
 			creeper.clearFire();
 		}
 	}

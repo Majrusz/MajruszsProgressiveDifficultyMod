@@ -8,13 +8,12 @@ import com.mlib.Random;
 import com.mlib.entities.EntityHelper;
 import com.mlib.items.ItemHelper;
 import com.mlib.loot.LootHelper;
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +58,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	}
 
 	private void spawnMob( MobInfo mobInfo ) {
-		Vec3 position = VectorHelper.subtract( VectorHelper.vec3( mobInfo.position ), new Vec3( 0.0, 0.5, 0.0 ) );
+		Vec3 position = AnyPos.from( mobInfo.position ).sub( 0.0, 0.5, 0.0 ).vec3();
 		Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
 		if( !( entity instanceof PathfinderMob mob ) ) {
 			this.undeadArmy.mobsLeft.remove( mobInfo ); // something went wrong, mob could not spawn, and we do not want to block the Undead Army
@@ -71,6 +70,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		this.loadEquipment( mob, mobInfo );
 		this.addGoals( mob );
 		this.makePersistent( mob );
+		ExtraLootInfo.addExtraLootTag( mob );
 	}
 
 	private void generateMobList() {
@@ -115,10 +115,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		int y = 0;
 		int z = direction.x != 0 ? 24 : 8;
 
-		return VectorHelper.add(
-			new Vec3( direction.x * spawnRadius, 0, direction.z * spawnRadius ),
-			Random.getRandomVector3d( -x, x, -y, y, -z, z )
-		);
+		return AnyPos.from( direction.x * spawnRadius, 0, direction.z * spawnRadius ).add( Random.getRandomVector( -x, x, -y, y, -z, z ) ).vec3();
 	}
 
 	private void loadEquipment( PathfinderMob mob, MobInfo mobInfo ) {

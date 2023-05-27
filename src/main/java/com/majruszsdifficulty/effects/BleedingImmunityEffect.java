@@ -2,8 +2,9 @@ package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -34,16 +35,16 @@ public class BleedingImmunityEffect extends MobEffect {
 	}
 
 	@AutoInstance
-	public static class BleedingImmunity extends GameModifier {
+	public static class BleedingImmunity {
 		public BleedingImmunity() {
-			super( Registries.Modifiers.DEFAULT );
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+				.name( "BleedingImmunity" )
+				.comment( "Config for Bleeding Immunity effect." );
 
-			new OnEffectApplicable.Context( this::cancelBleeding )
-				.addCondition( new Condition.HasEffect<>( Registries.BLEEDING_IMMUNITY ) )
-				.addCondition( data->data.effect.equals( Registries.BLEEDING.get() ) )
-				.insertTo( this );
-
-			this.name( "BleedingImmunity" ).comment( "Config for Bleeding Immunity effect." );
+			OnEffectApplicable.listen( this::cancelBleeding )
+				.addCondition( Condition.hasEffect( Registries.BLEEDING_IMMUNITY, data->data.entity ) )
+				.addCondition( Condition.predicate( data->data.effect.equals( Registries.BLEEDING.get() ) ) )
+				.insertTo( group );
 		}
 
 		private void cancelBleeding( OnEffectApplicable.Data data ) {

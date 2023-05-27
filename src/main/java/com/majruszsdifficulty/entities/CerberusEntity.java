@@ -6,6 +6,8 @@ import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
+import com.mlib.config.EffectConfig;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
@@ -13,20 +15,18 @@ import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
 import com.mlib.entities.ICustomSkillProvider;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
-import com.mlib.gamemodifiers.configs.EffectConfig;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
 import com.mlib.gamemodifiers.contexts.OnEntityTick;
 import com.mlib.goals.CustomMeleeGoal;
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -37,6 +37,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.SmallFireball;
@@ -57,7 +58,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	static final String GROUP_ID = "Cerberus";
 
 	static {
-		GameModifier.addNewGroup( Registries.Modifiers.MOBS, GROUP_ID ).name( "Cerberus" );
+		ModConfigs.init( Registries.Groups.MOBS, GROUP_ID ).name( "Cerberus" );
 	}
 
 	public final Skills skills = new Skills( this );
@@ -71,7 +72,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		return Mob.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 240.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.28 )
-			.add( Attributes.ATTACK_DAMAGE, 10.0 )
+			.add( Attributes.ATTACK_DAMAGE, 8.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
 			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
@@ -102,10 +103,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		if( this.isSilent() ) {
 			return;
 		}
-		// boolean isCustomSound = sound == SoundEvents.WOLF_GROWL || sound == SoundEvents.WOLF_AMBIENT;
+
 		float randomizedVolume = SoundHandler.randomized( volume ).get();
 		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
-
 		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
@@ -178,7 +178,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 				return false;
 
 			double distance = Math.sqrt( distanceSquared );
-			if( distance < 3.5 ) {
+			if( distance < 3.5 && this.mob.canAttack( entity, TargetingConditions.DEFAULT ) ) {
 				Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
 				if( distance > 2.0 ) {
 					this.pushMobTowards( entity );
@@ -211,13 +211,16 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		}
 
 		private void pushMobTowards( LivingEntity entity ) {
-			Vec3 direction = VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( entity.position(), this.mob.position() ) ), 0.9 );
-			this.mob.push( direction.x, direction.y + 0.1, direction.z );
+			Vec3 direction = AnyPos.from( entity.position() ).sub( this.mob.position() ).norm().mul( 0.9 ).add( 0.0, 0.1, 0.0 ).vec3();
+			this.mob.push( direction.x, direction.y, direction.z );
 		}
 
 		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
 			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 2.5, entity->!entity.is( this.mob ) );
 			for( LivingEntity entity : entities ) {
+				if( !this.mob.canAttack( entity, TargetingConditions.DEFAULT ) )
+					continue;
+
 				this.mob.doHurtTarget( entity );
 				if( entity instanceof ServerPlayer player && player.isBlocking() ) {
 					player.disableShield( true );
@@ -226,20 +229,20 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		}
 
 		private Vec3 getAttackPosition( Vec3 pos1, Vec3 pos2 ) {
-			return VectorHelper.add( pos1, VectorHelper.multiply( VectorHelper.normalize( VectorHelper.subtract( pos2, pos1 ) ), 1.75 ) );
+			return AnyPos.from( pos2 ).sub( pos1 ).norm().mul( 1.75 ).add( pos1 ).vec3();
 		}
 
 		private void spawnFireballTowards( LivingEntity target ) {
-			Vec3 offset = VectorHelper.subtract( target.position(), this.mob.position() );
+			Vec3 offset = AnyPos.from( target.position() ).sub( this.mob.position() ).vec3();
 			for( double angle : new double[]{ -30.0, 0.0, 30.0 } ) {
-				Vec3 power = VectorHelper.multiply( offset, Random.getRandomVector3d( 0.8, 1.2, 0.8, 1.2, 0.8, 1.2 ) );
+				Vec3 power = AnyPos.from( offset ).mul( Random.getRandomVector( 0.8, 1.2, 0.8, 1.2, 0.8, 1.2 ) ).vec3();
 				double cos = Math.cos( Math.toRadians( angle ) ), sin = Math.sin( Math.toRadians( angle ) );
-				Vec3 normalized = VectorHelper.normalize( offset );
+				Vec3 normalized = AnyPos.from( offset ).norm().vec3();
 				normalized = new Vec3( cos * normalized.x - sin * normalized.z, normalized.y, sin * normalized.x + cos * normalized.z );
-				Vec3 spawnPosition = VectorHelper.add( VectorHelper.add( this.mob.position(), normalized ), new Vec3( 0.0, Random.nextDouble( 1.2, 1.5 ), 0.0 ) );
+				Vec3 spawnPosition = AnyPos.from( this.mob.position() ).add( normalized ).add( 0.0, Random.nextDouble( 1.2, 1.5 ), 0.0 ).vec3();
 				SmallFireball fireball = new SmallFireball( this.mob.level, this.mob, power.x, power.y, power.z );
 				fireball.setPos( spawnPosition.x, spawnPosition.y, spawnPosition.z );
-				fireball.setDeltaMovement( VectorHelper.normalize( power ).multiply( 0.25, 0.25, 0.25 ) );
+				fireball.setDeltaMovement( AnyPos.from( power ).norm().mul( 0.25 ).vec3() );
 
 				this.mob.level.addFreshEntity( fireball );
 			}
@@ -284,28 +287,29 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	@AutoInstance
-	public static class WitherAttack extends GameModifier {
+	public static class WitherAttack {
 		final EffectConfig wither = new EffectConfig( MobEffects.WITHER, 1, 10.0 );
 
 		public WitherAttack() {
-			super( GROUP_ID );
+			ConfigGroup group = ModConfigs.registerSubgroup( GROUP_ID );
 
-			new OnDamaged.Context( this::applyWither )
-				.addCondition( OnDamaged.DIRECT_DAMAGE )
-				.addCondition( data->data.attacker instanceof CerberusEntity )
+			OnDamaged.listen( this::applyWither )
+				.addCondition( OnDamaged.isDirect() )
+				.addCondition( OnDamaged.dealtAnyDamage() )
+				.addCondition( Condition.predicate( data->data.attacker instanceof CerberusEntity ) )
 				.addConfig( this.wither.name( "Wither" ) )
-				.insertTo( this );
+				.insertTo( group );
 
-			new OnEffectApplicable.Context( this::cancelEffect )
-				.addCondition( data->data.effect.equals( MobEffects.WITHER ) )
-				.addCondition( data->data.entity instanceof CerberusEntity )
-				.insertTo( this );
+			OnEffectApplicable.listen( this::cancelEffect )
+				.addCondition( Condition.predicate( data->data.effect.equals( MobEffects.WITHER ) ) )
+				.addCondition( Condition.predicate( data->data.entity instanceof CerberusEntity ) )
+				.insertTo( group );
 
-			new OnEntityTick.Context( this::spawnParticle )
-				.addCondition( new Condition.IsServer<>() )
-				.addCondition( new Condition.Cooldown< OnEntityTick.Data >( 4, Dist.DEDICATED_SERVER ).configurable( false ) )
-				.addCondition( data->data.entity instanceof CerberusEntity )
-				.insertTo( this );
+			OnEntityTick.listen( this::spawnParticle )
+				.addCondition( Condition.isServer() )
+				.addCondition( Condition.< OnEntityTick.Data > cooldown( 4, Dist.DEDICATED_SERVER ).configurable( false ) )
+				.addCondition( Condition.predicate( data->data.entity instanceof CerberusEntity ) )
+				.insertTo( group );
 		}
 
 		private void applyWither( OnDamaged.Data data ) {
@@ -317,7 +321,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		}
 
 		private void spawnParticle( OnEntityTick.Data data ) {
-			ParticleHandler.SMOKE.spawn( data.level, data.entity.position().add( 0.0, 0.75, 0.0 ), 3, ()->new Vec3( 0.25, 0.5, 0.25 ) );
+			ParticleHandler.SMOKE.spawn( data.getServerLevel(), data.entity.position().add( 0.0, 0.75, 0.0 ), 3, ()->new Vec3( 0.25, 0.5, 0.25 ) );
 		}
 	}
 

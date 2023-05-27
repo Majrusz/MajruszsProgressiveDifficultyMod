@@ -2,6 +2,7 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnFarmlandTillCheck;
 import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
 import net.minecraft.ChatFormatting;
@@ -20,12 +21,12 @@ public class EnderiumHoeItem extends HoeItem {
 		static final String ATTRIBUTE_ID = "item.majruszsdifficulty.enderium_hoe.effect";
 
 		public IncreaseTillArea() {
-			new OnFarmlandTillCheck.Context( OnFarmlandTillCheck.INCREASE_AREA )
-				.addCondition( OnFarmlandTillCheck.IS_NOT_CROUCHING )
-				.addCondition( data->data.itemStack.getItem() instanceof EnderiumHoeItem );
+			OnFarmlandTillCheck.listen( OnFarmlandTillCheck.INCREASE_AREA )
+				.addCondition( Condition.< OnFarmlandTillCheck.Data >isShiftKeyDown( data->data.player ).negate() )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof EnderiumHoeItem ) );
 
-			new OnItemAttributeTooltip.Context( this::addTooltip )
-				.addCondition( data->data.item instanceof EnderiumHoeItem );
+			OnItemAttributeTooltip.listen( this::addTooltip )
+				.addCondition( Condition.predicate( data->data.item instanceof EnderiumHoeItem ) );
 		}
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
