@@ -1,6 +1,7 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.gamemodifiers.list.IncreaseGameStage;
+import com.majruszsdifficulty.gamestage.handlers.GameStageIncreaser;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
 import com.majruszsdifficulty.undeadarmy.Config;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
@@ -15,7 +16,7 @@ public class GameDataSaver extends SavedData {
 	public GameDataSaver( ServerLevel overworld ) {
 		this.data = new Data( overworld );
 
-		GameStage.changeStage( IncreaseGameStage.getDefaultGameStage(), null );
+		GameStage.changeStage( GameStageIncreaser.getDefaultGameStage(), null );
 	}
 
 	public GameDataSaver( ServerLevel overworld, CompoundTag tag ) {

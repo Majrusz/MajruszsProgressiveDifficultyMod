@@ -4,7 +4,7 @@ import com.majruszsdifficulty.entities.TankEntity;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
 import com.mlib.animations.InterpolationType;
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -156,7 +156,7 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 	private void rotateArm( ModelPart arm, float ageInTicks, float duration, float extraRotationX ) {
 		float multiplier = arm == this.leftArm ? -1.0f : 1.0f;
 		Vector3f vectorHandMultiplier = new Vector3f( 1.0f, multiplier, multiplier );
-		Vector3f rotation = VectorHelper.add( NORMAL_ATTACK_ARM.apply( duration, ageInTicks ), new Vector3f( extraRotationX, 0.0f, 0.0f ) );
-		Animation.applyRotationInDegrees( VectorHelper.multiply( rotation, vectorHandMultiplier ), arm );
+		Vector3f rotation = AnyPos.from( NORMAL_ATTACK_ARM.apply( duration, ageInTicks ) ).add( extraRotationX, 0.0f, 0.0f ).vec3f();
+		Animation.applyRotationInDegrees( AnyPos.from( rotation ).mul( vectorHandMultiplier ).vec3f(), arm );
 	}
 }

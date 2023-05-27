@@ -1,17 +1,19 @@
 package com.majruszsdifficulty.undeadarmy;
 
-import com.majruszsdifficulty.GameStage;
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.undeadarmy.data.ExtraLootInfo;
 import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
 import com.majruszsdifficulty.undeadarmy.data.WavesDef;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
+import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.data.JsonListener;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnServerTick;
@@ -29,14 +31,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.event.TickEvent;
 
 import java.util.List;
 import java.util.function.Supplier;
 
 @AutoInstance
-public class Config extends GameModifier {
-	static ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
+public class Config {
+	static final ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
 	private final BooleanConfig availability = new BooleanConfig( true );
 	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
 	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 4.0, 30.0 ) );
@@ -44,33 +45,12 @@ public class Config extends GameModifier {
 	private final DoubleConfig extraSizePerPlayer = new DoubleConfig( 0.5, new Range<>( 0.0, 1.0 ) );
 	private final IntegerConfig armyRadius = new IntegerConfig( 70, new Range<>( 35, 140 ) );
 	private final IntegerConfig killRequirement = new IntegerConfig( 75, new Range<>( 0, 1000 ) );
+	private final IntegerConfig killRequirementFirst = new IntegerConfig( 25, new Range<>( 0, 1000 ) );
 	private final Supplier< WavesDef > wavesDef;
 
 	public Config() {
-		super( Registries.Modifiers.UNDEAD_ARMY );
-
-		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
-
-		new OnServerTick.Context( data->Registries.getUndeadArmyManager().tick() )
-			.addCondition( data->data.event.phase == TickEvent.Phase.END )
-			.insertTo( this );
-
-		new OnDeath.Context( this::updateKilledUndead )
-			.addCondition( data->this.getRequiredKills() > 0 )
-			.addCondition( data->data.target.getMobType() == MobType.UNDEAD )
-			.addCondition( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) )
-			.addCondition( data->data.attacker instanceof ServerPlayer )
-			.insertTo( this );
-
-		new OnLoot.Context( this::giveExtraLoot )
-			.addCondition( new Condition.IsServer<>() )
-			.addCondition( OnLoot.HAS_DAMAGE_SOURCE )
-			.addCondition( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) )
-			.addCondition( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD )
-			.addCondition( data->Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.entity ) )
-			.insertTo( this );
-
-		this.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.UNDEAD_ARMY )
+			.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
 			.addConfig( this.waveDuration.name( "wave_duration" ).comment( "Duration that players have to defeat a single wave (in seconds)." ) )
 			.addConfig( this.preparationDuration.name( "preparation_duration" ).comment( "Duration before the next wave arrives (in seconds)." ) )
 			.addConfig( this.highlightDelay.name( "highlight_delay" ).comment( "Duration before all mobs will be highlighted (in seconds)." ) )
@@ -78,7 +58,30 @@ public class Config extends GameModifier {
 				.comment( "Extra size ratio per each additional player on multiplayer (0.25 means ~25% bigger army per player)." ) )
 			.addConfig( this.armyRadius.name( "army_radius" ).comment( "Radius, which determines how big is the raid circle (in blocks)." ) )
 			.addConfig( this.killRequirement.name( "kill_requirement" )
-				.comment( "Required amount of killed undead to start the Undead Army. (set to 0 if you want to disable this)" ) );
+				.comment( "Required amount of killed undead to start the Undead Army. (set to 0 if you want to disable this)" ) )
+			.addConfig( this.killRequirementFirst.name( "kill_requirement_first" )
+				.comment( "Required amount of killed undead to start the first Undead Army." ) );
+
+		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
+
+		OnServerTick.listen( data->Registries.getUndeadArmyManager().tick() )
+			.addCondition( Condition.isEndPhase() )
+			.insertTo( group );
+
+		OnDeath.listen( this::updateKilledUndead )
+			.addCondition( Condition.predicate( data->this.getRequiredKills() > 0 ) )
+			.addCondition( Condition.predicate( data->data.target.getMobType() == MobType.UNDEAD ) )
+			.addCondition( Condition.predicate( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) ) )
+			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
+			.insertTo( group );
+
+		OnLoot.listen( this::giveExtraLoot )
+			.addCondition( Condition.isServer() )
+			.addCondition( OnLoot.hasDamageSource() )
+			.addCondition( Condition.predicate( data->!data.context.getQueriedLootTableId().equals( EXTRA_LOOT_ID ) ) )
+			.addCondition( Condition.predicate( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) )
+			.addCondition( Condition.predicate( data->ExtraLootInfo.hasExtraLootTag( data.entity ) ) )
+			.insertTo( group );
 	}
 
 	public boolean isEnabled() {
@@ -113,6 +116,10 @@ public class Config extends GameModifier {
 		return this.killRequirement.get();
 	}
 
+	public int getInitialKillsCount() {
+		return this.killRequirement.get() - this.killRequirementFirst.get();
+	}
+
 	public int getSpawnRadius() {
 		return this.getArmyRadius() - 15; // maybe one day add a config
 	}
@@ -134,6 +141,7 @@ public class Config extends GameModifier {
 		ServerPlayer player = ( ServerPlayer )data.attacker;
 		CompoundTag tag = player.getPersistentData();
 		UndeadArmyInfo info = new UndeadArmyInfo();
+		info.killedUndead = this.getInitialKillsCount();
 		info.read( tag );
 
 		++info.killedUndead;
@@ -154,7 +162,7 @@ public class Config extends GameModifier {
 	}
 
 	private LootContext toExtraLootContext( OnLoot.Data data ) {
-		return new LootContext.Builder( data.level )
+		return new LootContext.Builder( data.getServerLevel() )
 			.withParameter( LootContextParams.ORIGIN, data.entity.position() )
 			.withParameter( LootContextParams.THIS_ENTITY, data.entity )
 			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )

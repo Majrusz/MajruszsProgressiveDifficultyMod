@@ -1,16 +1,17 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.GameModifier;
+import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.gamemodifiers.contexts.OnExplosion;
+import com.mlib.gamemodifiers.contexts.OnExplosionDetonate;
 import com.mlib.math.Range;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,46 +21,45 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.level.ExplosionEvent;
 
 import java.util.List;
 
 @AutoInstance
-public class CreeperSplitIntoCreeperlings extends GameModifier {
+public class CreeperSplitIntoCreeperlings {
 	final GameStageIntegerConfig creeperlingsAmount = new GameStageIntegerConfig( 2, 4, 6, new Range<>( 1, 10 ) );
 
 	public CreeperSplitIntoCreeperlings() {
-		super( Registries.Modifiers.DEFAULT );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+			.name( "CreeperSplitIntoCreeperlings" )
+			.comment( "When the Creeper explode it may spawn a few Creeperlings." );
 
-		new OnExplosion.Context( this::spawnCreeperlings )
-			.addCondition( new CustomConditions.GameStage<>( GameStage.NORMAL ) )
-			.addCondition( new CustomConditions.CRDChance<>( 0.666, false ) )
-			.addCondition( new Condition.Excludable<>() )
-			.addCondition( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) )
-			.addCondition( data->data.event instanceof ExplosionEvent.Detonate )
+		OnExplosionDetonate.listen( this::spawnCreeperlings )
+			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
+			.addCondition( Condition.chanceCRD( 0.666, false ) )
+			.addCondition( Condition.excludable() )
+			.addCondition( Condition.predicate( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) ) )
 			.addConfig( this.creeperlingsAmount.name( "MaxCreeperlings" ).comment( "Maximum amount of Creeperlings to spawn." ) )
-			.insertTo( this );
+			.insertTo( group );
 
-		new OnExplosion.Context( this::giveAdvancement )
-			.addCondition( data->data.explosion.getExploder() instanceof CreeperlingEntity && data.level != null )
-			.insertTo( this );
+		OnExplosionDetonate.listen( this::giveAdvancement )
+			.addCondition( Condition.isServer() )
+			.addCondition( Condition.predicate( data->data.explosion.getExploder() instanceof CreeperlingEntity ) )
+			.insertTo( group );
 
-		new OnDeath.Context( this::giveAdvancement )
-			.addCondition( data->data.attacker instanceof ServerPlayer )
-			.addCondition( data->data.target instanceof CreeperlingEntity )
-			.insertTo( this );
-
-		this.name( "CreeperSplitIntoCreeperlings" ).comment( "When the Creeper explode it may spawn a few Creeperlings." );
+		OnDeath.listen( this::giveAdvancement )
+			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
+			.addCondition( Condition.predicate( data->data.target instanceof CreeperlingEntity ) )
+			.insertTo( group );
 	}
 
-	private void spawnCreeperlings( OnExplosion.Data data ) {
+	private void spawnCreeperlings( OnExplosionDetonate.Data data ) {
 		Creeper creeper = ( Creeper )data.explosion.getExploder();
-		ServerLevel level = data.level;
+		ServerLevel level = data.getServerLevel();
 		int creeperlingsAmount = Random.nextInt( 1, this.creeperlingsAmount.getCurrentGameStageValue() + 1 );
 
 		assert creeper != null && level != null;
 		for( int i = 0; i < creeperlingsAmount; ++i ) {
-			BlockPos position = creeper.blockPosition().offset( Random.getRandomVector3i( -2, 2, -1, 1, -2, 2 ) );
+			BlockPos position = creeper.blockPosition().offset( Random.getRandomVector( -2, 2, -1, 1, -2, 2 ).vec3i() );
 			CreeperlingEntity creeperling = Registries.CREEPERLING.get()
 				.spawn( level, ( CompoundTag )null, null, position, MobSpawnType.SPAWNER, true, true );
 			if( creeperling != null )
@@ -67,11 +67,11 @@ public class CreeperSplitIntoCreeperlings extends GameModifier {
 		}
 	}
 
-	private void giveAdvancement( OnExplosion.Data data ) {
-		assert data.level != null;
+	private void giveAdvancement( OnExplosionDetonate.Data data ) {
+		ServerLevel level = data.getServerLevel();
 		Vec3 position = data.event.getExplosion().getPosition();
 		Vec3 offset = new Vec3( 10.0, 6.0, 10.0 );
-		List< ServerPlayer > nearbyPlayers = data.level.getEntitiesOfClass( ServerPlayer.class, new AABB( position.subtract( offset ), position.add( offset ) ) );
+		List< ServerPlayer > nearbyPlayers = level.getEntitiesOfClass( ServerPlayer.class, new AABB( position.subtract( offset ), position.add( offset ) ) );
 		nearbyPlayers.forEach( this::giveAdvancement );
 	}
 

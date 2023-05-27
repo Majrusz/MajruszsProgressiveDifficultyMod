@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.undeadarmy.data;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.data.SerializableStructure;
 
 import java.util.ArrayList;

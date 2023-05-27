@@ -4,7 +4,7 @@ import com.majruszsdifficulty.entities.CerberusEntity;
 import com.mlib.animations.Animation;
 import com.mlib.animations.Frame;
 import com.mlib.animations.InterpolationType;
-import com.mlib.math.VectorHelper;
+import com.mlib.math.AnyPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -302,7 +302,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		// movement anims
 		if( cerberus.hasTarget ) {
 			// gallop anims
-			float swingRatio = ( limbSwing * 0.15f ) % 1.0f;
+			float swingRatio = ( limbSwing * 0.175f ) % 1.0f;
 			this.frontThigh1.xRot = ( float )Math.toRadians( 30.0f ) - GALLOP_FRONT_LEG_1_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			this.frontThigh2.xRot = ( float )Math.toRadians( 30.0f ) - GALLOP_FRONT_LEG_2_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
 			this.hindThigh1.xRot = ( float )Math.toRadians( -20.0f ) - GALLOP_HIND_LEG_1_ROTATION_X.apply( swingRatio, ageInTicks ) * limbSwingAmount;
@@ -342,6 +342,6 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 	private float getPlayerDistance( Type cerberus ) {
 		LocalPlayer player = Minecraft.getInstance().player;
 
-		return player != null && !player.isSpectator() ? ( float )VectorHelper.distance( player.position(), cerberus.position() ) : Float.MAX_VALUE;
+		return player != null && !player.isSpectator() ? AnyPos.from( player.position() ).dist( cerberus.position() ).floatValue() : Float.MAX_VALUE;
 	}
 }

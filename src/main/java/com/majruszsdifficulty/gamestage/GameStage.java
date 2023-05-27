@@ -1,16 +1,10 @@
-package com.majruszsdifficulty;
+package com.majruszsdifficulty.gamestage;
 
 import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
-import com.mlib.levels.LevelHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public enum GameStage {
@@ -34,7 +28,7 @@ public enum GameStage {
 			GameStage previous = CURRENT;
 			CURRENT = stage;
 
-			OnGameStageChange.accept( new OnGameStageChange.Data( server, previous, CURRENT ) );
+			OnGameStageChange.dispatch( server, previous, CURRENT );
 			return true;
 		}
 
@@ -71,23 +65,6 @@ public enum GameStage {
 
 	public static MutableComponent getGameStageText( GameStage stage ) {
 		return Component.translatable( "majruszsdifficulty.stages." + stage.name().toLowerCase() ).withStyle( stage.formatting );
-	}
-
-	public static double getRegionalDifficulty( Entity target ) {
-		double clampedRegionalDifficulty = target != null ? LevelHelper.getClampedRegionalDifficulty( target ) : 0.25;
-
-		return Mth.clamp( clampedRegionalDifficulty + getStageModifier(), 0.0, 1.0 );
-	}
-
-	// TODO: replace with mixin
-	public static double getRegionalDifficulty( Level level, Vec3 position ) {
-		double clampedRegionalDifficulty = LevelHelper.getClampedRegionalDifficulty( level, position );
-
-		return Mth.clamp( clampedRegionalDifficulty + getStageModifier(), 0.0, 1.0 );
-	}
-
-	public static double getStageModifier() {
-		return getCurrentGameStageDependentValue( 0.0, 0.15, 0.3 );
 	}
 
 	public record Integer( int normal, int expert, int master ) {

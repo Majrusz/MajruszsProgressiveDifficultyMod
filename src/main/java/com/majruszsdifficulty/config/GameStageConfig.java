@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.config;
 
-import com.majruszsdifficulty.GameStage;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.ValueConfig;
 
