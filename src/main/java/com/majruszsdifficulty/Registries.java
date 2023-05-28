@@ -14,6 +14,7 @@ import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+import com.majruszsdifficulty.world.WorldGenHelper;
 import com.mlib.Utility;
 import com.mlib.annotations.AnnotationHandler;
 import com.mlib.items.CreativeModeTabHelper;
@@ -23,6 +24,7 @@ import com.mlib.triggers.BasicTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
@@ -47,6 +49,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
@@ -92,6 +96,8 @@ public class Registries {
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
 	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( LOOT_FUNCTION_REGISTRY );
 	static final DeferredRegister< Potion > POTIONS = HELPER.create( ForgeRegistries.Keys.POTIONS );
+	static final DeferredRegister< PlacedFeature > PLACED_FEATURES = HELPER.create( Registry.PLACED_FEATURE_REGISTRY );
+	static final DeferredRegister< ConfiguredFeature< ?, ? > > CONFIGURED_FEATURES = HELPER.create( Registry.CONFIGURED_FEATURE_REGISTRY );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -204,6 +210,16 @@ public class Registries {
 
 	// Game Modifiers
 	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
+
+	// Configured Feature
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_SMALL_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_small", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 2, 0.99f ) );
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > ENDERIUM_ORE_LARGE_CONFIGURED = CONFIGURED_FEATURES.register( "enderium_ore_large", ()->WorldGenHelper.getEndConfigured( ENDERIUM_SHARD_ORE, 3, 0.99f ) );
+	public static final RegistryObject< ConfiguredFeature< ?, ? > > INFESTED_END_STONE_CONFIGURED = CONFIGURED_FEATURES.register( "infested_end_stone", ()->WorldGenHelper.getEndConfigured( INFESTED_END_STONE, 4, 0.0f ) );
+
+	// Placed Feature
+	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_SMALL_PLACED = PLACED_FEATURES.register( "enderium_ore_small_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_SMALL_CONFIGURED, 16 ) );
+	public static final RegistryObject< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = PLACED_FEATURES.register( "enderium_ore_large_placed", ()->WorldGenHelper.getEndPlaced( ENDERIUM_ORE_LARGE_CONFIGURED, 8 ) );
+	public static final RegistryObject< PlacedFeature > INFESTED_END_STONE_PLACED = PLACED_FEATURES.register( "infested_end_stone_placed", ()->WorldGenHelper.getEndPlaced( INFESTED_END_STONE_CONFIGURED, 128 ) );
 
 	public static UndeadArmyManager getUndeadArmyManager() {
 		return GAME_DATA_SAVER != null ? GAME_DATA_SAVER.getUndeadArmyManager() : UndeadArmyManager.NOT_LOADED;

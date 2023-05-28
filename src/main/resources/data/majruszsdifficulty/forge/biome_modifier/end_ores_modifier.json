@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_end",
-  "features": ["majruszsdifficulty:enderium_ore_small_placed", "majruszsdifficulty:enderium_ore_large_placed", "majruszsdifficulty:infested_end_stone_placed"],
-  "step": "underground_ores"
-}
