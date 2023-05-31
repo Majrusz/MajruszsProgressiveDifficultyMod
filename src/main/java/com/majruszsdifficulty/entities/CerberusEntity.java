@@ -119,6 +119,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			this.hasTarget = hasTarget;
 			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new TargetMessage( this ) );
 		}
+		if( this.isSunBurnTick() ) {
+			this.setSecondsOnFire( 8 );
+		}
 	}
 
 	@Override

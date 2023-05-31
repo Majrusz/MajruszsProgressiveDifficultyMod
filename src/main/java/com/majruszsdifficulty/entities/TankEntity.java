@@ -131,6 +131,9 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		super.tick();
 
 		this.skills.tick();
+		if( this.isSunBurnTick() ) {
+			this.setSecondsOnFire( 8 );
+		}
 	}
 
 	public static class Skills extends CustomSkills< SkillType > {
