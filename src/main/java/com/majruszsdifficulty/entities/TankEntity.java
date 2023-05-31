@@ -162,7 +162,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 				this.start( Random.tryChance( 0.5 ) ? SkillType.STANDARD_LEFT_ATTACK : SkillType.STANDARD_RIGHT_ATTACK, Utility.secondsToTicks( 0.6 ) )
 					.onRatio( 0.45f, ()->{
 						if( Math.sqrt( this.mob.distanceTo( entity ) ) < 2.5 ) {
-							this.hitEntity( entity );
+							this.tryToHitEntity( entity );
 							this.playHitSound();
 						}
 					} );
@@ -208,7 +208,11 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 			return Optional.empty();
 		}
 
-		private void hitEntity( LivingEntity entity ) {
+		private void tryToHitEntity( LivingEntity entity ) {
+			if( !this.mob.canAttack( entity, TargetingConditions.DEFAULT ) ) {
+				return;
+			}
+
 			this.mob.doHurtTarget( entity );
 		}
 
