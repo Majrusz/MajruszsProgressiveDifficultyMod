@@ -58,7 +58,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	}
 
 	private void spawnMob( MobInfo mobInfo ) {
-		Vec3 position = AnyPos.from( mobInfo.position ).sub( 0.0, 0.5, 0.0 ).vec3();
+		Vec3 position = AnyPos.from( mobInfo.position ).add( 0.0, 0.25, 0.0 ).vec3();
 		Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
 		if( !( entity instanceof PathfinderMob mob ) ) {
 			this.undeadArmy.mobsLeft.remove( mobInfo ); // something went wrong, mob could not spawn, and we do not want to block the Undead Army
