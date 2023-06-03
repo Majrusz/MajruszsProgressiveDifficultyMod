@@ -67,7 +67,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 
 		mobInfo.uuid = mob.getUUID();
 		this.updateWaveHealth( mobInfo );
-		this.loadEquipment( mob, mobInfo );
+		this.tryToLoadEquipment( mob, mobInfo );
 		this.addGoals( mob );
 		this.makePersistent( mob );
 		ExtraLootInfo.addExtraLootTag( mob );
@@ -118,7 +118,11 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		return AnyPos.from( direction.x * spawnRadius, 0, direction.z * spawnRadius ).add( Random.getRandomVector( -x, x, -y, y, -z, z ) ).vec3();
 	}
 
-	private void loadEquipment( PathfinderMob mob, MobInfo mobInfo ) {
+	private void tryToLoadEquipment( PathfinderMob mob, MobInfo mobInfo ) {
+		if( mobInfo.equipment == null ) {
+			return;
+		}
+
 		LootHelper.getLootTable( mobInfo.equipment )
 			.getRandomItems( LootHelper.toGiftContext( mob ) )
 			.forEach( itemStack->ItemHelper.equip( mob, itemStack ) );
