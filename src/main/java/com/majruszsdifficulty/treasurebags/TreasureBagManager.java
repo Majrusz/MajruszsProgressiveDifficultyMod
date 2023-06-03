@@ -5,6 +5,7 @@ import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
+import com.mlib.data.SerializableStructure;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
@@ -15,10 +16,13 @@ import com.mlib.items.ItemHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -30,8 +34,6 @@ import java.util.UUID;
 public class TreasureBagManager {
 	static final String PARTICIPANT_LIST_TAG = "TreasureBagPlayersToReward";
 	static final String PLAYER_TAG = "TreasureBagPlayerUUID";
-	static final String FISHING_TAG = "TreasureBagFishingCounter";
-	static final String RAID_TAG = "TreasureBagLastPillagerRaidID";
 	static final List< Register > REGISTERS = new ArrayList<>();
 
 	public static void addTreasureBagTo( EntityType< ? > entityType, TreasureBagItem treasureBag ) {
@@ -78,33 +80,39 @@ public class TreasureBagManager {
 				return treasureBag != null && treasureBag.isEnabled();
 			} ) ).insertTo( group );
 
-		/*OnItemFished.listen( this::giveTreasureBagToAngler )
+		OnItemFished.listen( this::giveTreasureBagToAngler )
 			.addCondition( Condition.isServer() )
 			.addCondition( Condition.predicate( data->{
-				int requiredFishCount = TreasureBagItem.Fishing.REQUIRED_FISH_COUNT.getCurrentGameStageValue();
-				NBTHelper.IntegerData fishedItems = new NBTHelper.IntegerData( data.player, FISHING_TAG );
-				fishedItems.set( x->( x + 1 ) % requiredFishCount );
+				CompoundTag tag = data.player.getPersistentData();
+				FishingData fishingData = new FishingData();
+				fishingData.read( tag );
+				fishingData.fishedItems = ( fishingData.fishedItems + 1 ) % TreasureBagItem.Fishing.REQUIRED_FISH_COUNT.getCurrentGameStageValue();
+				fishingData.write( tag );
 
-				return fishedItems.get() == 0;
+				return fishingData.fishedItems == 0;
 			} ) ).addCondition( Condition.predicate( data->TreasureBagItem.Fishing.CONFIG.isEnabled() ) )
 			.insertTo( group );
 
 		OnPlayerTick.listen( this::giveTreasureBagToHero )
 			.addCondition( Condition.isServer() )
-			.addCondition( Condition.predicate( data->TimeHelper.hasServerTicksPassed( 20 ) ) )
+			.addCondition( Condition.< OnPlayerTick.Data > cooldown( 20, Dist.DEDICATED_SERVER ).configurable( false ) )
 			.addCondition( Condition.predicate( data->{
-				assert data.level != null;
-				Raid raid = data.level.getRaidAt( data.player.blockPosition() );
-				if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) )
+				Raid raid = data.getServerLevel().getRaidAt( data.player.blockPosition() );
+				if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) ) {
 					return false;
+				}
 
-				NBTHelper.IntegerData lastRaidId = new NBTHelper.IntegerData( data.player, RAID_TAG );
-				if( lastRaidId.get() == raid.getId() )
+				CompoundTag tag = data.player.getPersistentData();
+				RaidData raidData = new RaidData();
+				raidData.read( tag );
+				if( raidData.raidId == raid.getId() ) {
 					return false;
+				}
 
-				lastRaidId.set( raid.getId() );
+				raidData.raidId = raid.getId();
+				raidData.write( tag );
 				return true;
-			} ) ).insertTo( group );*/
+			} ) ).insertTo( group );
 	}
 
 	private void addPlayerToParticipantList( OnDamaged.Data damagedData ) {
@@ -164,6 +172,22 @@ public class TreasureBagManager {
 
 	private void giveTreasureBagToHero( OnPlayerTick.Data tickData ) {
 		giveTreasureBagTo( tickData.player, Registries.PILLAGER_TREASURE_BAG.get(), tickData.getServerLevel() );
+	}
+
+	static class FishingData extends SerializableStructure {
+		int fishedItems = 0;
+
+		public FishingData() {
+			this.define( "TreasureBagFishingCounter", ()->this.fishedItems, x->this.fishedItems = x );
+		}
+	}
+
+	static class RaidData extends SerializableStructure {
+		int raidId = -1;
+
+		public RaidData() {
+			this.define( "TreasureBagLastPillagerRaidID", ()->this.raidId, x->this.raidId = x );
+		}
 	}
 
 	record Register( EntityType< ? > entityType, TreasureBagItem treasureBag ) {}

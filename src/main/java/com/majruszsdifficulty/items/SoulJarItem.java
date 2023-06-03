@@ -137,12 +137,12 @@ public class SoulJarItem extends Item {
 			final AttributeHandler LUCK_ATTRIBUTE = new AttributeHandler( "a2a496f4-3799-46eb-856c-1ba992f67912", "SoulJarLuckBonus", Attributes.LUCK, AttributeModifier.Operation.ADDITION );
 			final AttributeHandler SWIM_ATTRIBUTE = new AttributeHandler( "f404c216-a758-404f-ba95-5a53d3974b44", "SoulJarSwimmingBonus", ForgeMod.SWIM_SPEED.get(), AttributeModifier.Operation.MULTIPLY_TOTAL );
 
-			MOVE_ATTRIBUTE.apply( entity ).setValue( multiplier * moveBonus );
-			ARMOR_ATTRIBUTE.apply( entity ).setValue( multiplier * armorBonus );
-			REACH_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
-			RANGE_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
-			LUCK_ATTRIBUTE.apply( entity ).setValue( multiplier * luckBonus );
-			SWIM_ATTRIBUTE.apply( entity ).setValue( multiplier * swimBonus );
+			MOVE_ATTRIBUTE.setValue( multiplier * moveBonus ).apply( entity );
+			ARMOR_ATTRIBUTE.setValue( multiplier * armorBonus ).apply( entity );
+			REACH_ATTRIBUTE.setValue( multiplier * rangeBonus ).apply( entity );
+			RANGE_ATTRIBUTE.setValue( multiplier * rangeBonus ).apply( entity );
+			LUCK_ATTRIBUTE.setValue( multiplier * luckBonus ).apply( entity );
+			SWIM_ATTRIBUTE.setValue( multiplier * swimBonus ).apply( entity );
 		}
 
 		private void increaseDamage( OnPreDamaged.Data data ) {
