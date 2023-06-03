@@ -15,7 +15,7 @@ public class CreeperChainReaction {
 	public CreeperChainReaction() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
 			.name( "CreeperChainReaction" )
-			.comment( "Makes a Creeper ignite once any other Creeper explode nearby." );
+			.comment( "Makes a Creeper ignite when any other Creeper explodes nearby." );
 
 		OnDamaged.listen( this::igniteCreeper )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )

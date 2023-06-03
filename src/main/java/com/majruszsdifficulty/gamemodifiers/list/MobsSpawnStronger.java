@@ -53,8 +53,8 @@ public class MobsSpawnStronger {
 		LivingEntity entity = data.target;
 		double nightMultiplier = data.getServerLevel().isNight() ? this.nightMultiplier.get() : 1.0;
 
-		MAX_HEALTH_ATTRIBUTE.apply( entity ).setValue( this.healthBonus.getCurrentGameStageValue() * nightMultiplier );
-		DAMAGE_ATTRIBUTE.apply( entity ).setValue( this.damageBonus.getCurrentGameStageValue() * nightMultiplier );
+		MAX_HEALTH_ATTRIBUTE.setValue( this.healthBonus.getCurrentGameStageValue() * nightMultiplier ).apply( entity );
+		DAMAGE_ATTRIBUTE.setValue( this.damageBonus.getCurrentGameStageValue() * nightMultiplier ).apply( entity );
 		entity.setHealth( entity.getMaxHealth() );
 	}
 

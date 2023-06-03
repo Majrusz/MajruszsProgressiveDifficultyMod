@@ -58,7 +58,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 	}
 
 	private void spawnMob( MobInfo mobInfo ) {
-		Vec3 position = AnyPos.from( mobInfo.position ).sub( 0.0, 0.5, 0.0 ).vec3();
+		Vec3 position = AnyPos.from( mobInfo.position ).add( 0.0, 0.25, 0.0 ).vec3();
 		Entity entity = EntityHelper.spawn( mobInfo.type, this.undeadArmy.level, position );
 		if( !( entity instanceof PathfinderMob mob ) ) {
 			this.undeadArmy.mobsLeft.remove( mobInfo ); // something went wrong, mob could not spawn, and we do not want to block the Undead Army
@@ -67,7 +67,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 
 		mobInfo.uuid = mob.getUUID();
 		this.updateWaveHealth( mobInfo );
-		this.loadEquipment( mob, mobInfo );
+		this.tryToLoadEquipment( mob, mobInfo );
 		this.addGoals( mob );
 		this.makePersistent( mob );
 		ExtraLootInfo.addExtraLootTag( mob );
@@ -118,7 +118,11 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		return AnyPos.from( direction.x * spawnRadius, 0, direction.z * spawnRadius ).add( Random.getRandomVector( -x, x, -y, y, -z, z ) ).vec3();
 	}
 
-	private void loadEquipment( PathfinderMob mob, MobInfo mobInfo ) {
+	private void tryToLoadEquipment( PathfinderMob mob, MobInfo mobInfo ) {
+		if( mobInfo.equipment == null ) {
+			return;
+		}
+
 		LootHelper.getLootTable( mobInfo.equipment )
 			.getRandomItems( LootHelper.toGiftContext( mob ) )
 			.forEach( itemStack->ItemHelper.equip( mob, itemStack ) );
