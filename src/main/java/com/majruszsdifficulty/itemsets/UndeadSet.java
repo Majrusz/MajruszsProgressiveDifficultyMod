@@ -62,7 +62,7 @@ public class UndeadSet extends ItemSet {
 	private void updateArmorBonus( OnItemEquipped.Data data ) {
 		int armorBonus = BONUS_3.isConditionMet( this, data.entity ) ? EXTRA_ARMOR : 0;
 
-		ARMOR_ATTRIBUTE.apply( data.entity ).setValue( armorBonus );
+		ARMOR_ATTRIBUTE.setValue( armorBonus ).apply( data.entity );
 	}
 
 	private void increaseMultiplier( OnSoulJarMultiplier.Data data ) {

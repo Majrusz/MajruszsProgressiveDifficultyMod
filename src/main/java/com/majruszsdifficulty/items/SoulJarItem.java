@@ -134,12 +134,12 @@ public class SoulJarItem extends Item {
 			float luckBonus = hasBonus( data.entity, BonusType.LUCK ) ? LUCK_BONUS : 0.0f;
 			float swimBonus = hasBonus( data.entity, BonusType.SWIM ) ? SWIM_BONUS : 0.0f;
 
-			MOVE_ATTRIBUTE.apply( entity ).setValue( multiplier * moveBonus );
-			ARMOR_ATTRIBUTE.apply( entity ).setValue( multiplier * armorBonus );
-			REACH_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
-			RANGE_ATTRIBUTE.apply( entity ).setValue( multiplier * rangeBonus );
-			LUCK_ATTRIBUTE.apply( entity ).setValue( multiplier * luckBonus );
-			SWIM_ATTRIBUTE.apply( entity ).setValue( multiplier * swimBonus );
+			MOVE_ATTRIBUTE.setValue( multiplier * moveBonus ).apply( entity );
+			ARMOR_ATTRIBUTE.setValue( multiplier * armorBonus ).apply( entity );
+			REACH_ATTRIBUTE.setValue( multiplier * rangeBonus ).apply( entity );
+			RANGE_ATTRIBUTE.setValue( multiplier * rangeBonus ).apply( entity );
+			LUCK_ATTRIBUTE.setValue( multiplier * luckBonus ).apply( entity );
+			SWIM_ATTRIBUTE.setValue( multiplier * swimBonus ).apply( entity );
 		}
 
 		private void increaseDamage( OnPreDamaged.Data data ) {
