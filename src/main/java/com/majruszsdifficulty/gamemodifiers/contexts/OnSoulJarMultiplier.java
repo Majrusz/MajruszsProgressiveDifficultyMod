@@ -35,7 +35,7 @@ public class OnSoulJarMultiplier {
 
 		@Override
 		public Level getLevel() {
-			return this.entity.getLevel();
+			return this.entity != null ? this.entity.getLevel() : null;
 		}
 	}
 }
