@@ -46,6 +46,7 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.INFESTED_END_STONE_ITEM.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD_ORE_ITEM.get() ),
 			new ItemStack( Registries.ENDERIUM_BLOCK_ITEM.get() ),
+			new ItemStack( Registries.ENDERIUM_SMITHING_TEMPLATE.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD.get() ),
 			new ItemStack( Registries.ENDERIUM_INGOT.get() ),
 			new ItemStack( Registries.ENDERIUM_HELMET.get() ),

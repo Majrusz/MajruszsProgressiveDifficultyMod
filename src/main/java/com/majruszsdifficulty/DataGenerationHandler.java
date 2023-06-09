@@ -9,6 +9,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -28,12 +29,16 @@ public class DataGenerationHandler {
 	@SubscribeEvent
 	public static void onGatherData( GatherDataEvent event ) {
 		DataGenerator generator = event.getGenerator();
-		CompletableFuture< HolderLookup.Provider > provider = event.getLookupProvider();
+		CompletableFuture< HolderLookup.Provider > lookupProvider = event.getLookupProvider();
 		ExistingFileHelper helper = event.getExistingFileHelper();
 		PackOutput output = generator.getPackOutput();
+		BlockTagsProvider blockTagsProvider = new BlockTagsProvider( output, lookupProvider, MajruszsDifficulty.MOD_ID, helper ) {
+			@Override
+			protected void addTags( HolderLookup.Provider provider ) {}
+		};
 
-		generator.addProvider( event.includeServer(), new DatapackBuiltinEntriesProvider( output, provider, BUILDER, Set.of( MajruszsDifficulty.MOD_ID ) ) );
-		generator.addProvider( event.includeServer(), new BleedingEffect.TagsProvider( output, provider.thenApply( DataGenerationHandler::append ), helper ) );
+		generator.addProvider( event.includeServer(), new DatapackBuiltinEntriesProvider( output, lookupProvider, BUILDER, Set.of( MajruszsDifficulty.MOD_ID ) ) );
+		generator.addProvider( event.includeServer(), new BleedingEffect.TagsProvider( output, lookupProvider.thenApply( DataGenerationHandler::append ), helper ) );
 	}
 
 	private static HolderLookup.Provider append( HolderLookup.Provider provider ) {
