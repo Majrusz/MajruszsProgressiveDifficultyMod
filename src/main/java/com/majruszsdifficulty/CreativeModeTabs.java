@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 public class CreativeModeTabs {
 	public static Supplier< CreativeModeTab > primary() {
 		return ()->CreativeModeTab.builder()
+			.withTabsBefore( net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS )
 			.title( Component.translatable( "itemGroup.majruszsdifficulty.primary" ) )
 			.icon( ()->new ItemStack( Registries.BATTLE_STANDARD.get() ) )
 			.displayItems( CreativeModeTabs::definePrimaryItems )
@@ -24,6 +25,7 @@ public class CreativeModeTabs {
 
 	public static Supplier< CreativeModeTab > treasureBags() {
 		return ()->CreativeModeTab.builder()
+			.withTabsBefore( Registries.PRIMARY_TAB.getId() )
 			.title( Component.translatable( "itemGroup.majruszsdifficulty.treasure_bags" ) )
 			.displayItems( CreativeModeTabs::defineTreasureBagItems )
 			.withTabFactory( TreasureBag::new )
