@@ -11,8 +11,8 @@ import net.minecraft.world.item.Rarity;
 import javax.annotation.Nullable;
 
 public class EnderiumArmorItem extends ArmorItem {
-	public EnderiumArmorItem( EquipmentSlot slot ) {
-		super( CustomArmorMaterial.END, slot, new Item.Properties()
+	public EnderiumArmorItem( ArmorItem.Type type ) {
+		super( CustomArmorMaterial.END, type, new Item.Properties()
 			.rarity( Rarity.UNCOMMON )
 			.fireResistant() );
 	}
@@ -25,25 +25,25 @@ public class EnderiumArmorItem extends ArmorItem {
 
 	public static class Boots extends EnderiumArmorItem {
 		public Boots() {
-			super( EquipmentSlot.FEET );
+			super( Type.BOOTS );
 		}
 	}
 
 	public static class Chestplate extends EnderiumArmorItem {
 		public Chestplate() {
-			super( EquipmentSlot.CHEST );
+			super( Type.CHESTPLATE );
 		}
 	}
 
 	public static class Helmet extends EnderiumArmorItem {
 		public Helmet() {
-			super( EquipmentSlot.HEAD );
+			super( Type.HELMET );
 		}
 	}
 
 	public static class Leggings extends EnderiumArmorItem {
 		public Leggings() {
-			super( EquipmentSlot.LEGS );
+			super( Type.LEGGINGS );
 		}
 	}
 }

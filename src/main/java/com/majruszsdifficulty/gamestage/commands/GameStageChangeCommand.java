@@ -20,7 +20,7 @@ public class GameStageChangeCommand extends Command {
 		GameStage gameStage = this.getEnumeration( data, GameStage.class );
 		boolean hasGameStageChanged = GameStage.changeStage( gameStage, data.source.getServer() );
 		String textId = String.format( "commands.gamestage.%s", hasGameStageChanged ? "changed" : "cannot_change" );
-		data.source.sendSuccess( Component.translatable( textId, GameStage.getGameStageText( GameStage.getCurrentStage() ) ), true );
+		data.source.sendSuccess( ()->Component.translatable( textId, GameStage.getGameStageText( GameStage.getCurrentStage() ) ), true );
 
 		return gameStage.ordinal();
 	}

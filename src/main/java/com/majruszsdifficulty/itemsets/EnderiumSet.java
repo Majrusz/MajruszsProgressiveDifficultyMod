@@ -21,11 +21,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
@@ -69,8 +68,8 @@ public class EnderiumSet extends ItemSet {
 		OnDeath.listen( this::cancelDeath )
 			.addCondition( Condition.isServer() )
 			.addCondition( Condition.predicate( data->BONUS_4.isConditionMet( this, data.target ) ) )
-			.addCondition( Condition.predicate( data->data.target.getY() < data.target.level.getMinBuildHeight() - 64 ) )
-			.addCondition( Condition.predicate( data->data.source.equals( DamageSource.OUT_OF_WORLD ) ) )
+			.addCondition( Condition.predicate( data->data.target.getY() < data.target.level().getMinBuildHeight() - 64 ) )
+			.addCondition( Condition.predicate( data->data.source.is( DamageTypes.FELL_OUT_OF_WORLD ) ) )
 			.addCondition( Condition.predicate( data->data.target instanceof ServerPlayer ) );
 	}
 
@@ -95,7 +94,7 @@ public class EnderiumSet extends ItemSet {
 		EntityHelper.cheatDeath( data.target, 1.0f, false );
 		data.target.setDeltaMovement( 0.0, 0.2, 0.0 );
 		LevelHelper.teleportToSpawnPosition( ( ServerPlayer )data.target );
-		Time.slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level, data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
+		Time.slider( 3.0, slider->ParticleHandler.PORTAL.spawn( ( ServerLevel )data.target.level(), data.target.position(), ( int )Math.ceil( slider.getRatioLeft() * 5 ) ) );
 		data.event.setCanceled( true );
 	}
 }

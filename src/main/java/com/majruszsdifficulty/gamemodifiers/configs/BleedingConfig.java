@@ -7,6 +7,7 @@ import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
@@ -33,7 +34,7 @@ public class BleedingConfig extends ProgressiveEffectConfig {
 
 		if( target instanceof ServerPlayer targetPlayer ) {
 			Registries.BASIC_TRIGGER.trigger( targetPlayer, "bleeding_received" );
-			if( data.source.equals( DamageSource.CACTUS ) ) {
+			if( data.source.is( DamageTypes.CACTUS ) ) {
 				Registries.BASIC_TRIGGER.trigger( targetPlayer, "cactus_bleeding" );
 			}
 		}

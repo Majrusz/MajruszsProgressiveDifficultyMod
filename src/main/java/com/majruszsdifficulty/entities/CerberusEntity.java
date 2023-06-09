@@ -106,7 +106,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		float randomizedVolume = SoundHandler.randomized( volume ).get();
 		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
-		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
+		this.level().playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
 	@Override
@@ -115,9 +115,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		this.skills.tick();
 		boolean hasTarget = this.getTarget() != null;
-		if( hasTarget != this.hasTarget && !this.level.isClientSide ) {
+		if( hasTarget != this.hasTarget && !this.level().isClientSide ) {
 			this.hasTarget = hasTarget;
-			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new TargetMessage( this ) );
+			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level().dimension() ), new TargetMessage( this ) );
 		}
 		if( this.isSunBurnTick() ) {
 			this.setSecondsOnFire( 8 );
@@ -177,7 +177,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		@Override
 		public boolean tryToStart( LivingEntity entity, double distanceSquared ) {
-			if( !( this.mob.level instanceof ServerLevel level ) )
+			if( !( this.mob.level() instanceof ServerLevel level ) )
 				return false;
 
 			double distance = Math.sqrt( distanceSquared );
@@ -243,14 +243,14 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 				Vec3 normalized = AnyPos.from( offset ).norm().vec3();
 				normalized = new Vec3( cos * normalized.x - sin * normalized.z, normalized.y, sin * normalized.x + cos * normalized.z );
 				Vec3 spawnPosition = AnyPos.from( this.mob.position() ).add( normalized ).add( 0.0, Random.nextDouble( 1.2, 1.5 ), 0.0 ).vec3();
-				SmallFireball fireball = new SmallFireball( this.mob.level, this.mob, power.x, power.y, power.z );
+				SmallFireball fireball = new SmallFireball( this.mob.level(), this.mob, power.x, power.y, power.z );
 				fireball.setPos( spawnPosition.x, spawnPosition.y, spawnPosition.z );
 				fireball.setDeltaMovement( AnyPos.from( power ).norm().mul( 0.25 ).vec3() );
 
-				this.mob.level.addFreshEntity( fireball );
+				this.mob.level().addFreshEntity( fireball );
 			}
 
-			SoundHandler.SMELT.play( this.mob.level, this.mob.position() );
+			SoundHandler.SMELT.play( this.mob.level(), this.mob.position() );
 		}
 	}
 

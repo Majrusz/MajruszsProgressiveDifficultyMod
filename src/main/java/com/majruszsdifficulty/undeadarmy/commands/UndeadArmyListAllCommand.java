@@ -33,11 +33,11 @@ public class UndeadArmyListAllCommand extends Command {
 				component.append( Component.translatable( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( Math.max( undeadArmy.currentWave, 1 ) ) ) );
 				component.append( String.format( " (%s)", undeadArmy.positionToAttack.toShortString() ) );
 			} );
-			data.source.sendSuccess( component, true );
+			data.source.sendSuccess( ()->component, true );
 			return 0;
 		}
 
-		data.source.sendSuccess( Component.translatable( "commands.undeadarmy.list_empty" ), true );
+		data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.list_empty" ), true );
 		return -1;
 	}
 }

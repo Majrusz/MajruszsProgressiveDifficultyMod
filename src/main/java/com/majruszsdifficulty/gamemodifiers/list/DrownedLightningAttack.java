@@ -32,11 +32,11 @@ public class DrownedLightningAttack {
 	}
 
 	private void spawnLightningBolt( OnDamaged.Data data ) {
-		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.target.level );
+		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.target.level() );
 		if( lightningBolt == null )
 			return;
 
 		lightningBolt.absMoveTo( data.target.getX(), data.target.getY(), data.target.getZ() );
-		data.target.level.addFreshEntity( lightningBolt );
+		data.target.level().addFreshEntity( lightningBolt );
 	}
 }

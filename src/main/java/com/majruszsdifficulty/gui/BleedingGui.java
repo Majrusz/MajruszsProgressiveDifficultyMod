@@ -5,9 +5,8 @@ import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.gamemodifiers.contexts.OnClientTick;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -51,7 +50,7 @@ public class BleedingGui {
 
 	static class Overlay implements IGuiOverlay {
 		@Override
-		public void render( ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight ) {
+		public void render( ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight ) {
 			RenderSystem.setShader( GameRenderer::getPositionTexShader );
 			RenderSystem.enableBlend();
 			for( Particle particle : PARTICLES.get() ) {
@@ -61,7 +60,7 @@ public class BleedingGui {
 				Particle.RenderData renderData = particle.buildRenderData( screenWidth, screenHeight );
 				RenderSystem.setShaderColor( 1.0f, 1.0f, 1.0f, particle.getAlpha() );
 				RenderSystem.setShaderTexture( 0, renderData.resource );
-				GuiComponent.blit( poseStack, renderData.x, renderData.y, 0, 0, renderData.size, renderData.size, renderData.size, renderData.size );
+				graphics.blit( renderData.resource, renderData.x, renderData.y, 0, 0, renderData.size, renderData.size, renderData.size, renderData.size );
 			}
 			RenderSystem.disableBlend();
 		}

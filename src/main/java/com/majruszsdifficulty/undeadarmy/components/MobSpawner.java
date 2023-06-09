@@ -15,6 +15,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -124,7 +126,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		}
 
 		LootHelper.getLootTable( mobInfo.equipment )
-			.getRandomItems( LootHelper.toGiftContext( mob ) )
+			.getRandomItems( LootHelper.toGiftParams( mob, mobInfo.equipment ) )
 			.forEach( itemStack->ItemHelper.equip( mob, itemStack ) );
 
 		Arrays.stream( EquipmentSlot.values() )

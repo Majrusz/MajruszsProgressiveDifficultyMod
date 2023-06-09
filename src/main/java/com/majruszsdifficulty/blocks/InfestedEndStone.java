@@ -15,13 +15,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 /** New end block which works and looks like End Stone but spawns the Endermite when destroyed. */
 public class InfestedEndStone extends Block {
 	public InfestedEndStone() {
-		super( Properties.of( Material.CLAY, MaterialColor.COLOR_YELLOW ).strength( 0.0f, 0.75f ).sound( SoundType.STONE ) );
+		super( Properties.of().mapColor( MapColor.SAND ).strength( 0.0f, 0.75f ).sound( SoundType.STONE ) );
 	}
 
 	@Override

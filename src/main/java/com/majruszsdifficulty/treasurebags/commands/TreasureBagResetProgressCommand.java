@@ -25,7 +25,7 @@ public class TreasureBagResetProgressCommand extends Command {
 		Player player = Utility.castIfPossible( Player.class, this.getOptionalEntityOrPlayer( data ) );
 		if( player != null ) {
 			Registries.getTreasureBagProgressManager().clearProgress( player );
-			data.source.sendSuccess( Component.translatable( "commands.treasurebag.reset", player.getName() ), true );
+			data.source.sendSuccess( ()->Component.translatable( "commands.treasurebag.reset", player.getName() ), true );
 			return 0;
 		}
 

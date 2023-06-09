@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -72,7 +73,7 @@ public class TreasureBagProgressManager extends SerializableStructure {
 	}
 
 	private void createDefaultProgress( Player player ) {
-		LootContext context = TreasureBagItem.generateLootContext( player );
+		LootParams params = TreasureBagItem.generateLootParams( player );
 		for( TreasureBagItem item : TreasureBagItem.TREASURE_BAGS ) {
 			TreasureBagData data = this.get( player ).get( item );
 
@@ -87,7 +88,7 @@ public class TreasureBagProgressManager extends SerializableStructure {
 						if( data.lootDataList.stream().noneMatch( lootData->lootData.itemId.equals( itemId ) ) ) {
 							data.lootDataList.add( new LootData( itemId, false, lootItem.quality ) );
 						}
-					}, context );
+					}, new LootContext.Builder( params ).create( item.getLootTable().getLootTableId() ) );
 				}
 			}
 			data.lootDataList.sort( Comparator.comparingInt( a->-a.quality ) );

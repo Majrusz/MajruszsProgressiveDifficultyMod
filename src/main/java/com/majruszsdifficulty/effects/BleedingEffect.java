@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.effects;
 
+import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
@@ -23,10 +24,15 @@ import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -38,6 +44,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -46,6 +53,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -86,11 +94,10 @@ public class BleedingEffect extends MobEffect {
 	public static class EntityBleedingDamageSource extends DamageSource {
 		@Nullable protected final Entity damageSourceEntity;
 
-		public EntityBleedingDamageSource( @Nullable Entity damageSourceEntity ) {
-			super( Registries.BLEEDING_SOURCE.msgId );
+		public EntityBleedingDamageSource( Holder< DamageType > damageType, @Nullable Entity damageSourceEntity ) {
+			super( damageType );
 
 			this.damageSourceEntity = damageSourceEntity;
-			this.bypassArmor();
 		}
 
 		@Nullable
@@ -103,6 +110,17 @@ public class BleedingEffect extends MobEffect {
 		@Override
 		public Entity getEntity() {
 			return this.damageSourceEntity;
+		}
+	}
+
+	public static class TagsProvider extends net.minecraft.data.tags.TagsProvider< DamageType > {
+		public TagsProvider( PackOutput output, CompletableFuture< HolderLookup.Provider > registries, ExistingFileHelper existingFileHelper ) {
+			super( output, net.minecraft.core.registries.Registries.DAMAGE_TYPE, registries, MajruszsDifficulty.MOD_ID, existingFileHelper );
+		}
+
+		@Override
+		protected void addTags( HolderLookup.Provider provider ) {
+			this.tag( DamageTypeTags.BYPASSES_ARMOR ).add( Registries.BLEEDING_SOURCE );
 		}
 	}
 
@@ -199,12 +217,17 @@ public class BleedingEffect extends MobEffect {
 		}
 
 		private void dealDamage( LivingEntity entity ) {
+			Holder< DamageType > damageType = entity.level()
+				.registryAccess()
+				.registryOrThrow( net.minecraft.core.registries.Registries.DAMAGE_TYPE )
+				.getHolderOrThrow( Registries.BLEEDING_SOURCE );
+
 			if( entity.getEffect( Registries.BLEEDING.get() ) instanceof MobEffectInstance effectInstance ) {
 				Vec3 motion = entity.getDeltaMovement();
-				entity.hurt( new EntityBleedingDamageSource( effectInstance.damageSourceEntity ), 1.0f );
+				entity.hurt( new EntityBleedingDamageSource( damageType, effectInstance.damageSourceEntity ), 1.0f );
 				entity.setDeltaMovement( motion ); // sets previous motion to avoid any knockback from bleeding
 			} else {
-				entity.hurt( Registries.BLEEDING_SOURCE, 1.0f );
+				entity.hurt( new DamageSource( damageType ), 1.0f );
 			}
 			if( entity instanceof ServerPlayer player ) {
 				PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->player ), new BloodMessage( player ) );

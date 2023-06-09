@@ -29,11 +29,11 @@ public class UndeadArmyStartCommand extends Command {
 		Optional< Direction > direction = this.getOptionalEnumeration( data, Direction.class );
 		BlockPos position = this.getOptionalEntityOrPlayer( data ).blockPosition();
 		if( Registries.getUndeadArmyManager().tryToSpawn( new BlockPos( position ), direction ) ) {
-			data.source.sendSuccess( Component.translatable( "commands.undeadarmy.started", String.format( "(%s)", position.toShortString() ) ), true );
+			data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.started", String.format( "(%s)", position.toShortString() ) ), true );
 			return 0;
 		}
 
-		data.source.sendSuccess( Component.translatable( "commands.undeadarmy.cannot_start", String.format( "(%s)", position.toShortString() ) ), true );
+		data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.cannot_start", String.format( "(%s)", position.toShortString() ) ), true );
 		return -1;
 	}
 }

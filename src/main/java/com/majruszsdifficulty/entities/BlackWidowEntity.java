@@ -55,7 +55,7 @@ public class BlackWidowEntity extends Spider {
 		float randomizedVolume = SoundHandler.randomized( volume * 0.6f ).get();
 		float randomizedPitch = SoundHandler.randomized( pitch * 1.4f ).get();
 
-		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
+		this.level().playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
 	@Override

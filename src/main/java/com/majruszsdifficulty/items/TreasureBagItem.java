@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -47,12 +47,12 @@ public class TreasureBagItem extends Item {
 	}
 
 	/** Generates loot context of current treasure bag. (who opened the bag, where, etc.) */
-	public static LootContext generateLootContext( Player player ) {
-		LootContext.Builder lootContextBuilder = new LootContext.Builder( ( ServerLevel )player.level );
-		lootContextBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
-		lootContextBuilder.withParameter( LootContextParams.THIS_ENTITY, player );
+	public static LootParams generateLootParams( Player player ) {
+		LootParams.Builder paramsBuilder = new LootParams.Builder( ( ServerLevel )player.level() );
+		paramsBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
+		paramsBuilder.withParameter( LootContextParams.THIS_ENTITY, player );
 
-		return lootContextBuilder.create( LootContextParamSets.GIFT );
+		return paramsBuilder.create( LootContextParamSets.GIFT );
 	}
 
 	public TreasureBagItem( ResourceLocation location, TreasureBagConfig config ) {
@@ -95,13 +95,13 @@ public class TreasureBagItem extends Item {
 	}
 
 	public LootTable getLootTable() {
-		return ServerLifecycleHooks.getCurrentServer().getLootTables().get( this.lootTableLocation );
+		return ServerLifecycleHooks.getCurrentServer().getLootData().getLootTable( this.lootTableLocation );
 	}
 
 	private List< ItemStack > generateLoot( Player player ) {
 		LootTable lootTable = getLootTable();
 
-		return lootTable.getRandomItems( generateLootContext( player ) );
+		return lootTable.getRandomItems( generateLootParams( player ) );
 	}
 
 	private void triggerTreasureBagAdvancement( ServerPlayer player ) {

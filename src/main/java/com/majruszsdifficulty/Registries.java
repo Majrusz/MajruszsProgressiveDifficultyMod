@@ -24,20 +24,18 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -87,6 +85,7 @@ public class Registries {
 	static final DeferredRegister< SoundEvent > SOUNDS_EVENTS = HELPER.create( ForgeRegistries.Keys.SOUND_EVENTS );
 	static final DeferredRegister< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( net.minecraft.core.registries.Registries.LOOT_FUNCTION_TYPE );
 	static final DeferredRegister< Potion > POTIONS = HELPER.create( ForgeRegistries.Keys.POTIONS );
+	static final DeferredRegister< CreativeModeTab > CREATIVE_MODE_TABS = HELPER.create( net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB );
 
 	// Entities
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.register( "creeperling", CreeperlingEntity.createSupplier() );
@@ -172,7 +171,7 @@ public class Registries {
 	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.register( "bleeding_immunity", BleedingImmunityEffect::new );
 
 	// Damage Sources
-	public static final DamageSource BLEEDING_SOURCE = new DamageSource( "bleeding" ).bypassArmor();
+	public static final ResourceKey< DamageType > BLEEDING_SOURCE = ResourceKey.create( net.minecraft.core.registries.Registries.DAMAGE_TYPE, getLocation( "bleeding" ) );
 
 	// Particles
 	public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLE_TYPES.register( "blood_particle", ()->new SimpleParticleType( true ) );
@@ -196,6 +195,10 @@ public class Registries {
 
 	// Loot Functions
 	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY = LOOT_FUNCTIONS.register( "curse_randomly", CurseRandomlyFunction::newType );
+
+	// Creative Mode Tabs
+	public static final RegistryObject< CreativeModeTab > PRIMARY_TAB = CREATIVE_MODE_TABS.register( "primary", CreativeModeTabs.primary() );
+	public static final RegistryObject< CreativeModeTab > TREASURE_BAGS_TAB = CREATIVE_MODE_TABS.register( "treasure_bags", CreativeModeTabs.treasureBags() );
 
 	// Game Modifiers
 	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );

@@ -48,6 +48,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -119,8 +120,8 @@ public class CursedArmorEntity extends Monster {
 		this.setYRot( yRot );
 		this.setYHeadRot( yRot );
 		this.setYBodyRot( yRot );
-		if( this.level instanceof ServerLevel ) {
-			Time.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level.dimension() ), new AssembleMessage( this, yRot ) ) );
+		if( this.level() instanceof ServerLevel ) {
+			Time.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level().dimension() ), new AssembleMessage( this, yRot ) ) );
 		}
 	}
 
@@ -151,7 +152,7 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	private void tryToPlaySfx() {
-		if( !( this.level instanceof ServerLevel level ) )
+		if( !( this.level() instanceof ServerLevel level ) )
 			return;
 
 		if( this.assembleTicksLeft == ASSEMBLE_DURATION ) {
@@ -272,12 +273,12 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void equipSet( Data data, CursedArmorEntity cursedArmor, Vec3 position ) {
-			LootContext lootContext = new LootContext.Builder( ( ServerLevel )cursedArmor.level )
+			LootParams params = new LootParams.Builder( ( ServerLevel )cursedArmor.level() )
 				.withParameter( LootContextParams.ORIGIN, position )
 				.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
 				.create( LootContextParamSets.GIFT );
 
-			data.lootTable.getRandomItems( lootContext )
+			data.lootTable.getRandomItems( params )
 				.forEach( cursedArmor::equipItemIfPossible );
 
 			Arrays.stream( EquipmentSlot.values() )

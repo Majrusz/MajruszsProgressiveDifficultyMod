@@ -47,7 +47,7 @@ public class MobGroupConfig extends ConfigGroup {
 
 		List< PathfinderMob > sidekicks = new ArrayList<>();
 		for( int sidekickIdx = 0; sidekickIdx < sidekickAmount; sidekickIdx++ ) {
-			PathfinderMob sidekick = EntityHelper.spawn( this.getMob(), leader.level, mob->{
+			PathfinderMob sidekick = EntityHelper.spawn( this.getMob(), leader.level(), mob->{
 				this.addSidekickGoals( mob, leader );
 				this.markAsSidekick( mob );
 				this.applyArmorSet( this.sidekickSet, mob );
@@ -94,7 +94,7 @@ public class MobGroupConfig extends ConfigGroup {
 			return;
 
 		LootHelper.getLootTable( location )
-			.getRandomItems( LootHelper.toGiftContext( mob ) )
+			.getRandomItems( LootHelper.toGiftParams( mob, location ) )
 			.forEach( itemStack->ItemHelper.equip( mob, itemStack ) );
 
 		Arrays.stream( EquipmentSlot.values() )

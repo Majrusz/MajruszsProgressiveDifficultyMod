@@ -108,7 +108,7 @@ public class BandageItem extends Item {
 			}
 			applyEffects( itemStack, target );
 			ItemHelper.consumeItemOnUse( itemStack, player );
-			SoundHandler.ITEM_PICKUP.play( target.level, target.position() );
+			SoundHandler.ITEM_PICKUP.play( target.level(), target.position() );
 			data.event.setCancellationResult( InteractionResult.SUCCESS );
 		}
 

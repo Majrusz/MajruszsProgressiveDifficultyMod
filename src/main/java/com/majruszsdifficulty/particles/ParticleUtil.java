@@ -13,6 +13,6 @@ public class ParticleUtil {
 	@OnlyIn( Dist.CLIENT )
 	@SubscribeEvent
 	public static void registerParticles( RegisterParticleProvidersEvent event ) {
-		event.register( Registries.BLOOD.get(), BloodParticle.Factory::new );
+		event.registerSpriteSet( Registries.BLOOD.get(), BloodParticle.Factory::new );
 	}
 }

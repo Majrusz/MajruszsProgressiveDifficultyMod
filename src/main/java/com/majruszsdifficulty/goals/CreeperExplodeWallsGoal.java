@@ -63,7 +63,7 @@ public class CreeperExplodeWallsGoal extends Goal {
 
 	@Nullable
 	private Player getNearestPlayer( Creeper creeper ) {
-		ServerLevel level = Utility.castIfPossible( ServerLevel.class, creeper.level );
+		ServerLevel level = Utility.castIfPossible( ServerLevel.class, creeper.level() );
 		if( level == null )
 			return null;
 

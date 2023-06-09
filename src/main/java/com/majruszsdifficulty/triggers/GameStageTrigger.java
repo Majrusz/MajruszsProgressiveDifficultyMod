@@ -22,7 +22,7 @@ public class GameStageTrigger extends SimpleCriterionTrigger< GameStageTrigger.I
 	}
 
 	@Override
-	public GameStageTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate, DeserializationContext conditions
+	public GameStageTrigger.Instance createInstance( JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext conditions
 	) {
 		JsonElement stateElement = jsonObject.get( "state_id" );
 		return new GameStageTrigger.Instance( predicate, GameStage.convertIntegerToStage( stateElement.getAsInt() ) );
@@ -42,7 +42,7 @@ public class GameStageTrigger extends SimpleCriterionTrigger< GameStageTrigger.I
 	public static class Instance extends AbstractCriterionTriggerInstance {
 		private final GameStage stage;
 
-		public Instance( EntityPredicate.Composite player, GameStage stage ) {
+		public Instance( ContextAwarePredicate player, GameStage stage ) {
 			super( GameStageTrigger.ID, player );
 
 			this.stage = stage;

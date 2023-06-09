@@ -33,7 +33,7 @@ public class OnTreasureBagOpened {
 
 		@Override
 		public Level getLevel() {
-			return this.player.getLevel();
+			return this.player.level();
 		}
 	}
 }

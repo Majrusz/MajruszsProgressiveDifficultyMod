@@ -15,7 +15,7 @@ public class GameStageGetCommand extends Command {
 	}
 
 	private int handle( CommandData data ) {
-		data.source.sendSuccess( Component.translatable( "commands.gamestage.current", GameStage.getGameStageText( GameStage.getCurrentStage() ) ), true );
+		data.source.sendSuccess( ()->Component.translatable( "commands.gamestage.current", GameStage.getGameStageText( GameStage.getCurrentStage() ) ), true );
 
 		return GameStage.getCurrentStage().ordinal();
 	}

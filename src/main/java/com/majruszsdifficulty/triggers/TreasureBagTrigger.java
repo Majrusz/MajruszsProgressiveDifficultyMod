@@ -19,7 +19,7 @@ public class TreasureBagTrigger extends SimpleCriterionTrigger< TreasureBagTrigg
 	}
 
 	@Override
-	public TreasureBagTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate, DeserializationContext conditions
+	public TreasureBagTrigger.Instance createInstance( JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext conditions
 	) {
 		JsonElement bagID = jsonObject.get( "bag_id" );
 		JsonElement amountOfBags = jsonObject.get( "amount" );
@@ -35,7 +35,7 @@ public class TreasureBagTrigger extends SimpleCriterionTrigger< TreasureBagTrigg
 		private final String bagID;
 		private final int amountOfBags;
 
-		public Instance( EntityPredicate.Composite predicate, String bagID, int amountOfBags ) {
+		public Instance( ContextAwarePredicate predicate, String bagID, int amountOfBags ) {
 			super( TreasureBagTrigger.ID, predicate );
 
 			this.bagID = bagID;

@@ -37,11 +37,11 @@ public class UndeadArmyCommand extends Command {
 		BlockPos position = this.getOptionalEntityOrPlayer( data ).blockPosition();
 		UndeadArmy undeadArmy = Registries.getUndeadArmyManager().findNearestUndeadArmy( new BlockPos( position ) );
 		if( undeadArmy != null ) {
-			data.source.sendSuccess( this.componentSupplier.apply( undeadArmy, position ), true );
+			data.source.sendSuccess( ()->this.componentSupplier.apply( undeadArmy, position ), true );
 			return 0;
 		}
 
-		data.source.sendSuccess( Component.translatable( "commands.undeadarmy.missing", String.format( "(%s)", position.toShortString() ) ), true );
+		data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.missing", String.format( "(%s)", position.toShortString() ) ), true );
 		return -1;
 	}
 }

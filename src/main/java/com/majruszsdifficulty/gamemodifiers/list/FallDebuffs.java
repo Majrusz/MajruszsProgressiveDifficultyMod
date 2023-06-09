@@ -1,16 +1,16 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.ProgressiveEffectConfig;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 
 @AutoInstance
@@ -27,7 +27,7 @@ public class FallDebuffs {
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
 			.addCondition( Condition.chanceCRD( 1.0, false ) )
 			.addCondition( Condition.excludable() )
-			.addCondition( Condition.predicate( data->data.source.equals( DamageSource.FALL ) && data.event.getAmount() > 2.0f ) )
+			.addCondition( Condition.predicate( data->data.source.is( DamageTypes.FALL ) && data.event.getAmount() > 2.0f ) )
 			.addCondition( Condition.predicate( data->EntityHelper.isHuman( data.target ) ) )
 			.addConfig( this.nausea.name( "Nausea" ) )
 			.addConfig( this.slowness.name( "Slowness" ) )

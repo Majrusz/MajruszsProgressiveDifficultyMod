@@ -37,7 +37,7 @@ public class EndShardLocatorItem extends Item {
 		if( !( entity instanceof Player player ) || player.getInventory().findSlotMatchingItem( itemStack ) == -1 )
 			return INVALID_DISTANCE;
 
-		Level world = entity.level;
+		Level world = entity.level();
 		Vec3 entityPosition = entity.position();
 
 		CompoundTag data = itemStack.getOrCreateTag();

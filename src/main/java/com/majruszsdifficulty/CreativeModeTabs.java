@@ -1,40 +1,36 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.items.SoulJarItem;
-import com.mlib.annotations.AutoInstance;
 import com.mlib.items.CreativeModeTabHelper;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-@AutoInstance
 public class CreativeModeTabs {
-	public CreativeModeTabs() {
-		var primary = CreativeModeTabHelper.newTab( FMLJavaModLoadingContext.get(), Registries.getLocation( "primary" ) );
-		primary.accept( builder->builder.title( Component.translatable( "itemGroup.majruszsdifficulty.primary" ) )
+	public static Supplier< CreativeModeTab > primary() {
+		return ()->CreativeModeTab.builder()
+			.title( Component.translatable( "itemGroup.majruszsdifficulty.primary" ) )
 			.icon( ()->new ItemStack( Registries.BATTLE_STANDARD.get() ) )
-			.displayItems( this::definePrimaryItems ) );
-
-		var treasureBags = CreativeModeTabHelper.newTab( FMLJavaModLoadingContext.get(), Registries.getLocation( "treasure_bags" ) );
-		treasureBags.accept( builder->builder.title( Component.translatable( "itemGroup.majruszsdifficulty.treasure_bags" ) )
-			.displayItems( this::defineTreasureBagItems )
-			.withTabFactory( TreasureBag::new ) );
+			.displayItems( CreativeModeTabs::definePrimaryItems )
+			.build();
 	}
 
-	private static ItemStack newItemStackWithPotion( Item item, Potion potion ) {
-		return PotionUtils.setPotion( new ItemStack( item ), potion );
+	public static Supplier< CreativeModeTab > treasureBags() {
+		return ()->CreativeModeTab.builder()
+			.title( Component.translatable( "itemGroup.majruszsdifficulty.treasure_bags" ) )
+			.displayItems( CreativeModeTabs::defineTreasureBagItems )
+			.withTabFactory( TreasureBag::new )
+			.build();
 	}
 
-	private void definePrimaryItems( FeatureFlagSet flagSet, CreativeModeTab.Output output, boolean hasPermissions ) {
+	private static void definePrimaryItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
 		Stream.of(
 			new ItemStack( Registries.BANDAGE.get() ),
 			new ItemStack( Registries.GOLDEN_BANDAGE.get() ),
@@ -96,7 +92,11 @@ public class CreativeModeTabs {
 		).forEach( output::accept );
 	}
 
-	private void defineTreasureBagItems( FeatureFlagSet flagSet, CreativeModeTab.Output output, boolean hasPermissions ) {
+	private static ItemStack newItemStackWithPotion( Item item, Potion potion ) {
+		return PotionUtils.setPotion( new ItemStack( item ), potion );
+	}
+
+	private static void defineTreasureBagItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
 		Stream.of(
 			new ItemStack( Registries.FISHING_TREASURE_BAG.get() ),
 			notImplemented(),
@@ -128,9 +128,9 @@ public class CreativeModeTabs {
 		).forEach( output::accept );
 	}
 
-	int counter = 0;
+	static int counter = 0;
 
-	private ItemStack notImplemented() {
+	private static ItemStack notImplemented() {
 		ItemStack itemStack = new ItemStack( Items.DIRT ).setHoverName( Component.translatable( "Coming soon..." ) );
 		itemStack.getOrCreateTagElement( String.format( "dirt_%d", ++counter ) ); // items must be unique, so well...
 

@@ -85,7 +85,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		float randomizedVolume = SoundHandler.randomized( volume * 1.25f ).get();
 		float randomizedPitch = SoundHandler.randomized( pitch * 0.75f ).get();
 
-		this.level.playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
+		this.level().playSound( null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), randomizedVolume, randomizedPitch );
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 			if( Random.tryChance( 0.25 ) ) {
 				this.start( SkillType.HEAVY_ATTACK, Utility.secondsToTicks( 0.9 ) )
 					.onRatio( 0.55f, ()->{
-						if( !( this.mob.level instanceof ServerLevel level ) )
+						if( !( this.mob.level() instanceof ServerLevel level ) )
 							return;
 
 						Vec3 position = this.getSpecialAttackPosition( this.mob.position(), entity.position() );
@@ -186,7 +186,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 
 		private void spawnGroundParticles( ServerLevel level, Vec3 position ) {
 			Optional< BlockState > blockState = this.getBlockStateBelowPosition( level, position );
-			BlockParticleOption blockParticleOption = new BlockParticleOption( ParticleTypes.BLOCK, blockState.orElse( Blocks.DIRT.defaultBlockState() ) ).setPos( new BlockPos( position ) );
+			BlockParticleOption blockParticleOption = new BlockParticleOption( ParticleTypes.BLOCK, blockState.orElse( Blocks.DIRT.defaultBlockState() ) ).setPos( BlockPos.containing( position ) );
 
 			level.sendParticles( blockParticleOption, position.x, position.y + 0.25, position.z, 120, 1.0, 0.25, 1.0, 0.5 );
 		}
@@ -198,7 +198,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 		private Optional< BlockState > getBlockStateBelowPosition( Level level, Vec3 position ) {
 			int y = ( int )position.y;
 			while( y > level.getMinBuildHeight() ) {
-				BlockState blockState = level.getBlockState( new BlockPos( position.x, y, position.z ) );
+				BlockState blockState = level.getBlockState( BlockPos.containing( position.x, y, position.z ) );
 				if( !blockState.isAir() )
 					return Optional.of( blockState );
 

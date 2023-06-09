@@ -23,7 +23,8 @@ public class ClampedRegionalDifficultyGetCommand extends Command {
 	}
 
 	private int handle( CommandData data ) throws CommandSyntaxException {
-		data.source.sendSuccess( this.buildMessage( data ), true );
+		MutableComponent message = this.buildMessage( data );
+		data.source.sendSuccess( ()->message, true );
 
 		return 0;
 	}

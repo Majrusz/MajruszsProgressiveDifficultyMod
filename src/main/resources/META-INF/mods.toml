@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[44,)"
+loaderVersion = "[46,)"
 license = "MIT License"
 issueTrackerURL = "https://github.com/Majrusz/MajruszsProgressiveDifficultyMod/issues"
 

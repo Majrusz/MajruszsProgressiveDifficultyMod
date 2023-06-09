@@ -4,9 +4,8 @@ import com.majruszsdifficulty.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -60,13 +59,23 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 	}
 
 	@Override
-	public int getDurabilityForSlot( EquipmentSlot equipmentSlotType ) {
-		return this.maxDamageFactor * MAX_DAMAGE_ARRAY[ equipmentSlotType.getIndex() ];
+	public int getDurabilityForType( ArmorItem.Type type ) {
+		return this.maxDamageFactor * MAX_DAMAGE_ARRAY[ switch( type ) {
+			case HELMET -> 0;
+			case CHESTPLATE -> 1;
+			case LEGGINGS -> 2;
+			case BOOTS -> 3;
+		} ];
 	}
 
 	@Override
-	public int getDefenseForSlot( EquipmentSlot equipmentSlotType ) {
-		return this.damageReductionAmountArray[ equipmentSlotType.getIndex() ];
+	public int getDefenseForType( ArmorItem.Type type ) {
+		return this.damageReductionAmountArray[ switch( type ) {
+			case HELMET -> 0;
+			case CHESTPLATE -> 1;
+			case LEGGINGS -> 2;
+			case BOOTS -> 3;
+		} ];
 	}
 
 	@Override

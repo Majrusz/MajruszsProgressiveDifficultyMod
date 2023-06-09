@@ -29,6 +29,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
@@ -156,13 +157,13 @@ public class Config {
 
 	private void giveExtraLoot( OnLoot.Data data ) {
 		List< ItemStack > extraLoot = LootHelper.getLootTable( EXTRA_LOOT_ID )
-			.getRandomItems( this.toExtraLootContext( data ) );
+			.getRandomItems( this.toExtraLootParams( data ) );
 
 		data.generatedLoot.addAll( extraLoot );
 	}
 
-	private LootContext toExtraLootContext( OnLoot.Data data ) {
-		return new LootContext.Builder( data.getServerLevel() )
+	private LootParams toExtraLootParams( OnLoot.Data data ) {
+		return new LootParams.Builder( data.getServerLevel() )
 			.withParameter( LootContextParams.ORIGIN, data.entity.position() )
 			.withParameter( LootContextParams.THIS_ENTITY, data.entity )
 			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )

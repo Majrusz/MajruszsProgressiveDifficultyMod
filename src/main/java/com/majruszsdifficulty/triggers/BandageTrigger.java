@@ -20,7 +20,7 @@ public class BandageTrigger extends SimpleCriterionTrigger< BandageTrigger.Insta
 	}
 
 	@Override
-	public BandageTrigger.Instance createInstance( JsonObject jsonObject, EntityPredicate.Composite predicate, DeserializationContext conditions
+	public BandageTrigger.Instance createInstance( JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext conditions
 	) {
 		JsonElement bandageID = jsonObject.get( "bandage_id" );
 		JsonElement usedOnOneself = jsonObject.get( "used_on_oneself" );
@@ -37,7 +37,7 @@ public class BandageTrigger extends SimpleCriterionTrigger< BandageTrigger.Insta
 		private final String bandageID;
 		private final boolean usedOnOneself;
 
-		public Instance( EntityPredicate.Composite predicate, String bandageID, boolean usedOnOneself ) {
+		public Instance( ContextAwarePredicate predicate, String bandageID, boolean usedOnOneself ) {
 			super( BandageTrigger.ID, predicate );
 
 			this.bandageID = bandageID;

@@ -25,7 +25,7 @@ public class TreasureBagUnlockAllCommand extends Command {
 		Player player = Utility.castIfPossible( Player.class, this.getOptionalEntityOrPlayer( data ) );
 		if( player != null ) {
 			Registries.getTreasureBagProgressManager().unlockAll( player );
-			data.source.sendSuccess( Component.translatable( "commands.treasurebag.unlockall", player.getName() ), true );
+			data.source.sendSuccess( ()->Component.translatable( "commands.treasurebag.unlockall", player.getName() ), true );
 			return 0;
 		}
 

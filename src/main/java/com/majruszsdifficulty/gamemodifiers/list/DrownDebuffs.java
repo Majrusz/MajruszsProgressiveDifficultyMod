@@ -9,6 +9,7 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDamaged;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 
@@ -26,7 +27,7 @@ public class DrownDebuffs {
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
 			.addCondition( Condition.chanceCRD( 1.0, false ) )
 			.addCondition( Condition.excludable() )
-			.addCondition( Condition.predicate( data->data.source.equals( DamageSource.DROWN ) ) )
+			.addCondition( Condition.predicate( data->data.source.is( DamageTypeTags.IS_DROWNING ) ) )
 			.addConfig( this.nausea.name( "Nausea" ) )
 			.addConfig( this.weakness.name( "Weakness" ) )
 			.insertTo( group );
