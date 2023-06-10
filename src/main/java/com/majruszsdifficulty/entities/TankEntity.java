@@ -48,7 +48,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 	}
 
 	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes()
+		return Monster.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 140.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.25 )
 			.add( Attributes.ATTACK_DAMAGE, 6.0 )
