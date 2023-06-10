@@ -100,6 +100,11 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	@Override
+	public boolean canBreatheUnderwater() {
+		return true;
+	}
+
+	@Override
 	public int getExperienceReward() {
 		return Random.nextInt( 7 );
 	}
