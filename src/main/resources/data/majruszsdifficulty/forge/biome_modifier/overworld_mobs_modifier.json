@@ -4,7 +4,7 @@
   "spawners": [
     {
       "type": "minecraft:illusioner",
-      "weight": 20,
+      "weight": 8,
       "minCount": 1,
       "maxCount": 1
     },
