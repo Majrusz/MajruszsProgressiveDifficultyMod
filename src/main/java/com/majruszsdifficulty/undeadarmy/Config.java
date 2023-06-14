@@ -140,12 +140,18 @@ public class Config {
 			.toList();
 	}
 
-	private void updateKilledUndead( OnDeath.Data data ) {
-		ServerPlayer player = ( ServerPlayer )data.attacker;
-		CompoundTag tag = player.getPersistentData();
+	public UndeadArmyInfo readUndeadArmyInfo( CompoundTag tag ) {
 		UndeadArmyInfo info = new UndeadArmyInfo();
 		info.killedUndead = this.getInitialKillsCount();
 		info.read( tag );
+
+		return info;
+	}
+
+	private void updateKilledUndead( OnDeath.Data data ) {
+		ServerPlayer player = ( ServerPlayer )data.attacker;
+		CompoundTag tag = player.getPersistentData();
+		UndeadArmyInfo info = this.readUndeadArmyInfo( tag );
 
 		++info.killedUndead;
 		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
