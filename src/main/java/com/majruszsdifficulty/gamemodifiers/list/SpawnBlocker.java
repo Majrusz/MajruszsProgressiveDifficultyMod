@@ -9,7 +9,6 @@ import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.eventbus.api.Event;
 
 @AutoInstance
 public class SpawnBlocker {
@@ -23,14 +22,10 @@ public class SpawnBlocker {
 			.name( "SpawnBlocker" )
 			.comment( "Blocks certain mobs from spawning when given game stage is active." );
 
-		OnCheckSpawn.listen( this::blockSpawn )
+		OnCheckSpawn.listen( OnCheckSpawn.CANCEL )
 			.addCondition( Condition.predicate( data->this.isForbidden( data.mob ) ) )
 			.addConfig( this.forbiddenEntities )
 			.insertTo( group );
-	}
-
-	private void blockSpawn( OnCheckSpawn.Data data ) {
-		data.event.setResult( Event.Result.DENY );
 	}
 
 	private boolean isForbidden( Entity entity ) {
