@@ -28,7 +28,7 @@ public class UndeadArmyPersonalProgressCommand extends Command {
 		UndeadArmyInfo info = config.readUndeadArmyInfo( entity.getPersistentData() );
 		int killsToStart = Math.max( config.getRequiredKills() - info.killedUndead, 1 );
 
-		data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), killsToStart ), true );
+		data.source.sendSuccess( Component.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), killsToStart ), true );
 		return -1;
 	}
 }
