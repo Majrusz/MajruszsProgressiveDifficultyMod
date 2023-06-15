@@ -84,7 +84,7 @@ public class CursedArmorEntity extends Monster {
 	}
 
 	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes()
+		return Monster.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 30.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.23 )
 			.add( Attributes.ATTACK_DAMAGE, 3.0 )
@@ -96,6 +96,11 @@ public class CursedArmorEntity extends Monster {
 
 	public CursedArmorEntity( EntityType< ? extends CursedArmorEntity > type, Level world ) {
 		super( type, world );
+	}
+
+	@Override
+	public boolean canBreatheUnderwater() {
+		return true;
 	}
 
 	@Override

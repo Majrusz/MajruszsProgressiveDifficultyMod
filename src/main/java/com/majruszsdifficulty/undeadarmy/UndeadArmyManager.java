@@ -76,6 +76,10 @@ public class UndeadArmyManager extends SerializableStructure {
 		return Collections.unmodifiableList( this.undeadArmies );
 	}
 
+	public Config getConfig() {
+		return this.config;
+	}
+
 	void tick() {
 		this.undeadArmies.forEach( UndeadArmy::tick );
 		boolean hasAnyArmyFinished = this.undeadArmies.removeIf( UndeadArmy::hasFinished );

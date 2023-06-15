@@ -89,6 +89,7 @@
   "commands.undeadarmy.highlighted": "All Undead Army units were highlighted at position: %s",
   "commands.undeadarmy.list": "List of all Undead Armies in progress:",
   "commands.undeadarmy.list_empty": "There is no Undead Army in progress!",
+  "commands.undeadarmy.progress": "%1$s must kill %2$s more undead to start the Undead Army.",
   "commands.treasurebag.reset": "Progress of all treasure bags has been restarted for %1$s.",
   "commands.treasurebag.unlockall": "Progress of all treasure bags has been maxed out for %1$s.",
   "commands.clampedregionaldifficulty": "Clamped regional difficulty at %1$s is %2$s.",
