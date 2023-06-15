@@ -17,6 +17,7 @@ import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnServerTick;
+import com.mlib.levels.LevelHelper;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
 import net.minecraft.ChatFormatting;
@@ -28,7 +29,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -74,6 +75,7 @@ public class Config {
 			.addCondition( Condition.predicate( data->data.target.getMobType() == MobType.UNDEAD ) )
 			.addCondition( Condition.predicate( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) ) )
 			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
+			.addCondition( Condition.predicate( data->LevelHelper.isEntityIn( data.attacker, Level.OVERWORLD ) ) )
 			.insertTo( group );
 
 		OnLoot.listen( this::giveExtraLoot )
@@ -138,12 +140,18 @@ public class Config {
 			.toList();
 	}
 
-	private void updateKilledUndead( OnDeath.Data data ) {
-		ServerPlayer player = ( ServerPlayer )data.attacker;
-		CompoundTag tag = player.getPersistentData();
+	public UndeadArmyInfo readUndeadArmyInfo( CompoundTag tag ) {
 		UndeadArmyInfo info = new UndeadArmyInfo();
 		info.killedUndead = this.getInitialKillsCount();
 		info.read( tag );
+
+		return info;
+	}
+
+	private void updateKilledUndead( OnDeath.Data data ) {
+		ServerPlayer player = ( ServerPlayer )data.attacker;
+		CompoundTag tag = player.getPersistentData();
+		UndeadArmyInfo info = this.readUndeadArmyInfo( tag );
 
 		++info.killedUndead;
 		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {

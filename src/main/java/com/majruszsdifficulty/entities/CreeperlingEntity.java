@@ -10,6 +10,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
@@ -22,7 +23,7 @@ public class CreeperlingEntity extends Creeper {
 	}
 
 	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes()
+		return Monster.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 6.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.35 )
 			.build();
