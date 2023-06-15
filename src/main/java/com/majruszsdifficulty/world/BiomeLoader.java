@@ -34,7 +34,7 @@ public class BiomeLoader {
 	}
 
 	static void addOverworldEntities( MobSpawnSettingsBuilder spawnInfoBuilder ) {
-		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EntityType.ILLUSIONER, 20, 1, 2 );
+		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, EntityType.ILLUSIONER, 8, 1, 2 );
 		addFreshEntity( spawnInfoBuilder, MobCategory.MONSTER, Registries.TANK.get(), 3, 1, 1 );
 	}
 

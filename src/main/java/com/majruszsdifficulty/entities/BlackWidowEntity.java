@@ -17,6 +17,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -32,7 +33,7 @@ public class BlackWidowEntity extends Spider {
 	}
 
 	public static AttributeSupplier getAttributeMap() {
-		return Mob.createMobAttributes()
+		return Monster.createMobAttributes()
 			.add( Attributes.MAX_HEALTH, 12.0 )
 			.add( Attributes.MOVEMENT_SPEED, 0.3 )
 			.add( Attributes.ATTACK_DAMAGE, 4.0 )
