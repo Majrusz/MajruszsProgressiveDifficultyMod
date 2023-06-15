@@ -7,7 +7,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 
 @AutoInstance
@@ -28,7 +28,7 @@ public class UndeadArmyPersonalProgressCommand extends Command {
 		UndeadArmyInfo info = config.readUndeadArmyInfo( entity.getPersistentData() );
 		int killsToStart = Math.max( config.getRequiredKills() - info.killedUndead, 1 );
 
-		data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), killsToStart ), true );
+		data.source.sendSuccess( new TranslatableComponent( "commands.undeadarmy.progress", entity.getDisplayName(), killsToStart ), true );
 		return -1;
 	}
 }
