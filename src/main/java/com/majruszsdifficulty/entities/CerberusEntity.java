@@ -65,7 +65,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	public boolean hasTarget = false;
 
 	public static Supplier< EntityType< CerberusEntity > > createSupplier() {
-		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.0f, 1.99f ).build( "cerberus" );
+		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 0.9f, 1.75f ).build( "cerberus" );
 	}
 
 	public static AttributeSupplier getAttributeMap() {
@@ -143,7 +143,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected float getStandingEyeHeight( Pose poseIn, EntityDimensions sizeIn ) {
-		return 1.8f;
+		return 1.6f;
 	}
 
 	@Override
