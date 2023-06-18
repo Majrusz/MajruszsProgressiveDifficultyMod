@@ -30,7 +30,7 @@ public class SkeletonsInGroup {
 
 		OnSpawned.listenSafe( this::spawnGroup )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
-			.addCondition( Condition.chanceCRD( 0.25, true ) )
+			.addCondition( Condition.chanceCRD( 0.1, true ) )
 			.addCondition( CustomConditions.isNotPartOfGroup( data->data.target ) )
 			.addCondition( CustomConditions.isNotPartOfUndeadArmy( data->data.target ) )
 			.addCondition( Condition.excludable() )
