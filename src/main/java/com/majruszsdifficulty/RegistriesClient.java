@@ -1,9 +1,14 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.entities.CerberusEntity;
 import com.majruszsdifficulty.items.EndShardLocatorItem;
-import com.majruszsdifficulty.models.*;
-import com.majruszsdifficulty.renderers.*;
+import com.majruszsdifficulty.models.CerberusModel;
+import com.majruszsdifficulty.models.CreeperlingModel;
+import com.majruszsdifficulty.models.CursedArmorModel;
+import com.majruszsdifficulty.models.TankModel;
+import com.majruszsdifficulty.renderers.CerberusRenderer;
+import com.majruszsdifficulty.renderers.CreeperlingRenderer;
+import com.majruszsdifficulty.renderers.CursedArmorRenderer;
+import com.majruszsdifficulty.renderers.TankRenderer;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -20,7 +25,6 @@ public class RegistriesClient {
 	public static void setup() {
 		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
 		ForgeHooksClient.registerLayerDefinition( TankRenderer.LAYER, ()->TankModel.createBodyLayer( CubeDeformation.NONE ) );
-		ForgeHooksClient.registerLayerDefinition( BlackWidowRenderer.LAYER, BlackWidowModel::createBodyLayer );
 		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.INNER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
 		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.OUTER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
 		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.MAIN_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
@@ -28,7 +32,6 @@ public class RegistriesClient {
 
 		EntityRenderers.register( Registries.CREEPERLING.get(), CreeperlingRenderer::new );
 		EntityRenderers.register( Registries.TANK.get(), TankRenderer::new );
-		EntityRenderers.register( Registries.BLACK_WIDOW.get(), BlackWidowRenderer::new );
 		EntityRenderers.register( Registries.CURSED_ARMOR.get(), CursedArmorRenderer::new );
 		EntityRenderers.register( Registries.CERBERUS.get(), CerberusRenderer::new );
 
