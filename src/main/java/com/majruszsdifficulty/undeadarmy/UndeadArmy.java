@@ -49,7 +49,7 @@ public class UndeadArmy extends SerializableStructure {
 	public void start( BlockPos positionToAttack, Direction direction ) {
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
-		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.7 ) );
+		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.4 ) );
 
 		this.components.dispatch( IComponent::onStart );
 	}
