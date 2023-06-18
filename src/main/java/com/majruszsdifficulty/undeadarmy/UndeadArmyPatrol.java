@@ -37,7 +37,7 @@ public class UndeadArmyPatrol {
 
 		OnSpawned.listenSafe( this::spawnGroup )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
-			.addCondition( Condition.chanceCRD( 0.0625, true ) )
+			.addCondition( Condition.chanceCRD( 0.10, true ) )
 			.addCondition( CustomConditions.isNotPartOfGroup( data->data.target ) )
 			.addCondition( CustomConditions.isNotPartOfUndeadArmy( data->data.target ) )
 			.addCondition( CustomConditions.isNotNearUndeadArmy( data->data.target ) )
