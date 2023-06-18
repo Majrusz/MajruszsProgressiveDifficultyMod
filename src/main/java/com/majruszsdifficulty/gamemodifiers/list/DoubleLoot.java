@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.gamemodifiers.list;
 
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
@@ -20,10 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-@Deprecated( forRemoval = true )
 @AutoInstance
 public class DoubleLoot {
-	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, ()->new Vec3( 0.5, 1, 0.5 ), ()->0.1f );
+	static final ParticleHandler AWARD = new ParticleHandler( ParticleTypes.HAPPY_VILLAGER, ()->new Vec3( 0.25, 0.5, 0.25 ), ()->0.1f );
 	final StringListConfig forbiddenItems = new StringListConfig( "minecraft:nether_star", "minecraft:totem_of_undying" );
 
 	public DoubleLoot() {
@@ -37,12 +36,12 @@ public class DoubleLoot {
 			.comment( "Determines the chance on Normal Mode." )
 			.insertTo( group );
 
-		OnDoubleLoot.listen( this::doubleLoot, 0.2, GameStage.EXPERT )
+		OnDoubleLoot.listen( this::doubleLoot, 0.1, GameStage.EXPERT )
 			.name( "ExpertMode" )
 			.comment( "Determines the chance on Expert Mode." )
 			.insertTo( group );
 
-		OnDoubleLoot.listen( this::doubleLoot, 0.4, GameStage.MASTER )
+		OnDoubleLoot.listen( this::doubleLoot, 0.2, GameStage.MASTER )
 			.name( "MasterMode" )
 			.comment( "Determines the chance on Master Mode." )
 			.insertTo( group );
@@ -51,7 +50,7 @@ public class DoubleLoot {
 	private void doubleLoot( OnLoot.Data data ) {
 		assert data.entity != null && data.lastDamagePlayer != null;
 
-		boolean doubledAtLeastOneItem = replaceLoot( data.generatedLoot );
+		boolean doubledAtLeastOneItem = this.replaceLoot( data.generatedLoot );
 		if( doubledAtLeastOneItem && data.getServerLevel() != null ) {
 			AWARD.spawn( data.getServerLevel(), data.entity.position().add( 0.0, 0.5, 0.0 ), 12 );
 		}
