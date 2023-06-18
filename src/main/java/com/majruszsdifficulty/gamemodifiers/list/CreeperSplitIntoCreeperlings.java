@@ -35,7 +35,7 @@ public class CreeperSplitIntoCreeperlings {
 
 		OnExplosionDetonate.listen( this::spawnCreeperlings )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
-			.addCondition( Condition.chanceCRD( 0.666, false ) )
+			.addCondition( Condition.chanceCRD( 0.666, true ) )
 			.addCondition( Condition.excludable() )
 			.addCondition( Condition.predicate( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) ) )
 			.addConfig( this.creeperlingsAmount.name( "MaxCreeperlings" ).comment( "Maximum amount of Creeperlings to spawn." ) )
