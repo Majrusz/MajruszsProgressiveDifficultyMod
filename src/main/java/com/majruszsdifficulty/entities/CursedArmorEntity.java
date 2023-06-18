@@ -174,7 +174,7 @@ public class CursedArmorEntity extends Monster {
 		static final String SOUND_TAG = "sound";
 		static final String CHANCE_TAG = "chance";
 		static final Map< ResourceLocation, Data > DATA_MAP = new HashMap<>();
-		final DoubleConfig dropChance = new DoubleConfig( 0.1, Range.CHANCE );
+		final DoubleConfig dropChance = new DoubleConfig( 0.2, Range.CHANCE );
 		final StringConfig name = new StringConfig( "Freshah" );
 
 		public Spawn() {
