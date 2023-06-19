@@ -8,6 +8,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:recall_potion",
+          "weight": 3,
           "quality": 4,
           "functions": [
             {
@@ -18,22 +19,12 @@
               }
             }
           ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
-          "name": "majruszsdifficulty:bad_omen_potion",
-          "quality": 4,
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 0.33333
-            }
-          ]
+          "name": "majruszsdifficulty:evoker_fang_scroll",
+          "weight": 1,
+          "quality": 4
         }
       ]
     },

@@ -54,8 +54,6 @@
   "item.majruszsdifficulty.golden_bandage": "金绷带",
   "item.majruszsdifficulty.recall_potion": "回忆药水",
   "item.majruszsdifficulty.recall_potion.effect": "传送回家",
-  "item.majruszsdifficulty.bad_omen_potion": "恶兆药水",
-  "item.majruszsdifficulty.bad_omen_potion.effect": "%1$s 恶兆等级",
   "item.majruszsdifficulty.cerberus_fang": "地狱犬牙",
   "item.majruszsdifficulty.soul_jar": "灵魂罐",
   "item.majruszsdifficulty.soul_jar.item_tooltip1": "含有 %1$s 种随机灵魂在内",

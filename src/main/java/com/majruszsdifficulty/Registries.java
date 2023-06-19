@@ -119,7 +119,7 @@ public class Registries {
 	public static final RegistryObject< EnderPouchItem > ENDER_POUCH = ITEMS.register( "ender_pouch", EnderPouchItem::new );
 	public static final RegistryObject< WitherSwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
-	public static final RegistryObject< BadOmenPotionItem > BAD_OMEN_POTION = ITEMS.register( "bad_omen_potion", BadOmenPotionItem::new );
+	public static final RegistryObject< EvokerFangScrollItem > EVOKER_FANG_SCROLL = ITEMS.register( "evoker_fang_scroll", EvokerFangScrollItem::new );
 	public static final RegistryObject< SoulJarItem > SOUL_JAR = ITEMS.register( "soul_jar", SoulJarItem::new );
 
 	// Potions

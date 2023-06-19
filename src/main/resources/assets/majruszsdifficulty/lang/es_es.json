@@ -54,8 +54,6 @@
     "item.majruszsdifficulty.golden_bandage": "Venda dorada",
     "item.majruszsdifficulty.recall_potion": "Poción de retirada",
     "item.majruszsdifficulty.recall_potion.effect": "Teletransporta de vuelta a casa",
-    "item.majruszsdifficulty.bad_omen_potion": "Poción de mal presagio",
-    "item.majruszsdifficulty.bad_omen_potion.effect": "%1$s Nivel de mal presagio",
     "item.majruszsdifficulty.cerberus_fang": "Colmillo de Cerbero",
     "item.majruszsdifficulty.soul_jar": "Frasco de almas",
     "item.majruszsdifficulty.soul_jar.item_tooltip1": "Contiene %1$s almas aleatorias dentro",

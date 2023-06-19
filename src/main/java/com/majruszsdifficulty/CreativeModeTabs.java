@@ -110,7 +110,7 @@ public class CreativeModeTabs {
 
 			new ItemStack( Registries.PILLAGER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.RECALL_POTION.get() ),
-			new ItemStack( Registries.BAD_OMEN_POTION.get() ),
+			new ItemStack( Registries.EVOKER_FANG_SCROLL.get() ),
 
 			new ItemStack( Registries.ELDER_GUARDIAN_TREASURE_BAG.get() ),
 			notImplemented(),
