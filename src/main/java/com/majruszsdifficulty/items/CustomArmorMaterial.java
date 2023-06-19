@@ -61,20 +61,20 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 	@Override
 	public int getDurabilityForType( ArmorItem.Type type ) {
 		return this.maxDamageFactor * MAX_DAMAGE_ARRAY[ switch( type ) {
-			case HELMET -> 0;
-			case CHESTPLATE -> 1;
-			case LEGGINGS -> 2;
-			case BOOTS -> 3;
+			case BOOTS -> 0;
+			case LEGGINGS -> 1;
+			case CHESTPLATE -> 2;
+			case HELMET -> 3;
 		} ];
 	}
 
 	@Override
 	public int getDefenseForType( ArmorItem.Type type ) {
 		return this.damageReductionAmountArray[ switch( type ) {
-			case HELMET -> 0;
-			case CHESTPLATE -> 1;
-			case LEGGINGS -> 2;
-			case BOOTS -> 3;
+			case BOOTS -> 0;
+			case LEGGINGS -> 1;
+			case CHESTPLATE -> 2;
+			case HELMET -> 3;
 		} ];
 	}
 
