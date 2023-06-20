@@ -246,7 +246,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.jawLower1.xRot = this.jawLower2.xRot = this.jawLower3.xRot = jawRotation;
 
 		// movement anims
-		float limbFactor1 = ( cerberus.hasTarget ? 0.7f : 0.5f ) * limbSwing, limbFactor2 = 0.6f * limbSwingAmount;
+		float limbFactor1 = 0.5f * limbSwing, limbFactor2 = 0.6f * limbSwingAmount;
 		this.frontLeg1.xRot = this.hindLeg1.xRot = ( float )( Math.cos( limbFactor1 ) * limbFactor2 );
 		this.frontLeg2.xRot = this.hindLeg2.xRot = ( float )( Math.cos( limbFactor1 + Math.PI ) * limbFactor2 );
 		this.body.y = 27.0f + 1.0f * Math.abs( ( float )Math.cos( limbFactor1 ) * limbSwingAmount );
