@@ -14,8 +14,9 @@ import net.minecraft.world.entity.Entity;
 public class SpawnBlocker {
 	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( new String[]{
 		"minecraft:illusioner",
-		"majruszsdifficulty:tank"
-	}, new String[]{}, new String[]{} );
+		"majruszsdifficulty:tank",
+		"majruszsdifficulty:cerberus"
+	}, new String[]{ "majruszsdifficulty:cerberus" }, new String[]{} );
 
 	public SpawnBlocker() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
