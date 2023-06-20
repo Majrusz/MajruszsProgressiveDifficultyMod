@@ -3,6 +3,7 @@ package com.majruszsdifficulty.entities;
 import com.mlib.Random;
 import com.mlib.effects.SoundHandler;
 import com.mlib.levels.LevelHelper;
+import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -59,7 +60,7 @@ public class GiantEntity extends Monster {
 		if( this.isSunBurnTick() ) {
 			this.setSecondsOnFire( 8 );
 		}
-		if( Random.nextInt( 10 ) == 0 ) {
+		if( TimeHelper.hasServerSecondsPassed( 0.5 ) ) {
 			LevelHelper.destroyBlocks( this, this.getBoundingBox().inflate( 0.6 ), ( blockPos, blockState )->{
 				return blockState.getBlock() instanceof LeavesBlock;
 			} );
@@ -91,7 +92,7 @@ public class GiantEntity extends Monster {
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal( 2, new GiantAttackGoal( this, 1.0, false ) );
+		this.goalSelector.addGoal( 2, new GiantAttackGoal( this, 1.0, true ) );
 		this.goalSelector.addGoal( 7, new WaterAvoidingRandomStrollGoal( this, 1.0 ) );
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );
@@ -108,7 +109,7 @@ public class GiantEntity extends Monster {
 
 	@Override
 	protected float getStandingEyeHeight( Pose poseIn, EntityDimensions sizeIn ) {
-		return 8.4f;
+		return 8.5f;
 	}
 
 	@Override
