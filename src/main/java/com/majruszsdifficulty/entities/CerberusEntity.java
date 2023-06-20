@@ -2,7 +2,6 @@ package com.majruszsdifficulty.entities;
 
 import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
@@ -75,12 +74,14 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			.add( Attributes.ATTACK_DAMAGE, 8.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
-			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
+			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5 )
 			.build();
 	}
 
 	public CerberusEntity( EntityType< ? extends CerberusEntity > type, Level world ) {
 		super( type, world );
+
+		this.setMaxUpStep( 1.0f );
 	}
 
 	@Override
@@ -126,7 +127,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal( 1, new CustomMeleeGoal<>( this, 1.5, false ) );
+		this.goalSelector.addGoal( 1, new CustomMeleeGoal<>( this, 1.5, true ) );
 		this.goalSelector.addGoal( 7, new WaterAvoidingRandomStrollGoal( this, 1.0 ) );
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f, 1.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );

@@ -34,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,11 +56,14 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.ATTACK_KNOCKBACK, 3.5 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.75 )
+			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5 )
 			.build();
 	}
 
-	public TankEntity( EntityType< ? extends TankEntity > type, Level world ) {
-		super( type, world );
+	public TankEntity( EntityType< ? extends TankEntity > type, Level level ) {
+		super( type, level );
+
+		this.setMaxUpStep( 1.0f );
 	}
 
 	@Override
