@@ -41,14 +41,14 @@ public class GiantEntity extends Monster {
 			.add( Attributes.ATTACK_DAMAGE, 10.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 1.0 )
-			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5 )
+			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
 			.build();
 	}
 
 	public GiantEntity( EntityType< ? extends GiantEntity > type, Level world ) {
 		super( type, world );
 
-		this.setMaxUpStep( 2.0f );
+		this.setMaxUpStep( 1.5f );
 		this.setPathfindingMalus( BlockPathTypes.LEAVES, 0.0f );
 	}
 
@@ -60,7 +60,7 @@ public class GiantEntity extends Monster {
 			this.setSecondsOnFire( 8 );
 		}
 		if( Random.nextInt( 10 ) == 0 ) {
-			LevelHelper.destroyBlocks( this, this.getBoundingBox().inflate( 0.6, 2.0, 0.6 ), ( blockPos, blockState )->{
+			LevelHelper.destroyBlocks( this, this.getBoundingBox().inflate( 0.6 ), ( blockPos, blockState )->{
 				return blockState.getBlock() instanceof LeavesBlock;
 			} );
 			LevelHelper.destroyBlocks( this, this.getBoundingBox(), ( blockPos, blockState )->{
