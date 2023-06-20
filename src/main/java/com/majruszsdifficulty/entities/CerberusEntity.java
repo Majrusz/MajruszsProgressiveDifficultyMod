@@ -162,10 +162,8 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	private boolean isValidTarget( LivingEntity entity ) {
-		UndeadArmyManager undeadArmyManager = Registries.getUndeadArmyManager();
-
-		return !undeadArmyManager.isPartOfUndeadArmy( this )
-			|| !undeadArmyManager.isPartOfUndeadArmy( entity ) && undeadArmyManager.findNearestUndeadArmy( entity.blockPosition() ) != null;
+		return !entity.getMobType().equals( MobType.UNDEAD )
+			&& !Registries.getUndeadArmyManager().isPartOfUndeadArmy( entity );
 	}
 
 	public static class Skills extends CustomSkills< SkillType > {
