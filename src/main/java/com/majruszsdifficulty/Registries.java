@@ -92,6 +92,7 @@ public class Registries {
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
 	public static final RegistryObject< EntityType< CursedArmorEntity > > CURSED_ARMOR = ENTITY_TYPES.register( "cursed_armor", CursedArmorEntity.createSupplier() );
 	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.register( "cerberus", CerberusEntity.createSupplier() );
+	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.register( "giant", GiantEntity.createSupplier() );
 
 	// Items
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
@@ -147,6 +148,7 @@ public class Registries {
 	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( TANK, 0xc1c1c1, 0x949494 ) );
 	public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.register( "cursed_armor_spawn_egg", createEggSupplier( CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
 	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.register( "cerberus_spawn_egg", createEggSupplier( CERBERUS, 0x212121, 0xe0e0e0 ) );
+	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.register( "giant_spawn_egg", createEggSupplier( GIANT, 0x00afaf, 0x799c65 ) );
 
 	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type,
 		int backgroundColor, int highlightColor
@@ -256,6 +258,7 @@ public class Registries {
 		event.put( TANK.get(), TankEntity.getAttributeMap() );
 		event.put( CURSED_ARMOR.get(), CursedArmorEntity.getAttributeMap() );
 		event.put( CERBERUS.get(), CerberusEntity.getAttributeMap() );
+		event.put( GIANT.get(), GiantEntity.getAttributeMap() );
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
@@ -263,7 +266,8 @@ public class Registries {
 		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
-		SpawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
+		SpawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CerberusEntity::checkMonsterSpawnRules );
+		SpawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
 
 		event.enqueueWork( ()->{
 			addPotionRecipe( ()->Potions.WATER, CERBERUS_FANG, ()->Potions.MUNDANE );

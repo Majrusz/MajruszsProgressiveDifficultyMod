@@ -9,6 +9,8 @@ import com.majruszsdifficulty.renderers.CerberusRenderer;
 import com.majruszsdifficulty.renderers.CreeperlingRenderer;
 import com.majruszsdifficulty.renderers.CursedArmorRenderer;
 import com.majruszsdifficulty.renderers.TankRenderer;
+import com.majruszsdifficulty.models.*;
+import com.majruszsdifficulty.renderers.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -29,11 +31,13 @@ public class RegistriesClient {
 		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.OUTER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0f ), 64, 32 ) );
 		ForgeHooksClient.registerLayerDefinition( CursedArmorRenderer.MAIN_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
 		ForgeHooksClient.registerLayerDefinition( CerberusRenderer.LAYER, CerberusModel::createBodyLayer );
+		ForgeHooksClient.registerLayerDefinition( GiantRenderer.LAYER, ()->LayerDefinition.create( GiantModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
 
 		EntityRenderers.register( Registries.CREEPERLING.get(), CreeperlingRenderer::new );
 		EntityRenderers.register( Registries.TANK.get(), TankRenderer::new );
 		EntityRenderers.register( Registries.CURSED_ARMOR.get(), CursedArmorRenderer::new );
 		EntityRenderers.register( Registries.CERBERUS.get(), CerberusRenderer::new );
+		EntityRenderers.register( Registries.GIANT.get(), GiantRenderer::new );
 
 		ItemProperties.register( Registries.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EndShardLocatorItem::calculateDistanceToEndShard );
 	}
