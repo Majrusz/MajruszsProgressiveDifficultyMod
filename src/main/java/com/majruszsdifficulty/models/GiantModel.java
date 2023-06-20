@@ -19,6 +19,6 @@ public class GiantModel< Type extends GiantEntity > extends AbstractZombieModel<
 
 	@Override
 	public void setupAnim( Type giant, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
-		super.setupAnim( giant, 0.5f * limbSwing, 0.7f * limbSwingAmount, ageInTicks, netHeadYaw, headPitch );
+		super.setupAnim( giant, 0.25f * limbSwing, 0.5f * limbSwingAmount, ageInTicks, netHeadYaw, headPitch );
 	}
 }
