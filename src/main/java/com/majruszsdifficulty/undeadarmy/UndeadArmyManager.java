@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 
@@ -46,6 +47,7 @@ public class UndeadArmyManager extends SerializableStructure {
 	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
 		return this.config.isEnabled()
 			&& this.level.getDifficulty() != Difficulty.PEACEFUL
+			&& !this.level.getGameRules().getBoolean( GameRules.RULE_DISABLE_RAIDS )
 			&& this.findNearestUndeadArmy( position ) == null
 			&& this.undeadArmies.add( this.setupNewArmy( position, direction ) );
 	}
