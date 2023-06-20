@@ -2,7 +2,7 @@ package com.majruszsdifficulty.entities;
 
 import com.mlib.Random;
 import com.mlib.effects.SoundHandler;
-import com.mlib.levels.LevelHelper;
+import com.mlib.entities.EntityHelper;
 import com.mlib.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -61,10 +61,10 @@ public class GiantEntity extends Monster {
 			this.setSecondsOnFire( 8 );
 		}
 		if( TimeHelper.hasServerSecondsPassed( 0.5 ) ) {
-			LevelHelper.destroyBlocks( this, this.getBoundingBox().inflate( 0.6 ), ( blockPos, blockState )->{
+			EntityHelper.destroyBlocks( this, this.getBoundingBox().inflate( 0.6 ), ( blockPos, blockState )->{
 				return blockState.getBlock() instanceof LeavesBlock;
 			} );
-			LevelHelper.destroyBlocks( this, this.getBoundingBox(), ( blockPos, blockState )->{
+			EntityHelper.destroyBlocks( this, this.getBoundingBox(), ( blockPos, blockState )->{
 				return blockState.getCollisionShape( this.level(), blockPos ).isEmpty();
 			} );
 		}
