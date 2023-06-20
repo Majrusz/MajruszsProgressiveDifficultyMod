@@ -161,5 +161,41 @@
     },
     "exp": 40,
     "game_stage": "EXPERT"
+  },
+  {
+    "mobs": [
+      {
+        "type": "minecraft:zombie",
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_6"
+      },
+      {
+        "type": "minecraft:skeleton",
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_6_skeleton"
+      },
+      {
+        "type": "majruszsdifficulty:tank"
+      },
+      {
+        "type": "minecraft:stray",
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_6_skeleton"
+      },
+      {
+        "type": "minecraft:husk",
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_6"
+      },
+      {
+        "type": "minecraft:wither_skeleton",
+        "equipment": "majruszsdifficulty:undead_army/equipment_wave_6_wither_skeleton"
+      },
+      {
+        "type": "majruszsdifficulty:cerberus"
+      }
+    ],
+    "boss": {
+      "type": "majruszsdifficulty:giant",
+      "equipment": "majruszsdifficulty:undead_army/equipment_wave_6"
+    },
+    "exp": 48,
+    "game_stage": "MASTER"
   }
 ]
