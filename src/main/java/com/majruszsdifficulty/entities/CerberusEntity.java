@@ -181,9 +181,6 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			double distance = Math.sqrt( distanceSquared );
 			if( distance < 3.5 && this.mob.canAttack( entity, TargetingConditions.DEFAULT ) ) {
 				Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
-				if( distance > 2.0 ) {
-					this.pushMobTowards( entity );
-				}
 				this.start( SkillType.BITE, Utility.secondsToTicks( 0.7 ) )
 					.onTick( 2, ()->this.mob.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.85f ) )
 					.onTick( 3, ()->this.mob.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.7f ) )
@@ -209,11 +206,6 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			super.tick();
 
 			this.fireballCooldownLeft = Math.max( this.fireballCooldownLeft - 1, 0 );
-		}
-
-		private void pushMobTowards( LivingEntity entity ) {
-			Vec3 direction = AnyPos.from( entity.position() ).sub( this.mob.position() ).norm().mul( 0.9 ).add( 0.0, 0.1, 0.0 ).vec3();
-			this.mob.push( direction.x, direction.y, direction.z );
 		}
 
 		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
