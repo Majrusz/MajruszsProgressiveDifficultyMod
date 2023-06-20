@@ -22,6 +22,5 @@ public class PacketHandler {
 		SerializableStructure.register( CHANNEL, 2, LootProgressData.class, LootProgressData::new );
 		SerializableStructure.register( CHANNEL, 3, BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::new );
 		SerializableStructure.register( CHANNEL, 4, CerberusEntity.SkillMessage.class, CerberusEntity.SkillMessage::new );
-		SerializableStructure.register( CHANNEL, 5, CerberusEntity.TargetMessage.class, CerberusEntity.TargetMessage::new );
 	}
 }
