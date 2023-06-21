@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.treasurebags;
 
-import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnTreasureBagOpened;
 import com.majruszsdifficulty.items.TreasureBagItem;
@@ -97,7 +96,7 @@ public class TreasureBagProgressManager extends SerializableStructure {
 
 	private void sendMessageTo( Player player ) {
 		if( player instanceof ServerPlayer serverPlayer ) {
-			PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->serverPlayer ), this.get( serverPlayer ) );
+			Registries.HELPER.sendMessage( PacketDistributor.PLAYER.with( ()->serverPlayer ), this.get( serverPlayer ) );
 		}
 	}
 

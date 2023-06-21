@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.PacketHandler;
+import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.effects.SoundHandler;
@@ -142,7 +142,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 
 	public static class Skills extends CustomSkills< SkillType > {
 		public Skills( PathfinderMob mob ) {
-			super( mob, PacketHandler.CHANNEL, SkillMessage::new );
+			super( mob, Registries.HELPER.getNetworkChannel(), SkillMessage::new );
 		}
 
 		@Override

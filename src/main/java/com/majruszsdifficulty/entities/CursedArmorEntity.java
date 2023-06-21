@@ -3,7 +3,6 @@ package com.majruszsdifficulty.entities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
@@ -126,7 +125,7 @@ public class CursedArmorEntity extends Monster {
 		this.setYHeadRot( yRot );
 		this.setYBodyRot( yRot );
 		if( this.level() instanceof ServerLevel ) {
-			Time.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level().dimension() ), new AssembleMessage( this, yRot ) ) );
+			Time.nextTick( ()->Registries.HELPER.sendMessage( PacketDistributor.DIMENSION.with( ()->this.level().dimension() ), new AssembleMessage( this, yRot ) ) );
 		}
 	}
 

@@ -33,7 +33,7 @@ public class EndermanTeleportAttack {
 	private void teleportPlayerRandomly( OnDamaged.Data data ) {
 		LivingEntity target = data.target;
 		if( LevelHelper.teleportNearby( target, data.getServerLevel(), 10.0 ) && target instanceof ServerPlayer player ) {
-			Registries.BASIC_TRIGGER.trigger( player, "enderman_teleport_attack" );
+			Registries.HELPER.triggerAchievement( player, "enderman_teleport_attack" );
 		}
 	}
 }

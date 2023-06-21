@@ -1,7 +1,6 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
@@ -230,7 +229,7 @@ public class BleedingEffect extends MobEffect {
 				entity.hurt( new DamageSource( damageType ), 1.0f );
 			}
 			if( entity instanceof ServerPlayer player ) {
-				PacketHandler.CHANNEL.send( PacketDistributor.PLAYER.with( ()->player ), new BloodMessage( player ) );
+				Registries.HELPER.sendMessage( PacketDistributor.PLAYER.with( ()->player ), new BloodMessage( player ) );
 			}
 
 			this.entityTicks.put( entity.getId(), 0 );

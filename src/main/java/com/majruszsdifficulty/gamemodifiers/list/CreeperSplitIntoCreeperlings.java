@@ -80,6 +80,6 @@ public class CreeperSplitIntoCreeperlings {
 	}
 
 	private void giveAdvancement( ServerPlayer player ) {
-		Registries.BASIC_TRIGGER.trigger( player, "encountered_creeperling" );
+		Registries.HELPER.triggerAchievement( player, "encountered_creeperling" );
 	}
 }

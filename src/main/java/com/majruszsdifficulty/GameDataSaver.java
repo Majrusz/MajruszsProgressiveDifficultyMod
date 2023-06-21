@@ -47,7 +47,7 @@ public class GameDataSaver extends SavedData {
 		public Data( ServerLevel overworld ) {
 			super( "MajruszsDifficulty" );
 
-			this.undeadArmyManager = new UndeadArmyManager( overworld, Registries.ANNOTATION_HANDLER.getInstance( Config.class ) );
+			this.undeadArmyManager = new UndeadArmyManager( overworld, Registries.HELPER.findInstance( Config.class ).orElseThrow() );
 			this.treasureBagProgressManager = new TreasureBagProgressManager();
 
 			this.define( "GameStage", GameStage::getCurrentStage, gameStage->GameStage.changeStage( gameStage, null ), GameStage::values );

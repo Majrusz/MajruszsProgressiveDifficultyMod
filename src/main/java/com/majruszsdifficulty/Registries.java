@@ -10,15 +10,15 @@ import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
+import com.majruszsdifficulty.treasurebags.data.LootProgressData;
 import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Utility;
-import com.mlib.annotations.AnnotationHandler;
+import com.mlib.config.ConfigHandler;
 import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.registries.RegistryHelper;
-import com.mlib.triggers.BasicTrigger;
+import com.mlib.modhelper.ModHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderType;
@@ -51,7 +51,7 @@ import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -63,10 +63,11 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
-
 public class Registries {
-	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
+	public static final ModHelper HELPER = ModHelper.create( MajruszsDifficulty.MOD_ID );
+
+	// Configs
+	public static final ConfigHandler SERVER_CONFIG = HELPER.createConfig( ModConfig.Type.SERVER );
 
 	static {
 		ModConfigs.init( SERVER_CONFIG, Groups.DEFAULT ).name( "GameModifiers" );
@@ -184,7 +185,6 @@ public class Registries {
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
 	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
-	public static final BasicTrigger BASIC_TRIGGER = HELPER.registerBasicTrigger();
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );
@@ -201,8 +201,14 @@ public class Registries {
 	public static final RegistryObject< CreativeModeTab > PRIMARY_TAB = CREATIVE_MODE_TABS.register( "primary", CreativeModeTabs.primary() );
 	public static final RegistryObject< CreativeModeTab > TREASURE_BAGS_TAB = CREATIVE_MODE_TABS.register( "treasure_bags", CreativeModeTabs.treasureBags() );
 
-	// Game Modifiers
-	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
+	// Network
+	static {
+		HELPER.createMessage( TankEntity.SkillMessage.class, TankEntity.SkillMessage::new );
+		HELPER.createMessage( CursedArmorEntity.AssembleMessage.class, CursedArmorEntity.AssembleMessage::new );
+		HELPER.createMessage( LootProgressData.class, LootProgressData::new );
+		HELPER.createMessage( BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::new );
+		HELPER.createMessage( CerberusEntity.SkillMessage.class, CerberusEntity.SkillMessage::new );
+	}
 
 	public static UndeadArmyManager getUndeadArmyManager() {
 		return GAME_DATA_SAVER != null ? GAME_DATA_SAVER.getUndeadArmyManager() : UndeadArmyManager.NOT_LOADED;
@@ -233,20 +239,16 @@ public class Registries {
 	}
 
 	public static void initialize() {
-		FMLJavaModLoadingContext loadingContext = FMLJavaModLoadingContext.get();
-		final IEventBus modEventBus = loadingContext.getModEventBus();
-
-		HELPER.registerAll();
+		final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener( Registries::setup );
 		modEventBus.addListener( Registries::setupClient );
 		modEventBus.addListener( Registries::setupEntities );
-		modEventBus.addListener( PacketHandler::registerPacket );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( Registries::onLoadingLevel );
 		forgeEventBus.addListener( Registries::onSavingLevel );
 
-		SERVER_CONFIG.register( ModLoadingContext.get() );
+		HELPER.register();
 	}
 
 	private static void setupClient( final FMLClientSetupEvent event ) {

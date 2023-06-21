@@ -73,7 +73,7 @@ public class SpawnPlayerZombie {
 	}
 
 	private void giveAdvancement( OnDeath.Data data ) {
-		Registries.BASIC_TRIGGER.trigger( ( ServerPlayer )data.attacker, "kill_yourself" );
+		Registries.HELPER.triggerAchievement( ( ServerPlayer )data.attacker, "kill_yourself" );
 	}
 
 	private static ItemStack getHead( Player player ) {

@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
@@ -160,7 +159,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		int fireballCooldownLeft = 0;
 
 		public Skills( PathfinderMob mob ) {
-			super( mob, PacketHandler.CHANNEL, SkillMessage::new );
+			super( mob, Registries.HELPER.getNetworkChannel(), SkillMessage::new );
 		}
 
 		@Override
