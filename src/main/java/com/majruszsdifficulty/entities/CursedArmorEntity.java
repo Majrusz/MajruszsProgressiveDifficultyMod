@@ -265,7 +265,7 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void setCustomName( OnSpawned.Data data ) {
-			data.target.setCustomName( this.name.asLiteral() );
+			data.target.setCustomName( Component.literal( this.name.get() ) );
 		}
 
 		private void giveRandomArmor( OnSpawned.Data data ) {
