@@ -16,9 +16,8 @@ import net.minecraft.world.entity.EntityType;
 @AutoInstance
 public class GameStageIncreaser {
 	static final EnumConfig< GameStage > DEFAULT_GAME_STAGE = new EnumConfig<>( GameStage.NORMAL );
-	final StageProgressConfig expertMode = new StageProgressConfig( "none", "minecraft:the_nether" );
-	final StageProgressConfig masterMode = new StageProgressConfig( "minecraft:ender_dragon", "none" );
-	final BooleanConfig enteringAnyDimensionStartsExpertMode = new BooleanConfig( true );
+	final StageProgressConfig expertMode = new StageProgressConfig( "", "{regex}.*" );
+	final StageProgressConfig masterMode = new StageProgressConfig( "minecraft:ender_dragon", "" );
 
 	public static GameStage getDefaultGameStage() {
 		return DEFAULT_GAME_STAGE.get();
@@ -27,15 +26,12 @@ public class GameStageIncreaser {
 	public GameStageIncreaser() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.GAME_STAGE )
 			.addConfig( DEFAULT_GAME_STAGE.name( "default_mode" ).comment( "Game stage set at the beginning of a new world." ) )
-			.addConfig( this.enteringAnyDimensionStartsExpertMode
-				.name( "any_dimension_expert" )
-				.comment( "Determines whether any dimension should start Expert Mode (useful for integration with other mods)." )
-			).addConfig( this.expertMode.name( "ExpertMode" ).comment( "Determines what starts the Expert Mode." ) )
+			.addConfig( this.expertMode.name( "ExpertMode" ).comment( "Determines what starts the Expert Mode." ) )
 			.addConfig( this.masterMode.name( "MasterMode" ).comment( "Determines what starts the Master Mode." ) );
 
 		OnDimensionChanged.listen( this::startExpertMode )
 			.addCondition( Condition.predicate( data->GameStage.getCurrentStage() == GameStage.NORMAL ) )
-			.addCondition( Condition.predicate( data->this.expertMode.dimensionTriggersChange( data.to.location() ) || this.enteringAnyDimensionStartsExpertMode.isEnabled() ) )
+			.addCondition( Condition.predicate( data->this.expertMode.dimensionTriggersChange( data.to.location() ) ) )
 			.insertTo( group );
 
 		OnDimensionChanged.listen( this::startMasterMode )
