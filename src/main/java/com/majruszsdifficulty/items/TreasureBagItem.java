@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
@@ -85,7 +84,10 @@ public class TreasureBagItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY, " " );
+		if( flag.isAdvanced() ) {
+			tooltip.add( Component.translatable( ITEM_TOOLTIP_TRANSLATION_KEY ) );
+			tooltip.add( Component.translatable( " " ) );
+		}
 
 		tooltip.addAll( TreasureBagProgressClient.getTextComponents( this ) );
 	}

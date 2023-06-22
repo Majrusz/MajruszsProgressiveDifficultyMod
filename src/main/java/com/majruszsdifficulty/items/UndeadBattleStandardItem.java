@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.mlib.items.ItemHelper;
 import net.minecraft.network.chat.Component;
@@ -42,6 +41,9 @@ public class UndeadBattleStandardItem extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY_1 ) );
-		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, TOOLTIP_TRANSLATION_KEY_2, TOOLTIP_TRANSLATION_KEY_3 );
+		if( flag.isAdvanced() ) {
+			tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY_2 ) );
+			tooltip.add( Component.translatable( TOOLTIP_TRANSLATION_KEY_3 ) );
+		}
 	}
 }
