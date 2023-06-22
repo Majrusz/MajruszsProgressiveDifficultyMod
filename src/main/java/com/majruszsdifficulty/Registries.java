@@ -11,7 +11,6 @@ import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
 import com.majruszsdifficulty.treasurebags.data.LootProgressData;
-import com.majruszsdifficulty.triggers.BandageTrigger;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
@@ -184,7 +183,6 @@ public class Registries {
 	// Triggers
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
-	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );

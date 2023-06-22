@@ -138,7 +138,11 @@ public class BandageItem extends Item {
 		private static void removeBleeding( ItemStack itemStack, Player player, LivingEntity target ) {
 			BleedingEffect bleeding = Registries.BLEEDING.get();
 			if( target.hasEffect( bleeding ) && player instanceof ServerPlayer serverPlayer ) {
-				Registries.BANDAGE_TRIGGER.trigger( serverPlayer, ( BandageItem )itemStack.getItem(), target.equals( serverPlayer ) );
+				if( target.equals( serverPlayer ) ) {
+					Registries.HELPER.triggerAchievement( serverPlayer, "bandage_used" );
+				} else if( itemStack.getItem() instanceof GoldenBandageItem ) {
+					Registries.HELPER.triggerAchievement( serverPlayer, "golden_bandage_used_on_others" );
+				}
 			}
 			target.removeEffect( bleeding );
 		}
