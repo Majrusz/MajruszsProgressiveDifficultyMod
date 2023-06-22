@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.effects;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
@@ -24,12 +23,9 @@ import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
@@ -43,7 +39,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -52,7 +47,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -109,17 +103,6 @@ public class BleedingEffect extends MobEffect {
 		@Override
 		public Entity getEntity() {
 			return this.damageSourceEntity;
-		}
-	}
-
-	public static class TagsProvider extends net.minecraft.data.tags.TagsProvider< DamageType > {
-		public TagsProvider( PackOutput output, CompletableFuture< HolderLookup.Provider > registries, ExistingFileHelper existingFileHelper ) {
-			super( output, net.minecraft.core.registries.Registries.DAMAGE_TYPE, registries, MajruszsDifficulty.MOD_ID, existingFileHelper );
-		}
-
-		@Override
-		protected void addTags( HolderLookup.Provider provider ) {
-			this.tag( DamageTypeTags.BYPASSES_ARMOR ).add( Registries.BLEEDING_SOURCE );
 		}
 	}
 
