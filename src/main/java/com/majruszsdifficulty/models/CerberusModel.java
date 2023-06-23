@@ -85,11 +85,11 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition body = partdefinition.addOrReplaceChild( "body", CubeListBuilder.create(), PartPose.offset( 0.0F, 27.0F, 0.0F ) );
+		PartDefinition body = partdefinition.addOrReplaceChild( "body", CubeListBuilder.create(), PartPose.offset( 0.0F, 27.0F, -1.0F ) );
 
 		PartDefinition spine = body.addOrReplaceChild( "spine", CubeListBuilder.create()
-			.texOffs( 28, 35 )
-			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 25.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( 0.0F, -25.0F, 2.0F ) );
+			.texOffs( 31, 38 )
+			.addBox( -2.0F, -2.0F, -12.0F, 4.0F, 4.0F, 22.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( 0.0F, -25.0F, 2.0F ) );
 
 		PartDefinition necks = spine.addOrReplaceChild( "necks", CubeListBuilder.create(), PartPose.offset( 0.0F, -3.0F, -10.0F ) );
 
@@ -191,11 +191,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 
 		PartDefinition chest = spine.addOrReplaceChild( "chest", CubeListBuilder.create()
 			.texOffs( 28, 0 )
-			.addBox( -7.0F, -6.5F, -5.0F, 14.0F, 8.0F, 14.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, 4.5F, -3.0F, 0.0F, 3.1416F, 0.0F ) );
-
-		PartDefinition pelvis = spine.addOrReplaceChild( "pelvis", CubeListBuilder.create()
-			.texOffs( 53, 22 )
-			.addBox( -6.0F, -4.5F, -16.0F, 12.0F, 4.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, 2.5F, -3.0F, 0.0F, 3.1416F, 0.0F ) );
+			.addBox( -7.0F, -6.5F, -5.0F, 14.0F, 8.0F, 12.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, 4.5F, -5.0F, 0.0F, 3.1416F, 0.0F ) );
 
 		PartDefinition frontLeg1 = spine.addOrReplaceChild( "frontLeg1", CubeListBuilder.create()
 			.texOffs( 28, 22 )
@@ -205,17 +201,21 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 			.texOffs( 28, 22 )
 			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 20.0F, 4.0F, new CubeDeformation( 0.1F ) ), PartPose.offset( -5.0F, 2.0F, -9.0F ) );
 
+		PartDefinition pelvis = spine.addOrReplaceChild( "pelvis", CubeListBuilder.create()
+			.texOffs( 53, 22 )
+			.addBox( -6.0F, -4.5F, -16.0F, 12.0F, 4.0F, 6.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, 2.5F, -6.0F, 0.0F, 3.1416F, 0.0F ) );
+
 		PartDefinition hindLeg1 = spine.addOrReplaceChild( "hindLeg1", CubeListBuilder.create()
 			.texOffs( 28, 22 )
-			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 20.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( 4.0F, 2.0F, 10.0F ) );
+			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 20.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( 4.0F, 2.0F, 7.0F ) );
 
 		PartDefinition hindLeg2 = spine.addOrReplaceChild( "hindLeg2", CubeListBuilder.create()
 			.texOffs( 28, 22 )
-			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 20.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( -4.0F, 2.0F, 10.0F ) );
+			.addBox( -2.0F, 0.0F, -2.0F, 4.0F, 20.0F, 4.0F, new CubeDeformation( 0.0F ) ), PartPose.offset( -4.0F, 2.0F, 7.0F ) );
 
 		PartDefinition tail = spine.addOrReplaceChild( "tail", CubeListBuilder.create()
 			.texOffs( 44, 22 )
-			.addBox( -1.0F, 0.0F, -1.0F, 2.0F, 18.0F, 2.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.0F, 13.0F, 0.3927F, 0.0F, 0.0F ) );
+			.addBox( -1.0F, 0.0F, -1.0F, 2.0F, 18.0F, 2.0F, new CubeDeformation( 0.0F ) ), PartPose.offsetAndRotation( 0.0F, -1.0F, 10.0F, 0.3927F, 0.0F, 0.0F ) );
 
 		return LayerDefinition.create( meshdefinition, 96, 64 );
 	}
@@ -237,8 +237,8 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.necks.xRot = ( float )Math.toRadians( headPitch ) + 0.0873f;
 
 		// head rotation for side heads to follow the main one
-		this.neck1.yRot = ( float )( Math.toRadians( 35.0f + netHeadYaw * ( netHeadYaw < 0.0f ? 0.15f : -0.075f ) ) );
-		this.neck3.yRot = ( float )( Math.toRadians( -35.0f + netHeadYaw * ( netHeadYaw > 0.0f ? 0.15f : -0.075f ) ) );
+		this.neck1.yRot = ( float )( Math.toRadians( 35.0f + netHeadYaw * ( netHeadYaw < 0.0f ? 0.255f : -0.075f ) + 2.0f * Math.sin( 0.1f * ageInTicks ) ) );
+		this.neck3.yRot = ( float )( Math.toRadians( -35.0f + netHeadYaw * ( netHeadYaw > 0.0f ? 0.225f : -0.075f ) - 2.0f * Math.cos( 0.1f * ageInTicks ) ) );
 
 		// jaw rotation dependent on players distance
 		float jawRotation = ( float )Math.toRadians( -1.0f * Math.sin( ageInTicks / 10.0f ) - 15.0f * Mth.clamp( 1.20f - this.getPlayerDistance( cerberus ) / 5.0f, 0.0f, 1.0f ) );
