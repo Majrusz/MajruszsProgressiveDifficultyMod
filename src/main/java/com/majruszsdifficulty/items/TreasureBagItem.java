@@ -8,6 +8,7 @@ import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
 import com.mlib.effects.SoundHandler;
 import com.mlib.items.ItemHelper;
 import com.mlib.math.Range;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -85,7 +86,7 @@ public class TreasureBagItem extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		if( flag.isAdvanced() ) {
-			tooltip.add( Component.translatable( ITEM_TOOLTIP_TRANSLATION_KEY ) );
+			tooltip.add( Component.translatable( ITEM_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY ) );
 			tooltip.add( Component.translatable( " " ) );
 		}
 
