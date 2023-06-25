@@ -42,14 +42,14 @@ public class GiantEntity extends Monster {
 			.add( Attributes.ATTACK_DAMAGE, 10.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 1.0 )
-			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
+			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 2.0 )
 			.build();
 	}
 
 	public GiantEntity( EntityType< ? extends GiantEntity > type, Level world ) {
 		super( type, world );
 
-		this.setMaxUpStep( 1.5f );
+		this.setMaxUpStep( 3.0f );
 		this.setPathfindingMalus( BlockPathTypes.LEAVES, 0.0f );
 	}
 
