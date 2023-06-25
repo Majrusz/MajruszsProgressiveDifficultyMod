@@ -70,6 +70,8 @@
   "item.majruszsdifficulty.soul_jar.mine": "%1$s prędkości kopania",
   "item.majruszsdifficulty.soul_jar.luck": "%1$s szczęścia",
   "item.majruszsdifficulty.soul_jar.swim": "%1$s prędkości pływania",
+  "item.majruszsdifficulty.sonic_boom_scroll": "Zwój fali dźwiękowej",
+  "item.majruszsdifficulty.sonic_boom_scroll.effect": "Przywołuje falę dźwiękową",
   "item.minecraft.tipped_arrow.effect.wither": "Strzała obumierania",
   "item.minecraft.potion.effect.wither": "Mikstura obumierania",
   "item.minecraft.splash_potion.effect.wither": "Miotana mikstura obumierania",

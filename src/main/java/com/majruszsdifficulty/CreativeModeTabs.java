@@ -119,7 +119,7 @@ public class CreativeModeTabs {
 
 			new ItemStack( Registries.WARDEN_TREASURE_BAG.get() ),
 			notImplemented(),
-			notImplemented(),
+			new ItemStack( Registries.SONIC_BOOM_SCROLL.get() ),
 
 			new ItemStack( Registries.WITHER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.WITHER_SWORD.get() ),

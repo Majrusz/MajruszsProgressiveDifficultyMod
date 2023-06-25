@@ -122,6 +122,7 @@ public class Registries {
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
 	public static final RegistryObject< EvokerFangScrollItem > EVOKER_FANG_SCROLL = ITEMS.register( "evoker_fang_scroll", EvokerFangScrollItem::new );
 	public static final RegistryObject< SoulJarItem > SOUL_JAR = ITEMS.register( "soul_jar", SoulJarItem::new );
+	public static final RegistryObject< SonicBoomScrollItem > SONIC_BOOM_SCROLL = ITEMS.register( "sonic_boom_scroll", SonicBoomScrollItem::new );
 
 	// Potions
 	public static final RegistryObject< Potion > WITHER_POTION = POTIONS.register( "wither", ()->new Potion( new MobEffectInstance( MobEffects.WITHER, Utility.secondsToTicks( 40.0 ) ) ) );

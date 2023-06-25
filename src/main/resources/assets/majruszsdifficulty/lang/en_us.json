@@ -70,6 +70,8 @@
   "item.majruszsdifficulty.soul_jar.mine": "%1$s Mine Speed",
   "item.majruszsdifficulty.soul_jar.luck": "%1$s Luck",
   "item.majruszsdifficulty.soul_jar.swim": "%1$s Swim Speed",
+  "item.majruszsdifficulty.sonic_boom_scroll": "Scroll of Sonic Boom",
+  "item.majruszsdifficulty.sonic_boom_scroll.effect": "Summons Sonic Boom",
   "entity.minecraft.sniffer": "Sniffer",
   "item.minecraft.tipped_arrow.effect.wither": "Arrow of Wither",
   "item.minecraft.potion.effect.wither": "Potion of Wither",
