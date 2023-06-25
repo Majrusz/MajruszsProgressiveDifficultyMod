@@ -6,11 +6,8 @@ import com.mlib.effects.SoundHandler;
 import com.mlib.items.ItemHelper;
 import com.mlib.time.TimeHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -24,8 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IArmPoseTransformer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -67,13 +62,6 @@ public abstract class ScrollItem extends Item {
 	@Override
 	public int getUseDuration( ItemStack itemStack ) {
 		return Utility.secondsToTicks( 3.0 );
-	}
-
-	@Override
-	public void appendHoverText( ItemStack itemStack, @Nullable Level level, List< Component > components, TooltipFlag flag ) {
-		components.add( CommonComponents.EMPTY );
-		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );
-		components.add( this.getEffectTooltip() );
 	}
 
 	@Override
@@ -133,8 +121,6 @@ public abstract class ScrollItem extends Item {
 			ItemHelper.addCooldown( player, ticks, itemStack.getItem() );
 		}
 	}
-
-	protected abstract Component getEffectTooltip();
 
 	protected abstract SoundEvent getPrepareSound();
 

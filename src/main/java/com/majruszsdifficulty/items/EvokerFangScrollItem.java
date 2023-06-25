@@ -1,10 +1,12 @@
 package com.majruszsdifficulty.items;
 
+import com.majruszsdifficulty.Registries;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.data.SerializableHelper;
 import com.mlib.data.SerializableStructure;
 import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
 import com.mlib.gamemodifiers.contexts.OnPreDamaged;
 import com.mlib.levels.LevelHelper;
 import com.mlib.math.AnyPos;
@@ -14,6 +16,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.item.ItemStack;
@@ -24,23 +28,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EvokerFangScrollItem extends ScrollItem {
+	public static int ATTACK_DAMAGE = 12;
+	public static Range< Integer > ATTACK_RANGE = new Range<>( 8, 20 );
+
 	@Override
 	protected void useScroll( ItemStack itemStack, Level level, LivingEntity entity, float useRatio ) {
 		super.useScroll( itemStack, level, entity, useRatio );
 
 		double rotation = Math.toRadians( entity.getYRot() ) - Math.PI / 2.0;
-		this.getAttackPattern( entity, 8 + ( int )( useRatio * 12 ) )
+		this.getAttackPattern( entity, ( int )Mth.lerp( useRatio, ATTACK_RANGE.from, ATTACK_RANGE.to ) )
 			.forEach( spawnPoint->{
 				EvokerFangs evokerFangs = new EvokerFangs( level, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z, ( float )rotation, spawnPoint.cooldown, entity );
-				SerializableHelper.modify( DamageInfo::new, evokerFangs.getPersistentData(), damageInfo->damageInfo.extraDamage = 4 );
+				SerializableHelper.modify( DamageInfo::new, evokerFangs.getPersistentData(), damageInfo->damageInfo.extraDamage = ( int )( ATTACK_DAMAGE - 6.0f ) );
 
 				level.addFreshEntity( evokerFangs );
 			} );
-	}
-
-	@Override
-	protected Component getEffectTooltip() {
-		return Component.translatable( "item.majruszsdifficulty.evoker_fang_scroll.effect" ).withStyle( ChatFormatting.BLUE );
 	}
 
 	@Override
@@ -58,8 +60,8 @@ public class EvokerFangScrollItem extends ScrollItem {
 		AnyRot lookRotation = EntityHelper.getLookRotation( entity );
 		for( int x = 0; x <= attackLength; ++x ) {
 			for( int z = -1; z <= 1; ++z ) {
-				int cooldown = Math.abs( x ) * 2 + 8;
-				Vec3 position = AnyPos.from( entity.position() ).floor().add( AnyPos.from( x + 1, 0, z ).rot( lookRotation ).round() ).vec3();
+				int cooldown = Math.abs( x ) + 4;
+				Vec3 position = AnyPos.from( entity.position() ).floor().add( AnyPos.from( x, 0, z ).rot( lookRotation ).round() ).vec3();
 				LevelHelper.findBlockPosOnGround( entity.level(), position.x, new Range<>( position.y - 3, position.y + 3 ), position.z )
 					.ifPresent( blockPos->spawnPoints.add( new SpawnPoint( AnyPos.from( blockPos ).add( 0.5, 0.0, 0.5 ).vec3(), cooldown ) ) );
 			}
@@ -83,6 +85,22 @@ public class EvokerFangScrollItem extends ScrollItem {
 			DamageInfo damageInfo = SerializableHelper.read( DamageInfo::new, data.source.getDirectEntity().getPersistentData() );
 
 			data.extraDamage += damageInfo.extraDamage;
+		}
+	}
+
+	@AutoInstance
+	public static class Tooltip {
+		public Tooltip() {
+			OnItemAttributeTooltip.listen( this::addSpellInfo )
+				.addCondition( Condition.predicate( data->data.itemStack.is( Registries.EVOKER_FANG_SCROLL.get() ) ) );
+		}
+
+		private void addSpellInfo( OnItemAttributeTooltip.Data data ) {
+			List.of(
+				Component.translatable( "majruszsdifficulty.scrolls.attack_damage", ATTACK_DAMAGE ).withStyle( ChatFormatting.DARK_GREEN ),
+				Component.translatable( "majruszsdifficulty.scrolls.attack_range", "%d-%d".formatted( ATTACK_RANGE.from, ATTACK_RANGE.to ) )
+					.withStyle( ChatFormatting.DARK_GREEN )
+			).forEach( component->data.add( EquipmentSlot.MAINHAND, component ) );
 		}
 	}
 
