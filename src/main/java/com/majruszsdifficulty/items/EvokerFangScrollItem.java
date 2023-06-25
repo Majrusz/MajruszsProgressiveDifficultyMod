@@ -29,12 +29,10 @@ public class EvokerFangScrollItem extends ScrollItem {
 		super.useScroll( itemStack, level, entity, useRatio );
 
 		double rotation = Math.toRadians( entity.getYRot() ) - Math.PI / 2.0;
-		this.getAttackPattern( entity )
+		this.getAttackPattern( entity, 8 + ( int )( useRatio * 12 ) )
 			.forEach( spawnPoint->{
 				EvokerFangs evokerFangs = new EvokerFangs( level, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z, ( float )rotation, spawnPoint.cooldown, entity );
-				SerializableHelper.modify( DamageInfo::new, evokerFangs.getPersistentData(), damageInfo->{
-					damageInfo.extraDamage = ( int )( useRatio * 6.0f );
-				} );
+				SerializableHelper.modify( DamageInfo::new, evokerFangs.getPersistentData(), damageInfo->damageInfo.extraDamage = 4 );
 
 				level.addFreshEntity( evokerFangs );
 			} );
@@ -55,10 +53,10 @@ public class EvokerFangScrollItem extends ScrollItem {
 		return SoundEvents.EVOKER_CAST_SPELL;
 	}
 
-	private List< SpawnPoint > getAttackPattern( LivingEntity entity ) {
+	private List< SpawnPoint > getAttackPattern( LivingEntity entity, int attackLength ) {
 		List< SpawnPoint > spawnPoints = new ArrayList<>();
 		AnyRot lookRotation = EntityHelper.getLookRotation( entity );
-		for( int x = 0; x <= 16; ++x ) {
+		for( int x = 0; x <= attackLength; ++x ) {
 			for( int z = -1; z <= 1; ++z ) {
 				int cooldown = Math.abs( x ) * 2 + 8;
 				Vec3 position = AnyPos.from( entity.position() ).floor().add( AnyPos.from( x + 1, 0, z ).rot( lookRotation ).round() ).vec3();

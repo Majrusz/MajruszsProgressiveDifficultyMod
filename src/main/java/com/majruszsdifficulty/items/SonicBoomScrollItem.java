@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.items;
 
-import com.mlib.Utility;
 import com.mlib.entities.EntityHelper;
 import com.mlib.math.AnyPos;
 import net.minecraft.ChatFormatting;
@@ -32,7 +31,7 @@ public class SonicBoomScrollItem extends ScrollItem {
 				.forEach( target->{
 					Vec3 knockbackDirection = direction.mul( -1.0, 0.0, -1.0 ).vec3();
 
-					target.hurt( level.damageSources().sonicBoom( entity ), 12.0f );
+					target.hurt( level.damageSources().sonicBoom( entity ), 14.0f );
 					target.knockback( 1.0, knockbackDirection.x, knockbackDirection.z );
 				} );
 		}

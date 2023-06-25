@@ -50,7 +50,7 @@ public abstract class ScrollItem extends Item {
 
 	@Override
 	public void releaseUsing( ItemStack itemStack, Level level, LivingEntity entity, int ticksLeft ) {
-		if( ( this.getUseDuration( itemStack ) - ticksLeft ) < 10 ) {
+		if( ( this.getUseDuration( itemStack ) - ticksLeft ) < 20 ) {
 			this.disableItem( itemStack, entity, Utility.secondsToTicks( 1.0 ) );
 			return;
 		}
