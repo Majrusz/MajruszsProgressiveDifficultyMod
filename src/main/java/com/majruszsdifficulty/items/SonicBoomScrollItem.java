@@ -43,7 +43,7 @@ public class SonicBoomScrollItem extends ScrollItem {
 				.forEach( target->{
 					Vec3 knockbackDirection = direction.mul( -1.0, 0.0, -1.0 ).vec3();
 
-					target.hurt( level.damageSources().sonicBoom( entity ), ATTACK_DAMAGE );
+					target.hurt( level.damageSources().indirectMagic( entity, entity ), ATTACK_DAMAGE );
 					target.knockback( 1.0, knockbackDirection.x, knockbackDirection.z );
 				} );
 		}
