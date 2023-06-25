@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.items;
 
+import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
 import com.mlib.math.AnyPos;
 import net.minecraft.ChatFormatting;
@@ -26,7 +27,7 @@ public class SonicBoomScrollItem extends ScrollItem {
 		for( int i = 0; i < 16 + ( int )( 32 * useRatio ); ++i ) {
 			Vec3 position = direction.mul( i ).add( entity.getEyePosition( 0.75f ) ).vec3();
 
-			serverLevel.sendParticles( ParticleTypes.SONIC_BOOM, position.x, position.y, position.z, 1, 0.0, 0.0, 0.0, 0.0 );
+			ParticleHandler.SONIC_BOOM.spawn( serverLevel, position, 1 );
 			EntityHelper.getEntitiesInBox( LivingEntity.class, serverLevel, position, 2.0, target->!target.equals( entity ) )
 				.forEach( target->{
 					Vec3 knockbackDirection = direction.mul( -1.0, 0.0, -1.0 ).vec3();
