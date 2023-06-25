@@ -36,7 +36,7 @@ public abstract class ScrollItem extends Item {
 
 	@Override
 	public InteractionResultHolder< ItemStack > use( Level level, Player player, InteractionHand hand ) {
-		this.playSound( this::getCastSound, level, player );
+		this.playSound( this::getPrepareSound, level, player, 1.0f );
 
 		return ItemUtils.startUsingInstantly( level, player, hand );
 	}
@@ -120,12 +120,12 @@ public abstract class ScrollItem extends Item {
 	}
 
 	protected void useScroll( ItemStack itemStack, Level level, LivingEntity entity, float useRatio ) {
-		this.disableItem( itemStack, entity, Utility.secondsToTicks( 8.0 ) );
-		this.playSound( this::getPrepareSound, level, entity );
+		this.disableItem( itemStack, entity, Utility.secondsToTicks( 12.0 ) );
+		this.playSound( this::getCastSound, level, entity, 2.0f );
 	}
 
-	protected void playSound( Supplier< SoundEvent > sound, Level level, LivingEntity entity ) {
-		new SoundHandler( sound.get(), SoundSource.PLAYERS ).play( level, entity.position() );
+	protected void playSound( Supplier< SoundEvent > sound, Level level, LivingEntity entity, float volumeScale ) {
+		new SoundHandler( sound.get(), SoundSource.PLAYERS, SoundHandler.randomized( volumeScale ) ).play( level, entity.position() );
 	}
 
 	protected void disableItem( ItemStack itemStack, LivingEntity entity, int ticks ) {
