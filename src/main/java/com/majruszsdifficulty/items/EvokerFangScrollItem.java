@@ -3,10 +3,12 @@ package com.majruszsdifficulty.items;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.data.SerializableHelper;
 import com.mlib.data.SerializableStructure;
+import com.mlib.entities.EntityHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnPreDamaged;
 import com.mlib.levels.LevelHelper;
 import com.mlib.math.AnyPos;
+import com.mlib.math.AnyRot;
 import com.mlib.math.Range;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -26,8 +28,8 @@ public class EvokerFangScrollItem extends ScrollItem {
 	protected void useScroll( ItemStack itemStack, Level level, LivingEntity entity, float useRatio ) {
 		super.useScroll( itemStack, level, entity, useRatio );
 
-		double rotation = Math.toRadians( entity.getYRot() ) + Math.PI / 2.0;
-		this.getAttackPattern( entity, rotation )
+		double rotation = Math.toRadians( entity.getYRot() ) - Math.PI / 2.0;
+		this.getAttackPattern( entity )
 			.forEach( spawnPoint->{
 				EvokerFangs evokerFangs = new EvokerFangs( level, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z, ( float )rotation, spawnPoint.cooldown, entity );
 				SerializableHelper.modify( DamageInfo::new, evokerFangs.getPersistentData(), damageInfo->{
@@ -53,12 +55,13 @@ public class EvokerFangScrollItem extends ScrollItem {
 		return SoundEvents.EVOKER_CAST_SPELL;
 	}
 
-	private List< SpawnPoint > getAttackPattern( LivingEntity entity, double rotation ) {
+	private List< SpawnPoint > getAttackPattern( LivingEntity entity ) {
 		List< SpawnPoint > spawnPoints = new ArrayList<>();
+		AnyRot lookRotation = EntityHelper.getLookRotation( entity );
 		for( int x = 0; x <= 16; ++x ) {
 			for( int z = -1; z <= 1; ++z ) {
 				int cooldown = Math.abs( x ) * 2 + 8;
-				Vec3 position = AnyPos.from( entity.position() ).floor().add( AnyPos.from( x + 1, 0, z ).rot2d( rotation ).round() ).vec3();
+				Vec3 position = AnyPos.from( entity.position() ).floor().add( AnyPos.from( x + 1, 0, z ).rot( lookRotation ).round() ).vec3();
 				LevelHelper.findBlockPosOnGround( entity.level(), position.x, new Range<>( position.y - 3, position.y + 3 ), position.z )
 					.ifPresent( blockPos->spawnPoints.add( new SpawnPoint( AnyPos.from( blockPos ).add( 0.5, 0.0, 0.5 ).vec3(), cooldown ) ) );
 			}
