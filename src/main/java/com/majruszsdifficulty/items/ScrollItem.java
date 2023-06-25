@@ -25,6 +25,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class ScrollItem extends Item {
+	public static final int MIN_DURATION = Utility.secondsToTicks( 1.0 );
+
 	public ScrollItem() {
 		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 1 ) );
 	}
@@ -45,12 +47,12 @@ public abstract class ScrollItem extends Item {
 
 	@Override
 	public void releaseUsing( ItemStack itemStack, Level level, LivingEntity entity, int ticksLeft ) {
-		if( ( this.getUseDuration( itemStack ) - ticksLeft ) < 20 ) {
+		if( ( this.getUseDuration( itemStack ) - ticksLeft ) < MIN_DURATION ) {
 			this.disableItem( itemStack, entity, Utility.secondsToTicks( 1.0 ) );
 			return;
 		}
 
-		float useRatio = Mth.clamp( 1.0f - ( float )ticksLeft / this.getUseDuration( itemStack ), 0.0f, 1.0f );
+		float useRatio = Mth.clamp( 1.0f - ( float )ticksLeft / ( this.getUseDuration( itemStack ) - MIN_DURATION ), 0.0f, 1.0f );
 		this.useScroll( itemStack, level, entity, useRatio );
 	}
 
@@ -108,7 +110,7 @@ public abstract class ScrollItem extends Item {
 	}
 
 	protected void useScroll( ItemStack itemStack, Level level, LivingEntity entity, float useRatio ) {
-		this.disableItem( itemStack, entity, Utility.secondsToTicks( 12.0 ) );
+		this.disableItem( itemStack, entity, Utility.secondsToTicks( 16.0 ) );
 		this.playSound( this::getCastSound, level, entity, 2.0f );
 	}
 
