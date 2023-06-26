@@ -18,6 +18,7 @@ import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Stray;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class UndeadArmyPatrol {
 			.addCondition( CustomConditions.isNotPartOfUndeadArmy( data->data.target ) )
 			.addCondition( CustomConditions.isNotNearUndeadArmy( data->data.target ) )
 			.addCondition( Condition.isServer() )
+			.addCondition( Condition.isLevel( Level.OVERWORLD ) )
 			.addCondition( Condition.excludable() )
 			.addCondition( OnSpawned.isNotLoadedFromDisk() )
 			.addCondition( OnSpawned.is( Zombie.class, Skeleton.class, Husk.class, Stray.class ) )
