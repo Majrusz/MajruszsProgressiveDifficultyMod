@@ -21,9 +21,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 public class MobsSpawnStronger {
 	static final AttributeHandler MAX_HEALTH_ATTRIBUTE = new AttributeHandler( "ba9de909-4a9e-43da-9d14-fbcbc2403316", "ProgressiveDifficultyHealthBonus", Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE );
 	static final AttributeHandler DAMAGE_ATTRIBUTE = new AttributeHandler( "053d92c8-ccb5-4b95-9add-c31aca144177", "ProgressiveDifficultyDamageBonus", Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE );
-	final GameStageDoubleConfig healthBonus = new GameStageDoubleConfig( 0.0, 0.15, 0.3, new Range<>( 0.0, 10.0 ) );
-	final GameStageDoubleConfig damageBonus = new GameStageDoubleConfig( 0.0, 0.15, 0.3, new Range<>( 0.0, 10.0 ) );
-	final GameStageDoubleConfig nightMultiplier = new GameStageDoubleConfig( 2.0, 2.0, 2.0, new Range<>( 1.0, 10.0 ) );
+	final GameStageDoubleConfig healthBonus = new GameStageDoubleConfig( 0.0, 0.1, 0.2, new Range<>( 0.0, 10.0 ) );
+	final GameStageDoubleConfig damageBonus = new GameStageDoubleConfig( 0.0, 0.1, 0.2, new Range<>( 0.0, 10.0 ) );
+	final GameStageDoubleConfig nightMultiplier = new GameStageDoubleConfig( 1.5, 1.5, 1.5, new Range<>( 1.0, 10.0 ) );
 	final StringListConfig excludedMobs = new StringListConfig();
 	final StringListConfig excludedDimensions = new StringListConfig();
 
