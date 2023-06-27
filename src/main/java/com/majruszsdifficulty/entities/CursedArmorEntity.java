@@ -218,7 +218,9 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
-			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.getLevel(), this.getSpawnPosition( data ) );
+			CursedArmorEntity cursedArmor = EntityHelper.createSpawner( Registries.CURSED_ARMOR, data.getLevel() )
+				.position( this.getSpawnPosition( data ) )
+				.spawn();
 			if( cursedArmor != null ) {
 				float yRot = BlockHelper.getBlockState( data.getLevel(), data.origin )
 					.getValue( ChestBlock.FACING )
