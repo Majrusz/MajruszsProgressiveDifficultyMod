@@ -1,9 +1,16 @@
 package com.majruszsdifficulty.items;
 
+import com.majruszsdifficulty.Registries;
+import com.mlib.annotations.AutoInstance;
+import com.mlib.config.ConfigGroup;
+import com.mlib.gamemodifiers.Condition;
+import com.mlib.gamemodifiers.ModConfigs;
+import com.mlib.gamemodifiers.contexts.OnLoot;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.SmithingTemplateItem;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 import java.util.List;
 
@@ -30,5 +37,25 @@ public class EnderiumSmithingTemplateItem extends SmithingTemplateItem {
 				new ResourceLocation( "item/empty_slot_ingot" )
 			)
 		);
+	}
+
+	@AutoInstance
+	public static class AddToEndCity {
+		static final ResourceLocation ID = Registries.getLocation( "gameplay/enderium_upgrade_smithing_template" );
+
+		public AddToEndCity() {
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
+				.name( "EnderiumUpgradeSmithingTemplate" )
+				.comment( "Determines where Enderium Upgrade can be found." );
+
+			OnLoot.listen( this::addToChest )
+				.addCondition( Condition.isServer() )
+				.addCondition( OnLoot.is( BuiltInLootTables.END_CITY_TREASURE ) )
+				.insertTo( group );
+		}
+
+		private void addToChest( OnLoot.Data data ) {
+			data.addAsChestLoot( ID );
+		}
 	}
 }
