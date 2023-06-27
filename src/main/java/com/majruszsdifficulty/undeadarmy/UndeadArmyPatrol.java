@@ -25,7 +25,7 @@ import java.util.List;
 @AutoInstance
 public class UndeadArmyPatrol {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
-		()->Random.nextRandom( List.of( EntityType.ZOMBIE, EntityType.HUSK ) ),
+		()->Random.nextRandom( List.of( EntityType.ZOMBIE, EntityType.HUSK, EntityType.SKELETON, EntityType.STRAY ) ),
 		new Range<>( 2, 4 ),
 		Registries.getLocation( "undead_army/equipment_wave_3" ),
 		Registries.getLocation( "undead_army/equipment_wave_2" )
