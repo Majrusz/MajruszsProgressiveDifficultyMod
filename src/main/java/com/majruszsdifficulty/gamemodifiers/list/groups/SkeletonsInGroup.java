@@ -14,8 +14,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Skeleton;
 
+import java.util.function.Supplier;
+
 @AutoInstance
-public class SkeletonsInGroup {
+public class SkeletonsInGroup implements Supplier< MobGroupConfig > {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
 		()->EntityType.SKELETON,
 		new Range<>( 1, 3 ),
@@ -39,6 +41,11 @@ public class SkeletonsInGroup {
 			.addCondition( OnSpawned.is( Skeleton.class ) )
 			.addConfig( this.mobGroups.name( "Skeletons" ) )
 			.insertTo( group );
+	}
+
+	@Override
+	public MobGroupConfig get() {
+		return this.mobGroups;
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {

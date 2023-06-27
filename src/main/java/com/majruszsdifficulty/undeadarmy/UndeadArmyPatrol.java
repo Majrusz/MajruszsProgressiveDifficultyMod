@@ -21,9 +21,10 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @AutoInstance
-public class UndeadArmyPatrol {
+public class UndeadArmyPatrol implements Supplier< MobGroupConfig > {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
 		()->Random.nextRandom( List.of( EntityType.ZOMBIE, EntityType.HUSK, EntityType.SKELETON, EntityType.STRAY ) ),
 		new Range<>( 2, 4 ),
@@ -49,6 +50,11 @@ public class UndeadArmyPatrol {
 			.addCondition( OnSpawned.is( Zombie.class, Skeleton.class, Husk.class, Stray.class ) )
 			.addConfigs( this.mobGroups.name( "Undead" ) )
 			.insertTo( group );
+	}
+
+	@Override
+	public MobGroupConfig get() {
+		return this.mobGroups;
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {

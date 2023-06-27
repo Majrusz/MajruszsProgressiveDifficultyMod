@@ -14,8 +14,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 
+import java.util.function.Supplier;
+
 @AutoInstance
-public class PiglinsInGroup {
+public class PiglinsInGroup implements Supplier< MobGroupConfig > {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
 		()->EntityType.PIGLIN,
 		new Range<>( 1, 3 ),
@@ -38,6 +40,11 @@ public class PiglinsInGroup {
 			.addCondition( OnSpawned.is( Piglin.class ) )
 			.addConfig( this.mobGroups.name( "Piglins" ) )
 			.insertTo( group );
+	}
+
+	@Override
+	public MobGroupConfig get() {
+		return this.mobGroups;
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {
