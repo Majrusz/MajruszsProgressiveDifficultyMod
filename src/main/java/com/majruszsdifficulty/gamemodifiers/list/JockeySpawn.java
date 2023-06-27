@@ -31,7 +31,7 @@ public class JockeySpawn {
 	}
 
 	private void spawnSkeletonOnSpider( OnSpawned.Data data ) {
-		Skeleton skeleton = EntityHelper.spawn( EntityType.SKELETON, data.getServerLevel(), data.target.position() );
+		Skeleton skeleton = EntityHelper.createSpawner( EntityType.SKELETON, data.getServerLevel() ).position( data.target.position() ).spawn();
 		if( skeleton != null ) {
 			skeleton.startRiding( data.target );
 		}
