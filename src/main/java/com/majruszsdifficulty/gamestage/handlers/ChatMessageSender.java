@@ -21,7 +21,7 @@ public class ChatMessageSender {
 	final Supplier< Messages > messages;
 
 	public ChatMessageSender() {
-		this.messages = JsonListener.add( "game_stages", Registries.getLocation( "messages" ), Messages.class, Messages::new );
+		this.messages = JsonListener.add( "custom", Registries.getLocation( "game_stage_messages" ), Messages.class, Messages::new );
 
 		OnGameStageChange.listen( this::sendMessage )
 			.addCondition( Condition.predicate( data->!data.isLoadedFromDisk() ) )

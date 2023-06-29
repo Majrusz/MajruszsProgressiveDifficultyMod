@@ -64,7 +64,7 @@ public class Config {
 			.addConfig( this.killRequirementFirst.name( "kill_requirement_first" )
 				.comment( "Required amount of killed undead to start the first Undead Army." ) );
 
-		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
+		this.wavesDef = JsonListener.add( "custom", Registries.getLocation( "undead_army_waves" ), WavesDef.class, WavesDef::new );
 
 		OnServerTick.listen( data->Registries.getUndeadArmyManager().tick() )
 			.addCondition( Condition.isEndPhase() )
