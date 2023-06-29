@@ -1,23 +1,21 @@
-package com.majruszsdifficulty.gamemodifiers.list;
+package com.majruszsdifficulty.gamemodifiers.list.bleeding;
 
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
+import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 
 @AutoInstance
 public class CactusBleeding {
 	public CactusBleeding() {
-		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
-			.name( "CactusBleeding" )
-			.comment( "Cactus damage may inflict bleeding." );
+		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.BLEEDING )
+			.name( "Cactus" )
+			.comment( "Touching cactus may inflict bleeding." );
 
 		OnBleedingCheck.listen( OnBleedingCheck.Data::trigger )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
@@ -25,7 +23,7 @@ public class CactusBleeding {
 			.addCondition( Condition.excludable() )
 			.addCondition( Condition.isLivingBeing( data->data.target ) )
 			.addCondition( Condition.predicate( data->data.source.is( DamageTypes.CACTUS ) ) )
-			.addCondition( Condition.predicate( data->data.source.getDirectEntity() == data.attacker ) )
+			.addCondition( Condition.predicate( OnBleedingCheck.Data::isDirect ) )
 			.insertTo( group );
 	}
 }
