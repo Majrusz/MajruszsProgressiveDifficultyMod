@@ -3,6 +3,7 @@ package com.majruszsdifficulty.effects;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
+import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingTooltip;
 import com.majruszsdifficulty.gui.BleedingGui;
 import com.mlib.EquipmentSlots;
 import com.mlib.Random;
@@ -175,6 +176,10 @@ public class BleedingEffect extends MobEffect {
 				.addCondition( Condition.predicate( data->BleedingEffect.isEnabled() ) )
 				.insertTo( group );
 
+			OnItemAttributeTooltip.listen( this::addCustomTooltip )
+				.addCondition( Condition.predicate( data->BleedingEffect.isEnabled() ) )
+				.insertTo( group );
+
 			GET_AMPLIFIER = this.effect::getAmplifier;
 		}
 
@@ -250,6 +255,10 @@ public class BleedingEffect extends MobEffect {
 				String multiplier = TextHelper.minPrecision( GET_ARMOR_MULTIPLIER.apply( slot ) );
 				data.add( slot, Component.translatable( ATTRIBUTE_ID, multiplier ).withStyle( ChatFormatting.BLUE ) );
 			}
+		}
+
+		private void addCustomTooltip( OnItemAttributeTooltip.Data data ) {
+			OnBleedingTooltip.dispatch( data.itemStack ).addAll( data );
 		}
 	}
 
