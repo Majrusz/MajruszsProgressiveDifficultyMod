@@ -1,15 +1,8 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.items.EndShardLocatorItem;
-import com.majruszsdifficulty.models.CerberusModel;
-import com.majruszsdifficulty.models.CreeperlingModel;
-import com.majruszsdifficulty.models.CursedArmorModel;
-import com.majruszsdifficulty.models.TankModel;
-import com.majruszsdifficulty.renderers.CerberusRenderer;
-import com.majruszsdifficulty.renderers.CreeperlingRenderer;
-import com.majruszsdifficulty.renderers.CursedArmorRenderer;
-import com.majruszsdifficulty.renderers.TankRenderer;
 import com.majruszsdifficulty.models.*;
+import com.majruszsdifficulty.particles.BloodParticle;
 import com.majruszsdifficulty.renderers.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -20,9 +13,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 @Deprecated( forRemoval = true )
 @OnlyIn( Dist.CLIENT )
+@Mod.EventBusSubscriber( modid = MajruszsDifficulty.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT )
 public class RegistriesClient {
 	public static void setup() {
 		ForgeHooksClient.registerLayerDefinition( CreeperlingRenderer.LAYER, ()->CreeperlingModel.createBodyLayer( CubeDeformation.NONE ) );
@@ -40,5 +37,11 @@ public class RegistriesClient {
 		EntityRenderers.register( Registries.GIANT.get(), GiantRenderer::new );
 
 		ItemProperties.register( Registries.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EndShardLocatorItem::calculateDistanceToEndShard );
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	@SubscribeEvent
+	public static void registerParticles( RegisterParticleProvidersEvent event ) {
+		event.registerSpriteSet( Registries.BLOOD.get(), BloodParticle.Factory::new );
 	}
 }
