@@ -27,6 +27,10 @@ public class OnBleedingCheck {
 			this.isTriggered = true;
 		}
 
+		public void cancel() {
+			this.isTriggered = false;
+		}
+
 		public boolean isEffectTriggered() {
 			return this.isTriggered;
 		}

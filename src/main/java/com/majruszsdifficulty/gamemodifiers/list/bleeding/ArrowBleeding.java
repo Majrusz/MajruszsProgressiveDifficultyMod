@@ -1,10 +1,8 @@
 package com.majruszsdifficulty.gamemodifiers.list.bleeding;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingTooltip;
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
@@ -28,7 +26,6 @@ public class ArrowBleeding {
 			.comment( "Arrows may inflict bleeding." );
 
 		OnBleedingCheck.listen( OnBleedingCheck.Data::trigger )
-			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
 			.addCondition( Condition.chanceCRD( this.chance, false ) )
 			.addCondition( Condition.excludable( this.availability ) )
 			.addCondition( Condition.isLivingBeing( data->data.target ) )
@@ -42,6 +39,6 @@ public class ArrowBleeding {
 	}
 
 	private void addTooltip( OnBleedingTooltip.Data data ) {
-		data.add( this.chance.getOrDefault() );
+		data.addItem( this.chance.getOrDefault() );
 	}
 }

@@ -1,9 +1,7 @@
 package com.majruszsdifficulty.gamemodifiers.list.bleeding;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.annotations.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.gamemodifiers.Condition;
@@ -21,7 +19,6 @@ public class BiteBleeding {
 			.comment( "Wolves, zombies, spiders, and animals from other mods may inflict bleeding." );
 
 		OnBleedingCheck.listen( OnBleedingCheck.Data::trigger )
-			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
 			.addCondition( Condition.chanceCRD( 0.5, false ) )
 			.addCondition( Condition.excludable() )
 			.addCondition( Condition.isLivingBeing( data->data.target ) )

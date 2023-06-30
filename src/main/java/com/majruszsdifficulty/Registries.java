@@ -6,6 +6,8 @@ import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.entities.*;
+import com.majruszsdifficulty.gamemodifiers.list.bleeding.ArmorBleeding;
+import com.majruszsdifficulty.gamemodifiers.list.bleeding.ToolsBleeding;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
@@ -74,6 +76,7 @@ public class Registries {
 		ModConfigs.init( SERVER_CONFIG, Groups.GAME_STAGE ).name( "GameStage" );
 		ModConfigs.init( SERVER_CONFIG, Groups.TREASURE_BAG ).name( "TreasureBag" );
 		ModConfigs.init( SERVER_CONFIG, Groups.MOBS ).name( "Mobs" );
+		ModConfigs.init( SERVER_CONFIG, Groups.BLEEDING ).name( "Bleeding" );
 	}
 
 	// Groups
@@ -207,6 +210,8 @@ public class Registries {
 		HELPER.createMessage( LootProgressData.class, LootProgressData::new );
 		HELPER.createMessage( BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::new );
 		HELPER.createMessage( CerberusEntity.SkillMessage.class, CerberusEntity.SkillMessage::new );
+		HELPER.createMessage( ToolsBleeding.ToolsDef.class, ToolsBleeding.ToolsDef::new );
+		HELPER.createMessage( ArmorBleeding.ArmorsDef.class, ArmorBleeding.ArmorsDef::new );
 	}
 
 	public static UndeadArmyManager getUndeadArmyManager() {
@@ -334,5 +339,6 @@ public class Registries {
 		public static final String GAME_STAGE = Registries.getLocationString( "game_stage" );
 		public static final String TREASURE_BAG = Registries.getLocationString( "treasure_bag" );
 		public static final String MOBS = Registries.getLocationString( "mobs" );
+		public static final String BLEEDING = Registries.getLocationString( "bleeding" );
 	}
 }

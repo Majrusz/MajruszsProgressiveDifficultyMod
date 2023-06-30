@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
-import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.gamemodifiers.Context;
 import com.mlib.gamemodifiers.Contexts;
 import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
@@ -17,22 +16,27 @@ public class OnBleedingTooltip {
 		return Contexts.get( Data.class ).add( consumer );
 	}
 
-	public static Data dispatch( ItemStack itemStack ) {
-		return Contexts.get( Data.class ).dispatch( new Data( itemStack ) );
+	public static Data dispatch( ItemStack itemStack, int amplifier ) {
+		return Contexts.get( Data.class ).dispatch( new Data( itemStack, amplifier ) );
 	}
 
 	public static class Data extends OnItemAttributeTooltip.Data {
-		public Data( ItemStack itemStack ) {
+		final int amplifier;
+
+		public Data( ItemStack itemStack, int amplifier ) {
 			super( itemStack );
+
+			this.amplifier = amplifier;
 		}
 
-		public void add( double chance, int amplifier ) {
-			this.add( EquipmentSlot.MAINHAND, Component.translatable( "effect.majruszsdifficulty.bleeding.item_tooltip", TextHelper.percent( ( float )chance ), TextHelper.toRoman( amplifier + 1 ) )
+		public void addItem( double chance ) {
+			this.add( EquipmentSlot.MAINHAND, Component.translatable( "effect.majruszsdifficulty.bleeding.item_tooltip", TextHelper.percent( ( float )chance ), TextHelper.toRoman( this.amplifier + 1 ) )
 				.withStyle( ChatFormatting.DARK_GREEN ) );
 		}
 
-		public void add( double chance ) {
-			this.add( chance, BleedingEffect.getAmplifier() );
+		public void addArmor( EquipmentSlot slot, double chanceMultiplier ) {
+			this.add( slot, Component.translatable( "effect.majruszsdifficulty.bleeding.armor_tooltip", TextHelper.minPrecision( chanceMultiplier ) )
+				.withStyle( ChatFormatting.BLUE ) );
 		}
 
 		public void addAll( OnItemAttributeTooltip.Data data ) {
