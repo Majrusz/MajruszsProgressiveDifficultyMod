@@ -1,17 +1,20 @@
 package com.majruszsdifficulty.treasurebags.data;
 
+import com.mlib.data.SerializableList;
 import com.mlib.data.SerializableStructure;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreasureBagData extends SerializableStructure {
-	public final List< LootData > lootDataList;
+public class TreasureBagData extends SerializableList {
+	public List< LootData > lootDataList;
 
 	public TreasureBagData( List< LootData > lootDataList ) {
+		super( "LootDataList" );
+
 		this.lootDataList = lootDataList;
 
-		this.define( "LootDataList", ()->this.lootDataList, this.lootDataList::addAll, LootData::new );
+		this.defineCustom( ()->this.lootDataList, x->this.lootDataList = x, LootData::new );
 	}
 
 	public TreasureBagData() {

@@ -178,7 +178,7 @@ public class TreasureBagManager {
 		int fishedItems = 0;
 
 		public FishingData() {
-			this.define( "TreasureBagFishingCounter", ()->this.fishedItems, x->this.fishedItems = x );
+			this.defineInteger( "TreasureBagFishingCounter", ()->this.fishedItems, x->this.fishedItems = x );
 		}
 	}
 
@@ -186,7 +186,7 @@ public class TreasureBagManager {
 		int raidId = -1;
 
 		public RaidData() {
-			this.define( "TreasureBagLastPillagerRaidID", ()->this.raidId, x->this.raidId = x );
+			this.defineInteger( "TreasureBagLastPillagerRaidID", ()->this.raidId, x->this.raidId = x );
 		}
 	}
 

@@ -12,6 +12,7 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.data.JsonListener;
+import com.mlib.data.SerializableHelper;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDeath;
@@ -141,26 +142,19 @@ public class Config {
 	}
 
 	public UndeadArmyInfo readUndeadArmyInfo( CompoundTag tag ) {
-		UndeadArmyInfo info = new UndeadArmyInfo();
-		info.killedUndead = this.getInitialKillsCount();
-		info.read( tag );
-
-		return info;
+		return SerializableHelper.read( ()->new UndeadArmyInfo( this.getInitialKillsCount() ), tag );
 	}
 
 	private void updateKilledUndead( OnDeath.Data data ) {
 		ServerPlayer player = ( ServerPlayer )data.attacker;
-		CompoundTag tag = player.getPersistentData();
-		UndeadArmyInfo info = this.readUndeadArmyInfo( tag );
-
-		++info.killedUndead;
-		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
-			info.killedUndead = 0;
-		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {
-			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
-		}
-
-		info.write( tag );
+		SerializableHelper.modify( ()->new UndeadArmyInfo( this.getInitialKillsCount() ), player.getPersistentData(), info->{
+			++info.killedUndead;
+			if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
+				info.killedUndead = 0;
+			} else if( info.killedUndead == this.getRequiredKills() - 3 ) {
+				player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+			}
+		} );
 	}
 
 	private void giveExtraLoot( OnLoot.Data data ) {

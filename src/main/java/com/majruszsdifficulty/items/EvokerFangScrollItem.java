@@ -108,7 +108,7 @@ public class EvokerFangScrollItem extends ScrollItem {
 		int extraDamage = 0;
 
 		public DamageInfo() {
-			this.define( "MajruszsProgressiveDifficultyEvokerFangDamage", ()->this.extraDamage, x->this.extraDamage = x );
+			this.defineInteger( "MajruszsProgressiveDifficultyEvokerFangDamage", ()->this.extraDamage, x->this.extraDamage = x );
 		}
 	}
 }

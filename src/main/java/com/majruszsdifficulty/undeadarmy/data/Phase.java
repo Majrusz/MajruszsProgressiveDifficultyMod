@@ -10,10 +10,10 @@ public class Phase extends SerializableStructure {
 	public int healthTotal = 0;
 
 	public Phase() {
-		this.define( "state", ()->this.state, x->this.state = x, State::values );
-		this.define( "ticks_left", ()->this.ticksLeft, x->this.ticksLeft = x );
-		this.define( "ticks_total", ()->this.ticksTotal, x->this.ticksTotal = x );
-		this.define( "health_total", ()->this.healthTotal, x->this.healthTotal = x );
+		this.defineEnum( "state", ()->this.state, x->this.state = x, State::values );
+		this.defineInteger( "ticks_left", ()->this.ticksLeft, x->this.ticksLeft = x );
+		this.defineInteger( "ticks_total", ()->this.ticksTotal, x->this.ticksTotal = x );
+		this.defineInteger( "health_total", ()->this.healthTotal, x->this.healthTotal = x );
 	}
 
 	public float getRatio() {

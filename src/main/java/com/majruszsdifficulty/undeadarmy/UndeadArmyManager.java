@@ -22,15 +22,15 @@ import java.util.Optional;
 
 public class UndeadArmyManager extends SerializableStructure {
 	public static final UndeadArmyManager NOT_LOADED = new UndeadArmyManager();
-	final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	final ServerLevel level;
 	final Config config;
+	List< UndeadArmy > undeadArmies = new ArrayList<>();
 
 	public UndeadArmyManager( ServerLevel level, Config config ) {
 		this.level = level;
 		this.config = config;
 
-		this.define( "undead_armies", ()->this.undeadArmies, this.undeadArmies::addAll, ()->new UndeadArmy( level, config ) );
+		this.defineCustom( "undead_armies", ()->this.undeadArmies, x->this.undeadArmies = x, ()->new UndeadArmy( level, config ) );
 	}
 
 	private UndeadArmyManager() {

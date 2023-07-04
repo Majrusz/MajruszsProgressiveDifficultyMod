@@ -218,7 +218,7 @@ public class BleedingEffect extends MobEffect {
 		int entityId;
 
 		public BloodMessage() {
-			this.define( null, ()->this.entityId, x->this.entityId = x );
+			this.defineInteger( "id", ()->this.entityId, x->this.entityId = x );
 		}
 
 		public BloodMessage( Entity entity ) {

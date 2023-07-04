@@ -121,7 +121,7 @@ public class WitherSwordItem extends SwordItem {
 			boolean hasWitherTag = false;
 
 			public Data() {
-				this.define( "MajruszsDifficultyWitherTag", ()->this.hasWitherTag, x->this.hasWitherTag = x );
+				this.defineBoolean( "MajruszsDifficultyWitherTag", ()->this.hasWitherTag, x->this.hasWitherTag = x );
 			}
 		}
 	}

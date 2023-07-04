@@ -9,6 +9,7 @@ import com.majruszsdifficulty.treasurebags.data.TreasureBagData;
 import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
 import com.mlib.annotations.AutoInstance;
+import com.mlib.data.SerializableMap;
 import com.mlib.data.SerializableStructure;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.contexts.OnPlayerLogged;
@@ -25,13 +26,15 @@ import net.minecraftforge.network.PacketDistributor;
 
 import java.util.*;
 
-public class TreasureBagProgressManager extends SerializableStructure {
+public class TreasureBagProgressManager extends SerializableMap {
 	static final ObfuscationGetter.Field< LootTable, List< LootPool > > POOLS = new ObfuscationGetter.Field<>( LootTable.class, "f_79109_" );
 	static final ObfuscationGetter.Field< LootPool, LootPoolEntryContainer[] > ENTRIES = new ObfuscationGetter.Field<>( LootPool.class, "f_79023_" );
-	final Map< String, LootProgressData > lootProgressMap = new HashMap<>();
+	Map< String, LootProgressData > lootProgressMap = new HashMap<>();
 
 	public TreasureBagProgressManager() {
-		this.define( "LootProgress", ()->this.lootProgressMap, this.lootProgressMap::putAll, LootProgressData::new );
+		super( "LootProgress" );
+
+		this.defineCustom( ()->this.lootProgressMap, x->this.lootProgressMap = x, LootProgressData::new );
 	}
 
 	public void clearProgress( Player player ) {

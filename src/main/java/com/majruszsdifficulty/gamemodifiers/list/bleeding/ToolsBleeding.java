@@ -9,6 +9,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.data.JsonListener;
+import com.mlib.data.SerializableList;
 import com.mlib.data.SerializableStructure;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
@@ -55,11 +56,11 @@ public class ToolsBleeding {
 		data.addItem( this.toolsDef.get().find( data.itemStack ).orElseThrow().getChance( data.itemStack ) );
 	}
 
-	public static class ToolsDef extends SerializableStructure {
+	public static class ToolsDef extends SerializableList {
 		public List< ToolDef > toolDefs = new ArrayList<>();
 
 		public ToolsDef() {
-			this.define( null, ()->this.toolDefs, x->this.toolDefs = x, ToolDef::new );
+			this.defineCustom( ()->this.toolDefs, x->this.toolDefs = x, ToolDef::new );
 		}
 
 		public Optional< ToolDef > find( ItemStack itemStack ) {
@@ -81,13 +82,13 @@ public class ToolsBleeding {
 		public List< EnchantmentDef > enchantmentDefs = new ArrayList<>();
 
 		public ToolDef() {
-			this.define( "id", this.id::get, this.id::set );
-			this.define( "chance", ()->this.chance, x->this.chance = x );
-			this.define( "enchantments", ()->this.enchantmentDefs, x->this.enchantmentDefs = x, EnchantmentDef::new );
+			this.defineString( "id", this.id::get, this.id::set );
+			this.defineFloat( "chance", ()->this.chance, x->this.chance = x );
+			this.defineCustom( "enchantments", ()->this.enchantmentDefs, x->this.enchantmentDefs = x, EnchantmentDef::new );
 		}
 
 		public float getChance( ItemStack itemStack ) {
-			return this.chance + ItemHelper.getEnchantmentsInfo( itemStack ).stream().map( this::getExtraChance ).reduce( 0.0f, Float::sum );
+			return this.chance + ItemHelper.getEnchantmentsInfo( itemStack ).enchantments.stream().map( this::getExtraChance ).reduce( 0.0f, Float::sum );
 		}
 
 		public boolean matches( ItemStack itemStack ) {
@@ -110,8 +111,8 @@ public class ToolsBleeding {
 		public float chance;
 
 		public EnchantmentDef() {
-			this.define( "id", this.id::get, this.id::set );
-			this.define( "extra_chance", ()->this.chance, x->this.chance = x );
+			this.defineString( "id", this.id::get, this.id::set );
+			this.defineFloat( "extra_chance", ()->this.chance, x->this.chance = x );
 		}
 	}
 
