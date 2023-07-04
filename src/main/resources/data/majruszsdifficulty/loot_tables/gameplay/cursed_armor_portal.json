@@ -1,10 +1,4 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/cursed_armor_end_loot",
-  "cursed_armor": {
-    "loot": "minecraft:chests/end_city_treasure",
-    "sound": "minecraft:item.armor.equip_diamond",
-    "chance": 0.5
-  },
   "type": "minecraft:gift",
   "pools": [
     {
@@ -12,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond_helmet",
+          "name": "minecraft:golden_helmet",
           "functions": [
             {
               "function": "majruszsdifficulty:curse_randomly",
@@ -29,7 +23,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond_chestplate",
+          "name": "minecraft:golden_chestplate",
           "functions": [
             {
               "function": "majruszsdifficulty:curse_randomly",
@@ -46,7 +40,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond_leggings",
+          "name": "minecraft:golden_leggings",
           "functions": [
             {
               "function": "majruszsdifficulty:curse_randomly",
@@ -63,7 +57,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond_boots",
+          "name": "minecraft:golden_boots",
           "functions": [
             {
               "function": "majruszsdifficulty:curse_randomly",
@@ -80,34 +74,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond_axe",
-          "weight": 6,
-          "functions": [
-            {
-              "function": "majruszsdifficulty:curse_randomly",
-              "excluding": [
-                "minecraft:vanishing_curse"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:netherite_axe",
-          "weight": 3,
-          "functions": [
-            {
-              "function": "majruszsdifficulty:curse_randomly",
-              "excluding": [
-                "minecraft:vanishing_curse"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "majruszsdifficulty:enderium_axe",
-          "weight": 1,
+          "name": "minecraft:golden_sword",
           "functions": [
             {
               "function": "majruszsdifficulty:curse_randomly",

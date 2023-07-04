@@ -1,10 +1,4 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/cursed_armor_dungeon_loot",
-  "cursed_armor": {
-    "loot": "minecraft:chests/simple_dungeon",
-    "sound": "minecraft:item.armor.equip_leather",
-    "chance": 0.5
-  },
   "type": "minecraft:gift",
   "pools": [
     {
