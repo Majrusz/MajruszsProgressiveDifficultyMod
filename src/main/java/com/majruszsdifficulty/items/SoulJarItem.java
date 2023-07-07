@@ -14,6 +14,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
@@ -64,9 +65,11 @@ public class SoulJarItem extends Item {
 		ItemStack itemStack = player.getItemInHand( hand );
 		BonusInfo bonusInfo = SerializableHelper.read( BonusInfo::new, itemStack.getOrCreateTag() );
 		if( bonusInfo.bonusMask == 0b0 ) {
-			bonusInfo.randomize();
-			bonusInfo.write( itemStack.getOrCreateTag() );
-			SoundHandler.ENCHANT.play( level, player.position() );
+			if( level instanceof ServerLevel ) {
+				bonusInfo.randomize();
+				bonusInfo.write( itemStack.getOrCreateTag() );
+				SoundHandler.ENCHANT.play( level, player.position() );
+			}
 
 			return InteractionResultHolder.sidedSuccess( itemStack, level.isClientSide() );
 		}
