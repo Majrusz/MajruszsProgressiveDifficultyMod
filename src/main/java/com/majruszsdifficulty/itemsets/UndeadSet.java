@@ -27,7 +27,7 @@ public class UndeadSet extends ItemSet {
 	static final FoodProperties FLESH_NO_EFFECT = new FoodProperties.Builder().nutrition( 4 ).saturationMod( 0.1f ).meat().build();
 	static final FoodProperties FLESH_EXTRA_HUNGER = new FoodProperties.Builder().nutrition( 4 * 2 ).saturationMod( 0.1f ).meat().build();
 	static final AttributeHandler ARMOR_ATTRIBUTE = new AttributeHandler( "6bf545e0-8f10-483b-9c2d-6ab369e2cb1f", "UndeadSetArmorBonus", Attributes.ARMOR, AttributeModifier.Operation.ADDITION );
-	static final int EXTRA_ARMOR = 5;
+	static final int EXTRA_ARMOR = 4;
 	static final ItemData ITEM_1 = new ItemData( Registries.TATTERED_HELMET, EquipmentSlot.HEAD );
 	static final ItemData ITEM_2 = new ItemData( Registries.TATTERED_CHESTPLATE, EquipmentSlot.CHEST );
 	static final ItemData ITEM_3 = new ItemData( Registries.TATTERED_LEGGINGS, EquipmentSlot.LEGS );
