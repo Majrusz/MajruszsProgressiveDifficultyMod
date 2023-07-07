@@ -3,6 +3,7 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +25,11 @@ public class TatteredArmorItem extends ArmorItem {
 	public static class Boots extends TatteredArmorItem {
 		public Boots() {
 			super( Type.BOOTS );
+		}
+
+		@Override
+		public boolean canWalkOnPowderedSnow( ItemStack itemStack, LivingEntity wearer ) {
+			return itemStack.getItem().equals( this );
 		}
 	}
 
