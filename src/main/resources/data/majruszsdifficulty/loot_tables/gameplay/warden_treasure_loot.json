@@ -2,6 +2,16 @@
   "type": "minecraft:gift",
   "pools": [
     {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "majruszsdifficulty:sonic_boom_scroll",
+          "quality": 4
+        }
+      ]
+    },
+    {
       "rolls": {
         "min": 3.0,
         "max": 7.0,
