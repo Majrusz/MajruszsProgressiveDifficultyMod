@@ -37,7 +37,7 @@ public class SoulJarItem extends Item {
 	static final float DAMAGE_BONUS = 2.5f;
 	static final float MOVE_BONUS = 0.15f;
 	static final float RANGE_BONUS = 0.5f;
-	static final int ARMOR_BONUS = 2;
+	static final int ARMOR_BONUS = 3;
 	static final float MINE_BONUS = 0.15f;
 	static final int LUCK_BONUS = 1;
 	static final float SWIM_BONUS = 0.30f;
