@@ -1,18 +1,22 @@
 package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.items.EndShardLocatorItem;
+import com.majruszsdifficulty.items.SoulJarItem;
 import com.majruszsdifficulty.models.*;
 import com.majruszsdifficulty.particles.BloodParticle;
 import com.majruszsdifficulty.renderers.*;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,5 +47,11 @@ public class RegistriesClient {
 	@SubscribeEvent
 	public static void registerParticles( RegisterParticleProvidersEvent event ) {
 		event.registerSpriteSet( Registries.BLOOD.get(), BloodParticle.Factory::new );
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	@SubscribeEvent
+	public static void registerItemColors( RegisterColorHandlersEvent.Item event ) {
+		event.register( new SoulJarItem.ItemColor(), Registries.SOUL_JAR.get() );
 	}
 }

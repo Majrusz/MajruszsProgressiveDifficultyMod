@@ -212,6 +212,7 @@ public class Registries {
 		HELPER.createMessage( CerberusEntity.SkillMessage.class, CerberusEntity.SkillMessage::new );
 		HELPER.createMessage( ToolsBleeding.ToolsDef.class, ToolsBleeding.ToolsDef::new );
 		HELPER.createMessage( ArmorBleeding.ArmorsDef.class, ArmorBleeding.ArmorsDef::new );
+		HELPER.createMessage( CursedArmorEntity.LocationsDef.class, CursedArmorEntity.LocationsDef::new );
 	}
 
 	public static UndeadArmyManager getUndeadArmyManager() {

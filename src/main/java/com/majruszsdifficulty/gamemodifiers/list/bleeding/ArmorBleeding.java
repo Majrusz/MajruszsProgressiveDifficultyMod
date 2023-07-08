@@ -10,6 +10,7 @@ import com.mlib.annotations.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.data.JsonListener;
+import com.mlib.data.SerializableList;
 import com.mlib.data.SerializableStructure;
 import com.mlib.gamemodifiers.Condition;
 import com.mlib.gamemodifiers.ModConfigs;
@@ -58,11 +59,11 @@ public class ArmorBleeding {
 		data.addArmor( LivingEntity.getEquipmentSlotForItem( data.itemStack ), this.armorsDef.get().find( data.itemStack ).orElseThrow().chanceMultiplier );
 	}
 
-	public static class ArmorsDef extends SerializableStructure {
+	public static class ArmorsDef extends SerializableList {
 		public List< ArmorDef > armorDefs = new ArrayList<>();
 
 		public ArmorsDef() {
-			this.define( null, ()->this.armorDefs, x->this.armorDefs = x, ArmorDef::new );
+			this.defineCustom( ()->this.armorDefs, x->this.armorDefs = x, ArmorDef::new );
 		}
 
 		public Optional< ArmorDef > find( ItemStack itemStack ) {
@@ -83,8 +84,8 @@ public class ArmorBleeding {
 		public float chanceMultiplier;
 
 		public ArmorDef() {
-			this.define( "id", this.id::get, this.id::set );
-			this.define( "chance_multiplier", ()->this.chanceMultiplier, x->this.chanceMultiplier = x );
+			this.defineString( "id", this.id::get, this.id::set );
+			this.defineFloat( "chance_multiplier", ()->this.chanceMultiplier, x->this.chanceMultiplier = x );
 		}
 
 		public boolean matches( ItemStack itemStack ) {

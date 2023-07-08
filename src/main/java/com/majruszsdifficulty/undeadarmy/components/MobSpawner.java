@@ -126,7 +126,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		}
 
 		LootHelper.getLootTable( mobInfo.equipment )
-			.getRandomItems( LootHelper.toGiftParams( mob, mobInfo.equipment ) )
+			.getRandomItems( LootHelper.toGiftParams( mob ) )
 			.forEach( itemStack->ItemHelper.equip( mob, itemStack ) );
 
 		Arrays.stream( EquipmentSlot.values() )

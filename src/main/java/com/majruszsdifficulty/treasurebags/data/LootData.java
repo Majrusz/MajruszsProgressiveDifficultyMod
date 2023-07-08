@@ -8,9 +8,9 @@ public class LootData extends SerializableStructure {
 	public int quality;
 
 	public LootData() {
-		this.define( "item", ()->this.itemId, x->this.itemId = x );
-		this.define( "unlocked", ()->this.isUnlocked, x->this.isUnlocked = x );
-		this.define( "quality", ()->this.quality, x->this.quality = x );
+		this.defineString( "item", ()->this.itemId, x->this.itemId = x );
+		this.defineBoolean( "unlocked", ()->this.isUnlocked, x->this.isUnlocked = x );
+		this.defineInteger( "quality", ()->this.quality, x->this.quality = x );
 	}
 
 	public LootData( String itemId, boolean isUnlocked, int quality ) {

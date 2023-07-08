@@ -1,5 +1,4 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/pillager_treasure_loot",
   "type": "minecraft:gift",
   "pools": [
     {
@@ -14,8 +13,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 2,
-                "max": 5
+                "min": 4,
+                "max": 8
               }
             }
           ]

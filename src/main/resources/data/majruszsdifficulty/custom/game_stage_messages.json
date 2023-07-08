@@ -11,5 +11,10 @@
   {
     "id": "majruszsdifficulty.on_master_mode_start",
     "game_stage": "MASTER"
+  },
+  {
+    "id": "majruszsdifficulty.undead_army.on_master",
+    "game_stage": "MASTER",
+    "style": "DARK_PURPLE"
   }
 ]

@@ -1,10 +1,11 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.gamestage.handlers.GameStageIncreaser;
 import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.handlers.GameStageIncreaser;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
 import com.majruszsdifficulty.undeadarmy.Config;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
+import com.mlib.data.SerializableHelper;
 import com.mlib.data.SerializableStructure;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -27,9 +28,7 @@ public class GameDataSaver extends SavedData {
 
 	@Override
 	public CompoundTag save( CompoundTag tag ) {
-		this.data.write( tag );
-
-		return tag;
+		return SerializableHelper.write( ()->this.data, tag );
 	}
 
 	public UndeadArmyManager getUndeadArmyManager() {
@@ -41,18 +40,19 @@ public class GameDataSaver extends SavedData {
 	}
 
 	public static class Data extends SerializableStructure {
-		final UndeadArmyManager undeadArmyManager;
-		final TreasureBagProgressManager treasureBagProgressManager;
+		UndeadArmyManager undeadArmyManager;
+		TreasureBagProgressManager treasureBagProgressManager;
 
 		public Data( ServerLevel overworld ) {
 			super( "MajruszsDifficulty" );
 
-			this.undeadArmyManager = new UndeadArmyManager( overworld, Registries.HELPER.findInstance( Config.class ).orElseThrow() );
+			Config config = Registries.HELPER.findInstance( Config.class ).orElseThrow();
+			this.undeadArmyManager = new UndeadArmyManager( overworld, config );
 			this.treasureBagProgressManager = new TreasureBagProgressManager();
 
-			this.define( "GameStage", GameStage::getCurrentStage, gameStage->GameStage.changeStage( gameStage, null ), GameStage::values );
-			this.define( "UndeadArmy", ()->this.undeadArmyManager );
-			this.define( "TreasureBags", ()->this.treasureBagProgressManager );
+			this.defineEnum( "GameStage", GameStage::getCurrentStage, gameStage->GameStage.changeStage( gameStage, null ), GameStage::values );
+			this.defineCustom( "UndeadArmy", ()->this.undeadArmyManager, x->this.undeadArmyManager = x, ()->new UndeadArmyManager( overworld, config ) );
+			this.defineCustom( "TreasureBags", ()->this.treasureBagProgressManager, x->this.treasureBagProgressManager = x, TreasureBagProgressManager::new );
 		}
 	}
 }

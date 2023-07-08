@@ -1,14 +1,4 @@
 {
-  "mlib": "majruszsdifficulty:gameplay/cursed_armor_library_loot",
-  "cursed_armor": {
-    "loot": [
-      "minecraft:chests/stronghold_corridor",
-      "minecraft:chests/stronghold_crossing",
-      "minecraft:chests/stronghold_library"
-    ],
-    "sound": "minecraft:item.armor.equip_chain",
-    "chance": 0.4
-  },
   "type": "minecraft:gift",
   "pools": [
     {
