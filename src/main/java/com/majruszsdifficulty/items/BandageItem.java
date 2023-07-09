@@ -73,7 +73,7 @@ public class BandageItem extends Item {
 		final EffectConfig regeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 0, 20.0 );
 		final ConfigGroup goldenBandageGroup = new ConfigGroup();
 		final EffectConfig goldenRegeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 1, 20.0 );
-		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 60.0 );
+		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 90.0 );
 
 		public Effects() {
 			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT ).name( "Bandages" );
