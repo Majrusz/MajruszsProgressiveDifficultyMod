@@ -5,6 +5,7 @@ import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
+import com.majruszsdifficulty.effects.RegenerativeWrapEffect;
 import com.majruszsdifficulty.entities.*;
 import com.majruszsdifficulty.gamemodifiers.list.bleeding.ArmorBleeding;
 import com.majruszsdifficulty.gamemodifiers.list.bleeding.ToolsBleeding;
@@ -174,6 +175,7 @@ public class Registries {
 	// Effects
 	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.register( "bleeding", BleedingEffect::new );
 	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.register( "bleeding_immunity", BleedingImmunityEffect::new );
+	public static final RegistryObject< RegenerativeWrapEffect > REGENERATIVE_WRAP = MOB_EFFECTS.register( "regenerative_wrap", RegenerativeWrapEffect::new );
 
 	// Damage Sources
 	public static final ResourceKey< DamageType > BLEEDING_SOURCE = ResourceKey.create( net.minecraft.core.registries.Registries.DAMAGE_TYPE, getLocation( "bleeding" ) );
