@@ -250,7 +250,7 @@ public class SoulJarItem extends Item {
 	public static class ItemColor implements net.minecraft.client.color.item.ItemColor {
 		static final Map< BonusType, Integer > COLOR_MAPPING = Map.of(
 			BonusType.DAMAGE, 0xcc5555,
-			BonusType.MOVE, 0xcccccc,
+			BonusType.MOVE, 0xdddddd,
 			BonusType.RANGE, 0xcc55cc,
 			BonusType.ARMOR, 0x5555cc,
 			BonusType.MINE, 0xcccc55,
