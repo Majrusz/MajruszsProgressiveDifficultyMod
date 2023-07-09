@@ -34,30 +34,13 @@
           "type": "minecraft:item",
           "name": "minecraft:sculk_sensor",
           "quality": 2,
-          "weight": 10
+          "weight": 15
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:echo_shard",
           "quality": 1,
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:amethyst_shard",
-          "quality": 0,
-          "weight": 20
+          "weight": 25
         },
         {
           "type": "minecraft:item",
@@ -74,7 +57,7 @@
           ],
           "name": "minecraft:candle",
           "quality": 0,
-          "weight": 20
+          "weight": 25
         },
         {
           "type": "minecraft:item",
@@ -91,7 +74,7 @@
           ],
           "name": "minecraft:experience_bottle",
           "quality": 0,
-          "weight": 20
+          "weight": 25
         }
       ]
     }
