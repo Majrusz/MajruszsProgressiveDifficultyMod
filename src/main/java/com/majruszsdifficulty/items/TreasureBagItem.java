@@ -112,7 +112,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class UndeadArmy extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/undead_army_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_undead_army" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "UndeadArmy" );
 
 		public UndeadArmy() {
@@ -121,7 +121,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class ElderGuardian extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/elder_guardian_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_elder_guardian" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "ElderGuardian" );
 
 		public ElderGuardian() {
@@ -130,7 +130,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Wither extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/wither_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_wither" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Wither" );
 
 		public Wither() {
@@ -139,7 +139,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class EnderDragon extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/ender_dragon_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_ender_dragon" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "EnderDragon" );
 
 		public EnderDragon() {
@@ -148,7 +148,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Fishing extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/fishing_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_fishing" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Fishing" );
 		public static final GameStageIntegerConfig REQUIRED_FISH_COUNT = new GameStageIntegerConfig( 20, 15, 10, new Range<>( 3, 100 ) );
 
@@ -162,7 +162,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Pillager extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/pillager_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_pillager" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "PillagerRaid" );
 
 		public Pillager() {
@@ -171,7 +171,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Warden extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/warden_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_warden" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden" );
 
 		public Warden() {
