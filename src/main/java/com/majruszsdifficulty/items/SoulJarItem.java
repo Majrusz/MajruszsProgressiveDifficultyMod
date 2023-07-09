@@ -91,6 +91,9 @@ public class SoulJarItem extends Item {
 			OnBreakSpeed.listen( this::increaseSpeed )
 				.addCondition( Condition.predicate( data->hasBonus( data.player, BonusType.MINE ) ) );
 
+			OnLoot.listen( this::applyRandomSouls )
+				.addCondition( Condition.isServer() );
+
 			OnItemAttributeTooltip.listen( this::addTooltip )
 				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof SoulJarItem ) );
 
@@ -143,6 +146,20 @@ public class SoulJarItem extends Item {
 
 		private void increaseSpeed( OnBreakSpeed.Data data ) {
 			data.event.setNewSpeed( data.event.getNewSpeed() + data.event.getOriginalSpeed() * MINE_BONUS * getMultiplier( data.player ) );
+		}
+
+		private void applyRandomSouls( OnLoot.Data data ) {
+			for( ItemStack itemStack : data.generatedLoot ) {
+				if( !( itemStack.getItem() instanceof SoulJarItem ) ) {
+					continue;
+				}
+
+				SerializableHelper.modify( BonusInfo::new, itemStack.getOrCreateTag(), bonusInfo->{
+					if( bonusInfo.bonusMask == 0b0 ) {
+						bonusInfo.randomize();
+					}
+				} );
+			}
 		}
 
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
