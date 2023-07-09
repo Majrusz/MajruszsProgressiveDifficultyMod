@@ -70,9 +70,9 @@ public class BandageItem extends Item {
 	public static class Effects {
 		static Effects INSTANCE = null;
 		final ConfigGroup bandageGroup = new ConfigGroup();
-		final EffectConfig regeneration = new EffectConfig( MobEffects.REGENERATION, 0, 4.0 );
+		final EffectConfig regeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 0, 20.0 );
 		final ConfigGroup goldenBandageGroup = new ConfigGroup();
-		final EffectConfig goldenRegeneration = new EffectConfig( MobEffects.REGENERATION, 1, 4.0 );
+		final EffectConfig goldenRegeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 1, 20.0 );
 		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 60.0 );
 
 		public Effects() {
@@ -80,8 +80,8 @@ public class BandageItem extends Item {
 
 			INSTANCE = this;
 
-			this.bandageGroup.addConfig( this.regeneration.name( "Regeneration" ) );
-			this.goldenBandageGroup.addConfig( this.goldenRegeneration.name( "Regeneration" ) )
+			this.bandageGroup.addConfig( this.regeneration.name( "RegenerativeWrap" ) );
+			this.goldenBandageGroup.addConfig( this.goldenRegeneration.name( "RegenerativeWrap" ) )
 				.addConfig( this.goldenImmunity.name( "Immunity" ) );
 
 			OnPlayerInteract.listen( this::useBandage )

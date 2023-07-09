@@ -10,6 +10,8 @@
   "effect.majruszsdifficulty.bleeding.armor_tooltip": "x%1$s Chance To Bleed",
   "effect.majruszsdifficulty.bleeding_immunity": "Bleeding Immunity",
   "effect.majruszsdifficulty.bleeding_immunity.description": "Makes the player immune to Bleeding.",
+  "effect.majruszsdifficulty.regenerative_wrap": "Regenerative Wrap",
+  "effect.majruszsdifficulty.regenerative_wrap.description": "Weaker version of Regeneration that can be interrupted by taking damage.",
   "itemGroup.majruszsdifficulty.primary": "Majrusz's Progressive Difficulty",
   "itemGroup.majruszsdifficulty.treasure_bags": "Treasure Bags",
   "item.majruszsdifficulty.illusioner_spawn_egg": "Illusioner Spawn Egg",
