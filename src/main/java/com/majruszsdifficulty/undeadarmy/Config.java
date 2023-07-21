@@ -17,6 +17,7 @@ import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.gamemodifiers.contexts.OnDeath;
 import com.mlib.gamemodifiers.contexts.OnLoot;
 import com.mlib.gamemodifiers.contexts.OnServerTick;
+import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
 import com.mlib.levels.LevelHelper;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
@@ -27,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -41,6 +43,7 @@ import java.util.function.Supplier;
 public class Config {
 	static final ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
 	private final BooleanConfig availability = new BooleanConfig( true );
+	private final BooleanConfig naturalSpawnOnly = new BooleanConfig( false );
 	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
 	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 4.0, 30.0 ) );
 	private final DoubleConfig highlightDelay = new DoubleConfig( 300.0, new Range<>( 30.0, 3600.0 ) );
@@ -53,6 +56,8 @@ public class Config {
 	public Config() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.UNDEAD_ARMY )
 			.addConfig( this.availability.name( "is_enabled" ).comment( "Determines whether the Undead Army can spawn in any way." ) )
+			.addConfig( this.naturalSpawnOnly.name( "natural_spawns_only" )
+				.comment( "Determines if the undead has to spawn naturally to contribute to the kill_requirement." ) )
 			.addConfig( this.waveDuration.name( "wave_duration" ).comment( "Duration that players have to defeat a single wave (in seconds)." ) )
 			.addConfig( this.preparationDuration.name( "preparation_duration" ).comment( "Duration before the next wave arrives (in seconds)." ) )
 			.addConfig( this.highlightDelay.name( "highlight_delay" ).comment( "Duration before all mobs will be highlighted (in seconds)." ) )
@@ -73,6 +78,7 @@ public class Config {
 		OnDeath.listen( this::updateKilledUndead )
 			.addCondition( Condition.predicate( data->this.getRequiredKills() > 0 ) )
 			.addCondition( Condition.predicate( data->data.target.getMobType() == MobType.UNDEAD ) )
+			.addCondition( Condition.predicate( data->!this.isNaturalSpawnOnly() || data.target.getPersistentData().contains( "majruszsdifficulty.undeadarmy.natural" ) ) )
 			.addCondition( Condition.predicate( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) ) )
 			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
 			.addCondition( Condition.predicate( data->LevelHelper.isEntityIn( data.attacker, Level.OVERWORLD ) ) )
@@ -85,11 +91,17 @@ public class Config {
 			.addCondition( Condition.predicate( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) )
 			.addCondition( Condition.predicate( data->ExtraLootInfo.hasExtraLootTag( data.entity ) ) )
 			.insertTo( group );
+
+		OnCheckSpawn.listen( this::markNaturalSpawn )
+			.addCondition( Condition.predicate( data->data.event.getSpawnType() == MobSpawnType.NATURAL ) )
+			.addCondition( Condition.predicate( data->data.mob.getMobType() == MobType.UNDEAD ) );
 	}
 
 	public boolean isEnabled() {
 		return this.availability.isEnabled();
 	}
+
+	public boolean isNaturalSpawnOnly() { return this.naturalSpawnOnly.isEnabled(); }
 
 	public int getWaveDuration() {
 		return this.waveDuration.asTicks();
@@ -177,5 +189,9 @@ public class Config {
 			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )
 			.withOptionalParameter( LootContextParams.KILLER_ENTITY, data.killer )
 			.create( LootContextParamSets.ENTITY );
+	}
+
+	private void markNaturalSpawn( OnCheckSpawn.Data data ) {
+		data.mob.getPersistentData().putBoolean( "majruszsdifficulty.undeadarmy.natural", true );
 	}
 }
