@@ -52,6 +52,7 @@ public class Config {
 	private final IntegerConfig armyRadius = new IntegerConfig( 70, new Range<>( 35, 140 ) );
 	private final IntegerConfig killRequirement = new IntegerConfig( 75, new Range<>( 0, 1000 ) );
 	private final IntegerConfig killRequirementFirst = new IntegerConfig( 25, new Range<>( 0, 1000 ) );
+	private final IntegerConfig killRequirementWarning = new IntegerConfig( 3, new Range<>( -1, 1000 ) );
 	private final Supplier< WavesDef > wavesDef;
 
 	public Config() {
@@ -70,7 +71,9 @@ public class Config {
 			.addConfig( this.killRequirementFirst.name( "kill_requirement_first" )
 				.comment( "Required amount of killed undead to start the first Undead Army." ) )
 			.addConfig( this.resetParticipantsKillRequirement.name( "reset_participants_kill_requirement" )
-				.comment( "If all participants of an undead army should have their kill count reset (false resets only the person who caused it)." ) );
+				.comment( "If all participants of an undead army should have their kill count reset (false resets only the person who caused it)." ) )
+			.addConfig( this.killRequirementWarning.name( "kill_requirement_warning" )
+				.comment( "How many left to kill until the undead army warning shows up (set to -1 to disable this)." ));
 
 		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
 
@@ -144,6 +147,8 @@ public class Config {
 		return this.getArmyRadius() - 15; // maybe one day add a config
 	}
 
+	public int getKillRequirementWarning() { return this.killRequirementWarning.get(); }
+
 	public WaveDef getWave( int waveIdx ) {
 		List< WaveDef > waves = this.getWaves();
 
@@ -173,7 +178,7 @@ public class Config {
 		++info.killedUndead;
 		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
 			info.killedUndead = 0;
-		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {  // TODO: Make message warning timing configurable.
+		} else if( info.killedUndead == this.getRequiredKills() - this.getKillRequirementWarning() ) {
 			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
 		}
 
