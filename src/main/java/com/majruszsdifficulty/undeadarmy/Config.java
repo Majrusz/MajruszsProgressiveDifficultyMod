@@ -44,6 +44,7 @@ public class Config {
 	static final ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
 	private final BooleanConfig availability = new BooleanConfig( true );
 	private final BooleanConfig naturalSpawnOnly = new BooleanConfig( false );
+	private final BooleanConfig resetParticipantsKillRequirement = new BooleanConfig( false );
 	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
 	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 4.0, 30.0 ) );
 	private final DoubleConfig highlightDelay = new DoubleConfig( 300.0, new Range<>( 30.0, 3600.0 ) );
@@ -67,7 +68,9 @@ public class Config {
 			.addConfig( this.killRequirement.name( "kill_requirement" )
 				.comment( "Required amount of killed undead to start the Undead Army. (set to 0 if you want to disable this)" ) )
 			.addConfig( this.killRequirementFirst.name( "kill_requirement_first" )
-				.comment( "Required amount of killed undead to start the first Undead Army." ) );
+				.comment( "Required amount of killed undead to start the first Undead Army." ) )
+			.addConfig( this.resetParticipantsKillRequirement.name( "reset_participants_kill_requirement" )
+				.comment( "If all participants of an undead army should have their kill count reset (false resets only the person who caused it)." ) );
 
 		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
 
@@ -102,6 +105,8 @@ public class Config {
 	}
 
 	public boolean isNaturalSpawnOnly() { return this.naturalSpawnOnly.isEnabled(); }
+
+	public boolean isResetParticipantsKillRequirement() { return this.resetParticipantsKillRequirement.isEnabled(); }
 
 	public int getWaveDuration() {
 		return this.waveDuration.asTicks();
@@ -168,7 +173,7 @@ public class Config {
 		++info.killedUndead;
 		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
 			info.killedUndead = 0;
-		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {
+		} else if( info.killedUndead == this.getRequiredKills() - 3 ) {  // TODO: Make message warning timing configurable.
 			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
 		}
 
