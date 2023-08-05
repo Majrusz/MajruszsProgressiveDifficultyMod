@@ -200,7 +200,7 @@ public class BleedingEffect extends MobEffect {
 
 		private void applyBleeding( OnDamaged.Data data ) {
 			OnBleedingCheck.Data bleedingData = OnBleedingCheck.dispatch( data.event );
-			if( bleedingData.isEffectTriggered() && this.effect.apply( data ) ) {
+			if( bleedingData.dealtAnyDamage() && bleedingData.isEffectTriggered() && this.effect.apply( data ) ) {
 				this.dealDamage( data.target );
 			}
 		}
