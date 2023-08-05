@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.mlib.gamemodifiers.Context;
-import com.mlib.gamemodifiers.Contexts;
+import com.mlib.contexts.base.Context;
+import com.mlib.contexts.base.Contexts;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.Nullable;
 

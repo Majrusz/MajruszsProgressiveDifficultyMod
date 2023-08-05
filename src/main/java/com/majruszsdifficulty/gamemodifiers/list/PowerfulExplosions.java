@@ -2,12 +2,12 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnExplosionStart;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnExplosionStart;
 import com.mlib.levels.LevelHelper;
 import com.mlib.math.AnyPos;
 import com.mlib.math.Range;

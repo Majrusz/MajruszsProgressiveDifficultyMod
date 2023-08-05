@@ -6,7 +6,7 @@ import com.majruszsdifficulty.gamemodifiers.list.groups.PiglinsInGroup;
 import com.majruszsdifficulty.gamemodifiers.list.groups.SkeletonsInGroup;
 import com.majruszsdifficulty.gamemodifiers.list.groups.ZombiesInGroup;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyPatrol;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import com.mlib.entities.EntityHelper;

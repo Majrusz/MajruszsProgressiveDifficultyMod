@@ -79,7 +79,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		float sizeMultiplier = this.undeadArmy.config.getSizeMultiplier( this.undeadArmy.participants.size() );
 		WaveDef waveDef = this.undeadArmy.config.getWave( this.undeadArmy.currentWave + 1 );
 		waveDef.mobDefs.forEach( mobDef->{
-			int totalCount = Random.roundRandomly( mobDef.count * sizeMultiplier );
+			int totalCount = Random.round( mobDef.count * sizeMultiplier );
 			for( int i = 0; i < totalCount; ++i ) {
 				this.addToPendingMobs( mobDef, false );
 			}
@@ -117,7 +117,7 @@ record MobSpawner( UndeadArmy undeadArmy ) implements IComponent {
 		int y = 0;
 		int z = direction.x != 0 ? 24 : 8;
 
-		return AnyPos.from( direction.x * spawnRadius, 0, direction.z * spawnRadius ).add( Random.getRandomVector( -x, x, -y, y, -z, z ) ).vec3();
+		return AnyPos.from( direction.x * spawnRadius, 0, direction.z * spawnRadius ).add( Random.nextVector( -x, x, -y, y, -z, z ) ).vec3();
 	}
 
 	private void tryToLoadEquipment( PathfinderMob mob, MobInfo mobInfo ) {

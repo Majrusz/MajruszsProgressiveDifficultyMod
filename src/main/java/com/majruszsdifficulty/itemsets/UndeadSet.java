@@ -2,11 +2,11 @@ package com.majruszsdifficulty.itemsets;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnSoulJarMultiplier;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnFoodPropertiesGet;
-import com.mlib.gamemodifiers.contexts.OnItemEquipped;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.OnFoodPropertiesGet;
+import com.mlib.contexts.OnItemEquipped;
 import com.mlib.itemsets.BonusData;
 import com.mlib.itemsets.ItemData;
 import com.mlib.itemsets.ItemSet;

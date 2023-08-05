@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.items;
 
 import com.mlib.effects.SoundHandler;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.OnPlayerInteract;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;

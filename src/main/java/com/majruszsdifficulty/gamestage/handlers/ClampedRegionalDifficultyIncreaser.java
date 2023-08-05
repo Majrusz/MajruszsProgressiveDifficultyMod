@@ -2,10 +2,10 @@ package com.majruszsdifficulty.gamestage.handlers;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnClampedRegionalDifficultyGet;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnClampedRegionalDifficultyGet;
 import com.mlib.math.Range;
 
 @AutoInstance

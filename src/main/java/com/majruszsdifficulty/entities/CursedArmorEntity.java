@@ -3,7 +3,7 @@ package com.majruszsdifficulty.entities;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.blocks.BlockHelper;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
@@ -14,10 +14,10 @@ import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
 import com.mlib.entities.EntityHelper;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.Context;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.Context;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.*;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.AnyPos;
 import com.mlib.math.Range;
@@ -380,7 +380,7 @@ public class CursedArmorEntity extends Monster {
 		}
 
 		public LocationDef getRandom() {
-			return Random.nextRandom( this.locationDefs );
+			return Random.next( this.locationDefs );
 		}
 
 		@Override

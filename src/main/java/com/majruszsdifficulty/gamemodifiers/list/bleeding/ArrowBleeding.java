@@ -3,12 +3,12 @@ package com.majruszsdifficulty.gamemodifiers.list.bleeding;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingTooltip;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ProjectileWeaponItem;
 

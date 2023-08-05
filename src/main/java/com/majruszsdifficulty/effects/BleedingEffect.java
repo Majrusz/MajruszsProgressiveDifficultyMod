@@ -7,16 +7,16 @@ import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingTooltip;
 import com.majruszsdifficulty.gui.BleedingGui;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.StringListConfig;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.*;
 import com.mlib.mobeffects.MobEffectHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -149,13 +149,13 @@ public class BleedingEffect extends MobEffect {
 			int amplifier = MobEffectHelper.getAmplifier( data.entity, Registries.BLEEDING.get() );
 			float walkDistanceDelta = EntityHelper.getWalkDistanceDelta( data.entity );
 
-			this.spawnParticles( data.getServerLevel(), data.entity, Random.roundRandomly( 1.0 + ( 15.0 + amplifier ) * walkDistanceDelta ) );
+			this.spawnParticles( data.getServerLevel(), data.entity, Random.round( 1.0 + ( 15.0 + amplifier ) * walkDistanceDelta ) );
 		}
 
 		private void tick( OnEntityTick.Data data ) {
 			LivingEntity entity = data.entity;
 			int amplifier = MobEffectHelper.getAmplifier( entity, Registries.BLEEDING.get() );
-			int extraDuration = Random.roundRandomly( 0.3 * ( amplifier + 2 ) * ( 7.26 * EntityHelper.getWalkDistanceDelta( entity ) + 1 ) );
+			int extraDuration = Random.round( 0.3 * ( amplifier + 2 ) * ( 7.26 * EntityHelper.getWalkDistanceDelta( entity ) + 1 ) );
 			int duration = this.entityTicks.getOrDefault( entity.getId(), 0 ) + extraDuration;
 			if( duration >= BLOOD_TICK_COOLDOWN ) {
 				this.dealDamage( entity );

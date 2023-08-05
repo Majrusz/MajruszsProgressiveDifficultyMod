@@ -2,10 +2,10 @@ package com.majruszsdifficulty.gamemodifiers.list.bleeding;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
 import net.minecraft.world.damagesource.DamageTypes;
 
 @AutoInstance

@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
-import com.mlib.gamemodifiers.Context;
-import com.mlib.gamemodifiers.Contexts;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
+import com.mlib.contexts.base.Context;
+import com.mlib.contexts.base.Contexts;
+import com.mlib.contexts.OnDamaged;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import java.util.function.Consumer;

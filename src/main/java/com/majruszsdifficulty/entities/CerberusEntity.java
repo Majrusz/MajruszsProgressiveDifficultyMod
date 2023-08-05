@@ -3,7 +3,7 @@ package com.majruszsdifficulty.entities;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.EffectConfig;
 import com.mlib.effects.ParticleHandler;
@@ -11,11 +11,11 @@ import com.mlib.effects.SoundHandler;
 import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
 import com.mlib.entities.ICustomSkillProvider;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
-import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
-import com.mlib.gamemodifiers.contexts.OnEntityTick;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnDamaged;
+import com.mlib.contexts.OnEffectApplicable;
+import com.mlib.contexts.OnEntityTick;
 import com.mlib.goals.CustomMeleeGoal;
 import com.mlib.math.AnyPos;
 import net.minecraft.core.BlockPos;
@@ -217,7 +217,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		private void spawnFireballTowards( LivingEntity target ) {
 			Vec3 offset = AnyPos.from( target.position() ).sub( this.mob.position() ).vec3();
 			for( double angle : new double[]{ -30.0, 0.0, 30.0 } ) {
-				Vec3 power = AnyPos.from( offset ).mul( Random.getRandomVector( 0.8, 1.2, 0.8, 1.2, 0.8, 1.2 ) ).vec3();
+				Vec3 power = AnyPos.from( offset ).mul( Random.nextVector( 0.8, 1.2, 0.8, 1.2, 0.8, 1.2 ) ).vec3();
 				double cos = Math.cos( Math.toRadians( angle ) ), sin = Math.sin( Math.toRadians( angle ) );
 				Vec3 normalized = AnyPos.from( offset ).norm().vec3();
 				normalized = new Vec3( cos * normalized.x - sin * normalized.z, normalized.y, sin * normalized.x + cos * normalized.z );

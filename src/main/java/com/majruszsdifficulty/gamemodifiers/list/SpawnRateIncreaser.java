@@ -2,10 +2,10 @@ package com.majruszsdifficulty.gamemodifiers.list;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnMobSpawnLimit;
-import com.mlib.gamemodifiers.contexts.OnMobSpawnRate;
+import com.mlib.modhelper.AutoInstance;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnMobSpawnLimit;
+import com.mlib.contexts.OnMobSpawnRate;
 import com.mlib.math.Range;
 import net.minecraft.world.entity.MobCategory;
 

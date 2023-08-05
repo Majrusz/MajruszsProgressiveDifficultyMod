@@ -19,7 +19,7 @@ import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Utility;
 import com.mlib.config.ConfigHandler;
-import com.mlib.gamemodifiers.ModConfigs;
+import com.mlib.contexts.base.ModConfigs;
 import com.mlib.modhelper.ModHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.model.geom.ModelLayerLocation;

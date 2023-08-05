@@ -2,13 +2,13 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.contexts.OnSoulJarMultiplier;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.data.SerializableHelper;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.SoundHandler;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.*;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
+import com.mlib.modhelper.AutoInstance;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.OnEffectApplicable;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;

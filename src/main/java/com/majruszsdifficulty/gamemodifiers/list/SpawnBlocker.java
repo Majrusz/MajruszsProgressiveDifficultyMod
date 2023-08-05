@@ -3,11 +3,11 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageStringListConfig;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnCheckSpawn;
 import net.minecraft.world.entity.Entity;
 
 @AutoInstance

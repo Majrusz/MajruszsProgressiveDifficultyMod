@@ -92,7 +92,7 @@ public class UndeadArmyManager extends SerializableStructure {
 
 	private UndeadArmy setupNewArmy( BlockPos position, Optional< Direction > direction ) {
 		UndeadArmy undeadArmy = new UndeadArmy( this.level, this.config );
-		undeadArmy.start( position, direction.orElse( Random.nextRandom( Direction.values() ) ) );
+		undeadArmy.start( position, direction.orElse( Random.next( Direction.values() ) ) );
 
 		return undeadArmy;
 	}

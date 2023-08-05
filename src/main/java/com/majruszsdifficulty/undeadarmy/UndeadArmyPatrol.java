@@ -6,11 +6,11 @@ import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.undeadarmy.data.ExtraLootInfo;
 import com.mlib.Random;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnSpawned;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnSpawned;
 import com.mlib.math.Range;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 @AutoInstance
 public class UndeadArmyPatrol implements Supplier< MobGroupConfig > {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
-		()->Random.nextRandom( List.of( EntityType.ZOMBIE, EntityType.HUSK, EntityType.SKELETON, EntityType.STRAY ) ),
+		()->Random.next( List.of( EntityType.ZOMBIE, EntityType.HUSK, EntityType.SKELETON, EntityType.STRAY ) ),
 		new Range<>( 2, 4 ),
 		Registries.getLocation( "undead_army/equipment_wave_3" ),
 		Registries.getLocation( "undead_army/equipment_wave_2" )

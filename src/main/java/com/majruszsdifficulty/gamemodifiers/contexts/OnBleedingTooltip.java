@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.gamemodifiers.contexts;
 
-import com.mlib.gamemodifiers.Context;
-import com.mlib.gamemodifiers.Contexts;
-import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
+import com.mlib.contexts.base.Context;
+import com.mlib.contexts.base.Contexts;
+import com.mlib.contexts.OnItemAttributeTooltip;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

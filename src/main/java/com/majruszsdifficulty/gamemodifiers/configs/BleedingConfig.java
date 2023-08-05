@@ -4,7 +4,7 @@ import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.mobeffects.MobEffectHelper;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
+import com.mlib.contexts.OnDamaged;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
