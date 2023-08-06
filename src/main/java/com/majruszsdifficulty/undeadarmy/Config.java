@@ -43,7 +43,7 @@ public class Config {
 	static final ResourceLocation EXTRA_LOOT_ID = Registries.getLocation( "undead_army/extra_mob_loot" );
 	private final BooleanConfig availability = new BooleanConfig( true );
 	private final BooleanConfig naturalSpawnsOnly = new BooleanConfig( false );
-	private final BooleanConfig resetParticipantsKillRequirement = new BooleanConfig( false );
+	private final BooleanConfig resetParticipantsKillRequirement = new BooleanConfig( true );
 	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
 	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 1.0, 30.0 ) );
 	private final DoubleConfig highlightDelay = new DoubleConfig( 300.0, new Range<>( 30.0, 3600.0 ) );
