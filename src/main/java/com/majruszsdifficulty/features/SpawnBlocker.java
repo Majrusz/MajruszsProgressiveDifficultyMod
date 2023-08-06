@@ -5,6 +5,7 @@ import com.majruszsdifficulty.config.GameStageStringListConfig;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.contexts.OnCheckSpawn;
+import com.mlib.contexts.OnSpawned;
 import com.mlib.contexts.base.Condition;
 import com.mlib.contexts.base.ModConfigs;
 import com.mlib.modhelper.AutoInstance;
@@ -28,6 +29,11 @@ public class SpawnBlocker {
 		OnCheckSpawn.listen( OnCheckSpawn.CANCEL )
 			.addCondition( Condition.predicate( data->data.getSpawnType() == MobSpawnType.NATURAL ) )
 			.addCondition( Condition.predicate( data->this.isBlocked( data.mob ) ) )
+			.insertTo( group );
+
+		OnSpawned.listen( OnSpawned.CANCEL )
+			.addCondition( Condition.predicate( data->data.getSpawnType() == MobSpawnType.NATURAL ) )
+			.addCondition( Condition.predicate( data->this.isBlocked( data.target ) ) )
 			.insertTo( group );
 	}
 
