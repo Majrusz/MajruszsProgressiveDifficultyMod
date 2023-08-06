@@ -72,7 +72,7 @@ public class Registries {
 	public static final ConfigHandler SERVER_CONFIG = HELPER.createConfig( ModConfig.Type.SERVER );
 
 	static {
-		ModConfigs.init( SERVER_CONFIG, Groups.DEFAULT ).name( "GameModifiers" );
+		ModConfigs.init( SERVER_CONFIG, Groups.DEFAULT ).name( "Features" );
 		ModConfigs.init( SERVER_CONFIG, Groups.UNDEAD_ARMY ).name( "UndeadArmy" );
 		ModConfigs.init( SERVER_CONFIG, Groups.GAME_STAGE ).name( "GameStage" );
 		ModConfigs.init( SERVER_CONFIG, Groups.TREASURE_BAG ).name( "TreasureBag" );
