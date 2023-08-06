@@ -1,23 +1,21 @@
 package com.majruszsdifficulty.undeadarmy.components;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.undeadarmy.Config;
 import com.majruszsdifficulty.undeadarmy.UndeadArmy;
-import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
 import com.mlib.entities.EntityHelper;
 import com.mlib.items.ItemHelper;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 record RewardsController( UndeadArmy undeadArmy ) implements IComponent {
-
 	@Override
 	public void onWaveFinished() {
 		this.giveExperienceReward();
 		if( this.undeadArmy.isLastWave() ) {
 			this.giveTreasureReward();
-			if ( this.undeadArmy.config.isResetParticipantsKillRequirement() ) this.resetAllKillRequirements();
+			if( this.undeadArmy.config.isResetAllParticipantsKillRequirementsEnabled() ) {
+				this.resetAllKillRequirements();
+			}
 		}
 	}
 
@@ -38,11 +36,7 @@ record RewardsController( UndeadArmy undeadArmy ) implements IComponent {
 
 	private void resetAllKillRequirements() {
 		this.undeadArmy.participants.forEach( participant->{
-			UndeadArmyInfo info = new UndeadArmyInfo();
-			CompoundTag tag = participant.getPersistentData();
-			info.read( tag );
-			info.killedUndead = 0;
-			info.write( tag );
+			this.undeadArmy.config.modifyUndeadArmyInfo( participant.getPersistentData(), info->info.killedUndead = 0 );
 		} );
 	}
 }
