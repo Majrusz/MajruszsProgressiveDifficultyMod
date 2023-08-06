@@ -23,7 +23,7 @@ public class SpawnBlocker {
 	public SpawnBlocker() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
 			.name( "SpawnBlocker" )
-			.comment( "Blocks certain mobs from spawning when given game stage is active (it only affects natural spawns)." )
+			.comment( "Makes mobs unable to spawn when given game stage is active (it only affects natural spawns)." )
 			.addConfig( this.forbiddenEntities );
 
 		OnCheckSpawn.listen( OnCheckSpawn.CANCEL )
