@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnSoulJarMultiplier;
+import com.majruszsdifficulty.contexts.OnSoulJarMultiplier;
 import com.mlib.modhelper.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
 import com.mlib.data.SerializableHelper;

@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
+import com.majruszsdifficulty.contexts.base.CustomConditions;
+import com.majruszsdifficulty.config.MobGroupConfig;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.undeadarmy.data.ExtraLootInfo;
 import com.mlib.Random;

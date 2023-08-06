@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.treasurebags;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnTreasureBagOpened;
+import com.majruszsdifficulty.contexts.OnTreasureBagOpened;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.majruszsdifficulty.treasurebags.data.LootData;
 import com.majruszsdifficulty.treasurebags.data.LootProgressData;
@@ -10,7 +10,6 @@ import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
 import com.mlib.modhelper.AutoInstance;
 import com.mlib.data.SerializableMap;
-import com.mlib.data.SerializableStructure;
 import com.mlib.contexts.base.Condition;
 import com.mlib.contexts.OnPlayerLogged;
 import net.minecraft.server.level.ServerPlayer;

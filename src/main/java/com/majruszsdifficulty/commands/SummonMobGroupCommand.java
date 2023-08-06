@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.commands;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
-import com.majruszsdifficulty.gamemodifiers.list.groups.PiglinsInGroup;
-import com.majruszsdifficulty.gamemodifiers.list.groups.SkeletonsInGroup;
-import com.majruszsdifficulty.gamemodifiers.list.groups.ZombiesInGroup;
+import com.majruszsdifficulty.config.MobGroupConfig;
+import com.majruszsdifficulty.features.groups.PiglinsInGroup;
+import com.majruszsdifficulty.features.groups.SkeletonsInGroup;
+import com.majruszsdifficulty.features.groups.ZombiesInGroup;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyPatrol;
 import com.mlib.modhelper.AutoInstance;
 import com.mlib.commands.Command;

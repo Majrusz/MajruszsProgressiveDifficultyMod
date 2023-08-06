@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.CustomConditions;
+import com.majruszsdifficulty.contexts.base.CustomConditions;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
@@ -20,8 +20,6 @@ import com.mlib.mobeffects.MobEffectHelper;
 import com.mlib.text.TextHelper;
 import com.mlib.time.Time;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffects;

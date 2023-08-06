@@ -2,8 +2,8 @@ package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
-import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnTreasureBagOpened;
+import com.majruszsdifficulty.config.TreasureBagConfig;
+import com.majruszsdifficulty.contexts.OnTreasureBagOpened;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
 import com.mlib.effects.SoundHandler;
 import com.mlib.items.ItemHelper;

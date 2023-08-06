@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.configs.BleedingConfig;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingCheck;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnBleedingTooltip;
+import com.majruszsdifficulty.config.BleedingConfig;
+import com.majruszsdifficulty.contexts.OnBleedingCheck;
+import com.majruszsdifficulty.contexts.OnBleedingTooltip;
 import com.majruszsdifficulty.gui.BleedingGui;
 import com.mlib.Random;
 import com.mlib.Utility;

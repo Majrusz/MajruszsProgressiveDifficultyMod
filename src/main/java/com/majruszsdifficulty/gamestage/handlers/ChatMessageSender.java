@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamestage.handlers;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
+import com.majruszsdifficulty.contexts.OnGameStageChange;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.modhelper.AutoInstance;
 import com.mlib.data.JsonListener;

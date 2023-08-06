@@ -1,10 +1,9 @@
 package com.majruszsdifficulty.gamestage.handlers;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.configs.StageProgressConfig;
+import com.majruszsdifficulty.config.StageProgressConfig;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.mlib.modhelper.AutoInstance;
-import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.EnumConfig;
 import com.mlib.contexts.base.Condition;
