@@ -2,12 +2,14 @@ package com.majruszsdifficulty.undeadarmy;
 
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.undeadarmy.data.*;
+import com.majruszsdifficulty.undeadarmy.data.ExtraLootInfo;
+import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
+import com.majruszsdifficulty.undeadarmy.data.WaveDef;
+import com.majruszsdifficulty.undeadarmy.data.WavesDef;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
-import com.mlib.contexts.OnCheckSpawn;
 import com.mlib.contexts.OnDeath;
 import com.mlib.contexts.OnLoot;
 import com.mlib.contexts.OnServerTick;
@@ -88,7 +90,7 @@ public class Config {
 		OnDeath.listen( this::updateKilledUndead )
 			.addCondition( Condition.predicate( data->this.getRequiredKills() > 0 ) )
 			.addCondition( Condition.predicate( data->data.target.getMobType() == MobType.UNDEAD ) )
-			.addCondition( Condition.predicate( data->!this.getNaturalSpawnsOnly() || SerializableHelper.read( NaturalSpawnInfo::new, data.target.getPersistentData() ).isNaturalSpawn ) )
+			.addCondition( Condition.predicate( data->!this.getNaturalSpawnsOnly() || data.target instanceof Mob mob && mob.getSpawnType() == MobSpawnType.NATURAL ) )
 			.addCondition( Condition.predicate( data->!Registries.getUndeadArmyManager().isPartOfUndeadArmy( data.target ) ) )
 			.addCondition( Condition.predicate( data->data.attacker instanceof ServerPlayer ) )
 			.addCondition( Condition.predicate( data->LevelHelper.isEntityIn( data.attacker, Level.OVERWORLD ) ) )
@@ -101,10 +103,6 @@ public class Config {
 			.addCondition( Condition.predicate( data->data.entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) )
 			.addCondition( Condition.predicate( data->ExtraLootInfo.hasExtraLootTag( data.entity ) ) )
 			.insertTo( group );
-
-		OnCheckSpawn.listen( this::markNaturalSpawn )
-			.addCondition( Condition.predicate( data->this.getNaturalSpawnsOnly() ) )
-			.addCondition( Condition.predicate( data->data.mob.getMobType() == MobType.UNDEAD ) );
 	}
 
 	public boolean isEnabled() {
@@ -200,9 +198,5 @@ public class Config {
 			.withParameter( LootContextParams.DAMAGE_SOURCE, data.damageSource )
 			.withOptionalParameter( LootContextParams.KILLER_ENTITY, data.killer )
 			.create( LootContextParamSets.ENTITY );
-	}
-
-	private void markNaturalSpawn( OnCheckSpawn.Data data ) {
-		SerializableHelper.write( ()->new NaturalSpawnInfo( data.event.getSpawnType() == MobSpawnType.NATURAL ), data.mob.getPersistentData() );
 	}
 }
