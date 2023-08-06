@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class CerberusEntity extends Monster implements ICustomSkillProvider< CerberusEntity.Skills > {
-	static final String GROUP_ID = "Cerberus";
+	static final String GROUP_ID = Registries.getLocationString( "cerberus" );
 
 	static {
 		ModConfigs.init( Registries.Groups.MOBS, GROUP_ID ).name( "Cerberus" );

@@ -32,6 +32,12 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.phys.Vec3;
 
 public class WitherSwordItem extends SwordItem {
+	static final String GROUP_ID = Registries.getLocationString( "wither_sword" );
+
+	static {
+		ModConfigs.init( Registries.Groups.DEFAULT, GROUP_ID ).name( "WitherSword" );
+	}
+
 	public WitherSwordItem() {
 		super( CustomItemTier.WITHER, 3, -2.4f, new Properties().rarity( Rarity.UNCOMMON ) );
 	}
@@ -42,8 +48,8 @@ public class WitherSwordItem extends SwordItem {
 		final EffectConfig wither = new EffectConfig( MobEffects.WITHER, 1, 6.0 );
 
 		public Effect() {
-			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
-				.name( "WitherSwordEffect" )
+			ConfigGroup group = ModConfigs.registerSubgroup( GROUP_ID )
+				.name( "Effect" )
 				.comment( "Wither Sword inflicts wither effect." );
 
 			OnDamaged.listen( this::applyWither )
@@ -72,8 +78,8 @@ public class WitherSwordItem extends SwordItem {
 	@AutoInstance
 	public static class TurnSkeletonIntoWitherSkeleton {
 		public TurnSkeletonIntoWitherSkeleton() {
-			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )
-				.name( "TurnSkeletonIntoWitherSkeleton" )
+			ConfigGroup group = ModConfigs.registerSubgroup( GROUP_ID )
+				.name( "TransformSkeletons" )
 				.comment( "If the Skeleton dies from Wither Sword it will respawn as Wither Skeleton in a few seconds." );
 
 			OnDamaged.listen( this::applyWitherTag )

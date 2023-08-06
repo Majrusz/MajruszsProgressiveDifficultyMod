@@ -68,7 +68,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
-	public static final String GROUP_ID = "CursedArmor";
+	public static final String GROUP_ID = Registries.getLocationString( "cursed_armor" );
 	public static final int ASSEMBLE_DURATION = Utility.secondsToTicks( 2.5 );
 	boolean areGoalsRegistered = false;
 	SoundHandler assembleSound = null;

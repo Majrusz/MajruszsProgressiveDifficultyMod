@@ -76,7 +76,7 @@ public class BandageItem extends Item {
 		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 90.0 );
 
 		public Effects() {
-			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT ).name( "Bandages" );
+			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT );
 
 			INSTANCE = this;
 
