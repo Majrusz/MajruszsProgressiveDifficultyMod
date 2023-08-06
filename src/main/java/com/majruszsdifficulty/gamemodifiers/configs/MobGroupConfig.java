@@ -7,15 +7,22 @@ import com.mlib.config.ConfigGroup;
 import com.mlib.config.IntegerConfig;
 import com.mlib.entities.EntityHelper;
 import com.mlib.items.ItemHelper;
+import com.mlib.levels.LevelHelper;
 import com.mlib.loot.LootHelper;
+import com.mlib.math.AnyPos;
 import com.mlib.math.Range;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class MobGroupConfig extends ConfigGroup {
@@ -37,29 +44,27 @@ public class MobGroupConfig extends ConfigGroup {
 		this.leaderSet = leaderSet;
 		this.sidekickSet = sidekickSet;
 
-		this.addConfig( this.min.name( "min_count" ).comment( "Minimum amount of mobs to spawn (leader is not considered)." ) );
-		this.addConfig( this.max.name( "max_count" ).comment( "Maximum amount of mobs to spawn (leader is not considered)." ) );
+		this.addConfig( this.min.name( "min_count" ).comment( "Minimum amount of extra mobs to spawn." ) );
+		this.addConfig( this.max.name( "max_count" ).comment( "Maximum amount of extra mobs to spawn." ) );
 	}
 
 	public List< PathfinderMob > spawn( PathfinderMob leader ) {
 		int sidekickAmount = Random.nextInt( this.getMinCount(), this.getMaxCount() + 1 );
-		Vec3 spawnPosition = leader.position();
-
 		List< PathfinderMob > sidekicks = new ArrayList<>();
-		for( int sidekickIdx = 0; sidekickIdx < sidekickAmount; sidekickIdx++ ) {
-			PathfinderMob sidekick = EntityHelper.spawn( this.getMob(), leader.level(), mob->{
-				this.addSidekickGoals( mob, leader );
-				this.markAsSidekick( mob );
-				this.applyArmorSet( this.sidekickSet, mob );
-				this.randomizePosition( mob, spawnPosition );
-			} );
+		for( int idx = 0; idx < sidekickAmount; idx++ ) {
+			PathfinderMob sidekick = EntityHelper.createSpawner( this.getMob(), leader.level() )
+				.position( this.getRandomizedPosition( leader.level(), leader.position() ) )
+				.spawn();
 
 			if( sidekick != null ) {
+				this.addSidekickGoals( sidekick, leader );
+				this.markAsSidekick( sidekick );
+				this.applyArmorSet( sidekick, this.sidekickSet );
 				sidekicks.add( sidekick );
 			}
 		}
 		this.markAsLeader( leader );
-		this.applyArmorSet( this.leaderSet, leader );
+		this.applyArmorSet( leader, this.leaderSet );
 
 		return sidekicks;
 	}
@@ -89,19 +94,28 @@ public class MobGroupConfig extends ConfigGroup {
 		leader.getPersistentData().putBoolean( LEADER_TAG, true );
 	}
 
-	private void applyArmorSet( ResourceLocation location, PathfinderMob mob ) {
-		if( location == null )
+	private void applyArmorSet( PathfinderMob mob, ResourceLocation location ) {
+		if( location == null ) {
 			return;
+		}
 
 		LootHelper.getLootTable( location )
-			.getRandomItems( LootHelper.toGiftParams( mob, location ) )
+			.getRandomItems( LootHelper.toGiftParams( mob ) )
 			.forEach( itemStack->ItemHelper.equip( mob, itemStack ) );
 
 		Arrays.stream( EquipmentSlot.values() )
 			.forEach( slot->mob.setDropChance( slot, 0.05f ) );
 	}
 
-	private void randomizePosition( PathfinderMob sidekick, Vec3 position ) {
-		sidekick.setPos( position.x + Random.nextInt( -3, 4 ), position.y + 0.5, position.z + Random.nextInt( -3, 4 ) );
+	private Vec3 getRandomizedPosition( Level level, Vec3 position ) {
+		for( int idx = 0; idx < 3; ++idx ) {
+			Vec3 newPosition = AnyPos.from( position ).add( Random.nextInt( -3, 4 ), 0.0, Random.nextInt( -3, 4 ) ).vec3();
+			Optional< BlockPos > spawnPoint = LevelHelper.findBlockPosOnGround( level, newPosition.x, new Range<>( newPosition.y - 3, newPosition.y + 3 ), newPosition.z );
+			if( spawnPoint.isPresent() ) {
+				return AnyPos.from( spawnPoint.get() ).add( 0.5, 0.0, 0.5 ).vec3();
+			}
+		}
+
+		return position;
 	}
 }

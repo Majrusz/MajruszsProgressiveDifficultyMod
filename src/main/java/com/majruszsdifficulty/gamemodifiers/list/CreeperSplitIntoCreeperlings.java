@@ -6,12 +6,12 @@ import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.gamemodifiers.contexts.OnExplosionDetonate;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnDeath;
+import com.mlib.contexts.OnExplosionDetonate;
 import com.mlib.math.Range;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +35,7 @@ public class CreeperSplitIntoCreeperlings {
 
 		OnExplosionDetonate.listen( this::spawnCreeperlings )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.NORMAL ) )
-			.addCondition( Condition.chanceCRD( 0.666, false ) )
+			.addCondition( Condition.chanceCRD( 0.666, true ) )
 			.addCondition( Condition.excludable() )
 			.addCondition( Condition.predicate( data->data.explosion.getExploder() instanceof Creeper && !( data.explosion.getExploder() instanceof CreeperlingEntity ) ) )
 			.addConfig( this.creeperlingsAmount.name( "MaxCreeperlings" ).comment( "Maximum amount of Creeperlings to spawn." ) )
@@ -59,7 +59,7 @@ public class CreeperSplitIntoCreeperlings {
 
 		assert creeper != null && level != null;
 		for( int i = 0; i < creeperlingsAmount; ++i ) {
-			BlockPos position = creeper.blockPosition().offset( Random.getRandomVector( -2, 2, -1, 1, -2, 2 ).vec3i() );
+			BlockPos position = creeper.blockPosition().offset( Random.nextVector( -2, 2, -1, 1, -2, 2 ).vec3i() );
 			CreeperlingEntity creeperling = Registries.CREEPERLING.get()
 				.spawn( level, ( CompoundTag )null, null, position, MobSpawnType.SPAWNER, true, true );
 			if( creeperling != null )
@@ -80,6 +80,6 @@ public class CreeperSplitIntoCreeperlings {
 	}
 
 	private void giveAdvancement( ServerPlayer player ) {
-		Registries.BASIC_TRIGGER.trigger( player, "encountered_creeperling" );
+		Registries.HELPER.triggerAchievement( player, "encountered_creeperling" );
 	}
 }

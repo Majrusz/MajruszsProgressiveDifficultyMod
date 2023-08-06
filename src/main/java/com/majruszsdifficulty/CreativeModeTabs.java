@@ -91,7 +91,7 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.TANK_SPAWN_EGG.get() ),
 			new ItemStack( Registries.CURSED_ARMOR_SPAWN_EGG.get() ),
 			new ItemStack( Registries.CERBERUS_SPAWN_EGG.get() ),
-			new ItemStack( Registries.BLACK_WIDOW_SPAWN_EGG.get() )
+			new ItemStack( Registries.GIANT_SPAWN_EGG.get() )
 		).forEach( output::accept );
 	}
 
@@ -111,7 +111,7 @@ public class CreativeModeTabs {
 
 			new ItemStack( Registries.PILLAGER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.RECALL_POTION.get() ),
-			new ItemStack( Registries.BAD_OMEN_POTION.get() ),
+			new ItemStack( Registries.EVOKER_FANG_SCROLL.get() ),
 
 			new ItemStack( Registries.ELDER_GUARDIAN_TREASURE_BAG.get() ),
 			notImplemented(),
@@ -119,7 +119,7 @@ public class CreativeModeTabs {
 
 			new ItemStack( Registries.WARDEN_TREASURE_BAG.get() ),
 			notImplemented(),
-			notImplemented(),
+			new ItemStack( Registries.SONIC_BOOM_SCROLL.get() ),
 
 			new ItemStack( Registries.WITHER_TREASURE_BAG.get() ),
 			new ItemStack( Registries.WITHER_SWORD.get() ),

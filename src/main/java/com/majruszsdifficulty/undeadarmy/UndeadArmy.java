@@ -25,9 +25,9 @@ import java.util.function.Consumer;
 public class UndeadArmy extends SerializableStructure {
 	public final Components components = new Components( this );
 	public final List< ServerPlayer > participants = new ArrayList<>();
-	public final List< MobInfo > mobsLeft = new ArrayList<>();
 	public final ServerLevel level;
 	public final Config config;
+	public List< MobInfo > mobsLeft = new ArrayList<>();
 	public BlockPos positionToAttack;
 	public Direction direction;
 	public Phase phase = new Phase();
@@ -39,17 +39,17 @@ public class UndeadArmy extends SerializableStructure {
 		this.level = level;
 		this.config = config;
 
-		this.define( "mobs_left", ()->this.mobsLeft, this.mobsLeft::addAll, MobInfo::new );
-		this.define( "position", ()->this.positionToAttack, x->this.positionToAttack = x );
-		this.define( "direction", ()->this.direction, x->this.direction = x, Direction::values );
-		this.define( "phase", ()->this.phase, x->this.phase = x, Phase::new );
-		this.define( "current_wave", ()->this.currentWave, x->this.currentWave = x );
+		this.defineCustom( "mobs_left", ()->this.mobsLeft, this::readMobsLeft, MobInfo::new );
+		this.defineBlockPos( "position", ()->this.positionToAttack, x->this.positionToAttack = x );
+		this.defineEnum( "direction", ()->this.direction, x->this.direction = x, Direction::values );
+		this.defineCustom( "phase", ()->this.phase, x->this.phase = x, Phase::new );
+		this.defineInteger( "current_wave", ()->this.currentWave, x->this.currentWave = x );
 	}
 
 	public void start( BlockPos positionToAttack, Direction direction ) {
 		this.positionToAttack = positionToAttack;
 		this.direction = direction;
-		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.7 ) );
+		this.setState( Phase.State.STARTED, Utility.secondsToTicks( 6.4 ) );
 
 		this.components.dispatch( IComponent::onStart );
 	}
@@ -115,9 +115,9 @@ public class UndeadArmy extends SerializableStructure {
 		return this.mobsLeft.stream().anyMatch( mobInfo->mobInfo.uuid != null && mobInfo.uuid.equals( entity.getUUID() ) );
 	}
 
-	@Override
-	protected void onRead() {
+	private void readMobsLeft( List< MobInfo > mobsLeft ) {
 		this.areEntitiesLoaded = false;
+		this.mobsLeft = mobsLeft;
 	}
 
 	private void forEachSpawnedUndead( Consumer< LivingEntity > consumer ) {

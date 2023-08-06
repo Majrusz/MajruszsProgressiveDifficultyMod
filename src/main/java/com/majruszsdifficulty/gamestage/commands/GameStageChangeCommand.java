@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamestage.commands;
 
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import net.minecraft.network.chat.Component;

@@ -58,11 +58,6 @@ public class RecallPotionItem extends Item {
 	}
 
 	@Override
-	public boolean isFoil( ItemStack itemStack ) {
-		return true;
-	}
-
-	@Override
 	public void appendHoverText( ItemStack itemStack, @Nullable Level level, List< Component > components, TooltipFlag flag ) {
 		components.add( CommonComponents.EMPTY );
 		components.add( Component.translatable( "potion.whenDrank" ).withStyle( ChatFormatting.DARK_PURPLE ) );

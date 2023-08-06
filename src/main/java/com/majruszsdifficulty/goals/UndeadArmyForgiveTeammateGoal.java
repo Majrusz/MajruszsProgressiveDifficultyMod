@@ -4,8 +4,8 @@ import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 
-/** Removes mob's target when both the mob and the target are from the Undead Army. */
 public class UndeadArmyForgiveTeammateGoal extends Goal {
 	final PathfinderMob mob;
 
@@ -21,6 +21,10 @@ public class UndeadArmyForgiveTeammateGoal extends Goal {
 	@Override
 	public void tick() {
 		this.mob.setTarget( null );
+		this.mob.targetSelector.getRunningGoals()
+			.filter( wrappedGoal->wrappedGoal.getGoal() instanceof HurtByTargetGoal )
+			.map( goal->( HurtByTargetGoal )goal.getGoal() )
+			.forEach( HurtByTargetGoal::stop );
 	}
 
 	@Override

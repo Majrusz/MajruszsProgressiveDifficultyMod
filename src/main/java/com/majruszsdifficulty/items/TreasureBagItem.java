@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszsdifficulty.MajruszsHelper;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.gamemodifiers.configs.TreasureBagConfig;
@@ -9,6 +8,7 @@ import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
 import com.mlib.effects.SoundHandler;
 import com.mlib.items.ItemHelper;
 import com.mlib.math.Range;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -85,7 +85,10 @@ public class TreasureBagItem extends Item {
 	@Override
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
-		MajruszsHelper.addAdvancedTranslatableTexts( tooltip, flag, ITEM_TOOLTIP_TRANSLATION_KEY, " " );
+		if( flag.isAdvanced() ) {
+			tooltip.add( Component.translatable( ITEM_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY ) );
+			tooltip.add( Component.translatable( " " ) );
+		}
 
 		tooltip.addAll( TreasureBagProgressClient.getTextComponents( this ) );
 	}
@@ -109,7 +112,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class UndeadArmy extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/undead_army_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_undead_army" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "UndeadArmy" );
 
 		public UndeadArmy() {
@@ -118,7 +121,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class ElderGuardian extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/elder_guardian_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_elder_guardian" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "ElderGuardian" );
 
 		public ElderGuardian() {
@@ -127,7 +130,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Wither extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/wither_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_wither" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Wither" );
 
 		public Wither() {
@@ -136,7 +139,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class EnderDragon extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/ender_dragon_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_ender_dragon" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "EnderDragon" );
 
 		public EnderDragon() {
@@ -145,7 +148,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Fishing extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/fishing_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_fishing" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Fishing" );
 		public static final GameStageIntegerConfig REQUIRED_FISH_COUNT = new GameStageIntegerConfig( 20, 15, 10, new Range<>( 3, 100 ) );
 
@@ -159,7 +162,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Pillager extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/pillager_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_pillager" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "PillagerRaid" );
 
 		public Pillager() {
@@ -168,7 +171,7 @@ public class TreasureBagItem extends Item {
 	}
 
 	public static class Warden extends TreasureBagItem {
-		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/warden_treasure_loot" );
+		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_warden" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Warden" );
 
 		public Warden() {

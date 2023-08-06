@@ -4,18 +4,20 @@ import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.majruszsdifficulty.gamemodifiers.configs.MobGroupConfig;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnSpawned;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnSpawned;
 import com.mlib.math.Range;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Skeleton;
 
+import java.util.function.Supplier;
+
 @AutoInstance
-public class SkeletonsInGroup {
+public class SkeletonsInGroup implements Supplier< MobGroupConfig > {
 	final MobGroupConfig mobGroups = new MobGroupConfig(
 		()->EntityType.SKELETON,
 		new Range<>( 1, 3 ),
@@ -30,7 +32,7 @@ public class SkeletonsInGroup {
 
 		OnSpawned.listenSafe( this::spawnGroup )
 			.addCondition( CustomConditions.gameStageAtLeast( GameStage.EXPERT ) )
-			.addCondition( Condition.chanceCRD( 0.25, true ) )
+			.addCondition( Condition.chanceCRD( 0.1, true ) )
 			.addCondition( CustomConditions.isNotPartOfGroup( data->data.target ) )
 			.addCondition( CustomConditions.isNotPartOfUndeadArmy( data->data.target ) )
 			.addCondition( Condition.excludable() )
@@ -39,6 +41,11 @@ public class SkeletonsInGroup {
 			.addCondition( OnSpawned.is( Skeleton.class ) )
 			.addConfig( this.mobGroups.name( "Skeletons" ) )
 			.insertTo( group );
+	}
+
+	@Override
+	public MobGroupConfig get() {
+		return this.mobGroups;
 	}
 
 	private void spawnGroup( OnSpawned.Data data ) {

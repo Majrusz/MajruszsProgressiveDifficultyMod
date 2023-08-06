@@ -1,27 +1,23 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.EffectConfig;
-import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
 import com.mlib.entities.CustomSkills;
 import com.mlib.entities.EntityHelper;
 import com.mlib.entities.ICustomSkillProvider;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
-import com.mlib.gamemodifiers.contexts.OnEffectApplicable;
-import com.mlib.gamemodifiers.contexts.OnEntityTick;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnDamaged;
+import com.mlib.contexts.OnEffectApplicable;
+import com.mlib.contexts.OnEntityTick;
 import com.mlib.goals.CustomMeleeGoal;
 import com.mlib.math.AnyPos;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,11 +41,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -62,10 +55,9 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	public final Skills skills = new Skills( this );
-	public boolean hasTarget = false;
 
 	public static Supplier< EntityType< CerberusEntity > > createSupplier() {
-		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.0f, 1.99f ).build( "cerberus" );
+		return ()->EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER ).sized( 1.2f, 1.75f ).build( "cerberus" );
 	}
 
 	public static AttributeSupplier getAttributeMap() {
@@ -75,12 +67,14 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			.add( Attributes.ATTACK_DAMAGE, 8.0 )
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.5 )
-			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0 )
+			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5 )
 			.build();
 	}
 
 	public CerberusEntity( EntityType< ? extends CerberusEntity > type, Level world ) {
 		super( type, world );
+
+		this.setMaxUpStep( 1.0f );
 	}
 
 	@Override
@@ -114,11 +108,6 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		super.tick();
 
 		this.skills.tick();
-		boolean hasTarget = this.getTarget() != null;
-		if( hasTarget != this.hasTarget && !this.level().isClientSide ) {
-			this.hasTarget = hasTarget;
-			PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level().dimension() ), new TargetMessage( this ) );
-		}
 		if( this.isSunBurnTick() ) {
 			this.setSecondsOnFire( 8 );
 		}
@@ -126,7 +115,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal( 1, new CustomMeleeGoal<>( this, 1.5, false ) );
+		this.goalSelector.addGoal( 1, new CustomMeleeGoal<>( this, 1.5, true ) );
 		this.goalSelector.addGoal( 7, new WaterAvoidingRandomStrollGoal( this, 1.0 ) );
 		this.goalSelector.addGoal( 8, new LookAtPlayerGoal( this, Player.class, 8.0f, 1.0f ) );
 		this.goalSelector.addGoal( 8, new RandomLookAroundGoal( this ) );
@@ -143,7 +132,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 	@Override
 	protected float getStandingEyeHeight( Pose poseIn, EntityDimensions sizeIn ) {
-		return 1.8f;
+		return 1.6f;
 	}
 
 	@Override
@@ -162,17 +151,15 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 	}
 
 	private boolean isValidTarget( LivingEntity entity ) {
-		UndeadArmyManager undeadArmyManager = Registries.getUndeadArmyManager();
-
-		return !undeadArmyManager.isPartOfUndeadArmy( this )
-			|| !undeadArmyManager.isPartOfUndeadArmy( entity ) && undeadArmyManager.findNearestUndeadArmy( entity.blockPosition() ) != null;
+		return !entity.getMobType().equals( MobType.UNDEAD )
+			&& !Registries.getUndeadArmyManager().isPartOfUndeadArmy( entity );
 	}
 
 	public static class Skills extends CustomSkills< SkillType > {
 		int fireballCooldownLeft = 0;
 
 		public Skills( PathfinderMob mob ) {
-			super( mob, PacketHandler.CHANNEL, SkillMessage::new );
+			super( mob, Registries.HELPER.getNetworkChannel(), SkillMessage::new );
 		}
 
 		@Override
@@ -183,9 +170,6 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			double distance = Math.sqrt( distanceSquared );
 			if( distance < 3.5 && this.mob.canAttack( entity, TargetingConditions.DEFAULT ) ) {
 				Vec3 position = this.getAttackPosition( this.mob.position(), entity.position() );
-				if( distance > 2.0 ) {
-					this.pushMobTowards( entity );
-				}
 				this.start( SkillType.BITE, Utility.secondsToTicks( 0.7 ) )
 					.onTick( 2, ()->this.mob.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.85f ) )
 					.onTick( 3, ()->this.mob.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.7f ) )
@@ -213,11 +197,6 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 			this.fireballCooldownLeft = Math.max( this.fireballCooldownLeft - 1, 0 );
 		}
 
-		private void pushMobTowards( LivingEntity entity ) {
-			Vec3 direction = AnyPos.from( entity.position() ).sub( this.mob.position() ).norm().mul( 0.9 ).add( 0.0, 0.1, 0.0 ).vec3();
-			this.mob.push( direction.x, direction.y, direction.z );
-		}
-
 		private void hurtAllEntitiesInRange( ServerLevel level, Vec3 position ) {
 			List< LivingEntity > entities = EntityHelper.getEntitiesInSphere( LivingEntity.class, level, position, 2.5, entity->!entity.is( this.mob ) );
 			for( LivingEntity entity : entities ) {
@@ -238,7 +217,7 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 		private void spawnFireballTowards( LivingEntity target ) {
 			Vec3 offset = AnyPos.from( target.position() ).sub( this.mob.position() ).vec3();
 			for( double angle : new double[]{ -30.0, 0.0, 30.0 } ) {
-				Vec3 power = AnyPos.from( offset ).mul( Random.getRandomVector( 0.8, 1.2, 0.8, 1.2, 0.8, 1.2 ) ).vec3();
+				Vec3 power = AnyPos.from( offset ).mul( Random.nextVector( 0.8, 1.2, 0.8, 1.2, 0.8, 1.2 ) ).vec3();
 				double cos = Math.cos( Math.toRadians( angle ) ), sin = Math.sin( Math.toRadians( angle ) );
 				Vec3 normalized = AnyPos.from( offset ).norm().vec3();
 				normalized = new Vec3( cos * normalized.x - sin * normalized.z, normalized.y, sin * normalized.x + cos * normalized.z );
@@ -261,31 +240,6 @@ public class CerberusEntity extends Monster implements ICustomSkillProvider< Cer
 
 		public SkillMessage() {
 			super( SkillType::values );
-		}
-	}
-
-	public static class TargetMessage extends SerializableStructure {
-		int entityId;
-		boolean hasTarget = false;
-
-		public TargetMessage( CerberusEntity cerberus ) {
-			this();
-
-			this.entityId = cerberus.getId();
-			this.hasTarget = cerberus.hasTarget;
-		}
-
-		public TargetMessage() {
-			this.define( null, ()->this.entityId, x->this.entityId = x );
-			this.define( null, ()->this.hasTarget, x->this.hasTarget = x );
-		}
-
-		@OnlyIn( Dist.CLIENT )
-		public void onClient( NetworkEvent.Context context ) {
-			Level level = Minecraft.getInstance().level;
-			if( level != null && level.getEntity( this.entityId ) instanceof CerberusEntity cerberus ) {
-				cerberus.hasTarget = this.hasTarget;
-			}
 		}
 	}
 

@@ -3,8 +3,8 @@ package com.majruszsdifficulty.gamemodifiers;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.mlib.config.StringListConfig;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.Priority;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.Priority;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
 

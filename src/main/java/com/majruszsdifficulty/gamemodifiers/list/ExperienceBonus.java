@@ -3,11 +3,11 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.config.GameStageDoubleConfig;
 import com.mlib.Random;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnPickupXp;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnPickupXp;
 import com.mlib.math.Range;
 
 @AutoInstance
@@ -27,6 +27,6 @@ public class ExperienceBonus {
 
 	private void giveExtraExperience( OnPickupXp.Data data ) {
 		double experience = data.event.getOrb().getValue();
-		data.player.giveExperiencePoints( Random.roundRandomly( this.bonusMultiplier.getCurrentGameStageValue() * experience ) );
+		data.player.giveExperiencePoints( Random.round( this.bonusMultiplier.getCurrentGameStageValue() * experience ) );
 	}
 }

@@ -3,13 +3,13 @@ package com.majruszsdifficulty.items;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.EffectConfig;
 import com.mlib.effects.SoundHandler;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnPlayerInteract;
 import com.mlib.items.ItemHelper;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
@@ -70,18 +70,18 @@ public class BandageItem extends Item {
 	public static class Effects {
 		static Effects INSTANCE = null;
 		final ConfigGroup bandageGroup = new ConfigGroup();
-		final EffectConfig regeneration = new EffectConfig( MobEffects.REGENERATION, 0, 4.0 );
+		final EffectConfig regeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 0, 20.0 );
 		final ConfigGroup goldenBandageGroup = new ConfigGroup();
-		final EffectConfig goldenRegeneration = new EffectConfig( MobEffects.REGENERATION, 1, 4.0 );
-		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 60.0 );
+		final EffectConfig goldenRegeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 1, 20.0 );
+		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 90.0 );
 
 		public Effects() {
 			ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT ).name( "Bandages" );
 
 			INSTANCE = this;
 
-			this.bandageGroup.addConfig( this.regeneration.name( "Regeneration" ) );
-			this.goldenBandageGroup.addConfig( this.goldenRegeneration.name( "Regeneration" ) )
+			this.bandageGroup.addConfig( this.regeneration.name( "RegenerativeWrap" ) );
+			this.goldenBandageGroup.addConfig( this.goldenRegeneration.name( "RegenerativeWrap" ) )
 				.addConfig( this.goldenImmunity.name( "Immunity" ) );
 
 			OnPlayerInteract.listen( this::useBandage )
@@ -138,7 +138,11 @@ public class BandageItem extends Item {
 		private static void removeBleeding( ItemStack itemStack, Player player, LivingEntity target ) {
 			BleedingEffect bleeding = Registries.BLEEDING.get();
 			if( target.hasEffect( bleeding ) && player instanceof ServerPlayer serverPlayer ) {
-				Registries.BANDAGE_TRIGGER.trigger( serverPlayer, ( BandageItem )itemStack.getItem(), target.equals( serverPlayer ) );
+				if( target.equals( serverPlayer ) ) {
+					Registries.HELPER.triggerAchievement( serverPlayer, "bandage_used" );
+				} else if( itemStack.getItem() instanceof GoldenBandageItem ) {
+					Registries.HELPER.triggerAchievement( serverPlayer, "golden_bandage_used_on_others" );
+				}
 			}
 			target.removeEffect( bleeding );
 		}

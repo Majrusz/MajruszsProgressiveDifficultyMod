@@ -2,7 +2,7 @@ package com.majruszsdifficulty.treasurebags.commands;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.commands.Command;
 import com.mlib.commands.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

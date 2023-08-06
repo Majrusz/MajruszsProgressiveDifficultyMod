@@ -3,11 +3,11 @@ package com.majruszsdifficulty.gamemodifiers.list;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnDamaged;
 import com.mlib.levels.LevelHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,8 +32,8 @@ public class EndermanTeleportAttack {
 
 	private void teleportPlayerRandomly( OnDamaged.Data data ) {
 		LivingEntity target = data.target;
-		if( LevelHelper.teleportNearby( target, data.getServerLevel(), 10.0 ) && target instanceof ServerPlayer player ) {
-			Registries.BASIC_TRIGGER.trigger( player, "enderman_teleport_attack" );
+		if( LevelHelper.teleportNearby( target, data.getServerLevel(), 6.0 ) && target instanceof ServerPlayer player ) {
+			Registries.HELPER.triggerAchievement( player, "enderman_teleport_attack" );
 		}
 	}
 }

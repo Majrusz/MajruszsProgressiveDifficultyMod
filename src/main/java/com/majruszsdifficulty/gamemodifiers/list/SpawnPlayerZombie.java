@@ -4,12 +4,12 @@ import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnDeath;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnDeath;
 import com.mlib.math.Range;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -73,7 +73,7 @@ public class SpawnPlayerZombie {
 	}
 
 	private void giveAdvancement( OnDeath.Data data ) {
-		Registries.BASIC_TRIGGER.trigger( ( ServerPlayer )data.attacker, "kill_yourself" );
+		Registries.HELPER.triggerAchievement( ( ServerPlayer )data.attacker, "kill_yourself" );
 	}
 
 	private static ItemStack getHead( Player player ) {

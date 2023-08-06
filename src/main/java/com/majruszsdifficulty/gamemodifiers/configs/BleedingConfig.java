@@ -4,7 +4,7 @@ import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.mobeffects.MobEffectHelper;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
+import com.mlib.contexts.OnDamaged;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -33,13 +33,13 @@ public class BleedingConfig extends ProgressiveEffectConfig {
 			return false;
 
 		if( target instanceof ServerPlayer targetPlayer ) {
-			Registries.BASIC_TRIGGER.trigger( targetPlayer, "bleeding_received" );
+			Registries.HELPER.triggerAchievement( targetPlayer, "bleeding_received" );
 			if( data.source.is( DamageTypes.CACTUS ) ) {
-				Registries.BASIC_TRIGGER.trigger( targetPlayer, "cactus_bleeding" );
+				Registries.HELPER.triggerAchievement( targetPlayer, "cactus_bleeding" );
 			}
 		}
 		if( attacker instanceof ServerPlayer attackerPlayer ) {
-			Registries.BASIC_TRIGGER.trigger( attackerPlayer, "bleeding_inflicted" );
+			Registries.HELPER.triggerAchievement( attackerPlayer, "bleeding_inflicted" );
 		}
 
 		return true;

@@ -6,18 +6,19 @@ import com.majruszsdifficulty.undeadarmy.data.ExtraLootInfo;
 import com.majruszsdifficulty.undeadarmy.data.UndeadArmyInfo;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
 import com.majruszsdifficulty.undeadarmy.data.WavesDef;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.BooleanConfig;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.IntegerConfig;
 import com.mlib.data.JsonListener;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.gamemodifiers.contexts.OnLoot;
-import com.mlib.gamemodifiers.contexts.OnServerTick;
-import com.mlib.gamemodifiers.contexts.OnCheckSpawn;
+import com.mlib.data.SerializableHelper;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnDeath;
+import com.mlib.contexts.OnLoot;
+import com.mlib.contexts.OnServerTick;
+import com.mlib.contexts.OnCheckSpawn;
 import com.mlib.levels.LevelHelper;
 import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
@@ -46,7 +47,7 @@ public class Config {
 	private final BooleanConfig naturalSpawnOnly = new BooleanConfig( false );
 	private final BooleanConfig resetParticipantsKillRequirement = new BooleanConfig( false );
 	private final DoubleConfig waveDuration = new DoubleConfig( 1200.0, new Range<>( 300.0, 3600.0 ) );
-	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 4.0, 30.0 ) );
+	private final DoubleConfig preparationDuration = new DoubleConfig( 10.0, new Range<>( 1.0, 30.0 ) );
 	private final DoubleConfig highlightDelay = new DoubleConfig( 300.0, new Range<>( 30.0, 3600.0 ) );
 	private final DoubleConfig extraSizePerPlayer = new DoubleConfig( 0.5, new Range<>( 0.0, 1.0 ) );
 	private final IntegerConfig armyRadius = new IntegerConfig( 70, new Range<>( 35, 140 ) );
@@ -75,7 +76,7 @@ public class Config {
 			.addConfig( this.killRequirementWarning.name( "kill_requirement_warning" )
 				.comment( "How many left to kill until the undead army warning shows up (set to -1 to disable this)." ));
 
-		this.wavesDef = JsonListener.add( "undead_army", Registries.getLocation( "waves" ), WavesDef.class, WavesDef::new );
+		this.wavesDef = JsonListener.add( "custom", Registries.getLocation( "undead_army_waves" ), WavesDef.class, WavesDef::new );
 
 		OnServerTick.listen( data->Registries.getUndeadArmyManager().tick() )
 			.addCondition( Condition.isEndPhase() )
@@ -163,26 +164,20 @@ public class Config {
 	}
 
 	public UndeadArmyInfo readUndeadArmyInfo( CompoundTag tag ) {
-		UndeadArmyInfo info = new UndeadArmyInfo();
-		info.killedUndead = this.getInitialKillsCount();
-		info.read( tag );
-
-		return info;
+		return SerializableHelper.read( ()->new UndeadArmyInfo( this.getInitialKillsCount() ), tag );
 	}
 
 	private void updateKilledUndead( OnDeath.Data data ) {
 		ServerPlayer player = ( ServerPlayer )data.attacker;
-		CompoundTag tag = player.getPersistentData();
-		UndeadArmyInfo info = this.readUndeadArmyInfo( tag );
 
-		++info.killedUndead;
-		if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
-			info.killedUndead = 0;
-		} else if( info.killedUndead == this.getRequiredKills() - this.getKillRequirementWarning() ) {
-			player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
-		}
-
-		info.write( tag );
+		SerializableHelper.modify( ()->new UndeadArmyInfo( this.getInitialKillsCount() ), player.getPersistentData(), info->{
+			++info.killedUndead;
+			if( info.killedUndead >= this.getRequiredKills() && Registries.getUndeadArmyManager().tryToSpawn( player ) ) {
+				info.killedUndead = 0;
+			} else if( info.killedUndead == this.getRequiredKills() - this.getKillRequirementWarning() ) {
+				player.sendSystemMessage( Component.translatable( "majruszsdifficulty.undead_army.warning" ).withStyle( ChatFormatting.DARK_PURPLE ) );
+			}
+		} );
 	}
 
 	private void giveExtraLoot( OnLoot.Data data ) {

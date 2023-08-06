@@ -3,6 +3,7 @@ package com.majruszsdifficulty.treasurebags.data;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
 import com.mlib.Utility;
+import com.mlib.data.SerializableMap;
 import com.mlib.data.SerializableStructure;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,11 +13,13 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LootProgressData extends SerializableStructure {
-	public final Map< String, TreasureBagData > treasureBags = new HashMap<>();
+public class LootProgressData extends SerializableMap {
+	public Map< String, TreasureBagData > treasureBags = new HashMap<>();
 
 	public LootProgressData() {
-		this.define( "TreasureBags", ()->this.treasureBags, this.treasureBags::putAll, TreasureBagData::new );
+		super( "TreasureBags" );
+
+		this.defineCustom( ()->this.treasureBags, x->this.treasureBags = x, TreasureBagData::new );
 	}
 
 	public TreasureBagData get( TreasureBagItem item ) {

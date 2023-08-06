@@ -4,12 +4,12 @@ import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.gamemodifiers.CustomConditions;
 import com.mlib.Random;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.EffectConfig;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnSpawned;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnSpawned;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
@@ -42,6 +42,6 @@ public class CreeperSpawnDebuffed {
 	}
 
 	private void applyRandomEffect( OnSpawned.Data data ) {
-		Random.nextRandom( this.effects ).apply( data.target );
+		Random.next( this.effects ).apply( data.target );
 	}
 }
