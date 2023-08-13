@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.gamestage.handlers;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.Condition;
+import com.majruszsdifficulty.contexts.OnGameStageChange;
+import com.mlib.modhelper.AutoInstance;
+import com.mlib.contexts.base.Condition;
 
 @AutoInstance
 public class AdvancementProvider {

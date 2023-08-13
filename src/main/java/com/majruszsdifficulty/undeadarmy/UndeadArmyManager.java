@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 
@@ -21,15 +22,15 @@ import java.util.Optional;
 
 public class UndeadArmyManager extends SerializableStructure {
 	public static final UndeadArmyManager NOT_LOADED = new UndeadArmyManager();
-	final List< UndeadArmy > undeadArmies = new ArrayList<>();
 	final ServerLevel level;
 	final Config config;
+	List< UndeadArmy > undeadArmies = new ArrayList<>();
 
 	public UndeadArmyManager( ServerLevel level, Config config ) {
 		this.level = level;
 		this.config = config;
 
-		this.define( "undead_armies", ()->this.undeadArmies, this.undeadArmies::addAll, ()->new UndeadArmy( level, config ) );
+		this.defineCustom( "undead_armies", ()->this.undeadArmies, x->this.undeadArmies = x, ()->new UndeadArmy( level, config ) );
 	}
 
 	private UndeadArmyManager() {
@@ -46,6 +47,7 @@ public class UndeadArmyManager extends SerializableStructure {
 	public boolean tryToSpawn( BlockPos position, Optional< Direction > direction ) {
 		return this.config.isEnabled()
 			&& this.level.getDifficulty() != Difficulty.PEACEFUL
+			&& !this.level.getGameRules().getBoolean( GameRules.RULE_DISABLE_RAIDS )
 			&& this.findNearestUndeadArmy( position ) == null
 			&& this.undeadArmies.add( this.setupNewArmy( position, direction ) );
 	}
@@ -90,7 +92,7 @@ public class UndeadArmyManager extends SerializableStructure {
 
 	private UndeadArmy setupNewArmy( BlockPos position, Optional< Direction > direction ) {
 		UndeadArmy undeadArmy = new UndeadArmy( this.level, this.config );
-		undeadArmy.start( position, direction.orElse( Random.nextRandom( Direction.values() ) ) );
+		undeadArmy.start( position, direction.orElse( Random.next( Direction.values() ) ) );
 
 		return undeadArmy;
 	}

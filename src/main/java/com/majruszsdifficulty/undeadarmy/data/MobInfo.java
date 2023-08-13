@@ -19,11 +19,11 @@ public class MobInfo extends SerializableStructure {
 	public UUID uuid = null;
 
 	public MobInfo() {
-		this.define( "type", ()->this.type, x->this.type = x );
-		this.define( "equipment", ()->this.equipment, x->this.equipment = x );
-		this.define( "position", ()->this.position, x->this.position = x );
-		this.define( "is_boss", ()->this.isBoss, x->this.isBoss = x );
-		this.define( "uuid", ()->this.uuid, x->this.uuid = x );
+		this.defineEntityType( "type", ()->this.type, x->this.type = x );
+		this.defineLocation( "equipment", ()->this.equipment, x->this.equipment = x );
+		this.defineBlockPos( "position", ()->this.position, x->this.position = x );
+		this.defineBoolean( "is_boss", ()->this.isBoss, x->this.isBoss = x );
+		this.defineUUID( "uuid", ()->this.uuid, x->this.uuid = x );
 	}
 
 	public MobInfo( MobDef def, BlockPos position, boolean isBoss ) {

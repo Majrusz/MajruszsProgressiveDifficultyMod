@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.entities;
 
-import com.majruszsdifficulty.PacketHandler;
+import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
 import com.mlib.effects.SoundHandler;
@@ -34,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,11 +56,14 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 			.add( Attributes.FOLLOW_RANGE, 30.0 )
 			.add( Attributes.ATTACK_KNOCKBACK, 3.5 )
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.75 )
+			.add( ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5 )
 			.build();
 	}
 
-	public TankEntity( EntityType< ? extends TankEntity > type, Level world ) {
-		super( type, world );
+	public TankEntity( EntityType< ? extends TankEntity > type, Level level ) {
+		super( type, level );
+
+		this.maxUpStep = 1.0f;
 	}
 
 	@Override
@@ -138,7 +142,7 @@ public class TankEntity extends Monster implements ICustomSkillProvider< TankEnt
 
 	public static class Skills extends CustomSkills< SkillType > {
 		public Skills( PathfinderMob mob ) {
-			super( mob, PacketHandler.CHANNEL, SkillMessage::new );
+			super( mob, Registries.HELPER.getNetworkChannel(), SkillMessage::new );
 		}
 
 		@Override

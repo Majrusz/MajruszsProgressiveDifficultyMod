@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.undeadarmy.commands;
 
 import com.majruszsdifficulty.undeadarmy.UndeadArmy;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 
 @AutoInstance
 public class UndeadArmyKillAllCommand extends UndeadArmyCommand {

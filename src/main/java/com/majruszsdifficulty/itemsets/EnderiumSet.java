@@ -3,14 +3,14 @@ package com.majruszsdifficulty.itemsets;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.entities.EntityHelper;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnChorusFruitTeleport;
-import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.gamemodifiers.contexts.OnEnderManAnger;
-import com.mlib.gamemodifiers.contexts.OnLootLevel;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.OnChorusFruitTeleport;
+import com.mlib.contexts.OnDeath;
+import com.mlib.contexts.OnEnderManAnger;
+import com.mlib.contexts.OnLootLevel;
 import com.mlib.itemsets.BonusData;
 import com.mlib.itemsets.ItemData;
 import com.mlib.itemsets.ItemSet;
@@ -87,7 +87,7 @@ public class EnderiumSet extends ItemSet {
 			.filter( effect->MobEffectHelper.getAmplifier( data.event.getEntityLiving(), effect ) == -1 )
 			.toList();
 
-		MobEffectHelper.tryToApply( data.event.getEntityLiving(), Random.nextRandom( !notAppliedEffects.isEmpty() ? notAppliedEffects : List.of( EFFECTS ) ), Utility.minutesToTicks( 1.5 ), 0 );
+		MobEffectHelper.tryToApply( data.event.getEntityLiving(), Random.next( !notAppliedEffects.isEmpty() ? notAppliedEffects : List.of( EFFECTS ) ), Utility.minutesToTicks( 1.5 ), 0 );
 		data.event.setCanceled( true );
 	}
 

@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "majruszsdifficulty:item/bad_omen_potion"
-  }
-}

@@ -10,8 +10,8 @@ public class MobDef extends SerializableStructure {
 	public ResourceLocation equipment;
 
 	public MobDef() {
-		this.define( "type", ()->this.type, x->this.type = x );
-		this.define( "count", ()->this.count, x->this.count = x );
-		this.define( "equipment", ()->this.equipment, x->this.equipment = x );
+		this.defineEntityType( "type", ()->this.type, x->this.type = x );
+		this.defineInteger( "count", ()->this.count, x->this.count = x );
+		this.defineLocation( "equipment", ()->this.equipment, x->this.equipment = x );
 	}
 }

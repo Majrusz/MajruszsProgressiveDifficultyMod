@@ -4,6 +4,7 @@ import com.majruszsdifficulty.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
@@ -21,6 +22,11 @@ public class TatteredArmorItem extends ArmorItem {
 	public static class Boots extends TatteredArmorItem {
 		public Boots() {
 			super( EquipmentSlot.FEET );
+		}
+
+		@Override
+		public boolean canWalkOnPowderedSnow( ItemStack itemStack, LivingEntity wearer ) {
+			return itemStack.getItem().equals( this );
 		}
 	}
 

@@ -5,21 +5,23 @@ import com.majruszsdifficulty.blocks.EnderiumBlock;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
+import com.majruszsdifficulty.effects.GlassRegenerationEffect;
 import com.majruszsdifficulty.entities.*;
+import com.majruszsdifficulty.features.bleeding.ArmorBleeding;
+import com.majruszsdifficulty.features.bleeding.ToolsBleeding;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.treasurebags.TreasureBagManager;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressManager;
-import com.majruszsdifficulty.triggers.BandageTrigger;
+import com.majruszsdifficulty.treasurebags.data.LootProgressData;
 import com.majruszsdifficulty.triggers.GameStageTrigger;
 import com.majruszsdifficulty.triggers.TreasureBagTrigger;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyManager;
 import com.mlib.Utility;
-import com.mlib.annotations.AnnotationHandler;
-import com.mlib.gamemodifiers.ModConfigs;
 import com.mlib.items.CreativeModeTabHelper;
-import com.mlib.registries.RegistryHelper;
-import com.mlib.triggers.BasicTrigger;
+import com.mlib.config.ConfigHandler;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.modhelper.ModHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderType;
@@ -55,7 +57,7 @@ import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -67,19 +69,21 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.majruszsdifficulty.MajruszsDifficulty.MOD_ID;
-import static com.majruszsdifficulty.MajruszsDifficulty.SERVER_CONFIG;
 import static net.minecraft.core.Registry.LOOT_FUNCTION_REGISTRY;
 
 public class Registries {
-	private static final RegistryHelper HELPER = new RegistryHelper( MajruszsDifficulty.MOD_ID );
+	public static final ModHelper HELPER = ModHelper.create( MajruszsDifficulty.MOD_ID );
+
+	// Configs
+	public static final ConfigHandler SERVER_CONFIG = HELPER.createConfig( ModConfig.Type.SERVER );
 
 	static {
-		ModConfigs.init( SERVER_CONFIG, Groups.DEFAULT ).name( "GameModifiers" );
+		ModConfigs.init( SERVER_CONFIG, Groups.DEFAULT ).name( "Features" );
 		ModConfigs.init( SERVER_CONFIG, Groups.UNDEAD_ARMY ).name( "UndeadArmy" );
 		ModConfigs.init( SERVER_CONFIG, Groups.GAME_STAGE ).name( "GameStage" );
 		ModConfigs.init( SERVER_CONFIG, Groups.TREASURE_BAG ).name( "TreasureBag" );
 		ModConfigs.init( SERVER_CONFIG, Groups.MOBS ).name( "Mobs" );
+		ModConfigs.init( SERVER_CONFIG, Groups.BLEEDING ).name( "Bleeding" );
 	}
 
 	// Groups
@@ -97,7 +101,7 @@ public class Registries {
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.register( "tank", TankEntity.createSupplier() );
 	public static final RegistryObject< EntityType< CursedArmorEntity > > CURSED_ARMOR = ENTITY_TYPES.register( "cursed_armor", CursedArmorEntity.createSupplier() );
 	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.register( "cerberus", CerberusEntity.createSupplier() );
-	public static final RegistryObject< EntityType< BlackWidowEntity > > BLACK_WIDOW = ENTITY_TYPES.register( "black_widow", BlackWidowEntity.createSupplier() );
+	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.register( "giant", GiantEntity.createSupplier() );
 
 	// Items
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.register( "bandage", BandageItem::new );
@@ -124,8 +128,9 @@ public class Registries {
 	public static final RegistryObject< EnderPouchItem > ENDER_POUCH = ITEMS.register( "ender_pouch", EnderPouchItem::new );
 	public static final RegistryObject< WitherSwordItem > WITHER_SWORD = ITEMS.register( "wither_sword", WitherSwordItem::new );
 	public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.register( "recall_potion", RecallPotionItem::new );
-	public static final RegistryObject< BadOmenPotionItem > BAD_OMEN_POTION = ITEMS.register( "bad_omen_potion", BadOmenPotionItem::new );
+	public static final RegistryObject< EvokerFangScrollItem > EVOKER_FANG_SCROLL = ITEMS.register( "evoker_fang_scroll", EvokerFangScrollItem::new );
 	public static final RegistryObject< SoulJarItem > SOUL_JAR = ITEMS.register( "soul_jar", SoulJarItem::new );
+	public static final RegistryObject< SonicBoomScrollItem > SONIC_BOOM_SCROLL = ITEMS.register( "sonic_boom_scroll", SonicBoomScrollItem::new );
 
 	// Potions
 	public static final RegistryObject< Potion > WITHER_POTION = POTIONS.register( "wither", ()->new Potion( new MobEffectInstance( MobEffects.WITHER, Utility.secondsToTicks( 40.0 ) ) ) );
@@ -152,7 +157,7 @@ public class Registries {
 	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.register( "tank_spawn_egg", createEggSupplier( TANK, 0xc1c1c1, 0x949494 ) );
 	public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.register( "cursed_armor_spawn_egg", createEggSupplier( CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
 	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.register( "cerberus_spawn_egg", createEggSupplier( CERBERUS, 0x212121, 0xe0e0e0 ) );
-	public static final RegistryObject< SpawnEggItem > BLACK_WIDOW_SPAWN_EGG = ITEMS.register( "black_widow_spawn_egg", createEggSupplier( BLACK_WIDOW, 0x212121, 0xe12121 ) );
+	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.register( "giant_spawn_egg", createEggSupplier( GIANT, 0x00afaf, 0x799c65 ) );
 
 	static Supplier< SpawnEggItem > createEggSupplier( Supplier< ? extends EntityType< ? extends Mob > > type,
 		int backgroundColor, int highlightColor
@@ -174,6 +179,7 @@ public class Registries {
 	// Effects
 	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.register( "bleeding", BleedingEffect::new );
 	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.register( "bleeding_immunity", BleedingImmunityEffect::new );
+	public static final RegistryObject< GlassRegenerationEffect > GLASS_REGENERATION = MOB_EFFECTS.register( "glass_regeneration", GlassRegenerationEffect::new );
 
 	// Damage Sources
 	public static final DamageSource BLEEDING_SOURCE = new DamageSource( "bleeding" ).bypassArmor();
@@ -188,8 +194,6 @@ public class Registries {
 	// Triggers
 	public static final GameStageTrigger GAME_STATE_TRIGGER = CriteriaTriggers.register( new GameStageTrigger() );
 	public static final TreasureBagTrigger TREASURE_BAG_TRIGGER = CriteriaTriggers.register( new TreasureBagTrigger() );
-	public static final BandageTrigger BANDAGE_TRIGGER = CriteriaTriggers.register( new BandageTrigger() );
-	public static final BasicTrigger BASIC_TRIGGER = HELPER.registerBasicTrigger();
 
 	// Sounds
 	public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = register( "undead_army.approaching" );
@@ -202,8 +206,17 @@ public class Registries {
 	// Loot Functions
 	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY = LOOT_FUNCTIONS.register( "curse_randomly", CurseRandomlyFunction::newType );
 
-	// Game Modifiers
-	public static final AnnotationHandler ANNOTATION_HANDLER = new AnnotationHandler( MajruszsDifficulty.MOD_ID );
+	// Network
+	static {
+		HELPER.createMessage( TankEntity.SkillMessage.class, TankEntity.SkillMessage::new );
+		HELPER.createMessage( CursedArmorEntity.AssembleMessage.class, CursedArmorEntity.AssembleMessage::new );
+		HELPER.createMessage( LootProgressData.class, LootProgressData::new );
+		HELPER.createMessage( BleedingEffect.BloodMessage.class, BleedingEffect.BloodMessage::new );
+		HELPER.createMessage( CerberusEntity.SkillMessage.class, CerberusEntity.SkillMessage::new );
+		HELPER.createMessage( ToolsBleeding.ToolsDef.class, ToolsBleeding.ToolsDef::new );
+		HELPER.createMessage( ArmorBleeding.ArmorsDef.class, ArmorBleeding.ArmorsDef::new );
+		HELPER.createMessage( CursedArmorEntity.LocationsDef.class, CursedArmorEntity.LocationsDef::new );
+	}
 
 	public static UndeadArmyManager getUndeadArmyManager() {
 		return GAME_DATA_SAVER != null ? GAME_DATA_SAVER.getUndeadArmyManager() : UndeadArmyManager.NOT_LOADED;
@@ -234,20 +247,16 @@ public class Registries {
 	}
 
 	public static void initialize() {
-		FMLJavaModLoadingContext loadingContext = FMLJavaModLoadingContext.get();
-		final IEventBus modEventBus = loadingContext.getModEventBus();
-
-		HELPER.registerAll();
+		final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener( Registries::setup );
 		modEventBus.addListener( Registries::setupClient );
 		modEventBus.addListener( Registries::setupEntities );
-		modEventBus.addListener( PacketHandler::registerPacket );
 
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener( Registries::onLoadingLevel );
 		forgeEventBus.addListener( Registries::onSavingLevel );
 
-		SERVER_CONFIG.register( ModLoadingContext.get() );
+		HELPER.register();
 	}
 
 	private static void setupClient( final FMLClientSetupEvent event ) {
@@ -257,18 +266,18 @@ public class Registries {
 	public static void setupEntities( EntityAttributeCreationEvent event ) {
 		event.put( CREEPERLING.get(), CreeperlingEntity.getAttributeMap() );
 		event.put( TANK.get(), TankEntity.getAttributeMap() );
-		event.put( BLACK_WIDOW.get(), BlackWidowEntity.getAttributeMap() );
 		event.put( CURSED_ARMOR.get(), CursedArmorEntity.getAttributeMap() );
 		event.put( CERBERUS.get(), CerberusEntity.getAttributeMap() );
+		event.put( GIANT.get(), GiantEntity.getAttributeMap() );
 	}
 
 	private static void setup( final FMLCommonSetupEvent event ) {
 		// FORGE: use SpawnPlacementRegisterEvent to register and modify spawn placements
 		SpawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMobSpawnRules );
 		SpawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
-		SpawnPlacements.register( BLACK_WIDOW.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlackWidowEntity::checkMonsterSpawnRules );
 		SpawnPlacements.register( CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
-		SpawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
+		SpawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CerberusEntity::checkMonsterSpawnRules );
+		SpawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
 
 		event.enqueueWork( ()->{
 			addPotionRecipe( ()->Potions.WATER, CERBERUS_FANG, ()->Potions.MUNDANE );
@@ -334,5 +343,6 @@ public class Registries {
 		public static final String GAME_STAGE = Registries.getLocationString( "game_stage" );
 		public static final String TREASURE_BAG = Registries.getLocationString( "treasure_bag" );
 		public static final String MOBS = Registries.getLocationString( "mobs" );
+		public static final String BLEEDING = Registries.getLocationString( "bleeding" );
 	}
 }
