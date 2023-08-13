@@ -19,7 +19,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.gossip.GossipType;
 import net.minecraft.world.entity.npc.Villager;
@@ -70,9 +69,9 @@ public class BandageItem extends Item {
 	public static class Effects {
 		static Effects INSTANCE = null;
 		final ConfigGroup bandageGroup = new ConfigGroup();
-		final EffectConfig regeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 0, 20.0 );
+		final EffectConfig regeneration = new EffectConfig( Registries.GLASS_REGENERATION, 0, 20.0 );
 		final ConfigGroup goldenBandageGroup = new ConfigGroup();
-		final EffectConfig goldenRegeneration = new EffectConfig( Registries.REGENERATIVE_WRAP, 1, 20.0 );
+		final EffectConfig goldenRegeneration = new EffectConfig( Registries.GLASS_REGENERATION, 1, 20.0 );
 		final EffectConfig goldenImmunity = new EffectConfig( Registries.BLEEDING_IMMUNITY, 0, 90.0 );
 
 		public Effects() {

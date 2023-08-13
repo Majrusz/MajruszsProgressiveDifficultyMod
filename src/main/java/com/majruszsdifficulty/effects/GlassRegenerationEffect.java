@@ -12,8 +12,8 @@ import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
-public class RegenerativeWrapEffect extends MobEffect {
-	public RegenerativeWrapEffect() {
+public class GlassRegenerationEffect extends MobEffect {
+	public GlassRegenerationEffect() {
 		super( MobEffectCategory.BENEFICIAL, 0xffcd5cab );
 	}
 
@@ -37,15 +37,15 @@ public class RegenerativeWrapEffect extends MobEffect {
 	}
 
 	@AutoInstance
-	public static class RegenerativeWrap {
-		public RegenerativeWrap() {
+	public static class GlassRegeneration {
+		public GlassRegeneration() {
 			OnDamaged.listen( this::removeEffect )
-				.addCondition( Condition.hasEffect( Registries.REGENERATIVE_WRAP, data->data.target ) )
+				.addCondition( Condition.hasEffect( Registries.GLASS_REGENERATION, data->data.target ) )
 				.addCondition( OnDamaged.dealtAnyDamage() );
 		}
 
 		private void removeEffect( OnDamaged.Data data ) {
-			data.target.removeEffect( Registries.REGENERATIVE_WRAP.get() );
+			data.target.removeEffect( Registries.GLASS_REGENERATION.get() );
 		}
 	}
 }
