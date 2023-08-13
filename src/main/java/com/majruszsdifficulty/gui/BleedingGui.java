@@ -3,7 +3,7 @@ package com.majruszsdifficulty.gui;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.gamemodifiers.contexts.OnClientTick;
+import com.mlib.contexts.OnClientTick;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

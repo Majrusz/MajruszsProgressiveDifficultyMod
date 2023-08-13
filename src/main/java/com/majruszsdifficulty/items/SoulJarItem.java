@@ -1,19 +1,20 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnSoulJarMultiplier;
-import com.mlib.annotations.AutoInstance;
+import com.majruszsdifficulty.contexts.OnSoulJarMultiplier;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.attributes.AttributeHandler;
+import com.mlib.data.SerializableHelper;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.SoundHandler;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.*;
 import com.mlib.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
@@ -25,21 +26,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public class SoulJarItem extends Item {
 	static final float DAMAGE_BONUS = 2.5f;
 	static final float MOVE_BONUS = 0.15f;
 	static final float RANGE_BONUS = 0.5f;
-	static final int ARMOR_BONUS = 2;
+	static final int ARMOR_BONUS = 3;
 	static final float MINE_BONUS = 0.15f;
 	static final int LUCK_BONUS = 1;
 	static final float SWIM_BONUS = 0.30f;
@@ -52,9 +51,7 @@ public class SoulJarItem extends Item {
 
 	public static ItemStack randomItemStack( int bonusCount ) {
 		ItemStack itemStack = new ItemStack( Registries.SOUL_JAR.get() );
-		BonusInfo bonusInfo = new BonusInfo( itemStack.getOrCreateTag() );
-		bonusInfo.bonusCount = bonusCount;
-		bonusInfo.write( itemStack.getOrCreateTag() );
+		SerializableHelper.modify( BonusInfo::new, itemStack.getOrCreateTag(), info->info.bonusCount = bonusCount );
 
 		return itemStack;
 	}
@@ -64,18 +61,15 @@ public class SoulJarItem extends Item {
 	}
 
 	@Override
-	public boolean isFoil( ItemStack itemStack ) {
-		return new BonusInfo( itemStack.getOrCreateTag() ).hasBonuses();
-	}
-
-	@Override
 	public InteractionResultHolder< ItemStack > use( Level level, Player player, InteractionHand hand ) {
 		ItemStack itemStack = player.getItemInHand( hand );
-		BonusInfo bonusInfo = new BonusInfo( itemStack.getOrCreateTag() );
+		BonusInfo bonusInfo = SerializableHelper.read( BonusInfo::new, itemStack.getOrCreateTag() );
 		if( bonusInfo.bonusMask == 0b0 ) {
-			bonusInfo.randomize();
-			bonusInfo.write( itemStack.getOrCreateTag() );
-			SoundHandler.ENCHANT.play( level, player.position() );
+			if( level instanceof ServerLevel ) {
+				bonusInfo.randomize();
+				bonusInfo.write( itemStack.getOrCreateTag() );
+				SoundHandler.ENCHANT.play( level, player.position() );
+			}
 
 			return InteractionResultHolder.sidedSuccess( itemStack, level.isClientSide() );
 		}
@@ -95,7 +89,10 @@ public class SoulJarItem extends Item {
 				.addCondition( Condition.predicate( data->hasBonus( data.attacker, BonusType.DAMAGE ) ) );
 
 			OnBreakSpeed.listen( this::increaseSpeed )
-				.addCondition( Condition.predicate( data->hasBonus( data.player, BonusType.MINING ) ) );
+				.addCondition( Condition.predicate( data->hasBonus( data.player, BonusType.MINE ) ) );
+
+			OnLoot.listen( this::applyRandomSouls )
+				.addCondition( Condition.isServer() );
 
 			OnItemAttributeTooltip.listen( this::addTooltip )
 				.addCondition( Condition.predicate( data->data.itemStack.getItem() instanceof SoulJarItem ) );
@@ -109,7 +106,7 @@ public class SoulJarItem extends Item {
 			if( !( itemStack.getItem() instanceof SoulJarItem ) )
 				return false;
 
-			return new BonusInfo( itemStack.getOrCreateTag() )
+			return SerializableHelper.read( BonusInfo::new, itemStack.getOrCreateTag() )
 				.getBonusTypes()
 				.contains( bonusType );
 		}
@@ -151,9 +148,23 @@ public class SoulJarItem extends Item {
 			data.event.setNewSpeed( data.event.getNewSpeed() + data.event.getOriginalSpeed() * MINE_BONUS * getMultiplier( data.player ) );
 		}
 
+		private void applyRandomSouls( OnLoot.Data data ) {
+			for( ItemStack itemStack : data.generatedLoot ) {
+				if( !( itemStack.getItem() instanceof SoulJarItem ) ) {
+					continue;
+				}
+
+				SerializableHelper.modify( BonusInfo::new, itemStack.getOrCreateTag(), bonusInfo->{
+					if( bonusInfo.bonusMask == 0b0 ) {
+						bonusInfo.randomize();
+					}
+				} );
+			}
+		}
+
 		private void addTooltip( OnItemAttributeTooltip.Data data ) {
 			Player player = DistExecutor.unsafeCallWhenOn( Dist.CLIENT, ()->()->Minecraft.getInstance().player );
-			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
+			BonusInfo bonusInfo = SerializableHelper.read( BonusInfo::new, data.itemStack.getOrCreateTag() );
 			float multiplier = getMultiplier( player, data.itemStack );
 			for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
 				data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( multiplier ) );
@@ -161,7 +172,7 @@ public class SoulJarItem extends Item {
 		}
 
 		private void addTooltip( OnItemTooltip.Data data ) {
-			BonusInfo bonusInfo = new BonusInfo( data.itemStack.getOrCreateTag() );
+			BonusInfo bonusInfo = SerializableHelper.read( BonusInfo::new, data.itemStack.getOrCreateTag() );
 			if( bonusInfo.hasBonuses() ) {
 				MutableComponent souls = Component.literal( "" );
 				for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
@@ -178,13 +189,11 @@ public class SoulJarItem extends Item {
 		public int bonusMask = 0b0;
 		public int bonusCount = 3;
 
-		public BonusInfo( CompoundTag tag ) {
+		public BonusInfo() {
 			super( "SoulJar" );
 
-			this.define( "BonusMask", ()->this.bonusMask, x->this.bonusMask = x );
-			this.define( "BonusCount", ()->this.bonusCount, x->this.bonusCount = x );
-
-			this.read( tag );
+			this.defineInteger( "BonusMask", ()->this.bonusMask, x->this.bonusMask = x );
+			this.defineInteger( "BonusCount", ()->this.bonusCount, x->this.bonusCount = x );
 		}
 
 		public void randomize() {
@@ -225,7 +234,7 @@ public class SoulJarItem extends Item {
 		MOVE( 1 << 1, "item.majruszsdifficulty.soul_jar.move", "entity.minecraft.horse", ChatFormatting.WHITE, multiplier->TextHelper.signedPercent( MOVE_BONUS * multiplier ) ),
 		RANGE( 1 << 2, "item.majruszsdifficulty.soul_jar.range", "entity.minecraft.enderman", ChatFormatting.DARK_PURPLE, multiplier->TextHelper.signed( RANGE_BONUS * multiplier ) ),
 		ARMOR( 1 << 3, "item.majruszsdifficulty.soul_jar.armor", "entity.majruszsdifficulty.tank", ChatFormatting.BLUE, multiplier->TextHelper.signed( ( int )( ARMOR_BONUS * multiplier ) ) ),
-		MINING( 1 << 4, "item.majruszsdifficulty.soul_jar.mine", "entity.minecraft.sniffer", ChatFormatting.YELLOW, multiplier->TextHelper.signedPercent( MINE_BONUS * multiplier ) ),
+		MINE( 1 << 4, "item.majruszsdifficulty.soul_jar.mine", "entity.minecraft.sniffer", ChatFormatting.YELLOW, multiplier->TextHelper.signedPercent( MINE_BONUS * multiplier ) ),
 		LUCK( 1 << 5, "item.majruszsdifficulty.soul_jar.luck", "entity.minecraft.rabbit", ChatFormatting.GREEN, multiplier->TextHelper.signed( ( int )( LUCK_BONUS * multiplier ) ) ),
 		SWIM( 1 << 6, "item.majruszsdifficulty.soul_jar.swim", "entity.minecraft.dolphin", ChatFormatting.AQUA, multiplier->TextHelper.signedPercent( SWIM_BONUS * multiplier ) );
 
@@ -251,6 +260,29 @@ public class SoulJarItem extends Item {
 		public Component getSoulComponent() {
 			return Component.translatable( this.mobId )
 				.withStyle( this.soulFormatting );
+		}
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	public static class ItemColor implements net.minecraft.client.color.item.ItemColor {
+		static final Map< BonusType, Integer > COLOR_MAPPING = Map.of(
+			BonusType.DAMAGE, 0xcc5555,
+			BonusType.MOVE, 0xdddddd,
+			BonusType.RANGE, 0xcc55cc,
+			BonusType.ARMOR, 0x5555cc,
+			BonusType.MINE, 0xcccc55,
+			BonusType.LUCK, 0x55cc55,
+			BonusType.SWIM, 0x55cccc
+		);
+
+		@Override
+		public int getColor( ItemStack itemStack, int index ) {
+			if( index == 0 ) {
+				return 0xffffff;
+			}
+
+			BonusInfo bonusInfo = SerializableHelper.read( BonusInfo::new, itemStack.getOrCreateTag() );
+			return bonusInfo.hasBonuses() ? COLOR_MAPPING.get( bonusInfo.getBonusTypes().get( index - 1 ) ) : 0xeeeeee - index * 0x111111;
 		}
 	}
 }

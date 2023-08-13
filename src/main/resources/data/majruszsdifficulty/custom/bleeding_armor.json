@@ -1,0 +1,18 @@
+[
+  {
+    "id": "{regex}.*_helmet",
+    "chance_multiplier": 0.8
+  },
+  {
+    "id": "{regex}.*_chestplate",
+    "chance_multiplier": 0.6
+  },
+  {
+    "id": "{regex}.*_leggings",
+    "chance_multiplier": 0.7
+  },
+  {
+    "id": "{regex}.*_boots",
+    "chance_multiplier": 0.9
+  }
+]

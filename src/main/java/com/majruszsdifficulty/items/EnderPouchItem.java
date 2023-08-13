@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.items;
 
 import com.mlib.effects.SoundHandler;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnPlayerInteract;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.OnPlayerInteract;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
@@ -24,7 +24,7 @@ public class EnderPouchItem extends Item {
 		data.player.awardStat( Stats.OPEN_ENDERCHEST );
 		data.player.swing( data.hand );
 		if( data.getLevel() instanceof ServerLevel level ) {
-			SoundHandler.ITEM_PICKUP.play( level, data.player.position(), SoundHandler.randomized( 0.5f ) );
+			SoundHandler.ENDERMAN_TELEPORT.play( level, data.player.position(), SoundHandler.randomized( 0.5f ), SoundHandler.randomized( 0.7f ) );
 		}
 		data.event.setCancellationResult( InteractionResult.SUCCESS );
 	}

@@ -1,6 +1,9 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "majruszsdifficulty:item/soul_jar"
+    "layer0": "majruszsdifficulty:item/soul_jar",
+    "layer1": "majruszsdifficulty:item/soul_jar_soul1",
+    "layer2": "majruszsdifficulty:item/soul_jar_soul2",
+    "layer3": "majruszsdifficulty:item/soul_jar_soul3"
   }
 }

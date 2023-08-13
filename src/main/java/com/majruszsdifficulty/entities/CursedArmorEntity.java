@@ -1,25 +1,24 @@
 package com.majruszsdifficulty.entities;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.majruszsdifficulty.PacketHandler;
 import com.majruszsdifficulty.Registries;
 import com.mlib.Random;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.blocks.BlockHelper;
 import com.mlib.config.ConfigGroup;
 import com.mlib.config.DoubleConfig;
 import com.mlib.config.StringConfig;
+import com.mlib.data.JsonListener;
+import com.mlib.data.SerializableList;
 import com.mlib.data.SerializableStructure;
 import com.mlib.effects.ParticleHandler;
 import com.mlib.effects.SoundHandler;
 import com.mlib.entities.EntityHelper;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.Context;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.*;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.Context;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.*;
+import com.mlib.loot.LootHelper;
 import com.mlib.math.AnyPos;
 import com.mlib.math.Range;
 import com.mlib.text.TextHelper;
@@ -33,7 +32,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -47,9 +49,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
@@ -59,16 +59,16 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class CursedArmorEntity extends Monster {
-	public static final String GROUP_ID = "CursedArmor";
+	public static final String GROUP_ID = Registries.getLocationString( "cursed_armor" );
 	public static final int ASSEMBLE_DURATION = Utility.secondsToTicks( 2.5 );
 	boolean areGoalsRegistered = false;
 	SoundHandler assembleSound = null;
@@ -126,12 +126,12 @@ public class CursedArmorEntity extends Monster {
 		this.setYHeadRot( yRot );
 		this.setYBodyRot( yRot );
 		if( this.level() instanceof ServerLevel ) {
-			Time.nextTick( ()->PacketHandler.CHANNEL.send( PacketDistributor.DIMENSION.with( ()->this.level().dimension() ), new AssembleMessage( this, yRot ) ) );
+			Time.nextTick( ()->Registries.HELPER.sendMessage( PacketDistributor.DIMENSION.with( ()->this.level().dimension() ), new AssembleMessage( this, yRot ) ) );
 		}
 	}
 
 	public void setAssembleSound( SoundEvent soundEvent ) {
-		this.assembleSound = new SoundHandler( soundEvent, SoundSource.HOSTILE, SoundHandler.randomized( 1.2f ) );
+		this.assembleSound = new SoundHandler( soundEvent, SoundSource.HOSTILE, SoundHandler.randomized( 2.0f ) );
 	}
 
 	public boolean isAssembling() {
@@ -162,34 +162,29 @@ public class CursedArmorEntity extends Monster {
 
 		if( this.assembleTicksLeft == ASSEMBLE_DURATION ) {
 			SoundHandler.ENCHANT.play( level, this.position() );
-		} else if( this.assembleTicksLeft == ASSEMBLE_DURATION - 75 ) {
+		} else if( this.assembleTicksLeft == ASSEMBLE_DURATION - 35 ) {
 			this.assembleSound.play( level, this.position() );
 		}
 	}
 
 	@AutoInstance
 	public static class Spawn {
-		static final String MAIN_TAG = "cursed_armor";
-		static final String LOOT_TABLE_TAG = "loot";
-		static final String SOUND_TAG = "sound";
-		static final String CHANCE_TAG = "chance";
-		static final Map< ResourceLocation, Data > DATA_MAP = new HashMap<>();
-		final DoubleConfig dropChance = new DoubleConfig( 0.1, Range.CHANCE );
+		final DoubleConfig dropChance = new DoubleConfig( 0.2, Range.CHANCE );
 		final StringConfig name = new StringConfig( "Freshah" );
+		final JsonListener.Holder< LocationsDef > locationsDef;
 
 		public Spawn() {
+			this.locationsDef = JsonListener.add( "custom", Registries.getLocation( "cursed_armor_locations" ), LocationsDef.class, LocationsDef::new )
+				.syncWithClients( Registries.HELPER );
+
 			ConfigGroup group = ModConfigs.registerSubgroup( GROUP_ID );
 
 			OnLoot.listen( this::spawnCursedArmor )
 				.addCondition( Condition.isServer() )
 				.addCondition( OnLoot.hasOrigin() )
 				.addCondition( Condition.predicate( data->BlockHelper.getBlockEntity( data.getLevel(), data.origin ) instanceof ChestBlockEntity ) )
-				.addCondition( Condition.predicate( this::hasLootDefined ) )
+				.addCondition( this.isLootDefined() )
 				.addConfig( this.dropChance.name( "drop_chance" ).comment( "Chance for each equipped item to drop when killed." ) )
-				.insertTo( group );
-
-			OnLootTableCustomLoad.listen( this::loadCursedArmorLoot )
-				.addCondition( Condition.predicate( data->data.jsonObject.has( MAIN_TAG ) ) )
 				.insertTo( group );
 
 			OnSpawned.listen( this::setCustomName )
@@ -216,17 +211,22 @@ public class CursedArmorEntity extends Monster {
 			OnPreDamaged.listen( OnPreDamaged.CANCEL )
 				.addCondition( Condition.predicate( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() ) )
 				.insertTo( group );
+
+			OnItemTooltip.listen( this::addSpawnInfo )
+				.addCondition( Condition.predicate( data->data.itemStack.getItem().equals( Registries.CURSED_ARMOR_SPAWN_EGG.get() ) ) );
 		}
 
 		private void spawnCursedArmor( OnLoot.Data data ) {
-			CursedArmorEntity cursedArmor = EntityHelper.spawn( Registries.CURSED_ARMOR, data.getLevel(), this.getSpawnPosition( data ) );
+			CursedArmorEntity cursedArmor = EntityHelper.createSpawner( Registries.CURSED_ARMOR, data.getLevel() )
+				.position( this.getSpawnPosition( data ) )
+				.spawn();
 			if( cursedArmor != null ) {
 				float yRot = BlockHelper.getBlockState( data.getLevel(), data.origin )
 					.getValue( ChestBlock.FACING )
 					.toYRot();
 
 				cursedArmor.startAssembling( yRot );
-				this.equipSet( DATA_MAP.get( data.context.getQueriedLootTableId() ), cursedArmor, data.origin );
+				this.equipSet( this.locationsDef.get().find( data.context.getQueriedLootTableId() ).orElseThrow(), cursedArmor, data.origin );
 				if( data.entity instanceof ServerPlayer player ) {
 					Time.nextTick( player::closeContainer );
 				}
@@ -245,51 +245,41 @@ public class CursedArmorEntity extends Monster {
 			}
 		}
 
-		private void loadCursedArmorLoot( OnLootTableCustomLoad.Data data ) {
-			JsonObject object = data.jsonObject.get( MAIN_TAG ).getAsJsonObject();
-			ResourceLocation sound = new ResourceLocation( object.has( SOUND_TAG ) ? object.get( SOUND_TAG )
-				.getAsString() : "item.armor.equip_generic" );
-			double chance = object.has( CHANCE_TAG ) ? object.get( CHANCE_TAG ).getAsDouble() : 1.0;
-			JsonElement ids = object.get( LOOT_TABLE_TAG );
-			if( ids.isJsonArray() ) {
-				JsonArray array = ids.getAsJsonArray();
-				array.forEach( id->DATA_MAP.put( new ResourceLocation( id.getAsString() ), new Data( data.table, sound, chance ) ) );
-			} else {
-				DATA_MAP.put( new ResourceLocation( ids.getAsString() ), new Data( data.table, sound, chance ) );
-			}
-		}
+		private Condition< OnLoot.Data > isLootDefined() {
+			return Condition.predicate( data->{
+				Optional< LocationDef > locationDef = this.locationsDef.get().find( data.context.getQueriedLootTableId() );
 
-		private boolean hasLootDefined( OnLoot.Data data ) {
-			ResourceLocation lootTableId = data.context.getQueriedLootTableId();
-
-			return DATA_MAP.containsKey( lootTableId ) && Random.tryChance( DATA_MAP.get( lootTableId ).chance );
+				return locationDef.isPresent() && Random.tryChance( locationDef.get().chance );
+			} );
 		}
 
 		private void setCustomName( OnSpawned.Data data ) {
-			data.target.setCustomName( this.name.asLiteral() );
+			data.target.setCustomName( Component.literal( this.name.get() ) );
 		}
 
 		private void giveRandomArmor( OnSpawned.Data data ) {
 			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.target;
-			if( cursedArmor.getArmorCoverPercentage() > 0.0f )
+			if( cursedArmor.getArmorCoverPercentage() > 0.0f ) {
 				return;
+			}
 
-			this.equipSet( Random.nextRandom( DATA_MAP ).getValue(), cursedArmor, cursedArmor.position() );
+			this.equipSet( this.locationsDef.get().getRandom(), cursedArmor, cursedArmor.position() );
 		}
 
-		private void equipSet( Data data, CursedArmorEntity cursedArmor, Vec3 position ) {
+		private void equipSet( LocationDef locationDef, CursedArmorEntity cursedArmor, Vec3 position ) {
 			LootParams params = new LootParams.Builder( ( ServerLevel )cursedArmor.level() )
 				.withParameter( LootContextParams.ORIGIN, position )
 				.withParameter( LootContextParams.THIS_ENTITY, cursedArmor )
 				.create( LootContextParamSets.GIFT );
 
-			data.lootTable.getRandomItems( params )
+			LootHelper.getLootTable( locationDef.loot )
+				.getRandomItems( params )
 				.forEach( cursedArmor::equipItemIfPossible );
 
 			Arrays.stream( EquipmentSlot.values() )
 				.forEach( slot->cursedArmor.setDropChance( slot, this.dropChance.asFloat() ) );
 
-			cursedArmor.setAssembleSound( ForgeRegistries.SOUND_EVENTS.getValue( data.sound ) );
+			cursedArmor.setAssembleSound( ForgeRegistries.SOUND_EVENTS.getValue( locationDef.sound ) );
 		}
 
 		private void startAssembling( OnSpawned.Data data ) {
@@ -297,7 +287,23 @@ public class CursedArmorEntity extends Monster {
 			cursedArmor.startAssembling( 0.0f );
 		}
 
-		private record Data( LootTable lootTable, ResourceLocation sound, double chance ) {}
+		private void addSpawnInfo( OnItemTooltip.Data data ) {
+			List< Component > components = data.tooltip;
+			components.add( Component.translatable( "item.majruszsdifficulty.cursed_armor_spawn_egg.locations" )
+				.withStyle( ChatFormatting.GRAY ) );
+
+			this.locationsDef.get().locationDefs.forEach( locationDef->{
+				String chance = TextHelper.percent( locationDef.chance );
+				locationDef.chests.forEach( chestId->{
+					components.add( Component.literal( " - " )
+						.append( Component.literal( chestId.toString() ) )
+						.append( Component.literal( " " ) )
+						.append( Component.literal( chance ).withStyle( ChatFormatting.DARK_GRAY ) )
+						.withStyle( ChatFormatting.GRAY )
+					);
+				} );
+			} );
+		}
 	}
 
 	@AutoInstance
@@ -334,37 +340,13 @@ public class CursedArmorEntity extends Monster {
 		}
 	}
 
-	@AutoInstance
-	public static class TooltipUpdater {
-		public TooltipUpdater() {
-			OnItemTooltip.listen( this::addSpawnInfo )
-				.addCondition( Condition.predicate( data->data.itemStack.getItem().equals( Registries.CURSED_ARMOR_SPAWN_EGG.get() ) ) );
-		}
-
-		private void addSpawnInfo( OnItemTooltip.Data data ) {
-			List< Component > components = data.tooltip;
-			components.add( Component.translatable( "item.majruszsdifficulty.cursed_armor_spawn_egg.locations" )
-				.withStyle( ChatFormatting.GRAY ) );
-
-			Spawn.DATA_MAP.forEach( ( location, spawnData )->{
-				String chance = TextHelper.percent( ( float )spawnData.chance );
-				components.add( Component.literal( " - " )
-					.append( Component.literal( location.toString() ) )
-					.append( Component.literal( " " ) )
-					.append( Component.literal( chance ).withStyle( ChatFormatting.DARK_GRAY ) )
-					.withStyle( ChatFormatting.GRAY )
-				);
-			} );
-		}
-	}
-
 	public static class AssembleMessage extends SerializableStructure {
 		int entityId;
 		float yRot;
 
 		public AssembleMessage() {
-			this.define( null, ()->this.entityId, x->this.entityId = x );
-			this.define( null, ()->this.yRot, x->this.yRot = x );
+			this.defineInteger( "id", ()->this.entityId, x->this.entityId = x );
+			this.defineFloat( "rot", ()->this.yRot, x->this.yRot = x );
 		}
 
 		public AssembleMessage( Entity entity, float yRot ) {
@@ -381,6 +363,44 @@ public class CursedArmorEntity extends Monster {
 			if( level != null && level.getEntity( this.entityId ) instanceof CursedArmorEntity cursedArmor ) {
 				cursedArmor.startAssembling( this.yRot );
 			}
+		}
+	}
+
+	public static class LocationsDef extends SerializableList {
+		List< LocationDef > locationDefs = new ArrayList<>();
+
+		public LocationsDef() {
+			this.defineCustom( ()->this.locationDefs, x->this.locationDefs = x, LocationDef::new );
+		}
+
+		public Optional< LocationDef > find( ResourceLocation chestId ) {
+			return this.locationDefs.stream()
+				.filter( locationDef -> locationDef.chests.stream().anyMatch( chestId::equals ) )
+				.findFirst();
+		}
+
+		public LocationDef getRandom() {
+			return Random.next( this.locationDefs );
+		}
+
+		@Override
+		@OnlyIn( Dist.CLIENT )
+		public void onClient( NetworkEvent.Context context ) {
+			Registries.HELPER.findInstance( Spawn.class ).ifPresent( instance->instance.locationsDef.onSync( this ) );
+		}
+	}
+
+	public static class LocationDef extends SerializableStructure {
+		ResourceLocation loot;
+		List< ResourceLocation > chests;
+		ResourceLocation sound = new ResourceLocation( "item.armor.equip_generic" );
+		float chance = 0.0f;
+
+		public LocationDef() {
+			this.defineLocation( "loot", ()->this.loot, x->this.loot = x );
+			this.defineLocation( "chests", ()->this.chests, x->this.chests = x );
+			this.defineLocation( "sound", ()->this.sound, x->this.sound = x );
+			this.defineFloat( "chance", ()->this.chance, x->this.chance = x );
 		}
 	}
 }
