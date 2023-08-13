@@ -51,7 +51,7 @@ public class InfestedEndStone extends Block {
 
 	public static class InfestedEndStoneItem extends BlockItem {
 		public InfestedEndStoneItem() {
-			super( Registries.INFESTED_END_STONE.get(), ( new Properties() ).stacksTo( 64 ) );
+			super( Registries.INFESTED_END_STONE.get(), ( new Properties() ).tab( Registries.ITEM_GROUP ).stacksTo( 64 ) );
 		}
 	}
 }

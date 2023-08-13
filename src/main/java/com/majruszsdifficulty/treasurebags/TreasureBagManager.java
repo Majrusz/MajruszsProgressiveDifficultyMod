@@ -3,15 +3,15 @@ package com.majruszsdifficulty.treasurebags;
 import com.majruszsdifficulty.Registries;
 import com.majruszsdifficulty.items.TreasureBagItem;
 import com.mlib.Utility;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.config.ConfigGroup;
 import com.mlib.data.SerializableStructure;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.ModConfigs;
-import com.mlib.gamemodifiers.contexts.OnDamaged;
-import com.mlib.gamemodifiers.contexts.OnDeath;
-import com.mlib.gamemodifiers.contexts.OnItemFished;
-import com.mlib.gamemodifiers.contexts.OnPlayerTick;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.ModConfigs;
+import com.mlib.contexts.OnDamaged;
+import com.mlib.contexts.OnDeath;
+import com.mlib.contexts.OnItemFished;
+import com.mlib.contexts.OnPlayerTick;
 import com.mlib.items.ItemHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -178,7 +178,7 @@ public class TreasureBagManager {
 		int fishedItems = 0;
 
 		public FishingData() {
-			this.define( "TreasureBagFishingCounter", ()->this.fishedItems, x->this.fishedItems = x );
+			this.defineInteger( "TreasureBagFishingCounter", ()->this.fishedItems, x->this.fishedItems = x );
 		}
 	}
 
@@ -186,7 +186,7 @@ public class TreasureBagManager {
 		int raidId = -1;
 
 		public RaidData() {
-			this.define( "TreasureBagLastPillagerRaidID", ()->this.raidId, x->this.raidId = x );
+			this.defineInteger( "TreasureBagLastPillagerRaidID", ()->this.raidId, x->this.raidId = x );
 		}
 	}
 

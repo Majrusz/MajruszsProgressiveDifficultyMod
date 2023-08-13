@@ -1,12 +1,13 @@
 package com.majruszsdifficulty.gamestage.handlers;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
+import com.majruszsdifficulty.contexts.OnGameStageChange;
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.mlib.annotations.AutoInstance;
+import com.mlib.modhelper.AutoInstance;
 import com.mlib.data.JsonListener;
+import com.mlib.data.SerializableList;
 import com.mlib.data.SerializableStructure;
-import com.mlib.gamemodifiers.Condition;
+import com.mlib.contexts.base.Condition;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -21,7 +22,7 @@ public class ChatMessageSender {
 	final Supplier< Messages > messages;
 
 	public ChatMessageSender() {
-		this.messages = JsonListener.add( "game_stages", Registries.getLocation( "messages" ), Messages.class, Messages::new );
+		this.messages = JsonListener.add( "custom", Registries.getLocation( "game_stage_messages" ), Messages.class, Messages::new );
 
 		OnGameStageChange.listen( this::sendMessage )
 			.addCondition( Condition.predicate( data->!data.isLoadedFromDisk() ) )
@@ -41,11 +42,11 @@ public class ChatMessageSender {
 			} );
 	}
 
-	static class Messages extends SerializableStructure {
+	static class Messages extends SerializableList {
 		List< Message > messages = new ArrayList<>();
 
 		public Messages() {
-			this.define( null, ()->this.messages, x->this.messages = x, Message::new );
+			this.defineCustom( ()->this.messages, x->this.messages = x, Message::new );
 		}
 
 		public Stream< Message > stream() {
@@ -59,9 +60,9 @@ public class ChatMessageSender {
 		ChatFormatting chatFormatting = null;
 
 		public Message() {
-			this.define( "id", ()->this.id, x->this.id = x );
-			this.define( "game_stage", ()->this.gameStage, x->this.gameStage = x, GameStage::values );
-			this.define( "style", ()->this.chatFormatting, x->this.chatFormatting = x, ChatFormatting::values );
+			this.defineString( "id", ()->this.id, x->this.id = x );
+			this.defineEnum( "game_stage", ()->this.gameStage, x->this.gameStage = x, GameStage::values );
+			this.defineEnum( "style", ()->this.chatFormatting, x->this.chatFormatting = x, ChatFormatting::values );
 		}
 	}
 }

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "minecraft:trident",
+    "chance": 0.25
+  },
+  {
+    "id": "{regex}.*_sword",
+    "chance": 0.25,
+    "enchantments": [
+      {
+        "id": "minecraft:sharpness",
+        "extra_chance": 0.015
+      },
+      {
+        "id": "{regex}(minecraft:smite)|(minecraft:bane_of_arthropods)|(majruszsenchantments:misanthropy)",
+        "extra_chance": 0.01
+      }
+    ]
+  },
+  {
+    "id": "{regex}.*_axe",
+    "chance": 0.225,
+    "enchantments": [
+      {
+        "id": "minecraft:sharpness",
+        "extra_chance": 0.015
+      },
+      {
+        "id": "{regex}(minecraft:smite)|(minecraft:bane_of_arthropods)|(majruszsenchantments:misanthropy)",
+        "extra_chance": 0.01
+      }
+    ]
+  },
+  {
+    "id": "{regex}(.*_pickaxe)|minecraft:shears",
+    "chance": 0.2
+  },
+  {
+    "id": "{regex}.*_shovel",
+    "chance": 0.175
+  },
+  {
+    "id": "{regex}.*_hoe",
+    "chance": 0.15
+  }
+]

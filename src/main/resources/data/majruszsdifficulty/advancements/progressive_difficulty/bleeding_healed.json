@@ -17,10 +17,9 @@
   },
   "criteria": {
     "bleeding_healed": {
-      "trigger": "majruszsdifficulty:bandage_used",
+      "trigger": "majruszsdifficulty:basic_trigger",
       "conditions": {
-        "bandage_id": "majruszsdifficulty:bandage",
-        "used_on_oneself": true
+        "type": "bandage_used"
       }
     }
   },

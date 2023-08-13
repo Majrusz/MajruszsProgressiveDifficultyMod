@@ -20,10 +20,9 @@
   },
   "criteria": {
     "bleeding_healed": {
-      "trigger": "majruszsdifficulty:bandage_used",
+      "trigger": "majruszsdifficulty:basic_trigger",
       "conditions": {
-        "bandage_id": "majruszsdifficulty:golden_bandage",
-        "used_on_oneself": false
+        "type": "golden_bandage_used_on_others"
       }
     }
   },

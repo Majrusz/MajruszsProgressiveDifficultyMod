@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamestage;
 
-import com.majruszsdifficulty.gamemodifiers.contexts.OnGameStageChange;
+import com.majruszsdifficulty.contexts.OnGameStageChange;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.MutableComponent;

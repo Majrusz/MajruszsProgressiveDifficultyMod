@@ -13,6 +13,9 @@ record RewardsController( UndeadArmy undeadArmy ) implements IComponent {
 		this.giveExperienceReward();
 		if( this.undeadArmy.isLastWave() ) {
 			this.giveTreasureReward();
+			if( this.undeadArmy.config.isResetAllParticipantsKillRequirementsEnabled() ) {
+				this.resetAllKillRequirements();
+			}
 		}
 	}
 
@@ -28,6 +31,12 @@ record RewardsController( UndeadArmy undeadArmy ) implements IComponent {
 	private void giveTreasureReward() {
 		this.undeadArmy.participants.forEach( participant->{
 			ItemHelper.giveItemStackToPlayer( new ItemStack( Registries.UNDEAD_ARMY_TREASURE_BAG.get() ), participant, this.undeadArmy.level );
+		} );
+	}
+
+	private void resetAllKillRequirements() {
+		this.undeadArmy.participants.forEach( participant->{
+			this.undeadArmy.config.modifyUndeadArmyInfo( participant.getPersistentData(), info->info.killedUndead = 0 );
 		} );
 	}
 }

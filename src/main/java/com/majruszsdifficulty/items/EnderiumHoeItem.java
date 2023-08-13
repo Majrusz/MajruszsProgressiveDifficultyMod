@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.annotations.AutoInstance;
-import com.mlib.gamemodifiers.Condition;
-import com.mlib.gamemodifiers.contexts.OnFarmlandTillCheck;
-import com.mlib.gamemodifiers.contexts.OnItemAttributeTooltip;
+import com.mlib.modhelper.AutoInstance;
+import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.OnFarmlandTillCheck;
+import com.mlib.contexts.OnItemAttributeTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.EquipmentSlot;

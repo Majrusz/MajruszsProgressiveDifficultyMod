@@ -14,6 +14,7 @@ public record Components( UndeadArmy undeadArmy, List< IComponent > components )
 		this.add( ParticipantsUpdater::new );
 		this.add( BossUpdater::new );
 		this.add( MobSpawner::new );
+		this.add( LightningSpawner::new );
 		this.add( WaveController::new );
 		this.add( WeatherController::new );
 		this.add( MobHighlighter::new );
