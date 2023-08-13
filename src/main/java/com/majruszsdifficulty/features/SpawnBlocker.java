@@ -32,6 +32,7 @@ public class SpawnBlocker {
 			.insertTo( group );
 
 		OnSpawned.listen( OnSpawned.CANCEL )
+			.addCondition( OnSpawned.isNotLoadedFromDisk() )
 			.addCondition( Condition.predicate( data->data.getSpawnType() == MobSpawnType.NATURAL ) )
 			.addCondition( Condition.predicate( data->this.isBlocked( data.target ) ) )
 			.insertTo( group );
