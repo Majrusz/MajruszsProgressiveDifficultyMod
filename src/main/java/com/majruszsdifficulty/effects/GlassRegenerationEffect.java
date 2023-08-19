@@ -2,9 +2,12 @@ package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
 import com.mlib.Utility;
+import com.mlib.effects.SoundHandler;
 import com.mlib.modhelper.AutoInstance;
 import com.mlib.contexts.base.Condition;
 import com.mlib.contexts.OnDamaged;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -38,6 +41,8 @@ public class GlassRegenerationEffect extends MobEffect {
 
 	@AutoInstance
 	public static class GlassRegeneration {
+		private static final SoundHandler GLASS_BREAK = new SoundHandler( SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, SoundHandler.randomized( 0.5f ) );
+
 		public GlassRegeneration() {
 			OnDamaged.listen( this::removeEffect )
 				.addCondition( Condition.hasEffect( Registries.GLASS_REGENERATION, data->data.target ) )
@@ -46,6 +51,7 @@ public class GlassRegenerationEffect extends MobEffect {
 
 		private void removeEffect( OnDamaged.Data data ) {
 			data.target.removeEffect( Registries.GLASS_REGENERATION.get() );
+			GLASS_BREAK.play( data.getLevel(), data.target.position() );
 		}
 	}
 }
