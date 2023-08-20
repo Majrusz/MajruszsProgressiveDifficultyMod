@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.features;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.config.GameStageStringListConfig;
+import com.majruszsdifficulty.config.GameStageConfig;
 import com.mlib.Utility;
 import com.mlib.config.ConfigGroup;
 import com.mlib.contexts.OnCheckSpawn;
@@ -12,13 +12,15 @@ import com.mlib.modhelper.AutoInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
 
+import java.util.List;
+
 @AutoInstance
 public class SpawnBlocker {
-	final GameStageStringListConfig forbiddenEntities = new GameStageStringListConfig( new String[]{
-		"minecraft:illusioner",
-		"majruszsdifficulty:tank",
-		"majruszsdifficulty:cerberus"
-	}, new String[]{ "majruszsdifficulty:cerberus" }, new String[]{} );
+	final GameStageConfig< List< ? extends String > > forbiddenEntities = GameStageConfig.create(
+		List.of( "minecraft:illusioner", "majruszsdifficulty:tank", "majruszsdifficulty:cerberus" ),
+		List.of( "majruszsdifficulty:cerberus" ),
+		List.of()
+	);
 
 	public SpawnBlocker() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )

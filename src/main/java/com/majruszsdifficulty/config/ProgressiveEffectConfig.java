@@ -17,14 +17,14 @@ public class ProgressiveEffectConfig extends ConfigGroup {
 	static final Range< Double > DURATION = new Range<>( 1.0, 999.0 );
 	static final Range< Double > MAX_DURATION = new Range<>( 5.0, 9999.0 );
 	final Supplier< MobEffect > effect;
-	final GameStageIntegerConfig amplifier;
-	final GameStageDoubleConfig duration;
+	final GameStageConfig< Integer > amplifier;
+	final GameStageConfig< Double > duration;
 	DoubleConfig maxDuration = null;
 
 	public ProgressiveEffectConfig( Supplier< MobEffect > effect, GameStage.Integer amplifier, GameStage.Double duration ) {
 		this.effect = effect;
-		this.amplifier = new GameStageIntegerConfig( amplifier.normal() + 1, amplifier.expert() + 1, amplifier.master() + 1, AMPLIFIER );
-		this.duration = new GameStageDoubleConfig( duration.normal(), duration.expert(), duration.master(), DURATION );
+		this.amplifier = GameStageConfig.create( amplifier.normal() + 1, amplifier.expert() + 1, amplifier.master() + 1, AMPLIFIER );
+		this.duration = GameStageConfig.create( duration.normal(), duration.expert(), duration.master(), DURATION );
 
 		this.addConfig( this.amplifier.name( "Amplifier" ).comment( "Level of the effect to apply." ) );
 		this.addConfig( this.duration.name( "Duration" ).comment( "Duration in seconds." ) );

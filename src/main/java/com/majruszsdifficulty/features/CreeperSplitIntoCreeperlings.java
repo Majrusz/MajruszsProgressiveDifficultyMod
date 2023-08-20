@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.features;
 
+import com.majruszsdifficulty.config.GameStageConfig;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.config.GameStageIntegerConfig;
 import com.majruszsdifficulty.entities.CreeperlingEntity;
 import com.majruszsdifficulty.contexts.base.CustomConditions;
 import com.mlib.Random;
@@ -26,7 +26,7 @@ import java.util.List;
 
 @AutoInstance
 public class CreeperSplitIntoCreeperlings {
-	final GameStageIntegerConfig creeperlingsAmount = new GameStageIntegerConfig( 2, 4, 6, new Range<>( 1, 10 ) );
+	final GameStageConfig< Integer > creeperlingsAmount = GameStageConfig.create( 2, 4, 6, new Range<>( 1, 10 ) );
 
 	public CreeperSplitIntoCreeperlings() {
 		ConfigGroup group = ModConfigs.registerSubgroup( Registries.Groups.DEFAULT )

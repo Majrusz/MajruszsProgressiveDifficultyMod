@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.Registries;
-import com.majruszsdifficulty.config.GameStageIntegerConfig;
+import com.majruszsdifficulty.config.GameStageConfig;
 import com.majruszsdifficulty.config.TreasureBagConfig;
 import com.majruszsdifficulty.contexts.OnTreasureBagOpened;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
@@ -150,7 +150,7 @@ public class TreasureBagItem extends Item {
 	public static class Fishing extends TreasureBagItem {
 		public static final ResourceLocation LOCATION = Registries.getLocation( "gameplay/treasure_bag_fishing" );
 		public static final TreasureBagConfig CONFIG = new TreasureBagConfig( "Fishing" );
-		public static final GameStageIntegerConfig REQUIRED_FISH_COUNT = new GameStageIntegerConfig( 20, 15, 10, new Range<>( 3, 100 ) );
+		public static final GameStageConfig< Integer > REQUIRED_FISH_COUNT = GameStageConfig.create( 20, 15, 10, new Range<>( 3, 100 ) );
 
 		static {
 			CONFIG.addConfig( REQUIRED_FISH_COUNT.name( "RequiredFishCount" ).comment( "Required amount of items fished to get this Treasure Bag." ) );
