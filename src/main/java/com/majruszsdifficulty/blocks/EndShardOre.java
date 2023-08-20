@@ -11,9 +11,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber
 public class EndShardOre extends Block {
 	public EndShardOre() {
 		super( Properties.of()
