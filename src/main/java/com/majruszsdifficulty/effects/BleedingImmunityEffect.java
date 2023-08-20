@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.Registries;
-import com.mlib.modhelper.AutoInstance;
-import com.mlib.contexts.base.Condition;
 import com.mlib.contexts.OnEffectApplicable;
+import com.mlib.contexts.base.Condition;
+import com.mlib.modhelper.AutoInstance;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -21,9 +21,7 @@ public class BleedingImmunityEffect extends MobEffect {
 	public void applyEffectTick( LivingEntity entity, int amplifier ) {}
 
 	@Override
-	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity,
-		int amplifier, double health
-	) {
+	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health ) {
 		entity.removeEffect( Registries.BLEEDING.get() );
 	}
 
