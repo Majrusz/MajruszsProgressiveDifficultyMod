@@ -7,6 +7,7 @@ import com.majruszsdifficulty.contexts.OnTreasureBagOpened;
 import com.majruszsdifficulty.treasurebags.TreasureBagProgressClient;
 import com.mlib.effects.SoundHandler;
 import com.mlib.items.ItemHelper;
+import com.mlib.loot.LootHelper;
 import com.mlib.math.Range;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -22,13 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -36,7 +33,6 @@ import java.util.List;
 
 public class TreasureBagItem extends Item {
 	public final static List< TreasureBagItem > TREASURE_BAGS = new ArrayList<>();
-	final static String ITEM_TOOLTIP_TRANSLATION_KEY = "majruszsdifficulty.treasure_bag.item_tooltip";
 	final ResourceLocation lootTableLocation;
 	final TreasureBagConfig config;
 
@@ -46,17 +42,9 @@ public class TreasureBagItem extends Item {
 		};
 	}
 
-	/** Generates loot context of current treasure bag. (who opened the bag, where, etc.) */
-	public static LootParams generateLootParams( Player player ) {
-		LootParams.Builder paramsBuilder = new LootParams.Builder( ( ServerLevel )player.level() );
-		paramsBuilder.withParameter( LootContextParams.ORIGIN, player.position() );
-		paramsBuilder.withParameter( LootContextParams.THIS_ENTITY, player );
-
-		return paramsBuilder.create( LootContextParamSets.GIFT );
-	}
-
 	public TreasureBagItem( ResourceLocation location, TreasureBagConfig config ) {
 		super( new Properties().stacksTo( 16 ).rarity( Rarity.UNCOMMON ) );
+
 		this.lootTableLocation = location;
 		this.config = config;
 		TREASURE_BAGS.add( this );
@@ -65,10 +53,9 @@ public class TreasureBagItem extends Item {
 	@Override
 	public InteractionResultHolder< ItemStack > use( Level level, Player player, InteractionHand hand ) {
 		ItemStack itemStack = player.getItemInHand( hand );
-
 		if( !level.isClientSide ) {
 			SoundHandler.ITEM_PICKUP.play( level, player.position() );
-			List< ItemStack > loot = this.generateLoot( player );
+			List< ItemStack > loot = this.getRandomItems( player );
 			OnTreasureBagOpened.dispatch( player, this, loot );
 			if( level instanceof ServerLevel serverLevel ) {
 				loot.forEach( reward->ItemHelper.giveItemStackToPlayer( reward, player, serverLevel ) );
@@ -86,7 +73,7 @@ public class TreasureBagItem extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public void appendHoverText( ItemStack itemStack, @Nullable Level world, List< Component > tooltip, TooltipFlag flag ) {
 		if( flag.isAdvanced() ) {
-			tooltip.add( Component.translatable( ITEM_TOOLTIP_TRANSLATION_KEY ).withStyle( ChatFormatting.GRAY ) );
+			tooltip.add( Component.translatable( "majruszsdifficulty.treasure_bag.item_tooltip" ).withStyle( ChatFormatting.GRAY ) );
 			tooltip.add( Component.translatable( " " ) );
 		}
 
@@ -98,13 +85,11 @@ public class TreasureBagItem extends Item {
 	}
 
 	public LootTable getLootTable() {
-		return ServerLifecycleHooks.getCurrentServer().getLootData().getLootTable( this.lootTableLocation );
+		return LootHelper.getLootTable( this.lootTableLocation );
 	}
 
-	private List< ItemStack > generateLoot( Player player ) {
-		LootTable lootTable = getLootTable();
-
-		return lootTable.getRandomItems( generateLootParams( player ) );
+	private List< ItemStack > getRandomItems( Player player ) {
+		return this.getLootTable().getRandomItems( LootHelper.toGiftParams( player ) );
 	}
 
 	private void triggerTreasureBagAdvancement( ServerPlayer player ) {

@@ -8,6 +8,7 @@ import com.majruszsdifficulty.treasurebags.data.LootProgressData;
 import com.majruszsdifficulty.treasurebags.data.TreasureBagData;
 import com.mlib.ObfuscationGetter;
 import com.mlib.Utility;
+import com.mlib.loot.LootHelper;
 import com.mlib.modhelper.AutoInstance;
 import com.mlib.data.SerializableMap;
 import com.mlib.contexts.base.Condition;
@@ -74,7 +75,7 @@ public class TreasureBagProgressManager extends SerializableMap {
 	}
 
 	private void createDefaultProgress( Player player ) {
-		LootParams params = TreasureBagItem.generateLootParams( player );
+		LootParams params = LootHelper.toGiftParams( player );
 		for( TreasureBagItem item : TreasureBagItem.TREASURE_BAGS ) {
 			TreasureBagData data = this.get( player ).get( item );
 
