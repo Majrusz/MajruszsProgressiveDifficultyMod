@@ -34,61 +34,67 @@ public class CreativeModeTabs {
 
 	private static void definePrimaryItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
 		Stream.of(
-			new ItemStack( Registries.BANDAGE.get() ),
-			new ItemStack( Registries.GOLDEN_BANDAGE.get() ),
+			// BLOCKS
+			new ItemStack( Registries.INFERNAL_SPONGE.get() ),
+			new ItemStack( Registries.SOAKED_INFERNAL_SPONGE.get() ),
+			new ItemStack( Registries.INFESTED_END_STONE_ITEM.get() ),
+			new ItemStack( Registries.ENDERIUM_SHARD_ORE_ITEM.get() ),
+			new ItemStack( Registries.ENDERIUM_BLOCK_ITEM.get() ),
 
+			// ITEMS
 			new ItemStack( Registries.CLOTH.get() ),
-			new ItemStack( Registries.BATTLE_STANDARD.get() ),
+			new ItemStack( Registries.CERBERUS_FANG.get() ),
+
+			// TOOLS
+			new ItemStack( Registries.ENDERIUM_SHOVEL.get() ),
+			new ItemStack( Registries.ENDERIUM_PICKAXE.get() ),
+			new ItemStack( Registries.ENDERIUM_AXE.get() ),
+			new ItemStack( Registries.ENDERIUM_HOE.get() ),
+
+			// WEAPONS
+			new ItemStack( Registries.EVOKER_FANG_SCROLL.get() ),
+			new ItemStack( Registries.SONIC_BOOM_SCROLL.get() ),
+			new ItemStack( Registries.WITHER_SWORD.get() ),
+			new ItemStack( Registries.ENDERIUM_SWORD.get() ),
+
+			// ARMORS
 			new ItemStack( Registries.TATTERED_HELMET.get() ),
 			new ItemStack( Registries.TATTERED_CHESTPLATE.get() ),
 			new ItemStack( Registries.TATTERED_LEGGINGS.get() ),
 			new ItemStack( Registries.TATTERED_BOOTS.get() ),
-			new ItemStack( Registries.CERBERUS_FANG.get() ),
-
-			new ItemStack( Registries.INFESTED_END_STONE_ITEM.get() ),
-			new ItemStack( Registries.ENDERIUM_SHARD_ORE_ITEM.get() ),
-			new ItemStack( Registries.ENDERIUM_BLOCK_ITEM.get() ),
-			new ItemStack( Registries.INFERNAL_SPONGE.get() ),
-			new ItemStack( Registries.SOAKED_INFERNAL_SPONGE.get() ),
-
-			new ItemStack( Registries.ENDERIUM_SMITHING_TEMPLATE.get() ),
-			new ItemStack( Registries.ENDERIUM_SHARD.get() ),
-			new ItemStack( Registries.ENDERIUM_INGOT.get() ),
 			new ItemStack( Registries.ENDERIUM_HELMET.get() ),
 			new ItemStack( Registries.ENDERIUM_CHESTPLATE.get() ),
 			new ItemStack( Registries.ENDERIUM_LEGGINGS.get() ),
 			new ItemStack( Registries.ENDERIUM_BOOTS.get() ),
-			new ItemStack( Registries.ENDERIUM_SWORD.get() ),
-			new ItemStack( Registries.ENDERIUM_PICKAXE.get() ),
-			new ItemStack( Registries.ENDERIUM_AXE.get() ),
-			new ItemStack( Registries.ENDERIUM_SHOVEL.get() ),
-			new ItemStack( Registries.ENDERIUM_HOE.get() ),
-			newItemStackWithPotion( Items.TIPPED_ARROW, Registries.WITHER_POTION.get() ),
-			newItemStackWithPotion( Items.TIPPED_ARROW, Registries.WITHER_POTION_LONG.get() ),
-			newItemStackWithPotion( Items.TIPPED_ARROW, Registries.WITHER_POTION_STRONG.get() ),
-			newItemStackWithPotion( Items.POTION, Registries.WITHER_POTION.get() ),
-			newItemStackWithPotion( Items.POTION, Registries.WITHER_POTION_LONG.get() ),
-			newItemStackWithPotion( Items.POTION, Registries.WITHER_POTION_STRONG.get() ),
-			newItemStackWithPotion( Items.SPLASH_POTION, Registries.WITHER_POTION.get() ),
-			newItemStackWithPotion( Items.SPLASH_POTION, Registries.WITHER_POTION_LONG.get() ),
-			newItemStackWithPotion( Items.SPLASH_POTION, Registries.WITHER_POTION_STRONG.get() ),
-			newItemStackWithPotion( Items.LINGERING_POTION, Registries.WITHER_POTION.get() ),
-			newItemStackWithPotion( Items.LINGERING_POTION, Registries.WITHER_POTION_LONG.get() ),
-			newItemStackWithPotion( Items.LINGERING_POTION, Registries.WITHER_POTION_STRONG.get() )
+
+			// CONSUMABLE
+			new ItemStack( Registries.BANDAGE.get() ),
+			new ItemStack( Registries.GOLDEN_BANDAGE.get() ),
+			new ItemStack( Registries.BATTLE_STANDARD.get() ),
+			new ItemStack( Registries.RECALL_POTION.get() )
 		).forEach( output::accept );
 
-		Stream.of(
-			Items.TIPPED_ARROW,
-			Items.POTION,
-			Items.SPLASH_POTION,
-			Items.LINGERING_POTION
-		).forEach( item->Stream.of(
-			Registries.WITHER_POTION,
-			Registries.WITHER_POTION_LONG,
-			Registries.WITHER_POTION_STRONG
-		).forEach( potion->PotionUtils.setPotion( new ItemStack( item ), potion.get() ) ) );
+		// ARROWS & POTIONS
+		Stream.of( Items.TIPPED_ARROW, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION ).forEach( item->
+			Stream.of(
+				Registries.WITHER_POTION,
+				Registries.WITHER_POTION_LONG,
+				Registries.WITHER_POTION_STRONG
+			).forEach( potion->output.accept( PotionUtils.setPotion( new ItemStack( item ), potion.get() ) ) )
+		);
 
 		Stream.of(
+			// ORES
+			new ItemStack( Registries.ENDERIUM_SHARD.get() ),
+			new ItemStack( Registries.ENDERIUM_INGOT.get() ),
+
+			// UNIQUE
+			SoulJarItem.randomItemStack( 3 ),
+			new ItemStack( Registries.ENDER_POUCH.get() ),
+			new ItemStack( Registries.ENDERIUM_SMITHING_TEMPLATE.get() ),
+			new ItemStack( Registries.ENDERIUM_SHARD_LOCATOR.get() ),
+
+			// SPAWN EGGS
 			new ItemStack( Registries.ILLUSIONER_SPAWN_EGG.get() ),
 			new ItemStack( Registries.CREEPERLING_SPAWN_EGG.get() ),
 			new ItemStack( Registries.TANK_SPAWN_EGG.get() ),
@@ -96,10 +102,6 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.CERBERUS_SPAWN_EGG.get() ),
 			new ItemStack( Registries.GIANT_SPAWN_EGG.get() )
 		).forEach( output::accept );
-	}
-
-	private static ItemStack newItemStackWithPotion( Item item, Potion potion ) {
-		return PotionUtils.setPotion( new ItemStack( item ), potion );
 	}
 
 	private static void defineTreasureBagItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
