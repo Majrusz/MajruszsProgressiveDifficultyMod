@@ -48,6 +48,9 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.INFESTED_END_STONE_ITEM.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD_ORE_ITEM.get() ),
 			new ItemStack( Registries.ENDERIUM_BLOCK_ITEM.get() ),
+			new ItemStack( Registries.INFERNAL_SPONGE.get() ),
+			new ItemStack( Registries.SOAKED_INFERNAL_SPONGE.get() ),
+
 			new ItemStack( Registries.ENDERIUM_SMITHING_TEMPLATE.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD.get() ),
 			new ItemStack( Registries.ENDERIUM_INGOT.get() ),
@@ -122,8 +125,8 @@ public class CreativeModeTabs {
 			new ItemStack( Registries.SONIC_BOOM_SCROLL.get() ),
 
 			new ItemStack( Registries.WITHER_TREASURE_BAG.get() ),
+			new ItemStack( Registries.INFERNAL_SPONGE.get() ),
 			new ItemStack( Registries.WITHER_SWORD.get() ),
-			notImplemented(),
 
 			new ItemStack( Registries.ENDER_DRAGON_TREASURE_BAG.get() ),
 			new ItemStack( Registries.ENDERIUM_SHARD_LOCATOR.get() ),

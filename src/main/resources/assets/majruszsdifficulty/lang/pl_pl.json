@@ -79,6 +79,8 @@
   "block.majruszsdifficulty.enderium_shard_ore": "Ruda kryształu enderium",
   "block.majruszsdifficulty.enderium_block": "Blok enderium",
   "block.majruszsdifficulty.infested_end_stone": "Zainfekowany kamień Endu",
+  "block.majruszsdifficulty.infernal_sponge": "Piekielna gąbka",
+  "block.majruszsdifficulty.soaked_infernal_sponge": "Przesiąknięta piekielna gąbka",
   "commands.gamestage.changed": "Etap gry został zmieniony na %s.",
   "commands.gamestage.cannot_change": "Etapem gry jest już %s!",
   "commands.gamestage.current": "Aktualny etap gry to %s.",

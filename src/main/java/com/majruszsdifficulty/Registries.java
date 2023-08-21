@@ -1,8 +1,6 @@
 package com.majruszsdifficulty;
 
-import com.majruszsdifficulty.blocks.EndShardOre;
-import com.majruszsdifficulty.blocks.EnderiumBlock;
-import com.majruszsdifficulty.blocks.InfestedEndStone;
+import com.majruszsdifficulty.blocks.*;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.effects.GlassRegenerationEffect;
@@ -146,6 +144,8 @@ public class Registries {
 	public static final RegistryObject< EndShardOre.EndShardOreItem > ENDERIUM_SHARD_ORE_ITEM = ITEMS.register( "enderium_shard_ore", EndShardOre.EndShardOreItem::new );
 	public static final RegistryObject< EnderiumBlock.EndBlockItem > ENDERIUM_BLOCK_ITEM = ITEMS.register( "enderium_block", EnderiumBlock.EndBlockItem::new );
 	public static final RegistryObject< InfestedEndStone.InfestedEndStoneItem > INFESTED_END_STONE_ITEM = ITEMS.register( "infested_end_stone", InfestedEndStone.InfestedEndStoneItem::new );
+	public static final RegistryObject< InfernalSpongeBlock.Item > INFERNAL_SPONGE_ITEM = ITEMS.register( "infernal_sponge", InfernalSpongeBlock.Item::new );
+	public static final RegistryObject< SoakedInfernalSpongeBlock.Item > SOAKED_INFERNAL_SPONGE_ITEM = ITEMS.register( "soaked_infernal_sponge", SoakedInfernalSpongeBlock.Item::new );
 
 	// Spawn Eggs
 	public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.register( "illusioner_spawn_egg", createEggSupplier( ()->EntityType.ILLUSIONER, 0x135a97, 9804699 ) );
@@ -171,6 +171,8 @@ public class Registries {
 	public static final RegistryObject< EndShardOre > ENDERIUM_SHARD_ORE = BLOCKS.register( "enderium_shard_ore", EndShardOre::new );
 	public static final RegistryObject< EnderiumBlock > ENDERIUM_BLOCK = BLOCKS.register( "enderium_block", EnderiumBlock::new );
 	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.register( "infested_end_stone", InfestedEndStone::new );
+	public static final RegistryObject< InfernalSpongeBlock > INFERNAL_SPONGE = BLOCKS.register( "infernal_sponge", InfernalSpongeBlock::new );
+	public static final RegistryObject< SoakedInfernalSpongeBlock > SOAKED_INFERNAL_SPONGE = BLOCKS.register( "soaked_infernal_sponge", SoakedInfernalSpongeBlock::new );
 
 	// Effects
 	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.register( "bleeding", BleedingEffect::new );

@@ -80,6 +80,8 @@
   "block.majruszsdifficulty.enderium_shard_ore": "Enderium Shard Ore",
   "block.majruszsdifficulty.enderium_block": "Enderium Block",
   "block.majruszsdifficulty.infested_end_stone": "Infested End Stone",
+  "block.majruszsdifficulty.infernal_sponge": "Infernal Sponge",
+  "block.majruszsdifficulty.soaked_infernal_sponge": "Soaked Infernal Sponge",
   "commands.gamestage.changed": "Game stage has been changed to %s.",
   "commands.gamestage.cannot_change": "Game stage is already %s!",
   "commands.gamestage.current": "Current game stage is %s.",
