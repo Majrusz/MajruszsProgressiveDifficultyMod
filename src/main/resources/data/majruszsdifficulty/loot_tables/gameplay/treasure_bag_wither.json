@@ -6,7 +6,23 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "majruszsdifficulty:infernal_sponge",
+          "weight": 3,
+          "quality": 4,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
           "name": "majruszsdifficulty:wither_sword",
+          "weight": 1,
           "quality": 4,
           "functions": [
             {
