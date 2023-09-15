@@ -145,7 +145,7 @@ public class SoulJarItem extends Item {
 		}
 
 		private void increaseSpeed( OnBreakSpeed.Data data ) {
-			data.event.setNewSpeed( data.event.getNewSpeed() + data.event.getOriginalSpeed() * MINE_BONUS * getMultiplier( data.player ) );
+			data.newSpeed *= 1.0f + MINE_BONUS * getMultiplier( data.player );
 		}
 
 		private void applyRandomSouls( OnLoot.Data data ) {

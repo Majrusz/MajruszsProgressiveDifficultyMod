@@ -96,6 +96,7 @@ public class TreasureBagManager {
 		OnPlayerTick.listen( this::giveTreasureBagToHero )
 			.addCondition( Condition.isServer() )
 			.addCondition( Condition.< OnPlayerTick.Data > cooldown( 20, Dist.DEDICATED_SERVER ).configurable( false ) )
+			.addCondition( Condition.predicate( data->TreasureBagItem.Pillager.CONFIG.isEnabled() ) )
 			.addCondition( Condition.predicate( data->{
 				Raid raid = data.getServerLevel().getRaidAt( data.player.blockPosition() );
 				if( raid == null || !raid.isVictory() || !data.player.hasEffect( MobEffects.HERO_OF_THE_VILLAGE ) ) {

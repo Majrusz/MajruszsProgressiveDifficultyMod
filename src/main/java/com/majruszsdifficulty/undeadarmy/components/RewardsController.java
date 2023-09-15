@@ -1,6 +1,7 @@
 package com.majruszsdifficulty.undeadarmy.components;
 
 import com.majruszsdifficulty.Registries;
+import com.majruszsdifficulty.items.TreasureBagItem;
 import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.majruszsdifficulty.undeadarmy.data.WaveDef;
 import com.mlib.entities.EntityHelper;
@@ -12,7 +13,9 @@ record RewardsController( UndeadArmy undeadArmy ) implements IComponent {
 	public void onWaveFinished() {
 		this.giveExperienceReward();
 		if( this.undeadArmy.isLastWave() ) {
-			this.giveTreasureReward();
+			if( TreasureBagItem.UndeadArmy.CONFIG.isEnabled() ) {
+				this.giveTreasureReward();
+			}
 			if( this.undeadArmy.config.isResetAllParticipantsKillRequirementsEnabled() ) {
 				this.resetAllKillRequirements();
 			}

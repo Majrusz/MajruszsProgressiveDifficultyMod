@@ -64,6 +64,7 @@ public class SonicBoomScrollItem extends ScrollItem {
 	public static class Tooltip {
 		public Tooltip() {
 			OnItemAttributeTooltip.listen( this::addSpellInfo )
+				.addCondition( Condition.predicate( data->Registries.SONIC_BOOM_SCROLL.isPresent() ) )
 				.addCondition( Condition.predicate( data->data.itemStack.is( Registries.SONIC_BOOM_SCROLL.get() ) ) );
 		}
 
