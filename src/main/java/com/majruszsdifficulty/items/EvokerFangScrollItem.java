@@ -92,6 +92,7 @@ public class EvokerFangScrollItem extends ScrollItem {
 	public static class Tooltip {
 		public Tooltip() {
 			OnItemAttributeTooltip.listen( this::addSpellInfo )
+				.addCondition( Condition.predicate( data->Registries.EVOKER_FANG_SCROLL.isPresent() ) )
 				.addCondition( Condition.predicate( data->data.itemStack.is( Registries.EVOKER_FANG_SCROLL.get() ) ) );
 		}
 
