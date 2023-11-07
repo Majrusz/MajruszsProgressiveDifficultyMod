@@ -83,7 +83,7 @@
   "block.majruszsdifficulty.infernal_sponge": "Infernal Sponge",
   "block.majruszsdifficulty.soaked_infernal_sponge": "Soaked Infernal Sponge",
   "commands.gamestage.changed": "Game stage has been changed to %s.",
-  "commands.gamestage.cannot_change": "Game stage is already %s!",
+  "commands.gamestage.cannot_change": "Game stage is already set to %s!",
   "commands.gamestage.current": "Current game stage is %s.",
   "commands.undeadarmy.finished": "An Undead Army has been stopped at position: %s",
   "commands.undeadarmy.missing": "There is no Undead Army at position: %s",

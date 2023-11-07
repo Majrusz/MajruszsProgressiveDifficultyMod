@@ -10,12 +10,12 @@ import com.mlib.text.TextHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 @AutoInstance
-public class GameStageChangeCommand {
+public class GameStageSetCommand {
 	static final IParameter< String > GAME_STAGE = Command.string()
 		.named( "name" )
 		.suggests( ()->GameStageHelper.getGameStages().stream().map( GameStage::getName ).toList() );
 
-	public GameStageChangeCommand() {
+	public GameStageSetCommand() {
 		Command.create()
 			.literal( "gamestage", "gamestate" )
 			.hasPermission( 4 )
