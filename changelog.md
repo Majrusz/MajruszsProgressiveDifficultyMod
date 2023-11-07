@@ -1,5 +1,6 @@
 - changed required Majrusz Library version from 5.0.0+ to 6.2.0+
 - added support for custom game stages
+- added support for per player difficulty
 - added Infernal Sponge and Soaked Infernal Sponge to Wither Treasure Bag
 - added chance for Pillagers to hold fireworks and Multishot crossbows (suggested by @Tides of Twilight)
 - added glass break sound when Glass Regeneration gets removed
