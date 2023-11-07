@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "description": "${mod_display_name}",
+    "pack_format": ${mod_resource_pack_version}
+  }
+}

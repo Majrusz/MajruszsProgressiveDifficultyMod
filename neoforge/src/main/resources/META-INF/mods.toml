@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "${neoforge_version_loader}"
+license = "${mod_license}"
+issueTrackerURL = "${mod_issues}"
+
+[[mods]]
+    modId = "${mod_id}"
+    version = "${mod_version}"
+    displayName = "${mod_display_name}"
+    displayURL = "${mod_homepage}"
+    authors = "${mod_authors}"
+    description = "${mod_description}"
+    updateJSONURL = "${mod_update}"
+    logoFile = "${mod_logo}"
+
+[[dependencies.${ mod_id }]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "${neoforge_version_range}"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "${neoforge_minecraft_version_range}"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+    modId = "mlib"
+    mandatory = true
+    versionRange = "${neoforge_mlib_version_range}"
+    ordering = "NONE"
+    side = "BOTH"

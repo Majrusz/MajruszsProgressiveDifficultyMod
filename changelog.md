@@ -1,0 +1,4 @@
+- changed required Majrusz Library version from 5.0.0+ to 6.1.0+
+- added Infernal Sponge and Soaked Infernal Sponge to Wither Treasure Bag
+- added chance for Pillagers to hold fireworks and Multishot crossbows (suggested by @Tides of Twilight)
+- added glass break sound when Glass Regeneration gets removed
