@@ -6,12 +6,11 @@ import com.mlib.data.Serializables;
 import com.mlib.entity.EntityHelper;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
 public class WorldData extends com.mlib.data.WorldData {
-	private GameStage gameStage = GameStage.NORMAL;
+	private GameStage gameStage = GameStageHelper.getDefaultGameStage();
 	private Map< String, GameStage > playerGameStages = new Object2ObjectOpenHashMap<>();
 
 	static {
@@ -20,35 +19,39 @@ public class WorldData extends com.mlib.data.WorldData {
 			.defineStringMap( "player_game_stages", s->GameStageHelper.mapToNames( s.playerGameStages ), ( s, v )->s.playerGameStages = GameStageHelper.mapToGameStages( v ) );
 	}
 
-	public boolean setGameStage( GameStage gameStage, @Nullable Player player ) {
-		if( player != null ) {
-			String uuid = EntityHelper.getPlayerUUID( player );
-			if( !this.playerGameStages.computeIfAbsent( uuid, key->GameStage.NORMAL ).equals( gameStage ) ) {
-				this.playerGameStages.put( uuid, gameStage );
-				this.setDirty();
+	public boolean setGameStage( GameStage gameStage, Player player ) {
+		String uuid = EntityHelper.getPlayerUUID( player );
+		if( !this.playerGameStages.computeIfAbsent( uuid, key->GameStageHelper.getDefaultGameStage() ).equals( gameStage ) ) {
+			this.playerGameStages.put( uuid, gameStage );
+			this.setDirty();
 
-				return true;
-			}
-		} else {
-			if( !this.gameStage.equals( gameStage ) ) {
-				this.gameStage = gameStage;
-				this.setDirty();
-
-				return true;
-			}
+			return true;
 		}
 
 		return false;
 	}
 
-	public GameStage getGameStage( @Nullable Player player ) {
-		if( player != null ) {
-			GameStage gameStage = this.playerGameStages.get( EntityHelper.getPlayerUUID( player ) );
-			if( gameStage != null ) {
-				return gameStage;
-			}
+	public boolean setGlobalGameStage( GameStage gameStage ) {
+		if( !this.gameStage.equals( gameStage ) ) {
+			this.gameStage = gameStage;
+			this.setDirty();
+
+			return true;
 		}
 
+		return false;
+	}
+
+	public GameStage getGameStage( Player player ) {
+		GameStage gameStage = this.playerGameStages.get( EntityHelper.getPlayerUUID( player ) );
+		if( gameStage != null ) {
+			return gameStage;
+		}
+
+		return this.getGlobalGameStage();
+	}
+
+	public GameStage getGlobalGameStage() {
 		return this.gameStage;
 	}
 
@@ -56,7 +59,7 @@ public class WorldData extends com.mlib.data.WorldData {
 	protected void setupDefaultValues() {
 		super.setupDefaultValues();
 
-		this.gameStage = GameStage.NORMAL;
+		this.gameStage = GameStageHelper.getDefaultGameStage();
 		this.playerGameStages = new Object2ObjectOpenHashMap<>();
 	}
 }

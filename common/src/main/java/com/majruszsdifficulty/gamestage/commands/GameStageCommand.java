@@ -11,6 +11,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,8 @@ public class GameStageCommand {
 		entities.map( GameStageCommand::toPlayers )
 			.orElse( GameStageCommand.getNullList() )
 			.forEach( player->{
-				boolean hasGameStageChanged = GameStageHelper.setGameStage( gameStage, player );
-				GameStageCommand.send( data, "commands.gamestage.%s".formatted( hasGameStageChanged ? "changed" : "cannot_change" ), player );
+				boolean hasGameStageChanged = player != null ? GameStageHelper.setGameStage( gameStage, player ) : GameStageHelper.setGlobalGameStage( gameStage );
+				GameStageCommand.send( data, hasGameStageChanged ? "changed" : "cannot_change", player );
 			} );
 
 		return 0;
@@ -68,31 +69,26 @@ public class GameStageCommand {
 
 		entities.map( GameStageCommand::toPlayers )
 			.orElse( GameStageCommand.getNullList() )
-			.forEach( player->GameStageCommand.send( data, "commands.gamestage.current", player ) );
+			.forEach( player->GameStageCommand.send( data, "current", player ) );
 
 		return 0;
 	}
 
-	private static void send( CommandData data, String id, Player player ) {
+	private static void send( CommandData data, String id, @Nullable Player player ) {
+		String messageId = "commands.gamestage.%s.%s".formatted( player != null ? "player" : "global", id );
 		MutableComponent component;
 		if( player != null ) {
-			component = TextHelper.translatable( "%s_player".formatted( id ), GameStageHelper.getGameStage( player ).getComponent(), player.getDisplayName() );
+			component = TextHelper.translatable( messageId, GameStageHelper.getGameStage( player ).getComponent(), player.getDisplayName() );
 		} else {
-			component = TextHelper.translatable( id, GameStageHelper.getGameStage().getComponent() );
+			component = TextHelper.translatable( messageId, GameStageHelper.getGlobalGameStage().getComponent() );
 		}
 
 		data.source.sendSuccess( ()->component, true );
 	}
 
 	private static boolean isInvalid( CommandData data, boolean arePlayersDefined ) {
-		if( GameStageHelper.isPerPlayerDifficultyEnabled() ) {
-			if( !arePlayersDefined ) {
-				data.source.sendFailure( TextHelper.translatable( "commands.gamestage.per_player_difficulty_enabled" ) );
-
-				return true;
-			}
-		} else if( arePlayersDefined ) {
-			data.source.sendFailure( TextHelper.translatable( "commands.gamestage.per_player_difficulty_disabled" ) );
+		if( !GameStageHelper.isPerPlayerDifficultyEnabled() && arePlayersDefined ) {
+			data.source.sendFailure( TextHelper.translatable( "commands.gamestage.player.disabled" ) );
 
 			return true;
 		}
