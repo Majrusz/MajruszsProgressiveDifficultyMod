@@ -2,7 +2,12 @@ package com.majruszsdifficulty;
 
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.data.WorldData;
+import com.majruszsdifficulty.gamestage.GameStageAdvancement;
+import com.majruszsdifficulty.items.FakeItem;
 import com.mlib.modhelper.ModHelper;
+import com.mlib.registry.RegistryGroup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 
 public class MajruszsDifficulty {
 	public static final String MOD_ID = "majruszsdifficulty";
@@ -11,6 +16,19 @@ public class MajruszsDifficulty {
 	// Data
 	public static final Config CONFIG = HELPER.config( Config::new ).autoSync().create();
 	public static final WorldData WORLD_DATA = HELPER.saved( WorldData::new );
+
+	// Registry Groups
+	public static final RegistryGroup< Item > ITEMS = HELPER.create( BuiltInRegistries.ITEM );
+
+	// Items (fake)
+	static {
+		ITEMS.create( "advancement_normal", FakeItem::new );
+		ITEMS.create( "advancement_expert", FakeItem::new );
+		ITEMS.create( "advancement_master", FakeItem::new );
+	}
+
+	// Advancements
+	public static final GameStageAdvancement GAME_STAGE_ADVANCEMENT = new GameStageAdvancement();
 
 	private MajruszsDifficulty() {}
 }

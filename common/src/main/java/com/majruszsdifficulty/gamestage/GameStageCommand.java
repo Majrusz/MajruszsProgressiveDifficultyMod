@@ -1,7 +1,5 @@
-package com.majruszsdifficulty.gamestage.commands;
+package com.majruszsdifficulty.gamestage;
 
-import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.mlib.annotation.AutoInstance;
 import com.mlib.command.Command;
 import com.mlib.command.CommandData;
@@ -21,7 +19,7 @@ import java.util.Optional;
 public class GameStageCommand {
 	static final IParameter< String > GAME_STAGE = Command.string()
 		.named( "name" )
-		.suggests( ()->GameStageHelper.getGameStages().stream().map( GameStage::getName ).toList() );
+		.suggests( ()->GameStageHelper.getGameStages().stream().map( GameStage::getId ).toList() );
 	static final IParameter< List< ? extends Entity > > ENTITIES = Command.entities().named( "entities" );
 
 	public GameStageCommand() {

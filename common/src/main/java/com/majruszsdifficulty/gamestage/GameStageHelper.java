@@ -40,11 +40,15 @@ public class GameStageHelper {
 	}
 
 	public static Map< String, String > mapToNames( Map< String, GameStage > gameStages ) {
-		return CollectionHelper.map( gameStages, GameStage::getName, Object2ObjectOpenHashMap::new );
+		return CollectionHelper.map( gameStages, GameStage::getId, Object2ObjectOpenHashMap::new );
 	}
 
 	public static boolean isPerPlayerDifficultyEnabled() {
 		return MajruszsDifficulty.CONFIG.isPerPlayerDifficultyEnabled;
+	}
+
+	public static boolean isPerPlayerDifficultyDisabled() {
+		return !MajruszsDifficulty.CONFIG.isPerPlayerDifficultyEnabled;
 	}
 
 	public static GameStage getGameStage( Player player ) {

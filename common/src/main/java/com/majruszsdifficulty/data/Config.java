@@ -14,12 +14,12 @@ public class Config extends com.mlib.data.Config {
 		GameStage.named( GameStage.EXPERT_ID )
 			.format( ChatFormatting.RED, ChatFormatting.BOLD )
 			.triggersIn( "{regex}.*" )
-			.message( "majruszsdifficulty.on_expert_mode_start", ChatFormatting.RED, ChatFormatting.BOLD )
+			.message( "majruszsdifficulty.stages.expert.started", ChatFormatting.RED, ChatFormatting.BOLD )
 			.create(),
 		GameStage.named( GameStage.MASTER_ID )
 			.format( ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD )
 			.triggersByKilling( "minecraft:ender_dragon" )
-			.message( "majruszsdifficulty.on_master_mode_start", ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD  )
+			.message( "majruszsdifficulty.stages.master.started", ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD  )
 			.create()
 	);
 	public boolean isPerPlayerDifficultyEnabled = false;
@@ -45,7 +45,7 @@ public class Config extends com.mlib.data.Config {
 			gameStage.setOrdinal( idx++ );
 			long count = gameStages.stream().filter( stage->stage.equals( gameStage ) ).count();
 			if( count > 1 ) {
-				throw new IllegalArgumentException( "Found %d game stages with identical id (%s)".formatted( count, gameStage.getName() ) );
+				throw new IllegalArgumentException( "Found %d game stages with identical id (%s)".formatted( count, gameStage.getId() ) );
 			}
 		}
 

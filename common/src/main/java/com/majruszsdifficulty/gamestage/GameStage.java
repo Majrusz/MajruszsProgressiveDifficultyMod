@@ -13,7 +13,7 @@ public class GameStage {
 	public static final String NORMAL_ID = "normal";
 	public static final String EXPERT_ID = "expert";
 	public static final String MASTER_ID = "master";
-	private String name = "";
+	private String id = "";
 	private List< ChatFormatting > format = new ArrayList<>();
 	private Trigger trigger = new Trigger();
 	private List< Message > messages = new ArrayList<>();
@@ -21,7 +21,7 @@ public class GameStage {
 
 	static {
 		Serializables.get( GameStage.class )
-			.defineString( "name", s->s.name, ( s, v )->s.name = v )
+			.defineString( "id", s->s.id, ( s, v )->s.id = v )
 			.defineEnumList( "format", s->s.format, ( s, v )->s.format = v, ChatFormatting::values )
 			.defineCustom( "triggers", s->s.trigger, ( s, v )->s.trigger = v, Trigger::new )
 			.defineCustomList( "messages", s->s.messages, ( s, v )->s.messages = v, Message::new );
@@ -34,7 +34,7 @@ public class GameStage {
 	@Override
 	public boolean equals( Object object ) {
 		return object instanceof GameStage gameStage
-			&& this.name.equals( gameStage.name );
+			&& this.id.equals( gameStage.id );
 	}
 
 	public void setOrdinal( int ordinal ) {
@@ -50,11 +50,11 @@ public class GameStage {
 	}
 
 	public boolean is( String name ) {
-		return this.name.equals( name );
+		return this.id.equals( name );
 	}
 
-	public String getName() {
-		return this.name;
+	public String getId() {
+		return this.id;
 	}
 
 	public int getOrdinal() {
@@ -62,7 +62,7 @@ public class GameStage {
 	}
 
 	public MutableComponent getComponent() {
-		return TextHelper.translatable( "majruszsdifficulty.stages.%s".formatted( this.name.toLowerCase() ) )
+		return TextHelper.translatable( "majruszsdifficulty.stages.%s".formatted( this.id.toLowerCase() ) )
 			.withStyle( this.format.toArray( ChatFormatting[]::new ) );
 	}
 
@@ -77,7 +77,7 @@ public class GameStage {
 
 		public Builder( String name ) {
 			this.gameStage = new GameStage();
-			this.gameStage.name = name;
+			this.gameStage.id = name;
 		}
 
 		public Builder format( ChatFormatting... format ) {

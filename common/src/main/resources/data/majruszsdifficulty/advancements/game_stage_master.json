@@ -1,0 +1,31 @@
+{
+  "parent": "majruszsdifficulty:game_stage_expert",
+  "display": {
+    "icon": {
+      "item": "majruszsdifficulty:advancement_master"
+    },
+    "title": {
+      "translate": "majruszsdifficulty.stages.master"
+    },
+    "description": {
+      "translate": "majruszsdifficulty.stages.master.started"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "is_triggered": {
+      "trigger": "majruszsdifficulty:game_stage",
+      "conditions": {
+        "stage_id": "master"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "is_triggered"
+    ]
+  ]
+}

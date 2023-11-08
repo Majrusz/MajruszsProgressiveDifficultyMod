@@ -18,7 +18,7 @@ public class WorldData extends com.mlib.data.WorldData {
 
 	static {
 		Serializables.get( WorldData.class )
-			.defineString( "current_game_stage", s->s.gameStage.getName(), ( s, v )->s.gameStage = GameStageHelper.find( v ) )
+			.defineString( "current_game_stage", s->s.gameStage.getId(), ( s, v )->s.gameStage = GameStageHelper.find( v ) )
 			.defineStringMap( "player_game_stages", s->GameStageHelper.mapToNames( s.playerGameStages ), ( s, v )->s.playerGameStages = GameStageHelper.mapToGameStages( v ) );
 	}
 

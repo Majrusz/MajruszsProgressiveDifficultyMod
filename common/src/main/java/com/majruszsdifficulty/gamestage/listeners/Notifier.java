@@ -14,7 +14,7 @@ public class Notifier {
 	public Notifier() {
 		OnGlobalGameStageChanged.listen( this::notify )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->!GameStageHelper.isPerPlayerDifficultyEnabled() )
+			.addCondition( GameStageHelper::isPerPlayerDifficultyDisabled )
 			.addCondition( data->data.current.getOrdinal() > data.previous.getOrdinal() );
 
 		OnPlayerGameStageChanged.listen( this::notify )
