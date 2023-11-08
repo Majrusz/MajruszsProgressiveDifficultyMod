@@ -9,8 +9,8 @@ import com.mlib.math.AnyPos;
 import com.mlib.registry.Registries;
 
 @AutoInstance
-public class GameStageUpdater {
-	public GameStageUpdater() {
+public class Updater {
+	public Updater() {
 		OnDimensionChanged.listen( this::tryToChangeGameStage );
 
 		OnEntityDied.listen( this::tryToChangeGameStage );

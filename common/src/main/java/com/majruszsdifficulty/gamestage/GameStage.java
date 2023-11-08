@@ -14,15 +14,17 @@ public class GameStage {
 	public static final String EXPERT_ID = "expert";
 	public static final String MASTER_ID = "master";
 	private String name = "";
-	private List< ChatFormatting > format = List.of();
+	private List< ChatFormatting > format = new ArrayList<>();
 	private Trigger trigger = new Trigger();
+	private List< Message > messages = new ArrayList<>();
 	private int ordinal = 0;
 
 	static {
 		Serializables.get( GameStage.class )
 			.defineString( "name", s->s.name, ( s, v )->s.name = v )
 			.defineEnumList( "format", s->s.format, ( s, v )->s.format = v, ChatFormatting::values )
-			.defineCustom( "triggers", s->s.trigger, ( s, v )->s.trigger = v, Trigger::new );
+			.defineCustom( "triggers", s->s.trigger, ( s, v )->s.trigger = v, Trigger::new )
+			.defineCustomList( "messages", s->s.messages, ( s, v )->s.messages = v, Message::new );
 	}
 
 	public static Builder named( String name ) {
@@ -64,6 +66,12 @@ public class GameStage {
 			.withStyle( this.format.toArray( ChatFormatting[]::new ) );
 	}
 
+	public List< MutableComponent > getMessages() {
+		return this.messages.stream()
+			.map( message->TextHelper.translatable( message.id ).withStyle( message.format.toArray( ChatFormatting[]::new ) ) )
+			.toList();
+	}
+
 	public static class Builder {
 		private final GameStage gameStage;
 
@@ -90,6 +98,15 @@ public class GameStage {
 			return this;
 		}
 
+		public Builder message( String id, ChatFormatting... format ) {
+			Message message = new Message();
+			message.id = id;
+			message.format = List.of( format );
+			this.gameStage.messages.add( message );
+
+			return this;
+		}
+
 		public GameStage create() {
 			return this.gameStage;
 		}
@@ -103,6 +120,17 @@ public class GameStage {
 			Serializables.get( Trigger.class )
 				.defineStringList( "dimensions", s->RegexString.toString( s.dimensions ), ( s, v )->s.dimensions = RegexString.toRegex( v ) )
 				.defineStringList( "entities", s->RegexString.toString( s.entities ), ( s, v )->s.entities = RegexString.toRegex( v ) );
+		}
+	}
+
+	private static class Message {
+		public String id;
+		public List< ChatFormatting > format = new ArrayList<>();
+
+		static {
+			Serializables.get( Message.class )
+				.defineString( "id", s->s.id, ( s, v )->s.id = v )
+				.defineEnumList( "format", s->s.format, ( s, v )->s.format = v, ChatFormatting::values );
 		}
 	}
 }

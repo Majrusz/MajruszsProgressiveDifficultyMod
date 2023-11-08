@@ -1,7 +1,10 @@
 package com.majruszsdifficulty.data;
 
+import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
+import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.mlib.contexts.base.Contexts;
 import com.mlib.data.Serializables;
 import com.mlib.entity.EntityHelper;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -22,8 +25,10 @@ public class WorldData extends com.mlib.data.WorldData {
 	public boolean setGameStage( GameStage gameStage, Player player ) {
 		String uuid = EntityHelper.getPlayerUUID( player );
 		if( !this.playerGameStages.computeIfAbsent( uuid, key->GameStageHelper.getDefaultGameStage() ).equals( gameStage ) ) {
+			GameStage previous = this.playerGameStages.get( uuid );
 			this.playerGameStages.put( uuid, gameStage );
 			this.setDirty();
+			Contexts.dispatch( new OnPlayerGameStageChanged( previous, gameStage, player ) );
 
 			return true;
 		}
@@ -33,8 +38,10 @@ public class WorldData extends com.mlib.data.WorldData {
 
 	public boolean setGlobalGameStage( GameStage gameStage ) {
 		if( !this.gameStage.equals( gameStage ) ) {
+			GameStage previous = this.gameStage;
 			this.gameStage = gameStage;
 			this.setDirty();
+			Contexts.dispatch( new OnGlobalGameStageChanged( previous, gameStage ) );
 
 			return true;
 		}
