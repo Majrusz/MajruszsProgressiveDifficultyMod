@@ -23,8 +23,17 @@ public class FragileEndStone extends Block {
 	}
 
 	@Override
+	public void stepOn( Level level, BlockPos blockPos, BlockState blockState, Entity entity ) {
+		super.stepOn( level, blockPos, blockState, entity );
+
+		if( entity instanceof Player player && !player.isCrouching() ) {
+			FragileEndStone.destroy( level, blockState, blockPos, player );
+		}
+	}
+
+	@Override
 	public void fallOn( Level level, BlockState blockState, BlockPos blockPos, Entity entity, float distance ) {
-		if( distance > 1.0f && entity instanceof Player player ) {
+		if( distance > 0.7f && entity instanceof Player player ) {
 			FragileEndStone.destroy( level, blockState, blockPos, player );
 		}
 	}
@@ -32,11 +41,11 @@ public class FragileEndStone extends Block {
 	@Override
 	public void updateEntityAfterFallOn( BlockGetter block, Entity entity ) {}
 
-	private static void destroy( Level level, BlockState blockState, BlockPos blockPos, Player player ) {
-		Block block = blockState.getBlock();
-		block.playerWillDestroy( level, blockPos, blockState, player );
-		level.setBlockAndUpdate( blockPos, Blocks.AIR.defaultBlockState() );
+	@Override
+	public void playerWillDestroy( Level level, BlockPos blockPos, BlockState blockState, Player player ) {
+		super.playerWillDestroy( level, blockPos, blockState, player );
 
+		Block block = blockState.getBlock();
 		TimeHelper.nextTick( delay->{
 			for( Direction direction : Direction.values() ) {
 				BlockPos offset = AnyPos.from( blockPos ).add( direction ).block();
@@ -46,6 +55,11 @@ public class FragileEndStone extends Block {
 				}
 			}
 		} );
+	}
+
+	private static void destroy( Level level, BlockState blockState, BlockPos blockPos, Player player ) {
+		blockState.getBlock().playerWillDestroy( level, blockPos, blockState, player );
+		level.setBlockAndUpdate( blockPos, Blocks.AIR.defaultBlockState() );
 	}
 
 	public static class Item extends BlockItem {

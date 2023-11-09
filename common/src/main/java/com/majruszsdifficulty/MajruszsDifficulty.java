@@ -10,8 +10,11 @@ import com.mlib.modhelper.ModHelper;
 import com.mlib.registry.RegistryGroup;
 import com.mlib.registry.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class MajruszsDifficulty {
 	public static final String MOD_ID = "majruszsdifficulty";
@@ -39,6 +42,11 @@ public class MajruszsDifficulty {
 		ITEMS.create( "advancement_expert", FakeItem::new );
 		ITEMS.create( "advancement_master", FakeItem::new );
 	}
+
+	// Placed Features
+	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
+	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_LARGE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone_large" ) );
+	public static final ResourceKey< PlacedFeature > INFESTED_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "infested_end_stone" ) );
 
 	// Advancements
 	public static final GameStageAdvancement GAME_STAGE_ADVANCEMENT = new GameStageAdvancement();

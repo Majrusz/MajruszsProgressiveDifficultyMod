@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_end",
+  "features": [
+    "majruszsdifficulty:fragile_end_stone",
+    "majruszsdifficulty:fragile_end_stone_large",
+    "majruszsdifficulty:infested_end_stone"
+  ],
+  "step": "underground_ores"
+}
