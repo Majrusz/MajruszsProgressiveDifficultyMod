@@ -5,6 +5,7 @@ import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
+import com.majruszsdifficulty.items.CreativeModeTabs;
 import com.majruszsdifficulty.items.FakeItem;
 import com.mlib.modhelper.ModHelper;
 import com.mlib.registry.RegistryGroup;
@@ -12,6 +13,7 @@ import com.mlib.registry.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -26,6 +28,7 @@ public class MajruszsDifficulty {
 
 	// Registry Groups
 	public static final RegistryGroup< Block > BLOCKS = HELPER.create( BuiltInRegistries.BLOCK );
+	public static final RegistryGroup< CreativeModeTab > CREATIVE_MODE_TABS = HELPER.create( BuiltInRegistries.CREATIVE_MODE_TAB );
 	public static final RegistryGroup< Item > ITEMS = HELPER.create( BuiltInRegistries.ITEM );
 
 	// Blocks
@@ -42,6 +45,9 @@ public class MajruszsDifficulty {
 		ITEMS.create( "advancement_expert", FakeItem::new );
 		ITEMS.create( "advancement_master", FakeItem::new );
 	}
+
+	// Creative Mode Tabs
+	public static final RegistryObject< CreativeModeTab > CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", CreativeModeTabs.primary() );
 
 	// Placed Features
 	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
