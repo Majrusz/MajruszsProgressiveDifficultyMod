@@ -1,0 +1,130 @@
+package com.majruszsdifficulty.gui;
+
+import com.majruszsdifficulty.MajruszsDifficulty;
+import com.mlib.annotation.Dist;
+import com.mlib.annotation.OnlyIn;
+import com.mlib.contexts.OnClientTicked;
+import com.mlib.contexts.OnGuiOverlaysRegistered;
+import com.mlib.math.Random;
+import com.mlib.platform.Side;
+import com.mlib.time.TimeHelper;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+@OnlyIn( Dist.CLIENT )
+public class BleedingGui {
+	static final List< Particle > PARTICLES = new ArrayList<>();
+
+	static {
+		OnGuiOverlaysRegistered.listen( data->data.register( MajruszsDifficulty.HELPER.getLocationString( "bleeding" ), BleedingGui::render ) );
+
+		OnClientTicked.listen( BleedingGui::updateParticles );
+
+		for( int x = 0; x < Particle.GRID_WIDTH; ++x ) {
+			for( int y = 0; y < Particle.GRID_HEIGHT; ++y ) {
+				PARTICLES.add( new Particle( x, y ) );
+			}
+		}
+	}
+
+	public static void addBloodOnScreen( int count ) {
+		List< Integer > x = BleedingGui.randomizedCoordinates( Particle.GRID_WIDTH );
+		List< Integer > y = BleedingGui.randomizedCoordinates( Particle.GRID_HEIGHT );
+
+		IntStream.iterate( 0, i->i + 1 )
+			.limit( count )
+			.forEach( idx->PARTICLES.get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
+	}
+
+	private static List< Integer > randomizedCoordinates( int max ) {
+		return Random.next( IntStream.iterate( 0, i->i + 1 ).limit( max ).boxed().collect( Collectors.toList() ), max );
+	}
+
+	private static void render( GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight ) {
+		RenderSystem.setShader( GameRenderer::getPositionTexShader );
+		RenderSystem.enableBlend();
+		for( Particle particle : PARTICLES ) {
+			if( particle.hasFinished() ) {
+				continue;
+			}
+
+			Particle.RenderData renderData = particle.buildRenderData( screenWidth, screenHeight );
+			RenderSystem.setShaderColor( 1.0f, 1.0f, 1.0f, particle.getAlpha() );
+			RenderSystem.setShaderTexture( 0, renderData.resource );
+			graphics.blit( renderData.resource, renderData.x, renderData.y, 0, 0, renderData.size, renderData.size, renderData.size, renderData.size );
+		}
+		RenderSystem.disableBlend();
+	}
+
+	private static void updateParticles( OnClientTicked data ) {
+		PARTICLES.forEach( Particle::tick );
+	}
+
+	static class Particle {
+		static final int ASSETS_COUNT = 7;
+		static final int GRID_WIDTH = 6, GRID_HEIGHT = 4;
+		static final int LIFETIME = TimeHelper.toTicks( 9.0 );
+		static final List< ResourceLocation > ASSETS = new ArrayList<>();
+
+		static {
+			for( int idx = 0; idx < ASSETS_COUNT; ++idx ) {
+				ASSETS.add( MajruszsDifficulty.HELPER.getLocation( "textures/particle/blood_%d.png".formatted( idx ) ) );
+			}
+		}
+
+		final int x;
+		final int y;
+		int ticks = LIFETIME;
+		int phase = 0;
+
+		public Particle( int x, int y ) {
+			this.x = x;
+			this.y = y;
+		}
+
+		public void makeVisible() {
+			if( !this.hasFinished() ) {
+				return;
+			}
+
+			this.ticks = Random.nextInt( 0, TimeHelper.toTicks( 2.0 ) );
+			this.phase = Random.nextInt( 0, ASSETS_COUNT - 1 );
+		}
+
+		public RenderData buildRenderData( int width, int height ) {
+			float size = height / ( GRID_HEIGHT * 1.5f );
+			float x = this.x * size + ( this.x >= GRID_WIDTH / 2 ? width - GRID_WIDTH * size : 0 );
+			float y = ( 1.5f * this.y + ( this.x % 2 == 0 ? 0.0f : 0.5f ) ) * size;
+
+			return new RenderData( ( int )x, ( int )y, ( int )size, ASSETS.get( this.phase ) );
+		}
+
+		public boolean hasFinished() {
+			return this.ticks >= LIFETIME;
+		}
+
+		public float getAlpha() {
+			float ratio = ( float )this.ticks / LIFETIME;
+
+			return Mth.clamp( 0.7f * ( 1.0f - ratio * ratio ), 0.0f, 0.7f );
+		}
+
+		public void tick() {
+			if( Side.getMinecraft().isPaused() ) {
+				return;
+			}
+
+			++this.ticks;
+		}
+
+		public record RenderData( int x, int y, int size, ResourceLocation resource ) {}
+	}
+}

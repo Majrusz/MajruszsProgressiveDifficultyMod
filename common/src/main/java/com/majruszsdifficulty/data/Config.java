@@ -19,17 +19,19 @@ public class Config extends com.mlib.data.Config {
 		GameStage.named( GameStage.MASTER_ID )
 			.format( ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD )
 			.triggersByKilling( "minecraft:ender_dragon" )
-			.message( "majruszsdifficulty.stages.master.started", ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD  )
+			.message( "majruszsdifficulty.stages.master.started", ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD )
 			.create()
 	);
 	public boolean isPerPlayerDifficultyEnabled = false;
+	public Bleeding bleeding = new Bleeding();
 
 	public Config( String name ) {
 		super( name );
 
 		Serializables.get( Config.class )
 			.defineCustomList( "game_stages", s->s.gameStages, ( s, v )->s.gameStages = Config.validate( v ), GameStage::new )
-			.defineBoolean( "is_per_player_difficulty_enabled", s->s.isPerPlayerDifficultyEnabled, ( s, v )->s.isPerPlayerDifficultyEnabled = v );
+			.defineBoolean( "is_per_player_difficulty_enabled", s->s.isPerPlayerDifficultyEnabled, ( s, v )->s.isPerPlayerDifficultyEnabled = v )
+			.defineCustom( "bleeding", s->s.bleeding, ( s, v )->s.bleeding = v, Bleeding::new );
 	}
 
 	private static List< GameStage > validate( List< GameStage > gameStages ) {
@@ -50,5 +52,14 @@ public class Config extends com.mlib.data.Config {
 		}
 
 		return gameStages;
+	}
+
+	public static class Bleeding {
+		public boolean isEnabled = true;
+
+		static {
+			Serializables.get( Bleeding.class )
+				.defineBoolean( "is_enabled", s->s.isEnabled, ( s, v )->s.isEnabled = v );
+		}
 	}
 }
