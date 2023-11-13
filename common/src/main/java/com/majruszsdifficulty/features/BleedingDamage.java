@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features.bleeding;
+package com.majruszsdifficulty.features;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.contexts.OnBleedingCheck;
