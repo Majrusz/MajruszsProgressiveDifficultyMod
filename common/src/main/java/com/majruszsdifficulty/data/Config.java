@@ -1,6 +1,8 @@
 package com.majruszsdifficulty.data;
 
 import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageValue;
+import com.mlib.collection.DefaultMap;
 import com.mlib.data.Serializables;
 import net.minecraft.ChatFormatting;
 
@@ -56,10 +58,22 @@ public class Config extends com.mlib.data.Config {
 
 	public static class Bleeding {
 		public boolean isEnabled = true;
+		public GameStageValue< EffectDef > effects = GameStageValue.of(
+			DefaultMap.defaultEntry( new EffectDef( 0, 24.0f ) ),
+			DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( 1, 24.0f ) ),
+			DefaultMap.entry( GameStage.MASTER_ID, new EffectDef( 2, 24.0f ) )
+		);
+		public Sources sources = new Sources();
 
 		static {
 			Serializables.get( Bleeding.class )
-				.defineBoolean( "is_enabled", s->s.isEnabled, ( s, v )->s.isEnabled = v );
+				.defineBoolean( "is_enabled", s->s.isEnabled, ( s, v )->s.isEnabled = v )
+				.defineCustomMap( "effect", s->s.effects.get(), ( s, v )->s.effects.set( v ), EffectDef::new )
+				.defineCustom( "sources", s->s.sources, ( s, v )->s.sources = v, Sources::new );
+
+			Serializables.get( Sources.class );
 		}
+
+		public static class Sources {}
 	}
 }

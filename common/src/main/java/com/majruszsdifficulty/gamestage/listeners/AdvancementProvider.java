@@ -3,7 +3,6 @@ package com.majruszsdifficulty.gamestage.listeners;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
 import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.mlib.annotation.AutoInstance;
 import com.mlib.contexts.OnPlayerLoggedIn;
@@ -39,8 +38,6 @@ public class AdvancementProvider {
 	}
 
 	private void giveAdvancement( OnPlayerLoggedIn data ) {
-		GameStage gameStage = GameStageHelper.isPerPlayerDifficultyEnabled() ? GameStageHelper.getGameStage( data.player ) : GameStageHelper.getGlobalGameStage();
-
-		MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( data.player, gameStage );
+		MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( data.player, GameStageHelper.determineGameStage( data.player ) );
 	}
 }

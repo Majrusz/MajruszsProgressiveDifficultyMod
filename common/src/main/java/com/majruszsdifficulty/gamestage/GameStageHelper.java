@@ -4,6 +4,8 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import com.mlib.collection.CollectionHelper;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +51,33 @@ public class GameStageHelper {
 
 	public static boolean isPerPlayerDifficultyDisabled() {
 		return !MajruszsDifficulty.CONFIG.isPerPlayerDifficultyEnabled;
+	}
+
+	public static GameStage determineGameStage( Level level, Vec3 pos ) {
+		if( GameStageHelper.isPerPlayerDifficultyDisabled() ) {
+			return GameStageHelper.getGlobalGameStage();
+		}
+
+		List< ? extends Player > players = level.players();
+		if( players.isEmpty() ) {
+			return GameStageHelper.getGlobalGameStage();
+		}
+
+		int closestPlayerIdx = 0;
+		double closestPlayerDistance = players.get( 0 ).distanceToSqr( pos );
+		for( int idx = 1; idx < players.size(); ++idx ) {
+			double distance = players.get( idx ).distanceToSqr( pos );
+			if( distance < closestPlayerDistance ) {
+				closestPlayerIdx = idx;
+				closestPlayerDistance = distance;
+			}
+		}
+
+		return GameStageHelper.getGameStage( players.get( closestPlayerIdx ) );
+	}
+
+	public static GameStage determineGameStage( Player player ) {
+		return GameStageHelper.isPerPlayerDifficultyEnabled() ? GameStageHelper.getGameStage( player ) : GameStageHelper.getGlobalGameStage();
 	}
 
 	public static GameStage getGameStage( Player player ) {

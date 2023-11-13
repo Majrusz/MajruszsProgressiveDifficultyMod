@@ -6,3 +6,5 @@
 - added chance for Pillagers to hold fireworks and Multishot crossbows (suggested by @Tides of Twilight)
 - added glass break sound when Glass Regeneration gets removed
 - added possibility to cure Bleeding with Milk Bucket
+- added config list for animals that should not apply Bleeding
+- made blood particles darker the longer they last

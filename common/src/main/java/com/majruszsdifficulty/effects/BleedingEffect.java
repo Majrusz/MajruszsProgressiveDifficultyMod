@@ -1,8 +1,10 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import net.minecraft.core.Holder;
-import net.minecraft.world.damagesource.DamageType;
+import com.majruszsdifficulty.data.EffectDef;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.mlib.time.TimeHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +12,21 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class BleedingEffect extends MobEffect {
+	public static boolean apply( LivingEntity target, @Nullable LivingEntity attacker ) {
+		EffectDef effectDef = BleedingEffect.getCurrentEffect( GameStageHelper.determineGameStage( target.level(), target.position() ) );
+
+		return target.addEffect( new MobEffectInstance( effectDef.amplifier, TimeHelper.toTicks( effectDef.duration ), attacker ) );
+	}
+
+	public static EffectDef getCurrentEffect( GameStage gameStage ) {
+		return MajruszsDifficulty.CONFIG.bleeding.effects.get( gameStage );
+	}
+
 	public static boolean isEnabled() {
+		return MajruszsDifficulty.CONFIG.bleeding.isEnabled;
+	}
+
+	public static boolean isImmune( LivingEntity entity ) {
 		return MajruszsDifficulty.CONFIG.bleeding.isEnabled;
 	}
 
@@ -33,8 +49,8 @@ public class BleedingEffect extends MobEffect {
 	public static class MobEffectInstance extends net.minecraft.world.effect.MobEffectInstance {
 		public final @Nullable Entity damageSourceEntity;
 
-		public MobEffectInstance( int duration, int amplifier, boolean ambient, @Nullable LivingEntity attacker ) {
-			super( MajruszsDifficulty.BLEEDING.get(), duration, amplifier, ambient, false, true );
+		public MobEffectInstance( int duration, int amplifier, @Nullable LivingEntity attacker ) {
+			super( MajruszsDifficulty.BLEEDING.get(), duration, amplifier, false, false, true );
 
 			this.damageSourceEntity = attacker;
 		}

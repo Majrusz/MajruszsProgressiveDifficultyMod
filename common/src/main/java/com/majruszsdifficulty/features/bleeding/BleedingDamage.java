@@ -1,10 +1,13 @@
 package com.majruszsdifficulty.features.bleeding;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.mlib.annotation.AutoInstance;
+import com.mlib.contexts.OnEntityDamaged;
 import com.mlib.contexts.OnEntityTicked;
 import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.Contexts;
 import com.mlib.entity.EffectHelper;
 import com.mlib.entity.EntityHelper;
 import com.mlib.math.Random;
@@ -12,6 +15,7 @@ import com.mlib.time.TimeHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -24,9 +28,20 @@ public class BleedingDamage {
 	final Map< Integer, Integer > entityTicks = new HashMap<>();
 
 	public BleedingDamage() {
+		OnEntityDamaged.listen( this::tryToApply )
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( BleedingEffect::isEnabled )
+			.addCondition( data->!BleedingEffect.isImmune( data.target ) );
+
 		OnEntityTicked.listen( this::tick )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING, data.entity ) );
+	}
+
+	private void tryToApply( OnEntityDamaged data ) {
+		if( Contexts.dispatch( new OnBleedingCheck( data ) ).isBleedingTriggered() && BleedingEffect.apply( data.target, data.attacker ) ) {
+			this.dealDamage( data.target );
+		}
 	}
 
 	private void tick( OnEntityTicked data ) {
