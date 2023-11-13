@@ -5,6 +5,7 @@ import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.effects.BleedingEffect;
+import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.CreativeModeTabs;
 import com.majruszsdifficulty.items.FakeItem;
@@ -61,6 +62,7 @@ public class MajruszsDifficulty {
 
 	// Effects
 	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.create( "bleeding", BleedingEffect::new );
+	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.create( "bleeding_immunity", BleedingImmunityEffect::new );
 
 	// Particles
 	public static final RegistryObject< SimpleParticleType > BLOOD_PARTICLE = PARTICLES.create( "blood", ()->new SimpleParticleType( true ) {} );
