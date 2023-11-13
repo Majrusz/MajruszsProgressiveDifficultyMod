@@ -84,7 +84,7 @@ public class MajruszsDifficulty {
 	}
 
 	private static void setDefaultEmitters( OnGameInitialized data ) {
-		ParticleEmitter.setDefault( BLOOD_PARTICLE.get(), new ParticleEmitter.Properties( ParticleEmitter.offset( 0.5f ), ParticleEmitter.speed( 0.05f, 0.1f ) ) );
+		ParticleEmitter.setDefault( BLOOD_PARTICLE.get(), new ParticleEmitter.Properties( ParticleEmitter.offset( 0.5f ), ParticleEmitter.speed( 0.025f, 0.075f ) ) );
 	}
 
 	private MajruszsDifficulty() {}

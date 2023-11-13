@@ -56,8 +56,9 @@ public class BleedingGui {
 				continue;
 			}
 
+			float color = particle.getColor();
 			Particle.RenderData renderData = particle.buildRenderData( screenWidth, screenHeight );
-			RenderSystem.setShaderColor( 1.0f, 1.0f, 1.0f, particle.getAlpha() );
+			RenderSystem.setShaderColor( color, color, color, particle.getAlpha() );
 			RenderSystem.setShaderTexture( 0, renderData.resource );
 			graphics.blit( renderData.resource, renderData.x, renderData.y, 0, 0, renderData.size, renderData.size, renderData.size, renderData.size );
 		}
@@ -109,6 +110,12 @@ public class BleedingGui {
 
 		public boolean hasFinished() {
 			return this.ticks >= LIFETIME;
+		}
+
+		public float getColor() {
+			float ratio = ( float )this.ticks / LIFETIME;
+
+			return Mth.lerp( ratio, 1.0f, 0.6f );
 		}
 
 		public float getAlpha() {
