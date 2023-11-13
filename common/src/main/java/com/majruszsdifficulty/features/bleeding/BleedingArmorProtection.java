@@ -9,6 +9,7 @@ import com.mlib.contexts.base.Condition;
 import com.mlib.data.Serializables;
 import com.mlib.item.EquipmentSlots;
 import com.mlib.math.Random;
+import com.mlib.math.Range;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -28,8 +29,8 @@ public class BleedingArmorProtection {
 			.addCondition( data->data.itemStack.getItem() instanceof ArmorItem );
 
 		Serializables.get( Config.Bleeding.class )
-			.defineFloat( "chance_multiplier_per_armor", s->this.armorBonus, ( s, v )->this.armorBonus = v )
-			.defineFloat( "chance_multiplier_per_armor_toughness", s->this.toughnessBonus, ( s, v )->this.toughnessBonus = v );
+			.defineFloat( "chance_multiplier_per_armor", s->this.armorBonus, ( s, v )->this.armorBonus = Range.of( 0.0f, 1.0f ).clamp( v ) )
+			.defineFloat( "chance_multiplier_per_armor_toughness", s->this.toughnessBonus, ( s, v )->this.toughnessBonus = Range.of( 0.0f, 1.0f ).clamp( v ) );
 	}
 
 	private float calculateCancelChance( OnEntityEffectCheck data ) {
@@ -48,6 +49,6 @@ public class BleedingArmorProtection {
 	}
 
 	private float getArmorMultiplier( ArmorItem item ) {
-		return 1.0f - ( this.armorBonus * item.getDefense() + this.toughnessBonus * item.getToughness() );
+		return 1.0f - Math.min( this.armorBonus * item.getDefense() + this.toughnessBonus * item.getToughness(), 1.0f );
 	}
 }
