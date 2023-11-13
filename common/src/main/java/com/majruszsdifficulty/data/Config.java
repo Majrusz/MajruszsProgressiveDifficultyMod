@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Config extends com.mlib.data.Config {
-	public List< GameStage > gameStages = List.of(
+	public static final List< GameStage > DEFAULT_GAME_STAGES = List.of(
 		GameStage.named( GameStage.NORMAL_ID )
 			.format( ChatFormatting.WHITE )
 			.create(),
@@ -26,8 +26,10 @@ public class Config extends com.mlib.data.Config {
 			.message( "majruszsdifficulty.stages.master.started", ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD )
 			.create()
 	);
+	public List< GameStage > gameStages = DEFAULT_GAME_STAGES;
 	public boolean isPerPlayerDifficultyEnabled = false;
 	public Bleeding bleeding = new Bleeding();
+	public Features features = new Features();
 
 	public Config( String name ) {
 		super( name );
@@ -35,7 +37,8 @@ public class Config extends com.mlib.data.Config {
 		Serializables.get( Config.class )
 			.defineCustomList( "game_stages", s->s.gameStages, ( s, v )->s.gameStages = Config.validate( v ), GameStage::new )
 			.defineBoolean( "is_per_player_difficulty_enabled", s->s.isPerPlayerDifficultyEnabled, ( s, v )->s.isPerPlayerDifficultyEnabled = v )
-			.defineCustom( "bleeding", s->s.bleeding, ( s, v )->s.bleeding = v, Bleeding::new );
+			.defineCustom( "bleeding", s->s.bleeding, ( s, v )->s.bleeding = v, Bleeding::new )
+			.defineCustom( "features", s->s.features, ( s, v )->s.features = v, Features::new );
 	}
 
 	private static List< GameStage > validate( List< GameStage > gameStages ) {
@@ -76,10 +79,18 @@ public class Config extends com.mlib.data.Config {
 				.defineEntityTypeList( "immune_mobs", s->s.immuneMobs, ( s, v )->s.immuneMobs = v )
 				.defineCustomMap( "effect", s->s.effects.get(), ( s, v )->s.effects.set( v ), EffectDef::new )
 				.defineCustom( "sources", s->s.sources, ( s, v )->s.sources = v, Sources::new );
-
-			Serializables.get( Sources.class );
 		}
 
-		public static class Sources {}
+		public static class Sources {
+			static {
+				Serializables.get( Sources.class );
+			}
+		}
+	}
+
+	public static class Features {
+		static {
+			Serializables.get( Features.class );
+		}
 	}
 }

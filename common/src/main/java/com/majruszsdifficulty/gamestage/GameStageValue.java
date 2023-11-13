@@ -15,8 +15,25 @@ public class GameStageValue< Type > {
 		return new GameStageValue<>( DefaultMap.of( entries ) );
 	}
 
+	public static GameStageValue< Boolean > alwaysEnabled() {
+		return new GameStageValue<>( DefaultMap.of( DefaultMap.defaultEntry( true ) ) );
+	}
+
+	public static GameStageValue< Boolean > disabledOn( String... ids ) {
+		DefaultMap< Boolean > map = DefaultMap.of( DefaultMap.defaultEntry( true ) );
+		for( String id : ids ) {
+			map.put( id, false );
+		}
+
+		return new GameStageValue<>( map );
+	}
+
 	public void set( Map< String, Type > map ) {
-		this.map = DefaultMap.of( map );
+		this.set( DefaultMap.of( map ) );
+	}
+
+	public void set( DefaultMap< Type > map ) {
+		this.map = map;
 		this.list = new ArrayList<>();
 		for( GameStage gameStage : GameStageHelper.getGameStages() ) {
 			this.list.add( this.map.get( gameStage.getId() ) );
@@ -32,6 +49,6 @@ public class GameStageValue< Type > {
 	}
 
 	private GameStageValue( DefaultMap< Type > map ) {
-		this.map = map;
+		this.set( map );
 	}
 }

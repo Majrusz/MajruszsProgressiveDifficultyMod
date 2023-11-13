@@ -1,7 +1,10 @@
 package com.majruszsdifficulty.gamestage;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.data.Config;
 import com.mlib.collection.CollectionHelper;
+import com.mlib.contexts.data.ILevelData;
+import com.mlib.contexts.data.IPositionData;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -76,6 +79,10 @@ public class GameStageHelper {
 		return GameStageHelper.getGameStage( players.get( closestPlayerIdx ) );
 	}
 
+	public static < Type extends ILevelData & IPositionData > GameStage determineGameStage( Type data ) {
+		return GameStageHelper.determineGameStage( data.getLevel(), data.getPosition() );
+	}
+
 	public static GameStage determineGameStage( Player player ) {
 		return GameStageHelper.isPerPlayerDifficultyEnabled() ? GameStageHelper.getGameStage( player ) : GameStageHelper.getGlobalGameStage();
 	}
@@ -93,7 +100,7 @@ public class GameStageHelper {
 	}
 
 	public static List< GameStage > getGameStages() {
-		return MajruszsDifficulty.CONFIG.gameStages;
+		return MajruszsDifficulty.CONFIG != null ? MajruszsDifficulty.CONFIG.gameStages : Config.DEFAULT_GAME_STAGES;
 	}
 
 	private GameStageHelper() {}
