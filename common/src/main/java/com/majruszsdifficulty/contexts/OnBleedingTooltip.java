@@ -34,7 +34,7 @@ public class OnBleedingTooltip {
 	}
 
 	public void addArmor( EquipmentSlot slot, double chanceMultiplier ) {
-		MutableComponent component = TextHelper.translatable( "effect.majruszsdifficulty.bleeding.armor_tooltip", TextHelper.minPrecision( chanceMultiplier ) )
+		MutableComponent component = TextHelper.translatable( "effect.majruszsdifficulty.bleeding.armor_tooltip", TextHelper.minPrecision( chanceMultiplier, 3 ) )
 			.withStyle( ChatFormatting.BLUE );
 
 		this.data.add( slot, component );
