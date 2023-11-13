@@ -5,6 +5,7 @@ import com.majruszsdifficulty.contexts.OnBleedingTooltip;
 import com.majruszsdifficulty.data.Config;
 import com.mlib.annotation.AutoInstance;
 import com.mlib.contexts.OnEntityEffectCheck;
+import com.mlib.contexts.base.Condition;
 import com.mlib.data.Serializables;
 import com.mlib.item.EquipmentSlots;
 import com.mlib.math.Random;
@@ -19,6 +20,7 @@ public class BleedingArmorProtection {
 
 	public BleedingArmorProtection() {
 		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
+			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->data.effect.equals( MajruszsDifficulty.BLEEDING.get() ) )
 			.addCondition( data->Random.check( this.calculateCancelChance( data ) ) );
 

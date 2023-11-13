@@ -7,5 +7,6 @@
 - added glass break sound when Glass Regeneration gets removed
 - added possibility to cure Bleeding with Milk Bucket
 - added config list for animals that should not apply Bleeding
+- added config for default immunity for undead mobs
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last

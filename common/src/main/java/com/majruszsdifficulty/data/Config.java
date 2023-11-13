@@ -5,7 +5,9 @@ import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.mlib.collection.DefaultMap;
 import com.mlib.data.Serializables;
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.entity.EntityType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Config extends com.mlib.data.Config {
@@ -58,6 +60,8 @@ public class Config extends com.mlib.data.Config {
 
 	public static class Bleeding {
 		public boolean isEnabled = true;
+		public boolean areUndeadImmuneByDefault = true;
+		public List< EntityType< ? > > immuneMobs = new ArrayList<>();
 		public GameStageValue< EffectDef > effects = GameStageValue.of(
 			DefaultMap.defaultEntry( new EffectDef( 0, 24.0f ) ),
 			DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( 1, 24.0f ) ),
@@ -68,6 +72,8 @@ public class Config extends com.mlib.data.Config {
 		static {
 			Serializables.get( Bleeding.class )
 				.defineBoolean( "is_enabled", s->s.isEnabled, ( s, v )->s.isEnabled = v )
+				.defineBoolean( "are_undead_immune_by_default", s->s.areUndeadImmuneByDefault, ( s, v )->s.areUndeadImmuneByDefault = v )
+				.defineEntityTypeList( "immune_mobs", s->s.immuneMobs, ( s, v )->s.immuneMobs = v )
 				.defineCustomMap( "effect", s->s.effects.get(), ( s, v )->s.effects.set( v ), EffectDef::new )
 				.defineCustom( "sources", s->s.sources, ( s, v )->s.sources = v, Sources::new );
 

@@ -9,13 +9,15 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
 import org.jetbrains.annotations.Nullable;
 
 public class BleedingEffect extends MobEffect {
 	public static boolean apply( LivingEntity target, @Nullable LivingEntity attacker ) {
 		EffectDef effectDef = BleedingEffect.getCurrentEffect( GameStageHelper.determineGameStage( target.level(), target.position() ) );
 
-		return target.addEffect( new MobEffectInstance( effectDef.amplifier, TimeHelper.toTicks( effectDef.duration ), attacker ) );
+		return target.addEffect( new MobEffectInstance( TimeHelper.toTicks( effectDef.duration ), effectDef.amplifier, attacker ) );
 	}
 
 	public static EffectDef getCurrentEffect( GameStage gameStage ) {
@@ -27,7 +29,10 @@ public class BleedingEffect extends MobEffect {
 	}
 
 	public static boolean isImmune( LivingEntity entity ) {
-		return MajruszsDifficulty.CONFIG.bleeding.isEnabled;
+		return MajruszsDifficulty.CONFIG.bleeding.areUndeadImmuneByDefault
+			&& entity instanceof Mob mob
+			&& mob.getMobType().equals( MobType.UNDEAD )
+			|| MajruszsDifficulty.CONFIG.bleeding.immuneMobs.contains( entity.getType() );
 	}
 
 	public BleedingEffect() {
