@@ -97,18 +97,18 @@ public class BleedingSources {
 	public static class Tools {
 		private boolean isEnabled = true;
 		private List< ToolDef > toolDefs = List.of(
-			new ToolDef( "minecraft:trident", 0.25f ),
-			new ToolDef( "{regex}.*_sword", 0.25f, List.of(
-				new EnchantmentDef( "minecraft:sharpness", 0.015f ),
+			new ToolDef( "minecraft:trident", 0.3f ),
+			new ToolDef( "{regex}.*_sword", 0.3f, List.of(
+				new EnchantmentDef( "minecraft:sharpness", 0.02f ),
 				new EnchantmentDef( "{regex}(minecraft:smite)|(minecraft:bane_of_arthropods)|(majruszsenchantments:misanthropy)", 0.01f )
 			) ),
-			new ToolDef( "{regex}.*_axe", 0.225f, List.of(
-				new EnchantmentDef( "minecraft:sharpness", 0.015f ),
+			new ToolDef( "{regex}.*_axe", 0.26f, List.of(
+				new EnchantmentDef( "minecraft:sharpness", 0.02f ),
 				new EnchantmentDef( "{regex}(minecraft:smite)|(minecraft:bane_of_arthropods)|(majruszsenchantments:misanthropy)", 0.01f )
 			) ),
-			new ToolDef( "{regex}(.*_pickaxe)|minecraft:shears", 0.2f ),
-			new ToolDef( "{regex}.*_shovel", 0.175f ),
-			new ToolDef( "{regex}.*_hoe", 0.15f )
+			new ToolDef( "{regex}(.*_pickaxe)|minecraft:shears", 0.22f ),
+			new ToolDef( "{regex}.*_shovel", 0.18f ),
+			new ToolDef( "{regex}.*_hoe", 0.14f )
 		);
 
 		public Tools() {
