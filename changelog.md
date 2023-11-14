@@ -10,4 +10,5 @@
 - added config for default immunity for undead mobs
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
+- decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - rebalanced Bleeding chances on tools
