@@ -39,9 +39,9 @@ public class BleedingGui {
 		List< Integer > x = BleedingGui.randomizedCoordinates( Particle.GRID_WIDTH );
 		List< Integer > y = BleedingGui.randomizedCoordinates( Particle.GRID_HEIGHT );
 
-		IntStream.iterate( 0, i->i + 1 )
-			.limit( count )
-			.forEach( idx->PARTICLES.get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible() );
+		for( int idx = 0; idx < count; ++idx ) {
+			PARTICLES.get( x.get( idx ) * Particle.GRID_HEIGHT + y.get( idx ) ).makeVisible();
+		}
 	}
 
 	private static List< Integer > randomizedCoordinates( int max ) {

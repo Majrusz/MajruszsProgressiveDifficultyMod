@@ -3,10 +3,11 @@ package com.majruszsdifficulty.features;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gui.BleedingGui;
 import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnEntityDamaged;
 import com.mlib.contexts.OnEntityDied;
+import com.mlib.contexts.OnEntityPreDamaged;
 import com.mlib.contexts.OnEntityTicked;
 import com.mlib.contexts.base.Condition;
+import com.mlib.contexts.base.Priority;
 import com.mlib.emitter.ParticleEmitter;
 import com.mlib.entity.EffectHelper;
 import com.mlib.entity.EntityHelper;
@@ -25,7 +26,8 @@ public class BleedingParticles {
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING, data.target ) );
 
-		OnEntityDamaged.listen( this::addGuiOverlay )
+		OnEntityPreDamaged.listen( this::addGuiOverlay )
+			.priority( Priority.LOWEST )
 			.addCondition( data->data.source.is( MajruszsDifficulty.BLEEDING_SOURCE ) );
 	}
 
@@ -46,7 +48,11 @@ public class BleedingParticles {
 			.emit( data.getServerLevel() );
 	}
 
-	private void addGuiOverlay( OnEntityDamaged data ) {
-		Side.runOnClient( ()->()->BleedingGui.addBloodOnScreen( 3 ) );
+	private void addGuiOverlay( OnEntityPreDamaged data ) {
+		Side.runOnClient( ()->()->{
+			if( data.target.equals( Side.getLocalPlayer() ) ) {
+				BleedingGui.addBloodOnScreen( 3 );
+			}
+		} );
 	}
 }
