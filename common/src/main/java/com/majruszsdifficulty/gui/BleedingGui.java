@@ -24,7 +24,7 @@ public class BleedingGui {
 	static final List< Particle > PARTICLES = new ArrayList<>();
 
 	static {
-		OnGuiOverlaysRegistered.listen( data->data.register( MajruszsDifficulty.HELPER.getLocationString( "bleeding" ), BleedingGui::render ) );
+		OnGuiOverlaysRegistered.listen( data->data.register( "bleeding", BleedingGui::render ) );
 
 		OnClientTicked.listen( BleedingGui::updateParticles );
 
