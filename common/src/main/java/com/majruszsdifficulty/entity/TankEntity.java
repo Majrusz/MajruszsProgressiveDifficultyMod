@@ -180,7 +180,7 @@ public class TankEntity extends Monster implements IAnimableEntity {
 					if( !( target.level() instanceof ServerLevel level ) ) {
 						return;
 					}
-					Vec3 position = this.getSpecialAttackPosition( this.tank.position(), target.position() );
+					Vec3 position = this.getHeavyAttackPosition();
 
 					this.spawnGroundParticles( level, position );
 					this.hitAllNearbyEntities( level, position );
@@ -198,7 +198,7 @@ public class TankEntity extends Monster implements IAnimableEntity {
 		}
 
 		private void hitAllNearbyEntities( ServerLevel level, Vec3 position ) {
-			for( LivingEntity entity : EntityHelper.getEntitiesNearby( LivingEntity.class, level, position, 3.0 ) ) {
+			for( LivingEntity entity : EntityHelper.getEntitiesNearby( LivingEntity.class, level, position, 2.5 ) ) {
 				if( entity.equals( this.tank ) ) {
 					continue;
 				}
@@ -219,8 +219,8 @@ public class TankEntity extends Monster implements IAnimableEntity {
 			return false;
 		}
 
-		private Vec3 getSpecialAttackPosition( Vec3 tankPosition, Vec3 targetPosition ) {
-			return AnyPos.from( targetPosition ).sub( tankPosition ).norm().mul( 1.75 ).add( tankPosition ).vec3();
+		private Vec3 getHeavyAttackPosition() {
+			return AnyPos.from( this.tank.position() ).add( AnyPos.from( 2.0, 0.0, 0.0 ).rot( EntityHelper.getLookRotation( this.tank ) ) ).vec3();
 		}
 
 		private void spawnGroundParticles( ServerLevel level, Vec3 position ) {

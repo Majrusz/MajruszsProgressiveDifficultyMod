@@ -12,3 +12,4 @@
 - made blood particles darker the longer they last
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - rebalanced Bleeding chances on tools
+- fixed bug with Tank's area attack not always spawning in front of the Tank
