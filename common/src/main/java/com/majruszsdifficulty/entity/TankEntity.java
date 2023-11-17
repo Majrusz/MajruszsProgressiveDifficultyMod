@@ -161,8 +161,8 @@ public class TankEntity extends Monster implements IAnimableEntity {
 		}
 
 		@Override
-		protected void checkAndPerformAttack( LivingEntity target, double distance ) {
-			if( distance > this.getAttackReachSqr( target ) || !this.tank.animations.isEmpty() ) {
+		protected void checkAndPerformAttack( LivingEntity target, double distanceSqr ) {
+			if( distanceSqr > this.getAttackReachSqr( target ) || !this.tank.animations.isEmpty() ) {
 				return;
 			}
 
@@ -220,7 +220,7 @@ public class TankEntity extends Monster implements IAnimableEntity {
 		}
 
 		private Vec3 getHeavyAttackPosition() {
-			return AnyPos.from( this.tank.position() ).add( AnyPos.from( 2.0, 0.0, 0.0 ).rot( EntityHelper.getLookRotation( this.tank ) ) ).vec3();
+			return AnyPos.from( this.tank.position() ).add( EntityHelper.getDirection2d( this.tank ).mul( 2.0 ) ).vec3();
 		}
 
 		private void spawnGroundParticles( ServerLevel level, Vec3 position ) {
