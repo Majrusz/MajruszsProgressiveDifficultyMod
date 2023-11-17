@@ -23,7 +23,9 @@ public class CreativeModeTabs {
 	private static void definePrimaryItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
 		Stream.of(
 			MajruszsDifficulty.FRAGILE_END_STONE,
-			MajruszsDifficulty.INFESTED_END_STONE
+			MajruszsDifficulty.INFESTED_END_STONE,
+			MajruszsDifficulty.CERBERUS_SPAWN_EGG,
+			MajruszsDifficulty.TANK_SPAWN_EGG
 		).map( item->new ItemStack( item.get() ) ).forEach( output::accept );
 	}
 }

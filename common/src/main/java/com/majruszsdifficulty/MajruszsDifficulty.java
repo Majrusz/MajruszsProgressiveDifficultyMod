@@ -17,6 +17,7 @@ import com.mlib.annotation.OnlyIn;
 import com.mlib.contexts.OnGameInitialized;
 import com.mlib.contexts.OnParticlesRegistered;
 import com.mlib.emitter.ParticleEmitter;
+import com.mlib.item.ItemHelper;
 import com.mlib.modhelper.ModHelper;
 import com.mlib.registry.Custom;
 import com.mlib.registry.RegistryGroup;
@@ -32,6 +33,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -52,6 +54,10 @@ public class MajruszsDifficulty {
 	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
 	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
 
+	// Entities
+	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.create( "cerberus", CerberusEntity::createEntityType );
+	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
+
 	// Blocks
 	public static final RegistryObject< FragileEndStone > FRAGILE_END_STONE = BLOCKS.create( "fragile_end_stone", FragileEndStone::new );
 	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.create( "infested_end_stone", InfestedEndStone::new );
@@ -59,6 +65,10 @@ public class MajruszsDifficulty {
 	// Items
 	public static final RegistryObject< FragileEndStone.Item > FRAGILE_END_STONE_ITEM = ITEMS.create( "fragile_end_stone", FragileEndStone.Item::new );
 	public static final RegistryObject< InfestedEndStone.Item > INFESTED_END_STONE_ITEM = ITEMS.create( "infested_end_stone", InfestedEndStone.Item::new );
+
+	// Items (spawn eggs)
+	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.create( "cerberus_spawn_egg", ItemHelper.createEgg( CERBERUS, 0x212121, 0xe0e0e0 ) );
+	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( TANK, 0xc1c1c1, 0x949494 ) );
 
 	// Items (fake)
 	static {
@@ -77,10 +87,6 @@ public class MajruszsDifficulty {
 
 	// Creative Mode Tabs
 	public static final RegistryObject< CreativeModeTab > CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", CreativeModeTabs.primary() );
-
-	// Entities
-	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.create( "cerberus", CerberusEntity::createEntityType );
-	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
 
 	// Placed Features
 	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
