@@ -7,9 +7,7 @@ import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.effects.GlassRegenerationEffect;
-import com.majruszsdifficulty.entity.TankEntity;
-import com.majruszsdifficulty.entity.TankModel;
-import com.majruszsdifficulty.entity.TankRenderer;
+import com.majruszsdifficulty.entity.*;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.CreativeModeTabs;
 import com.majruszsdifficulty.items.FakeItem;
@@ -81,6 +79,7 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< CreativeModeTab > CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", CreativeModeTabs.primary() );
 
 	// Entities
+	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.create( "cerberus", CerberusEntity::createEntityType );
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
 
 	// Placed Features
@@ -102,10 +101,12 @@ public class MajruszsDifficulty {
 		} );
 
 		HELPER.create( Custom.Attributes.class, attributes->{
+			attributes.register( CERBERUS.get(), CerberusEntity.createAttributes() );
 			attributes.register( TANK.get(), TankEntity.createAttributes() );
 		} );
 
 		HELPER.create( Custom.SpawnPlacements.class, spawnPlacements->{
+			spawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CerberusEntity::checkMonsterSpawnRules );
 			spawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 		} );
 	}
@@ -122,10 +123,12 @@ public class MajruszsDifficulty {
 			OnParticlesRegistered.listen( data->data.register( BLOOD_PARTICLE.get(), BloodParticle.Factory::new ) );
 
 			HELPER.create( Custom.ModelLayers.class, modelLayers->{
+				modelLayers.register( CerberusRenderer.LAYER, ()->CerberusModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( TankRenderer.LAYER, ()->TankModel.MODEL.get().toLayerDefinition() );
 			} );
 
 			HELPER.create( Custom.Renderers.class, renderers->{
+				renderers.register( CERBERUS.get(), CerberusRenderer::new );
 				renderers.register( TANK.get(), TankRenderer::new );
 			} );
 		}
