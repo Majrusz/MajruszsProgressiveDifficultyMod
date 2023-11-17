@@ -3,17 +3,12 @@ package com.majruszsdifficulty.gamestage;
 import com.google.gson.JsonObject;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.mlib.data.Serializables;
-import com.mlib.mixin.IMixinCriteriaTriggers;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 public class GameStageAdvancement extends SimpleCriterionTrigger< GameStageAdvancement.Instance > {
 	final ResourceLocation id = MajruszsDifficulty.HELPER.getLocation( "game_stage" );
-
-	public GameStageAdvancement() {
-		IMixinCriteriaTriggers.register( this );
-	}
 
 	@Override
 	public ResourceLocation getId() {

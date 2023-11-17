@@ -7,6 +7,9 @@ import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.effects.GlassRegenerationEffect;
+import com.majruszsdifficulty.entity.TankEntity;
+import com.majruszsdifficulty.entity.TankModel;
+import com.majruszsdifficulty.entity.TankRenderer;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.CreativeModeTabs;
 import com.majruszsdifficulty.items.FakeItem;
@@ -17,6 +20,7 @@ import com.mlib.contexts.OnGameInitialized;
 import com.mlib.contexts.OnParticlesRegistered;
 import com.mlib.emitter.ParticleEmitter;
 import com.mlib.modhelper.ModHelper;
+import com.mlib.registry.Custom;
 import com.mlib.registry.RegistryGroup;
 import com.mlib.registry.RegistryObject;
 import net.minecraft.core.particles.ParticleType;
@@ -26,9 +30,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class MajruszsDifficulty {
@@ -42,6 +49,7 @@ public class MajruszsDifficulty {
 	// Registry Groups
 	public static final RegistryGroup< Block > BLOCKS = HELPER.create( BuiltInRegistries.BLOCK );
 	public static final RegistryGroup< CreativeModeTab > CREATIVE_MODE_TABS = HELPER.create( BuiltInRegistries.CREATIVE_MODE_TAB );
+	public static final RegistryGroup< EntityType< ? > > ENTITY_TYPES = HELPER.create( BuiltInRegistries.ENTITY_TYPE );
 	public static final RegistryGroup< Item > ITEMS = HELPER.create( BuiltInRegistries.ITEM );
 	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
 	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
@@ -72,6 +80,9 @@ public class MajruszsDifficulty {
 	// Creative Mode Tabs
 	public static final RegistryObject< CreativeModeTab > CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", CreativeModeTabs.primary() );
 
+	// Entities
+	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
+
 	// Placed Features
 	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
 	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_LARGE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone_large" ) );
@@ -85,6 +96,18 @@ public class MajruszsDifficulty {
 
 	static {
 		OnGameInitialized.listen( MajruszsDifficulty::setDefaultEmitters );
+
+		HELPER.create( Custom.Advancements.class, advancements->{
+			advancements.register( GAME_STAGE_ADVANCEMENT );
+		} );
+
+		HELPER.create( Custom.Attributes.class, attributes->{
+			attributes.register( TANK.get(), TankEntity.createAttributes() );
+		} );
+
+		HELPER.create( Custom.SpawnPlacements.class, spawnPlacements->{
+			spawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
+		} );
 	}
 
 	private static void setDefaultEmitters( OnGameInitialized data ) {
@@ -97,6 +120,14 @@ public class MajruszsDifficulty {
 	public static class Client {
 		static {
 			OnParticlesRegistered.listen( data->data.register( BLOOD_PARTICLE.get(), BloodParticle.Factory::new ) );
+
+			HELPER.create( Custom.ModelLayers.class, modelLayers->{
+				modelLayers.register( TankRenderer.LAYER, ()->TankModel.MODEL.get().toLayerDefinition() );
+			} );
+
+			HELPER.create( Custom.Renderers.class, renderers->{
+				renderers.register( TANK.get(), TankRenderer::new );
+			} );
 		}
 	}
 }
