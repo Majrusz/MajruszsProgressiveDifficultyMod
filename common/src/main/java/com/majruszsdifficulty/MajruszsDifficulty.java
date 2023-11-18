@@ -11,6 +11,7 @@ import com.majruszsdifficulty.entity.*;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.CreativeModeTabs;
 import com.majruszsdifficulty.items.FakeItem;
+import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.particles.BloodParticle;
 import com.mlib.annotation.Dist;
 import com.mlib.annotation.OnlyIn;
@@ -39,6 +40,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 
 public class MajruszsDifficulty {
 	public static final String MOD_ID = "majruszsdifficulty";
@@ -53,12 +55,14 @@ public class MajruszsDifficulty {
 	public static final RegistryGroup< CreativeModeTab > CREATIVE_MODE_TABS = HELPER.create( BuiltInRegistries.CREATIVE_MODE_TAB );
 	public static final RegistryGroup< EntityType< ? > > ENTITY_TYPES = HELPER.create( BuiltInRegistries.ENTITY_TYPE );
 	public static final RegistryGroup< Item > ITEMS = HELPER.create( BuiltInRegistries.ITEM );
+	public static final RegistryGroup< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( BuiltInRegistries.LOOT_FUNCTION_TYPE );
 	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
 	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
 
 	// Entities
 	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.create( "cerberus", CerberusEntity::createEntityType );
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.create( "creeperling", CreeperlingEntity::createEntityType );
+	public static final RegistryObject< EntityType< CursedArmorEntity > > CURSED_ARMOR = ENTITY_TYPES.create( "cursed_armor", CursedArmorEntity::createEntityType );
 	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.create( "giant", GiantEntity::createEntityType );
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
 
@@ -73,6 +77,7 @@ public class MajruszsDifficulty {
 	// Items (spawn eggs)
 	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.create( "cerberus_spawn_egg", ItemHelper.createEgg( CERBERUS, 0x212121, 0xe0e0e0 ) );
 	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.create( "creeperling_spawn_egg", ItemHelper.createEgg( CREEPERLING, 0x0da70b, 0x000000 ) );
+	public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.create( "cursed_armor_spawn_egg", ItemHelper.createEgg( CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
 	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.create( "giant_spawn_egg", ItemHelper.createEgg( GIANT, 0x00afaf, 0x799c65 ) );
 	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( TANK, 0xc1c1c1, 0x949494 ) );
 
@@ -90,6 +95,9 @@ public class MajruszsDifficulty {
 
 	// Particles
 	public static final RegistryObject< SimpleParticleType > BLOOD_PARTICLE = PARTICLES.create( "blood", ()->new SimpleParticleType( true ) {} );
+
+	// Loot Functions
+	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY = LOOT_FUNCTIONS.create( "curse_randomly", CurseRandomlyFunction::create );
 
 	// Creative Mode Tabs
 	public static final RegistryObject< CreativeModeTab > CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", CreativeModeTabs.primary() );
@@ -114,6 +122,7 @@ public class MajruszsDifficulty {
 
 		HELPER.create( Custom.Attributes.class, attributes->{
 			attributes.register( CERBERUS.get(), CerberusEntity.createAttributes() );
+			attributes.register( CURSED_ARMOR.get(), CursedArmorEntity.createAttributes() );
 			attributes.register( CREEPERLING.get(), CreeperlingEntity.createChildAttributes() );
 			attributes.register( GIANT.get(), GiantEntity.createAttributes() );
 			attributes.register( TANK.get(), TankEntity.createAttributes() );
@@ -121,6 +130,7 @@ public class MajruszsDifficulty {
 
 		HELPER.create( Custom.SpawnPlacements.class, spawnPlacements->{
 			spawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CerberusEntity::checkMonsterSpawnRules );
+			spawnPlacements.register( CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
 			spawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMonsterSpawnRules );
 			spawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
 			spawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
@@ -140,6 +150,9 @@ public class MajruszsDifficulty {
 
 			HELPER.create( Custom.ModelLayers.class, modelLayers->{
 				modelLayers.register( CerberusRenderer.LAYER, ()->CerberusModel.MODEL.get().toLayerDefinition() );
+				modelLayers.register( CursedArmorRenderer.LAYER, ()->CursedArmorModel.MODEL.get().toLayerDefinition() );
+				modelLayers.register( CursedArmorRenderer.INNER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( new CubeDeformation( 0.5f ), 0.0f ), 64, 32 ) );
+				modelLayers.register( CursedArmorRenderer.OUTER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( new CubeDeformation( 1.0f ), 0.0f ), 64, 32 ) );
 				modelLayers.register( CreeperlingRenderer.LAYER, ()->CreeperlingModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( GiantRenderer.LAYER, ()->LayerDefinition.create( GiantModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
 				modelLayers.register( TankRenderer.LAYER, ()->TankModel.MODEL.get().toLayerDefinition() );
@@ -147,6 +160,7 @@ public class MajruszsDifficulty {
 
 			HELPER.create( Custom.Renderers.class, renderers->{
 				renderers.register( CERBERUS.get(), CerberusRenderer::new );
+				renderers.register( CURSED_ARMOR.get(), CursedArmorRenderer::new );
 				renderers.register( CREEPERLING.get(), CreeperlingRenderer::new );
 				renderers.register( GIANT.get(), GiantRenderer::new );
 				renderers.register( TANK.get(), TankRenderer::new );

@@ -26,6 +26,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.INFESTED_END_STONE,
 			MajruszsDifficulty.CERBERUS_SPAWN_EGG,
 			MajruszsDifficulty.CREEPERLING_SPAWN_EGG,
+			MajruszsDifficulty.CURSED_ARMOR_SPAWN_EGG,
 			MajruszsDifficulty.GIANT_SPAWN_EGG,
 			MajruszsDifficulty.TANK_SPAWN_EGG
 		).map( item->new ItemStack( item.get() ) ).forEach( output::accept );

@@ -1,0 +1,33 @@
+package com.majruszsdifficulty.entity;
+
+import com.majruszsdifficulty.MajruszsDifficulty;
+import com.mlib.animations.ModelDef;
+import com.mlib.animations.ModelParts;
+import com.mlib.annotation.Dist;
+import com.mlib.annotation.OnlyIn;
+import com.mlib.modhelper.LazyResource;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.server.packs.PackType;
+
+@OnlyIn( Dist.CLIENT )
+public class CursedArmorModel< Type extends CursedArmorEntity > extends HumanoidModel< Type > {
+	public static LazyResource< ModelDef > MODEL = MajruszsDifficulty.HELPER.load( "cursed_armor_model", ModelDef.class, PackType.CLIENT_RESOURCES );
+	public final ModelParts modelParts;
+
+	public CursedArmorModel( ModelPart modelPart ) {
+		super( modelPart );
+
+		this.modelParts = new ModelParts( modelPart, MODEL.get() );
+	}
+
+	@Override
+	public void setupAnim( Type cursedArmor, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
+		this.modelParts.reset();
+
+		super.setupAnim( cursedArmor, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch );
+
+		cursedArmor.getAnimations().forEach( animation->animation.apply( this.modelParts, ageInTicks ) );
+	}
+}
+

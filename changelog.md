@@ -8,12 +8,16 @@
 - added possibility to cure Bleeding with Milk Bucket
 - added config list for animals that should not apply Bleeding
 - added config for default immunity for undead mobs
+- removed Netherite and Enderium Axes from Cursed Armors in End Cities
+- removed detailed tooltip from Cursed Armor Spawn Egg
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
+- increased Cursed Armor experience from 0-7 to 7
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - decreased Cerberus move speed by 11%
 - decreased Cerberus experience from 60-90 to 26-46
 - rebalanced Bleeding chances on tools
 - fixed bug with Tank's area attack not always spawning in front of the Tank
 - fixed bug with Tank's attack always emitting sound even if it did not hit
+- fixed bug with Curse Armor playing assemble animation after reloading the world

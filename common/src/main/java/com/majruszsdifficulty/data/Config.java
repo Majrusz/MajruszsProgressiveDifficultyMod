@@ -30,6 +30,7 @@ public class Config extends com.mlib.data.Config {
 	public boolean isPerPlayerDifficultyEnabled = false;
 	public Bleeding bleeding = new Bleeding();
 	public Features features = new Features();
+	public Mobs mobs = new Mobs();
 
 	public Config( String name ) {
 		super( name );
@@ -38,7 +39,8 @@ public class Config extends com.mlib.data.Config {
 			.defineCustomList( "game_stages", s->s.gameStages, ( s, v )->s.gameStages = Config.validate( v ), GameStage::new )
 			.defineBoolean( "is_per_player_difficulty_enabled", s->s.isPerPlayerDifficultyEnabled, ( s, v )->s.isPerPlayerDifficultyEnabled = v )
 			.defineCustom( "bleeding", s->s.bleeding, ( s, v )->s.bleeding = v, Bleeding::new )
-			.defineCustom( "features", s->s.features, ( s, v )->s.features = v, Features::new );
+			.defineCustom( "features", s->s.features, ( s, v )->s.features = v, Features::new )
+			.defineCustom( "mobs", s->s.mobs, ( s, v )->s.mobs = v, Mobs::new );
 	}
 
 	private static List< GameStage > validate( List< GameStage > gameStages ) {
@@ -91,6 +93,12 @@ public class Config extends com.mlib.data.Config {
 	public static class Features {
 		static {
 			Serializables.get( Features.class );
+		}
+	}
+
+	public static class Mobs {
+		static {
+			Serializables.get( Mobs.class );
 		}
 	}
 }
