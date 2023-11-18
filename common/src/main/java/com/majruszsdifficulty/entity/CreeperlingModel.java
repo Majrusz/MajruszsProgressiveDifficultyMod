@@ -27,7 +27,7 @@ public class CreeperlingModel< Type extends CreeperlingEntity > extends Hierarch
 	}
 
 	@Override
-	public void setupAnim( Type cerberus, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
+	public void setupAnim( Type creeperling, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch ) {
 		this.modelParts.reset();
 
 		float limbFactor1 = 2.5f * limbSwing * 0.6662f, limbFactor2 = 1.4f * limbSwingAmount;
