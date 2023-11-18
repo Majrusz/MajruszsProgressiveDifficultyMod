@@ -32,8 +32,8 @@ public class TankModel< Type extends TankEntity > extends HierarchicalModel< Typ
 		float limbFactor1 = limbSwing * 0.3333f, limbFactor2 = 0.9f * limbSwingAmount, bodyFactor = 0.2f * limbSwingAmount;
 
 		// head rotation when looking around
-		this.head.yRot += netHeadYaw * ( ( float )Math.PI / 180f );
-		this.head.xRot += headPitch * ( ( float )Math.PI / 180f );
+		this.head.yRot += Math.toRadians( netHeadYaw );
+		this.head.xRot += Math.toRadians( headPitch ) + 0.0873f;
 
 		// leg and body rotation while moving
 		this.leftLeg.xRot += Mth.cos( limbFactor1 ) * limbFactor2;

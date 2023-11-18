@@ -43,12 +43,12 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		this.modelParts.reset();
 
 		// head rotation when looking around
-		this.necks.yRot = ( float )Math.toRadians( netHeadYaw );
-		this.necks.xRot = ( float )Math.toRadians( headPitch ) + 0.0873f;
+		this.necks.yRot += Math.toRadians( netHeadYaw );
+		this.necks.xRot += Math.toRadians( headPitch ) + 0.0873f;
 
 		// head rotation for side heads to follow the main one
-		this.neck1.yRot = ( float )( Math.toRadians( 35.0f + netHeadYaw * ( netHeadYaw < 0.0f ? 0.255f : -0.075f ) + 2.0f * Math.sin( 0.1f * ageInTicks ) ) );
-		this.neck3.yRot = ( float )( Math.toRadians( -35.0f + netHeadYaw * ( netHeadYaw > 0.0f ? 0.225f : -0.075f ) - 2.0f * Math.cos( 0.1f * ageInTicks ) ) );
+		this.neck1.yRot += Math.toRadians( netHeadYaw * ( netHeadYaw < 0.0f ? 0.255f : -0.075f ) + 2.0f * Math.sin( 0.1f * ageInTicks ) );
+		this.neck3.yRot += Math.toRadians( netHeadYaw * ( netHeadYaw > 0.0f ? 0.225f : -0.075f ) - 2.0f * Math.cos( 0.1f * ageInTicks ) );
 
 		// jaw rotation dependent on players distance
 		float jawRotation = ( float )Math.toRadians( -1.0f * Math.sin( ageInTicks / 10.0f ) - 15.0f * Mth.clamp( 1.20f - this.getPlayerDistance( cerberus ) / 5.0f, 0.0f, 1.0f ) );
@@ -59,7 +59,7 @@ public class CerberusModel< Type extends CerberusEntity > extends HierarchicalMo
 		float limbFactor1 = 0.5f * limbSwing, limbFactor2 = 0.6f * limbSwingAmount;
 		this.frontLeg1.xRot = this.hindLeg1.xRot = ( float )( Math.cos( limbFactor1 ) * limbFactor2 );
 		this.frontLeg2.xRot = this.hindLeg2.xRot = ( float )( Math.cos( limbFactor1 + Math.PI ) * limbFactor2 );
-		this.body.y = 27.0f + 1.0f * Math.abs( ( float )Math.cos( limbFactor1 ) * limbSwingAmount );
+		this.body.y += Math.abs( ( float )Math.cos( limbFactor1 ) * limbSwingAmount );
 
 		cerberus.getAnimations().forEach( animation->animation.apply( this.modelParts, ageInTicks ) );
 	}
