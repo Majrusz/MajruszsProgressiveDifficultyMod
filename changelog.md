@@ -14,3 +14,4 @@
 - decreased Cerberus move speed by 11%
 - rebalanced Bleeding chances on tools
 - fixed bug with Tank's area attack not always spawning in front of the Tank
+- fixed bug with Tank's attack always emitting sound even if it did not hit

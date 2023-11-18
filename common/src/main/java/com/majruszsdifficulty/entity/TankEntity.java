@@ -184,7 +184,7 @@ public class TankEntity extends Monster implements IAnimableEntity {
 
 					this.spawnGroundParticles( level, position );
 					this.hitAllNearbyEntities( level, position );
-					this.playHitSound();
+					this.playHitSound( 1.5f );
 				} );
 		}
 
@@ -192,7 +192,7 @@ public class TankEntity extends Monster implements IAnimableEntity {
 			this.tank.playAnimation( Random.next( "normal_attack_left", "normal_attack_right" ) )
 				.addCallback( 9, ()->{
 					if( this.tryToHitEntity( target ) ) {
-						this.playHitSound();
+						this.playHitSound( 0.8f );
 					}
 				} );
 		}
@@ -211,9 +211,7 @@ public class TankEntity extends Monster implements IAnimableEntity {
 
 		private boolean tryToHitEntity( LivingEntity entity ) {
 			if( this.tank.canAttack( entity, TargetingConditions.DEFAULT ) ) {
-				this.tank.doHurtTarget( entity );
-
-				return true;
+				return this.tank.doHurtTarget( entity );
 			}
 
 			return false;
@@ -236,8 +234,8 @@ public class TankEntity extends Monster implements IAnimableEntity {
 				.emit( level );
 		}
 
-		private void playHitSound() {
-			this.mob.playSound( SoundEvents.SKELETON_HURT, 0.75f, 0.9f );
+		private void playHitSound( float factor ) {
+			this.mob.playSound( SoundEvents.SKELETON_HURT, 0.75f * factor, 0.8f / factor );
 		}
 	}
 }
