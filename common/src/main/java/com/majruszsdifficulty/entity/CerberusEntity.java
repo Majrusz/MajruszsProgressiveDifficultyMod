@@ -69,7 +69,7 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 
 	@Override
 	public int getExperienceReward() {
-		return Random.nextInt( 60, 90 );
+		return Random.nextInt( 26, 46 );
 	}
 
 	@Override
