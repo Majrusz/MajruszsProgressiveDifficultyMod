@@ -5,7 +5,9 @@
   "minVersion": "0.8",
   "refmap": "majruszsdifficulty.refmap.json",
   "client": [],
-  "mixins": [],
+  "mixins": [
+    "IMixinCreeper"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

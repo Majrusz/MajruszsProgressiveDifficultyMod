@@ -200,8 +200,8 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 		}
 
 		private void hitAllNearbyEntities( ServerLevel level ) {
-			Vec3 position = AnyPos.from( this.cerberus.position() ).add( EntityHelper.getDirection2d( this.cerberus ).mul( 2.0 ) ).vec3();
-			for( LivingEntity entity : EntityHelper.getEntitiesNearby( LivingEntity.class, level, position, 2.5 ) ) {
+			Vec3 position = AnyPos.from( this.cerberus.position() ).add( EntityHelper.getDirection2d( this.cerberus ).mul( 1.5 ) ).vec3();
+			for( LivingEntity entity : EntityHelper.getEntitiesNearby( LivingEntity.class, level, position, 2.0 ) ) {
 				if( entity.equals( this.cerberus ) ) {
 					continue;
 				}
