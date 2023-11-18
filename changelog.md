@@ -10,6 +10,7 @@
 - added config for default immunity for undead mobs
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
+- made Giant launch attack weaker when player has knockback resistance
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - decreased Cerberus move speed by 11%
 - decreased Cerberus experience from 60-90 to 26-46

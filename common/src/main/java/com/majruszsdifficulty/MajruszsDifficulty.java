@@ -22,6 +22,8 @@ import com.mlib.modhelper.ModHelper;
 import com.mlib.registry.Custom;
 import com.mlib.registry.RegistryGroup;
 import com.mlib.registry.RegistryObject;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -57,6 +59,7 @@ public class MajruszsDifficulty {
 	// Entities
 	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.create( "cerberus", CerberusEntity::createEntityType );
 	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.create( "creeperling", CreeperlingEntity::createEntityType );
+	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.create( "giant", GiantEntity::createEntityType );
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
 
 	// Blocks
@@ -70,6 +73,7 @@ public class MajruszsDifficulty {
 	// Items (spawn eggs)
 	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.create( "cerberus_spawn_egg", ItemHelper.createEgg( CERBERUS, 0x212121, 0xe0e0e0 ) );
 	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.create( "creeperling_spawn_egg", ItemHelper.createEgg( CREEPERLING, 0x0da70b, 0x000000 ) );
+	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.create( "giant_spawn_egg", ItemHelper.createEgg( GIANT, 0x00afaf, 0x799c65 ) );
 	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( TANK, 0xc1c1c1, 0x949494 ) );
 
 	// Items (fake)
@@ -111,12 +115,14 @@ public class MajruszsDifficulty {
 		HELPER.create( Custom.Attributes.class, attributes->{
 			attributes.register( CERBERUS.get(), CerberusEntity.createAttributes() );
 			attributes.register( CREEPERLING.get(), CreeperlingEntity.createChildAttributes() );
+			attributes.register( GIANT.get(), GiantEntity.createAttributes() );
 			attributes.register( TANK.get(), TankEntity.createAttributes() );
 		} );
 
 		HELPER.create( Custom.SpawnPlacements.class, spawnPlacements->{
 			spawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CerberusEntity::checkMonsterSpawnRules );
 			spawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMonsterSpawnRules );
+			spawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
 			spawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
 		} );
 	}
@@ -135,12 +141,14 @@ public class MajruszsDifficulty {
 			HELPER.create( Custom.ModelLayers.class, modelLayers->{
 				modelLayers.register( CerberusRenderer.LAYER, ()->CerberusModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( CreeperlingRenderer.LAYER, ()->CreeperlingModel.MODEL.get().toLayerDefinition() );
+				modelLayers.register( GiantRenderer.LAYER, ()->LayerDefinition.create( GiantModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
 				modelLayers.register( TankRenderer.LAYER, ()->TankModel.MODEL.get().toLayerDefinition() );
 			} );
 
 			HELPER.create( Custom.Renderers.class, renderers->{
 				renderers.register( CERBERUS.get(), CerberusRenderer::new );
 				renderers.register( CREEPERLING.get(), CreeperlingRenderer::new );
+				renderers.register( GIANT.get(), GiantRenderer::new );
 				renderers.register( TANK.get(), TankRenderer::new );
 			} );
 		}
