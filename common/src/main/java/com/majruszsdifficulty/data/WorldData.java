@@ -2,6 +2,7 @@ package com.majruszsdifficulty.data;
 
 import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
 import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
+import com.majruszsdifficulty.events.bloodmoon.BloodMoon;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.mlib.contexts.base.Contexts;
@@ -15,11 +16,13 @@ import java.util.Map;
 public class WorldData extends com.mlib.data.WorldData {
 	private GameStage gameStage = GameStageHelper.getDefaultGameStage();
 	private Map< String, GameStage > playerGameStages = new Object2ObjectOpenHashMap<>();
+	private BloodMoon bloodMoon = new BloodMoon();
 
 	static {
 		Serializables.get( WorldData.class )
 			.defineString( "current_game_stage", s->s.gameStage.getId(), ( s, v )->s.gameStage = GameStageHelper.find( v ) )
-			.defineStringMap( "player_game_stages", s->GameStageHelper.mapToNames( s.playerGameStages ), ( s, v )->s.playerGameStages = GameStageHelper.mapToGameStages( v ) );
+			.defineStringMap( "player_game_stages", s->GameStageHelper.mapToNames( s.playerGameStages ), ( s, v )->s.playerGameStages = GameStageHelper.mapToGameStages( v ) )
+			.defineCustom( "blood_moon", s->s.bloodMoon, ( s, v )->s.bloodMoon = v, BloodMoon::new );
 	}
 
 	public boolean setGameStage( GameStage gameStage, Player player ) {
@@ -60,6 +63,10 @@ public class WorldData extends com.mlib.data.WorldData {
 
 	public GameStage getGlobalGameStage() {
 		return this.gameStage;
+	}
+
+	public BloodMoon getBloodMoon() {
+		return this.bloodMoon;
 	}
 
 	@Override

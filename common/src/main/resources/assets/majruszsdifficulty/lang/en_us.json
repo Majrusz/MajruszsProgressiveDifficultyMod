@@ -126,6 +126,8 @@
   "majruszsdifficulty.undead_army.east": "east",
   "majruszsdifficulty.undead_army.north": "north",
   "majruszsdifficulty.undead_army.south": "south",
+  "majruszsdifficulty.blood_moon.started": "The Blood Moon is rising...",
+  "majruszsdifficulty.blood_moon.finished": "The Blood Moon falls past the horizon...",
   "majruszsdifficulty.subtitle.undead_army.approaching": "Undead Army Approaching",
   "majruszsdifficulty.subtitle.undead_army.wave_started": "Wave Started",
   "majruszsdifficulty.sets.enderium.name": "Set of the End",
