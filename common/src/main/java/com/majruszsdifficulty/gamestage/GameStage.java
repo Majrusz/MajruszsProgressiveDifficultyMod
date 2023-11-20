@@ -1,8 +1,9 @@
 package com.majruszsdifficulty.gamestage;
 
-import com.mlib.data.Serializables;
-import com.mlib.text.RegexString;
-import com.mlib.text.TextHelper;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.text.RegexString;
+import com.majruszlibrary.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -21,10 +22,18 @@ public class GameStage {
 
 	static {
 		Serializables.get( GameStage.class )
-			.defineString( "id", s->s.id, ( s, v )->s.id = v )
-			.defineEnumList( "format", s->s.format, ( s, v )->s.format = v, ChatFormatting::values )
-			.defineCustom( "triggers", s->s.trigger, ( s, v )->s.trigger = v, Trigger::new )
-			.defineCustomList( "messages", s->s.messages, ( s, v )->s.messages = v, Message::new );
+			.define( "id", Reader.string(), s->s.id, ( s, v )->s.id = v )
+			.define( "format", Reader.list( Reader.enumeration( ChatFormatting::values ) ), s->s.format, ( s, v )->s.format = v )
+			.define( "triggers", Reader.custom( Trigger::new ), s->s.trigger, ( s, v )->s.trigger = v )
+			.define( "messages", Reader.list( Reader.custom( Message::new ) ), s->s.messages, ( s, v )->s.messages = v );
+
+		Serializables.get( Trigger.class )
+			.define( "dimensions", Reader.list( Reader.string() ), s->RegexString.toString( s.dimensions ), ( s, v )->s.dimensions = RegexString.toRegex( v ) )
+			.define( "entities", Reader.list( Reader.string() ), s->RegexString.toString( s.entities ), ( s, v )->s.entities = RegexString.toRegex( v ) );
+
+		Serializables.get( Message.class )
+			.define( "id", Reader.string(), s->s.id, ( s, v )->s.id = v )
+			.define( "format", Reader.list( Reader.enumeration( ChatFormatting::values ) ), s->s.format, ( s, v )->s.format = v );
 	}
 
 	public static Builder named( String name ) {
@@ -115,22 +124,10 @@ public class GameStage {
 	private static class Trigger {
 		public List< RegexString > dimensions = new ArrayList<>();
 		public List< RegexString > entities = new ArrayList<>();
-
-		static {
-			Serializables.get( Trigger.class )
-				.defineStringList( "dimensions", s->RegexString.toString( s.dimensions ), ( s, v )->s.dimensions = RegexString.toRegex( v ) )
-				.defineStringList( "entities", s->RegexString.toString( s.entities ), ( s, v )->s.entities = RegexString.toRegex( v ) );
-		}
 	}
 
 	private static class Message {
 		public String id;
 		public List< ChatFormatting > format = new ArrayList<>();
-
-		static {
-			Serializables.get( Message.class )
-				.defineString( "id", s->s.id, ( s, v )->s.id = v )
-				.defineEnumList( "format", s->s.format, ( s, v )->s.format = v, ChatFormatting::values );
-		}
 	}
 }

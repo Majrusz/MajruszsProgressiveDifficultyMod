@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.contexts;
 
-import com.mlib.contexts.OnEntityDamaged;
-import com.mlib.contexts.base.Context;
-import com.mlib.contexts.base.Contexts;
-import com.mlib.contexts.data.ICancellableData;
+import com.majruszlibrary.contexts.OnEntityDamaged;
+import com.majruszlibrary.contexts.base.Context;
+import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszlibrary.contexts.data.ICancellableData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;

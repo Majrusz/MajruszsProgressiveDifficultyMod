@@ -5,24 +5,25 @@ import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
 import com.majruszsdifficulty.events.bloodmoon.BloodMoon;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.mlib.contexts.base.Contexts;
-import com.mlib.data.Serializables;
-import com.mlib.entity.EntityHelper;
+import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.entity.EntityHelper;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Map;
 
-public class WorldData extends com.mlib.data.WorldData {
+public class WorldData extends com.majruszlibrary.data.WorldData {
 	private GameStage gameStage = GameStageHelper.getDefaultGameStage();
 	private Map< String, GameStage > playerGameStages = new Object2ObjectOpenHashMap<>();
 	private BloodMoon bloodMoon = new BloodMoon();
 
 	static {
 		Serializables.get( WorldData.class )
-			.defineString( "current_game_stage", s->s.gameStage.getId(), ( s, v )->s.gameStage = GameStageHelper.find( v ) )
-			.defineStringMap( "player_game_stages", s->GameStageHelper.mapToNames( s.playerGameStages ), ( s, v )->s.playerGameStages = GameStageHelper.mapToGameStages( v ) )
-			.defineCustom( "blood_moon", s->s.bloodMoon, ( s, v )->s.bloodMoon = v, BloodMoon::new );
+			.define( "current_game_stage", Reader.string(), s->s.gameStage.getId(), ( s, v )->s.gameStage = GameStageHelper.find( v ) )
+			.define( "player_game_stages", Reader.map( Reader.string() ), s->GameStageHelper.mapToNames( s.playerGameStages ), ( s, v )->s.playerGameStages = GameStageHelper.mapToGameStages( v ) )
+			.define( "blood_moon", Reader.custom( BloodMoon::new ), s->s.bloodMoon, ( s, v )->s.bloodMoon = v );
 	}
 
 	public boolean setGameStage( GameStage gameStage, Player player ) {

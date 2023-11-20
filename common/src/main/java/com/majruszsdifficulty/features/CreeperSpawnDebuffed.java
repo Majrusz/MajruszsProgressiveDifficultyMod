@@ -4,52 +4,51 @@ import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.data.EffectDef;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnEntitySpawned;
-import com.mlib.contexts.base.Condition;
-import com.mlib.data.Serializables;
-import com.mlib.math.Random;
-import com.mlib.math.Range;
-import com.mlib.time.TimeHelper;
+import com.majruszlibrary.contexts.OnEntitySpawned;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.math.Random;
+import com.majruszlibrary.math.Range;
+import com.majruszlibrary.time.TimeHelper;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Creeper;
 
 import java.util.List;
 
-@AutoInstance
 public class CreeperSpawnDebuffed {
-	private GameStageValue< Boolean > isEnabled = GameStageValue.alwaysEnabled();
-	private float chance = 0.375f;
-	private boolean isScaledByCRD = true;
-	private List< EffectDef > effects = List.of(
+	private static final GameStageValue< Boolean > IS_ENABLED = GameStageValue.alwaysEnabled();
+	private static float CHANCE = 0.375f;
+	private static boolean IS_SCALED_BY_CRD = true;
+	private static List< EffectDef > EFFECTS = List.of(
 		new EffectDef( ()->MobEffects.WEAKNESS, 0, 60.0f ),
 		new EffectDef( ()->MobEffects.MOVEMENT_SLOWDOWN, 0, 60.0f ),
 		new EffectDef( ()->MobEffects.DIG_SLOWDOWN, 0, 60.0f ),
 		new EffectDef( ()->MobEffects.SATURATION, 0, 60.0f )
 	);
 
-	public CreeperSpawnDebuffed() {
-		OnEntitySpawned.listen( this::applyRandomEffect )
+	static {
+		OnEntitySpawned.listen( CreeperSpawnDebuffed::applyRandomEffect )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( Condition.chanceCRD( ()->this.chance, ()->this.isScaledByCRD ) )
+			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
 			.addCondition( data->!data.isLoadedFromDisk )
-			.addCondition( data->this.isEnabled.get( GameStageHelper.determineGameStage( data ) ) )
+			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
 			.addCondition( data->data.entity instanceof Creeper );
 
-		Serializables.get( Config.Features.class )
-			.define( "creeper_spawn_debuffed", subconfig->{
-				subconfig.defineBooleanMap( "is_enabled", s->this.isEnabled.get(), ( s, v )->this.isEnabled.set( v ) );
-				subconfig.defineFloat( "chance", s->this.chance, ( s, v )->this.chance = Range.CHANCE.clamp( v ) );
-				subconfig.defineBoolean( "is_scaled_by_crd", s->this.isScaledByCRD, ( s, v )->this.isScaledByCRD = v );
-				subconfig.defineCustomList( "effects", s->this.effects, ( s, v )->this.effects = v, EffectDef::new );
-			} );
+		Serializables.getStatic( Config.Features.class )
+			.define( "creeper_spawn_debuffed", CreeperSpawnDebuffed.class );
+
+		Serializables.getStatic( CreeperSpawnDebuffed.class )
+			.define( "is_enabled", Reader.map( Reader.bool() ), ()->IS_ENABLED.get(), v->IS_ENABLED.set( v ) )
+			.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) )
+			.define( "is_scaled_by_crd", Reader.bool(), ()->IS_SCALED_BY_CRD, v->IS_SCALED_BY_CRD = v )
+			.define( "effects", Reader.list( Reader.custom( EffectDef::new ) ), ()->EFFECTS, v->EFFECTS = v );
 	}
 
-	private void applyRandomEffect( OnEntitySpawned data ) {
+	private static void applyRandomEffect( OnEntitySpawned data ) {
 		Creeper creeper = ( Creeper )data.entity;
-		EffectDef effectDef = Random.next( this.effects );
+		EffectDef effectDef = Random.next( EFFECTS );
 
 		creeper.addEffect( new MobEffectInstance( effectDef.effect.get(), TimeHelper.toTicks( effectDef.duration ), effectDef.amplifier ) );
 	}

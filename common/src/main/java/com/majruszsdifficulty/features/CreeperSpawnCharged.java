@@ -3,38 +3,38 @@ package com.majruszsdifficulty.features;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnEntitySpawned;
-import com.mlib.contexts.base.Condition;
-import com.mlib.data.Serializables;
-import com.mlib.math.Range;
+import com.majruszlibrary.contexts.OnEntitySpawned;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.math.Range;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Creeper;
 
-@AutoInstance
 public class CreeperSpawnCharged {
-	private GameStageValue< Boolean > isEnabled = GameStageValue.alwaysEnabled();
-	private float chance = 0.125f;
-	private boolean isScaledByCRD = true;
+	private static final GameStageValue< Boolean > IS_ENABLED = GameStageValue.alwaysEnabled();
+	private static float CHANCE = 0.125f;
+	private static boolean IS_SCALED_BY_CRD = true;
 
-	public CreeperSpawnCharged() {
-		OnEntitySpawned.listen( this::charge )
+	static {
+		OnEntitySpawned.listen( CreeperSpawnCharged::charge )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( Condition.chanceCRD( ()->this.chance, ()->this.isScaledByCRD ) )
+			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
 			.addCondition( data->!data.isLoadedFromDisk )
-			.addCondition( data->this.isEnabled.get( GameStageHelper.determineGameStage( data ) ) )
+			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
 			.addCondition( data->data.entity instanceof Creeper );
 
-		Serializables.get( Config.Features.class )
-			.define( "creeper_spawn_charged", subconfig->{
-				subconfig.defineBooleanMap( "is_enabled", s->this.isEnabled.get(), ( s, v )->this.isEnabled.set( v ) );
-				subconfig.defineFloat( "chance", s->this.chance, ( s, v )->this.chance = Range.CHANCE.clamp( v ) );
-				subconfig.defineBoolean( "is_scaled_by_crd", s->this.isScaledByCRD, ( s, v )->this.isScaledByCRD = v );
-			} );
+		Serializables.getStatic( Config.Features.class )
+			.define( "creeper_spawn_charged", CreeperSpawnCharged.class );
+
+		Serializables.getStatic( CreeperSpawnCharged.class )
+			.define( "is_enabled", Reader.map( Reader.bool() ), ()->IS_ENABLED.get(), v->IS_ENABLED.set( v ) )
+			.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) )
+			.define( "is_scaled_by_crd", Reader.bool(), ()->IS_SCALED_BY_CRD, v->IS_SCALED_BY_CRD = v );
 	}
 
-	private void charge( OnEntitySpawned data ) {
+	private static void charge( OnEntitySpawned data ) {
 		Creeper creeper = ( Creeper )data.entity;
 		LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create( data.getServerLevel() );
 		if( lightningBolt != null ) {

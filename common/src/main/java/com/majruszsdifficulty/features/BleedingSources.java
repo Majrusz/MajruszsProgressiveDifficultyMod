@@ -3,14 +3,15 @@ package com.majruszsdifficulty.features;
 import com.majruszsdifficulty.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.contexts.OnBleedingTooltip;
 import com.majruszsdifficulty.data.Config;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.base.Condition;
-import com.mlib.data.Serializables;
-import com.mlib.item.EnchantmentHelper;
-import com.mlib.math.Random;
-import com.mlib.math.Range;
-import com.mlib.registry.Registries;
-import com.mlib.text.RegexString;
+import com.majruszsdifficulty.effects.BleedingEffect;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.item.EnchantmentHelper;
+import com.majruszlibrary.math.Random;
+import com.majruszlibrary.math.Range;
+import com.majruszlibrary.registry.Registries;
+import com.majruszlibrary.text.RegexString;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
@@ -24,79 +25,78 @@ import java.util.List;
 import java.util.Optional;
 
 public class BleedingSources {
-	@AutoInstance
 	public static class Arrows {
-		private boolean isEnabled = true;
-		private float chance = 0.333f;
+		private static boolean IS_ENABLED = true;
+		private static float CHANCE = 0.333f;
 
-		public Arrows() {
+		static {
 			OnBleedingCheck.listen( OnBleedingCheck::trigger )
-				.addCondition( Condition.chance( this.chance ) )
-				.addCondition( data->this.isEnabled )
+				.addCondition( Condition.chance( ()->CHANCE ) )
+				.addCondition( data->IS_ENABLED )
 				.addCondition( data->data.source.getDirectEntity() instanceof Arrow );
 
-			OnBleedingTooltip.listen( this::addTooltip )
-				.addCondition( data->this.isEnabled )
+			OnBleedingTooltip.listen( Arrows::addTooltip )
+				.addCondition( data->IS_ENABLED )
 				.addCondition( data->data.itemStack.getItem() instanceof ProjectileWeaponItem );
 
-			Serializables.get( Config.Bleeding.Sources.class )
-				.define( "arrows", subconfig->{
-					subconfig.defineBoolean( "is_enabled", s->this.isEnabled, ( s, v )->this.isEnabled = v );
-					subconfig.defineFloat( "chance", s->this.chance, ( s, v )->this.chance = Range.CHANCE.clamp( v ) );
-				} );
+			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+				.define( "arrows", Arrows.class );
+
+			Serializables.getStatic( Arrows.class )
+				.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+				.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) );
 		}
 
-		private void addTooltip( OnBleedingTooltip data ) {
-			data.addItem( this.chance );
+		private static void addTooltip( OnBleedingTooltip data ) {
+			data.addItem( CHANCE );
 		}
 	}
 
-	@AutoInstance
 	public static class Bite {
-		private boolean isEnabled = true;
-		private float chance = 0.5f;
-		private List< EntityType< ? > > blacklistedAnimals = List.of( EntityType.LLAMA );
+		private static boolean IS_ENABLED = true;
+		private static float CHANCE = 0.5f;
+		private static List< EntityType< ? > > BLACKLISTED_ANIMALS = List.of( EntityType.LLAMA );
 
-		public Bite() {
+		static {
 			OnBleedingCheck.listen( OnBleedingCheck::trigger )
-				.addCondition( Condition.chance( this.chance ) )
-				.addCondition( data->this.isEnabled )
+				.addCondition( Condition.chance( ()->CHANCE ) )
+				.addCondition( data->IS_ENABLED )
 				.addCondition( data->!data.source.isIndirect() )
 				.addCondition( data->data.attacker instanceof Animal || data.attacker instanceof Zombie || data.attacker instanceof Spider )
-				.addCondition( data->!this.blacklistedAnimals.contains( data.attacker.getType() ) );
+				.addCondition( data->!BLACKLISTED_ANIMALS.contains( data.attacker.getType() ) );
 
-			Serializables.get( Config.Bleeding.Sources.class )
-				.define( "bite", subconfig->{
-					subconfig.defineBoolean( "is_enabled", s->this.isEnabled, ( s, v )->this.isEnabled = v );
-					subconfig.defineFloat( "chance", s->this.chance, ( s, v )->this.chance = Range.CHANCE.clamp( v ) );
-					subconfig.defineEntityTypeList( "blacklisted_animals", s->this.blacklistedAnimals, ( s, v )->this.blacklistedAnimals = v );
-				} );
+			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+				.define( "bite", Bite.class );
+
+			Serializables.getStatic( Bite.class )
+				.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+				.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) )
+				.define( "blacklisted_animals", Reader.list( Reader.entityType() ), ()->BLACKLISTED_ANIMALS, v->BLACKLISTED_ANIMALS = v );
 		}
 	}
 
-	@AutoInstance
 	public static class Cactus {
-		private boolean isEnabled = true;
-		private float chance = 0.5f;
+		private static boolean IS_ENABLED = true;
+		private static float CHANCE = 0.5f;
 
-		public Cactus() {
+		static {
 			OnBleedingCheck.listen( OnBleedingCheck::trigger )
-				.addCondition( Condition.chance( this.chance ) )
-				.addCondition( data->this.isEnabled )
+				.addCondition( Condition.chance( ()->CHANCE ) )
+				.addCondition( data->IS_ENABLED )
 				.addCondition( data->data.source.is( DamageTypes.CACTUS ) );
 
-			Serializables.get( Config.Bleeding.Sources.class )
-				.define( "cactus", subconfig->{
-					subconfig.defineBoolean( "is_enabled", s->this.isEnabled, ( s, v )->this.isEnabled = v );
-					subconfig.defineFloat( "chance", s->this.chance, ( s, v )->this.chance = Range.CHANCE.clamp( v ) );
-				} );
+			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+				.define( "cactus", Cactus.class );
+
+			Serializables.getStatic( Cactus.class )
+				.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+				.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) );
 		}
 	}
 
-	@AutoInstance
 	public static class Tools {
-		private boolean isEnabled = true;
-		private List< ToolDef > toolDefs = List.of(
+		private static boolean IS_ENABLED = true;
+		private static List< ToolDef > TOOL_DEFS = List.of(
 			new ToolDef( "minecraft:trident", 0.3f ),
 			new ToolDef( "{regex}.*_sword", 0.3f, List.of(
 				new EnchantmentDef( "minecraft:sharpness", 0.02f ),
@@ -111,38 +111,48 @@ public class BleedingSources {
 			new ToolDef( "{regex}.*_hoe", 0.14f )
 		);
 
-		public Tools() {
+		static {
 			OnBleedingCheck.listen( OnBleedingCheck::trigger )
-				.addCondition( data->this.isEnabled )
-				.addCondition( this::toolBasedChance );
+				.addCondition( data->IS_ENABLED )
+				.addCondition( Tools::toolBasedChance );
 
-			OnBleedingTooltip.listen( this::addTooltip )
-				.addCondition( data->this.isEnabled );
+			OnBleedingTooltip.listen( Tools::addTooltip )
+				.addCondition( data->IS_ENABLED );
 
-			Serializables.get( Config.Bleeding.Sources.class )
-				.define( "tools", subconfig->{
-					subconfig.defineBoolean( "is_enabled", s->this.isEnabled, ( s, v )->this.isEnabled = v );
-					subconfig.defineCustomList( "list", s->this.toolDefs, ( s, v )->this.toolDefs = v, ToolDef::new );
-				} );
+			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+				.define( "tools", Tools.class );
+
+			Serializables.getStatic( Tools.class )
+				.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+				.define( "list", Reader.list( Reader.custom( ToolDef::new ) ), ()->TOOL_DEFS, v->TOOL_DEFS = v );
+
+			Serializables.get( ToolDef.class )
+				.define( "id", Reader.string(), s->s.id.get(), ( s, v )->s.id.set( v ) )
+				.define( "chance", Reader.number(), s->s.chance, ( s, v )->s.chance = Range.CHANCE.clamp( v ) )
+				.define( "enchantments", Reader.list( Reader.custom( EnchantmentDef::new ) ), s->s.enchantmentDefs, ( s, v )->s.enchantmentDefs = v );
+
+			Serializables.get( EnchantmentDef.class )
+				.define( "id", Reader.string(), s->s.id.get(), ( s, v )->s.id.set( v ) )
+				.define( "extra_chance_per_level", Reader.number(), s->s.chance, ( s, v )->s.chance = Range.CHANCE.clamp( v ) );
 		}
 
-		private void addTooltip( OnBleedingTooltip data ) {
-			this.find( data.itemStack ).ifPresent( def->data.addItem( def.getChance( data.itemStack ) ) );
+		private static void addTooltip( OnBleedingTooltip data ) {
+			Tools.find( data.itemStack ).ifPresent( def->data.addItem( def.getChance( data.itemStack ) ) );
 		}
 
-		private Optional< ToolDef > find( ItemStack itemStack ) {
-			return this.toolDefs.stream()
+		private static Optional< ToolDef > find( ItemStack itemStack ) {
+			return TOOL_DEFS.stream()
 				.filter( toolDef->toolDef.matches( itemStack ) )
 				.findFirst();
 		}
 
-		private boolean toolBasedChance( OnBleedingCheck data ) {
+		private static boolean toolBasedChance( OnBleedingCheck data ) {
 			if( data.attacker == null ) {
 				return false;
 			}
 
 			ItemStack itemStack = data.attacker.getMainHandItem();
-			return this.find( itemStack )
+			return Tools.find( itemStack )
 				.map( def->Random.check( def.getChance( itemStack ) ) )
 				.orElse( false );
 		}
@@ -151,13 +161,6 @@ public class BleedingSources {
 			public RegexString id;
 			public float chance;
 			public List< EnchantmentDef > enchantmentDefs;
-
-			static {
-				Serializables.get( ToolDef.class )
-					.defineString( "id", s->s.id.get(), ( s, v )->s.id.set( v ) )
-					.defineFloat( "chance", s->s.chance, ( s, v )->s.chance = Range.CHANCE.clamp( v ) )
-					.defineCustomList( "enchantments", s->s.enchantmentDefs, ( s, v )->s.enchantmentDefs = v, EnchantmentDef::new );
-			}
 
 			public ToolDef( String id, float chance, List< EnchantmentDef > enchantmentDefs ) {
 				this.id = new RegexString( id );
@@ -195,12 +198,6 @@ public class BleedingSources {
 		public static class EnchantmentDef {
 			public RegexString id;
 			public float chance;
-
-			static {
-				Serializables.get( EnchantmentDef.class )
-					.defineString( "id", s->s.id.get(), ( s, v )->s.id.set( v ) )
-					.defineFloat( "extra_chance_per_level", s->s.chance, ( s, v )->s.chance = Range.CHANCE.clamp( v ) );
-			}
 
 			public EnchantmentDef( String id, float chance ) {
 				this.id = new RegexString( id );

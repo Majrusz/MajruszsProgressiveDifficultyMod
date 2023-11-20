@@ -1,4 +1,4 @@
-- changed required Majrusz Library version from 5.0.0+ to 6.2.0+
+- changed required Majrusz Library version from 5.0.0+ to 7.0.0+
 - added support for custom game stages (suggested by @samjviana)
 - added support for per player difficulty (suggested by @Not-February)
 - added Fragile End Stone

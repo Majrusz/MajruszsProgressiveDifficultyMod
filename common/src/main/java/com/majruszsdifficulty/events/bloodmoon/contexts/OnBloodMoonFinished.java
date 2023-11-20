@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.events.bloodmoon.contexts;
 
-import com.mlib.contexts.base.Context;
-import com.mlib.contexts.base.Contexts;
+import com.majruszlibrary.contexts.base.Context;
+import com.majruszlibrary.contexts.base.Contexts;
 
 import java.util.function.Consumer;
 

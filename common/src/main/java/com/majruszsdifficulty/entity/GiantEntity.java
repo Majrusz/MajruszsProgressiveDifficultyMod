@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.entity;
 
-import com.mlib.emitter.SoundEmitter;
-import com.mlib.entity.EntityHelper;
-import com.mlib.math.Random;
-import com.mlib.time.TimeHelper;
+import com.majruszlibrary.emitter.SoundEmitter;
+import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.math.Random;
+import com.majruszlibrary.time.TimeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

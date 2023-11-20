@@ -2,15 +2,16 @@ package com.majruszsdifficulty.events.bloodmoon;
 
 import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonFinished;
 import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonStarted;
-import com.mlib.contexts.base.Contexts;
-import com.mlib.data.Serializables;
+import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
 
 public class BloodMoon {
 	boolean isActive = false;
 
 	static {
 		Serializables.get( BloodMoon.class )
-			.defineBoolean( "is_active", s->s.isActive, ( s, v )->s.isActive = v );
+			.define( "is_active", Reader.bool(), s->s.isActive, ( s, v )->s.isActive = v );
 	}
 
 	public boolean start() {

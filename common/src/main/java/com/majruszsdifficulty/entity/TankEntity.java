@@ -1,16 +1,16 @@
 package com.majruszsdifficulty.entity;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.animations.Animations;
-import com.mlib.animations.AnimationsDef;
-import com.mlib.animations.IAnimableEntity;
-import com.mlib.emitter.ParticleEmitter;
-import com.mlib.emitter.SoundEmitter;
-import com.mlib.entity.EntityHelper;
-import com.mlib.level.LevelHelper;
-import com.mlib.math.AnyPos;
-import com.mlib.math.Random;
-import com.mlib.modhelper.LazyResource;
+import com.majruszlibrary.animations.Animations;
+import com.majruszlibrary.animations.AnimationsDef;
+import com.majruszlibrary.animations.IAnimableEntity;
+import com.majruszlibrary.emitter.ParticleEmitter;
+import com.majruszlibrary.emitter.SoundEmitter;
+import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.level.LevelHelper;
+import com.majruszlibrary.math.AnyPos;
+import com.majruszlibrary.math.Random;
+import com.majruszlibrary.modhelper.LazyResource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;

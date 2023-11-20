@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.entity;
 
 import com.majruszsdifficulty.mixin.IMixinCreeper;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnExploded;
+import com.majruszlibrary.annotation.AutoInstance;
+import com.majruszlibrary.contexts.OnExploded;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;

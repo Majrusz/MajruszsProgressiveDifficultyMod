@@ -4,9 +4,9 @@ import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
 import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.base.Condition;
-import com.mlib.platform.Side;
+import com.majruszlibrary.annotation.AutoInstance;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.platform.Side;
 import net.minecraft.world.entity.player.Player;
 
 @AutoInstance

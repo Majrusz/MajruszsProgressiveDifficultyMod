@@ -1,13 +1,13 @@
 package com.majruszsdifficulty.gui;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.annotation.Dist;
-import com.mlib.annotation.OnlyIn;
-import com.mlib.contexts.OnClientTicked;
-import com.mlib.contexts.OnGuiOverlaysRegistered;
-import com.mlib.math.Random;
-import com.mlib.platform.Side;
-import com.mlib.time.TimeHelper;
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
+import com.majruszlibrary.contexts.OnClientTicked;
+import com.majruszlibrary.contexts.OnGuiOverlaysRegistered;
+import com.majruszlibrary.math.Random;
+import com.majruszlibrary.platform.Side;
+import com.majruszlibrary.time.TimeHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;

@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-    implementation "com.mlib:majrusz-library-common:${mlib_version}"
+    implementation "com.majruszlibrary:majrusz-library-common:${majruszlibrary_version}"
 }
 
 java {

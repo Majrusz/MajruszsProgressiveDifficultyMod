@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.particles;
 
-import com.mlib.annotation.Dist;
-import com.mlib.annotation.OnlyIn;
-import com.mlib.client.CustomParticle;
-import com.mlib.math.Random;
-import com.mlib.time.TimeHelper;
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
+import com.majruszlibrary.client.CustomParticle;
+import com.majruszlibrary.math.Random;
+import com.majruszlibrary.time.TimeHelper;
 import com.mojang.math.Axis;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SpriteSet;

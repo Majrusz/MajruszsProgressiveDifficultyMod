@@ -2,11 +2,11 @@ package com.majruszsdifficulty.gamestage.listeners;
 
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnDimensionChanged;
-import com.mlib.contexts.OnEntityDied;
-import com.mlib.math.AnyPos;
-import com.mlib.registry.Registries;
+import com.majruszlibrary.annotation.AutoInstance;
+import com.majruszlibrary.contexts.OnDimensionChanged;
+import com.majruszlibrary.contexts.OnEntityDied;
+import com.majruszlibrary.math.AnyPos;
+import com.majruszlibrary.registry.Registries;
 
 @AutoInstance
 public class Updater {

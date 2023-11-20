@@ -4,22 +4,20 @@ import com.majruszsdifficulty.contexts.OnBleedingTooltip;
 import com.majruszsdifficulty.data.EffectDef;
 import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.annotation.Dist;
-import com.mlib.annotation.OnlyIn;
-import com.mlib.contexts.OnItemAttributeTooltip;
-import com.mlib.contexts.base.Contexts;
-import com.mlib.platform.Side;
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
+import com.majruszlibrary.contexts.OnItemAttributeTooltip;
+import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszlibrary.platform.Side;
 
-@AutoInstance
 @OnlyIn( Dist.CLIENT )
 public class BleedingTooltip {
-	public BleedingTooltip() {
-		OnItemAttributeTooltip.listen( this::addCustomTooltip )
+	static {
+		OnItemAttributeTooltip.listen( BleedingTooltip::addCustom )
 			.addCondition( BleedingEffect::isEnabled );
 	}
 
-	private void addCustomTooltip( OnItemAttributeTooltip data ) {
+	private static void addCustom( OnItemAttributeTooltip data ) {
 		EffectDef effectDef = BleedingEffect.getCurrentEffect( GameStageHelper.determineGameStage( Side.getLocalPlayer() ) );
 
 		Contexts.dispatch( new OnBleedingTooltip( data, effectDef.amplifier ) );

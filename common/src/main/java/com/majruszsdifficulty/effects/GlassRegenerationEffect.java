@@ -1,12 +1,12 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnEntityDamaged;
-import com.mlib.contexts.base.Condition;
-import com.mlib.emitter.SoundEmitter;
-import com.mlib.entity.EffectHelper;
-import com.mlib.time.TimeHelper;
+import com.majruszlibrary.annotation.AutoInstance;
+import com.majruszlibrary.contexts.OnEntityDamaged;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.emitter.SoundEmitter;
+import com.majruszlibrary.entity.EffectHelper;
+import com.majruszlibrary.time.TimeHelper;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;

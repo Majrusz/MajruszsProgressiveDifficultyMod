@@ -35,8 +35,8 @@ project(':common') {
         filter {
             String line ->  line.replaceAll('@OnlyIn', '@Environment')
                     .replaceAll('Dist.CLIENT', 'EnvType.CLIENT')
-                    .replaceAll('com.mlib.annotation.Dist', 'net.fabricmc.api.EnvType')
-                    .replaceAll('com.mlib.annotation.OnlyIn', 'net.fabricmc.api.Environment')
+                    .replaceAll('com.majruszlibrary.annotation.Dist', 'net.fabricmc.api.EnvType')
+                    .replaceAll('com.majruszlibrary.annotation.OnlyIn', 'net.fabricmc.api.Environment')
         }
     }
 
@@ -62,7 +62,7 @@ tasks.withType(JavaCompile) {
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
-    modImplementation "com.mlib:majrusz-library-fabric:${mlib_version}"
+    modImplementation "com.majruszlibrary:majrusz-library-fabric:${majruszlibrary_version}"
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 

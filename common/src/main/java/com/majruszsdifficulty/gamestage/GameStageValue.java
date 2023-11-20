@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamestage;
 
-import com.mlib.collection.DefaultMap;
+import com.majruszlibrary.collection.DefaultMap;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.gamestage;
 
-import com.mlib.annotation.AutoInstance;
-import com.mlib.command.Command;
-import com.mlib.command.CommandData;
-import com.mlib.command.IParameter;
-import com.mlib.text.TextHelper;
+import com.majruszlibrary.annotation.AutoInstance;
+import com.majruszlibrary.command.Command;
+import com.majruszlibrary.command.CommandData;
+import com.majruszlibrary.command.IParameter;
+import com.majruszlibrary.text.TextHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;

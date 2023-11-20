@@ -1,13 +1,13 @@
 package com.majruszsdifficulty.entity;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.animations.ModelDef;
-import com.mlib.animations.ModelParts;
-import com.mlib.annotation.Dist;
-import com.mlib.annotation.OnlyIn;
-import com.mlib.math.AnyPos;
-import com.mlib.modhelper.LazyResource;
-import com.mlib.platform.Side;
+import com.majruszlibrary.animations.ModelDef;
+import com.majruszlibrary.animations.ModelParts;
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
+import com.majruszlibrary.math.AnyPos;
+import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.platform.Side;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;

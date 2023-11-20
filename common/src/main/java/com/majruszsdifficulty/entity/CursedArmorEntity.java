@@ -1,30 +1,31 @@
 package com.majruszsdifficulty.entity;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.animations.Animations;
-import com.mlib.animations.AnimationsDef;
-import com.mlib.animations.IAnimableEntity;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnEntityPreDamaged;
-import com.mlib.contexts.OnEntitySpawned;
-import com.mlib.contexts.OnEntityTicked;
-import com.mlib.contexts.OnLootGenerated;
-import com.mlib.contexts.base.Condition;
-import com.mlib.contexts.base.Context;
-import com.mlib.data.Serializables;
-import com.mlib.emitter.ParticleEmitter;
-import com.mlib.emitter.SoundEmitter;
-import com.mlib.entity.EntityHelper;
-import com.mlib.item.EquipmentSlots;
-import com.mlib.item.ItemHelper;
-import com.mlib.item.LootHelper;
-import com.mlib.level.BlockHelper;
-import com.mlib.math.AnyPos;
-import com.mlib.math.Random;
-import com.mlib.math.Range;
-import com.mlib.modhelper.LazyResource;
-import com.mlib.text.TextHelper;
-import com.mlib.time.TimeHelper;
+import com.majruszlibrary.animations.Animations;
+import com.majruszlibrary.animations.AnimationsDef;
+import com.majruszlibrary.animations.IAnimableEntity;
+import com.majruszlibrary.annotation.AutoInstance;
+import com.majruszlibrary.contexts.OnEntityPreDamaged;
+import com.majruszlibrary.contexts.OnEntitySpawned;
+import com.majruszlibrary.contexts.OnEntityTicked;
+import com.majruszlibrary.contexts.OnLootGenerated;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.contexts.base.Context;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.emitter.ParticleEmitter;
+import com.majruszlibrary.emitter.SoundEmitter;
+import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.item.EquipmentSlots;
+import com.majruszlibrary.item.ItemHelper;
+import com.majruszlibrary.item.LootHelper;
+import com.majruszlibrary.level.BlockHelper;
+import com.majruszlibrary.math.AnyPos;
+import com.majruszlibrary.math.Random;
+import com.majruszlibrary.math.Range;
+import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.text.TextHelper;
+import com.majruszlibrary.time.TimeHelper;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -312,13 +313,14 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 		);
 
 		static {
-			Serializables.get( com.majruszsdifficulty.data.Config.Mobs.class )
-				.define( "cursed_armor", subconfig->{
-					subconfig.defineFloat( "item_drop_chance", s->ITEM_DROP_CHANCE, ( s, v )->ITEM_DROP_CHANCE = Range.CHANCE.clamp( v ) );
-					subconfig.defineFloat( "custom_name_chance", s->NAME_CHANCE, ( s, v )->NAME_CHANCE = Range.CHANCE.clamp( v ) );
-					subconfig.defineStringList( "custom_names", s->NAMES, ( s, v )->NAMES = v );
-					subconfig.defineCustomList( "locations", s->LOCATIONS, ( s, v )->LOCATIONS = v, LocationDef::new );
-				} );
+			Serializables.getStatic( com.majruszsdifficulty.data.Config.Mobs.class )
+				.define( "cursed_armor", Config.class );
+
+			Serializables.getStatic( Config.class )
+				.define( "item_drop_chance", Reader.number(), ()->ITEM_DROP_CHANCE, v->ITEM_DROP_CHANCE = Range.CHANCE.clamp( v ) )
+				.define( "custom_name_chance", Reader.number(), ()->NAME_CHANCE, v->NAME_CHANCE = Range.CHANCE.clamp( v ) )
+				.define( "custom_names", Reader.list( Reader.string() ), ()->NAMES, v->NAMES = v )
+				.define( "locations", Reader.list( Reader.custom( LocationDef::new ) ), ()->LOCATIONS, v->LOCATIONS = v );
 		}
 
 		public static Optional< LocationDef > find( ResourceLocation chestId ) {
@@ -339,9 +341,9 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 
 		static {
 			Serializables.get( LocationDef.class )
-				.defineLocation( "loot", s->s.loot, ( s, v )->s.loot = v )
-				.defineLocationList( "chests", s->s.chests, ( s, v )->s.chests = v )
-				.defineFloat( "chance", s->s.chance, ( s, v )->s.chance = v );
+				.define( "loot", Reader.location(), s->s.loot, ( s, v )->s.loot = v )
+				.define( "chests", Reader.list( Reader.location() ), s->s.chests, ( s, v )->s.chests = v )
+				.define( "chance", Reader.number(), s->s.chance, ( s, v )->s.chance = v );
 		}
 
 		public LocationDef( ResourceLocation loot, List< ResourceLocation > chests, float chance ) {

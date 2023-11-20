@@ -22,7 +22,7 @@
   "depends": {
     "fabric": "*",
     "minecraft": "${fabric_minecraft_version_range}",
-    "mlib": "${fabric_mlib_version_range}"
+    "majruszlibrary": "${fabric_majruszlibrary_version_range}"
   },
   "custom": {
     "update": "${mod_update}"

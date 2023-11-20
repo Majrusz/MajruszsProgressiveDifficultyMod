@@ -2,7 +2,8 @@ package com.majruszsdifficulty.gamestage;
 
 import com.google.gson.JsonObject;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.data.Serializables;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,7 +30,7 @@ public class GameStageAdvancement extends SimpleCriterionTrigger< GameStageAdvan
 
 		static {
 			Serializables.get( Instance.class )
-				.defineString( "stage_id", s->s.stageId, ( s, v )->s.stageId = v );
+				.define( "stage_id", Reader.string(), s->s.stageId, ( s, v )->s.stageId = v );
 		}
 
 		public Instance( ResourceLocation id, ContextAwarePredicate predicate ) {

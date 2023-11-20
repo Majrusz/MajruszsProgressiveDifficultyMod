@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.mixin;
 
 import com.majruszsdifficulty.events.bloodmoon.BloodMoonHelper;
-import com.mlib.math.AnyPos;
+import com.majruszlibrary.math.AnyPos;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;

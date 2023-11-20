@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.events.bloodmoon.listeners;
 
-import com.mlib.contexts.OnClampedRegionalDifficultyGet;
+import com.majruszlibrary.contexts.OnClampedRegionalDifficultyGet;
 
 public class DifficultyIncreaser {
 	static {

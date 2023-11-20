@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.items;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.text.TextHelper;
+import com.majruszlibrary.text.TextHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;

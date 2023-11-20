@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.effects;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnEntityEffectCheck;
-import com.mlib.entity.EffectHelper;
+import com.majruszlibrary.annotation.AutoInstance;
+import com.majruszlibrary.contexts.OnEntityEffectCheck;
+import com.majruszlibrary.entity.EffectHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;

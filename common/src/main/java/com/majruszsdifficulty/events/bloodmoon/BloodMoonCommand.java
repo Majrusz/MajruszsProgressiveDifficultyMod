@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.events.bloodmoon;
 
-import com.mlib.command.Command;
-import com.mlib.command.CommandData;
+import com.majruszlibrary.command.Command;
+import com.majruszlibrary.command.CommandData;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 public class BloodMoonCommand {

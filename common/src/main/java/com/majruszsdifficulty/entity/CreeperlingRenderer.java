@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.entity;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.annotation.Dist;
-import com.mlib.annotation.OnlyIn;
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;

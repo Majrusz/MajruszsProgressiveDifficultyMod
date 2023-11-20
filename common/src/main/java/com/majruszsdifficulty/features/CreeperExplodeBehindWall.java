@@ -4,12 +4,12 @@ import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
-import com.mlib.annotation.AutoInstance;
-import com.mlib.contexts.OnEntitySpawned;
-import com.mlib.contexts.base.Condition;
-import com.mlib.data.Serializables;
-import com.mlib.entity.EntityHelper;
-import com.mlib.math.Range;
+import com.majruszlibrary.contexts.OnEntitySpawned;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.math.Range;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -19,28 +19,28 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-@AutoInstance
 public class CreeperExplodeBehindWall {
-	private GameStageValue< Boolean > isEnabled = GameStageValue.disabledOn( GameStage.NORMAL_ID );
-	private float chance = 1.0f;
-	private boolean isScaledByCRD = false;
+	private static final GameStageValue< Boolean > IS_ENABLED = GameStageValue.disabledOn( GameStage.NORMAL_ID );
+	private static float CHANCE = 1.0f;
+	private static boolean IS_SCALED_BY_CRD = false;
 
-	public CreeperExplodeBehindWall() {
-		OnEntitySpawned.listen( this::modifyAI )
+	static {
+		OnEntitySpawned.listen( CreeperExplodeBehindWall::modifyAI )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( Condition.chanceCRD( ()->this.chance, ()->this.isScaledByCRD ) )
-			.addCondition( data->this.isEnabled.get( GameStageHelper.determineGameStage( data ) ) )
+			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
+			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
 			.addCondition( data->data.entity instanceof Creeper );
 
-		Serializables.get( Config.Features.class )
-			.define( "creeper_explode_behind_wall", subconfig->{
-				subconfig.defineBooleanMap( "is_enabled", s->this.isEnabled.get(), ( s, v )->this.isEnabled.set( v ) );
-				subconfig.defineFloat( "chance", s->this.chance, ( s, v )->this.chance = Range.CHANCE.clamp( v ) );
-				subconfig.defineBoolean( "is_scaled_by_crd", s->this.isScaledByCRD, ( s, v )->this.isScaledByCRD = v );
-			} );
+		Serializables.getStatic( Config.Features.class )
+			.define( "creeper_explode_behind_wall", CreeperExplodeBehindWall.class );
+
+		Serializables.getStatic( CreeperExplodeBehindWall.class )
+			.define( "is_enabled", Reader.map( Reader.bool() ), ()->IS_ENABLED.get(), v->IS_ENABLED.set( v ) )
+			.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) )
+			.define( "is_scaled_by_crd", Reader.bool(), ()->IS_SCALED_BY_CRD, v->IS_SCALED_BY_CRD = v );
 	}
 
-	private void modifyAI( OnEntitySpawned data ) {
+	private static void modifyAI( OnEntitySpawned data ) {
 		Creeper creeper = ( ( Creeper )data.entity );
 
 		EntityHelper.getGoalSelector( creeper ).addGoal( 1, new ExplodeBehindWallGoal( creeper ) );

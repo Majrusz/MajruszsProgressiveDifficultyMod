@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.contexts;
 
-import com.mlib.contexts.OnItemAttributeTooltip;
-import com.mlib.contexts.base.Context;
-import com.mlib.contexts.base.Contexts;
-import com.mlib.text.TextHelper;
+import com.majruszlibrary.contexts.OnItemAttributeTooltip;
+import com.majruszlibrary.contexts.base.Context;
+import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszlibrary.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EquipmentSlot;

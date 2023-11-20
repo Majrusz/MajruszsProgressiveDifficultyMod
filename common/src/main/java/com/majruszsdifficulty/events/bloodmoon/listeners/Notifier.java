@@ -2,9 +2,9 @@ package com.majruszsdifficulty.events.bloodmoon.listeners;
 
 import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonFinished;
 import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonStarted;
-import com.mlib.contexts.base.Condition;
-import com.mlib.platform.Side;
-import com.mlib.text.TextHelper;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.platform.Side;
+import com.majruszlibrary.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 

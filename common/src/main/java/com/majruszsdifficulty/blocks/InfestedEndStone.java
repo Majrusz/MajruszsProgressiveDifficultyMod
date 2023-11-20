@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.blocks;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.entity.EntityHelper;
-import com.mlib.math.AnyPos;
+import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.math.AnyPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;

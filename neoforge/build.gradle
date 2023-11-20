@@ -33,8 +33,8 @@ project(':common') {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         filter {
-            String line ->  line.replaceAll('com.mlib.annotation.Dist', 'net.minecraftforge.api.distmarker.Dist')
-                    .replaceAll('com.mlib.annotation.OnlyIn', 'net.minecraftforge.api.distmarker.OnlyIn')
+            String line ->  line.replaceAll('com.majruszlibrary.annotation.Dist', 'net.minecraftforge.api.distmarker.Dist')
+                    .replaceAll('com.majruszlibrary.annotation.OnlyIn', 'net.minecraftforge.api.distmarker.OnlyIn')
         }
     }
 
@@ -102,7 +102,7 @@ java {
 
 dependencies {
     minecraft "net.neoforged:forge:${neoforge_version}"
-    implementation fg.deobf("com.mlib:majrusz-library-neoforge:${mlib_version}")
+    implementation fg.deobf("com.majruszlibrary:majrusz-library-neoforge:${majruszlibrary_version}")
     compileOnly project(':common')
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

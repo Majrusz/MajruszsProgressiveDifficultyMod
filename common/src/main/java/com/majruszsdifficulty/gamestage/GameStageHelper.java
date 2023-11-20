@@ -1,10 +1,9 @@
 package com.majruszsdifficulty.gamestage;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.data.Config;
-import com.mlib.collection.CollectionHelper;
-import com.mlib.contexts.data.ILevelData;
-import com.mlib.contexts.data.IPositionData;
+import com.majruszlibrary.collection.CollectionHelper;
+import com.majruszlibrary.contexts.data.ILevelData;
+import com.majruszlibrary.contexts.data.IPositionData;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -49,11 +48,11 @@ public class GameStageHelper {
 	}
 
 	public static boolean isPerPlayerDifficultyEnabled() {
-		return MajruszsDifficulty.CONFIG.isPerPlayerDifficultyEnabled;
+		return GameStageConfig.IS_PER_PLAYER_DIFFICULTY_ENABLED;
 	}
 
 	public static boolean isPerPlayerDifficultyDisabled() {
-		return !MajruszsDifficulty.CONFIG.isPerPlayerDifficultyEnabled;
+		return !GameStageConfig.IS_PER_PLAYER_DIFFICULTY_ENABLED;
 	}
 
 	public static GameStage determineGameStage( Level level, Vec3 pos ) {
@@ -100,7 +99,7 @@ public class GameStageHelper {
 	}
 
 	public static List< GameStage > getGameStages() {
-		return MajruszsDifficulty.CONFIG != null ? MajruszsDifficulty.CONFIG.gameStages : Config.DEFAULT_GAME_STAGES;
+		return GameStageConfig.GAME_STAGES;
 	}
 
 	private GameStageHelper() {}

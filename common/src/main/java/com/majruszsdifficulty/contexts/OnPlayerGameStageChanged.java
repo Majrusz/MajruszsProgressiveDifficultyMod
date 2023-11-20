@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.contexts;
 
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.mlib.contexts.base.Context;
-import com.mlib.contexts.base.Contexts;
+import com.majruszlibrary.contexts.base.Context;
+import com.majruszlibrary.contexts.base.Contexts;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Consumer;

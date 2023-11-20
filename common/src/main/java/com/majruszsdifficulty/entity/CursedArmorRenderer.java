@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.entity;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.mlib.annotation.Dist;
-import com.mlib.annotation.OnlyIn;
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
