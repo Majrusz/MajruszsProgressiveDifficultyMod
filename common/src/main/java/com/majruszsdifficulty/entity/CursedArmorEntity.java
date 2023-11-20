@@ -1,16 +1,13 @@
 package com.majruszsdifficulty.entity;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.animations.Animations;
 import com.majruszlibrary.animations.AnimationsDef;
 import com.majruszlibrary.animations.IAnimableEntity;
-import com.majruszlibrary.annotation.AutoInstance;
 import com.majruszlibrary.contexts.OnEntityPreDamaged;
 import com.majruszlibrary.contexts.OnEntitySpawned;
 import com.majruszlibrary.contexts.OnEntityTicked;
 import com.majruszlibrary.contexts.OnLootGenerated;
 import com.majruszlibrary.contexts.base.Condition;
-import com.majruszlibrary.contexts.base.Context;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.emitter.ParticleEmitter;
@@ -26,6 +23,7 @@ import com.majruszlibrary.math.Range;
 import com.majruszlibrary.modhelper.LazyResource;
 import com.majruszlibrary.text.TextHelper;
 import com.majruszlibrary.time.TimeHelper;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -53,12 +51,98 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class CursedArmorEntity extends Monster implements IAnimableEntity {
 	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cursed_armor_animation", AnimationsDef.class, PackType.SERVER_DATA );
+	private static float ITEM_DROP_CHANCE = 0.2f;
+	private static float NAME_CHANCE = 0.025f;
+	private static List< String > NAMES = List.of( "Freshah" );
+	private static List< LocationDef > LOCATIONS = List.of(
+		new LocationDef(
+			MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_dungeon" ),
+			List.of( new ResourceLocation( "chests/simple_dungeon" ) ),
+			0.5f
+		),
+		new LocationDef(
+			MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_stronghold" ),
+			List.of(
+				new ResourceLocation( "chests/stronghold_corridor" ),
+				new ResourceLocation( "chests/stronghold_crossing" ),
+				new ResourceLocation( "chests/stronghold_library" )
+			),
+			0.4f
+		),
+		new LocationDef(
+			MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_portal" ),
+			List.of( new ResourceLocation( "chests/ruined_portal" ) ),
+			1.0f
+		),
+		new LocationDef(
+			MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_nether" ),
+			List.of(
+				new ResourceLocation( "chests/bastion_bridge" ),
+				new ResourceLocation( "chests/bastion_hoglin_stable" ),
+				new ResourceLocation( "chests/bastion_other" ),
+				new ResourceLocation( "chests/bastion_treasure" ),
+				new ResourceLocation( "chests/nether_bridge" )
+			),
+			0.25f
+		),
+		new LocationDef(
+			MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_end" ),
+			List.of( new ResourceLocation( "chests/end_city_treasure" ) ),
+			0.5f
+		)
+	);
 	private final Animations animations = Animations.create();
+
+	static {
+		OnLootGenerated.listen( CursedArmorEntity::spawnCursedArmor )
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( data->data.getLevel() != null )
+			.addCondition( data->data.origin != null )
+			.addCondition( data->BlockHelper.getEntity( data.getLevel(), data.origin ) instanceof ChestBlockEntity )
+			.addCondition( data->Random.check( CursedArmorEntity.find( data.lootId ).map( def->def.chance ).orElse( 0.0f ) ) );
+
+		OnEntitySpawned.listen( CursedArmorEntity::giveRandomArmor )
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( data->!data.isLoadedFromDisk )
+			.addCondition( data->data.entity instanceof CursedArmorEntity );
+
+		OnEntitySpawned.listen( CursedArmorEntity::setCustomName )
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( Condition.chance( ()->CursedArmorEntity.NAME_CHANCE ) )
+			.addCondition( data->!data.isLoadedFromDisk )
+			.addCondition( data->data.entity instanceof CursedArmorEntity );
+
+		OnEntityTicked.listen( CursedArmorEntity::spawnIdleParticles )
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( Condition.cooldown( 0.2f ) )
+			.addCondition( data->data.entity instanceof CursedArmorEntity );
+
+		OnEntityTicked.listen( CursedArmorEntity::spawnAssemblingParticles )
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( Condition.cooldown( 0.2f ) )
+			.addCondition( data->data.entity instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
+
+		OnEntityPreDamaged.listen( OnEntityPreDamaged::cancelDamage )
+			.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
+
+		Serializables.getStatic( com.majruszsdifficulty.data.Config.Mobs.class )
+			.define( "cursed_armor", CursedArmorEntity.class );
+
+		Serializables.getStatic( CursedArmorEntity.class )
+			.define( "item_drop_chance", Reader.number(), ()->ITEM_DROP_CHANCE, v->ITEM_DROP_CHANCE = Range.CHANCE.clamp( v ) )
+			.define( "custom_name_chance", Reader.number(), ()->NAME_CHANCE, v->NAME_CHANCE = Range.CHANCE.clamp( v ) )
+			.define( "custom_names", Reader.list( Reader.string() ), ()->NAMES, v->NAMES = v )
+			.define( "locations", Reader.list( Reader.custom( LocationDef::new ) ), ()->LOCATIONS, v->LOCATIONS = v );
+
+		Serializables.get( LocationDef.class )
+			.define( "loot", Reader.location(), s->s.loot, ( s, v )->s.loot = v )
+			.define( "chests", Reader.list( Reader.location() ), s->s.chests, ( s, v )->s.chests = v )
+			.define( "chance", Reader.number(), s->s.chance, ( s, v )->s.chance = v );
+	}
 
 	public static EntityType< CursedArmorEntity > createEntityType() {
 		return EntityType.Builder.of( CursedArmorEntity::new, MobCategory.MONSTER )
@@ -89,12 +173,6 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 	@Override
 	public int getExperienceReward() {
 		return 7;
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-
 	}
 
 	@Override
@@ -132,7 +210,7 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 				}
 			} );
 
-		EquipmentSlots.ALL.forEach( slot->this.setDropChance( slot, Config.ITEM_DROP_CHANCE ) );
+		EquipmentSlots.ALL.forEach( slot->this.setDropChance( slot, ITEM_DROP_CHANCE ) );
 	}
 
 	public boolean isAssembling() {
@@ -151,6 +229,77 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 		this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, IronGolem.class, true ) );
 	}
 
+	private static Optional< LocationDef > find( ResourceLocation chestId ) {
+		return LOCATIONS.stream()
+			.filter( locationDef->locationDef.chests.stream().anyMatch( chestId::equals ) )
+			.findFirst();
+	}
+
+	private static LocationDef getRandomLocationDef() {
+		return Random.next( LOCATIONS );
+	}
+
+	private static void spawnCursedArmor( OnLootGenerated data ) {
+		TimeHelper.nextTick( delay->{
+			CursedArmorEntity cursedArmor = EntityHelper.createSpawner( MajruszsDifficulty.CURSED_ARMOR, data.getLevel() )
+				.position( CursedArmorEntity.getSpawnPosition( data ) )
+				.beforeEvent( entity->{
+					float yRot = BlockHelper.getState( data.getLevel(), data.origin ).getValue( ChestBlock.FACING ).toYRot();
+					entity.setYRot( yRot );
+					entity.setYHeadRot( yRot );
+					entity.setYBodyRot( yRot );
+				} )
+				.spawn();
+			if( cursedArmor != null ) {
+				cursedArmor.assemble();
+				cursedArmor.equip( CursedArmorEntity.find( data.lootId ).orElseThrow() );
+				if( data.entity instanceof ServerPlayer player ) {
+					TimeHelper.nextTick( subdelay->player.closeContainer() );
+				}
+			}
+		} );
+	}
+
+	private static void giveRandomArmor( OnEntitySpawned data ) {
+		CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.entity;
+		if( cursedArmor.getArmorCoverPercentage() == 0.0f ) {
+			cursedArmor.assemble();
+			cursedArmor.equip( CursedArmorEntity.getRandomLocationDef() );
+		}
+	}
+
+	private static void setCustomName( OnEntitySpawned data ) {
+		data.entity.setCustomName( TextHelper.literal( Random.next( CursedArmorEntity.NAMES ) ) );
+	}
+
+	private static Vec3 getSpawnPosition( OnLootGenerated data ) {
+		ServerLevel level = data.getServerLevel();
+		Function< Float, Boolean > isAir = y->BlockHelper.getState( level, data.origin.add( 0.0, y, 0.0 ) ).isAir();
+		if( isAir.apply( 1.0f ) && isAir.apply( 2.0f ) ) {
+			return data.origin.add( 0.0, 0.5, 0.0 );
+		} else {
+			Vec3i offset = BlockHelper.getState( level, data.origin ).getValue( ChestBlock.FACING ).getNormal();
+			return data.origin.add( offset.getX(), offset.getY(), offset.getZ() );
+		}
+	}
+
+	private static void spawnIdleParticles( OnEntityTicked data ) {
+		CursedArmorEntity.spawnParticles( data, new Vec3( 0.0, data.entity.getBbHeight() * 0.5, 0.0 ), 0.3, 1 );
+	}
+
+	private static void spawnAssemblingParticles( OnEntityTicked data ) {
+		CursedArmorEntity.spawnParticles( data, new Vec3( 0.0, 0.0, 0.0 ), 0.6, 5 );
+	}
+
+	private static void spawnParticles( OnEntityTicked data, Vec3 emitterOffset, double offsetMultiplier, int particlesCount ) {
+		ParticleEmitter.of( ParticleTypes.ENCHANT )
+			.position( data.entity.position().add( emitterOffset ) )
+			.offset( ()->AnyPos.from( data.entity.getBbWidth(), data.entity.getBbHeight(), data.entity.getBbWidth() ).mul( offsetMultiplier ).vec3() )
+			.speed( 0.5f )
+			.count( particlesCount )
+			.emit( data.getLevel() );
+	}
+
 	public static class AssembleGoal extends Goal {
 		private final CursedArmorEntity cursedArmor;
 
@@ -166,185 +315,10 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 		}
 	}
 
-	@AutoInstance
-	public static class Spawn {
-		public Spawn() {
-			OnLootGenerated.listen( this::spawnCursedArmor )
-				.addCondition( Condition.isLogicalServer() )
-				.addCondition( data->data.getLevel() != null )
-				.addCondition( data->data.origin != null )
-				.addCondition( data->BlockHelper.getEntity( data.getLevel(), data.origin ) instanceof ChestBlockEntity )
-				.addCondition( data->Random.check( Config.find( data.lootId ).map( def->def.chance ).orElse( 0.0f ) ) );
-
-			OnEntitySpawned.listen( this::giveRandomArmor )
-				.addCondition( Condition.isLogicalServer() )
-				.addCondition( data->!data.isLoadedFromDisk )
-				.addCondition( data->data.entity instanceof CursedArmorEntity );
-
-			OnEntitySpawned.listen( this::setCustomName )
-				.addCondition( Condition.isLogicalServer() )
-				.addCondition( Condition.chance( ()->Config.NAME_CHANCE ) )
-				.addCondition( data->!data.isLoadedFromDisk )
-				.addCondition( data->data.entity instanceof CursedArmorEntity );
-
-			OnEntityPreDamaged.listen( OnEntityPreDamaged::cancelDamage )
-				.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
-		}
-
-		private void spawnCursedArmor( OnLootGenerated data ) {
-			TimeHelper.nextTick( delay->{
-				CursedArmorEntity cursedArmor = EntityHelper.createSpawner( MajruszsDifficulty.CURSED_ARMOR, data.getLevel() )
-					.position( this.getSpawnPosition( data ) )
-					.beforeEvent( entity->{
-						float yRot = BlockHelper.getState( data.getLevel(), data.origin ).getValue( ChestBlock.FACING ).toYRot();
-						entity.setYRot( yRot );
-						entity.setYHeadRot( yRot );
-						entity.setYBodyRot( yRot );
-					} )
-					.spawn();
-				if( cursedArmor != null ) {
-					cursedArmor.assemble();
-					cursedArmor.equip( Config.find( data.lootId ).orElseThrow() );
-					if( data.entity instanceof ServerPlayer player ) {
-						TimeHelper.nextTick( subdelay->player.closeContainer() );
-					}
-				}
-			} );
-		}
-
-		private void giveRandomArmor( OnEntitySpawned data ) {
-			CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.entity;
-			if( cursedArmor.getArmorCoverPercentage() == 0.0f ) {
-				cursedArmor.assemble();
-				cursedArmor.equip( Config.getRandomLocationDef() );
-			}
-		}
-
-		private void setCustomName( OnEntitySpawned data ) {
-			data.entity.setCustomName( TextHelper.literal( Random.next( Config.NAMES ) ) );
-		}
-
-		private Vec3 getSpawnPosition( OnLootGenerated data ) {
-			ServerLevel level = data.getServerLevel();
-			Function< Float, Boolean > isAir = y->BlockHelper.getState( level, data.origin.add( 0.0, y, 0.0 ) ).isAir();
-			if( isAir.apply( 1.0f ) && isAir.apply( 2.0f ) ) {
-				return data.origin.add( 0.0, 0.5, 0.0 );
-			} else {
-				Vec3i offset = BlockHelper.getState( level, data.origin ).getValue( ChestBlock.FACING ).getNormal();
-				return data.origin.add( offset.getX(), offset.getY(), offset.getZ() );
-			}
-		}
-	}
-
-	@AutoInstance
-	public static class Effects {
-		public Effects() {
-			this.createOnEntityTicked( this::spawnIdleParticles );
-
-			this.createOnEntityTicked( this::spawnAssemblingParticles )
-				.addCondition( data->data.entity instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
-		}
-
-		private Context< OnEntityTicked > createOnEntityTicked( Consumer< OnEntityTicked > consumer ) {
-			return OnEntityTicked.listen( consumer )
-				.addCondition( Condition.isLogicalServer() )
-				.addCondition( Condition.cooldown( 0.2f ) )
-				.addCondition( data->data.entity instanceof CursedArmorEntity );
-		}
-
-		private void spawnIdleParticles( OnEntityTicked data ) {
-			this.spawnParticles( data, new Vec3( 0.0, data.entity.getBbHeight() * 0.5, 0.0 ), 0.3, 1 );
-		}
-
-		private void spawnAssemblingParticles( OnEntityTicked data ) {
-			this.spawnParticles( data, new Vec3( 0.0, 0.0, 0.0 ), 0.6, 5 );
-		}
-
-		private void spawnParticles( OnEntityTicked data, Vec3 emitterOffset, double offsetMultiplier, int particlesCount ) {
-			ParticleEmitter.of( ParticleTypes.ENCHANT )
-				.position( data.entity.position().add( emitterOffset ) )
-				.offset( ()->AnyPos.from( data.entity.getBbWidth(), data.entity.getBbHeight(), data.entity.getBbWidth() ).mul( offsetMultiplier ).vec3() )
-				.speed( 0.5f )
-				.count( particlesCount )
-				.emit( data.getLevel() );
-		}
-	}
-
-	public static class Config {
-		public static float ITEM_DROP_CHANCE = 0.2f;
-		public static float NAME_CHANCE = 0.025f;
-		public static List< String > NAMES = List.of( "Freshah" );
-		public static List< LocationDef > LOCATIONS = List.of(
-			new LocationDef(
-				MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_dungeon" ),
-				List.of( new ResourceLocation( "chests/simple_dungeon" ) ),
-				0.5f
-			),
-			new LocationDef(
-				MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_stronghold" ),
-				List.of(
-					new ResourceLocation( "chests/stronghold_corridor" ),
-					new ResourceLocation( "chests/stronghold_crossing" ),
-					new ResourceLocation( "chests/stronghold_library" )
-				),
-				0.4f
-			),
-			new LocationDef(
-				MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_portal" ),
-				List.of( new ResourceLocation( "chests/ruined_portal" ) ),
-				1.0f
-			),
-			new LocationDef(
-				MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_nether" ),
-				List.of(
-					new ResourceLocation( "chests/bastion_bridge" ),
-					new ResourceLocation( "chests/bastion_hoglin_stable" ),
-					new ResourceLocation( "chests/bastion_other" ),
-					new ResourceLocation( "chests/bastion_treasure" ),
-					new ResourceLocation( "chests/nether_bridge" )
-				),
-				0.25f
-			),
-			new LocationDef(
-				MajruszsDifficulty.HELPER.getLocation( "gameplay/cursed_armor_end" ),
-				List.of( new ResourceLocation( "chests/end_city_treasure" ) ),
-				0.5f
-			)
-		);
-
-		static {
-			Serializables.getStatic( com.majruszsdifficulty.data.Config.Mobs.class )
-				.define( "cursed_armor", Config.class );
-
-			Serializables.getStatic( Config.class )
-				.define( "item_drop_chance", Reader.number(), ()->ITEM_DROP_CHANCE, v->ITEM_DROP_CHANCE = Range.CHANCE.clamp( v ) )
-				.define( "custom_name_chance", Reader.number(), ()->NAME_CHANCE, v->NAME_CHANCE = Range.CHANCE.clamp( v ) )
-				.define( "custom_names", Reader.list( Reader.string() ), ()->NAMES, v->NAMES = v )
-				.define( "locations", Reader.list( Reader.custom( LocationDef::new ) ), ()->LOCATIONS, v->LOCATIONS = v );
-		}
-
-		public static Optional< LocationDef > find( ResourceLocation chestId ) {
-			return LOCATIONS.stream()
-				.filter( locationDef->locationDef.chests.stream().anyMatch( chestId::equals ) )
-				.findFirst();
-		}
-
-		public static LocationDef getRandomLocationDef() {
-			return Random.next( LOCATIONS );
-		}
-	}
-
 	public static class LocationDef {
 		public ResourceLocation loot;
 		public List< ResourceLocation > chests;
 		public float chance;
-
-		static {
-			Serializables.get( LocationDef.class )
-				.define( "loot", Reader.location(), s->s.loot, ( s, v )->s.loot = v )
-				.define( "chests", Reader.list( Reader.location() ), s->s.chests, ( s, v )->s.chests = v )
-				.define( "chance", Reader.number(), s->s.chance, ( s, v )->s.chance = v );
-		}
 
 		public LocationDef( ResourceLocation loot, List< ResourceLocation > chests, float chance ) {
 			this.loot = loot;

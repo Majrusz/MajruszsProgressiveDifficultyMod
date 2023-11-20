@@ -1,43 +1,41 @@
 package com.majruszsdifficulty.gamestage.listeners;
 
+import com.majruszlibrary.contexts.OnPlayerLoggedIn;
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
 import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszlibrary.annotation.AutoInstance;
-import com.majruszlibrary.contexts.OnPlayerLoggedIn;
-import com.majruszlibrary.contexts.base.Condition;
-import com.majruszlibrary.platform.Side;
 import net.minecraft.server.level.ServerPlayer;
 
-@AutoInstance
 public class AdvancementProvider {
-	public AdvancementProvider() {
-		OnGlobalGameStageChanged.listen( this::giveAdvancement )
+	static {
+		OnGlobalGameStageChanged.listen( AdvancementProvider::giveAdvancement )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( GameStageHelper::isPerPlayerDifficultyDisabled )
 			.addCondition( data->data.current.getOrdinal() > data.previous.getOrdinal() );
 
-		OnPlayerGameStageChanged.listen( this::giveAdvancement )
+		OnPlayerGameStageChanged.listen( AdvancementProvider::giveAdvancement )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->data.current.getOrdinal() > data.previous.getOrdinal() );
 
-		OnPlayerLoggedIn.listen( this::giveAdvancement )
+		OnPlayerLoggedIn.listen( AdvancementProvider::giveAdvancement )
 			.addCondition( Condition.isLogicalServer() );
 	}
 
-	private void giveAdvancement( OnGlobalGameStageChanged data ) {
+	private static void giveAdvancement( OnGlobalGameStageChanged data ) {
 		Side.getServer()
 			.getPlayerList()
 			.getPlayers()
 			.forEach( player->MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( player, data.current ) );
 	}
 
-	private void giveAdvancement( OnPlayerGameStageChanged data ) {
+	private static void giveAdvancement( OnPlayerGameStageChanged data ) {
 		MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( ( ServerPlayer )data.player, data.current );
 	}
 
-	private void giveAdvancement( OnPlayerLoggedIn data ) {
+	private static void giveAdvancement( OnPlayerLoggedIn data ) {
 		MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( data.player, GameStageHelper.determineGameStage( data.player ) );
 	}
 }

@@ -1,22 +1,20 @@
 package com.majruszsdifficulty.gamestage.listeners;
 
-import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszlibrary.annotation.AutoInstance;
 import com.majruszlibrary.contexts.OnDimensionChanged;
 import com.majruszlibrary.contexts.OnEntityDied;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.registry.Registries;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
 
-@AutoInstance
 public class Updater {
-	public Updater() {
-		OnDimensionChanged.listen( this::tryToChangeGameStage );
+	static {
+		OnDimensionChanged.listen( Updater::tryToChangeGameStage );
 
-		OnEntityDied.listen( this::tryToChangeGameStage );
+		OnEntityDied.listen( Updater::tryToChangeGameStage );
 	}
 
-	private void tryToChangeGameStage( OnDimensionChanged data ) {
+	private static void tryToChangeGameStage( OnDimensionChanged data ) {
 		for( GameStage gameStage : GameStageHelper.getGameStages() ) {
 			if( gameStage.checkDimension( data.current.dimension().location().toString() ) ) {
 				GameStageHelper.increaseGlobalGameStage( gameStage );
@@ -27,7 +25,7 @@ public class Updater {
 		}
 	}
 
-	private void tryToChangeGameStage( OnEntityDied data ) {
+	private static void tryToChangeGameStage( OnEntityDied data ) {
 		for( GameStage gameStage : GameStageHelper.getGameStages() ) {
 			if( gameStage.checkEntity( Registries.get( data.target.getType() ).toString() ) ) {
 				GameStageHelper.increaseGlobalGameStage( gameStage );

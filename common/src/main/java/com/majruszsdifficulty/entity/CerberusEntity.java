@@ -1,10 +1,8 @@
 package com.majruszsdifficulty.entity;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.animations.Animations;
 import com.majruszlibrary.animations.AnimationsDef;
 import com.majruszlibrary.animations.IAnimableEntity;
-import com.majruszlibrary.annotation.AutoInstance;
 import com.majruszlibrary.contexts.OnEntityDamaged;
 import com.majruszlibrary.contexts.OnEntityEffectCheck;
 import com.majruszlibrary.contexts.OnEntityTicked;
@@ -16,6 +14,7 @@ import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.modhelper.LazyResource;
 import com.majruszlibrary.time.TimeHelper;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -46,6 +45,21 @@ import net.minecraft.world.phys.Vec3;
 public class CerberusEntity extends Monster implements IAnimableEntity {
 	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cerberus_animation", AnimationsDef.class, PackType.SERVER_DATA );
 	private final Animations animations = Animations.create();
+
+	static {
+		OnEntityDamaged.listen( CerberusEntity::applyWither )
+			.addCondition( OnEntityDamaged::isDirect )
+			.addCondition( data->data.attacker instanceof CerberusEntity );
+
+		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
+			.addCondition( data->data.effect.equals( MobEffects.WITHER ) )
+			.addCondition( data->data.entity instanceof CerberusEntity );
+
+		OnEntityTicked.listen( CerberusEntity::spawnParticle )
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( Condition.cooldown( 0.2f ) )
+			.addCondition( data->data.entity instanceof CerberusEntity );
+	}
 
 	public static EntityType< CerberusEntity > createEntityType() {
 		return EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER )
@@ -95,6 +109,25 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 	}
 
 	@Override
+	public void tick() {
+		super.tick();
+
+		if( this.isSunBurnTick() ) {
+			this.setSecondsOnFire( 8 );
+		}
+	}
+
+	@Override
+	public AnimationsDef getAnimationsDef() {
+		return ANIMATIONS.get();
+	}
+
+	@Override
+	public Animations getAnimations() {
+		return this.animations;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return SoundEvents.WOLF_GROWL;
 	}
@@ -120,25 +153,6 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
-
-		if( this.isSunBurnTick() ) {
-			this.setSecondsOnFire( 8 );
-		}
-	}
-
-	@Override
-	public AnimationsDef getAnimationsDef() {
-		return ANIMATIONS.get();
-	}
-
-	@Override
-	public Animations getAnimations() {
-		return this.animations;
-	}
-
-	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal( 1, new CerberusMeleeAttackGoal( this ) );
 		this.goalSelector.addGoal( 7, new WaterAvoidingRandomStrollGoal( this, 1.0 ) );
@@ -148,6 +162,19 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 		this.targetSelector.addGoal( 1, new HurtByTargetGoal( this ) );
 		this.targetSelector.addGoal( 2, new NearestAttackableTargetGoal<>( this, Player.class, true ) );
 		// this.targetSelector.addGoal( 3, new NearestAttackableTargetGoal<>( this, Mob.class, 2, true, false, this::isValidTarget ) ); TODO
+	}
+
+	private static void applyWither( OnEntityDamaged data ) {
+		data.target.addEffect( new MobEffectInstance( MobEffects.WITHER, TimeHelper.toTicks( 10.0 ), 1 ) );
+	}
+
+	private static void spawnParticle( OnEntityTicked data ) {
+		ParticleEmitter.of( ParticleTypes.SMOKE )
+			.sizeBased( data.entity )
+			.count( 1 )
+			.offset( ()->new Vec3( 0.25, 0.5, 0.25 ) )
+			.speed( ParticleEmitter.speed( 0.001f, 0.002f ) )
+			.emit( data.getLevel() );
 	}
 
 	private static class CerberusMeleeAttackGoal extends MeleeAttackGoal {
@@ -233,37 +260,6 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 			SoundEmitter.of( SoundEvents.FURNACE_FIRE_CRACKLE )
 				.position( this.mob.position() )
 				.emit( this.mob.level() );
-		}
-	}
-
-	@AutoInstance
-	public static class Effects {
-		public Effects() {
-			OnEntityDamaged.listen( this::applyWither )
-				.addCondition( OnEntityDamaged::isDirect )
-				.addCondition( data->data.attacker instanceof CerberusEntity );
-
-			OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
-				.addCondition( data->data.effect.equals( MobEffects.WITHER ) )
-				.addCondition( data->data.entity instanceof CerberusEntity );
-
-			OnEntityTicked.listen( this::spawnParticle )
-				.addCondition( Condition.isLogicalServer() )
-				.addCondition( Condition.cooldown( 0.2f ) )
-				.addCondition( data->data.entity instanceof CerberusEntity );
-		}
-
-		private void applyWither( OnEntityDamaged data ) {
-			data.target.addEffect( new MobEffectInstance( MobEffects.WITHER, TimeHelper.toTicks( 10.0 ), 1 ) );
-		}
-
-		private void spawnParticle( OnEntityTicked data ) {
-			ParticleEmitter.of( ParticleTypes.SMOKE )
-				.sizeBased( data.entity )
-				.count( 1 )
-				.offset( ()->new Vec3( 0.25, 0.5, 0.25 ) )
-				.speed( ParticleEmitter.speed( 0.001f, 0.002f ) )
-				.emit( data.getLevel() );
 		}
 	}
 }

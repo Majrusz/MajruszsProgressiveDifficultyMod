@@ -1,35 +1,33 @@
 package com.majruszsdifficulty.gamestage.listeners;
 
+import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
 import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszlibrary.annotation.AutoInstance;
-import com.majruszlibrary.contexts.base.Condition;
-import com.majruszlibrary.platform.Side;
 import net.minecraft.world.entity.player.Player;
 
-@AutoInstance
 public class Notifier {
-	public Notifier() {
-		OnGlobalGameStageChanged.listen( this::notify )
+	static {
+		OnGlobalGameStageChanged.listen( Notifier::notify )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( GameStageHelper::isPerPlayerDifficultyDisabled )
 			.addCondition( data->data.current.getOrdinal() > data.previous.getOrdinal() );
 
-		OnPlayerGameStageChanged.listen( this::notify )
+		OnPlayerGameStageChanged.listen( Notifier::notify )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->data.current.getOrdinal() > data.previous.getOrdinal() );
 	}
 
-	private void notify( OnGlobalGameStageChanged data ) {
+	private static void notify( OnGlobalGameStageChanged data ) {
 		Side.getServer()
 			.getPlayerList()
 			.getPlayers()
 			.forEach( player->Notifier.send( player, data.current ) );
 	}
 
-	private void notify( OnPlayerGameStageChanged data ) {
+	private static void notify( OnPlayerGameStageChanged data ) {
 		Notifier.send( data.player, data.current );
 	}
 

@@ -1,9 +1,8 @@
 package com.majruszsdifficulty.effects;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszlibrary.annotation.AutoInstance;
 import com.majruszlibrary.contexts.OnEntityEffectCheck;
 import com.majruszlibrary.entity.EffectHelper;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +10,12 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class BleedingImmunityEffect extends MobEffect {
+	static {
+		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING_IMMUNITY, data.entity ) )
+			.addCondition( data->data.effect.equals( MajruszsDifficulty.BLEEDING.get() ) );
+	}
+
 	public BleedingImmunityEffect() {
 		super( MobEffectCategory.BENEFICIAL, 0xff990000 );
 	}
@@ -26,14 +31,5 @@ public class BleedingImmunityEffect extends MobEffect {
 	@Override
 	public boolean isDurationEffectTick( int duration, int amplifier ) {
 		return false;
-	}
-
-	@AutoInstance
-	public static class BleedingImmunity {
-		public BleedingImmunity() {
-			OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
-				.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING_IMMUNITY, data.entity ) )
-				.addCondition( data->data.effect.equals( MajruszsDifficulty.BLEEDING.get() ) );
-		}
 	}
 }

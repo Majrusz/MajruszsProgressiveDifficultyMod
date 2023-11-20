@@ -1,8 +1,7 @@
 package com.majruszsdifficulty.entity;
 
-import com.majruszsdifficulty.mixin.IMixinCreeper;
-import com.majruszlibrary.annotation.AutoInstance;
 import com.majruszlibrary.contexts.OnExploded;
+import com.majruszsdifficulty.mixin.IMixinCreeper;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -10,6 +9,11 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 
 public class CreeperlingEntity extends Creeper {
+	static {
+		OnExploded.listen( CreeperlingEntity::weakenExplosion )
+			.addCondition( data->data.entity instanceof CreeperlingEntity );
+	}
+
 	public static EntityType< CreeperlingEntity > createEntityType() {
 		return EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER )
 			.sized( 0.6f, 0.9f )
@@ -44,16 +48,8 @@ public class CreeperlingEntity extends Creeper {
 		return 0.75f;
 	}
 
-	@AutoInstance
-	public static class WeakExplosions {
-		public WeakExplosions() {
-			OnExploded.listen( this::weakenExplosion )
-				.addCondition( data->data.entity instanceof CreeperlingEntity );
-		}
-
-		private void weakenExplosion( OnExploded data ) {
-			data.skipBlockIf( blockPos->true );
-			data.skipEntityIf( entity->!( entity instanceof LivingEntity ) );
-		}
+	private static void weakenExplosion( OnExploded data ) {
+		data.skipBlockIf( blockPos->true );
+		data.skipEntityIf( entity->!( entity instanceof LivingEntity ) );
 	}
 }

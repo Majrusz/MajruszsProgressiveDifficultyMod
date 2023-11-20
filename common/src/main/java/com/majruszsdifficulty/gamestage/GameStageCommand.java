@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.gamestage;
 
-import com.majruszlibrary.annotation.AutoInstance;
 import com.majruszlibrary.command.Command;
 import com.majruszlibrary.command.CommandData;
 import com.majruszlibrary.command.IParameter;
@@ -15,33 +14,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@AutoInstance
 public class GameStageCommand {
 	static final IParameter< String > GAME_STAGE = Command.string()
 		.named( "name" )
 		.suggests( ()->GameStageHelper.getGameStages().stream().map( GameStage::getId ).toList() );
 	static final IParameter< List< ? extends Entity > > ENTITIES = Command.entities().named( "entities" );
 
-	public GameStageCommand() {
+	static {
 		Command.create()
 			.literal( "gamestage", "gamestate" )
 			.hasPermission( 4 )
 			.parameter( GAME_STAGE )
-			.execute( this::set )
+			.execute( GameStageCommand::set )
 			.parameter( ENTITIES )
-			.execute( this::set )
+			.execute( GameStageCommand::set )
 			.register();
 
 		Command.create()
 			.literal( "gamestage", "gamestate" )
 			.hasPermission( 4 )
-			.execute( this::get )
+			.execute( GameStageCommand::get )
 			.parameter( ENTITIES )
-			.execute( this::get )
+			.execute( GameStageCommand::get )
 			.register();
 	}
 
-	private int set( CommandData data ) throws CommandSyntaxException {
+	private static int set( CommandData data ) throws CommandSyntaxException {
 		String name = data.get( GAME_STAGE );
 		GameStage gameStage = GameStageHelper.getGameStages().stream().filter( stage->stage.is( name ) ).findFirst().orElseThrow();
 		Optional< List< ? extends Entity > > entities = data.getOptional( ENTITIES );
@@ -59,7 +57,7 @@ public class GameStageCommand {
 		return 0;
 	}
 
-	private int get( CommandData data ) throws CommandSyntaxException {
+	private static int get( CommandData data ) throws CommandSyntaxException {
 		Optional< List< ? extends Entity > > entities = data.getOptional( ENTITIES );
 		if( GameStageCommand.isInvalid( data, entities.isPresent() ) ) {
 			return -1;
