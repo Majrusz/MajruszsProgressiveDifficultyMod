@@ -1,6 +1,7 @@
 - changed required Majrusz Library version from 5.0.0+ to 7.0.0+
 - added support for custom game stages (suggested by @samjviana)
 - added support for per player difficulty (suggested by @Not-February)
+- added support for custom mob groups (suggested by @NiveStinks)
 - added Fragile End Stone
 - added Infernal Sponge and Soaked Infernal Sponge to Wither Treasure Bag
 - added chance for Pillagers to hold fireworks and Multishot crossbows (suggested by @Tides of Twilight)
