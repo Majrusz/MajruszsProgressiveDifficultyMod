@@ -110,7 +110,7 @@ public class MobGroups {
 
 	private static void tryToSpawnGroup( OnEntitySpawned data ) {
 		PathfinderMob leader = ( PathfinderMob )data.entity;
-		GameStage gameStage = GameStageHelper.determineGameStage( data.getLevel(), leader.position() );
+		GameStage gameStage = GameStageHelper.determineGameStage( data );
 		for( Map.Entry< String, GroupDef > entry : GROUPS.entrySet() ) {
 			String id = entry.getKey();
 			if( id.equals( "zombie_miners" ) && data.entity.position().y > 50.0f ) {

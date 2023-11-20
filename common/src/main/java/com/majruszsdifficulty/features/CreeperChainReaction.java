@@ -12,8 +12,8 @@ import net.minecraft.world.entity.monster.Creeper;
 public class CreeperChainReaction {
 	private static final GameStageValue< Boolean > IS_ENABLED = GameStageValue.disabledOn( GameStage.NORMAL_ID );
 
-	public CreeperChainReaction() {
-		OnEntityDamaged.listen( this::igniteCreeper )
+	static {
+		OnEntityDamaged.listen( CreeperChainReaction::igniteCreeper )
 			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
 			.addCondition( data->data.target instanceof Creeper )
 			.addCondition( data->data.attacker instanceof Creeper );
@@ -25,7 +25,7 @@ public class CreeperChainReaction {
 			.define( "is_enabled", Reader.map( Reader.bool() ), ()->IS_ENABLED.get(), v->IS_ENABLED.set( v ) );
 	}
 
-	private void igniteCreeper( OnEntityDamaged data ) {
+	private static void igniteCreeper( OnEntityDamaged data ) {
 		( ( Creeper )data.target ).ignite();
 	}
 }
