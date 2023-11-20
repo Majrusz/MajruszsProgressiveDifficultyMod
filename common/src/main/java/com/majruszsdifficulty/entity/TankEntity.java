@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.entity;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.animations.Animations;
 import com.majruszlibrary.animations.AnimationsDef;
 import com.majruszlibrary.animations.IAnimableEntity;
@@ -11,6 +10,7 @@ import com.majruszlibrary.level.LevelHelper;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;

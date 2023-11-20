@@ -4,9 +4,9 @@ import com.majruszlibrary.contexts.OnPlayerLoggedIn;
 import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
-import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.majruszsdifficulty.gamestage.contexts.OnGlobalGameStageChanged;
+import com.majruszsdifficulty.gamestage.contexts.OnPlayerGameStageChanged;
 import net.minecraft.server.level.ServerPlayer;
 
 public class AdvancementProvider {

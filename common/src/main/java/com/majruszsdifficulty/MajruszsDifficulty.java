@@ -1,5 +1,15 @@
 package com.majruszsdifficulty;
 
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
+import com.majruszlibrary.contexts.OnGameInitialized;
+import com.majruszlibrary.contexts.OnParticlesRegistered;
+import com.majruszlibrary.emitter.ParticleEmitter;
+import com.majruszlibrary.item.ItemHelper;
+import com.majruszlibrary.modhelper.ModHelper;
+import com.majruszlibrary.registry.Custom;
+import com.majruszlibrary.registry.RegistryGroup;
+import com.majruszlibrary.registry.RegistryObject;
 import com.majruszsdifficulty.blocks.FragileEndStone;
 import com.majruszsdifficulty.blocks.InfestedEndStone;
 import com.majruszsdifficulty.data.Config;
@@ -13,16 +23,6 @@ import com.majruszsdifficulty.items.CreativeModeTabs;
 import com.majruszsdifficulty.items.FakeItem;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.particles.BloodParticle;
-import com.majruszlibrary.annotation.Dist;
-import com.majruszlibrary.annotation.OnlyIn;
-import com.majruszlibrary.contexts.OnGameInitialized;
-import com.majruszlibrary.contexts.OnParticlesRegistered;
-import com.majruszlibrary.emitter.ParticleEmitter;
-import com.majruszlibrary.item.ItemHelper;
-import com.majruszlibrary.modhelper.ModHelper;
-import com.majruszlibrary.registry.Custom;
-import com.majruszlibrary.registry.RegistryGroup;
-import com.majruszlibrary.registry.RegistryObject;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.core.particles.ParticleType;
@@ -50,6 +50,7 @@ public class MajruszsDifficulty {
 	static {
 		HELPER.config( Config.class ).autoSync().create();
 	}
+
 	public static final WorldData WORLD_DATA = HELPER.saved( WorldData::new );
 
 	// Registry Groups

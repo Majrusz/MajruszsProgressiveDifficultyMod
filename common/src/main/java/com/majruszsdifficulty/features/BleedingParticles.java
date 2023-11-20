@@ -1,7 +1,5 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.gui.BleedingGui;
 import com.majruszlibrary.contexts.OnEntityDied;
 import com.majruszlibrary.contexts.OnEntityPreDamaged;
 import com.majruszlibrary.contexts.OnEntityTicked;
@@ -12,6 +10,8 @@ import com.majruszlibrary.entity.EffectHelper;
 import com.majruszlibrary.entity.EntityHelper;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.platform.Side;
+import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.gui.BleedingGui;
 
 public class BleedingParticles {
 	static {

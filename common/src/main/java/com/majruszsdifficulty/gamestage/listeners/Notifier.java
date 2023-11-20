@@ -2,10 +2,10 @@ package com.majruszsdifficulty.gamestage.listeners;
 
 import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.platform.Side;
-import com.majruszsdifficulty.contexts.OnGlobalGameStageChanged;
-import com.majruszsdifficulty.contexts.OnPlayerGameStageChanged;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.majruszsdifficulty.gamestage.contexts.OnGlobalGameStageChanged;
+import com.majruszsdifficulty.gamestage.contexts.OnPlayerGameStageChanged;
 import net.minecraft.world.entity.player.Player;
 
 public class Notifier {

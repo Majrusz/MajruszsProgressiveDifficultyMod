@@ -1,14 +1,14 @@
 package com.majruszsdifficulty.effects;
 
+import com.majruszlibrary.collection.DefaultMap;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.EffectDef;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
-import com.majruszlibrary.collection.DefaultMap;
-import com.majruszlibrary.data.Reader;
-import com.majruszlibrary.data.Serializables;
-import com.majruszlibrary.time.TimeHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.*;

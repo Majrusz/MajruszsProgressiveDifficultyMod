@@ -2,8 +2,8 @@ package com.majruszsdifficulty.loot;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.registry.Registries;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.EnchantedBookItem;

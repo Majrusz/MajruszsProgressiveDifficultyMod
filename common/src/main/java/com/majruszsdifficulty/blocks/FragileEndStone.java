@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.blocks;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.level.BlockHelper;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.time.TimeHelper;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;

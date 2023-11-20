@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.gamestage;
 
 import com.google.gson.JsonObject;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

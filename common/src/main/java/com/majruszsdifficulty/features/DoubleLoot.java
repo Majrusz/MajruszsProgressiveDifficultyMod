@@ -1,9 +1,5 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.majruszlibrary.collection.DefaultMap;
 import com.majruszlibrary.contexts.OnLootGenerated;
 import com.majruszlibrary.data.Reader;
@@ -13,6 +9,10 @@ import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.registry.Registries;
 import com.majruszlibrary.text.RegexString;
+import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemStack;
 

@@ -1,13 +1,13 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.majruszlibrary.contexts.OnEntitySpawned;
 import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.math.Range;
+import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Creeper;

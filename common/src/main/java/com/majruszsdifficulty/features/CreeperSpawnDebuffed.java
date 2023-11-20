@@ -1,9 +1,5 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.data.EffectDef;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.majruszlibrary.contexts.OnEntitySpawned;
 import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.data.Reader;
@@ -11,6 +7,10 @@ import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.time.TimeHelper;
+import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.data.EffectDef;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;

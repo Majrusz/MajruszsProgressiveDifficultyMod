@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.majruszlibrary.contexts.OnEntitySpawned;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.entity.monster.Illusioner;
 
 public class BlockIllusionerFromJoiningRaids {

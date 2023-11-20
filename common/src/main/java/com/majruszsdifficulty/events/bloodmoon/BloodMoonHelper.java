@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.events.bloodmoon;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
+import com.majruszsdifficulty.MajruszsDifficulty;
 
 public class BloodMoonHelper {
 	public static void start() {

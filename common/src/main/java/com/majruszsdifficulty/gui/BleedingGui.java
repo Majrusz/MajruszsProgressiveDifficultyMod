@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.gui;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.contexts.OnClientTicked;
@@ -8,6 +7,7 @@ import com.majruszlibrary.contexts.OnGuiOverlaysRegistered;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.time.TimeHelper;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;

@@ -1,8 +1,8 @@
-package com.majruszsdifficulty.contexts;
+package com.majruszsdifficulty.gamestage.contexts;
 
-import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszlibrary.contexts.base.Context;
 import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszsdifficulty.gamestage.GameStage;
 
 import java.util.function.Consumer;
 

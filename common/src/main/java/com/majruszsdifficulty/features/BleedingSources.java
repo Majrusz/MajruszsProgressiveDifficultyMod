@@ -1,9 +1,5 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.contexts.OnBleedingCheck;
-import com.majruszsdifficulty.contexts.OnBleedingTooltip;
-import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.effects.BleedingEffect;
 import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
@@ -12,6 +8,9 @@ import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.registry.Registries;
 import com.majruszlibrary.text.RegexString;
+import com.majruszsdifficulty.contexts.OnBleedingCheck;
+import com.majruszsdifficulty.contexts.OnBleedingTooltip;
+import com.majruszsdifficulty.effects.BleedingEffect;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;

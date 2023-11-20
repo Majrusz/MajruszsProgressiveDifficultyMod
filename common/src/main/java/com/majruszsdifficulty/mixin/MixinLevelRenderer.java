@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.mixin;
 
+import com.majruszlibrary.math.AnyPos;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.events.bloodmoon.BloodMoonHelper;
-import com.majruszlibrary.math.AnyPos;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;

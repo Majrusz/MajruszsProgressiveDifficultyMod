@@ -1,15 +1,15 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.majruszlibrary.contexts.OnEntitySpawned;
 import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.entity.EntityHelper;
 import com.majruszlibrary.math.Range;
+import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;

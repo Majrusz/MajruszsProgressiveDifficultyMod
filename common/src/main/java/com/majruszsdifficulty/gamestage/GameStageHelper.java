@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.gamestage;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.collection.CollectionHelper;
 import com.majruszlibrary.contexts.data.ILevelData;
 import com.majruszlibrary.contexts.data.IPositionData;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

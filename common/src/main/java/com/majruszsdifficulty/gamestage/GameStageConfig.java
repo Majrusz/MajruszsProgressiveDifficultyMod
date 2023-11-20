@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.gamestage;
 
-import com.majruszsdifficulty.data.Config;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszsdifficulty.data.Config;
 import net.minecraft.ChatFormatting;
 
 import java.util.List;

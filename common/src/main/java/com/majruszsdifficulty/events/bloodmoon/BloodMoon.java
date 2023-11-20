@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.events.bloodmoon;
 
-import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonFinished;
-import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonStarted;
 import com.majruszlibrary.contexts.base.Contexts;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonFinished;
+import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonStarted;
 
 public class BloodMoon {
 	boolean isActive = false;

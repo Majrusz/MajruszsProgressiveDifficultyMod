@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.events.bloodmoon;
 
-import com.majruszsdifficulty.data.Config;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszsdifficulty.data.Config;
 
 public class BloodMoonConfig {
 	public static boolean IS_ENABLED = true;

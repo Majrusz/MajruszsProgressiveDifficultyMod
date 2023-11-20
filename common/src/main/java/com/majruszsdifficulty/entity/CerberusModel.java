@@ -1,6 +1,5 @@
 package com.majruszsdifficulty.entity;
 
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszlibrary.animations.ModelDef;
 import com.majruszlibrary.animations.ModelParts;
 import com.majruszlibrary.annotation.Dist;
@@ -8,6 +7,7 @@ import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.modhelper.LazyResource;
 import com.majruszlibrary.platform.Side;
+import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
