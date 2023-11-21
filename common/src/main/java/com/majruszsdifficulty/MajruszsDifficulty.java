@@ -4,7 +4,6 @@ import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.emitter.ParticleEmitter;
 import com.majruszlibrary.events.OnGameInitialized;
-import com.majruszlibrary.events.OnParticlesRegistered;
 import com.majruszlibrary.item.ItemHelper;
 import com.majruszlibrary.modhelper.ModHelper;
 import com.majruszlibrary.registry.Custom;
@@ -149,8 +148,6 @@ public class MajruszsDifficulty {
 	@OnlyIn( Dist.CLIENT )
 	public static class Client {
 		static {
-			OnParticlesRegistered.listen( data->data.register( BLOOD_PARTICLE.get(), BloodParticle.Factory::new ) );
-
 			HELPER.create( Custom.ModelLayers.class, modelLayers->{
 				modelLayers.register( CerberusRenderer.LAYER, ()->CerberusModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( CursedArmorRenderer.LAYER, ()->CursedArmorModel.MODEL.get().toLayerDefinition() );
@@ -159,6 +156,10 @@ public class MajruszsDifficulty {
 				modelLayers.register( CreeperlingRenderer.LAYER, ()->CreeperlingModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( GiantRenderer.LAYER, ()->LayerDefinition.create( GiantModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
 				modelLayers.register( TankRenderer.LAYER, ()->TankModel.MODEL.get().toLayerDefinition() );
+			} );
+
+			HELPER.create( Custom.Particles.class, particles->{
+				particles.register( BLOOD_PARTICLE.get(), BloodParticle.Factory::new );
 			} );
 
 			HELPER.create( Custom.Renderers.class, renderers->{
