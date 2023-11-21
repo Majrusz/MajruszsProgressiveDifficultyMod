@@ -71,13 +71,17 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< EnderiumBlock > ENDERIUM_BLOCK = BLOCKS.create( "enderium_block", EnderiumBlock::new );
 	public static final RegistryObject< EnderiumShardOre > ENDERIUM_SHARD_ORE = BLOCKS.create( "enderium_shard_ore", EnderiumShardOre::new );
 	public static final RegistryObject< FragileEndStone > FRAGILE_END_STONE = BLOCKS.create( "fragile_end_stone", FragileEndStone::new );
+	public static final RegistryObject< InfernalSponge > INFERNAL_SPONGE = BLOCKS.create( "infernal_sponge", InfernalSponge::new );
 	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.create( "infested_end_stone", InfestedEndStone::new );
+	public static final RegistryObject< SoakedInfernalSponge > SOAKED_INFERNAL_SPONGE = BLOCKS.create( "soaked_infernal_sponge", SoakedInfernalSponge::new );
 
 	// Items (blocks)
 	public static final RegistryObject< EnderiumBlock.Item > ENDERIUM_BLOCK_ITEM = ITEMS.create( "enderium_block", EnderiumBlock.Item::new );
 	public static final RegistryObject< EnderiumShardOre.Item > ENDERIUM_SHARD_ORE_ITEM = ITEMS.create( "enderium_shard_ore", EnderiumShardOre.Item::new );
 	public static final RegistryObject< FragileEndStone.Item > FRAGILE_END_STONE_ITEM = ITEMS.create( "fragile_end_stone", FragileEndStone.Item::new );
+	public static final RegistryObject< InfernalSponge.Item > INFERNAL_SPONGE_ITEM = ITEMS.create( "infernal_sponge", InfernalSponge.Item::new );
 	public static final RegistryObject< InfestedEndStone.Item > INFESTED_END_STONE_ITEM = ITEMS.create( "infested_end_stone", InfestedEndStone.Item::new );
+	public static final RegistryObject< SoakedInfernalSponge.Item > SOAKED_INFERNAL_SPONGE_ITEM = ITEMS.create( "soaked_infernal_sponge", SoakedInfernalSponge.Item::new );
 
 	// Items (spawn eggs)
 	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.create( "cerberus_spawn_egg", ItemHelper.createEgg( CERBERUS, 0x212121, 0xe0e0e0 ) );
