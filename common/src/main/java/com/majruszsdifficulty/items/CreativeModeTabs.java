@@ -32,6 +32,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.GOLDEN_BANDAGE,
 			MajruszsDifficulty.CLOTH,
 			MajruszsDifficulty.CERBERUS_FANG,
+			MajruszsDifficulty.ENDERIUM_INGOT,
 			MajruszsDifficulty.CERBERUS_SPAWN_EGG,
 			MajruszsDifficulty.CREEPERLING_SPAWN_EGG,
 			MajruszsDifficulty.CURSED_ARMOR_SPAWN_EGG,
