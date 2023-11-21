@@ -17,6 +17,7 @@
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
+- changed `Enderium Block` name to `Block of Enderium` to better match the vanilla (suggested by @nickolas78gr)
 - increased Cursed Armor experience from 0-7 to 7
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - decreased Cerberus move speed by 11%
