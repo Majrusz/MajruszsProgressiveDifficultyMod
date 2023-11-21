@@ -86,7 +86,11 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< Bandage > BANDAGE = ITEMS.create( "bandage", Bandage.normal() );
 		public static final RegistryObject< CerberusFang > CERBERUS_FANG = ITEMS.create( "cerberus_fang", CerberusFang::new );
 		public static final RegistryObject< Cloth > CLOTH = ITEMS.create( "cloth", Cloth::new );
+		public static final RegistryObject< EnderiumArmor > ENDERIUM_BOOTS = ITEMS.create( "enderium_boots", EnderiumArmor.boots() );
+		public static final RegistryObject< EnderiumArmor > ENDERIUM_CHESTPLATE = ITEMS.create( "enderium_chestplate", EnderiumArmor.chestplate() );
+		public static final RegistryObject< EnderiumArmor > ENDERIUM_HELMET = ITEMS.create( "enderium_helmet", EnderiumArmor.helmet() );
 		public static final RegistryObject< EnderiumIngot > ENDERIUM_INGOT = ITEMS.create( "enderium_ingot", EnderiumIngot::new );
+		public static final RegistryObject< EnderiumArmor > ENDERIUM_LEGGINGS = ITEMS.create( "enderium_leggings", EnderiumArmor.leggings() );
 		public static final RegistryObject< EnderiumShard > ENDERIUM_SHARD = ITEMS.create( "enderium_shard", EnderiumShard::new );
 		public static final RegistryObject< Bandage > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", Bandage.golden() );
 
