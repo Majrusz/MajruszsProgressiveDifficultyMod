@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features;
+package com.majruszsdifficulty.effects.bleeding;
 
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;

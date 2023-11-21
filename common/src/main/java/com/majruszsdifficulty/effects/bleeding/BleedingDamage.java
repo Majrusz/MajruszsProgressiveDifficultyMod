@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features;
+package com.majruszsdifficulty.effects.bleeding;
 
 import com.majruszlibrary.entity.EffectHelper;
 import com.majruszlibrary.entity.EntityHelper;

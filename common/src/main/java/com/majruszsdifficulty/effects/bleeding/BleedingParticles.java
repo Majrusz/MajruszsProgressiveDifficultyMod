@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.features;
+package com.majruszsdifficulty.effects.bleeding;
 
 import com.majruszlibrary.emitter.ParticleEmitter;
 import com.majruszlibrary.entity.EffectHelper;
@@ -11,7 +11,6 @@ import com.majruszlibrary.events.base.Priority;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.gui.BleedingGui;
 
 public class BleedingParticles {
 	static {

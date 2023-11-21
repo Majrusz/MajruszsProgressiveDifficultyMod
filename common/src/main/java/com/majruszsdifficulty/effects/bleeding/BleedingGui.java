@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.gui;
+package com.majruszsdifficulty.effects.bleeding;
 
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
