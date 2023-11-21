@@ -29,7 +29,7 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 		new int[]{ 4, 6, 8, 4 },
 		15,
 		SoundEvents.ARMOR_EQUIP_NETHERITE,
-		3.5f,
+		4.0f,
 		0.1f,
 		()->Ingredient.of( MajruszsDifficulty.Items.ENDERIUM_INGOT.get() )
 	);

@@ -93,6 +93,10 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< EnderiumArmor > ENDERIUM_LEGGINGS = ITEMS.create( "enderium_leggings", EnderiumArmor.leggings() );
 		public static final RegistryObject< EnderiumShard > ENDERIUM_SHARD = ITEMS.create( "enderium_shard", EnderiumShard::new );
 		public static final RegistryObject< Bandage > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", Bandage.golden() );
+		public static final RegistryObject< TatteredArmor > TATTERED_BOOTS = ITEMS.create( "tattered_boots", TatteredArmor.boots() );
+		public static final RegistryObject< TatteredArmor > TATTERED_CHESTPLATE = ITEMS.create( "tattered_chestplate", TatteredArmor.chestplate() );
+		public static final RegistryObject< TatteredArmor > TATTERED_HELMET = ITEMS.create( "tattered_helmet", TatteredArmor.helmet() );
+		public static final RegistryObject< TatteredArmor > TATTERED_LEGGINGS = ITEMS.create( "tattered_leggings", TatteredArmor.leggings() );
 
 		// Items (blocks)
 		public static final RegistryObject< EnderiumBlock.Item > ENDERIUM_BLOCK = ITEMS.create( "enderium_block", EnderiumBlock.Item::new );

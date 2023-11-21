@@ -20,6 +20,7 @@
 - made Giant launch attack weaker when player has knockback resistance
 - changed `Enderium Block` name to `Block of Enderium` to better match the vanilla (suggested by @nickolas78gr)
 - increased Cursed Armor experience from 0-7 to 7
+- increased armor toughness of Enderium Armor from 3.5 to 4
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - decreased Cerberus move speed by 11%
 - decreased Cerberus experience from 60-90 to 26-46
