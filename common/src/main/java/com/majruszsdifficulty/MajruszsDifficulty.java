@@ -17,10 +17,7 @@ import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.effects.GlassRegenerationEffect;
 import com.majruszsdifficulty.entity.*;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
-import com.majruszsdifficulty.items.BandageItem;
-import com.majruszsdifficulty.items.CerberusFangItem;
-import com.majruszsdifficulty.items.CreativeModeTabs;
-import com.majruszsdifficulty.items.FakeItem;
+import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
 import com.majruszsdifficulty.particles.BloodParticle;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -85,6 +82,7 @@ public class MajruszsDifficulty {
 	// Items
 	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.create( "bandage", BandageItem.normal() );
 	public static final RegistryObject< CerberusFangItem > CERBERUS_FANG = ITEMS.create( "cerberus_fang", CerberusFangItem::new );
+	public static final RegistryObject< ClothItem > CLOTH = ITEMS.create( "cloth", ClothItem::new );
 	public static final RegistryObject< BandageItem > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", BandageItem.golden() );
 
 	// Items (blocks)
