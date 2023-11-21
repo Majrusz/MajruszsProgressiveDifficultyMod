@@ -9,14 +9,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class BleedingImmunityEffect extends MobEffect {
+public class BleedingImmunity extends MobEffect {
 	static {
 		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING_IMMUNITY, data.entity ) )
-			.addCondition( data->data.effect.equals( MajruszsDifficulty.BLEEDING.get() ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.BLEEDING_IMMUNITY, data.entity ) )
+			.addCondition( data->data.effect.equals( MajruszsDifficulty.Effects.BLEEDING.get() ) );
 	}
 
-	public BleedingImmunityEffect() {
+	public BleedingImmunity() {
 		super( MobEffectCategory.BENEFICIAL, 0xff990000 );
 	}
 
@@ -25,7 +25,7 @@ public class BleedingImmunityEffect extends MobEffect {
 
 	@Override
 	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health ) {
-		entity.removeEffect( MajruszsDifficulty.BLEEDING.get() );
+		entity.removeEffect( MajruszsDifficulty.Effects.BLEEDING.get() );
 	}
 
 	@Override

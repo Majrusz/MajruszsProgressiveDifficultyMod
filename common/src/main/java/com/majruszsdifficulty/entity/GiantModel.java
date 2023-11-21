@@ -6,13 +6,13 @@ import net.minecraft.client.model.AbstractZombieModel;
 import net.minecraft.client.model.geom.ModelPart;
 
 @OnlyIn( Dist.CLIENT )
-public class GiantModel< Type extends GiantEntity > extends AbstractZombieModel< Type > {
+public class GiantModel< Type extends Giant > extends AbstractZombieModel< Type > {
 	public GiantModel( ModelPart root ) {
 		super( root );
 	}
 
 	@Override
-	public boolean isAggressive( GiantEntity giant ) {
+	public boolean isAggressive( Giant giant ) {
 		return false;
 	}
 

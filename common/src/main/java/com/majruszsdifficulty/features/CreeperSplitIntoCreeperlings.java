@@ -12,7 +12,7 @@ import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.entity.CreeperlingEntity;
+import com.majruszsdifficulty.entity.Creeperling;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
@@ -40,11 +40,11 @@ public class CreeperSplitIntoCreeperlings {
 
 		OnExploded.listen( CreeperSplitIntoCreeperlings::giveAdvancement )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->data.explosion.getDirectSourceEntity() instanceof CreeperlingEntity );
+			.addCondition( data->data.explosion.getDirectSourceEntity() instanceof Creeperling );
 
 		OnEntityDied.listen( CreeperSplitIntoCreeperlings::giveAdvancement )
 			.addCondition( data->data.attacker instanceof ServerPlayer )
-			.addCondition( data->data.target instanceof CreeperlingEntity );
+			.addCondition( data->data.target instanceof Creeperling );
 
 		Serializables.getStatic( Config.Features.class )
 			.define( "creeper_split_into_creeperlings", CreeperSplitIntoCreeperlings.class );
@@ -60,7 +60,7 @@ public class CreeperSplitIntoCreeperlings {
 		GameStage gameStage = GameStageHelper.determineGameStage( data );
 		int count = Random.nextInt( 1, COUNT.get( gameStage ) + 1 );
 		for( int i = 0; i < count; ++i ) {
-			CreeperlingEntity creeperling = EntityHelper.createSpawner( MajruszsDifficulty.CREEPERLING, data.getLevel() )
+			Creeperling creeperling = EntityHelper.createSpawner( MajruszsDifficulty.Entities.CREEPERLING, data.getLevel() )
 				.position( AnyPos.from( creeper.blockPosition() ).add( Random.nextVector( -2, 2, -1, 1, -2, 2 ) ).center().vec3() )
 				.mobSpawnType( MobSpawnType.EVENT )
 				.spawn();

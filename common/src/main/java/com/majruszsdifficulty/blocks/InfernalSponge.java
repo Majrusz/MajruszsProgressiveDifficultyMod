@@ -18,7 +18,7 @@ public class InfernalSponge extends Block {
 	static {
 		OnBlockPlaced.listen( InfernalSponge::absorb )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->data.blockState.is( MajruszsDifficulty.INFERNAL_SPONGE.get() ) );
+			.addCondition( data->data.blockState.is( MajruszsDifficulty.Blocks.INFERNAL_SPONGE.get() ) );
 	}
 
 	public InfernalSponge() {
@@ -67,13 +67,13 @@ public class InfernalSponge extends Block {
 		} ) - 1;
 
 		if( absorbedBlocks > 0 ) {
-			level.setBlock( spongePos, MajruszsDifficulty.SOAKED_INFERNAL_SPONGE.get().defaultBlockState(), 2 );
+			level.setBlock( spongePos, MajruszsDifficulty.Blocks.SOAKED_INFERNAL_SPONGE.get().defaultBlockState(), 2 );
 		}
 	}
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.INFERNAL_SPONGE.get(), new Properties().fireResistant() );
+			super( MajruszsDifficulty.Blocks.INFERNAL_SPONGE.get(), new Properties().fireResistant() );
 		}
 	}
 }

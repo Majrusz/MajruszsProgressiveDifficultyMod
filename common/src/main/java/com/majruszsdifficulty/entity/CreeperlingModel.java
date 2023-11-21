@@ -12,7 +12,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.util.Mth;
 
 @OnlyIn( Dist.CLIENT )
-public class CreeperlingModel< Type extends CreeperlingEntity > extends HierarchicalModel< Type > {
+public class CreeperlingModel< Type extends Creeperling > extends HierarchicalModel< Type > {
 	public static LazyResource< ModelDef > MODEL = MajruszsDifficulty.HELPER.load( "creeperling_model", ModelDef.class, PackType.CLIENT_RESOURCES );
 	public final ModelParts modelParts;
 	public final ModelPart head, leftBackFoot, leftFrontFoot, rightBackFoot, rightFrontFoot;

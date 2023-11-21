@@ -64,7 +64,7 @@ public class FragileEndStone extends Block {
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.FRAGILE_END_STONE.get(), new Properties().stacksTo( 64 ) );
+			super( MajruszsDifficulty.Blocks.FRAGILE_END_STONE.get(), new Properties().stacksTo( 64 ) );
 		}
 	}
 }

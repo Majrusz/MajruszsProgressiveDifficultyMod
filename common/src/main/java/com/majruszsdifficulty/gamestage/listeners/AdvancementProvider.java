@@ -28,14 +28,14 @@ public class AdvancementProvider {
 		Side.getServer()
 			.getPlayerList()
 			.getPlayers()
-			.forEach( player->MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( player, data.current ) );
+			.forEach( player->MajruszsDifficulty.Advancements.GAME_STAGE.trigger( player, data.current ) );
 	}
 
 	private static void giveAdvancement( OnPlayerGameStageChanged data ) {
-		MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( ( ServerPlayer )data.player, data.current );
+		MajruszsDifficulty.Advancements.GAME_STAGE.trigger( ( ServerPlayer )data.player, data.current );
 	}
 
 	private static void giveAdvancement( OnPlayerLoggedIn data ) {
-		MajruszsDifficulty.GAME_STAGE_ADVANCEMENT.trigger( data.player, GameStageHelper.determineGameStage( data.player ) );
+		MajruszsDifficulty.Advancements.GAME_STAGE.trigger( data.player, GameStageHelper.determineGameStage( data.player ) );
 	}
 }

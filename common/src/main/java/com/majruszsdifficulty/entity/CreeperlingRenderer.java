@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 @OnlyIn( Dist.CLIENT )
-public class CreeperlingRenderer extends MobRenderer< CreeperlingEntity, CreeperlingModel< CreeperlingEntity > > {
+public class CreeperlingRenderer extends MobRenderer< Creeperling, CreeperlingModel< Creeperling > > {
 	public static final ModelLayerLocation LAYER = MajruszsDifficulty.HELPER.getLayerLocation( "creeperling" );
 	public static final ResourceLocation TEXTURE = MajruszsDifficulty.HELPER.getLocation( "textures/entity/creeperling.png" );
 
@@ -21,12 +21,12 @@ public class CreeperlingRenderer extends MobRenderer< CreeperlingEntity, Creeper
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation( CreeperlingEntity creeperling ) {
+	public ResourceLocation getTextureLocation( Creeperling creeperling ) {
 		return TEXTURE;
 	}
 
 	@Override
-	public void render( CreeperlingEntity creeperling, float p_114209_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource,
+	public void render( Creeperling creeperling, float p_114209_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource,
 		int packedLight
 	) {
 		this.model.prepareMobModel( creeperling, 0.0f, 0.0f, partialTicks );
@@ -35,14 +35,14 @@ public class CreeperlingRenderer extends MobRenderer< CreeperlingEntity, Creeper
 	}
 
 	@Override
-	protected float getWhiteOverlayProgress( CreeperlingEntity creeperling, float partialTicks ) {
+	protected float getWhiteOverlayProgress( Creeperling creeperling, float partialTicks ) {
 		float f = creeperling.getSwelling( partialTicks );
 
 		return ( int )( f * 10.0f ) % 2 == 0 ? 0.0f : Mth.clamp( f, 0.5f, 1.0f );
 	}
 
 	@Override
-	protected void scale( CreeperlingEntity creeperling, PoseStack stack, float partialTicks ) {
+	protected void scale( Creeperling creeperling, PoseStack stack, float partialTicks ) {
 		float f = creeperling.getSwelling( partialTicks );
 		float f1 = 1.0f + Mth.sin( f * 100.0f ) * f * 0.01f;
 		f = Mth.clamp( f, 0.0f, 1.0f );

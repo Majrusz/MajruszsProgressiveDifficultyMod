@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
-public class GiantEntity extends Monster {
-	public static EntityType< GiantEntity > createEntityType() {
-		return EntityType.Builder.of( GiantEntity::new, MobCategory.MONSTER )
+public class Giant extends Monster {
+	public static EntityType< Giant > createEntityType() {
+		return EntityType.Builder.of( Giant::new, MobCategory.MONSTER )
 			.sized( 3.0f, 10.0f )
 			.build( "giant" );
 	}
@@ -42,7 +42,7 @@ public class GiantEntity extends Monster {
 			.build();
 	}
 
-	public GiantEntity( EntityType< ? extends Monster > entityType, Level level ) {
+	public Giant( EntityType< ? extends Monster > entityType, Level level ) {
 		super( entityType, level );
 
 		this.setPathfindingMalus( BlockPathTypes.LEAVES, 0.0f );
@@ -129,10 +129,10 @@ public class GiantEntity extends Monster {
 	}
 
 	private static class GiantMeleeAttackGoal extends MeleeAttackGoal {
-		private final GiantEntity giant;
+		private final Giant giant;
 		private int raiseArmTicks;
 
-		public GiantMeleeAttackGoal( GiantEntity giant ) {
+		public GiantMeleeAttackGoal( Giant giant ) {
 			super( giant, 1.0, true );
 
 			this.giant = giant;

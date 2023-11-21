@@ -14,18 +14,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class GlassRegenerationEffect extends MobEffect {
+public class GlassRegeneration extends MobEffect {
 	private static final SoundEmitter GLASS_BREAK = SoundEmitter.of( SoundEvents.GLASS_BREAK )
 		.source( SoundSource.PLAYERS )
 		.volume( SoundEmitter.randomized( 0.25f ) );
 
 	static {
-		OnEntityDamaged.listen( GlassRegenerationEffect::removeOnHit )
+		OnEntityDamaged.listen( GlassRegeneration::removeOnHit )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.GLASS_REGENERATION, data.target ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.GLASS_REGENERATION, data.target ) );
 	}
 
-	public GlassRegenerationEffect() {
+	public GlassRegeneration() {
 		super( MobEffectCategory.BENEFICIAL, 0xffcd5cab );
 	}
 
@@ -49,7 +49,7 @@ public class GlassRegenerationEffect extends MobEffect {
 	}
 
 	private static void removeOnHit( OnEntityDamaged data ) {
-		data.target.removeEffect( MajruszsDifficulty.GLASS_REGENERATION.get() );
+		data.target.removeEffect( MajruszsDifficulty.Effects.GLASS_REGENERATION.get() );
 		GLASS_BREAK.position( data.target.position() ).emit( data.getServerLevel() );
 	}
 }

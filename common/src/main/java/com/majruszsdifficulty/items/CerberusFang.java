@@ -2,8 +2,8 @@ package com.majruszsdifficulty.items;
 
 import net.minecraft.world.item.Item;
 
-public class CerberusFangItem extends Item {
-	public CerberusFangItem() {
+public class CerberusFang extends Item {
+	public CerberusFang() {
 		super( new Properties() );
 	}
 }

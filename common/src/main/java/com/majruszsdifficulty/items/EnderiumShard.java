@@ -3,8 +3,8 @@ package com.majruszsdifficulty.items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 
-public class EnderiumIngotItem extends Item {
-	public EnderiumIngotItem() {
+public class EnderiumShard extends Item {
+	public EnderiumShard() {
 		super( new Properties().rarity( Rarity.UNCOMMON ) );
 	}
 }

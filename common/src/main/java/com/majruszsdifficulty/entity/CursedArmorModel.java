@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.server.packs.PackType;
 
 @OnlyIn( Dist.CLIENT )
-public class CursedArmorModel< Type extends CursedArmorEntity > extends HumanoidModel< Type > {
+public class CursedArmorModel< Type extends CursedArmor > extends HumanoidModel< Type > {
 	public static LazyResource< ModelDef > MODEL = MajruszsDifficulty.HELPER.load( "cursed_armor_model", ModelDef.class, PackType.CLIENT_RESOURCES );
 	public final ModelParts modelParts;
 

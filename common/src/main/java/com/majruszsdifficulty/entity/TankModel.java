@@ -12,7 +12,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.util.Mth;
 
 @OnlyIn( Dist.CLIENT )
-public class TankModel< Type extends TankEntity > extends HierarchicalModel< Type > {
+public class TankModel< Type extends Tank > extends HierarchicalModel< Type > {
 	public static LazyResource< ModelDef > MODEL = MajruszsDifficulty.HELPER.load( "tank_model", ModelDef.class, PackType.CLIENT_RESOURCES );
 	public final ModelParts modelParts;
 	public final ModelPart head, leftLeg, rightLeg, body;

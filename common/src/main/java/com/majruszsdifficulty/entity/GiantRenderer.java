@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 
 @OnlyIn( Dist.CLIENT )
-public class GiantRenderer extends MobRenderer< GiantEntity, GiantModel< GiantEntity > > {
+public class GiantRenderer extends MobRenderer< Giant, GiantModel< Giant > > {
 	public static final ModelLayerLocation LAYER = MajruszsDifficulty.HELPER.getLayerLocation( "giant" );
 	public static final ResourceLocation TEXTURE = MajruszsDifficulty.HELPER.getLocation( "textures/entity/giant.png" );
 	public static final float SCALE = 5.0f;
@@ -26,12 +26,12 @@ public class GiantRenderer extends MobRenderer< GiantEntity, GiantModel< GiantEn
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation( GiantEntity giant ) {
+	public ResourceLocation getTextureLocation( Giant giant ) {
 		return TEXTURE;
 	}
 
 	@Override
-	protected void scale( GiantEntity giant, PoseStack stack, float p_114777_ ) {
+	protected void scale( Giant giant, PoseStack stack, float p_114777_ ) {
 		stack.scale( SCALE, SCALE, SCALE );
 	}
 }

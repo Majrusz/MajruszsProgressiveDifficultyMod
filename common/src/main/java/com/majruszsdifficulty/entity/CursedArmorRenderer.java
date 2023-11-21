@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
 @OnlyIn( Dist.CLIENT )
-public class CursedArmorRenderer extends HumanoidMobRenderer< CursedArmorEntity, CursedArmorModel< CursedArmorEntity > > {
+public class CursedArmorRenderer extends HumanoidMobRenderer< CursedArmor, CursedArmorModel< CursedArmor > > {
 	public static final ModelLayerLocation LAYER = MajruszsDifficulty.HELPER.getLayerLocation( "cursed_armor" );
 	public static final ModelLayerLocation INNER_ARMOR_LAYER = MajruszsDifficulty.HELPER.getLayerLocation( "cursed_armor", "inner_armor" );
 	public static final ModelLayerLocation OUTER_ARMOR_LAYER = MajruszsDifficulty.HELPER.getLayerLocation( "cursed_armor", "outer_armor" );
@@ -23,7 +23,7 @@ public class CursedArmorRenderer extends HumanoidMobRenderer< CursedArmorEntity,
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation( CursedArmorEntity cursedArmor ) {
+	public ResourceLocation getTextureLocation( CursedArmor cursedArmor ) {
 		return TEXTURE;
 	}
 }

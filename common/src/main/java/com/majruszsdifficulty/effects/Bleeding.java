@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BleedingEffect extends MobEffect {
+public class Bleeding extends MobEffect {
 	public static boolean apply( LivingEntity target, @Nullable LivingEntity attacker ) {
-		EffectDef effectDef = BleedingEffect.getCurrentEffect( GameStageHelper.determineGameStage( target.level(), target.position() ) );
+		EffectDef effectDef = Bleeding.getCurrentEffect( GameStageHelper.determineGameStage( target.level(), target.position() ) );
 
 		return target.addEffect( new MobEffectInstance( TimeHelper.toTicks( effectDef.duration ), effectDef.amplifier, attacker ) );
 	}
@@ -39,7 +39,7 @@ public class BleedingEffect extends MobEffect {
 			|| Config.IMMUNE_MOBS.contains( entity.getType() );
 	}
 
-	public BleedingEffect() {
+	public Bleeding() {
 		super( MobEffectCategory.HARMFUL, 0xffdd5555 );
 	}
 
@@ -59,7 +59,7 @@ public class BleedingEffect extends MobEffect {
 		public final @Nullable Entity damageSourceEntity;
 
 		public MobEffectInstance( int duration, int amplifier, @Nullable LivingEntity attacker ) {
-			super( MajruszsDifficulty.BLEEDING.get(), duration, amplifier, false, false, true );
+			super( MajruszsDifficulty.Effects.BLEEDING.get(), duration, amplifier, false, false, true );
 
 			this.damageSourceEntity = attacker;
 		}
@@ -70,9 +70,9 @@ public class BleedingEffect extends MobEffect {
 		public static boolean ARE_UNDEAD_IMMUNE_BY_DEFAULT = true;
 		public static List< EntityType< ? > > IMMUNE_MOBS = new ArrayList<>();
 		public static GameStageValue< EffectDef > EFFECTS = GameStageValue.of(
-			DefaultMap.defaultEntry( new EffectDef( MajruszsDifficulty.BLEEDING, 0, 24.0f ) ),
-			DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( MajruszsDifficulty.BLEEDING, 1, 24.0f ) ),
-			DefaultMap.entry( GameStage.MASTER_ID, new EffectDef( MajruszsDifficulty.BLEEDING, 2, 24.0f ) )
+			DefaultMap.defaultEntry( new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 0, 24.0f ) ),
+			DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 1, 24.0f ) ),
+			DefaultMap.entry( GameStage.MASTER_ID, new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 2, 24.0f ) )
 		);
 
 		static {

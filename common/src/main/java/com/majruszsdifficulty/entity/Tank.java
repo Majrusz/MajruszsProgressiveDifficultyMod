@@ -37,12 +37,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class TankEntity extends Monster implements IAnimableEntity {
+public class Tank extends Monster implements IAnimableEntity {
 	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "tank_animations", AnimationsDef.class, PackType.SERVER_DATA );
 	private final Animations animations = Animations.create();
 
-	public static EntityType< TankEntity > createEntityType() {
-		return EntityType.Builder.of( TankEntity::new, MobCategory.MONSTER )
+	public static EntityType< Tank > createEntityType() {
+		return EntityType.Builder.of( Tank::new, MobCategory.MONSTER )
 			.sized( 0.99f, 2.7f )
 			.build( "tank" );
 	}
@@ -58,7 +58,7 @@ public class TankEntity extends Monster implements IAnimableEntity {
 			.build();
 	}
 
-	public TankEntity( EntityType< ? extends Monster > entityType, Level level ) {
+	public Tank( EntityType< ? extends Monster > entityType, Level level ) {
 		super( entityType, level );
 	}
 
@@ -145,9 +145,9 @@ public class TankEntity extends Monster implements IAnimableEntity {
 	}
 
 	private static class TankMeleeAttackGoal extends MeleeAttackGoal {
-		private final TankEntity tank;
+		private final Tank tank;
 
-		public TankMeleeAttackGoal( TankEntity tank ) {
+		public TankMeleeAttackGoal( Tank tank ) {
 			super( tank, 1.0, true );
 
 			this.tank = tank;

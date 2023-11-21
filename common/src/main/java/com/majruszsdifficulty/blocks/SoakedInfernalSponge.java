@@ -72,7 +72,7 @@ public class SoakedInfernalSponge extends Block {
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.SOAKED_INFERNAL_SPONGE.get(), new Properties().fireResistant() );
+			super( MajruszsDifficulty.Blocks.SOAKED_INFERNAL_SPONGE.get(), new Properties().fireResistant() );
 		}
 	}
 }

@@ -8,7 +8,7 @@ import com.majruszlibrary.item.EquipmentSlots;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.effects.BleedingEffect;
+import com.majruszsdifficulty.effects.Bleeding;
 import com.majruszsdifficulty.events.OnBleedingTooltip;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,13 +21,13 @@ public class BleedingArmorProtection {
 	static {
 		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->data.effect.equals( MajruszsDifficulty.BLEEDING.get() ) )
+			.addCondition( data->data.effect.equals( MajruszsDifficulty.Effects.BLEEDING.get() ) )
 			.addCondition( data->Random.check( BleedingArmorProtection.calculateCancelChance( data ) ) );
 
 		OnBleedingTooltip.listen( BleedingArmorProtection::addTooltip )
 			.addCondition( data->data.itemStack.getItem() instanceof ArmorItem );
 
-		Serializables.getStatic( BleedingEffect.Config.class )
+		Serializables.getStatic( Bleeding.Config.class )
 			.define( "chance_multiplier_per_armor", Reader.number(), ()->ARMOR_BONUS, v->ARMOR_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) )
 			.define( "chance_multiplier_per_armor_toughness", Reader.number(), ()->TOUGHNESS_BONUS, v->TOUGHNESS_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) );
 	}

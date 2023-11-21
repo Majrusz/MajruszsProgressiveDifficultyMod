@@ -19,34 +19,34 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-public class CurseRandomlyFunction extends LootItemConditionalFunction {
+public class CurseRandomly extends LootItemConditionalFunction {
 	public static LootItemFunctionType create() {
 		return new LootItemFunctionType( new LootItemConditionalFunction.Serializer<>() {
 			@Override
-			public CurseRandomlyFunction deserialize( JsonObject jsonObject, JsonDeserializationContext context, LootItemCondition[] itemConditions ) {
-				return new CurseRandomlyFunction( itemConditions );
+			public CurseRandomly deserialize( JsonObject jsonObject, JsonDeserializationContext context, LootItemCondition[] itemConditions ) {
+				return new CurseRandomly( itemConditions );
 			}
 		} );
 	}
 
-	public CurseRandomlyFunction( LootItemCondition[] itemConditions ) {
+	public CurseRandomly( LootItemCondition[] itemConditions ) {
 		super( itemConditions );
 	}
 
 	@Override
 	public LootItemFunctionType getType() {
-		return MajruszsDifficulty.CURSE_RANDOMLY.get();
+		return MajruszsDifficulty.LootFunctions.CURSE_RANDOMLY.get();
 	}
 
 	@Override
 	public ItemStack run( ItemStack itemStack, LootContext context ) {
 		List< Enchantment > curses = this.generateCurses( itemStack );
 		if( !curses.isEmpty() ) {
-			itemStack = CurseRandomlyFunction.enchantItem( itemStack, context.getRandom(), curses );
+			itemStack = CurseRandomly.enchantItem( itemStack, context.getRandom(), curses );
 		}
 		List< Enchantment > enchantments = this.generateEnchantments( itemStack );
 		if( !enchantments.isEmpty() ) {
-			itemStack = CurseRandomlyFunction.enchantItem( itemStack, context.getRandom(), enchantments );
+			itemStack = CurseRandomly.enchantItem( itemStack, context.getRandom(), enchantments );
 		}
 
 		return itemStack;

@@ -18,29 +18,29 @@ public class BleedingParticles {
 		OnEntityTicked.listen( BleedingParticles::emit )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.cooldown( 0.15f ) )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING, data.entity ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.BLEEDING, data.entity ) );
 
 		OnEntityDied.listen( BleedingParticles::emit )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING, data.target ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.BLEEDING, data.target ) );
 
 		OnEntityPreDamaged.listen( BleedingParticles::addGuiOverlay )
 			.priority( Priority.LOWEST )
-			.addCondition( data->data.source.is( MajruszsDifficulty.BLEEDING_SOURCE ) );
+			.addCondition( data->data.source.is( MajruszsDifficulty.DamageSources.BLEEDING ) );
 	}
 
 	private static void emit( OnEntityTicked data ) {
-		int amplifier = EffectHelper.getAmplifier( MajruszsDifficulty.BLEEDING, data.entity ).orElse( 0 );
+		int amplifier = EffectHelper.getAmplifier( MajruszsDifficulty.Effects.BLEEDING, data.entity ).orElse( 0 );
 		float walkDistanceDelta = EntityHelper.getWalkDistanceDelta( data.entity );
 
-		ParticleEmitter.of( MajruszsDifficulty.BLOOD_PARTICLE )
+		ParticleEmitter.of( MajruszsDifficulty.Particles.BLOOD )
 			.count( Random.round( 0.5 + 0.5 * ( 15.0 + amplifier ) * walkDistanceDelta ) )
 			.sizeBased( data.entity )
 			.emit( data.getServerLevel() );
 	}
 
 	private static void emit( OnEntityDied data ) {
-		ParticleEmitter.of( MajruszsDifficulty.BLOOD_PARTICLE )
+		ParticleEmitter.of( MajruszsDifficulty.Particles.BLOOD )
 			.count( 50 )
 			.sizeBased( data.target )
 			.emit( data.getServerLevel() );

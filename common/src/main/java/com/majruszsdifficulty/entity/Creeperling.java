@@ -8,14 +8,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 
-public class CreeperlingEntity extends Creeper {
+public class Creeperling extends Creeper {
 	static {
-		OnExploded.listen( CreeperlingEntity::weakenExplosion )
-			.addCondition( data->data.entity instanceof CreeperlingEntity );
+		OnExploded.listen( Creeperling::weakenExplosion )
+			.addCondition( data->data.entity instanceof Creeperling );
 	}
 
-	public static EntityType< CreeperlingEntity > createEntityType() {
-		return EntityType.Builder.of( CreeperlingEntity::new, MobCategory.MONSTER )
+	public static EntityType< Creeperling > createEntityType() {
+		return EntityType.Builder.of( Creeperling::new, MobCategory.MONSTER )
 			.sized( 0.6f, 0.9f )
 			.build( "creeperling" );
 	}
@@ -27,7 +27,7 @@ public class CreeperlingEntity extends Creeper {
 			.build();
 	}
 
-	public CreeperlingEntity( EntityType< ? extends Creeper > entityType, Level level ) {
+	public Creeperling( EntityType< ? extends Creeper > entityType, Level level ) {
 		super( entityType, level );
 
 		( ( IMixinCreeper )this ).setExplosionRadius( 2 );

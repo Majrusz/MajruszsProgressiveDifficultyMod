@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.resources.ResourceLocation;
 
 @OnlyIn( Dist.CLIENT )
-public class CerberusRenderer extends MobRenderer< CerberusEntity, CerberusModel< CerberusEntity > > {
+public class CerberusRenderer extends MobRenderer< Cerberus, CerberusModel< Cerberus > > {
 	public static final ModelLayerLocation LAYER = MajruszsDifficulty.HELPER.getLayerLocation( "cerberus" );
 	public static final ResourceLocation TEXTURE = MajruszsDifficulty.HELPER.getLocation( "textures/entity/cerberus.png" );
 
@@ -25,22 +25,22 @@ public class CerberusRenderer extends MobRenderer< CerberusEntity, CerberusModel
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation( CerberusEntity cerberus ) {
+	public ResourceLocation getTextureLocation( Cerberus cerberus ) {
 		return TEXTURE;
 	}
 
 	@Override
-	public void render( CerberusEntity cerberus, float p_114209_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight ) {
+	public void render( Cerberus cerberus, float p_114209_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight ) {
 		this.model.prepareMobModel( cerberus, 0.0f, 0.0f, partialTicks );
 
 		super.render( cerberus, p_114209_, partialTicks, poseStack, bufferSource, packedLight );
 	}
 
 	@OnlyIn( Dist.CLIENT )
-	public static class CerberusEyesLayer extends EyesLayer< CerberusEntity, CerberusModel< CerberusEntity > > {
+	public static class CerberusEyesLayer extends EyesLayer< Cerberus, CerberusModel< Cerberus > > {
 		static final RenderType EYES = RenderType.eyes( MajruszsDifficulty.HELPER.getLocation( "textures/entity/cerberus_eyes.png" ) );
 
-		public CerberusEyesLayer( RenderLayerParent< CerberusEntity, CerberusModel< CerberusEntity > > layer ) {
+		public CerberusEyesLayer( RenderLayerParent< Cerberus, CerberusModel< Cerberus > > layer ) {
 			super( layer );
 		}
 

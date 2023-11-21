@@ -25,42 +25,42 @@ import net.minecraft.world.item.Rarity;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BandageItem extends Item {
+public class Bandage extends Item {
 	private static List< EffectDef > NORMAL_EFFECTS = List.of(
 		new EffectDef( ()->MobEffects.REGENERATION, 0, 20.0f )
 	);
 	private static List< EffectDef > GOLDEN_EFFECTS = List.of(
 		new EffectDef( ()->MobEffects.REGENERATION, 1, 20.0f ),
-		new EffectDef( MajruszsDifficulty.BLEEDING_IMMUNITY, 0, 90.0f )
+		new EffectDef( MajruszsDifficulty.Effects.BLEEDING_IMMUNITY, 0, 90.0f )
 	);
 	private final Supplier< List< EffectDef > > effects;
 
-	public static Supplier< BandageItem > normal() {
-		return ()->new BandageItem( Rarity.COMMON, ()->NORMAL_EFFECTS );
+	public static Supplier< Bandage > normal() {
+		return ()->new Bandage( Rarity.COMMON, ()->NORMAL_EFFECTS );
 	}
 
-	public static Supplier< BandageItem > golden() {
-		return ()->new BandageItem( Rarity.UNCOMMON, ()->GOLDEN_EFFECTS );
+	public static Supplier< Bandage > golden() {
+		return ()->new Bandage( Rarity.UNCOMMON, ()->GOLDEN_EFFECTS );
 	}
 
 	static {
-		OnPlayerInteracted.listen( BandageItem::use )
-			.addCondition( data->data.itemStack.getItem() instanceof BandageItem )
-			.addCondition( data->!ItemHelper.isOnCooldown( data.player, MajruszsDifficulty.BANDAGE.get(), MajruszsDifficulty.GOLDEN_BANDAGE.get() ) );
+		OnPlayerInteracted.listen( Bandage::use )
+			.addCondition( data->data.itemStack.getItem() instanceof Bandage )
+			.addCondition( data->!ItemHelper.isOnCooldown( data.player, MajruszsDifficulty.Items.BANDAGE.get(), MajruszsDifficulty.Items.GOLDEN_BANDAGE.get() ) );
 
-		OnItemTooltip.listen( BandageItem::addEffectInfo )
-			.addCondition( data->data.itemStack.getItem() instanceof BandageItem );
+		OnItemTooltip.listen( Bandage::addEffectInfo )
+			.addCondition( data->data.itemStack.getItem() instanceof Bandage );
 
 		Serializables.getStatic( Config.Items.class )
-			.define( "bandage", BandageItem.class );
+			.define( "bandage", Bandage.class );
 
-		Serializables.getStatic( BandageItem.class )
+		Serializables.getStatic( Bandage.class )
 			.define( "normal_effects", Reader.list( Reader.custom( EffectDef::new ) ), ()->NORMAL_EFFECTS, v->NORMAL_EFFECTS = v )
 			.define( "golden_effects", Reader.list( Reader.custom( EffectDef::new ) ), ()->GOLDEN_EFFECTS, v->GOLDEN_EFFECTS = v );
 	}
 
 	private static void use( OnPlayerInteracted data ) {
-		BandageItem bandage = ( BandageItem )data.itemStack.getItem();
+		Bandage bandage = ( Bandage )data.itemStack.getItem();
 		LivingEntity target = data.entity instanceof LivingEntity entity ? entity : data.player;
 
 		bandage.getEffects().forEach( effectDef->target.addEffect( effectDef.toEffectInstance() ) );
@@ -68,26 +68,26 @@ public class BandageItem extends Item {
 			.volume( Random.nextFloat( 0.4f, 0.6f ) )
 			.position( target.position() )
 			.emit( target.level() );
-		BandageItem.removeBleeding( bandage, data.player, target );
-		ItemHelper.addCooldown( data.player, TimeHelper.toTicks( 0.7 ), MajruszsDifficulty.BANDAGE.get(), MajruszsDifficulty.GOLDEN_BANDAGE.get() );
+		Bandage.removeBleeding( bandage, data.player, target );
+		ItemHelper.addCooldown( data.player, TimeHelper.toTicks( 0.7 ), MajruszsDifficulty.Items.BANDAGE.get(), MajruszsDifficulty.Items.GOLDEN_BANDAGE.get() );
 		ItemHelper.consumeItemOnUse( data.itemStack, data.player );
 		data.player.swing( data.hand, true );
 		data.cancelInteraction( InteractionResult.SUCCESS );
 	}
 
-	private static void removeBleeding( BandageItem item, Player player, LivingEntity target ) {
-		if( target.hasEffect( MajruszsDifficulty.BLEEDING.get() ) && player instanceof ServerPlayer serverPlayer ) {
+	private static void removeBleeding( Bandage item, Player player, LivingEntity target ) {
+		if( target.hasEffect( MajruszsDifficulty.Effects.BLEEDING.get() ) && player instanceof ServerPlayer serverPlayer ) {
 			if( target.equals( serverPlayer ) ) {
 				MajruszsDifficulty.HELPER.triggerAchievement( serverPlayer, "bandage_used" );
-			} else if( item.equals( MajruszsDifficulty.GOLDEN_BANDAGE.get() ) ) {
+			} else if( item.equals( MajruszsDifficulty.Items.GOLDEN_BANDAGE.get() ) ) {
 				MajruszsDifficulty.HELPER.triggerAchievement( serverPlayer, "golden_bandage_used_on_others" );
 			}
 		}
-		target.removeEffect( MajruszsDifficulty.BLEEDING.get() );
+		target.removeEffect( MajruszsDifficulty.Effects.BLEEDING.get() );
 	}
 
 	private static void addEffectInfo( OnItemTooltip data ) {
-		BandageItem bandage = ( BandageItem )data.itemStack.getItem();
+		Bandage bandage = ( Bandage )data.itemStack.getItem();
 		for( EffectDef effectDef : bandage.effects.get() ) {
 			data.components.add( effectDef.toComponent().withStyle( ChatFormatting.BLUE ) );
 		}
@@ -97,7 +97,7 @@ public class BandageItem extends Item {
 		data.components.add( TextHelper.translatable( "item.majruszsdifficulty.bandage.effect" ).withStyle( ChatFormatting.BLUE ) );
 	}
 
-	private BandageItem( Rarity rarity, Supplier< List< EffectDef > > effects ) {
+	private Bandage( Rarity rarity, Supplier< List< EffectDef > > effects ) {
 		super( new Properties().stacksTo( 16 ).rarity( rarity ) );
 
 		this.effects = effects;

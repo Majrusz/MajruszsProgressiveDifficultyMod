@@ -12,13 +12,13 @@ import com.majruszlibrary.registry.RegistryObject;
 import com.majruszsdifficulty.blocks.*;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.data.WorldData;
-import com.majruszsdifficulty.effects.BleedingEffect;
-import com.majruszsdifficulty.effects.BleedingImmunityEffect;
-import com.majruszsdifficulty.effects.GlassRegenerationEffect;
+import com.majruszsdifficulty.effects.Bleeding;
+import com.majruszsdifficulty.effects.BleedingImmunity;
+import com.majruszsdifficulty.effects.GlassRegeneration;
 import com.majruszsdifficulty.entity.*;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.*;
-import com.majruszsdifficulty.loot.CurseRandomlyFunction;
+import com.majruszsdifficulty.loot.CurseRandomly;
 import com.majruszsdifficulty.particles.BloodParticle;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -59,107 +59,115 @@ public class MajruszsDifficulty {
 	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
 	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
 
-	// Entities
-	public static final RegistryObject< EntityType< CerberusEntity > > CERBERUS = ENTITY_TYPES.create( "cerberus", CerberusEntity::createEntityType );
-	public static final RegistryObject< EntityType< CreeperlingEntity > > CREEPERLING = ENTITY_TYPES.create( "creeperling", CreeperlingEntity::createEntityType );
-	public static final RegistryObject< EntityType< CursedArmorEntity > > CURSED_ARMOR = ENTITY_TYPES.create( "cursed_armor", CursedArmorEntity::createEntityType );
-	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.create( "giant", GiantEntity::createEntityType );
-	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
-
-	// Effects
-	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.create( "bleeding", BleedingEffect::new );
-	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.create( "bleeding_immunity", BleedingImmunityEffect::new );
-	public static final RegistryObject< GlassRegenerationEffect > GLASS_REGENERATION = MOB_EFFECTS.create( "glass_regeneration", GlassRegenerationEffect::new );
-
-	// Blocks
-	public static final RegistryObject< EnderiumBlock > ENDERIUM_BLOCK = BLOCKS.create( "enderium_block", EnderiumBlock::new );
-	public static final RegistryObject< EnderiumShardOre > ENDERIUM_SHARD_ORE = BLOCKS.create( "enderium_shard_ore", EnderiumShardOre::new );
-	public static final RegistryObject< FragileEndStone > FRAGILE_END_STONE = BLOCKS.create( "fragile_end_stone", FragileEndStone::new );
-	public static final RegistryObject< InfernalSponge > INFERNAL_SPONGE = BLOCKS.create( "infernal_sponge", InfernalSponge::new );
-	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.create( "infested_end_stone", InfestedEndStone::new );
-	public static final RegistryObject< SoakedInfernalSponge > SOAKED_INFERNAL_SPONGE = BLOCKS.create( "soaked_infernal_sponge", SoakedInfernalSponge::new );
-
-	// Items
-	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.create( "bandage", BandageItem.normal() );
-	public static final RegistryObject< CerberusFangItem > CERBERUS_FANG = ITEMS.create( "cerberus_fang", CerberusFangItem::new );
-	public static final RegistryObject< ClothItem > CLOTH = ITEMS.create( "cloth", ClothItem::new );
-	public static final RegistryObject< EnderiumIngotItem > ENDERIUM_INGOT = ITEMS.create( "enderium_ingot", EnderiumIngotItem::new );
-	public static final RegistryObject< EnderiumShardItem > ENDERIUM_SHARD = ITEMS.create( "enderium_shard", EnderiumShardItem::new );
-	public static final RegistryObject< BandageItem > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", BandageItem.golden() );
-
-	// Items (blocks)
-	public static final RegistryObject< EnderiumBlock.Item > ENDERIUM_BLOCK_ITEM = ITEMS.create( "enderium_block", EnderiumBlock.Item::new );
-	public static final RegistryObject< EnderiumShardOre.Item > ENDERIUM_SHARD_ORE_ITEM = ITEMS.create( "enderium_shard_ore", EnderiumShardOre.Item::new );
-	public static final RegistryObject< FragileEndStone.Item > FRAGILE_END_STONE_ITEM = ITEMS.create( "fragile_end_stone", FragileEndStone.Item::new );
-	public static final RegistryObject< InfernalSponge.Item > INFERNAL_SPONGE_ITEM = ITEMS.create( "infernal_sponge", InfernalSponge.Item::new );
-	public static final RegistryObject< InfestedEndStone.Item > INFESTED_END_STONE_ITEM = ITEMS.create( "infested_end_stone", InfestedEndStone.Item::new );
-	public static final RegistryObject< SoakedInfernalSponge.Item > SOAKED_INFERNAL_SPONGE_ITEM = ITEMS.create( "soaked_infernal_sponge", SoakedInfernalSponge.Item::new );
-
-	// Items (spawn eggs)
-	public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.create( "cerberus_spawn_egg", ItemHelper.createEgg( CERBERUS, 0x212121, 0xe0e0e0 ) );
-	public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.create( "creeperling_spawn_egg", ItemHelper.createEgg( CREEPERLING, 0x0da70b, 0x000000 ) );
-	public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.create( "cursed_armor_spawn_egg", ItemHelper.createEgg( CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
-	public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.create( "giant_spawn_egg", ItemHelper.createEgg( GIANT, 0x00afaf, 0x799c65 ) );
-	public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( TANK, 0xc1c1c1, 0x949494 ) );
-
-	// Items (fake)
-	static {
-		ITEMS.create( "advancement_normal", FakeItem::new );
-		ITEMS.create( "advancement_expert", FakeItem::new );
-		ITEMS.create( "advancement_master", FakeItem::new );
+	public static class Entities {
+		public static final RegistryObject< EntityType< Cerberus > > CERBERUS = ENTITY_TYPES.create( "cerberus", Cerberus::createEntityType );
+		public static final RegistryObject< EntityType< Creeperling > > CREEPERLING = ENTITY_TYPES.create( "creeperling", Creeperling::createEntityType );
+		public static final RegistryObject< EntityType< CursedArmor > > CURSED_ARMOR = ENTITY_TYPES.create( "cursed_armor", CursedArmor::createEntityType );
+		public static final RegistryObject< EntityType< Giant > > GIANT = ENTITY_TYPES.create( "giant", Giant::createEntityType );
+		public static final RegistryObject< EntityType< Tank > > TANK = ENTITY_TYPES.create( "tank", Tank::createEntityType );
 	}
 
-	// Particles
-	public static final RegistryObject< SimpleParticleType > BLOOD_PARTICLE = PARTICLES.create( "blood", ()->new SimpleParticleType( true ) {} );
+	public static class Effects {
+		public static final RegistryObject< Bleeding > BLEEDING = MOB_EFFECTS.create( "bleeding", Bleeding::new );
+		public static final RegistryObject< BleedingImmunity > BLEEDING_IMMUNITY = MOB_EFFECTS.create( "bleeding_immunity", BleedingImmunity::new );
+		public static final RegistryObject< GlassRegeneration > GLASS_REGENERATION = MOB_EFFECTS.create( "glass_regeneration", GlassRegeneration::new );
+	}
 
-	// Loot Functions
-	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY = LOOT_FUNCTIONS.create( "curse_randomly", CurseRandomlyFunction::create );
+	public static class Blocks {
+		public static final RegistryObject< EnderiumBlock > ENDERIUM_BLOCK = BLOCKS.create( "enderium_block", EnderiumBlock::new );
+		public static final RegistryObject< EnderiumShardOre > ENDERIUM_SHARD_ORE = BLOCKS.create( "enderium_shard_ore", EnderiumShardOre::new );
+		public static final RegistryObject< FragileEndStone > FRAGILE_END_STONE = BLOCKS.create( "fragile_end_stone", FragileEndStone::new );
+		public static final RegistryObject< InfernalSponge > INFERNAL_SPONGE = BLOCKS.create( "infernal_sponge", InfernalSponge::new );
+		public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.create( "infested_end_stone", InfestedEndStone::new );
+		public static final RegistryObject< SoakedInfernalSponge > SOAKED_INFERNAL_SPONGE = BLOCKS.create( "soaked_infernal_sponge", SoakedInfernalSponge::new );
+	}
 
-	// Creative Mode Tabs
-	public static final RegistryObject< CreativeModeTab > CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", CreativeModeTabs.primary() );
+	public static class Items {
+		public static final RegistryObject< Bandage > BANDAGE = ITEMS.create( "bandage", Bandage.normal() );
+		public static final RegistryObject< CerberusFang > CERBERUS_FANG = ITEMS.create( "cerberus_fang", CerberusFang::new );
+		public static final RegistryObject< Cloth > CLOTH = ITEMS.create( "cloth", Cloth::new );
+		public static final RegistryObject< EnderiumIngot > ENDERIUM_INGOT = ITEMS.create( "enderium_ingot", EnderiumIngot::new );
+		public static final RegistryObject< EnderiumShard > ENDERIUM_SHARD = ITEMS.create( "enderium_shard", EnderiumShard::new );
+		public static final RegistryObject< Bandage > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", Bandage.golden() );
 
-	// Placed Features
-	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore" ) );
-	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore_large" ) );
-	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
-	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_LARGE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone_large" ) );
-	public static final ResourceKey< PlacedFeature > INFESTED_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "infested_end_stone" ) );
+		// Items (blocks)
+		public static final RegistryObject< EnderiumBlock.Item > ENDERIUM_BLOCK = ITEMS.create( "enderium_block", EnderiumBlock.Item::new );
+		public static final RegistryObject< EnderiumShardOre.Item > ENDERIUM_SHARD_ORE = ITEMS.create( "enderium_shard_ore", EnderiumShardOre.Item::new );
+		public static final RegistryObject< FragileEndStone.Item > FRAGILE_END_STONE = ITEMS.create( "fragile_end_stone", FragileEndStone.Item::new );
+		public static final RegistryObject< InfernalSponge.Item > INFERNAL_SPONGE = ITEMS.create( "infernal_sponge", InfernalSponge.Item::new );
+		public static final RegistryObject< InfestedEndStone.Item > INFESTED_END_STONE = ITEMS.create( "infested_end_stone", InfestedEndStone.Item::new );
+		public static final RegistryObject< SoakedInfernalSponge.Item > SOAKED_INFERNAL_SPONGE = ITEMS.create( "soaked_infernal_sponge", SoakedInfernalSponge.Item::new );
 
-	// Damage Sources
-	public static final ResourceKey< DamageType > BLEEDING_SOURCE = ResourceKey.create( Registries.DAMAGE_TYPE, HELPER.getLocation( "bleeding" ) );
+		// Items (spawn eggs)
+		public static final RegistryObject< SpawnEggItem > CERBERUS_SPAWN_EGG = ITEMS.create( "cerberus_spawn_egg", ItemHelper.createEgg( Entities.CERBERUS, 0x212121, 0xe0e0e0 ) );
+		public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.create( "creeperling_spawn_egg", ItemHelper.createEgg( Entities.CREEPERLING, 0x0da70b, 0x000000 ) );
+		public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.create( "cursed_armor_spawn_egg", ItemHelper.createEgg( Entities.CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
+		public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.create( "giant_spawn_egg", ItemHelper.createEgg( Entities.GIANT, 0x00afaf, 0x799c65 ) );
+		public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( Entities.TANK, 0xc1c1c1, 0x949494 ) );
 
-	// Advancements
-	public static final GameStageAdvancement GAME_STAGE_ADVANCEMENT = new GameStageAdvancement();
+		// Items (fake)
+		static {
+			ITEMS.create( "advancement_normal", FakeItem::new );
+			ITEMS.create( "advancement_expert", FakeItem::new );
+			ITEMS.create( "advancement_master", FakeItem::new );
+		}
+	}
+
+	public static class Particles {
+		public static final RegistryObject< SimpleParticleType > BLOOD = PARTICLES.create( "blood", ()->new SimpleParticleType( true ) {} );
+	}
+
+	public static class LootFunctions {
+		public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY = LOOT_FUNCTIONS.create( "curse_randomly", CurseRandomly::create );
+	}
+
+	public static class CreativeModeTabs {
+		public static final RegistryObject< CreativeModeTab > PRIMARY = CREATIVE_MODE_TABS.create( "primary", com.majruszsdifficulty.items.CreativeModeTabs.primary() );
+	}
+
+	public static class PlacedFeatures {
+		public static final ResourceKey< PlacedFeature > ENDERIUM_ORE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore" ) );
+		public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_LARGE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore_large" ) );
+		public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
+		public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_LARGE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone_large" ) );
+		public static final ResourceKey< PlacedFeature > INFESTED_END_STONE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "infested_end_stone" ) );
+	}
+
+	public static class DamageSources {
+		public static final ResourceKey< DamageType > BLEEDING = ResourceKey.create( Registries.DAMAGE_TYPE, HELPER.getLocation( "bleeding" ) );
+	}
+
+	public static class Advancements {
+		public static final GameStageAdvancement GAME_STAGE = new GameStageAdvancement();
+	}
 
 	static {
-		OnGameInitialized.listen( MajruszsDifficulty::setDefaultEmitters );
+		OnGameInitialized.listen( MajruszsDifficulty::addDefaultEmitters );
 
 		HELPER.create( Custom.Advancements.class, advancements->{
-			advancements.register( GAME_STAGE_ADVANCEMENT );
+			advancements.register( Advancements.GAME_STAGE );
 		} );
 
 		HELPER.create( Custom.Attributes.class, attributes->{
-			attributes.register( CERBERUS.get(), CerberusEntity.createAttributes() );
-			attributes.register( CURSED_ARMOR.get(), CursedArmorEntity.createAttributes() );
-			attributes.register( CREEPERLING.get(), CreeperlingEntity.createChildAttributes() );
-			attributes.register( GIANT.get(), GiantEntity.createAttributes() );
-			attributes.register( TANK.get(), TankEntity.createAttributes() );
+			attributes.register( Entities.CERBERUS.get(), Cerberus.createAttributes() );
+			attributes.register( Entities.CURSED_ARMOR.get(), CursedArmor.createAttributes() );
+			attributes.register( Entities.CREEPERLING.get(), Creeperling.createChildAttributes() );
+			attributes.register( Entities.GIANT.get(), Giant.createAttributes() );
+			attributes.register( Entities.TANK.get(), Tank.createAttributes() );
 		} );
 
 		HELPER.create( Custom.SpawnPlacements.class, spawnPlacements->{
-			spawnPlacements.register( CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CerberusEntity::checkMonsterSpawnRules );
-			spawnPlacements.register( CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmorEntity::checkMonsterSpawnRules );
-			spawnPlacements.register( CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreeperlingEntity::checkMonsterSpawnRules );
-			spawnPlacements.register( GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantEntity::checkMonsterSpawnRules );
-			spawnPlacements.register( TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TankEntity::checkMonsterSpawnRules );
+			spawnPlacements.register( Entities.CERBERUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Cerberus::checkMonsterSpawnRules );
+			spawnPlacements.register( Entities.CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmor::checkMonsterSpawnRules );
+			spawnPlacements.register( Entities.CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Creeperling::checkMonsterSpawnRules );
+			spawnPlacements.register( Entities.GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Giant::checkMonsterSpawnRules );
+			spawnPlacements.register( Entities.TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Tank::checkMonsterSpawnRules );
 		} );
 	}
 
-	private static void setDefaultEmitters( OnGameInitialized data ) {
-		ParticleEmitter.setDefault( BLOOD_PARTICLE.get(), new ParticleEmitter.Properties( ParticleEmitter.offset( 0.5f ), ParticleEmitter.speed( 0.025f, 0.075f ) ) );
+	private static void addDefaultEmitters( OnGameInitialized data ) {
+		ParticleEmitter.setDefault( Particles.BLOOD.get(), new ParticleEmitter.Properties( ParticleEmitter.offset( 0.5f ), ParticleEmitter.speed( 0.025f, 0.075f ) ) );
 	}
-
-	private MajruszsDifficulty() {}
 
 	@OnlyIn( Dist.CLIENT )
 	public static class Client {
@@ -175,15 +183,15 @@ public class MajruszsDifficulty {
 			} );
 
 			HELPER.create( Custom.Particles.class, particles->{
-				particles.register( BLOOD_PARTICLE.get(), BloodParticle.Factory::new );
+				particles.register( Particles.BLOOD.get(), BloodParticle.Factory::new );
 			} );
 
 			HELPER.create( Custom.Renderers.class, renderers->{
-				renderers.register( CERBERUS.get(), CerberusRenderer::new );
-				renderers.register( CURSED_ARMOR.get(), CursedArmorRenderer::new );
-				renderers.register( CREEPERLING.get(), CreeperlingRenderer::new );
-				renderers.register( GIANT.get(), GiantRenderer::new );
-				renderers.register( TANK.get(), TankRenderer::new );
+				renderers.register( Entities.CERBERUS.get(), CerberusRenderer::new );
+				renderers.register( Entities.CURSED_ARMOR.get(), CursedArmorRenderer::new );
+				renderers.register( Entities.CREEPERLING.get(), CreeperlingRenderer::new );
+				renderers.register( Entities.GIANT.get(), GiantRenderer::new );
+				renderers.register( Entities.TANK.get(), TankRenderer::new );
 			} );
 		}
 	}

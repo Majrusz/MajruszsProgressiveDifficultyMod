@@ -8,7 +8,7 @@ import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.registry.Registries;
 import com.majruszlibrary.text.RegexString;
-import com.majruszsdifficulty.effects.BleedingEffect;
+import com.majruszsdifficulty.effects.Bleeding;
 import com.majruszsdifficulty.events.OnBleedingCheck;
 import com.majruszsdifficulty.events.OnBleedingTooltip;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -38,7 +38,7 @@ public class BleedingSources {
 				.addCondition( data->IS_ENABLED )
 				.addCondition( data->data.itemStack.getItem() instanceof ProjectileWeaponItem );
 
-			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+			Serializables.getStatic( Bleeding.Config.Sources.class )
 				.define( "arrows", Arrows.class );
 
 			Serializables.getStatic( Arrows.class )
@@ -64,7 +64,7 @@ public class BleedingSources {
 				.addCondition( data->data.attacker instanceof Animal || data.attacker instanceof Zombie || data.attacker instanceof Spider )
 				.addCondition( data->!BLACKLISTED_ANIMALS.contains( data.attacker.getType() ) );
 
-			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+			Serializables.getStatic( Bleeding.Config.Sources.class )
 				.define( "bite", Bite.class );
 
 			Serializables.getStatic( Bite.class )
@@ -84,7 +84,7 @@ public class BleedingSources {
 				.addCondition( data->IS_ENABLED )
 				.addCondition( data->data.source.is( DamageTypes.CACTUS ) );
 
-			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+			Serializables.getStatic( Bleeding.Config.Sources.class )
 				.define( "cactus", Cactus.class );
 
 			Serializables.getStatic( Cactus.class )
@@ -118,7 +118,7 @@ public class BleedingSources {
 			OnBleedingTooltip.listen( Tools::addTooltip )
 				.addCondition( data->IS_ENABLED );
 
-			Serializables.getStatic( BleedingEffect.Config.Sources.class )
+			Serializables.getStatic( Bleeding.Config.Sources.class )
 				.define( "tools", Tools.class );
 
 			Serializables.getStatic( Tools.class )

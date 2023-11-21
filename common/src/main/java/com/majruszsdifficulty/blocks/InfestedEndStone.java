@@ -59,7 +59,7 @@ public class InfestedEndStone extends Block {
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.INFESTED_END_STONE.get(), new Properties().stacksTo( 64 ) );
+			super( MajruszsDifficulty.Blocks.INFESTED_END_STONE.get(), new Properties().stacksTo( 64 ) );
 		}
 	}
 }

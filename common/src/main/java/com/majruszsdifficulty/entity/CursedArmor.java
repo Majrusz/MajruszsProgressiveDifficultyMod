@@ -53,7 +53,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class CursedArmorEntity extends Monster implements IAnimableEntity {
+public class CursedArmor extends Monster implements IAnimableEntity {
 	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cursed_armor_animation", AnimationsDef.class, PackType.SERVER_DATA );
 	private static float ITEM_DROP_CHANCE = 0.2f;
 	private static float NAME_CHANCE = 0.025f;
@@ -98,41 +98,41 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 	private final Animations animations = Animations.create();
 
 	static {
-		OnLootGenerated.listen( CursedArmorEntity::spawnCursedArmor )
+		OnLootGenerated.listen( CursedArmor::spawnCursedArmor )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->data.getLevel() != null )
 			.addCondition( data->data.origin != null )
 			.addCondition( data->BlockHelper.getEntity( data.getLevel(), data.origin ) instanceof ChestBlockEntity )
-			.addCondition( data->Random.check( CursedArmorEntity.find( data.lootId ).map( def->def.chance ).orElse( 0.0f ) ) );
+			.addCondition( data->Random.check( CursedArmor.find( data.lootId ).map( def->def.chance ).orElse( 0.0f ) ) );
 
-		OnEntitySpawned.listen( CursedArmorEntity::giveRandomArmor )
+		OnEntitySpawned.listen( CursedArmor::giveRandomArmor )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->!data.isLoadedFromDisk )
-			.addCondition( data->data.entity instanceof CursedArmorEntity );
+			.addCondition( data->data.entity instanceof CursedArmor );
 
-		OnEntitySpawned.listen( CursedArmorEntity::setCustomName )
+		OnEntitySpawned.listen( CursedArmor::setCustomName )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( Condition.chance( ()->CursedArmorEntity.NAME_CHANCE ) )
+			.addCondition( Condition.chance( ()->CursedArmor.NAME_CHANCE ) )
 			.addCondition( data->!data.isLoadedFromDisk )
-			.addCondition( data->data.entity instanceof CursedArmorEntity );
+			.addCondition( data->data.entity instanceof CursedArmor );
 
-		OnEntityTicked.listen( CursedArmorEntity::spawnIdleParticles )
+		OnEntityTicked.listen( CursedArmor::spawnIdleParticles )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.cooldown( 0.2f ) )
-			.addCondition( data->data.entity instanceof CursedArmorEntity );
+			.addCondition( data->data.entity instanceof CursedArmor );
 
-		OnEntityTicked.listen( CursedArmorEntity::spawnAssemblingParticles )
+		OnEntityTicked.listen( CursedArmor::spawnAssemblingParticles )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.cooldown( 0.2f ) )
-			.addCondition( data->data.entity instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
+			.addCondition( data->data.entity instanceof CursedArmor cursedArmor && cursedArmor.isAssembling() );
 
 		OnEntityPreDamaged.listen( OnEntityPreDamaged::cancelDamage )
-			.addCondition( data->data.target instanceof CursedArmorEntity cursedArmor && cursedArmor.isAssembling() );
+			.addCondition( data->data.target instanceof CursedArmor cursedArmor && cursedArmor.isAssembling() );
 
 		Serializables.getStatic( com.majruszsdifficulty.data.Config.Mobs.class )
-			.define( "cursed_armor", CursedArmorEntity.class );
+			.define( "cursed_armor", CursedArmor.class );
 
-		Serializables.getStatic( CursedArmorEntity.class )
+		Serializables.getStatic( CursedArmor.class )
 			.define( "item_drop_chance", Reader.number(), ()->ITEM_DROP_CHANCE, v->ITEM_DROP_CHANCE = Range.CHANCE.clamp( v ) )
 			.define( "custom_name_chance", Reader.number(), ()->NAME_CHANCE, v->NAME_CHANCE = Range.CHANCE.clamp( v ) )
 			.define( "custom_names", Reader.list( Reader.string() ), ()->NAMES, v->NAMES = v )
@@ -144,8 +144,8 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 			.define( "chance", Reader.number(), s->s.chance, ( s, v )->s.chance = v );
 	}
 
-	public static EntityType< CursedArmorEntity > createEntityType() {
-		return EntityType.Builder.of( CursedArmorEntity::new, MobCategory.MONSTER )
+	public static EntityType< CursedArmor > createEntityType() {
+		return EntityType.Builder.of( CursedArmor::new, MobCategory.MONSTER )
 			.sized( 0.5f, 1.9f )
 			.build( "cursed_armor" );
 	}
@@ -161,7 +161,7 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 			.build();
 	}
 
-	public CursedArmorEntity( EntityType< ? extends Monster > entityType, Level level ) {
+	public CursedArmor( EntityType< ? extends Monster > entityType, Level level ) {
 		super( entityType, level );
 	}
 
@@ -241,8 +241,8 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 
 	private static void spawnCursedArmor( OnLootGenerated data ) {
 		TimeHelper.nextTick( delay->{
-			CursedArmorEntity cursedArmor = EntityHelper.createSpawner( MajruszsDifficulty.CURSED_ARMOR, data.getLevel() )
-				.position( CursedArmorEntity.getSpawnPosition( data ) )
+			CursedArmor cursedArmor = EntityHelper.createSpawner( MajruszsDifficulty.Entities.CURSED_ARMOR, data.getLevel() )
+				.position( CursedArmor.getSpawnPosition( data ) )
 				.beforeEvent( entity->{
 					float yRot = BlockHelper.getState( data.getLevel(), data.origin ).getValue( ChestBlock.FACING ).toYRot();
 					entity.setYRot( yRot );
@@ -252,7 +252,7 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 				.spawn();
 			if( cursedArmor != null ) {
 				cursedArmor.assemble();
-				cursedArmor.equip( CursedArmorEntity.find( data.lootId ).orElseThrow() );
+				cursedArmor.equip( CursedArmor.find( data.lootId ).orElseThrow() );
 				if( data.entity instanceof ServerPlayer player ) {
 					TimeHelper.nextTick( subdelay->player.closeContainer() );
 				}
@@ -261,15 +261,15 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 	}
 
 	private static void giveRandomArmor( OnEntitySpawned data ) {
-		CursedArmorEntity cursedArmor = ( CursedArmorEntity )data.entity;
+		CursedArmor cursedArmor = ( CursedArmor )data.entity;
 		if( cursedArmor.getArmorCoverPercentage() == 0.0f ) {
 			cursedArmor.assemble();
-			cursedArmor.equip( CursedArmorEntity.getRandomLocationDef() );
+			cursedArmor.equip( CursedArmor.getRandomLocationDef() );
 		}
 	}
 
 	private static void setCustomName( OnEntitySpawned data ) {
-		data.entity.setCustomName( TextHelper.literal( Random.next( CursedArmorEntity.NAMES ) ) );
+		data.entity.setCustomName( TextHelper.literal( Random.next( CursedArmor.NAMES ) ) );
 	}
 
 	private static Vec3 getSpawnPosition( OnLootGenerated data ) {
@@ -284,11 +284,11 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 	}
 
 	private static void spawnIdleParticles( OnEntityTicked data ) {
-		CursedArmorEntity.spawnParticles( data, new Vec3( 0.0, data.entity.getBbHeight() * 0.5, 0.0 ), 0.3, 1 );
+		CursedArmor.spawnParticles( data, new Vec3( 0.0, data.entity.getBbHeight() * 0.5, 0.0 ), 0.3, 1 );
 	}
 
 	private static void spawnAssemblingParticles( OnEntityTicked data ) {
-		CursedArmorEntity.spawnParticles( data, new Vec3( 0.0, 0.0, 0.0 ), 0.6, 5 );
+		CursedArmor.spawnParticles( data, new Vec3( 0.0, 0.0, 0.0 ), 0.6, 5 );
 	}
 
 	private static void spawnParticles( OnEntityTicked data, Vec3 emitterOffset, double offsetMultiplier, int particlesCount ) {
@@ -301,9 +301,9 @@ public class CursedArmorEntity extends Monster implements IAnimableEntity {
 	}
 
 	public static class AssembleGoal extends Goal {
-		private final CursedArmorEntity cursedArmor;
+		private final CursedArmor cursedArmor;
 
-		public AssembleGoal( CursedArmorEntity cursedArmor ) {
+		public AssembleGoal( CursedArmor cursedArmor ) {
 			this.cursedArmor = cursedArmor;
 
 			this.setFlags( EnumSet.of( Flag.MOVE, Flag.LOOK ) );

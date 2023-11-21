@@ -42,27 +42,27 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class CerberusEntity extends Monster implements IAnimableEntity {
+public class Cerberus extends Monster implements IAnimableEntity {
 	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cerberus_animation", AnimationsDef.class, PackType.SERVER_DATA );
 	private final Animations animations = Animations.create();
 
 	static {
-		OnEntityDamaged.listen( CerberusEntity::applyWither )
+		OnEntityDamaged.listen( Cerberus::applyWither )
 			.addCondition( OnEntityDamaged::isDirect )
-			.addCondition( data->data.attacker instanceof CerberusEntity );
+			.addCondition( data->data.attacker instanceof Cerberus );
 
 		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
 			.addCondition( data->data.effect.equals( MobEffects.WITHER ) )
-			.addCondition( data->data.entity instanceof CerberusEntity );
+			.addCondition( data->data.entity instanceof Cerberus );
 
-		OnEntityTicked.listen( CerberusEntity::spawnParticle )
+		OnEntityTicked.listen( Cerberus::spawnParticle )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.cooldown( 0.2f ) )
-			.addCondition( data->data.entity instanceof CerberusEntity );
+			.addCondition( data->data.entity instanceof Cerberus );
 	}
 
-	public static EntityType< CerberusEntity > createEntityType() {
-		return EntityType.Builder.of( CerberusEntity::new, MobCategory.MONSTER )
+	public static EntityType< Cerberus > createEntityType() {
+		return EntityType.Builder.of( Cerberus::new, MobCategory.MONSTER )
 			.sized( 1.2f, 1.75f )
 			.build( "cerberus" );
 	}
@@ -77,7 +77,7 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 			.build();
 	}
 
-	public CerberusEntity( EntityType< ? extends Monster > entityType, Level level ) {
+	public Cerberus( EntityType< ? extends Monster > entityType, Level level ) {
 		super( entityType, level );
 	}
 
@@ -178,10 +178,10 @@ public class CerberusEntity extends Monster implements IAnimableEntity {
 	}
 
 	private static class CerberusMeleeAttackGoal extends MeleeAttackGoal {
-		private final CerberusEntity cerberus;
+		private final Cerberus cerberus;
 		private int fireballCooldownLeft = 0;
 
-		public CerberusMeleeAttackGoal( CerberusEntity cerberus ) {
+		public CerberusMeleeAttackGoal( Cerberus cerberus ) {
 			super( cerberus, 1.5, true );
 
 			this.cerberus = cerberus;
