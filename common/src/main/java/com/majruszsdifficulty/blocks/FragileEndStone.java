@@ -26,7 +26,7 @@ public class FragileEndStone extends Block {
 	public void stepOn( Level level, BlockPos blockPos, BlockState blockState, Entity entity ) {
 		super.stepOn( level, blockPos, blockState, entity );
 
-		if( entity instanceof Player player && !player.isCrouching() ) {
+		if( entity instanceof Player player && !player.isSteppingCarefully() ) {
 			FragileEndStone.destroy( level, blockState, blockPos, player );
 		}
 	}

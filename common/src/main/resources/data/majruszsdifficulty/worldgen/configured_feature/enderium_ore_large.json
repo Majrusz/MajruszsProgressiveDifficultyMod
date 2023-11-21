@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:scattered_ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.99,
+    "size": 2,
+    "targets": [
+      {
+        "state": {
+          "Name": "majruszsdifficulty:enderium_shard_ore"
+        },
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:end_stone"
+        }
+      }
+    ]
+  }
+}

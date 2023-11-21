@@ -9,8 +9,7 @@ import com.majruszlibrary.modhelper.ModHelper;
 import com.majruszlibrary.registry.Custom;
 import com.majruszlibrary.registry.RegistryGroup;
 import com.majruszlibrary.registry.RegistryObject;
-import com.majruszsdifficulty.blocks.FragileEndStone;
-import com.majruszsdifficulty.blocks.InfestedEndStone;
+import com.majruszsdifficulty.blocks.*;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.effects.BleedingEffect;
@@ -69,10 +68,12 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
 
 	// Blocks
+	public static final RegistryObject< EnderiumShardOre > ENDERIUM_SHARD_ORE = BLOCKS.create( "enderium_shard_ore", EnderiumShardOre::new );
 	public static final RegistryObject< FragileEndStone > FRAGILE_END_STONE = BLOCKS.create( "fragile_end_stone", FragileEndStone::new );
 	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.create( "infested_end_stone", InfestedEndStone::new );
 
-	// Items
+	// Items (blocks)
+	public static final RegistryObject< EnderiumShardOre.Item > ENDERIUM_SHARD_ORE_ITEM = ITEMS.create( "enderium_shard_ore", EnderiumShardOre.Item::new );
 	public static final RegistryObject< FragileEndStone.Item > FRAGILE_END_STONE_ITEM = ITEMS.create( "fragile_end_stone", FragileEndStone.Item::new );
 	public static final RegistryObject< InfestedEndStone.Item > INFESTED_END_STONE_ITEM = ITEMS.create( "infested_end_stone", InfestedEndStone.Item::new );
 
@@ -105,6 +106,8 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< CreativeModeTab > CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", CreativeModeTabs.primary() );
 
 	// Placed Features
+	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore" ) );
+	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore_large" ) );
 	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
 	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_LARGE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone_large" ) );
 	public static final ResourceKey< PlacedFeature > INFESTED_END_STONE_PLACED = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "infested_end_stone" ) );

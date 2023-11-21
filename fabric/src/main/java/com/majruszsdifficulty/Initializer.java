@@ -15,6 +15,8 @@ public class Initializer implements ModInitializer {
 	public void onInitialize() {
 		MajruszsDifficulty.HELPER.register();
 
+		BiomeModifications.addFeature( IS_END, GenerationStep.Decoration.UNDERGROUND_ORES, MajruszsDifficulty.ENDERIUM_ORE_PLACED );
+		BiomeModifications.addFeature( IS_END, GenerationStep.Decoration.UNDERGROUND_ORES, MajruszsDifficulty.ENDERIUM_ORE_LARGE_PLACED );
 		BiomeModifications.addFeature( IS_END, GenerationStep.Decoration.UNDERGROUND_ORES, MajruszsDifficulty.FRAGILE_END_STONE_PLACED );
 		BiomeModifications.addFeature( IS_END, GenerationStep.Decoration.UNDERGROUND_ORES, MajruszsDifficulty.FRAGILE_END_STONE_LARGE_PLACED );
 		BiomeModifications.addFeature( IS_END, GenerationStep.Decoration.UNDERGROUND_ORES, MajruszsDifficulty.INFESTED_END_STONE_PLACED );
