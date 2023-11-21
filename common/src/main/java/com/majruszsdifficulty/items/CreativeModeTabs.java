@@ -22,6 +22,7 @@ public class CreativeModeTabs {
 
 	private static void definePrimaryItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
 		Stream.of(
+			MajruszsDifficulty.ENDERIUM_BLOCK,
 			MajruszsDifficulty.ENDERIUM_SHARD_ORE,
 			MajruszsDifficulty.FRAGILE_END_STONE,
 			MajruszsDifficulty.INFESTED_END_STONE,
