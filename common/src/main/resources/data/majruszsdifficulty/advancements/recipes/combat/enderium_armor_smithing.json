@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszsdifficulty:enderium_boots_smithing",
+      "majruszsdifficulty:enderium_chestplate_smithing",
+      "majruszsdifficulty:enderium_helmet_smithing",
+      "majruszsdifficulty:enderium_leggings_smithing"
+    ]
+  },
+  "criteria": {
+    "has_enderium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "majruszsdifficulty:enderium_ingot"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_enderium_ingot"
+    ]
+  ]
+}

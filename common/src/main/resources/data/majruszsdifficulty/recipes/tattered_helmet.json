@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "cloth",
+  "pattern": [
+    "ccc",
+    "c c"
+  ],
+  "key": {
+    "c": {
+      "item": "majruszsdifficulty:cloth"
+    }
+  },
+  "result": {
+    "item": "majruszsdifficulty:tattered_helmet",
+    "count": 1
+  }
+}

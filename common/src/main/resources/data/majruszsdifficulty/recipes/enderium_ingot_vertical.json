@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "enderium_ingot",
+  "pattern": [
+    "cc ",
+    "cec",
+    " cc"
+  ],
+  "key": {
+    "c": {
+      "item": "majruszsdifficulty:enderium_shard"
+    },
+    "e": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "item": "majruszsdifficulty:enderium_ingot",
+    "count": 1
+  }
+}

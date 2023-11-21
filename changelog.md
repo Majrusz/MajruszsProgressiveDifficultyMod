@@ -13,6 +13,7 @@
 - removed Netherite and Enderium Axes from Cursed Armors in End Cities
 - removed detailed tooltip from Cursed Armor Spawn Egg
 - removed Cloth drop chance from Undead Army mobs
+- removed Emerald as drop chance from Illusioner
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "majruszsdifficulty:block/soaked_infernal_sponge"
+  }
+}

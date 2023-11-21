@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "string",
+  "ingredients": [
+    {
+      "item": "majruszsdifficulty:cerberus_fang"
+    }
+  ],
+  "result": {
+    "item": "minecraft:bone_meal",
+    "count": 1
+  }
+}

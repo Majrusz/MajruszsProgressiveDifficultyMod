@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:nether/summon_wither",
+  "display": {
+    "icon": {
+      "item": "majruszsdifficulty:wither_treasure_bag"
+    },
+    "title": {
+      "translate": "advancements.progressive_difficulty.wither_treasure_bag.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_difficulty.wither_treasure_bag.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "bag_opened": {
+      "trigger": "majruszsdifficulty:treasure_bag_opened",
+      "conditions": {
+        "bag_id": "majruszsdifficulty:wither_treasure_bag",
+        "amount": 1
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bag_opened"
+    ]
+  ]
+}
