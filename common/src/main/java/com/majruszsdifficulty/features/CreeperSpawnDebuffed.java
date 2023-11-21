@@ -2,16 +2,14 @@ package com.majruszsdifficulty.features;
 
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.entity.EffectDef;
 import com.majruszlibrary.events.OnEntitySpawned;
 import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
-import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.data.EffectDef;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
 
@@ -47,9 +45,6 @@ public class CreeperSpawnDebuffed {
 	}
 
 	private static void applyRandomEffect( OnEntitySpawned data ) {
-		Creeper creeper = ( Creeper )data.entity;
-		EffectDef effectDef = Random.next( EFFECTS );
-
-		creeper.addEffect( new MobEffectInstance( effectDef.effect.get(), TimeHelper.toTicks( effectDef.duration ), effectDef.amplifier ) );
+		( ( Creeper )data.entity ).addEffect( Random.next( EFFECTS ).toEffectInstance() );
 	}
 }
