@@ -1,8 +1,8 @@
-package com.majruszsdifficulty.contexts;
+package com.majruszsdifficulty.events;
 
-import com.majruszlibrary.contexts.OnItemAttributeTooltip;
-import com.majruszlibrary.contexts.base.Context;
-import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszlibrary.events.OnItemAttributeTooltip;
+import com.majruszlibrary.events.base.Event;
+import com.majruszlibrary.events.base.Events;
 import com.majruszlibrary.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,8 +16,8 @@ public class OnBleedingTooltip {
 	public final int amplifier;
 	private final OnItemAttributeTooltip data;
 
-	public static Context< OnBleedingTooltip > listen( Consumer< OnBleedingTooltip > consumer ) {
-		return Contexts.get( OnBleedingTooltip.class ).add( consumer );
+	public static Event< OnBleedingTooltip > listen( Consumer< OnBleedingTooltip > consumer ) {
+		return Events.get( OnBleedingTooltip.class ).add( consumer );
 	}
 
 	public OnBleedingTooltip( OnItemAttributeTooltip data, int amplifier ) {

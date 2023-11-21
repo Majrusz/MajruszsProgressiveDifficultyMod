@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamestage.contexts;
 
-import com.majruszlibrary.contexts.base.Context;
-import com.majruszlibrary.contexts.base.Contexts;
+import com.majruszlibrary.events.base.Event;
+import com.majruszlibrary.events.base.Events;
 import com.majruszsdifficulty.gamestage.GameStage;
 import net.minecraft.world.entity.player.Player;
 
@@ -12,8 +12,8 @@ public class OnPlayerGameStageChanged {
 	public final GameStage current;
 	public final Player player;
 
-	public static Context< OnPlayerGameStageChanged > listen( Consumer< OnPlayerGameStageChanged > consumer ) {
-		return Contexts.get( OnPlayerGameStageChanged.class ).add( consumer );
+	public static Event< OnPlayerGameStageChanged > listen( Consumer< OnPlayerGameStageChanged > consumer ) {
+		return Events.get( OnPlayerGameStageChanged.class ).add( consumer );
 	}
 
 	public OnPlayerGameStageChanged( GameStage previous, GameStage current, Player player ) {

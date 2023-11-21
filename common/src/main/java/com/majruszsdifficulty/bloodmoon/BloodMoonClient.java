@@ -1,8 +1,8 @@
-package com.majruszsdifficulty.events.bloodmoon;
+package com.majruszsdifficulty.bloodmoon;
 
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
-import com.majruszlibrary.contexts.OnClientTicked;
+import com.majruszlibrary.events.OnClientTicked;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 

@@ -2,9 +2,9 @@ package com.majruszsdifficulty;
 
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
-import com.majruszlibrary.contexts.OnGameInitialized;
-import com.majruszlibrary.contexts.OnParticlesRegistered;
 import com.majruszlibrary.emitter.ParticleEmitter;
+import com.majruszlibrary.events.OnGameInitialized;
+import com.majruszlibrary.events.OnParticlesRegistered;
 import com.majruszlibrary.item.ItemHelper;
 import com.majruszlibrary.modhelper.ModHelper;
 import com.majruszlibrary.registry.Custom;

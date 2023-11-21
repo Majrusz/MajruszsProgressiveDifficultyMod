@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.events.bloodmoon;
+package com.majruszsdifficulty.bloodmoon;
 
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;

@@ -1,10 +1,10 @@
-package com.majruszsdifficulty.events.bloodmoon;
+package com.majruszsdifficulty.bloodmoon;
 
-import com.majruszlibrary.contexts.base.Contexts;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
-import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonFinished;
-import com.majruszsdifficulty.events.bloodmoon.contexts.OnBloodMoonStarted;
+import com.majruszlibrary.events.base.Events;
+import com.majruszsdifficulty.bloodmoon.contexts.OnBloodMoonFinished;
+import com.majruszsdifficulty.bloodmoon.contexts.OnBloodMoonStarted;
 
 public class BloodMoon {
 	boolean isActive = false;
@@ -15,7 +15,7 @@ public class BloodMoon {
 	}
 
 	public boolean start() {
-		if( !this.isActive && !Contexts.dispatch( new OnBloodMoonStarted() ).isCancelled() ) {
+		if( !this.isActive && !Events.dispatch( new OnBloodMoonStarted() ).isCancelled() ) {
 			this.isActive = true;
 
 			return true;
@@ -26,7 +26,7 @@ public class BloodMoon {
 
 	public boolean finish() {
 		if( this.isActive ) {
-			Contexts.dispatch( new OnBloodMoonFinished() );
+			Events.dispatch( new OnBloodMoonFinished() );
 			this.isActive = false;
 
 			return true;

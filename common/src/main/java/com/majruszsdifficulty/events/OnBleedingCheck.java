@@ -1,23 +1,23 @@
-package com.majruszsdifficulty.contexts;
+package com.majruszsdifficulty.events;
 
-import com.majruszlibrary.contexts.OnEntityDamaged;
-import com.majruszlibrary.contexts.base.Context;
-import com.majruszlibrary.contexts.base.Contexts;
-import com.majruszlibrary.contexts.data.ICancellableData;
+import com.majruszlibrary.events.OnEntityDamaged;
+import com.majruszlibrary.events.base.Event;
+import com.majruszlibrary.events.base.Events;
+import com.majruszlibrary.events.type.ICancellableEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class OnBleedingCheck implements ICancellableData {
+public class OnBleedingCheck implements ICancellableEvent {
 	public final DamageSource source;
 	public final @Nullable LivingEntity attacker;
 	public final LivingEntity target;
 	private boolean isBleedingTriggered = false;
 
-	public static Context< OnBleedingCheck > listen( Consumer< OnBleedingCheck > consumer ) {
-		return Contexts.get( OnBleedingCheck.class ).add( consumer );
+	public static Event< OnBleedingCheck > listen( Consumer< OnBleedingCheck > consumer ) {
+		return Events.get( OnBleedingCheck.class ).add( consumer );
 	}
 
 	public OnBleedingCheck( OnEntityDamaged data ) {

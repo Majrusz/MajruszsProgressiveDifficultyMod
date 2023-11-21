@@ -1,16 +1,16 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszlibrary.contexts.OnEntityDamaged;
-import com.majruszlibrary.contexts.OnEntityTicked;
-import com.majruszlibrary.contexts.base.Condition;
-import com.majruszlibrary.contexts.base.Contexts;
 import com.majruszlibrary.entity.EffectHelper;
 import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.events.OnEntityDamaged;
+import com.majruszlibrary.events.OnEntityTicked;
+import com.majruszlibrary.events.base.Condition;
+import com.majruszlibrary.events.base.Events;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.contexts.OnBleedingCheck;
 import com.majruszsdifficulty.effects.BleedingEffect;
+import com.majruszsdifficulty.events.OnBleedingCheck;
 import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -36,7 +36,7 @@ public class BleedingDamage {
 	}
 
 	private static void tryToApply( OnEntityDamaged data ) {
-		if( Contexts.dispatch( new OnBleedingCheck( data ) ).isBleedingTriggered() && BleedingEffect.apply( data.target, data.attacker ) ) {
+		if( Events.dispatch( new OnBleedingCheck( data ) ).isBleedingTriggered() && BleedingEffect.apply( data.target, data.attacker ) ) {
 			BleedingDamage.dealDamage( data.target );
 		}
 	}

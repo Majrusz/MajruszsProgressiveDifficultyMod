@@ -2,8 +2,8 @@ package com.majruszsdifficulty.gui;
 
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
-import com.majruszlibrary.contexts.OnClientTicked;
-import com.majruszlibrary.contexts.OnGuiOverlaysRegistered;
+import com.majruszlibrary.events.OnClientTicked;
+import com.majruszlibrary.events.OnGuiOverlaysRegistered;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.time.TimeHelper;

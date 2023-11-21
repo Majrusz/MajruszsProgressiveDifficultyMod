@@ -1,8 +1,8 @@
-package com.majruszsdifficulty.events.bloodmoon.listeners;
+package com.majruszsdifficulty.bloodmoon.listeners;
 
-import com.majruszlibrary.contexts.OnMobSpawnLimitGet;
-import com.majruszlibrary.contexts.OnMobSpawnRateGet;
-import com.majruszsdifficulty.events.bloodmoon.BloodMoonHelper;
+import com.majruszlibrary.events.OnMobSpawnLimitGet;
+import com.majruszlibrary.events.OnMobSpawnRateGet;
+import com.majruszsdifficulty.bloodmoon.BloodMoonHelper;
 
 public class SpawnRateIncreaser {
 	static {

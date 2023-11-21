@@ -1,15 +1,15 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszlibrary.contexts.OnEntityEffectCheck;
-import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.events.OnEntityEffectCheck;
+import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.item.EquipmentSlots;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.contexts.OnBleedingTooltip;
 import com.majruszsdifficulty.effects.BleedingEffect;
+import com.majruszsdifficulty.events.OnBleedingTooltip;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;

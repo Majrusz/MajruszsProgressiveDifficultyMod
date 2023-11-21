@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.effects;
 
-import com.majruszlibrary.contexts.OnEntityEffectCheck;
 import com.majruszlibrary.entity.EffectHelper;
+import com.majruszlibrary.events.OnEntityEffectCheck;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

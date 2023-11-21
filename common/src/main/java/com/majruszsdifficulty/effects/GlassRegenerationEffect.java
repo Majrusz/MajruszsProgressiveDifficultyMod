@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.effects;
 
-import com.majruszlibrary.contexts.OnEntityDamaged;
-import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.emitter.SoundEmitter;
 import com.majruszlibrary.entity.EffectHelper;
+import com.majruszlibrary.events.OnEntityDamaged;
+import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.sounds.SoundEvents;

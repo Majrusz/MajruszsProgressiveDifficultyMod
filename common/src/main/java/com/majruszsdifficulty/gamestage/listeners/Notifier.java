@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.gamestage.listeners;
 
-import com.majruszlibrary.contexts.base.Condition;
+import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;

@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.features;
 
 import com.majruszlibrary.collection.DefaultMap;
-import com.majruszlibrary.contexts.OnLootGenerated;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.emitter.ParticleEmitter;
+import com.majruszlibrary.events.OnLootGenerated;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.registry.Registries;

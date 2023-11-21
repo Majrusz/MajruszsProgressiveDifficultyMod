@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.gamestage;
 
 import com.majruszlibrary.collection.CollectionHelper;
-import com.majruszlibrary.contexts.data.ILevelData;
-import com.majruszlibrary.contexts.data.IPositionData;
+import com.majruszlibrary.events.type.ILevelEvent;
+import com.majruszlibrary.events.type.IPositionEvent;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
@@ -78,7 +78,7 @@ public class GameStageHelper {
 		return GameStageHelper.getGameStage( players.get( closestPlayerIdx ) );
 	}
 
-	public static < Type extends ILevelData & IPositionData > GameStage determineGameStage( Type data ) {
+	public static < Type extends ILevelEvent & IPositionEvent > GameStage determineGameStage( Type data ) {
 		return GameStageHelper.determineGameStage( data.getLevel(), data.getPosition() );
 	}
 

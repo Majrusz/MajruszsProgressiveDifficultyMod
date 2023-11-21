@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.mixin;
 
-import com.majruszsdifficulty.events.bloodmoon.BloodMoonHelper;
+import com.majruszsdifficulty.bloodmoon.BloodMoonHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;

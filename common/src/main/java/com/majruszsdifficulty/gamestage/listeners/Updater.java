@@ -1,7 +1,7 @@
 package com.majruszsdifficulty.gamestage.listeners;
 
-import com.majruszlibrary.contexts.OnDimensionChanged;
-import com.majruszlibrary.contexts.OnEntityDied;
+import com.majruszlibrary.events.OnDimensionChanged;
+import com.majruszlibrary.events.OnEntityDied;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.registry.Registries;
 import com.majruszsdifficulty.gamestage.GameStage;

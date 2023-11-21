@@ -1,8 +1,8 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszlibrary.contexts.OnEntityPreDamaged;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.events.OnEntityPreDamaged;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.gamestage.GameStage;

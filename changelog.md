@@ -7,10 +7,12 @@
 - added chance for Pillagers to hold fireworks and Multishot crossbows (suggested by @Tides of Twilight)
 - added glass break sound when Glass Regeneration gets removed
 - added possibility to cure Bleeding with Milk Bucket
+- added Cloth to Undead Army Treasure Bag
 - added config list for animals that should not apply Bleeding
 - added config for default immunity for undead mobs
 - removed Netherite and Enderium Axes from Cursed Armors in End Cities
 - removed detailed tooltip from Cursed Armor Spawn Egg
+- removed Cloth drop chance from Undead Army mobs
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance

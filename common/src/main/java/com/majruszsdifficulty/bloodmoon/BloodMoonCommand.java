@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.events.bloodmoon;
+package com.majruszsdifficulty.bloodmoon;
 
 import com.majruszlibrary.command.Command;
 import com.majruszlibrary.command.CommandData;

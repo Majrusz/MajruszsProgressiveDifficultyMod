@@ -1,10 +1,10 @@
 package com.majruszsdifficulty.data;
 
-import com.majruszlibrary.contexts.base.Contexts;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.entity.EntityHelper;
-import com.majruszsdifficulty.events.bloodmoon.BloodMoon;
+import com.majruszlibrary.events.base.Events;
+import com.majruszsdifficulty.bloodmoon.BloodMoon;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.contexts.OnGlobalGameStageChanged;
@@ -32,7 +32,7 @@ public class WorldData extends com.majruszlibrary.data.WorldData {
 			GameStage previous = this.playerGameStages.get( uuid );
 			this.playerGameStages.put( uuid, gameStage );
 			this.setDirty();
-			Contexts.dispatch( new OnPlayerGameStageChanged( previous, gameStage, player ) );
+			Events.dispatch( new OnPlayerGameStageChanged( previous, gameStage, player ) );
 
 			return true;
 		}
@@ -45,7 +45,7 @@ public class WorldData extends com.majruszlibrary.data.WorldData {
 			GameStage previous = this.gameStage;
 			this.gameStage = gameStage;
 			this.setDirty();
-			Contexts.dispatch( new OnGlobalGameStageChanged( previous, gameStage ) );
+			Events.dispatch( new OnGlobalGameStageChanged( previous, gameStage ) );
 
 			return true;
 		}

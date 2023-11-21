@@ -1,12 +1,12 @@
 package com.majruszsdifficulty.features;
 
 import com.majruszlibrary.collection.DefaultMap;
-import com.majruszlibrary.contexts.OnEntityDied;
-import com.majruszlibrary.contexts.OnExploded;
-import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.events.OnEntityDied;
+import com.majruszlibrary.events.OnExploded;
+import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;

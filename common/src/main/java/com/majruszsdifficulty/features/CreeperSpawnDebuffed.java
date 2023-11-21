@@ -1,9 +1,9 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszlibrary.contexts.OnEntitySpawned;
-import com.majruszlibrary.contexts.base.Condition;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.events.OnEntitySpawned;
+import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.time.TimeHelper;

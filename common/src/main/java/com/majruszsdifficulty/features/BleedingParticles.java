@@ -1,13 +1,13 @@
 package com.majruszsdifficulty.features;
 
-import com.majruszlibrary.contexts.OnEntityDied;
-import com.majruszlibrary.contexts.OnEntityPreDamaged;
-import com.majruszlibrary.contexts.OnEntityTicked;
-import com.majruszlibrary.contexts.base.Condition;
-import com.majruszlibrary.contexts.base.Priority;
 import com.majruszlibrary.emitter.ParticleEmitter;
 import com.majruszlibrary.entity.EffectHelper;
 import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.events.OnEntityDied;
+import com.majruszlibrary.events.OnEntityPreDamaged;
+import com.majruszlibrary.events.OnEntityTicked;
+import com.majruszlibrary.events.base.Condition;
+import com.majruszlibrary.events.base.Priority;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
