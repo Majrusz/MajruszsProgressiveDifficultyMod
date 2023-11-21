@@ -14,6 +14,7 @@
 - removed detailed tooltip from Cursed Armor Spawn Egg
 - removed Cloth drop chance from Undead Army mobs
 - removed Emerald as drop chance from Illusioner
+- removed reputation bonus when using Bandages on Villagers
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance

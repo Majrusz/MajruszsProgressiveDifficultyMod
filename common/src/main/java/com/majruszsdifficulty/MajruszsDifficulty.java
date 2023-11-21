@@ -17,6 +17,7 @@ import com.majruszsdifficulty.effects.BleedingImmunityEffect;
 import com.majruszsdifficulty.effects.GlassRegenerationEffect;
 import com.majruszsdifficulty.entity.*;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
+import com.majruszsdifficulty.items.BandageItem;
 import com.majruszsdifficulty.items.CreativeModeTabs;
 import com.majruszsdifficulty.items.FakeItem;
 import com.majruszsdifficulty.loot.CurseRandomlyFunction;
@@ -67,6 +68,11 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< EntityType< GiantEntity > > GIANT = ENTITY_TYPES.create( "giant", GiantEntity::createEntityType );
 	public static final RegistryObject< EntityType< TankEntity > > TANK = ENTITY_TYPES.create( "tank", TankEntity::createEntityType );
 
+	// Effects
+	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.create( "bleeding", BleedingEffect::new );
+	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.create( "bleeding_immunity", BleedingImmunityEffect::new );
+	public static final RegistryObject< GlassRegenerationEffect > GLASS_REGENERATION = MOB_EFFECTS.create( "glass_regeneration", GlassRegenerationEffect::new );
+
 	// Blocks
 	public static final RegistryObject< EnderiumBlock > ENDERIUM_BLOCK = BLOCKS.create( "enderium_block", EnderiumBlock::new );
 	public static final RegistryObject< EnderiumShardOre > ENDERIUM_SHARD_ORE = BLOCKS.create( "enderium_shard_ore", EnderiumShardOre::new );
@@ -74,6 +80,10 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< InfernalSponge > INFERNAL_SPONGE = BLOCKS.create( "infernal_sponge", InfernalSponge::new );
 	public static final RegistryObject< InfestedEndStone > INFESTED_END_STONE = BLOCKS.create( "infested_end_stone", InfestedEndStone::new );
 	public static final RegistryObject< SoakedInfernalSponge > SOAKED_INFERNAL_SPONGE = BLOCKS.create( "soaked_infernal_sponge", SoakedInfernalSponge::new );
+
+	// Items
+	public static final RegistryObject< BandageItem > BANDAGE = ITEMS.create( "bandage", BandageItem.normal() );
+	public static final RegistryObject< BandageItem > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", BandageItem.golden() );
 
 	// Items (blocks)
 	public static final RegistryObject< EnderiumBlock.Item > ENDERIUM_BLOCK_ITEM = ITEMS.create( "enderium_block", EnderiumBlock.Item::new );
@@ -96,11 +106,6 @@ public class MajruszsDifficulty {
 		ITEMS.create( "advancement_expert", FakeItem::new );
 		ITEMS.create( "advancement_master", FakeItem::new );
 	}
-
-	// Effects
-	public static final RegistryObject< BleedingEffect > BLEEDING = MOB_EFFECTS.create( "bleeding", BleedingEffect::new );
-	public static final RegistryObject< BleedingImmunityEffect > BLEEDING_IMMUNITY = MOB_EFFECTS.create( "bleeding_immunity", BleedingImmunityEffect::new );
-	public static final RegistryObject< GlassRegenerationEffect > GLASS_REGENERATION = MOB_EFFECTS.create( "glass_regeneration", GlassRegenerationEffect::new );
 
 	// Particles
 	public static final RegistryObject< SimpleParticleType > BLOOD_PARTICLE = PARTICLES.create( "blood", ()->new SimpleParticleType( true ) {} );

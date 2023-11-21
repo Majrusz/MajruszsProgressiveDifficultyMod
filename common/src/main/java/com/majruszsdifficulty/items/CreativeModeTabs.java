@@ -28,6 +28,8 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.ENDERIUM_SHARD_ORE,
 			MajruszsDifficulty.FRAGILE_END_STONE,
 			MajruszsDifficulty.INFESTED_END_STONE,
+			MajruszsDifficulty.BANDAGE,
+			MajruszsDifficulty.GOLDEN_BANDAGE,
 			MajruszsDifficulty.CERBERUS_SPAWN_EGG,
 			MajruszsDifficulty.CREEPERLING_SPAWN_EGG,
 			MajruszsDifficulty.CURSED_ARMOR_SPAWN_EGG,
