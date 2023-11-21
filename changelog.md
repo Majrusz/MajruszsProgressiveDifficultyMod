@@ -19,6 +19,7 @@
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
 - changed `Enderium Block` name to `Block of Enderium` to better match the vanilla (suggested by @nickolas78gr)
+- changed Wither Sword repair material from Bone to Cerberus Fang
 - increased Cursed Armor experience from 0-7 to 7
 - increased armor toughness of Enderium Armor from 3.5 to 4
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%

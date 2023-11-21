@@ -86,12 +86,17 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< Bandage > BANDAGE = ITEMS.create( "bandage", Bandage.normal() );
 		public static final RegistryObject< CerberusFang > CERBERUS_FANG = ITEMS.create( "cerberus_fang", CerberusFang::new );
 		public static final RegistryObject< Cloth > CLOTH = ITEMS.create( "cloth", Cloth::new );
+		public static final RegistryObject< EnderiumTool.Axe > ENDERIUM_AXE = ITEMS.create( "enderium_axe", EnderiumTool.Axe::new );
 		public static final RegistryObject< EnderiumArmor > ENDERIUM_BOOTS = ITEMS.create( "enderium_boots", EnderiumArmor.boots() );
 		public static final RegistryObject< EnderiumArmor > ENDERIUM_CHESTPLATE = ITEMS.create( "enderium_chestplate", EnderiumArmor.chestplate() );
 		public static final RegistryObject< EnderiumArmor > ENDERIUM_HELMET = ITEMS.create( "enderium_helmet", EnderiumArmor.helmet() );
+		public static final RegistryObject< EnderiumTool.Hoe > ENDERIUM_HOE = ITEMS.create( "enderium_hoe", EnderiumTool.Hoe::new );
 		public static final RegistryObject< EnderiumIngot > ENDERIUM_INGOT = ITEMS.create( "enderium_ingot", EnderiumIngot::new );
 		public static final RegistryObject< EnderiumArmor > ENDERIUM_LEGGINGS = ITEMS.create( "enderium_leggings", EnderiumArmor.leggings() );
+		public static final RegistryObject< EnderiumTool.Pickaxe > ENDERIUM_PICKAXE = ITEMS.create( "enderium_pickaxe", EnderiumTool.Pickaxe::new );
 		public static final RegistryObject< EnderiumShard > ENDERIUM_SHARD = ITEMS.create( "enderium_shard", EnderiumShard::new );
+		public static final RegistryObject< EnderiumTool.Shovel > ENDERIUM_SHOVEL = ITEMS.create( "enderium_shovel", EnderiumTool.Shovel::new );
+		public static final RegistryObject< EnderiumTool.Sword > ENDERIUM_SWORD = ITEMS.create( "enderium_sword", EnderiumTool.Sword::new );
 		public static final RegistryObject< Bandage > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", Bandage.golden() );
 		public static final RegistryObject< TatteredArmor > TATTERED_BOOTS = ITEMS.create( "tattered_boots", TatteredArmor.boots() );
 		public static final RegistryObject< TatteredArmor > TATTERED_CHESTPLATE = ITEMS.create( "tattered_chestplate", TatteredArmor.chestplate() );
