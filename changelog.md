@@ -29,3 +29,4 @@
 - fixed bug with Tank's area attack not always spawning in front of the Tank
 - fixed bug with Tank's attack always emitting sound even if it did not hit
 - fixed bug with Curse Armor playing assemble animation after reloading the world
+- fixed bug with Bleeding tooltip not displaying proper value on server

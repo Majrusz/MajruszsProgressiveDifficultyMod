@@ -11,10 +11,12 @@ import net.minecraft.network.chat.Component;
 public class Notifier {
 	static {
 		OnBloodMoonStarted.listen( data->Notifier.sendStartMessage( "majruszsdifficulty.blood_moon.started" ) )
-			.addCondition( Condition.isLogicalServer() );
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( data->Side.getServer() != null );
 
 		OnBloodMoonFinished.listen( data->Notifier.sendStartMessage( "majruszsdifficulty.blood_moon.finished" ) )
-			.addCondition( Condition.isLogicalServer() );
+			.addCondition( Condition.isLogicalServer() )
+			.addCondition( data->Side.getServer() != null );
 	}
 
 	private static void sendStartMessage( String id ) {

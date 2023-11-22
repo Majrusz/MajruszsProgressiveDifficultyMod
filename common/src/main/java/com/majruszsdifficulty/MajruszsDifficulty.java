@@ -48,7 +48,10 @@ public class MajruszsDifficulty {
 		HELPER.config( Config.class ).autoSync().create();
 	}
 
-	public static final WorldData WORLD_DATA = HELPER.saved( WorldData::new );
+	public static final com.majruszlibrary.data.WorldData WORLD_DATA = HELPER.worldData( WorldData.class )
+		.client( WorldData.Client.class )
+		.setupDefaultValues( WorldData::setupDefaultValues )
+		.create();
 
 	// Registry Groups
 	public static final RegistryGroup< Block > BLOCKS = HELPER.create( BuiltInRegistries.BLOCK );

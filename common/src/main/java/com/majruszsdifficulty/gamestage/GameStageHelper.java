@@ -3,7 +3,7 @@ package com.majruszsdifficulty.gamestage;
 import com.majruszlibrary.collection.CollectionHelper;
 import com.majruszlibrary.events.type.ILevelEvent;
 import com.majruszlibrary.events.type.IPositionEvent;
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.data.WorldData;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -14,11 +14,11 @@ import java.util.Map;
 
 public class GameStageHelper {
 	public static boolean setGameStage( GameStage gameStage, Player player ) {
-		return MajruszsDifficulty.WORLD_DATA.setGameStage( gameStage, player );
+		return WorldData.setGameStage( gameStage, player );
 	}
 
 	public static boolean setGlobalGameStage( GameStage gameStage ) {
-		return MajruszsDifficulty.WORLD_DATA.setGlobalGameStage( gameStage );
+		return WorldData.setGlobalGameStage( gameStage );
 	}
 
 	public static boolean increaseGameStage( GameStage gameStage, Player player ) {
@@ -87,11 +87,11 @@ public class GameStageHelper {
 	}
 
 	public static GameStage getGameStage( Player player ) {
-		return MajruszsDifficulty.WORLD_DATA.getGameStage( player );
+		return WorldData.getGameStage( player );
 	}
 
 	public static GameStage getGlobalGameStage() {
-		return MajruszsDifficulty.WORLD_DATA.getGlobalGameStage();
+		return WorldData.getGlobalGameStage();
 	}
 
 	public static GameStage getDefaultGameStage() {

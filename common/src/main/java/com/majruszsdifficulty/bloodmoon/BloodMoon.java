@@ -14,6 +14,10 @@ public class BloodMoon {
 			.define( "is_active", Reader.bool(), s->s.isActive, ( s, v )->s.isActive = v );
 	}
 
+	public boolean setActive( boolean isActive ) {
+		return isActive ? this.start() : this.finish();
+	}
+
 	public boolean start() {
 		if( !this.isActive && !Events.dispatch( new OnBloodMoonStarted() ).isCancelled() ) {
 			this.isActive = true;

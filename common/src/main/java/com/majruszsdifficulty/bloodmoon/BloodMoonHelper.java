@@ -2,18 +2,18 @@ package com.majruszsdifficulty.bloodmoon;
 
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
-import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.data.WorldData;
 
 public class BloodMoonHelper {
 	public static void start() {
-		if( MajruszsDifficulty.WORLD_DATA.getBloodMoon().start() ) {
-			MajruszsDifficulty.WORLD_DATA.setDirty();
+		if( WorldData.getBloodMoon().start() ) {
+			WorldData.setDirty();
 		}
 	}
 
 	public static void stop() {
-		if( MajruszsDifficulty.WORLD_DATA.getBloodMoon().finish() ) {
-			MajruszsDifficulty.WORLD_DATA.setDirty();
+		if( WorldData.getBloodMoon().finish() ) {
+			WorldData.setDirty();
 		}
 	}
 
@@ -23,6 +23,6 @@ public class BloodMoonHelper {
 	}
 
 	public static boolean isActive() {
-		return MajruszsDifficulty.WORLD_DATA.getBloodMoon().isActive();
+		return WorldData.getBloodMoon().isActive();
 	}
 }
