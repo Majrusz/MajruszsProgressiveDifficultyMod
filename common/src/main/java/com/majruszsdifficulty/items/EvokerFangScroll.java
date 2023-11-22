@@ -14,7 +14,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.EvokerFangs;
@@ -26,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EvokerFangScroll extends ScrollItem {
-	public static int ATTACK_DAMAGE = 12;
-	public static Range< Integer > ATTACK_RANGE = Range.of( 8, 20 );
+	private static final int ATTACK_DAMAGE = 12;
+	private static final Range< Integer > ATTACK_RANGE = Range.of( 8, 20 );
 
 	static {
 		OnEntityPreDamaged.listen( EvokerFangScroll::increaseDamage )
@@ -47,7 +46,7 @@ public class EvokerFangScroll extends ScrollItem {
 		super.useScroll( itemStack, level, entity, useRatio );
 
 		double rotation = Math.toRadians( entity.getYRot() ) - Math.PI / 2.0;
-		this.getAttackPattern( entity, ( int )Mth.lerp( useRatio, ATTACK_RANGE.from, ATTACK_RANGE.to ) )
+		this.getAttackPattern( entity, ( int )ATTACK_RANGE.lerp( useRatio ) )
 			.forEach( spawnPoint->{
 				EvokerFangs evokerFangs = new EvokerFangs( level, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z, ( float )rotation, spawnPoint.cooldown, entity );
 				Serializables.write( new DamageInfo( ATTACK_DAMAGE ), EntityHelper.getOrCreateExtraTag( evokerFangs ) );

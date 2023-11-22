@@ -102,6 +102,7 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< EvokerFangScroll > EVOKER_FANG_SCROLL = ITEMS.create( "evoker_fang_scroll", EvokerFangScroll::new );
 		public static final RegistryObject< Bandage > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", Bandage.golden() );
 		public static final RegistryObject< RecallPotion > RECALL_POTION = ITEMS.create( "recall_potion", RecallPotion::new );
+		public static final RegistryObject< SonicBoomScroll > SONIC_BOOM_SCROLL = ITEMS.create( "sonic_boom_scroll", SonicBoomScroll::new );
 		public static final RegistryObject< TatteredArmor > TATTERED_BOOTS = ITEMS.create( "tattered_boots", TatteredArmor.boots() );
 		public static final RegistryObject< TatteredArmor > TATTERED_CHESTPLATE = ITEMS.create( "tattered_chestplate", TatteredArmor.chestplate() );
 		public static final RegistryObject< TatteredArmor > TATTERED_HELMET = ITEMS.create( "tattered_helmet", TatteredArmor.helmet() );

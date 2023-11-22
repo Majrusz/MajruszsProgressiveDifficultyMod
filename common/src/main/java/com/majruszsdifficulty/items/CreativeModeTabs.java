@@ -33,6 +33,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.Items.CLOTH,
 			MajruszsDifficulty.Items.RECALL_POTION,
 			MajruszsDifficulty.Items.EVOKER_FANG_SCROLL,
+			MajruszsDifficulty.Items.SONIC_BOOM_SCROLL,
 			MajruszsDifficulty.Items.CERBERUS_FANG,
 			MajruszsDifficulty.Items.ENDER_POUCH,
 			MajruszsDifficulty.Items.ENDERIUM_SHARD,
