@@ -99,8 +99,9 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< EnderiumTool.Sword > ENDERIUM_SWORD = ITEMS.create( "enderium_sword", EnderiumTool.Sword::new );
 		public static final RegistryObject< EnderiumSmithingTemplate > ENDERIUM_SMITHING_TEMPLATE = ITEMS.create( "enderium_upgrade_smithing_template", EnderiumSmithingTemplate::new );
 		public static final RegistryObject< EnderPouch > ENDER_POUCH = ITEMS.create( "ender_pouch", EnderPouch::new );
+		public static final RegistryObject< EvokerFangScroll > EVOKER_FANG_SCROLL = ITEMS.create( "evoker_fang_scroll", EvokerFangScroll::new );
 		public static final RegistryObject< Bandage > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", Bandage.golden() );
-		public static final RegistryObject< RecallPotionItem > RECALL_POTION = ITEMS.create( "recall_potion", RecallPotionItem::new );
+		public static final RegistryObject< RecallPotion > RECALL_POTION = ITEMS.create( "recall_potion", RecallPotion::new );
 		public static final RegistryObject< TatteredArmor > TATTERED_BOOTS = ITEMS.create( "tattered_boots", TatteredArmor.boots() );
 		public static final RegistryObject< TatteredArmor > TATTERED_CHESTPLATE = ITEMS.create( "tattered_chestplate", TatteredArmor.chestplate() );
 		public static final RegistryObject< TatteredArmor > TATTERED_HELMET = ITEMS.create( "tattered_helmet", TatteredArmor.helmet() );
