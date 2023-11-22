@@ -17,13 +17,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
-public class RecallPotionItem extends Item {
+public class RecallPotion extends Item {
 	static {
-		OnItemTooltip.listen( RecallPotionItem::addTooltip )
-			.addCondition( data->data.itemStack.getItem() instanceof RecallPotionItem );
+		OnItemTooltip.listen( RecallPotion::addTooltip )
+			.addCondition( data->data.itemStack.getItem() instanceof RecallPotion );
 	}
 
-	public RecallPotionItem() {
+	public RecallPotion() {
 		super( new Properties().rarity( Rarity.UNCOMMON ).stacksTo( 16 ) );
 	}
 
