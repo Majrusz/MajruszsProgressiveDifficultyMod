@@ -31,6 +31,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.Items.BANDAGE,
 			MajruszsDifficulty.Items.GOLDEN_BANDAGE,
 			MajruszsDifficulty.Items.CLOTH,
+			MajruszsDifficulty.Items.RECALL_POTION,
 			MajruszsDifficulty.Items.CERBERUS_FANG,
 			MajruszsDifficulty.Items.ENDERIUM_INGOT,
 			MajruszsDifficulty.Items.ENDERIUM_SHARD,
