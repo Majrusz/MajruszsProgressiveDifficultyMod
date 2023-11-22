@@ -6,9 +6,9 @@ import com.majruszlibrary.events.OnItemAttributeTooltip;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.platform.Side;
+import com.majruszlibrary.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -67,8 +67,8 @@ public class SonicBoomScroll extends ScrollItem {
 
 	private static void addSpellInfo( OnItemAttributeTooltip data ) {
 		List.of(
-			Component.translatable( "majruszsdifficulty.scrolls.attack_damage", ATTACK_DAMAGE ).withStyle( ChatFormatting.DARK_GREEN ),
-			Component.translatable( "majruszsdifficulty.scrolls.attack_range", "%d-%d".formatted( ATTACK_RANGE.from, ATTACK_RANGE.to ) )
+			TextHelper.translatable( "majruszsdifficulty.scrolls.attack_damage", ATTACK_DAMAGE ).withStyle( ChatFormatting.DARK_GREEN ),
+			TextHelper.translatable( "majruszsdifficulty.scrolls.attack_range", "%d-%d".formatted( ATTACK_RANGE.from, ATTACK_RANGE.to ) )
 				.withStyle( ChatFormatting.DARK_GREEN )
 		).forEach( component->data.add( EquipmentSlot.MAINHAND, component ) );
 	}

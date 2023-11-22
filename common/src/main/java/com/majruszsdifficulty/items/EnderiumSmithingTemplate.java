@@ -2,9 +2,9 @@ package com.majruszsdifficulty.items;
 
 import com.majruszlibrary.events.OnLootGenerated;
 import com.majruszlibrary.item.LootHelper;
+import com.majruszlibrary.text.TextHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -21,11 +21,11 @@ public class EnderiumSmithingTemplate extends SmithingTemplateItem {
 
 	public EnderiumSmithingTemplate() {
 		super(
-			Component.translatable( "majruszsdifficulty.smithing.enderium.applies_to" ).withStyle( ChatFormatting.BLUE ),
-			Component.translatable( "majruszsdifficulty.smithing.enderium.ingredients" ).withStyle( ChatFormatting.BLUE ),
-			Component.translatable( "majruszsdifficulty.smithing.enderium.upgrade" ).withStyle( ChatFormatting.GRAY ),
-			Component.translatable( "majruszsdifficulty.smithing.enderium.base_slot" ).withStyle( ChatFormatting.GRAY ),
-			Component.translatable( "majruszsdifficulty.smithing.enderium.additions_slot" ).withStyle( ChatFormatting.GRAY ),
+			TextHelper.translatable( "majruszsdifficulty.smithing.enderium.applies_to" ).withStyle( ChatFormatting.BLUE ),
+			TextHelper.translatable( "majruszsdifficulty.smithing.enderium.ingredients" ).withStyle( ChatFormatting.BLUE ),
+			TextHelper.translatable( "majruszsdifficulty.smithing.enderium.upgrade" ).withStyle( ChatFormatting.GRAY ),
+			TextHelper.translatable( "majruszsdifficulty.smithing.enderium.base_slot" ).withStyle( ChatFormatting.GRAY ),
+			TextHelper.translatable( "majruszsdifficulty.smithing.enderium.additions_slot" ).withStyle( ChatFormatting.GRAY ),
 			List.of(
 				new ResourceLocation( "item/empty_armor_slot_helmet" ),
 				new ResourceLocation( "item/empty_slot_sword" ),
