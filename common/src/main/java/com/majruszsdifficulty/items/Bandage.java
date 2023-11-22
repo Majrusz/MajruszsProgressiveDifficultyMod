@@ -15,7 +15,6 @@ import com.majruszsdifficulty.data.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -71,8 +70,7 @@ public class Bandage extends Item {
 		Bandage.removeBleeding( bandage, data.player, target );
 		ItemHelper.addCooldown( data.player, TimeHelper.toTicks( 0.7 ), MajruszsDifficulty.Items.BANDAGE.get(), MajruszsDifficulty.Items.GOLDEN_BANDAGE.get() );
 		ItemHelper.consumeItemOnUse( data.itemStack, data.player );
-		data.player.swing( data.hand, true );
-		data.cancelInteraction( InteractionResult.SUCCESS );
+		data.finish();
 	}
 
 	private static void removeBleeding( Bandage item, Player player, LivingEntity target ) {
