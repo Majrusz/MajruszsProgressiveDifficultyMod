@@ -2,13 +2,13 @@
   "parent": "minecraft:husbandry/fishy_business",
   "display": {
     "icon": {
-      "item": "majruszsdifficulty:fishing_treasure_bag"
+      "item": "majruszsdifficulty:angler_treasure_bag"
     },
     "title": {
-      "translate": "advancements.progressive_difficulty.fishing_treasure_bag.title"
+      "translate": "advancements.progressive_difficulty.angler_treasure_bag.title"
     },
     "description": {
-      "translate": "advancements.progressive_difficulty.fishing_treasure_bag.description"
+      "translate": "advancements.progressive_difficulty.angler_treasure_bag.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -19,7 +19,7 @@
     "bag_opened": {
       "trigger": "majruszsdifficulty:treasure_bag_opened",
       "conditions": {
-        "bag_id": "majruszsdifficulty:fishing_treasure_bag",
+        "bag_id": "majruszsdifficulty:angler_treasure_bag",
         "amount": 1
       }
     }

@@ -22,6 +22,7 @@
 - made Giant launch attack weaker when player has knockback resistance
 - changed `Enderium Block` name to `Block of Enderium` to better match the vanilla (suggested by @nickolas78gr)
 - changed Wither Sword repair material from Bone to Cerberus Fang
+- changed Angler Treasure Bag id from `majruszsdifficulty:fishing_treasure_bag` to `majruszsdifficulty:angler_treasure_bag`
 - increased Cursed Armor experience from 0-7 to 7
 - increased armor toughness of Enderium Armor from 3.5 to 4
 - increased required undead kills to trigger the Undead Army from 75 to 100
