@@ -180,7 +180,7 @@ public class BleedingSources {
 			}
 
 			public boolean matches( ItemStack itemStack ) {
-				return this.id.matches( Registries.get( itemStack.getItem() ).toString() );
+				return this.id.matches( Registries.ITEMS.getId( itemStack.getItem() ).toString() );
 			}
 
 			private float getExtraChance( EnchantmentHelper.EnchantmentDef itemEnchantment ) {

@@ -70,7 +70,7 @@ public class DoubleLoot {
 			return false;
 		}
 
-		String id = Registries.get( itemStack.getItem() ).toString();
+		String id = Registries.ITEMS.getId( itemStack.getItem() ).toString();
 		return BLACKLISTED_ITEMS.stream().noneMatch( regex->regex.matches( id ) );
 	}
 }

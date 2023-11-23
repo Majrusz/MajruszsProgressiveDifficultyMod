@@ -53,7 +53,7 @@ public class CurseRandomly extends LootItemConditionalFunction {
 	}
 
 	private List< Enchantment > generateCurses( ItemStack itemStack ) {
-		return StreamSupport.stream( Registries.getEnchantments().spliterator(), false )
+		return StreamSupport.stream( Registries.ENCHANTMENTS.spliterator(), false )
 			.filter( Enchantment::isDiscoverable )
 			.filter( Enchantment::isCurse )
 			.filter( enchantment->enchantment.canEnchant( itemStack ) )
@@ -61,7 +61,7 @@ public class CurseRandomly extends LootItemConditionalFunction {
 	}
 
 	private List< Enchantment > generateEnchantments( ItemStack itemStack ) {
-		return StreamSupport.stream( Registries.getEnchantments().spliterator(), false )
+		return StreamSupport.stream( Registries.ENCHANTMENTS.spliterator(), false )
 			.filter( Enchantment::isDiscoverable )
 			.filter( enchantment->!enchantment.isCurse() )
 			.filter( enchantment->enchantment.canEnchant( itemStack ) )

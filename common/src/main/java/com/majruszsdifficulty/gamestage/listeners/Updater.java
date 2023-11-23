@@ -27,7 +27,7 @@ public class Updater {
 
 	private static void tryToChangeGameStage( OnEntityDied data ) {
 		for( GameStage gameStage : GameStageHelper.getGameStages() ) {
-			if( gameStage.checkEntity( Registries.get( data.target.getType() ).toString() ) ) {
+			if( gameStage.checkEntity( Registries.ENTITY_TYPES.getId( data.target.getType() ).toString() ) ) {
 				GameStageHelper.increaseGlobalGameStage( gameStage );
 				if( GameStageHelper.isPerPlayerDifficultyEnabled() ) {
 					data.getLevel()
