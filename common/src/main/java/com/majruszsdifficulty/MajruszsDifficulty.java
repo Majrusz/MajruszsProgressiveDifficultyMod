@@ -112,6 +112,7 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< TatteredArmor > TATTERED_CHESTPLATE = ITEMS.create( "tattered_chestplate", TatteredArmor.chestplate() );
 		public static final RegistryObject< TatteredArmor > TATTERED_HELMET = ITEMS.create( "tattered_helmet", TatteredArmor.helmet() );
 		public static final RegistryObject< TatteredArmor > TATTERED_LEGGINGS = ITEMS.create( "tattered_leggings", TatteredArmor.leggings() );
+		public static final RegistryObject< UndeadBattleStandard > UNDEAD_BATTLE_STANDARD = ITEMS.create( "undead_battle_standard", UndeadBattleStandard::new );
 
 		// Items (blocks)
 		public static final RegistryObject< EnderiumBlock.Item > ENDERIUM_BLOCK = ITEMS.create( "enderium_block", EnderiumBlock.Item::new );
