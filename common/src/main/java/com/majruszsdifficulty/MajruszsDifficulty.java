@@ -27,6 +27,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -61,6 +62,7 @@ public class MajruszsDifficulty {
 	public static final RegistryGroup< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( BuiltInRegistries.LOOT_FUNCTION_TYPE );
 	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
 	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
+	public static final RegistryGroup< SoundEvent > SOUND_EVENTS = HELPER.create( BuiltInRegistries.SOUND_EVENT );
 
 	public static class Entities {
 		public static final RegistryObject< EntityType< Cerberus > > CERBERUS = ENTITY_TYPES.create( "cerberus", Cerberus::createEntityType );
@@ -160,6 +162,15 @@ public class MajruszsDifficulty {
 
 	public static class Advancements {
 		public static final GameStageAdvancement GAME_STAGE = new GameStageAdvancement();
+	}
+
+	public static class Sounds {
+		public static final RegistryObject< SoundEvent > UNDEAD_ARMY_APPROACHING = Sounds.register( "undead_army.approaching" );
+		public static final RegistryObject< SoundEvent > UNDEAD_ARMY_WAVE_STARTED = Sounds.register( "undead_army.wave_started" );
+
+		private static RegistryObject< SoundEvent > register( String name ) {
+			return SOUND_EVENTS.create( name, ()->SoundEvent.createVariableRangeEvent( HELPER.getLocation( name ) ) );
+		}
 	}
 
 	static {

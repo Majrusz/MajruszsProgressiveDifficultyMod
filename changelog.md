@@ -15,6 +15,7 @@
 - removed Cloth drop chance from Undead Army mobs
 - removed Emerald as drop chance from Illusioner
 - removed reputation bonus when using Bandages on Villagers
+- removed check for natural spawns in Undead Army requirement
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
@@ -22,6 +23,7 @@
 - changed Wither Sword repair material from Bone to Cerberus Fang
 - increased Cursed Armor experience from 0-7 to 7
 - increased armor toughness of Enderium Armor from 3.5 to 4
+- increased required undead kills to trigger the Undead Army from 75 to 100
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - decreased Cerberus move speed by 11%
 - decreased Cerberus experience from 60-90 to 26-46
