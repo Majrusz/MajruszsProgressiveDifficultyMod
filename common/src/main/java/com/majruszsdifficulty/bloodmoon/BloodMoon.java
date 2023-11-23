@@ -3,8 +3,8 @@ package com.majruszsdifficulty.bloodmoon;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.events.base.Events;
-import com.majruszsdifficulty.bloodmoon.contexts.OnBloodMoonFinished;
-import com.majruszsdifficulty.bloodmoon.contexts.OnBloodMoonStarted;
+import com.majruszsdifficulty.bloodmoon.events.OnBloodMoonFinished;
+import com.majruszsdifficulty.bloodmoon.events.OnBloodMoonStarted;
 
 public class BloodMoon {
 	boolean isActive = false;

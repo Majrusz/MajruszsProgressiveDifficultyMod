@@ -101,11 +101,11 @@ public class MobGroups {
 
 		Serializables.get( LeaderDef.class )
 			.define( "type", Reader.entityType(), s->s.type, ( s, v )->s.type = v )
-			.define( "loot", Reader.location(), s->s.loot, ( s, v )->s.loot = v );
+			.define( "equipment", Reader.location(), s->s.equipment, ( s, v )->s.equipment = v );
 
 		Serializables.get( SidekickDef.class )
 			.define( "type", Reader.entityType(), s->s.type, ( s, v )->s.type = v )
-			.define( "loot", Reader.location(), s->s.loot, ( s, v )->s.loot = v );
+			.define( "equipment", Reader.location(), s->s.equipment, ( s, v )->s.equipment = v );
 	}
 
 	private static void tryToSpawnGroup( OnEntitySpawned data ) {
@@ -133,7 +133,7 @@ public class MobGroups {
 			}
 
 			MobGroups.spawn( ( PathfinderMob )data.entity, groupDef );
-			MobGroups.giveItems( leader, leaderDef.loot );
+			MobGroups.giveItems( leader, leaderDef.equipment );
 
 			break;
 		}
@@ -153,7 +153,7 @@ public class MobGroups {
 			}
 
 			MobGroups.addSidekickGoals( sidekick, leader );
-			MobGroups.giveItems( sidekick, sidekickDef.loot );
+			MobGroups.giveItems( sidekick, sidekickDef.equipment );
 		}
 	}
 
@@ -204,7 +204,7 @@ public class MobGroups {
 		}
 
 		MobGroups.spawn( leader, groupDef );
-		MobGroups.giveItems( leader, leaderDef.loot );
+		MobGroups.giveItems( leader, leaderDef.equipment );
 
 		return 0;
 	}
@@ -315,11 +315,11 @@ public class MobGroups {
 
 	public static class LeaderDef {
 		public EntityType< ? > type;
-		public ResourceLocation loot;
+		public ResourceLocation equipment;
 
-		public LeaderDef( EntityType< ? > type, ResourceLocation loot ) {
+		public LeaderDef( EntityType< ? > type, ResourceLocation equipment ) {
 			this.type = type;
-			this.loot = loot;
+			this.equipment = equipment;
 		}
 
 		public LeaderDef() {}
@@ -327,11 +327,11 @@ public class MobGroups {
 
 	public static class SidekickDef {
 		public EntityType< ? > type;
-		public ResourceLocation loot;
+		public ResourceLocation equipment;
 
-		public SidekickDef( EntityType< ? > type, ResourceLocation loot ) {
+		public SidekickDef( EntityType< ? > type, ResourceLocation equipment ) {
 			this.type = type;
-			this.loot = loot;
+			this.equipment = equipment;
 		}
 
 		public SidekickDef() {}

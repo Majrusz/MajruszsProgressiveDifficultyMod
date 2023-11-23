@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.bloodmoon.contexts;
+package com.majruszsdifficulty.bloodmoon.events;
 
 import com.majruszlibrary.events.base.Event;
 import com.majruszlibrary.events.base.Events;

@@ -5,7 +5,6 @@ import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.entity.EntityHelper;
 import com.majruszlibrary.events.base.Events;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.bloodmoon.BloodMoon;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.contexts.OnGlobalGameStageChanged;
@@ -18,17 +17,14 @@ import java.util.Map;
 public class WorldData {
 	private static GameStage GAME_STAGE = GameStageHelper.getDefaultGameStage();
 	private static Map< String, GameStage > PLAYER_GAME_STAGES = new Object2ObjectOpenHashMap<>();
-	private static BloodMoon BLOOD_MOON = new BloodMoon();
 
 	static {
 		Serializables.getStatic( WorldData.class )
 			.define( "global_game_stage", Reader.string(), ()->GAME_STAGE.getId(), v->GAME_STAGE = GameStageHelper.find( v ) )
-			.define( "player_game_stages", Reader.map( Reader.string() ), ()->GameStageHelper.mapToNames( PLAYER_GAME_STAGES ), v->PLAYER_GAME_STAGES = GameStageHelper.mapToGameStages( v ) )
-			.define( "blood_moon", Reader.custom( BloodMoon::new ), ()->BLOOD_MOON, v->BLOOD_MOON = v );
+			.define( "player_game_stages", Reader.map( Reader.string() ), ()->GameStageHelper.mapToNames( PLAYER_GAME_STAGES ), v->PLAYER_GAME_STAGES = GameStageHelper.mapToGameStages( v ) );
 
 		Serializables.getStatic( WorldData.Client.class )
-			.define( "global_game_stage", Reader.string(), ()->GAME_STAGE.getId(), v->GAME_STAGE = GameStageHelper.find( v ) )
-			.define( "blood_moon", Reader.bool(), ()->BLOOD_MOON.isActive(), v->BLOOD_MOON.setActive( v ) );
+			.define( "global_game_stage", Reader.string(), ()->GAME_STAGE.getId(), v->GAME_STAGE = GameStageHelper.find( v ) );
 	}
 
 	public static void setDirty() {
@@ -75,14 +71,9 @@ public class WorldData {
 		return GAME_STAGE;
 	}
 
-	public static BloodMoon getBloodMoon() {
-		return BLOOD_MOON;
-	}
-
 	public static void setupDefaultValues() {
 		GAME_STAGE = GameStageHelper.getDefaultGameStage();
 		PLAYER_GAME_STAGES = new Object2ObjectOpenHashMap<>();
-		BLOOD_MOON = new BloodMoon();
 	}
 
 	public static class Client {}
