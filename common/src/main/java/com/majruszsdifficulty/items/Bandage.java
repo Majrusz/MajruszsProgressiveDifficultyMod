@@ -26,10 +26,10 @@ import java.util.function.Supplier;
 
 public class Bandage extends Item {
 	private static List< EffectDef > NORMAL_EFFECTS = List.of(
-		new EffectDef( ()->MobEffects.REGENERATION, 0, 20.0f )
+		new EffectDef( MajruszsDifficulty.Effects.GLASS_REGENERATION, 0, 20.0f )
 	);
 	private static List< EffectDef > GOLDEN_EFFECTS = List.of(
-		new EffectDef( ()->MobEffects.REGENERATION, 1, 20.0f ),
+		new EffectDef( MajruszsDifficulty.Effects.GLASS_REGENERATION, 1, 20.0f ),
 		new EffectDef( MajruszsDifficulty.Effects.BLEEDING_IMMUNITY, 0, 90.0f )
 	);
 	private final Supplier< List< EffectDef > > effects;
