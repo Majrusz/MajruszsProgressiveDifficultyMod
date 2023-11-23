@@ -96,7 +96,9 @@ public class BleedingSources {
 	public static class Tools {
 		private static boolean IS_ENABLED = true;
 		private static List< ToolDef > TOOL_DEFS = List.of(
-			new ToolDef( "minecraft:trident", 0.3f ),
+			new ToolDef( "minecraft:trident", 0.3f, List.of(
+				new EnchantmentDef( "minecraft:impaling", 0.02f )
+			) ),
 			new ToolDef( "{regex}.*_sword", 0.3f, List.of(
 				new EnchantmentDef( "minecraft:sharpness", 0.02f ),
 				new EnchantmentDef( "{regex}(minecraft:smite)|(minecraft:bane_of_arthropods)|(majruszsenchantments:misanthropy)", 0.01f )

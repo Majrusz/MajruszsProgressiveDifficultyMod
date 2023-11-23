@@ -8,6 +8,7 @@
 - added glass break sound when Glass Regeneration gets removed
 - added possibility to cure Bleeding with Milk Bucket
 - added Cloth to Undead Army Treasure Bag
+- added 2% Bleeding chance bonus per each level of Impaling on Trident
 - added config list for animals that should not apply Bleeding
 - added config for default immunity for undead mobs
 - removed Netherite and Enderium Axes from Cursed Armors in End Cities
