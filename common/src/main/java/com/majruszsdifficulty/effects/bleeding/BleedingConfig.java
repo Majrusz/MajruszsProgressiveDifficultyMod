@@ -16,7 +16,7 @@ public class BleedingConfig {
 	public static boolean CAN_BE_CURED_WITH_GOLDEN_APPLES = true;
 	public static boolean IS_APPLICABLE_TO_ANIMALS = true;
 	public static boolean IS_APPLICABLE_TO_ILLAGERS = true;
-	public static List< EntityType< ? > > APPLICABLE_MOBS = List.of( EntityType.PLAYER, EntityType.VILLAGER );
+	public static List< EntityType< ? > > OTHER_APPLICABLE_MOBS = List.of( EntityType.PLAYER, EntityType.VILLAGER );
 	public static GameStageValue< EffectDef > EFFECTS = GameStageValue.of(
 		DefaultMap.defaultEntry( new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 0, 24.0f ) ),
 		DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 1, 24.0f ) ),
@@ -32,7 +32,7 @@ public class BleedingConfig {
 			.define( "can_be_cured_with_golden_apples", Reader.bool(), ()->CAN_BE_CURED_WITH_GOLDEN_APPLES, v->CAN_BE_CURED_WITH_GOLDEN_APPLES = v )
 			.define( "is_applicable_to_animals", Reader.bool(), ()->IS_APPLICABLE_TO_ANIMALS, v->IS_APPLICABLE_TO_ANIMALS = v )
 			.define( "is_applicable_to_pillagers", Reader.bool(), ()->IS_APPLICABLE_TO_ILLAGERS, v->IS_APPLICABLE_TO_ILLAGERS = v )
-			.define( "applicable_mobs", Reader.list( Reader.entityType() ), ()->APPLICABLE_MOBS, v->APPLICABLE_MOBS = v )
+			.define( "other_applicable_mobs", Reader.list( Reader.entityType() ), ()->OTHER_APPLICABLE_MOBS, v->OTHER_APPLICABLE_MOBS = v )
 			.define( "effect", Reader.map( Reader.custom( EffectDef::new ) ), ()->EFFECTS.get(), v->EFFECTS.set( v ) )
 			.define( "sources", Sources.class );
 	}

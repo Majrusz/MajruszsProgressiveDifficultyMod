@@ -33,7 +33,7 @@ public class Bleeding extends MobEffect {
 	public static boolean canApplyTo( LivingEntity entity ) {
 		return BleedingConfig.IS_APPLICABLE_TO_ANIMALS && entity instanceof Animal
 			|| BleedingConfig.IS_APPLICABLE_TO_ILLAGERS && entity instanceof Mob mob && mob.getMobType() == MobType.ILLAGER
-			|| BleedingConfig.APPLICABLE_MOBS.contains( entity.getType() );
+			|| BleedingConfig.OTHER_APPLICABLE_MOBS.contains( entity.getType() );
 	}
 
 	public Bleeding() {

@@ -4,7 +4,6 @@ import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.data.Config;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 
@@ -98,9 +97,6 @@ public class UndeadArmyConfig {
 	);
 
 	static {
-		Serializables.getStatic( Config.class )
-			.define( "undead_army", UndeadArmyConfig.class );
-
 		Serializables.getStatic( UndeadArmyConfig.class )
 			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
 			.define( "reset_all_participants_requirement", Reader.bool(), ()->RESET_ALL_PARTICIPANTS_REQUIREMENT, v->RESET_ALL_PARTICIPANTS_REQUIREMENT = v )
