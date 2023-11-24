@@ -8,6 +8,7 @@ import com.majruszlibrary.events.OnEntityPreDamaged;
 import com.majruszlibrary.events.OnEntityTicked;
 import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.events.base.Priority;
+import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
@@ -35,6 +36,7 @@ public class BleedingParticles {
 		ParticleEmitter.of( MajruszsDifficulty.Particles.BLOOD )
 			.count( Random.round( 0.5 + 0.5 * ( 15.0 + amplifier ) * walkDistanceDelta ) )
 			.sizeBased( data.entity )
+			.offset( AnyPos.from( data.entity.getBbWidth(), data.entity.getBbHeight(), data.entity.getBbWidth() ).mul( 0.25, 0.25, 0.25 ).vec3() )
 			.emit( data.getServerLevel() );
 	}
 
@@ -42,6 +44,7 @@ public class BleedingParticles {
 		ParticleEmitter.of( MajruszsDifficulty.Particles.BLOOD )
 			.count( 50 )
 			.sizeBased( data.target )
+			.offset( AnyPos.from( data.target.getBbWidth(), data.target.getBbHeight(), data.target.getBbWidth() ).mul( 0.25, 0.25, 0.25 ).vec3() )
 			.emit( data.getServerLevel() );
 	}
 
