@@ -142,6 +142,7 @@ public class MajruszsDifficulty {
 
 		// Items (fake)
 		static {
+			ITEMS.create( "advancement_bleeding", FakeItem::new );
 			ITEMS.create( "advancement_normal", FakeItem::new );
 			ITEMS.create( "advancement_expert", FakeItem::new );
 			ITEMS.create( "advancement_master", FakeItem::new );
