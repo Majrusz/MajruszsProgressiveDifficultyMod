@@ -64,6 +64,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.Items.CREEPERLING_SPAWN_EGG,
 			MajruszsDifficulty.Items.CURSED_ARMOR_SPAWN_EGG,
 			MajruszsDifficulty.Items.GIANT_SPAWN_EGG,
+			MajruszsDifficulty.Items.ILLUSIONER_SPAWN_EGG,
 			MajruszsDifficulty.Items.TANK_SPAWN_EGG
 		).map( item->new ItemStack( item.get() ) ).forEach( output::accept );
 	}

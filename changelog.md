@@ -36,6 +36,7 @@
 - decreased Cerberus experience from 60-90 to 26-46
 - rebalanced Bleeding chances on tools
 - replaced 12-36 Iron/Gold Nuggets with 1-3 Raw Iron/Gold in Angler Treasure Bag
+- replaced Illusioner texture with the one from Minecraft Dungeons
 - swapped drop chances for Rotten Flesh and Cloth inside Undead Army Treasure Bag
 - fixed bug with Tank's area attack not always spawning in front of the Tank
 - fixed bug with Tank's attack always emitting sound even if it did not hit

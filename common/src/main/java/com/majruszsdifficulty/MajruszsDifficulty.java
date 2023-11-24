@@ -71,6 +71,7 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< EntityType< Creeperling > > CREEPERLING = ENTITY_TYPES.create( "creeperling", Creeperling::createEntityType );
 		public static final RegistryObject< EntityType< CursedArmor > > CURSED_ARMOR = ENTITY_TYPES.create( "cursed_armor", CursedArmor::createEntityType );
 		public static final RegistryObject< EntityType< Giant > > GIANT = ENTITY_TYPES.create( "giant", Giant::createEntityType );
+		public static final RegistryObject< EntityType< Illusioner > > ILLUSIONER = ENTITY_TYPES.create( "illusioner", Illusioner::createEntityType );
 		public static final RegistryObject< EntityType< Tank > > TANK = ENTITY_TYPES.create( "tank", Tank::createEntityType );
 	}
 
@@ -129,6 +130,7 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.create( "creeperling_spawn_egg", ItemHelper.createEgg( Entities.CREEPERLING, 0x0da70b, 0x000000 ) );
 		public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.create( "cursed_armor_spawn_egg", ItemHelper.createEgg( Entities.CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
 		public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.create( "giant_spawn_egg", ItemHelper.createEgg( Entities.GIANT, 0x00afaf, 0x799c65 ) );
+		public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.create( "illusioner_spawn_egg", ItemHelper.createEgg( Entities.ILLUSIONER, 0x603e5c, 0x282b2b ) );
 		public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( Entities.TANK, 0xc1c1c1, 0x949494 ) );
 
 		// Items (treasure bags)
@@ -203,6 +205,7 @@ public class MajruszsDifficulty {
 			attributes.register( Entities.CURSED_ARMOR.get(), CursedArmor.createAttributes() );
 			attributes.register( Entities.CREEPERLING.get(), Creeperling.createChildAttributes() );
 			attributes.register( Entities.GIANT.get(), Giant.createAttributes() );
+			attributes.register( Entities.ILLUSIONER.get(), Illusioner.createAttributes().build() );
 			attributes.register( Entities.TANK.get(), Tank.createAttributes() );
 		} );
 
@@ -211,6 +214,7 @@ public class MajruszsDifficulty {
 			spawnPlacements.register( Entities.CURSED_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CursedArmor::checkMonsterSpawnRules );
 			spawnPlacements.register( Entities.CREEPERLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Creeperling::checkMonsterSpawnRules );
 			spawnPlacements.register( Entities.GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Giant::checkMonsterSpawnRules );
+			spawnPlacements.register( Entities.ILLUSIONER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Illusioner::checkMonsterSpawnRules );
 			spawnPlacements.register( Entities.TANK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Tank::checkMonsterSpawnRules );
 		} );
 	}
@@ -241,6 +245,7 @@ public class MajruszsDifficulty {
 				renderers.register( Entities.CURSED_ARMOR.get(), CursedArmorRenderer::new );
 				renderers.register( Entities.CREEPERLING.get(), CreeperlingRenderer::new );
 				renderers.register( Entities.GIANT.get(), GiantRenderer::new );
+				renderers.register( Entities.ILLUSIONER.get(), IllusionerRenderer::new );
 				renderers.register( Entities.TANK.get(), TankRenderer::new );
 			} );
 		}
