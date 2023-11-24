@@ -48,6 +48,6 @@ public class BleedingArmorProtection {
 	}
 
 	private static float getArmorMultiplier( ArmorItem item ) {
-		return 1.0f - Math.min( ARMOR_BONUS * item.getDefense() + TOUGHNESS_BONUS * item.getToughness(), 1.0f );
+		return 1.0f - Range.of( 0.0f, 0.9f ).clamp( ARMOR_BONUS * item.getDefense() + TOUGHNESS_BONUS * item.getToughness() );
 	}
 }
