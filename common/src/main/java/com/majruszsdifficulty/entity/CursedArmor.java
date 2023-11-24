@@ -24,6 +24,8 @@ import com.majruszlibrary.modhelper.LazyResource;
 import com.majruszlibrary.text.TextHelper;
 import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.bloodmoon.BloodMoonHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -31,9 +33,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -44,6 +48,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -159,6 +164,12 @@ public class CursedArmor extends Monster implements IAnimableEntity {
 			.add( Attributes.KNOCKBACK_RESISTANCE, 0.23 )
 			.add( Attributes.ARMOR, 4.0 )
 			.build();
+	}
+
+	public static boolean checkMonsterSpawnRules( EntityType< ? extends Monster > entityType, ServerLevelAccessor level, MobSpawnType mobSpawnType,
+		BlockPos blockPos, RandomSource random
+	) {
+		return Monster.checkMonsterSpawnRules( entityType, level, mobSpawnType, blockPos, random ) && BloodMoonHelper.isActive();
 	}
 
 	public CursedArmor( EntityType< ? extends Monster > entityType, Level level ) {

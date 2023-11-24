@@ -24,6 +24,7 @@ public class Initializer implements ModInitializer {
 		BiomeModifications.addFeature( IS_END, GenerationStep.Decoration.UNDERGROUND_ORES, MajruszsDifficulty.PlacedFeatures.FRAGILE_END_STONE_LARGE );
 		BiomeModifications.addFeature( IS_END, GenerationStep.Decoration.UNDERGROUND_ORES, MajruszsDifficulty.PlacedFeatures.INFESTED_END_STONE );
 
+		BiomeModifications.addSpawn( IS_OVERWORLD, MobCategory.MONSTER, MajruszsDifficulty.Entities.CURSED_ARMOR.get(), 30, 1, 3 );
 		BiomeModifications.addSpawn( IS_OVERWORLD, MobCategory.MONSTER, MajruszsDifficulty.Entities.ILLUSIONER.get(), 8, 1, 1 );
 		BiomeModifications.addSpawn( IS_OVERWORLD, MobCategory.MONSTER, MajruszsDifficulty.Entities.TANK.get(), 3, 1, 1 );
 		BiomeModifications.addSpawn( IS_NETHER, MobCategory.MONSTER, MajruszsDifficulty.Entities.CERBERUS.get(), 1, 1, 1 );

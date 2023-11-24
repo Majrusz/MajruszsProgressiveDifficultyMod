@@ -3,6 +3,12 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": [
     {
+      "type": "majruszsdifficulty:cursed_armor",
+      "weight": 30,
+      "minCount": 1,
+      "maxCount": 3
+    },
+    {
       "type": "majruszsdifficulty:illusioner",
       "weight": 8,
       "minCount": 1,
