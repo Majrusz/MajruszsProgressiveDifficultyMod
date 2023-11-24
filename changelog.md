@@ -17,6 +17,7 @@
 - removed Cloth drop chance from Undead Army mobs
 - removed Emerald as drop chance from Illusioner
 - removed reputation bonus when using Bandages on Villagers
+- removed recipe that converts Tattered Armor to Cloths
 - removed check for natural spawns in Undead Army requirement
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
