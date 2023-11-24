@@ -28,7 +28,7 @@ public class BleedingDamage {
 		OnEntityDamaged.listen( BleedingDamage::tryToApply )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Bleeding::isEnabled )
-			.addCondition( data->!Bleeding.isImmune( data.target ) );
+			.addCondition( data->Bleeding.canApplyTo( data.target ) );
 
 		OnEntityTicked.listen( BleedingDamage::tick )
 			.addCondition( Condition.isLogicalServer() )

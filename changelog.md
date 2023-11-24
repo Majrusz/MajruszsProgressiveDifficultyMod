@@ -12,6 +12,7 @@
 - added 2% Bleeding chance bonus per each level of Impaling on Trident
 - added config list for animals that should not apply Bleeding
 - added config for default immunity for undead mobs
+- added config for mobs that should be applicable by Bleeding (suggested by @zekeflynn)
 - removed Netherite and Enderium Axes from Cursed Armors in End Cities
 - removed detailed tooltip from Cursed Armor Spawn Egg
 - removed Cloth drop chance from Undead Army mobs

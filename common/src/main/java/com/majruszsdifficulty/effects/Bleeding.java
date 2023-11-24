@@ -12,9 +12,9 @@ import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Animal;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bleeding extends MobEffect {
@@ -32,11 +32,10 @@ public class Bleeding extends MobEffect {
 		return Config.IS_ENABLED;
 	}
 
-	public static boolean isImmune( LivingEntity entity ) {
-		return Config.ARE_UNDEAD_IMMUNE_BY_DEFAULT
-			&& entity instanceof Mob mob
-			&& mob.getMobType().equals( MobType.UNDEAD )
-			|| Config.IMMUNE_MOBS.contains( entity.getType() );
+	public static boolean canApplyTo( LivingEntity entity ) {
+		return Config.IS_APPLICABLE_TO_ANIMALS && entity instanceof Animal
+			|| Config.IS_APPLICABLE_TO_ILLAGERS && entity instanceof Mob mob && mob.getMobType() == MobType.ILLAGER
+			|| Config.APPLICABLE_MOBS.contains( entity.getType() );
 	}
 
 	public Bleeding() {
@@ -67,8 +66,9 @@ public class Bleeding extends MobEffect {
 
 	public static class Config {
 		public static boolean IS_ENABLED = true;
-		public static boolean ARE_UNDEAD_IMMUNE_BY_DEFAULT = true;
-		public static List< EntityType< ? > > IMMUNE_MOBS = new ArrayList<>();
+		public static boolean IS_APPLICABLE_TO_ANIMALS = true;
+		public static boolean IS_APPLICABLE_TO_ILLAGERS = true;
+		public static List< EntityType< ? > > APPLICABLE_MOBS = List.of( EntityType.PLAYER, EntityType.VILLAGER );
 		public static GameStageValue< EffectDef > EFFECTS = GameStageValue.of(
 			DefaultMap.defaultEntry( new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 0, 24.0f ) ),
 			DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 1, 24.0f ) ),
@@ -81,8 +81,9 @@ public class Bleeding extends MobEffect {
 
 			Serializables.getStatic( Config.class )
 				.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
-				.define( "are_undead_immune_by_default", Reader.bool(), ()->ARE_UNDEAD_IMMUNE_BY_DEFAULT, v->ARE_UNDEAD_IMMUNE_BY_DEFAULT = v )
-				.define( "immune_mobs", Reader.list( Reader.entityType() ), ()->IMMUNE_MOBS, v->IMMUNE_MOBS = v )
+				.define( "is_applicable_to_animals", Reader.bool(), ()->IS_APPLICABLE_TO_ANIMALS, v->IS_APPLICABLE_TO_ANIMALS = v )
+				.define( "is_applicable_to_pillagers", Reader.bool(), ()->IS_APPLICABLE_TO_ILLAGERS, v->IS_APPLICABLE_TO_ILLAGERS = v )
+				.define( "applicable_mobs", Reader.list( Reader.entityType() ), ()->APPLICABLE_MOBS, v->APPLICABLE_MOBS = v )
 				.define( "effect", Reader.map( Reader.custom( EffectDef::new ) ), ()->EFFECTS.get(), v->EFFECTS.set( v ) )
 				.define( "sources", Sources.class );
 		}
