@@ -130,7 +130,7 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< SpawnEggItem > CREEPERLING_SPAWN_EGG = ITEMS.create( "creeperling_spawn_egg", ItemHelper.createEgg( Entities.CREEPERLING, 0x0da70b, 0x000000 ) );
 		public static final RegistryObject< SpawnEggItem > CURSED_ARMOR_SPAWN_EGG = ITEMS.create( "cursed_armor_spawn_egg", ItemHelper.createEgg( Entities.CURSED_ARMOR, 0x808080, 0xe1e1e1 ) );
 		public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.create( "giant_spawn_egg", ItemHelper.createEgg( Entities.GIANT, 0x00afaf, 0x799c65 ) );
-		public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.create( "illusioner_spawn_egg", ItemHelper.createEgg( Entities.ILLUSIONER, 0x603e5c, 0x282b2b ) );
+		public static final RegistryObject< SpawnEggItem > ILLUSIONER_SPAWN_EGG = ITEMS.create( "illusioner_spawn_egg", ItemHelper.createEgg( Entities.ILLUSIONER, 0x3e293c, 0x959b9b ) );
 		public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( Entities.TANK, 0xc1c1c1, 0x949494 ) );
 
 		// Items (treasure bags)

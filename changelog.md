@@ -25,6 +25,7 @@
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
+- made Illusioner always have at least one illusion at the exact same position
 - changed `Enderium Block` name to `Block of Enderium` to better match the vanilla (suggested by @nickolas78gr)
 - changed Wither Sword repair material from Bone to Cerberus Fang
 - changed Angler Treasure Bag id from `majruszsdifficulty:fishing_treasure_bag` to `majruszsdifficulty:angler_treasure_bag`
