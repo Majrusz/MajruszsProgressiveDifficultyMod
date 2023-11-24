@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "majruszsdifficulty:undead_army/equipment_wave_6"
+          "name": "majruszsdifficulty:undead_army/wave_6_mob"
         }
       ]
     },
