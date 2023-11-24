@@ -6,6 +6,7 @@ import com.majruszlibrary.emitter.ParticleEmitter;
 import com.majruszlibrary.events.OnGameInitialized;
 import com.majruszlibrary.item.ItemHelper;
 import com.majruszlibrary.modhelper.ModHelper;
+import com.majruszlibrary.network.NetworkObject;
 import com.majruszlibrary.registry.Custom;
 import com.majruszlibrary.registry.RegistryGroup;
 import com.majruszlibrary.registry.RegistryObject;
@@ -20,6 +21,7 @@ import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomly;
 import com.majruszsdifficulty.particles.BloodParticle;
+import com.majruszsdifficulty.treasurebag.TreasureBagHelper;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.core.particles.ParticleType;
@@ -129,6 +131,15 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< SpawnEggItem > GIANT_SPAWN_EGG = ITEMS.create( "giant_spawn_egg", ItemHelper.createEgg( Entities.GIANT, 0x00afaf, 0x799c65 ) );
 		public static final RegistryObject< SpawnEggItem > TANK_SPAWN_EGG = ITEMS.create( "tank_spawn_egg", ItemHelper.createEgg( Entities.TANK, 0xc1c1c1, 0x949494 ) );
 
+		// Items (treasure bags)
+		public static final RegistryObject< TreasureBag > ANGLER_TREASURE_BAG = ITEMS.create( "angler_treasure_bag", TreasureBag.angler() );
+		public static final RegistryObject< TreasureBag > ELDER_GUARDIAN_TREASURE_BAG = ITEMS.create( "elder_guardian_treasure_bag", TreasureBag.elderGuardian() );
+		public static final RegistryObject< TreasureBag > ENDER_DRAGON_TREASURE_BAG = ITEMS.create( "ender_dragon_treasure_bag", TreasureBag.enderDragon() );
+		public static final RegistryObject< TreasureBag > PILLAGER_TREASURE_BAG = ITEMS.create( "pillager_treasure_bag", TreasureBag.pillager() );
+		public static final RegistryObject< TreasureBag > UNDEAD_ARMY_TREASURE_BAG = ITEMS.create( "undead_army_treasure_bag", TreasureBag.undeadArmy() );
+		public static final RegistryObject< TreasureBag > WARDEN_TREASURE_BAG = ITEMS.create( "warden_treasure_bag", TreasureBag.warden() );
+		public static final RegistryObject< TreasureBag > WITHER_TREASURE_BAG = ITEMS.create( "wither_treasure_bag", TreasureBag.wither() );
+
 		// Items (fake)
 		static {
 			ITEMS.create( "advancement_normal", FakeItem::new );
@@ -172,6 +183,11 @@ public class MajruszsDifficulty {
 		private static RegistryObject< SoundEvent > register( String name ) {
 			return SOUND_EVENTS.create( name, ()->SoundEvent.createVariableRangeEvent( HELPER.getLocation( name ) ) );
 		}
+	}
+
+	public static class Network {
+		public static final NetworkObject< TreasureBag.RightClickAction > TREASURE_BAG_RIGHT_CLICK = HELPER.create( "treasure_bag_right_click", TreasureBag.RightClickAction.class );
+		public static final NetworkObject< TreasureBagHelper.Progress > TREASURE_BAG_PROGRESS = HELPER.create( "treasure_bag_progress", TreasureBagHelper.Progress.class );
 	}
 
 	static {

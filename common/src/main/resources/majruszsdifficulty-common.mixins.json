@@ -10,7 +10,10 @@
     "MixinLightTexture"
   ],
   "mixins": [
-    "IMixinCreeper"
+    "IMixinCreeper",
+    "IMixinLootPool",
+    "IMixinLootPoolSingletonContainer",
+    "IMixinLootTable"
   ],
   "injectors": {
     "defaultRequire": 1

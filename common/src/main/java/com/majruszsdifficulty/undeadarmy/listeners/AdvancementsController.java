@@ -1,15 +1,14 @@
 package com.majruszsdifficulty.undeadarmy.listeners;
 
 import com.majruszsdifficulty.MajruszsDifficulty;
-import com.majruszsdifficulty.undeadarmy.events.OnUndeadArmyWaveFinished;
+import com.majruszsdifficulty.undeadarmy.events.OnUndeadArmyDefeated;
 
 public class AdvancementsController {
 	static {
-		OnUndeadArmyWaveFinished.listen( AdvancementsController::trigger )
-			.addCondition( data->data.undeadArmy.isLastWave() );
+		OnUndeadArmyDefeated.listen( AdvancementsController::trigger );
 	}
 
-	private static void trigger( OnUndeadArmyWaveFinished data ) {
+	private static void trigger( OnUndeadArmyDefeated data ) {
 		data.undeadArmy.participants.forEach( participant->MajruszsDifficulty.HELPER.triggerAchievement( participant, "army_defeated" ) );
 	}
 }

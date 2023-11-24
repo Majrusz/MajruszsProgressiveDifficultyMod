@@ -7,6 +7,7 @@
 - added chance for Pillagers to hold fireworks and Multishot crossbows (suggested by @Tides of Twilight)
 - added glass break sound when Glass Regeneration gets removed
 - added possibility to cure Bleeding with Milk Bucket
+- added possibility to open Treasure Bags by right-clicking it in the inventory
 - added Cloth to Undead Army Treasure Bag
 - added 2% Bleeding chance bonus per each level of Impaling on Trident
 - added config list for animals that should not apply Bleeding
@@ -30,6 +31,7 @@
 - decreased Cerberus move speed by 11%
 - decreased Cerberus experience from 60-90 to 26-46
 - rebalanced Bleeding chances on tools
+- replaced 12-36 Iron/Gold Nuggets with 1-3 Raw Iron/Gold in Angler Treasure Bag
 - fixed bug with Tank's area attack not always spawning in front of the Tank
 - fixed bug with Tank's attack always emitting sound even if it did not hit
 - fixed bug with Curse Armor playing assemble animation after reloading the world

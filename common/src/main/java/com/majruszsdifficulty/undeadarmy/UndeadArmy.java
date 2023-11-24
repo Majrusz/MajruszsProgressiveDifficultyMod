@@ -109,8 +109,10 @@ public class UndeadArmy {
 		this.phase.ticksTotal = Math.max( this.phase.ticksLeft, 1 );
 
 		Events.dispatch( new OnUndeadArmyStateChanged( this ) );
-		if( this.phase.state == Phase.State.WAVE_PREPARING && this.currentWave > 0 || this.phase.state == Phase.State.UNDEAD_DEFEATED && this.isLastWave() ) {
+		if( this.phase.state == Phase.State.WAVE_PREPARING && this.currentWave > 0 ) {
 			Events.dispatch( new OnUndeadArmyWaveFinished( this ) );
+		} else if( this.phase.state == Phase.State.UNDEAD_DEFEATED && this.isLastWave() ) {
+			Events.dispatch( new OnUndeadArmyDefeated( this ) );
 		}
 	}
 
