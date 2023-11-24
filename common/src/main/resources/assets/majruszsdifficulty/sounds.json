@@ -10,17 +10,5 @@
     "sounds": [
       "majruszsdifficulty:undead_army/wave_started"
     ]
-  },
-  "entity.cerberus_growl": {
-    "subtitle": "majruszsdifficulty.subtitle.entity.cerberus_growl",
-    "sounds": [
-      "majruszsdifficulty:entity/cerberus_growl"
-    ]
-  },
-  "entity.cerberus_bite": {
-    "subtitle": "majruszsdifficulty.subtitle.entity.cerberus_bite",
-    "sounds": [
-      "majruszsdifficulty:entity/cerberus_bite"
-    ]
   }
 }

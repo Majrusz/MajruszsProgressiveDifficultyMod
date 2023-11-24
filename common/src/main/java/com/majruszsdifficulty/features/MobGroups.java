@@ -14,11 +14,13 @@ import com.majruszlibrary.level.LevelHelper;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
+import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
+import com.majruszsdifficulty.undeadarmy.UndeadArmyHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -45,6 +47,24 @@ public class MobGroups {
 			Range.of( 1, 3 ),
 			List.of(
 				new SidekickDef( EntityType.SKELETON, MajruszsDifficulty.HELPER.getLocation( "mob_groups/skeleton_sidekick" ) )
+			)
+		),
+		"undead", new GroupDef(
+			GameStageValue.alwaysEnabled(),
+			0.1f,
+			true,
+			List.of(
+				new LeaderDef( EntityType.SKELETON, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_3_skeleton" ) ),
+				new LeaderDef( EntityType.STRAY, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_3_skeleton" ) ),
+				new LeaderDef( EntityType.ZOMBIE, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_3_mob" ) ),
+				new LeaderDef( EntityType.HUSK, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_3_mob" ) )
+			),
+			Range.of( 2, 4 ),
+			List.of(
+				new SidekickDef( EntityType.SKELETON, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_2_mob" ) ),
+				new SidekickDef( EntityType.STRAY, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_2_mob" ) ),
+				new SidekickDef( EntityType.ZOMBIE, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_2_mob" ) ),
+				new SidekickDef( EntityType.HUSK, MajruszsDifficulty.HELPER.getLocation( "undead_army/wave_2_mob" ) )
 			)
 		),
 		"zombie_miners", new GroupDef(
@@ -78,8 +98,8 @@ public class MobGroups {
 		OnEntitySpawned.listen( MobGroups::tryToSpawnGroup )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->!data.isLoadedFromDisk )
-			.addCondition( data->data.entity instanceof PathfinderMob );
-		// TODO: not undead army
+			.addCondition( data->data.entity instanceof PathfinderMob )
+			.addCondition( data->!data.getLevel().equals( Side.getServer().overworld() ) || !UndeadArmyHelper.isPartOfUndeadArmy( data.entity ) );
 
 		Command.create()
 			.literal( "summongroup" )
@@ -93,7 +113,7 @@ public class MobGroups {
 
 		Serializables.get( GroupDef.class )
 			.define( "is_enabled", Reader.map( Reader.bool() ), s->s.isEnabled.get(), ( s, v )->s.isEnabled.set( v ) )
-			.define( "chance", Reader.number(), s->s.chance, ( s, v )->Range.CHANCE.clamp( v ) )
+			.define( "chance", Reader.number(), s->s.chance, ( s, v )->s.chance = Range.CHANCE.clamp( v ) )
 			.define( "is_scaled_by_crd", Reader.bool(), s->s.isScaledByCRD, ( s, v )->s.isScaledByCRD = v )
 			.define( "leader_types", Reader.list( Reader.custom( LeaderDef::new ) ), s->s.leaders, ( s, v )->s.leaders = v )
 			.define( "sidekicks_count", Reader.range( Reader.integer() ), s->s.count, ( s, v )->s.count = Range.of( 1, 10 ).clamp( v ) )
