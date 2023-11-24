@@ -5,6 +5,7 @@ import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.events.OnClientTicked;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.level.Level;
 
 @OnlyIn( Dist.CLIENT )
 public class BloodMoonClient {
@@ -20,8 +21,8 @@ public class BloodMoonClient {
 			return;
 		}
 
-		if( BloodMoonHelper.isActive() && level.getDayTime() % 24000L > 12000L ) {
-			COLOR_RATIO = ( float )( 2.0 * ( level.getDayTime() % 12000L ) / 12000.0 - 1.0 );
+		if( BloodMoonHelper.isActive() && BloodMoonConfig.TIME.within( level.getDayTime() % Level.TICKS_PER_DAY ) ) {
+			COLOR_RATIO = ( float )( 2.0 * ( level.getDayTime() - BloodMoonConfig.TIME.from ) / ( BloodMoonConfig.TIME.to - BloodMoonConfig.TIME.from ) - 1.0 );
 			COLOR_RATIO = 1.0f - Math.abs( COLOR_RATIO * COLOR_RATIO * COLOR_RATIO );
 		} else {
 			COLOR_RATIO = 0.0f;
