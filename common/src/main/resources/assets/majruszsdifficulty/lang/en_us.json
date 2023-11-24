@@ -8,6 +8,7 @@
   "effect.majruszsdifficulty.bleeding.description": "Inflicts lethal damage over time. It is mainly caused by sharp tools, zombies and spiders. Does not affect undead.",
   "effect.majruszsdifficulty.bleeding.item_tooltip": " %1$s Chance To Inflict Bleeding %2$s",
   "effect.majruszsdifficulty.bleeding.armor_tooltip": "x%1$s Chance To Bleed",
+  "effect.majruszsdifficulty.bleeding.item_consumed": "When Consumed:",
   "effect.majruszsdifficulty.bleeding_immunity": "Bleeding Immunity",
   "effect.majruszsdifficulty.bleeding_immunity.description": "Makes the player immune to Bleeding.",
   "effect.majruszsdifficulty.glass_regeneration": "Glass Regeneration",

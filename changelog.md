@@ -6,7 +6,7 @@
 - added Infernal Sponge and Soaked Infernal Sponge to Wither Treasure Bag
 - added chance for Pillagers to hold fireworks and Multishot crossbows (suggested by @Tides of Twilight)
 - added glass break sound when Glass Regeneration gets removed
-- added possibility to cure Bleeding with Milk Bucket
+- added possibility to cure Bleeding with Milk Bucket and Golden Apples (suggested by @draglorr)
 - added possibility to open Treasure Bags by right-clicking it in the inventory
 - added Cloth to Undead Army Treasure Bag
 - added 2% Bleeding chance bonus per each level of Impaling on Trident
