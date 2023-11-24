@@ -17,10 +17,9 @@
   },
   "criteria": {
     "bag_opened": {
-      "trigger": "majruszsdifficulty:treasure_bag_opened",
+      "trigger": "majruszsdifficulty:basic_trigger",
       "conditions": {
-        "bag_id": "majruszsdifficulty:pillager_treasure_bag",
-        "amount": 1
+        "type": "majruszsdifficulty:pillager_treasure_bag"
       }
     }
   },

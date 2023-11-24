@@ -1,5 +1,5 @@
 {
-  "parent": "majruszsdifficulty:progressive_difficulty/bleeding_healed",
+  "parent": "majruszsdifficulty:bleeding_healed",
   "display": {
     "icon": {
       "item": "majruszsdifficulty:golden_bandage"

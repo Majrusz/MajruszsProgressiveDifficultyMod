@@ -1,5 +1,5 @@
 {
-  "parent": "majruszsdifficulty:progressive_difficulty/undead_army",
+  "parent": "majruszsdifficulty:undead_army",
   "display": {
     "icon": {
       "item": "majruszsdifficulty:undead_army_treasure_bag"
@@ -17,10 +17,9 @@
   },
   "criteria": {
     "bag_opened": {
-      "trigger": "majruszsdifficulty:treasure_bag_opened",
+      "trigger": "majruszsdifficulty:basic_trigger",
       "conditions": {
-        "bag_id": "majruszsdifficulty:undead_army_treasure_bag",
-        "amount": 1
+        "type": "majruszsdifficulty:undead_army_treasure_bag"
       }
     }
   },

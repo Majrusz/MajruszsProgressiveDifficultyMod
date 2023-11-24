@@ -1,5 +1,5 @@
 {
-  "parent": "majruszsdifficulty:progressive_difficulty/bleeding",
+  "parent": "majruszsdifficulty:bleeding",
   "display": {
     "icon": {
       "item": "majruszsdifficulty:bandage"

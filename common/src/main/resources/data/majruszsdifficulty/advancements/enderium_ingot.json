@@ -1,5 +1,5 @@
 {
-  "parent": "majruszsdifficulty:progressive_difficulty/enderium_shard",
+  "parent": "majruszsdifficulty:enderium_shard",
   "display": {
     "icon": {
       "item": "majruszsdifficulty:enderium_ingot"
