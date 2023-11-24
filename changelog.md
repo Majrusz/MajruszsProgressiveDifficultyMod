@@ -40,3 +40,4 @@
 - fixed bug with Tank's attack always emitting sound even if it did not hit
 - fixed bug with Curse Armor playing assemble animation after reloading the world
 - fixed bug with Bleeding tooltip not displaying proper value on server
+- fixed bug with Treasure Bag message appearing after changing worlds
