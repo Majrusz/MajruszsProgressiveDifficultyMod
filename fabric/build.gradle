@@ -65,6 +65,7 @@ dependencies {
     modImplementation "com.majruszlibrary:majrusz-library-fabric:${majruszlibrary_version}"
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    //modImplementation "curse.maven:spark-361579:4738953"
 
     compileOnly project(':common')
 }

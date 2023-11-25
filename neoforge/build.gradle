@@ -69,6 +69,8 @@ minecraft {
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             singleInstance true
             ideaModule "${rootProject.name}.${project.name}.main"
+            args "-mixin.config=${mod_id}-common.mixins.json"
+            args "-mixin.config=${mod_id}-neoforge.mixins.json"
             mods {
                 "${mod_id}" {
                     source sourceSets.main
@@ -126,6 +128,12 @@ jar {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}-common.mixins.json"
+    config "${mod_id}-neoforge.mixins.json"
 }
 
 processResources {

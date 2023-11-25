@@ -6,13 +6,14 @@ import com.majruszlibrary.events.OnGameInitialized;
 import com.majruszlibrary.events.OnLevelsLoaded;
 import com.majruszlibrary.events.OnPlayerLoggedIn;
 import com.majruszlibrary.item.LootHelper;
+import com.majruszlibrary.platform.Services;
 import com.majruszlibrary.registry.Registries;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.items.TreasureBag;
+import com.majruszsdifficulty.loot.ILootPlatform;
 import com.majruszsdifficulty.mixin.IMixinLootPool;
 import com.majruszsdifficulty.mixin.IMixinLootPoolSingletonContainer;
-import com.majruszsdifficulty.mixin.IMixinLootTable;
 import com.majruszsdifficulty.treasurebag.events.OnTreasureBagOpened;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import java.util.*;
 
 public class TreasureBagHelper {
+	private static final ILootPlatform PLATFORM = Services.load( ILootPlatform.class );
 	private static final List< TreasureBag > TREASURE_BAGS = new ArrayList<>();
 	private static Map< String, PlayerProgress > PLAYERS = new HashMap<>();
 
@@ -160,7 +162,7 @@ public class TreasureBagHelper {
 	}
 
 	private static List< LootItem > getLootItems( LootTable lootTable ) {
-		return Arrays.stream( ( ( IMixinLootTable )lootTable ).getPools() )
+		return PLATFORM.getLootPools( lootTable )
 			.flatMap( lootPool->Arrays.stream( ( ( IMixinLootPool )lootPool ).getEntries() ) )
 			.filter( entry->entry instanceof LootItem )
 			.map( entry->( LootItem )entry )
