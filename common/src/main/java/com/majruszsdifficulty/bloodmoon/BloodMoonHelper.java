@@ -4,6 +4,7 @@ import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
+import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.WorldData;
 
@@ -18,16 +19,22 @@ public class BloodMoonHelper {
 			.define( "blood_moon", Reader.bool(), ()->BLOOD_MOON.isActive(), v->BLOOD_MOON.setActive( v ) );
 	}
 
-	public static void start() {
+	public static boolean start() {
 		if( BLOOD_MOON.start() ) {
 			MajruszsDifficulty.WORLD_DATA.setDirty();
+			return true;
 		}
+
+		return false;
 	}
 
-	public static void stop() {
+	public static boolean stop() {
 		if( BLOOD_MOON.finish() ) {
 			MajruszsDifficulty.WORLD_DATA.setDirty();
+			return true;
 		}
+
+		return false;
 	}
 
 	@OnlyIn( Dist.CLIENT )
@@ -37,5 +44,9 @@ public class BloodMoonHelper {
 
 	public static boolean isActive() {
 		return BLOOD_MOON.isActive();
+	}
+
+	public static boolean isValidDayTime() {
+		return BloodMoonConfig.TIME.within( Side.getServer().overworld().getDayTime() );
 	}
 }

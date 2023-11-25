@@ -100,6 +100,8 @@
   "commands.undeadarmy.list": "List of all Undead Armies in progress:",
   "commands.undeadarmy.list_empty": "There is no Undead Army in progress!",
   "commands.undeadarmy.progress": "%1$s must kill %2$s more undead to start the Undead Army.",
+  "commands.blood_moon.cannot_start": "A Blood Moon cannot be triggered now!",
+  "commands.blood_moon.not_started": "There is no Blood Moon in progress!",
   "commands.treasurebag.reset": "Progress of all treasure bags has been restarted for %1$s.",
   "commands.treasurebag.unlockall": "Progress of all treasure bags has been maxed out for %1$s.",
   "commands.clampedregionaldifficulty": "Clamped regional difficulty at %1$s is %2$s.",

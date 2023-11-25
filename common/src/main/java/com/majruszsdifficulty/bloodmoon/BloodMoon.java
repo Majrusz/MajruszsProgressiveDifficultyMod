@@ -19,7 +19,7 @@ public class BloodMoon {
 	}
 
 	public boolean start() {
-		if( !this.isActive && !Events.dispatch( new OnBloodMoonStarted() ).isCancelled() ) {
+		if( !this.isActive && BloodMoonHelper.isValidDayTime() && !Events.dispatch( new OnBloodMoonStarted() ).isCancelled() ) {
 			this.isActive = true;
 
 			return true;
