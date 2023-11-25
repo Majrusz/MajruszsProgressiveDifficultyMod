@@ -36,6 +36,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.Items.EVOKER_FANG_SCROLL,
 			MajruszsDifficulty.Items.SONIC_BOOM_SCROLL,
 			MajruszsDifficulty.Items.CERBERUS_FANG,
+			MajruszsDifficulty.Items.WITHER_SWORD,
 			MajruszsDifficulty.Items.ENDER_POUCH,
 			MajruszsDifficulty.Items.ENDERIUM_SHARD,
 			MajruszsDifficulty.Items.ENDERIUM_INGOT,
