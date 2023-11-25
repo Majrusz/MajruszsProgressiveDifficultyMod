@@ -14,7 +14,7 @@ public class RewardsController {
 		RewardsController.giveExperienceReward( data.undeadArmy );
 		if( data.undeadArmy.isLastWave() ) {
 			// TODO: treasure bag
-			if( UndeadArmyConfig.RESET_ALL_PARTICIPANTS_REQUIREMENT ) {
+			if( UndeadArmyConfig.RESET_ALL_PARTICIPANTS_KILLS ) {
 				RewardsController.resetAllKillRequirements( data.undeadArmy );
 			}
 		}

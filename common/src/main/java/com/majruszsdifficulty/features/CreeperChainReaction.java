@@ -6,15 +6,15 @@ import com.majruszlibrary.events.OnEntityDamaged;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.events.base.CustomCondition;
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageValue;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperChainReaction {
-	private static final GameStageValue< Boolean > IS_ENABLED = GameStageValue.disabledOn( GameStage.NORMAL_ID );
+	private static GameStage REQUIRED_GAME_STAGE = GameStageHelper.find( GameStage.EXPERT_ID );
 
 	static {
 		OnEntityDamaged.listen( CreeperChainReaction::igniteCreeper )
-			.addCondition( CustomCondition.isEnabled( IS_ENABLED ) )
+			.addCondition( CustomCondition.check( REQUIRED_GAME_STAGE ) )
 			.addCondition( data->data.target instanceof Creeper )
 			.addCondition( data->data.attacker instanceof Creeper );
 
@@ -22,7 +22,7 @@ public class CreeperChainReaction {
 			.define( "creeper_chain_reaction", CreeperChainReaction.class );
 
 		Serializables.getStatic( CreeperChainReaction.class )
-			.define( "is_enabled", Reader.map( Reader.bool() ), ()->IS_ENABLED.get(), v->IS_ENABLED.set( v ) );
+			.define( "required_game_stage", Reader.string(), ()->REQUIRED_GAME_STAGE.getId(), v->REQUIRED_GAME_STAGE = GameStageHelper.find( v ) );
 	}
 
 	private static void igniteCreeper( OnEntityDamaged data ) {

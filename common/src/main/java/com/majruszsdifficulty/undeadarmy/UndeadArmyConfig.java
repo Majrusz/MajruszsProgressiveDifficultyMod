@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class UndeadArmyConfig {
 	public static boolean IS_ENABLED = true;
-	public static boolean RESET_ALL_PARTICIPANTS_REQUIREMENT = true;
+	public static boolean RESET_ALL_PARTICIPANTS_KILLS = true;
 	public static float WAVE_DURATION = 1200.0f;
 	public static float PREPARING_DURATION = 10.0f;
 	public static float HIGHLIGHT_DELAY = 300.0f;
@@ -99,7 +99,7 @@ public class UndeadArmyConfig {
 	static {
 		Serializables.getStatic( UndeadArmyConfig.class )
 			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
-			.define( "reset_all_participants_requirement", Reader.bool(), ()->RESET_ALL_PARTICIPANTS_REQUIREMENT, v->RESET_ALL_PARTICIPANTS_REQUIREMENT = v )
+			.define( "reset_all_participants_kills", Reader.bool(), ()->RESET_ALL_PARTICIPANTS_KILLS, v->RESET_ALL_PARTICIPANTS_KILLS = v )
 			.define( "wave_duration", Reader.number(), ()->WAVE_DURATION, v->WAVE_DURATION = Range.of( 300.0f, 3600.0f ).clamp( v ) )
 			.define( "preparing_duration", Reader.number(), ()->PREPARING_DURATION, v->PREPARING_DURATION = Range.of( 1.0f, 60.0f ).clamp( v ) )
 			.define( "highlight_delay", Reader.number(), ()->HIGHLIGHT_DELAY, v->HIGHLIGHT_DELAY = Range.of( 30.0f, 3600.0f ).clamp( v ) )

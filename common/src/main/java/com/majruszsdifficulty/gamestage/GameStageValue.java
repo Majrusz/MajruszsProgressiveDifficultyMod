@@ -15,26 +15,8 @@ public class GameStageValue< Type > {
 		return new GameStageValue<>( DefaultMap.of( entries ) );
 	}
 
-	public static GameStageValue< Boolean > alwaysEnabled() {
-		return new GameStageValue<>( DefaultMap.of( DefaultMap.defaultEntry( true ) ) );
-	}
-
-	public static GameStageValue< Boolean > disabledOn( String... ids ) {
-		DefaultMap< Boolean > map = DefaultMap.of( DefaultMap.defaultEntry( true ) );
-		for( String id : ids ) {
-			map.put( id, false );
-		}
-
-		return new GameStageValue<>( map );
-	}
-
-	public static GameStageValue< Boolean > enabledOn( String... ids ) {
-		DefaultMap< Boolean > map = DefaultMap.of( DefaultMap.defaultEntry( false ) );
-		for( String id : ids ) {
-			map.put( id, true );
-		}
-
-		return new GameStageValue<>( map );
+	public static < Type > GameStageValue< Type > of( Map< String, Type > values ) {
+		return new GameStageValue<>( values );
 	}
 
 	public void set( Map< String, Type > map ) {
@@ -58,6 +40,10 @@ public class GameStageValue< Type > {
 	}
 
 	private GameStageValue( DefaultMap< Type > map ) {
+		this.set( map );
+	}
+
+	private GameStageValue( Map< String, Type > map ) {
 		this.set( map );
 	}
 }

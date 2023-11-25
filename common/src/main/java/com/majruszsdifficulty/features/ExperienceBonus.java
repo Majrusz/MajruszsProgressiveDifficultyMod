@@ -12,7 +12,6 @@ import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 
 public class ExperienceBonus {
-	private static boolean IS_ENABLED = true;
 	private static final GameStageValue< Float > BONUS = GameStageValue.of(
 		DefaultMap.defaultEntry( 0.0f ),
 		DefaultMap.entry( GameStage.EXPERT_ID, 0.2f ),
@@ -20,15 +19,10 @@ public class ExperienceBonus {
 	);
 
 	static {
-		OnExpOrbPickedUp.listen( ExperienceBonus::increase )
-			.addCondition( data->IS_ENABLED );
+		OnExpOrbPickedUp.listen( ExperienceBonus::increase );
 
 		Serializables.getStatic( Config.Features.class )
-			.define( "experience_bonus", ExperienceBonus.class );
-
-		Serializables.getStatic( ExperienceBonus.class )
-			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
-			.define( "bonus", Reader.map( Reader.number() ), ()->BONUS.get(), v->BONUS.set( Range.of( 0.0f, 10.0f ).clamp( v ) ) );
+			.define( "experience_bonus", Reader.map( Reader.number() ), ()->BONUS.get(), v->BONUS.set( Range.of( 0.0f, 10.0f ).clamp( v ) ) );
 	}
 
 	private static void increase( OnExpOrbPickedUp data ) {

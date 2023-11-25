@@ -4,7 +4,6 @@ import com.majruszlibrary.collection.DefaultMap;
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.entity.EffectDef;
-import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.entity.EntityType;
@@ -18,9 +17,9 @@ public class BleedingConfig {
 	public static boolean IS_APPLICABLE_TO_ILLAGERS = true;
 	public static List< EntityType< ? > > OTHER_APPLICABLE_MOBS = List.of( EntityType.PLAYER, EntityType.VILLAGER );
 	public static GameStageValue< EffectDef > EFFECTS = GameStageValue.of(
-		DefaultMap.defaultEntry( new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 0, 24.0f ) ),
-		DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 1, 24.0f ) ),
-		DefaultMap.entry( GameStage.MASTER_ID, new EffectDef( MajruszsDifficulty.Effects.BLEEDING, 2, 24.0f ) )
+		DefaultMap.defaultEntry( new EffectDef( ()->null, 0, 24.0f ) ),
+		DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( ()->null, 1, 24.0f ) ),
+		DefaultMap.entry( GameStage.MASTER_ID, new EffectDef( ()->null, 2, 24.0f ) )
 	);
 
 	static {

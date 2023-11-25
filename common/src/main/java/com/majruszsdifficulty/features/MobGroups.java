@@ -19,7 +19,6 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
@@ -38,7 +37,7 @@ import java.util.*;
 public class MobGroups {
 	private static Map< String, GroupDef > GROUPS = Map.of(
 		"skeletons", new GroupDef(
-			GameStageValue.alwaysEnabled(),
+			GameStage.NORMAL_ID,
 			0.1f,
 			true,
 			List.of(
@@ -50,7 +49,7 @@ public class MobGroups {
 			)
 		),
 		"undead", new GroupDef(
-			GameStageValue.alwaysEnabled(),
+			GameStage.NORMAL_ID,
 			0.1f,
 			true,
 			List.of(
@@ -68,7 +67,7 @@ public class MobGroups {
 			)
 		),
 		"zombie_miners", new GroupDef(
-			GameStageValue.disabledOn( GameStage.NORMAL_ID ),
+			GameStage.EXPERT_ID,
 			0.25f,
 			true,
 			List.of(
@@ -80,7 +79,7 @@ public class MobGroups {
 			)
 		),
 		"piglins", new GroupDef(
-			GameStageValue.disabledOn( GameStage.NORMAL_ID ),
+			GameStage.EXPERT_ID,
 			0.25f,
 			true,
 			List.of(
@@ -112,7 +111,7 @@ public class MobGroups {
 			.define( "mob_groups", Reader.map( Reader.custom( GroupDef::new ) ), ()->GROUPS, v->GROUPS = v );
 
 		Serializables.get( GroupDef.class )
-			.define( "is_enabled", Reader.map( Reader.bool() ), s->s.isEnabled.get(), ( s, v )->s.isEnabled.set( v ) )
+			.define( "required_game_stage", Reader.string(), s->s.requiredGameStage.getId(), ( s, v )->s.requiredGameStage = GameStageHelper.find( v ) )
 			.define( "chance", Reader.number(), s->s.chance, ( s, v )->s.chance = Range.CHANCE.clamp( v ) )
 			.define( "is_scaled_by_crd", Reader.bool(), s->s.isScaledByCRD, ( s, v )->s.isScaledByCRD = v )
 			.define( "leader_types", Reader.list( Reader.custom( LeaderDef::new ) ), s->s.leaders, ( s, v )->s.leaders = v )
@@ -138,7 +137,7 @@ public class MobGroups {
 			}
 
 			GroupDef groupDef = entry.getValue();
-			if( !groupDef.isEnabled.get( gameStage ) ) {
+			if( groupDef.requiredGameStage.getOrdinal() > gameStage.getOrdinal() ) {
 				continue;
 			}
 
@@ -312,17 +311,17 @@ public class MobGroups {
 	}
 
 	public static class GroupDef {
-		public GameStageValue< Boolean > isEnabled = GameStageValue.alwaysEnabled();
+		public GameStage requiredGameStage = GameStageHelper.find( GameStage.NORMAL_ID );
 		public float chance = 0.0f;
 		public boolean isScaledByCRD = false;
 		public List< LeaderDef > leaders = List.of();
 		public Range< Integer > count = Range.of( 1, 10 );
 		public List< SidekickDef > sidekicks = List.of();
 
-		public GroupDef( GameStageValue< Boolean > isEnabled, float chance, boolean isScaledByCRD, List< LeaderDef > leaders, Range< Integer > count,
+		public GroupDef( String gameStageId, float chance, boolean isScaledByCRD, List< LeaderDef > leaders, Range< Integer > count,
 			List< SidekickDef > sidekicks
 		) {
-			this.isEnabled = isEnabled;
+			this.requiredGameStage = GameStageHelper.find( gameStageId );
 			this.chance = chance;
 			this.isScaledByCRD = isScaledByCRD;
 			this.leaders = leaders;
