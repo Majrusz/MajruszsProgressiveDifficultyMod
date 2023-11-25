@@ -4,8 +4,8 @@ import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.events.OnEntityDamaged;
 import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.events.base.CustomCondition;
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.entity.monster.Creeper;
 
@@ -14,7 +14,7 @@ public class CreeperChainReaction {
 
 	static {
 		OnEntityDamaged.listen( CreeperChainReaction::igniteCreeper )
-			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
+			.addCondition( CustomCondition.isEnabled( IS_ENABLED ) )
 			.addCondition( data->data.target instanceof Creeper )
 			.addCondition( data->data.attacker instanceof Creeper );
 

@@ -4,6 +4,7 @@ import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.events.OnEntitySpawned;
 import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.events.base.CustomCondition;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.entity.monster.Illusioner;
 
@@ -12,6 +13,7 @@ public class BlockIllusionerFromJoiningRaids {
 
 	static {
 		OnEntitySpawned.listen( BlockIllusionerFromJoiningRaids::blockJoiningRaids )
+			.addCondition( CustomCondition.isEnabled( IS_ENABLED ) )
 			.addCondition( data->data.entity instanceof Illusioner );
 
 		Serializables.getStatic( Config.Features.class )

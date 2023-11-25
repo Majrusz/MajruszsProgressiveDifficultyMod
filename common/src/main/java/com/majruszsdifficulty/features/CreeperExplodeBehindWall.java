@@ -7,8 +7,8 @@ import com.majruszlibrary.events.OnEntitySpawned;
 import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.events.base.CustomCondition;
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 import com.majruszsdifficulty.mixin.IMixinCreeper;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +29,7 @@ public class CreeperExplodeBehindWall {
 		OnEntitySpawned.listen( CreeperExplodeBehindWall::modifyAI )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
-			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
+			.addCondition( CustomCondition.isEnabled( IS_ENABLED ) )
 			.addCondition( data->data.entity instanceof Creeper );
 
 		Serializables.getStatic( Config.Features.class )

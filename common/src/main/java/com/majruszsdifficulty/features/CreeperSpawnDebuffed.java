@@ -8,7 +8,7 @@ import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.data.Config;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
+import com.majruszsdifficulty.events.base.CustomCondition;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Creeper;
@@ -30,8 +30,8 @@ public class CreeperSpawnDebuffed {
 		OnEntitySpawned.listen( CreeperSpawnDebuffed::applyRandomEffect )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
+			.addCondition( CustomCondition.isEnabled( IS_ENABLED ) )
 			.addCondition( data->!data.isLoadedFromDisk )
-			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
 			.addCondition( data->data.entity instanceof Creeper );
 
 		Serializables.getStatic( Config.Features.class )

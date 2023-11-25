@@ -8,8 +8,8 @@ import com.majruszlibrary.level.LevelHelper;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.Config;
+import com.majruszsdifficulty.events.base.CustomCondition;
 import com.majruszsdifficulty.gamestage.GameStage;
-import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -23,7 +23,7 @@ public class EndermanTeleportAttack {
 		OnEntityDamaged.listen( EndermanTeleportAttack::teleportRandomly )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
-			.addCondition( data->IS_ENABLED.get( GameStageHelper.determineGameStage( data ) ) )
+			.addCondition( CustomCondition.isEnabled( IS_ENABLED ) )
 			.addCondition( data->data.attacker instanceof EnderMan )
 			.addCondition( data->!data.source.isIndirect() );
 
