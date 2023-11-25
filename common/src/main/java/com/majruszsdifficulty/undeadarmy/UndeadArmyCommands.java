@@ -70,7 +70,7 @@ public class UndeadArmyCommands {
 			if( UndeadArmyHelper.tryToSpawn( blockPos, direction ) ) {
 				data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.started", "(%s)".formatted( blockPos.toShortString() ) ), true );
 			} else {
-				data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.cannot_start", "(%s)".formatted( blockPos.toShortString() ) ), true );
+				data.source.sendFailure( TextHelper.translatable( "commands.undeadarmy.cannot_start", "(%s)".formatted( blockPos.toShortString() ) ) );
 			}
 		}
 
@@ -92,7 +92,7 @@ public class UndeadArmyCommands {
 			return 0;
 		}
 
-		data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.list_empty" ), true );
+		data.source.sendFailure( TextHelper.translatable( "commands.undeadarmy.list_empty" ) );
 		return -1;
 	}
 
@@ -102,7 +102,7 @@ public class UndeadArmyCommands {
 		int undeadLeft = tag != null ? Serializables.read( new UndeadArmyTrigger.Progress(), tag ).undeadLeft : UndeadArmyConfig.KILL_REQUIREMENT_FIRST;
 
 		data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), Math.max( undeadLeft, 1 ) ), true );
-		return -1;
+		return 0;
 	}
 
 	private static void create( String command, String successId, Consumer< UndeadArmy > consumer ) {
@@ -129,7 +129,7 @@ public class UndeadArmyCommands {
 				consumer.accept( undeadArmy );
 				data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy." + successId, "(%s)".formatted( blockPos.toShortString() ) ), true );
 			} else {
-				data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.missing", "(%s)".formatted( blockPos.toShortString() ) ), true );
+				data.source.sendFailure( TextHelper.translatable( "commands.undeadarmy.missing", "(%s)".formatted( blockPos.toShortString() ) ) );
 			}
 		}
 
