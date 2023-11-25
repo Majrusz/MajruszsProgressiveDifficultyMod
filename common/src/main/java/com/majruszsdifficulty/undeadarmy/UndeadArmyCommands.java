@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class UndeadArmyCommands {
-	private static final IParameter< UndeadArmy.Direction > DIRECTION = Command.enumeration( UndeadArmy.Direction.class ).named( "direction" );
+	private static final IParameter< UndeadArmy.Direction > DIRECTION = Command.enumeration( UndeadArmy.Direction::values ).named( "direction" );
 	private static final IParameter< List< Vec3 > > POSITIONS = Command.anyPosition();
 	private static final IParameter< Entity > ENTITY = Command.entity();
 

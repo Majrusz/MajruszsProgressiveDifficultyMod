@@ -112,12 +112,12 @@ public class UndeadArmyConfig {
 
 		Serializables.get( WaveDef.class )
 			.define( "mobs", Reader.list( Reader.custom( MobDef::new ) ), s->s.mobDefs, ( s, v )->s.mobDefs = v )
-			.define( "boss", Reader.custom( MobDef::new ), s->s.bossDef, ( s, v )->s.bossDef = v )
+			.define( "boss", Reader.optional( Reader.custom( MobDef::new ) ), s->s.bossDef, ( s, v )->s.bossDef = v )
 			.define( "exp", Reader.integer(), s->s.experience, ( s, v )->s.experience = Range.of( 0, 1000 ).clamp( v ) );
 
 		Serializables.get( MobDef.class )
 			.define( "type", Reader.entityType(), s->s.type.get(), ( s, v )->s.type = ()->v )
-			.define( "equipment", Reader.location(), s->s.equipment, ( s, v )->s.equipment = v )
+			.define( "equipment", Reader.optional( Reader.location() ), s->s.equipment, ( s, v )->s.equipment = v )
 			.define( "count", Reader.integer(), s->s.count, ( s, v )->s.count = Range.of( 1, 20 ).clamp( v ) );
 	}
 
