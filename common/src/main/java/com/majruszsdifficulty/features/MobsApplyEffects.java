@@ -16,7 +16,7 @@ import net.minecraft.world.entity.EntityType;
 
 import java.util.List;
 
-public class MobExtraEffects {
+public class MobsApplyEffects {
 	private static List< ExtraEffectDef > EXTRA_EFFECTS = List.of(
 		new ExtraEffectDef(
 			GameStage.EXPERT_ID,
@@ -49,12 +49,12 @@ public class MobExtraEffects {
 	);
 
 	static {
-		OnEntityDamaged.listen( MobExtraEffects::tryToApply )
+		OnEntityDamaged.listen( MobsApplyEffects::tryToApply )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->data.attacker != null );
 
 		Serializables.getStatic( Config.Features.class )
-			.define( "mob_extra_effects", Reader.list( Reader.custom( ExtraEffectDef::new ) ), ()->EXTRA_EFFECTS, v->EXTRA_EFFECTS = v );
+			.define( "mobs_apply_effects", Reader.list( Reader.custom( ExtraEffectDef::new ) ), ()->EXTRA_EFFECTS, v->EXTRA_EFFECTS = v );
 
 		Serializables.get( ExtraEffectDef.class )
 			.define( "required_game_stage", Reader.string(), s->s.requiredGameStage.getId(), ( s, v )->s.requiredGameStage = GameStageHelper.find( v ) )

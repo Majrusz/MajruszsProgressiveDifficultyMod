@@ -9,8 +9,9 @@
 - added possibility to cure Bleeding with Milk Bucket and Golden Apples (suggested by @draglorr)
 - added possibility to open Treasure Bags by right-clicking it in the inventory
 - added Cloth to Undead Army Treasure Bag
-- added 2% Bleeding chance bonus per each level of Impaling on Trident
+- added 4% Bleeding chance bonus per each level of Impaling on Trident
 - added config list for animals that should not apply Bleeding
+- added config list for mobs with effects they can apply
 - added config for default immunity for undead mobs
 - added config for mobs that should be applicable by Bleeding (suggested by @zekeflynn)
 - removed Netherite and Enderium Axes from Cursed Armors in End Cities
