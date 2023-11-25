@@ -22,6 +22,7 @@
 - removed recipe that converts Cerberus Fangs to Bone Meal
 - removed check for natural spawns in Undead Army requirement
 - removed advancements for opening 16th Treasure Bag
+- removed night multiplier bonus for damage and health
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
@@ -33,6 +34,7 @@
 - increased Cursed Armor experience from 0-7 to 7
 - increased armor toughness of Enderium Armor from 3.5 to 4
 - increased required undead kills to trigger the Undead Army from 75 to 100
+- increased mob health bonus from 0%/10%/20% to 0%/15%/30%
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - decreased Cerberus move speed by 11%
 - decreased Cerberus experience from 60-90 to 26-46

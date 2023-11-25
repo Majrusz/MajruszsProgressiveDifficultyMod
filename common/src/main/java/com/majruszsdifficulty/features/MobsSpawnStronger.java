@@ -24,16 +24,13 @@ public class MobsSpawnStronger {
 	private static final AttributeHandler DAMAGE = new AttributeHandler( "progressive_difficulty_damage_bonus", ()->Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE );
 	private static final GameStageValue< Float > HEALTH_BONUS = GameStageValue.of(
 		DefaultMap.defaultEntry( 0.0f ),
-		DefaultMap.entry( GameStage.EXPERT_ID, 0.1f ),
-		DefaultMap.entry( GameStage.MASTER_ID, 0.2f )
+		DefaultMap.entry( GameStage.EXPERT_ID, 0.15f ),
+		DefaultMap.entry( GameStage.MASTER_ID, 0.3f )
 	);
 	private static final GameStageValue< Float > DAMAGE_BONUS = GameStageValue.of(
 		DefaultMap.defaultEntry( 0.0f ),
 		DefaultMap.entry( GameStage.EXPERT_ID, 0.1f ),
 		DefaultMap.entry( GameStage.MASTER_ID, 0.2f )
-	);
-	private static final GameStageValue< Float > NIGHT_MULTIPLIER = GameStageValue.of(
-		DefaultMap.defaultEntry( 1.5f )
 	);
 	private static List< RegexString > EXCLUDED_MOBS = List.of();
 
@@ -52,17 +49,15 @@ public class MobsSpawnStronger {
 			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
 			.define( "health_bonus", Reader.map( Reader.number() ), ()->HEALTH_BONUS.get(), v->HEALTH_BONUS.set( v ) )
 			.define( "damage_bonus", Reader.map( Reader.number() ), ()->DAMAGE_BONUS.get(), v->DAMAGE_BONUS.set( v ) )
-			.define( "night_multiplier", Reader.map( Reader.number() ), ()->NIGHT_MULTIPLIER.get(), v->NIGHT_MULTIPLIER.set( v ) )
 			.define( "excluded_mobs", Reader.list( Reader.string() ), ()->RegexString.toString( EXCLUDED_MOBS ), v->EXCLUDED_MOBS = RegexString.toRegex( v ) );
 	}
 
 	private static void boost( OnEntitySpawned data ) {
 		Mob mob = ( Mob )data.entity;
 		GameStage gameStage = GameStageHelper.determineGameStage( data );
-		float nightMultiplier = NIGHT_MULTIPLIER.get( gameStage );
 
-		HEALTH.setValue( HEALTH_BONUS.get( gameStage ) * nightMultiplier ).apply( mob );
-		DAMAGE.setValue( DAMAGE_BONUS.get( gameStage ) * nightMultiplier ).apply( mob );
+		HEALTH.setValue( HEALTH_BONUS.get( gameStage ) ).apply( mob );
+		DAMAGE.setValue( DAMAGE_BONUS.get( gameStage ) ).apply( mob );
 		mob.setHealth( mob.getMaxHealth() );
 	}
 }
