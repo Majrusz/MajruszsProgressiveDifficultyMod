@@ -2,7 +2,7 @@ package com.majruszsdifficulty.gamestage;
 
 import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
-import com.majruszsdifficulty.data.Config;
+import com.majruszlibrary.events.OnLevelsLoaded;
 import net.minecraft.ChatFormatting;
 
 import java.util.List;
@@ -26,9 +26,17 @@ public class GameStageConfig {
 	);
 
 	static {
+		OnLevelsLoaded.listen( GameStageConfig::updateOrdinals );
+
 		Serializables.getStatic( GameStageConfig.class )
 			.define( "is_per_player_difficulty_enabled", Reader.bool(), ()->IS_PER_PLAYER_DIFFICULTY_ENABLED, v->IS_PER_PLAYER_DIFFICULTY_ENABLED = v )
 			.define( "list", Reader.list( Reader.custom( GameStage::new ) ), ()->GAME_STAGES, v->GAME_STAGES = GameStageConfig.validate( v ) );
+	}
+
+	private static void updateOrdinals( OnLevelsLoaded data ) {
+		for( int idx = 0; idx < GAME_STAGES.size(); ++idx ) {
+			GAME_STAGES.get( idx ).setOrdinal( idx );
+		}
 	}
 
 	private static List< GameStage > validate( List< GameStage > gameStages ) {
