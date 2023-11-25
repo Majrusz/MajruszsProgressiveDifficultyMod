@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperSpawnCharged {
+	private static boolean IS_ENABLED = true;
 	private static GameStage REQUIRED_GAME_STAGE = GameStageHelper.find( GameStage.NORMAL_ID );
 	private static float CHANCE = 0.125f;
 	private static boolean IS_SCALED_BY_CRD = true;
@@ -22,6 +23,7 @@ public class CreeperSpawnCharged {
 		OnEntitySpawned.listen( CreeperSpawnCharged::charge )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
+			.addCondition( data->IS_ENABLED )
 			.addCondition( CustomCondition.check( REQUIRED_GAME_STAGE ) )
 			.addCondition( data->!data.isLoadedFromDisk )
 			.addCondition( data->data.entity instanceof Creeper );
@@ -30,6 +32,7 @@ public class CreeperSpawnCharged {
 			.define( "creeper_spawn_charged", CreeperSpawnCharged.class );
 
 		Serializables.getStatic( CreeperSpawnCharged.class )
+			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
 			.define( "required_game_stage", Reader.string(), ()->REQUIRED_GAME_STAGE.getId(), v->REQUIRED_GAME_STAGE = GameStageHelper.find( v ) )
 			.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) )
 			.define( "is_scaled_by_crd", Reader.bool(), ()->IS_SCALED_BY_CRD, v->IS_SCALED_BY_CRD = v );

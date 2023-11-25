@@ -23,18 +23,20 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.phys.AABB;
 
 public class CreeperSplitIntoCreeperlings {
-	private static final GameStageValue< Integer > COUNT = GameStageValue.of(
+	private static boolean IS_ENABLED = true;
+	private static float CHANCE = 0.666f;
+	private static boolean IS_SCALED_BY_CRD = true;
+	private static GameStageValue< Integer > COUNT = GameStageValue.of(
 		DefaultMap.defaultEntry( 2 ),
 		DefaultMap.entry( GameStage.EXPERT_ID, 4 ),
 		DefaultMap.entry( GameStage.MASTER_ID, 6 )
 	);
-	private static float CHANCE = 0.666f;
-	private static boolean IS_SCALED_BY_CRD = true;
 
 	static {
 		OnExploded.listen( CreeperSplitIntoCreeperlings::spawnCreeperlings )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
+			.addCondition( data->IS_ENABLED )
 			.addCondition( data->data.explosion.getDirectSourceEntity() != null )
 			.addCondition( data->data.explosion.getDirectSourceEntity().getType().equals( EntityType.CREEPER ) );
 
@@ -50,7 +52,8 @@ public class CreeperSplitIntoCreeperlings {
 			.define( "creeper_split_into_creeperlings", CreeperSplitIntoCreeperlings.class );
 
 		Serializables.getStatic( CreeperSplitIntoCreeperlings.class )
-			.define( "count", Reader.map( Reader.integer() ), ()->COUNT.get(), v->COUNT.set( v ) )
+			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+			.define( "count", Reader.map( Reader.integer() ), ()->COUNT.get(), v->COUNT = GameStageValue.of( Range.of( 1, 20 ).clamp( v ) ) )
 			.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) )
 			.define( "is_scaled_by_crd", Reader.bool(), ()->IS_SCALED_BY_CRD, v->IS_SCALED_BY_CRD = v );
 	}

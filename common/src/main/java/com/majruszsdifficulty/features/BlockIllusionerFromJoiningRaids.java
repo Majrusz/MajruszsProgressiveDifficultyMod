@@ -10,10 +10,12 @@ import com.majruszsdifficulty.gamestage.GameStageHelper;
 import net.minecraft.world.entity.monster.Illusioner;
 
 public class BlockIllusionerFromJoiningRaids {
+	private static boolean IS_ENABLED = true;
 	private static GameStage REQUIRED_GAME_STAGE = GameStageHelper.find( GameStage.NORMAL_ID );
 
 	static {
 		OnEntitySpawned.listen( BlockIllusionerFromJoiningRaids::blockJoiningRaids )
+			.addCondition( data->IS_ENABLED )
 			.addCondition( CustomCondition.check( REQUIRED_GAME_STAGE ) )
 			.addCondition( data->data.entity instanceof Illusioner );
 
@@ -21,6 +23,7 @@ public class BlockIllusionerFromJoiningRaids {
 			.define( "block_illusioner_from_joining_raids", BlockIllusionerFromJoiningRaids.class );
 
 		Serializables.getStatic( BlockIllusionerFromJoiningRaids.class )
+			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
 			.define( "required_game_stage", Reader.string(), ()->REQUIRED_GAME_STAGE.getId(), v->REQUIRED_GAME_STAGE = GameStageHelper.find( v ) );
 	}
 

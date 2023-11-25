@@ -12,17 +12,20 @@ import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
 
 public class ExperienceBonus {
-	private static final GameStageValue< Float > BONUS = GameStageValue.of(
+	private static boolean IS_ENABLED = true;
+	private static GameStageValue< Float > BONUS = GameStageValue.of(
 		DefaultMap.defaultEntry( 0.0f ),
 		DefaultMap.entry( GameStage.EXPERT_ID, 0.2f ),
 		DefaultMap.entry( GameStage.MASTER_ID, 0.4f )
 	);
 
 	static {
-		OnExpOrbPickedUp.listen( ExperienceBonus::increase );
+		OnExpOrbPickedUp.listen( ExperienceBonus::increase )
+			.addCondition( data->IS_ENABLED );
 
 		Serializables.getStatic( Config.Features.class )
-			.define( "experience_bonus", Reader.map( Reader.number() ), ()->BONUS.get(), v->BONUS.set( Range.of( 0.0f, 10.0f ).clamp( v ) ) );
+			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+			.define( "experience_bonus", Reader.map( Reader.number() ), ()->BONUS.get(), v->BONUS = GameStageValue.of( Range.of( 0.0f, 10.0f ).clamp( v ) ) );
 	}
 
 	private static void increase( OnExpOrbPickedUp data ) {

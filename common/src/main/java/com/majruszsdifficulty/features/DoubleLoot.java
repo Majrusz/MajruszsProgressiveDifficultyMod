@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoubleLoot {
-	private static final GameStageValue< Float > CHANCE = GameStageValue.of(
+	private static boolean IS_ENABLED = true;
+	private static GameStageValue< Float > CHANCE = GameStageValue.of(
 		DefaultMap.defaultEntry( 0.0f ),
 		DefaultMap.entry( GameStage.EXPERT_ID, 0.05f ),
 		DefaultMap.entry( GameStage.MASTER_ID, 0.1f )
@@ -32,6 +33,7 @@ public class DoubleLoot {
 
 	static {
 		OnLootGenerated.listen( DoubleLoot::doubleLoot )
+			.addCondition( data->IS_ENABLED )
 			.addCondition( data->data.lastDamagePlayer != null )
 			.addCondition( data->data.entity != null )
 			.addCondition( data->Random.check( CHANCE.get( GameStageHelper.determineGameStage( data ) ) ) );
@@ -40,7 +42,8 @@ public class DoubleLoot {
 			.define( "double_loot", DoubleLoot.class );
 
 		Serializables.getStatic( DoubleLoot.class )
-			.define( "chance", Reader.map( Reader.number() ), ()->CHANCE.get(), v->CHANCE.set( Range.CHANCE.clamp( v ) ) )
+			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+			.define( "chance", Reader.map( Reader.number() ), ()->CHANCE.get(), v->CHANCE = GameStageValue.of( Range.CHANCE.clamp( v ) ) )
 			.define( "blacklisted_items", Reader.list( Reader.string() ), ()->RegexString.toString( BLACKLISTED_ITEMS ), v->BLACKLISTED_ITEMS = RegexString.toRegex( v ) );
 	}
 

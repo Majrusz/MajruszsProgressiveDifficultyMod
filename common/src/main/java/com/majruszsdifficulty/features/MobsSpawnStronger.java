@@ -22,12 +22,12 @@ public class MobsSpawnStronger {
 	private static boolean IS_ENABLED = true;
 	private static final AttributeHandler HEALTH = new AttributeHandler( "progressive_difficulty_health_bonus", ()->Attributes.MAX_HEALTH, AttributeModifier.Operation.MULTIPLY_BASE );
 	private static final AttributeHandler DAMAGE = new AttributeHandler( "progressive_difficulty_damage_bonus", ()->Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.MULTIPLY_BASE );
-	private static final GameStageValue< Float > HEALTH_BONUS = GameStageValue.of(
+	private static GameStageValue< Float > HEALTH_BONUS = GameStageValue.of(
 		DefaultMap.defaultEntry( 0.0f ),
 		DefaultMap.entry( GameStage.EXPERT_ID, 0.15f ),
 		DefaultMap.entry( GameStage.MASTER_ID, 0.3f )
 	);
-	private static final GameStageValue< Float > DAMAGE_BONUS = GameStageValue.of(
+	private static GameStageValue< Float > DAMAGE_BONUS = GameStageValue.of(
 		DefaultMap.defaultEntry( 0.0f ),
 		DefaultMap.entry( GameStage.EXPERT_ID, 0.1f ),
 		DefaultMap.entry( GameStage.MASTER_ID, 0.2f )
@@ -47,8 +47,8 @@ public class MobsSpawnStronger {
 
 		Serializables.getStatic( MobsSpawnStronger.class )
 			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
-			.define( "health_bonus", Reader.map( Reader.number() ), ()->HEALTH_BONUS.get(), v->HEALTH_BONUS.set( v ) )
-			.define( "damage_bonus", Reader.map( Reader.number() ), ()->DAMAGE_BONUS.get(), v->DAMAGE_BONUS.set( v ) )
+			.define( "health_bonus", Reader.map( Reader.number() ), ()->HEALTH_BONUS.get(), v->HEALTH_BONUS = GameStageValue.of( v ) )
+			.define( "damage_bonus", Reader.map( Reader.number() ), ()->DAMAGE_BONUS.get(), v->DAMAGE_BONUS = GameStageValue.of( v ) )
 			.define( "excluded_mobs", Reader.list( Reader.string() ), ()->RegexString.toString( EXCLUDED_MOBS ), v->EXCLUDED_MOBS = RegexString.toRegex( v ) );
 	}
 
