@@ -1,5 +1,7 @@
 package com.majruszsdifficulty.items;
 
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.emitter.ParticleEmitter;
 import com.majruszlibrary.entity.EntityHelper;
 import com.majruszlibrary.events.OnItemAttributeTooltip;
@@ -7,6 +9,7 @@ import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.text.TextHelper;
+import com.majruszsdifficulty.data.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
@@ -21,12 +24,19 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class SonicBoomScroll extends ScrollItem {
-	private static final int ATTACK_DAMAGE = 16;
-	private static final Range< Integer > ATTACK_RANGE = Range.of( 12, 30 );
+	private static int ATTACK_DAMAGE = 14;
+	private static Range< Integer > ATTACK_RANGE = Range.of( 12, 30 );
 
 	static {
 		OnItemAttributeTooltip.listen( SonicBoomScroll::addSpellInfo )
 			.addCondition( data->data.itemStack.getItem() instanceof SonicBoomScroll );
+
+		Serializables.getStatic( Config.Items.class )
+			.define( "sonic_boom_scroll", SonicBoomScroll.class );
+
+		Serializables.getStatic( SonicBoomScroll.class )
+			.define( "attack_damage", Reader.integer(), ()->ATTACK_DAMAGE, v->ATTACK_DAMAGE = Range.of( 1, 100 ).clamp( v ) )
+			.define( "attack_range", Reader.range( Reader.integer() ), ()->ATTACK_RANGE, v->ATTACK_RANGE = Range.of( 1, 100 ).clamp( v ) );
 	}
 
 	@Override

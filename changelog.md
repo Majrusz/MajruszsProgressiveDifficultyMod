@@ -14,6 +14,7 @@
 - added config list for mobs with effects they can apply
 - added config for default immunity for undead mobs
 - added config for mobs that should be applicable by Bleeding (suggested by @zekeflynn)
+- added config for scrolls
 - removed Netherite and Enderium Axes from Cursed Armors in End Cities
 - removed detailed tooltip from Cursed Armor Spawn Egg
 - removed Cloth drop chance from Undead Army mobs
@@ -39,6 +40,7 @@
 - decreased double loot chance from 0%/10%/20% to 0%/5%/10%
 - decreased Cerberus move speed by 11%
 - decreased Cerberus experience from 60-90 to 26-46
+- decreased attack damage from 16 to 14 of Scroll of Sonic Boom 
 - rebalanced Bleeding chances on tools
 - replaced 12-36 Iron/Gold Nuggets with 1-3 Raw Iron/Gold in Angler Treasure Bag
 - replaced Illusioner texture with the one from Minecraft Dungeons

@@ -11,6 +11,7 @@ import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.AnyRot;
 import com.majruszlibrary.math.Range;
 import com.majruszlibrary.text.TextHelper;
+import com.majruszsdifficulty.data.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -25,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EvokerFangScroll extends ScrollItem {
-	private static final int ATTACK_DAMAGE = 12;
-	private static final Range< Integer > ATTACK_RANGE = Range.of( 8, 20 );
+	private static int ATTACK_DAMAGE = 12;
+	private static Range< Integer > ATTACK_RANGE = Range.of( 8, 20 );
 
 	static {
 		OnEntityPreDamaged.listen( EvokerFangScroll::increaseDamage )
@@ -36,6 +37,13 @@ public class EvokerFangScroll extends ScrollItem {
 
 		OnItemAttributeTooltip.listen( EvokerFangScroll::addSpellInfo )
 			.addCondition( data->data.itemStack.getItem() instanceof EvokerFangScroll );
+
+		Serializables.getStatic( Config.Items.class )
+			.define( "evoker_fang_scroll", EvokerFangScroll.class );
+
+		Serializables.getStatic( EvokerFangScroll.class )
+			.define( "attack_damage", Reader.integer(), ()->ATTACK_DAMAGE, v->ATTACK_DAMAGE = Range.of( 1, 100 ).clamp( v ) )
+			.define( "attack_range", Reader.range( Reader.integer() ), ()->ATTACK_RANGE, v->ATTACK_RANGE = Range.of( 1, 100 ).clamp( v ) );
 
 		Serializables.get( DamageInfo.class )
 			.define( "MajruszsProgressiveDifficultyEvokerFangDamage", Reader.integer(), s->s.damage, ( s, v )->s.damage = v );
