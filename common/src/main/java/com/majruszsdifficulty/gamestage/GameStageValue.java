@@ -28,6 +28,15 @@ public class GameStageValue< Type > {
 		return new GameStageValue<>( map );
 	}
 
+	public static GameStageValue< Boolean > enabledOn( String... ids ) {
+		DefaultMap< Boolean > map = DefaultMap.of( DefaultMap.defaultEntry( false ) );
+		for( String id : ids ) {
+			map.put( id, true );
+		}
+
+		return new GameStageValue<>( map );
+	}
+
 	public void set( Map< String, Type > map ) {
 		this.set( DefaultMap.of( map ) );
 	}
