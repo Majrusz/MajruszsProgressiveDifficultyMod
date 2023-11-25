@@ -2,11 +2,14 @@ package com.majruszsdifficulty.data;
 
 import com.majruszlibrary.data.Serializables;
 import com.majruszsdifficulty.bloodmoon.BloodMoonConfig;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageConfig;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyConfig;
 
 public class Config {
 	static {
 		Serializables.getStatic( Config.class )
+			.define( "game_stages", GameStageConfig.class )
 			.define( "features", Features.class )
 			.define( "blood_moon", BloodMoonConfig.class )
 			.define( "undead_army", UndeadArmyConfig.class )

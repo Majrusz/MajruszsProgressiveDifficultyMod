@@ -8,6 +8,7 @@ import net.minecraft.ChatFormatting;
 import java.util.List;
 
 public class GameStageConfig {
+	public static boolean IS_PER_PLAYER_DIFFICULTY_ENABLED = false;
 	public static List< GameStage > GAME_STAGES = List.of(
 		GameStage.named( GameStage.NORMAL_ID )
 			.format( ChatFormatting.WHITE )
@@ -23,12 +24,11 @@ public class GameStageConfig {
 			.message( "majruszsdifficulty.stages.master.started", ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD )
 			.create()
 	);
-	public static boolean IS_PER_PLAYER_DIFFICULTY_ENABLED = false;
 
 	static {
-		Serializables.getStatic( Config.class )
-			.define( "game_stages", Reader.list( Reader.custom( GameStage::new ) ), ()->GAME_STAGES, v->GAME_STAGES = GameStageConfig.validate( v ) )
-			.define( "is_per_player_difficulty_enabled", Reader.bool(), ()->IS_PER_PLAYER_DIFFICULTY_ENABLED, v->IS_PER_PLAYER_DIFFICULTY_ENABLED = v );
+		Serializables.getStatic( GameStageConfig.class )
+			.define( "is_per_player_difficulty_enabled", Reader.bool(), ()->IS_PER_PLAYER_DIFFICULTY_ENABLED, v->IS_PER_PLAYER_DIFFICULTY_ENABLED = v )
+			.define( "list", Reader.list( Reader.custom( GameStage::new ) ), ()->GAME_STAGES, v->GAME_STAGES = GameStageConfig.validate( v ) );
 	}
 
 	private static List< GameStage > validate( List< GameStage > gameStages ) {
