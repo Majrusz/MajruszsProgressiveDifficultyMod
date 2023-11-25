@@ -10,6 +10,7 @@ import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.gamestage.GameStageValue;
+import com.majruszsdifficulty.mixin.IMixinCreeper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -88,7 +89,7 @@ public class CreeperExplodeBehindWall {
 		}
 
 		private double getDistanceMultiplier() {
-			double sizeMultiplier = 1.0; // TODO: this.creeper instanceof CreeperlingEntity ? 0.6 : 1.0;
+			double sizeMultiplier = ( ( IMixinCreeper )this.creeper ).getExplosionRadius() / 3.0f;
 			double chargedMultiplier = this.creeper.isPowered() ? 2.0 : 1.0;
 
 			return sizeMultiplier * chargedMultiplier;

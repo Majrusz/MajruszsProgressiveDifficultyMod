@@ -8,4 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface IMixinCreeper {
 	@Accessor( "explosionRadius" )
 	void setExplosionRadius( int radius );
+
+	@Accessor( "explosionRadius" )
+	int getExplosionRadius();
 }
