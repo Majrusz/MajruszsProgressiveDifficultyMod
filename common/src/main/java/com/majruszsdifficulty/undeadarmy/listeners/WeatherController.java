@@ -8,16 +8,16 @@ import net.minecraft.world.entity.PathfinderMob;
 
 public class WeatherController {
 	static {
-		OnUndeadArmyStarted.listen( WeatherController::freezeWater );
+		OnUndeadArmyStarted.listen( WeatherController::startRaining );
 
-		OnUndeadArmyTicked.listen( WeatherController::update );
+		OnUndeadArmyTicked.listen( WeatherController::freezeWater );
 	}
 
-	private static void freezeWater( OnUndeadArmyStarted data ) {
-		LevelHelper.startRaining( data.getLevel(), TimeHelper.toTicks( 30.0 ), true );
+	private static void startRaining( OnUndeadArmyStarted data ) {
+		LevelHelper.startRaining( data.getLevel(), TimeHelper.toTicks( 60.0 * 30.0 ), true );
 	}
 
-	private static void update( OnUndeadArmyTicked data ) {
+	private static void freezeWater( OnUndeadArmyTicked data ) {
 		data.undeadArmy.mobsLeft.forEach( mobInfo->{
 			if( mobInfo.toEntity( data.getServerLevel() ) instanceof PathfinderMob mob ) {
 				LevelHelper.freezeWater( mob, 4.0, 30, 60, false );
