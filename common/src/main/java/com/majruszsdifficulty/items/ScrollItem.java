@@ -6,6 +6,7 @@ import com.majruszlibrary.emitter.SoundEmitter;
 import com.majruszlibrary.events.OnEntityModelSetup;
 import com.majruszlibrary.events.OnItemRendered;
 import com.majruszlibrary.item.ItemHelper;
+import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.time.TimeHelper;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -112,7 +113,7 @@ public abstract class ScrollItem extends Item {
 		}
 
 		private static void modify( OnItemRendered data ) {
-			data.poseStack.translate( 0.0, - 0.1 * Math.sin( TimeHelper.getTicks() + TimeHelper.getPartialTicks() ), 0.0 );
+			data.poseStack.translate( 0.0, - 0.1 * Math.sin( Side.getLocalPlayer().getTicksUsingItem() + TimeHelper.getPartialTicks() ), 0.0 );
 		}
 	}
 }

@@ -50,3 +50,4 @@
 - fixed bug with Curse Armor playing assemble animation after reloading the world
 - fixed bug with Bleeding tooltip not displaying proper value on server
 - fixed bug with Treasure Bag message appearing after changing worlds
+- fixed bug with Scroll animations not working properly on low frames per second
