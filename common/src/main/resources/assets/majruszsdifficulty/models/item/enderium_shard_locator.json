@@ -6,37 +6,37 @@
   "overrides": [
     {
       "predicate": {
-        "shard_distance": 0.0
+        "shard_distance": 0.000
       },
       "model": "majruszsdifficulty:item/enderium_shard_locator_5"
     },
     {
       "predicate": {
-        "shard_distance": 9.0
+        "shard_distance": 0.115
       },
       "model": "majruszsdifficulty:item/enderium_shard_locator_4"
     },
     {
       "predicate": {
-        "shard_distance": 36.0
+        "shard_distance": 0.230
       },
       "model": "majruszsdifficulty:item/enderium_shard_locator_3"
     },
     {
       "predicate": {
-        "shard_distance": 100.0
+        "shard_distance": 0.384
       },
       "model": "majruszsdifficulty:item/enderium_shard_locator_2"
     },
     {
       "predicate": {
-        "shard_distance": 256.0
+        "shard_distance": 0.615
       },
       "model": "majruszsdifficulty:item/enderium_shard_locator_1"
     },
     {
       "predicate": {
-        "shard_distance": 529.0
+        "shard_distance": 1.000
       },
       "model": "majruszsdifficulty:item/enderium_shard_locator_0"
     }

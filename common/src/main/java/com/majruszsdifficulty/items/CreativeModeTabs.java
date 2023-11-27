@@ -38,6 +38,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.Items.CERBERUS_FANG,
 			MajruszsDifficulty.Items.WITHER_SWORD,
 			MajruszsDifficulty.Items.ENDER_POUCH,
+			MajruszsDifficulty.Items.ENDERIUM_SHARD_LOCATOR,
 			MajruszsDifficulty.Items.ENDERIUM_SHARD,
 			MajruszsDifficulty.Items.ENDERIUM_INGOT,
 			MajruszsDifficulty.Items.ENDERIUM_SMITHING_TEMPLATE,
