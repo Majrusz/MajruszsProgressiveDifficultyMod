@@ -101,7 +101,7 @@ public class UndeadArmyCommands {
 		CompoundTag tag = EntityHelper.getExtraTag( entity );
 		int undeadLeft = tag != null ? Serializables.read( new UndeadArmyTrigger.Progress(), tag ).undeadLeft : UndeadArmyConfig.KILL_REQUIREMENT_FIRST;
 
-		data.source.sendSuccess( ()->Component.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), Math.max( undeadLeft, 1 ) ), true );
+		data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), Math.max( undeadLeft, 1 ) ), true );
 		return 0;
 	}
 
