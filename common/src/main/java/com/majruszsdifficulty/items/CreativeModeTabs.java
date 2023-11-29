@@ -32,6 +32,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.Items.GOLDEN_BANDAGE,
 			MajruszsDifficulty.Items.CLOTH,
 			MajruszsDifficulty.Items.UNDEAD_BATTLE_STANDARD,
+			MajruszsDifficulty.Items.SOUL_JAR,
 			MajruszsDifficulty.Items.RECALL_POTION,
 			MajruszsDifficulty.Items.EVOKER_FANG_SCROLL,
 			MajruszsDifficulty.Items.SONIC_BOOM_SCROLL,

@@ -21,6 +21,7 @@ import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.*;
 import com.majruszsdifficulty.loot.CurseRandomly;
 import com.majruszsdifficulty.particles.BloodParticle;
+import com.majruszsdifficulty.recipes.SoulJarShieldRecipe;
 import com.majruszsdifficulty.treasurebag.TreasureBagHelper;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -29,6 +30,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
@@ -37,6 +39,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -61,6 +64,7 @@ public class MajruszsDifficulty {
 	public static final RegistryGroup< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( BuiltInRegistries.LOOT_FUNCTION_TYPE );
 	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
 	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
+	public static final RegistryGroup< RecipeSerializer< ? > > RECIPES = HELPER.create( BuiltInRegistries.RECIPE_SERIALIZER );
 	public static final RegistryGroup< SoundEvent > SOUND_EVENTS = HELPER.create( BuiltInRegistries.SOUND_EVENT );
 
 	public static class Entities {
@@ -100,6 +104,7 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< EnderiumArmor > ENDERIUM_LEGGINGS = ITEMS.create( "enderium_leggings", EnderiumArmor.leggings() );
 		public static final RegistryObject< EnderiumTool.Pickaxe > ENDERIUM_PICKAXE = ITEMS.create( "enderium_pickaxe", EnderiumTool.Pickaxe::new );
 		public static final RegistryObject< EnderiumShard > ENDERIUM_SHARD = ITEMS.create( "enderium_shard", EnderiumShard::new );
+		public static final RegistryObject< EnderiumShardLocator > ENDERIUM_SHARD_LOCATOR = ITEMS.create( "enderium_shard_locator", EnderiumShardLocator::new );
 		public static final RegistryObject< EnderiumTool.Shovel > ENDERIUM_SHOVEL = ITEMS.create( "enderium_shovel", EnderiumTool.Shovel::new );
 		public static final RegistryObject< EnderiumTool.Sword > ENDERIUM_SWORD = ITEMS.create( "enderium_sword", EnderiumTool.Sword::new );
 		public static final RegistryObject< EnderiumSmithingTemplate > ENDERIUM_SMITHING_TEMPLATE = ITEMS.create( "enderium_upgrade_smithing_template", EnderiumSmithingTemplate::new );
@@ -108,6 +113,7 @@ public class MajruszsDifficulty {
 		public static final RegistryObject< Bandage > GOLDEN_BANDAGE = ITEMS.create( "golden_bandage", Bandage.golden() );
 		public static final RegistryObject< RecallPotion > RECALL_POTION = ITEMS.create( "recall_potion", RecallPotion::new );
 		public static final RegistryObject< SonicBoomScroll > SONIC_BOOM_SCROLL = ITEMS.create( "sonic_boom_scroll", SonicBoomScroll::new );
+		public static final RegistryObject< SoulJar > SOUL_JAR = ITEMS.create( "soul_jar", SoulJar::new );
 		public static final RegistryObject< TatteredArmor > TATTERED_BOOTS = ITEMS.create( "tattered_boots", TatteredArmor.boots() );
 		public static final RegistryObject< TatteredArmor > TATTERED_CHESTPLATE = ITEMS.create( "tattered_chestplate", TatteredArmor.chestplate() );
 		public static final RegistryObject< TatteredArmor > TATTERED_HELMET = ITEMS.create( "tattered_helmet", TatteredArmor.helmet() );
@@ -186,6 +192,10 @@ public class MajruszsDifficulty {
 		}
 	}
 
+	public static class Recipes {
+		public static final RegistryObject< RecipeSerializer< ? > > SOUL_JAR_SHIELD = RECIPES.create( "soul_jar_shield", SoulJarShieldRecipe.create() );
+	}
+
 	public static class Network {
 		public static final NetworkObject< TreasureBag.RightClickAction > TREASURE_BAG_RIGHT_CLICK = HELPER.create( "treasure_bag_right_click", TreasureBag.RightClickAction.class );
 		public static final NetworkObject< TreasureBagHelper.Progress > TREASURE_BAG_PROGRESS = HELPER.create( "treasure_bag_progress", TreasureBagHelper.Progress.class );
@@ -224,6 +234,10 @@ public class MajruszsDifficulty {
 	@OnlyIn( Dist.CLIENT )
 	public static class Client {
 		static {
+			HELPER.create( Custom.ItemProperties.class, itemProperties->{
+				itemProperties.register( MajruszsDifficulty.Items.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EnderiumShardLocator::getShardDistance );
+			} );
+
 			HELPER.create( Custom.ModelLayers.class, modelLayers->{
 				modelLayers.register( CerberusRenderer.LAYER, ()->CerberusModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( CursedArmorRenderer.LAYER, ()->CursedArmorModel.MODEL.get().toLayerDefinition() );

@@ -8,6 +8,7 @@
 - added glass break sound when Glass Regeneration gets removed
 - added possibility to cure Bleeding with Milk Bucket and Golden Apples (suggested by @draglorr)
 - added possibility to open Treasure Bags by right-clicking it in the inventory
+- added possibility to apply Soul Jar to shields with weaker variants of bonuses 
 - added Cloth to Undead Army Treasure Bag
 - added 4% Bleeding chance bonus per each level of Impaling on Trident
 - added config list for animals that should not apply Bleeding
@@ -25,6 +26,7 @@
 - removed check for natural spawns in Undead Army requirement
 - removed advancements for opening 16th Treasure Bag
 - removed night multiplier bonus for damage and health
+- removed Enderman soul from Soul Jar
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
