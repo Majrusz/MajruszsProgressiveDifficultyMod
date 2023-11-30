@@ -8,6 +8,7 @@ import com.majruszlibrary.entity.AttributeHandler;
 import com.majruszlibrary.events.*;
 import com.majruszlibrary.events.base.Events;
 import com.majruszlibrary.math.Random;
+import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.text.TextHelper;
 import com.majruszsdifficulty.events.OnSoulJarMultiplierGet;
 import net.minecraft.ChatFormatting;
@@ -64,12 +65,6 @@ public class SoulJar extends Item {
 		OnSoulJarMultiplierGet.listen( SoulJar::decreaseShieldBonus )
 			.addCondition( data->data.itemStack.getItem() instanceof ShieldItem );
 
-		OnItemAttributeTooltip.listen( SoulJar::addTooltip )
-			.addCondition( data->SoulJar.canHaveSouls( data.itemStack ) );
-
-		OnItemTooltip.listen( SoulJar::addTooltip )
-			.addCondition( data->SoulJar.canHaveSouls( data.itemStack ) );
-
 		Serializables.get( BonusInfo.class )
 			.define( "SoulJarBonusMask", Reader.integer(), BonusInfo::getMask, BonusInfo::setMask );
 	}
@@ -83,21 +78,21 @@ public class SoulJar extends Item {
 	}
 
 	private static void increaseDamage( OnEntityPreDamaged data ) {
-		data.damage += data.original * DAMAGE_BONUS * SoulJar.getMultiplier( data.attacker.getOffhandItem() );
+		data.damage += data.original * DAMAGE_BONUS * SoulJar.getMultiplier( data.attacker, data.attacker.getOffhandItem() );
 		data.spawnMagicParticles = true;
 	}
 
 	private static void increaseMineSpeed( OnBreakSpeedGet data ) {
-		data.speed += data.original * MINE_BONUS * SoulJar.getMultiplier( data.player.getOffhandItem() );
+		data.speed += data.original * MINE_BONUS * SoulJar.getMultiplier( data.player, data.player.getOffhandItem() );
 	}
 
 	private static void increaseSwimSpeed( OnEntitySwimSpeedMultiplierGet data ) {
-		data.multiplier += data.original * SWIM_BONUS * SoulJar.getMultiplier( data.entity.getOffhandItem() );
+		data.multiplier += data.original * SWIM_BONUS * SoulJar.getMultiplier( data.entity, data.entity.getOffhandItem() );
 	}
 
 	private static void updateAttributes( OnItemEquipped data ) {
 		ItemStack itemStack = data.entity.getOffhandItem();
-		float multiplier = SoulJar.canHaveSouls( itemStack ) ? SoulJar.getMultiplier( itemStack ) : 0.0f;
+		float multiplier = SoulJar.canHaveSouls( itemStack ) ? SoulJar.getMultiplier( data.entity, itemStack ) : 0.0f;
 		BonusInfo bonusInfo = BonusInfo.read( itemStack );
 
 		ARMOR_ATTRIBUTE.setValue( ( bonusInfo.has( BonusType.ARMOR ) ? ARMOR_BONUS : 0.0f ) * multiplier ).apply( data.entity );
@@ -113,21 +108,6 @@ public class SoulJar extends Item {
 		data.multiplier *= 2.0f / 3.0f;
 	}
 
-	private static void addTooltip( OnItemAttributeTooltip data ) {
-		float multiplier = SoulJar.getMultiplier( data.itemStack );
-		BonusInfo bonusInfo = BonusInfo.read( data.itemStack );
-		for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
-			data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( multiplier ) );
-		}
-	}
-
-	private static void addTooltip( OnItemTooltip data ) {
-		BonusInfo bonusInfo = BonusInfo.read( data.itemStack );
-		if( bonusInfo.hasBonuses() || data.itemStack.getItem() instanceof SoulJar ) {
-			data.components.addAll( bonusInfo.getComponents() );
-		}
-	}
-
 	private static void tryToRandomize( ItemStack itemStack ) {
 		if( itemStack.getItem() instanceof SoulJar ) {
 			Serializables.modify( new BonusInfo(), itemStack.getOrCreateTag(), bonusInfo->{
@@ -138,8 +118,8 @@ public class SoulJar extends Item {
 		}
 	}
 
-	private static float getMultiplier( ItemStack itemStack ) {
-		return Events.dispatch( new OnSoulJarMultiplierGet( itemStack ) ).getMultiplier();
+	private static float getMultiplier( LivingEntity entity, ItemStack itemStack ) {
+		return Events.dispatch( new OnSoulJarMultiplierGet( entity, itemStack ) ).getMultiplier();
 	}
 
 	private static boolean canHaveSouls( ItemStack itemStack ) {
@@ -270,6 +250,12 @@ public class SoulJar extends Item {
 			OnItemRenderColorGet.listen( Client::changeSoulColor )
 				.addCondition( data->data.itemStack.getItem() instanceof SoulJar )
 				.addCondition( data->data.layerIdx > 0 );
+
+			OnItemAttributeTooltip.listen( Client::addTooltip )
+				.addCondition( data->SoulJar.canHaveSouls( data.itemStack ) );
+
+			OnItemTooltip.listen( Client::addTooltip )
+				.addCondition( data->SoulJar.canHaveSouls( data.itemStack ) );
 		}
 
 		private static void changeSoulColor( OnItemRenderColorGet data ) {
@@ -277,6 +263,21 @@ public class SoulJar extends Item {
 				.getBonus( data.layerIdx - 1 )
 				.map( BonusType::getColor )
 				.orElseGet( ()->0xeeeeee - data.layerIdx * 0x111111 );
+		}
+
+		private static void addTooltip( OnItemAttributeTooltip data ) {
+			float multiplier = SoulJar.getMultiplier( Side.getLocalPlayer(), data.itemStack );
+			BonusInfo bonusInfo = BonusInfo.read( data.itemStack );
+			for( BonusType bonusType : bonusInfo.getBonusTypes() ) {
+				data.add( EquipmentSlot.OFFHAND, bonusType.getBonusComponent( multiplier ) );
+			}
+		}
+
+		private static void addTooltip( OnItemTooltip data ) {
+			BonusInfo bonusInfo = BonusInfo.read( data.itemStack );
+			if( bonusInfo.hasBonuses() || data.itemStack.getItem() instanceof SoulJar ) {
+				data.components.addAll( bonusInfo.getComponents() );
+			}
 		}
 	}
 }
