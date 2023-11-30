@@ -4,6 +4,8 @@ import com.majruszlibrary.data.Reader;
 import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.math.Range;
 import com.majruszsdifficulty.MajruszsDifficulty;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 
@@ -31,6 +33,7 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.SKELETON, "majruszsdifficulty:undead_army/wave_1_mob", 2 )
 			),
 			null,
+			GameStage.NORMAL_ID,
 			8
 		),
 		new WaveDef(
@@ -41,6 +44,7 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.SKELETON, "majruszsdifficulty:undead_army/wave_2_mob", 2 )
 			),
 			null,
+			GameStage.NORMAL_ID,
 			16
 		),
 		new WaveDef(
@@ -51,6 +55,7 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.STRAY, "majruszsdifficulty:undead_army/wave_3_skeleton", 3 )
 			),
 			new MobDef( MajruszsDifficulty.Entities.TANK ),
+			GameStage.NORMAL_ID,
 			24
 		),
 		new WaveDef(
@@ -66,6 +71,7 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_4_mob", 1 )
 			),
 			null,
+			GameStage.EXPERT_ID,
 			32
 		),
 		new WaveDef(
@@ -79,6 +85,7 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_5_mob", 2 )
 			),
 			new MobDef( MajruszsDifficulty.Entities.CERBERUS ),
+			GameStage.EXPERT_ID,
 			40
 		),
 		new WaveDef(
@@ -92,6 +99,7 @@ public class UndeadArmyConfig {
 				new MobDef( MajruszsDifficulty.Entities.CERBERUS )
 			),
 			new MobDef( MajruszsDifficulty.Entities.GIANT, "majruszsdifficulty:undead_army/wave_6_mob", 1 ),
+			GameStage.MASTER_ID,
 			48
 		)
 	);
@@ -113,6 +121,7 @@ public class UndeadArmyConfig {
 		Serializables.get( WaveDef.class )
 			.define( "mobs", Reader.list( Reader.custom( MobDef::new ) ), s->s.mobDefs, ( s, v )->s.mobDefs = v )
 			.define( "boss", Reader.optional( Reader.custom( MobDef::new ) ), s->s.bossDef, ( s, v )->s.bossDef = v )
+			.define( "game_stage", Reader.string(), s->s.gameStage.getId(), ( s, v )->s.gameStage = GameStageHelper.find( v ) )
 			.define( "exp", Reader.integer(), s->s.experience, ( s, v )->s.experience = Range.of( 0, 1000 ).clamp( v ) );
 
 		Serializables.get( MobDef.class )
@@ -124,11 +133,13 @@ public class UndeadArmyConfig {
 	public static class WaveDef {
 		public List< MobDef > mobDefs = new ArrayList<>();
 		public MobDef bossDef;
+		public GameStage gameStage;
 		public int experience = 0;
 
-		public WaveDef( List< MobDef > mobDefs, MobDef bossDef, int experience ) {
+		public WaveDef( List< MobDef > mobDefs, MobDef bossDef, String gameStageId, int experience ) {
 			this.mobDefs = mobDefs;
 			this.bossDef = bossDef;
+			this.gameStage = GameStageHelper.find( gameStageId );
 			this.experience = experience;
 		}
 

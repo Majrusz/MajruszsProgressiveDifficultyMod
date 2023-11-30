@@ -8,6 +8,8 @@ import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.text.TextHelper;
 import com.majruszlibrary.time.TimeHelper;
+import com.majruszsdifficulty.gamestage.GameStage;
+import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.undeadarmy.events.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +36,7 @@ public class UndeadArmy {
 	public final ServerBossEvent bossInfo = new ServerBossEvent( TextHelper.empty(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6 );
 	public final List< ServerPlayer > participants = new ArrayList<>();
 	public List< MobInfo > mobsLeft = new ArrayList<>();
+	public GameStage gameStage;
 	public BlockPos position;
 	public Direction direction;
 	public Phase phase = new Phase();
@@ -44,6 +47,7 @@ public class UndeadArmy {
 	static {
 		Serializables.get( UndeadArmy.class )
 			.define( "mobs_left", Reader.list( Reader.custom( MobInfo::new ) ), s->s.mobsLeft, ( s, v )->s.mobsLeft = v )
+			.define( "game_stage", Reader.string(), s->s.gameStage.getId(), ( s, v )->s.gameStage = GameStageHelper.find( v ) )
 			.define( "position", Reader.blockPos(), s->s.position, ( s, v )->s.position = v )
 			.define( "direction", Reader.enumeration( Direction::values ), s->s.direction, ( s, v )->s.direction = v )
 			.define( "phase", Reader.custom( Phase::new ), s->s.phase, ( s, v )->s.phase = v )
@@ -64,6 +68,7 @@ public class UndeadArmy {
 	}
 
 	public void start( BlockPos position, Direction direction ) {
+		this.gameStage = GameStageHelper.determineGameStage( this.getLevel(), position.getCenter() );
 		this.position = position;
 		this.direction = direction;
 		this.areEntitiesLoaded = true;
@@ -129,7 +134,7 @@ public class UndeadArmy {
 	}
 
 	public boolean isLastWave() {
-		return this.currentWave == UndeadArmyConfig.WAVE_DEFS.size();
+		return this.currentWave == UndeadArmyConfig.WAVE_DEFS.stream().filter( waveDef->this.gameStage.getOrdinal() >= waveDef.gameStage.getOrdinal() ).count();
 	}
 
 	public boolean isPartOfWave( Entity entity ) {
