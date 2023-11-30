@@ -17,11 +17,13 @@ public class GameStageConfig {
 			.format( ChatFormatting.RED, ChatFormatting.BOLD )
 			.triggersIn( "{regex}.*" )
 			.message( "majruszsdifficulty.stages.expert.started", ChatFormatting.RED, ChatFormatting.BOLD )
+			.message( "majruszsdifficulty.undead_army.on_expert", ChatFormatting.LIGHT_PURPLE )
 			.create(),
 		GameStage.named( GameStage.MASTER_ID )
 			.format( ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD )
 			.triggersByKilling( "minecraft:ender_dragon" )
 			.message( "majruszsdifficulty.stages.master.started", ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD )
+			.message( "majruszsdifficulty.undead_army.on_master", ChatFormatting.LIGHT_PURPLE )
 			.create()
 	);
 
