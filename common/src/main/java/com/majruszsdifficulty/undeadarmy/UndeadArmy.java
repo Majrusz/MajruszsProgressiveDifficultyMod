@@ -57,10 +57,10 @@ public class UndeadArmy {
 
 		Serializables.get( MobInfo.class )
 			.define( "type", Reader.entityType(), s->s.type, ( s, v )->s.type = v )
-			.define( "equipment", Reader.location(), s->s.equipment, ( s, v )->s.equipment = v )
+			.define( "equipment", Reader.optional( Reader.location() ), s->s.equipment, ( s, v )->s.equipment = v )
 			.define( "position", Reader.blockPos(), s->s.position, ( s, v )->s.position = v )
 			.define( "is_boss", Reader.bool(), s->s.isBoss, ( s, v )->s.isBoss = v )
-			.define( "uuid", Reader.uuid(), s->s.uuid, ( s, v )->s.uuid = v );
+			.define( "uuid", Reader.optional( Reader.uuid() ), s->s.uuid, ( s, v )->s.uuid = v );
 	}
 
 	public void start( BlockPos position, Direction direction ) {
