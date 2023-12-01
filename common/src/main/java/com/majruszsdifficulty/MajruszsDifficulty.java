@@ -246,7 +246,7 @@ public class MajruszsDifficulty {
 	public static class Client {
 		static {
 			HELPER.create( Custom.ItemProperties.class, itemProperties->{
-				itemProperties.register( MajruszsDifficulty.Items.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EnderiumShardLocator::getShardDistance );
+				itemProperties.register( MajruszsDifficulty.Items.ENDERIUM_SHARD_LOCATOR.get(), new ResourceLocation( "shard_distance" ), EnderiumShardLocator.Client::getShardDistance );
 			} );
 
 			HELPER.create( Custom.ModelLayers.class, modelLayers->{
