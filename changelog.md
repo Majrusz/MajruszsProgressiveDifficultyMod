@@ -26,6 +26,7 @@
 - removed advancements for opening 16th Treasure Bag
 - removed night multiplier bonus for damage and health
 - removed Enderman soul from Soul Jar
+- removed creative mode tab for Treasure Bags
 - made Bleeding immunity factor based on armor value and armor toughness (suggested by @Qee1y)
 - made blood particles darker the longer they last
 - made Giant launch attack weaker when player has knockback resistance
