@@ -7,7 +7,7 @@
         {
           "type": "minecraft:item",
           "name": "majruszsdifficulty:infernal_sponge",
-          "weight": 3,
+          "weight": 2,
           "quality": 4,
           "functions": [
             {
