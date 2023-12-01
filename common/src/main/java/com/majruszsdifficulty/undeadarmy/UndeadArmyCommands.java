@@ -11,7 +11,6 @@ import com.majruszsdifficulty.undeadarmy.listeners.UndeadArmyTrigger;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -23,7 +22,7 @@ import java.util.function.Consumer;
 public class UndeadArmyCommands {
 	private static final IParameter< UndeadArmy.Direction > DIRECTION = Command.enumeration( UndeadArmy.Direction::values ).named( "direction" );
 	private static final IParameter< List< Vec3 > > POSITIONS = Command.anyPosition();
-	private static final IParameter< Entity > ENTITY = Command.entity();
+	private static final IParameter< List< ? extends Entity > > ENTITIES = Command.entities();
 
 	static {
 		Command.create()
@@ -49,7 +48,7 @@ public class UndeadArmyCommands {
 			.hasPermission( 4 )
 			.literal( "progress" )
 			.execute( UndeadArmyCommands::sendProgress )
-			.parameter( ENTITY )
+			.parameter( ENTITIES )
 			.execute( UndeadArmyCommands::sendProgress )
 			.register();
 
@@ -97,11 +96,13 @@ public class UndeadArmyCommands {
 	}
 
 	private static int sendProgress( CommandData data ) throws CommandSyntaxException {
-		Entity entity = data.getOptional( ENTITY ).orElseGet( data::getCaller );
-		CompoundTag tag = EntityHelper.getExtraTag( entity );
-		int undeadLeft = tag != null ? Serializables.read( new UndeadArmyTrigger.Progress(), tag ).undeadLeft : UndeadArmyConfig.KILL_REQUIREMENT_FIRST;
+		for( Entity entity : data.getOptional( ENTITIES ).orElseGet( ()->List.of( data.getCaller() ) ) ) {
+			CompoundTag tag = EntityHelper.getExtraTag( entity );
+			int undeadLeft = tag != null ? Serializables.read( new UndeadArmyTrigger.Progress(), tag ).undeadLeft : UndeadArmyConfig.KILL_REQUIREMENT_FIRST;
 
-		data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), Math.max( undeadLeft, 1 ) ), true );
+			data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), Math.max( undeadLeft, 1 ) ), true );
+		}
+
 		return 0;
 	}
 

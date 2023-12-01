@@ -18,7 +18,7 @@ public class GameStageCommand {
 	static final IParameter< String > GAME_STAGE = Command.string()
 		.named( "name" )
 		.suggests( ()->GameStageHelper.getGameStages().stream().map( GameStage::getId ).toList() );
-	static final IParameter< List< ? extends Entity > > ENTITIES = Command.entities().named( "entities" );
+	static final IParameter< List< ? extends Entity > > ENTITIES = Command.entities();
 
 	static {
 		Command.create()
