@@ -5,6 +5,8 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -37,12 +39,23 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.Items.EVOKER_FANG_SCROLL,
 			MajruszsDifficulty.Items.SONIC_BOOM_SCROLL,
 			MajruszsDifficulty.Items.CERBERUS_FANG,
-			MajruszsDifficulty.Items.WITHER_SWORD,
 			MajruszsDifficulty.Items.ENDER_POUCH,
 			MajruszsDifficulty.Items.ENDERIUM_SHARD_LOCATOR,
 			MajruszsDifficulty.Items.ENDERIUM_SHARD,
 			MajruszsDifficulty.Items.ENDERIUM_INGOT,
-			MajruszsDifficulty.Items.ENDERIUM_SMITHING_TEMPLATE,
+			MajruszsDifficulty.Items.ENDERIUM_SMITHING_TEMPLATE
+		).map( item->new ItemStack( item.get() ) ).forEach( output::accept );
+
+		Stream.of( Items.TIPPED_ARROW, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION ).forEach( item->
+			Stream.of(
+				MajruszsDifficulty.Potions.WITHER,
+				MajruszsDifficulty.Potions.WITHER_LONG,
+				MajruszsDifficulty.Potions.WITHER_STRONG
+			).forEach( potion->output.accept( PotionUtils.setPotion( new ItemStack( item ), potion.get() ) ) )
+		);
+
+		Stream.of(
+			MajruszsDifficulty.Items.WITHER_SWORD,
 			MajruszsDifficulty.Items.ENDERIUM_SWORD,
 			MajruszsDifficulty.Items.ENDERIUM_SHOVEL,
 			MajruszsDifficulty.Items.ENDERIUM_PICKAXE,

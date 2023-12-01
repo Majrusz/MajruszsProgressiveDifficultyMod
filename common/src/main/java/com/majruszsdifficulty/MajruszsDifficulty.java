@@ -10,6 +10,7 @@ import com.majruszlibrary.network.NetworkObject;
 import com.majruszlibrary.registry.Custom;
 import com.majruszlibrary.registry.RegistryGroup;
 import com.majruszlibrary.registry.RegistryObject;
+import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.blocks.*;
 import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.data.WorldData;
@@ -34,11 +35,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -64,6 +68,7 @@ public class MajruszsDifficulty {
 	public static final RegistryGroup< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( BuiltInRegistries.LOOT_FUNCTION_TYPE );
 	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
 	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
+	public static final RegistryGroup< Potion > POTIONS = HELPER.create( BuiltInRegistries.POTION );
 	public static final RegistryGroup< RecipeSerializer< ? > > RECIPES = HELPER.create( BuiltInRegistries.RECIPE_SERIALIZER );
 	public static final RegistryGroup< SoundEvent > SOUND_EVENTS = HELPER.create( BuiltInRegistries.SOUND_EVENT );
 
@@ -153,6 +158,12 @@ public class MajruszsDifficulty {
 			ITEMS.create( "advancement_expert", FakeItem::new );
 			ITEMS.create( "advancement_master", FakeItem::new );
 		}
+	}
+
+	public static class Potions {
+		public static final RegistryObject< Potion > WITHER = POTIONS.create( "wither", ()->new Potion( new MobEffectInstance( MobEffects.WITHER, TimeHelper.toTicks( 40.0 ) ) ) );
+		public static final RegistryObject< Potion > WITHER_LONG = POTIONS.create( "long_wither", ()->new Potion( "wither", new MobEffectInstance( MobEffects.WITHER, TimeHelper.toTicks( 80.0 ) ) ) );
+		public static final RegistryObject< Potion > WITHER_STRONG = POTIONS.create( "strong_wither", ()->new Potion( "wither", new MobEffectInstance( MobEffects.WITHER, TimeHelper.toTicks( 20.0 ), 1 ) ) );
 	}
 
 	public static class Particles {
@@ -250,6 +261,13 @@ public class MajruszsDifficulty {
 
 			HELPER.create( Custom.Particles.class, particles->{
 				particles.register( Particles.BLOOD.get(), BloodParticle.Factory::new );
+			} );
+
+			HELPER.create( Custom.PotionRecipe.class, recipes->{
+				recipes.register( ()->net.minecraft.world.item.alchemy.Potions.WATER, Items.CERBERUS_FANG, ()->net.minecraft.world.item.alchemy.Potions.MUNDANE );
+				recipes.register( ()->net.minecraft.world.item.alchemy.Potions.AWKWARD, Items.CERBERUS_FANG, Potions.WITHER );
+				recipes.register( Potions.WITHER, ()->net.minecraft.world.item.Items.REDSTONE, Potions.WITHER_LONG );
+				recipes.register( Potions.WITHER, ()->net.minecraft.world.item.Items.GLOWSTONE_DUST, Potions.WITHER_STRONG );
 			} );
 
 			HELPER.create( Custom.Renderers.class, renderers->{
