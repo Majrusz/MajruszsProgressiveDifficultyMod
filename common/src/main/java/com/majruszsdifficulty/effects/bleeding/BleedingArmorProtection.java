@@ -14,8 +14,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 
 public class BleedingArmorProtection {
-	private static float ARMOR_BONUS = 0.05f;
-	private static float TOUGHNESS_BONUS = 0.05f;
+	private static float BASE_BONUS = 0.09f;
+	private static float ARMOR_BONUS = 0.03f;
+	private static float TOUGHNESS_BONUS = 0.03f;
 
 	static {
 		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
@@ -27,6 +28,7 @@ public class BleedingArmorProtection {
 			.addCondition( data->data.itemStack.getItem() instanceof ArmorItem );
 
 		Serializables.getStatic( BleedingConfig.class )
+			.define( "chance_multiplier_base", Reader.number(), ()->BASE_BONUS, v->BASE_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) )
 			.define( "chance_multiplier_per_armor", Reader.number(), ()->ARMOR_BONUS, v->ARMOR_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) )
 			.define( "chance_multiplier_per_armor_toughness", Reader.number(), ()->TOUGHNESS_BONUS, v->TOUGHNESS_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) );
 	}
@@ -47,6 +49,6 @@ public class BleedingArmorProtection {
 	}
 
 	private static float getArmorMultiplier( ArmorItem item ) {
-		return 1.0f - Range.of( 0.0f, 0.9f ).clamp( ARMOR_BONUS * item.getDefense() + TOUGHNESS_BONUS * item.getToughness() );
+		return 1.0f - Range.of( 0.0f, 0.9f ).clamp( BASE_BONUS + ARMOR_BONUS * item.getDefense() + TOUGHNESS_BONUS * item.getToughness() );
 	}
 }
