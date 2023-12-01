@@ -15,6 +15,7 @@
 - added config for default immunity for undead mobs
 - added config for mobs that should be applicable by Bleeding (suggested by @zekeflynn)
 - added config for scrolls
+- updated Russian translation (thanks to @reyzex)
 - removed Netherite and Enderium Axes from Cursed Armors in End Cities
 - removed detailed tooltip from Cursed Armor Spawn Egg
 - removed Cloth drop chance from Undead Army mobs
