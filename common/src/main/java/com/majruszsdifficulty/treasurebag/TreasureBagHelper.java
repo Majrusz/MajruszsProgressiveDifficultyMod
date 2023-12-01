@@ -81,19 +81,17 @@ public class TreasureBagHelper {
 
 	public static void createDefaultProgress( Player player ) {
 		String uuid = player.getStringUUID();
-		PlayerProgress playerProgress = new PlayerProgress();
+		PlayerProgress playerProgress = PLAYERS.computeIfAbsent( uuid, key->new PlayerProgress() );
 		LootParams params = LootHelper.toGiftParams( player );
 		for( TreasureBag treasureBag : TREASURE_BAGS ) {
 			ResourceLocation bagId = Registries.ITEMS.getId( treasureBag );
 			BagProgress bagProgress = playerProgress.get( treasureBag );
-			if( !bagProgress.items.isEmpty() ) {
-				continue;
+			if( bagProgress.items.isEmpty() ) {
+				TreasureBagHelper.createDefaultProgress( bagProgress, params, treasureBag.getLootId() );
 			}
 
-			TreasureBagHelper.createDefaultProgress( bagProgress, params, treasureBag.getLootId() );
 			TreasureBagHelper.sendToPlayer( player, bagId, bagProgress );
 		}
-		PLAYERS.put( uuid, playerProgress );
 		MajruszsDifficulty.WORLD_DATA.setDirty();
 	}
 
