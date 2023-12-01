@@ -71,7 +71,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:leather",
-          "weight": 16,
+          "weight": 12,
           "quality": 0,
           "functions": [
             {
@@ -87,7 +87,23 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:raw_gold",
-          "weight": 16,
+          "weight": 12,
+          "quality": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 3.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:raw_copper",
+          "weight": 8,
           "quality": 1,
           "functions": [
             {
@@ -103,7 +119,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:book",
-          "weight": 7,
+          "weight": 8,
           "quality": 2,
           "functions": [
             {
@@ -119,14 +135,8 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:name_tag",
-          "weight": 2,
-          "quality": 3
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:nautilus_shell",
-          "weight": 2,
+          "weight": 3,
           "quality": 3
         }
       ]

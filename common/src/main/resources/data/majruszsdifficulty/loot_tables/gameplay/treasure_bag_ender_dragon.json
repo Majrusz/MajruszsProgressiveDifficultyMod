@@ -28,25 +28,25 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:experience_bottle",
-          "weight": 350,
+          "weight": 35,
           "quality": 0
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:ender_pearl",
-          "weight": 300,
+          "weight": 30,
           "quality": 1
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:dragon_breath",
-          "weight": 300,
+          "weight": 30,
           "quality": 2
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:end_crystal",
-          "weight": 50,
+          "weight": 5,
           "quality": 3
         }
       ]

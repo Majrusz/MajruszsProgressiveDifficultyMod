@@ -57,13 +57,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:nautilus_shell",
-          "weight": 2,
-          "quality": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:name_tag",
-          "weight": 2,
+          "weight": 4,
           "quality": 2
         }
       ]
