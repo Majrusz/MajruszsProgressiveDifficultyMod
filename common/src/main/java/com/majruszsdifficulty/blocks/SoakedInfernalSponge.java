@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -108,7 +109,7 @@ public class SoakedInfernalSponge extends Block {
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.Blocks.SOAKED_INFERNAL_SPONGE.get(), new Properties().fireResistant() );
+			super( MajruszsDifficulty.Blocks.SOAKED_INFERNAL_SPONGE.get(), new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
 		}
 	}
 }

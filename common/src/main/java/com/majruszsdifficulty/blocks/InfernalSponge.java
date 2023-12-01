@@ -6,6 +6,7 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -73,7 +74,7 @@ public class InfernalSponge extends Block {
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.Blocks.INFERNAL_SPONGE.get(), new Properties().fireResistant() );
+			super( MajruszsDifficulty.Blocks.INFERNAL_SPONGE.get(), new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
 		}
 	}
 }
