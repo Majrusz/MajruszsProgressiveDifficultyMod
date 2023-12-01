@@ -5,7 +5,7 @@ import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.math.Range;
 
 public class BloodMoonConfig {
-	public static boolean IS_ENABLED = true;
+	public static boolean IS_ENABLED = false;
 	public static final Range< Long > TIME = Range.of( 12300L, 23600L );
 	public static float NIGHT_TRIGGER_CHANCE = 0.0666f;
 	public static float SPAWN_RATE_MULTIPLIER = 2.0f;
