@@ -1,0 +1,31 @@
+{
+  "parent": "majruszsdifficulty:game_stage_normal",
+  "display": {
+    "icon": {
+      "item": "majruszsdifficulty:advancement_expert"
+    },
+    "title": {
+      "translate": "majruszsdifficulty.stages.expert"
+    },
+    "description": {
+      "translate": "majruszsdifficulty.stages.expert.started"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "is_triggered": {
+      "trigger": "majruszsdifficulty:game_stage",
+      "conditions": {
+        "stage_id": "expert"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "is_triggered"
+    ]
+  ]
+}

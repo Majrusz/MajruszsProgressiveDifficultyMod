@@ -1,0 +1,189 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
+    id 'org.spongepowered.mixin'
+}
+
+base {
+    archivesName = "${mod_archives_name}-forge-${minecraft_version}-${mod_version}"
+}
+
+repositories {
+    maven {
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com'
+    }
+    flatDir { dirs 'libs' }
+}
+
+def commonSrcDir = "${project.buildDir}/classes/generated/main"
+def changelogText = rootProject.file('changelog.md').text
+
+project.delete(fileTree(dir: commonSrcDir))
+
+project(':common') {
+    task replaceForgeAnnotations(type: Copy) {
+        from 'src/main/java'
+        into commonSrcDir
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        filter {
+            String line ->  line.replaceAll('com.majruszlibrary.annotation.Dist', 'net.minecraftforge.api.distmarker.Dist')
+                    .replaceAll('com.majruszlibrary.annotation.OnlyIn', 'net.minecraftforge.api.distmarker.OnlyIn')
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        dependsOn replaceForgeAnnotations
+    }
+}
+
+task copyMods {
+    ['client', 'client2', 'server'].forEach( destination -> {
+        delete "runs/${destination}/libs/"
+        copy {
+            from 'libs'
+            into "runs/${destination}/libs"
+        }
+    } )
+}
+
+tasks.withType(JavaCompile) {
+    dependsOn copyMods
+}
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    copyIdeResources = true
+    runs {
+        configureEach {
+            property 'forge.logging.console.level', 'debug'
+            property 'fml.earlyprogresswindow', 'false'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            singleInstance true
+            ideaModule "${rootProject.name}.${project.name}.main"
+            args "-mixin.config=${mod_id}-common.mixins.json"
+            args "-mixin.config=${mod_id}-forge.mixins.json"
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                    source project(':common').sourceSets.main
+                }
+            }
+        }
+
+        client {
+            workingDirectory project.file('runs/client')
+            taskName 'client'
+        }
+
+        clientAlt {
+            parent minecraft.runs.client
+            workingDirectory project.file('runs/client2')
+            taskName 'client2'
+            args '--username', 'Dev2'
+        }
+
+        server {
+            workingDirectory project.file('runs/server')
+            taskName 'server'
+        }
+    }
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${forge_version}"
+    compileOnly project(':common')
+    implementation fg.deobf("com.majruszlibrary:majrusz-library-forge:${majruszlibrary_version}")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.setEncoding('UTF-8')
+    options.release.set(17)
+    source(commonSrcDir)
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : mod_id,
+                "Specification-Vendor"    : mod_authors,
+                "Specification-Version"   : '4',
+                "Implementation-Title"    : mod_display_name,
+                "Implementation-Version"  : mod_version,
+                "Implementation-Vendor"   : mod_authors,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}-common.mixins.json"
+    config "${mod_id}-forge.mixins.json"
+}
+
+processResources {
+    from project(':common').sourceSets.main.resources
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand project.properties
+    }
+    outputs.upToDateWhen {
+        false
+    }
+}
+
+modrinth {
+    token.set(System.getenv('MODRINTH_TOKEN'))
+    projectId.set(modrinth_project_id)
+    changelog.set(changelogText)
+    versionNumber.set(mod_version)
+    versionName.set("${mod_display_name} ${mod_version}")
+    versionType.set('release')
+    uploadFile.set(file("build/libs/${mod_archives_name}-forge-${minecraft_version}-${mod_version}.jar"))
+    gameVersions.set([minecraft_version])
+    loaders.set(['forge'])
+    dependencies {
+        required.project('majrusz-library')
+    }
+}
+
+task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    dependsOn 'build'
+    group = 'publishing'
+    apiToken = System.getenv('CURSEFORGE_TOKEN')
+
+    def file = upload(curseforge_project_id, file("build/libs/${mod_archives_name}-forge-${minecraft_version}-${mod_version}.jar"))
+    file.displayName = "${mod_display_name} ${mod_version} (Forge)"
+    file.changelog = changelogText
+    file.changelogType = 'markdown'
+    file.addModLoader('Forge')
+    file.addGameVersion(minecraft_version)
+    file.addGameVersion('Client', 'Server')
+    file.addJavaVersion('Java 17')
+    file.releaseType = 'release'
+    file.addRequirement('majrusz-library')
+}
+
+tasks.register('publishMods') {
+    group = 'publishing'
+    if( !mod_version.contains('unfinished') ) {
+        dependsOn tasks.named('modrinth')
+        dependsOn tasks.named('curseforge')
+    } else {
+        logger.error('Tried to publish unfinished mod')
+    }
+}

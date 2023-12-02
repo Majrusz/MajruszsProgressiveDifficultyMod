@@ -1,0 +1,31 @@
+{
+  "parent": "majruszsdifficulty:undead_army",
+  "display": {
+    "icon": {
+      "item": "majruszsdifficulty:undead_army_treasure_bag"
+    },
+    "title": {
+      "translate": "advancements.progressive_difficulty.undead_army_treasure_bag.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_difficulty.undead_army_treasure_bag.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "bag_opened": {
+      "trigger": "majruszsdifficulty:basic_trigger",
+      "conditions": {
+        "type": "majruszsdifficulty:undead_army_treasure_bag"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bag_opened"
+    ]
+  ]
+}

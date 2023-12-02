@@ -1,0 +1,44 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "majruszsdifficulty:item/enderium_shard_locator_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "shard_distance": 0.000
+      },
+      "model": "majruszsdifficulty:item/enderium_shard_locator_5"
+    },
+    {
+      "predicate": {
+        "shard_distance": 0.115
+      },
+      "model": "majruszsdifficulty:item/enderium_shard_locator_4"
+    },
+    {
+      "predicate": {
+        "shard_distance": 0.230
+      },
+      "model": "majruszsdifficulty:item/enderium_shard_locator_3"
+    },
+    {
+      "predicate": {
+        "shard_distance": 0.384
+      },
+      "model": "majruszsdifficulty:item/enderium_shard_locator_2"
+    },
+    {
+      "predicate": {
+        "shard_distance": 0.615
+      },
+      "model": "majruszsdifficulty:item/enderium_shard_locator_1"
+    },
+    {
+      "predicate": {
+        "shard_distance": 1.000
+      },
+      "model": "majruszsdifficulty:item/enderium_shard_locator_0"
+    }
+  ]
+}

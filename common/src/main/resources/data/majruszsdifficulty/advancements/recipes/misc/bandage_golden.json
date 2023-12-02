@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "majruszsdifficulty:bandage_golden"
+    ]
+  },
+  "criteria": {
+    "has_bandage": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "majruszsdifficulty:bandage"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "majruszsdifficulty:bandage_golden"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bandage",
+      "has_the_recipe"
+    ]
+  ]
+}
