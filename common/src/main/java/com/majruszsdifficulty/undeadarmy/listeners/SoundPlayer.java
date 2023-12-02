@@ -19,7 +19,7 @@ public class SoundPlayer {
 	}
 
 	private static void playStart( OnUndeadArmyStarted data ) {
-		SoundEmitter.of( MajruszsDifficulty.Sounds.UNDEAD_ARMY_APPROACHING )
+		SoundEmitter.of( MajruszsDifficulty.UNDEAD_ARMY_APPROACHING_SOUND )
 			.position( AnyPos.from( data.undeadArmy.position ).vec3() )
 			.volume( Random.nextFloat( 0.2f, 0.3f ) )
 			.pitch( Random.nextFloat( 0.9f, 1.1f ) )
@@ -34,7 +34,7 @@ public class SoundPlayer {
 			.vec3();
 
 		data.undeadArmy.participants.forEach( player->{
-			SoundEmitter.of( MajruszsDifficulty.Sounds.UNDEAD_ARMY_WAVE_STARTED )
+			SoundEmitter.of( MajruszsDifficulty.UNDEAD_ARMY_WAVE_STARTED_SOUND )
 				.position( new Vec3( position.x, player.getY(), position.z ) )
 				.volume( Random.nextFloat( 50.0f, 80.0f ) )
 				.pitch( Random.nextFloat( 0.9f, 1.1f ) )

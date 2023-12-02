@@ -4,15 +4,14 @@ import com.majruszlibrary.animations.ModelDef;
 import com.majruszlibrary.animations.ModelParts;
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
-import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.modhelper.Resource;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.server.packs.PackType;
 
 @OnlyIn( Dist.CLIENT )
 public class CursedArmorModel< Type extends CursedArmor > extends HumanoidModel< Type > {
-	public static LazyResource< ModelDef > MODEL = MajruszsDifficulty.HELPER.load( "cursed_armor_model", ModelDef.class, PackType.CLIENT_RESOURCES );
+	public static Resource< ModelDef > MODEL = MajruszsDifficulty.HELPER.loadClient( "cursed_armor_model", ModelDef.class );
 	public final ModelParts modelParts;
 
 	public CursedArmorModel( ModelPart modelPart ) {

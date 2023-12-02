@@ -37,10 +37,10 @@ public class EnderiumSet {
 		MobEffects.MOVEMENT_SPEED,
 		MobEffects.SATURATION
 	};
-	static final ItemSetRequirement HELMET = ItemSetRequirement.of( MajruszsDifficulty.Items.ENDERIUM_HELMET, EquipmentSlot.HEAD );
-	static final ItemSetRequirement CHESTPLATE = ItemSetRequirement.of( MajruszsDifficulty.Items.ENDERIUM_CHESTPLATE, EquipmentSlot.CHEST );
-	static final ItemSetRequirement LEGGINGS = ItemSetRequirement.of( MajruszsDifficulty.Items.ENDERIUM_LEGGINGS, EquipmentSlot.LEGS );
-	static final ItemSetRequirement BOOTS = ItemSetRequirement.of( MajruszsDifficulty.Items.ENDERIUM_BOOTS, EquipmentSlot.FEET );
+	static final ItemSetRequirement HELMET = ItemSetRequirement.of( MajruszsDifficulty.ENDERIUM_HELMET_ITEM, EquipmentSlot.HEAD );
+	static final ItemSetRequirement CHESTPLATE = ItemSetRequirement.of( MajruszsDifficulty.ENDERIUM_CHESTPLATE_ITEM, EquipmentSlot.CHEST );
+	static final ItemSetRequirement LEGGINGS = ItemSetRequirement.of( MajruszsDifficulty.ENDERIUM_LEGGINGS_ITEM, EquipmentSlot.LEGS );
+	static final ItemSetRequirement BOOTS = ItemSetRequirement.of( MajruszsDifficulty.ENDERIUM_BOOTS_ITEM, EquipmentSlot.FEET );
 	static final ItemSetBonus ENDERMAN_PROTECTION = ItemSetBonus.requires( HELMET )
 		.component( "majruszsdifficulty.sets.enderium.bonus_1", TextHelper.translatable( "item.majruszsdifficulty.enderium_helmet" ) );
 	static final ItemSetBonus END_LOOTING = ItemSetBonus.any( 2 )

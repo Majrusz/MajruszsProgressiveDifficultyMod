@@ -27,7 +27,7 @@ public class BleedingAppleProtection {
 	}
 
 	private static void cancelBleeding( OnItemEaten data ) {
-		data.entity.removeEffect( MajruszsDifficulty.Effects.BLEEDING.get() );
+		data.entity.removeEffect( MajruszsDifficulty.BLEEDING_EFFECT.get() );
 	}
 
 	private static void addTooltip( OnItemTooltip data ) {

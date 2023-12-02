@@ -18,70 +18,70 @@ public class CreativeModeTabs {
 		return ()->CreativeModeTab.builder( CreativeModeTab.Row.TOP, 0 )
 			.title( PRIMARY )
 			.displayItems( CreativeModeTabs::definePrimaryItems )
-			.icon( ()->new ItemStack( MajruszsDifficulty.Items.FRAGILE_END_STONE.get() ) )
+			.icon( ()->new ItemStack( MajruszsDifficulty.UNDEAD_BATTLE_STANDARD_ITEM.get() ) )
 			.build();
 	}
 
 	private static void definePrimaryItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
 		Stream.of(
-			MajruszsDifficulty.Items.INFERNAL_SPONGE,
-			MajruszsDifficulty.Items.SOAKED_INFERNAL_SPONGE,
-			MajruszsDifficulty.Items.ENDERIUM_BLOCK,
-			MajruszsDifficulty.Items.ENDERIUM_SHARD_ORE,
-			MajruszsDifficulty.Items.FRAGILE_END_STONE,
-			MajruszsDifficulty.Items.INFESTED_END_STONE,
-			MajruszsDifficulty.Items.BANDAGE,
-			MajruszsDifficulty.Items.GOLDEN_BANDAGE,
-			MajruszsDifficulty.Items.CLOTH,
-			MajruszsDifficulty.Items.UNDEAD_BATTLE_STANDARD,
-			MajruszsDifficulty.Items.SOUL_JAR,
-			MajruszsDifficulty.Items.RECALL_POTION,
-			MajruszsDifficulty.Items.EVOKER_FANG_SCROLL,
-			MajruszsDifficulty.Items.SONIC_BOOM_SCROLL,
-			MajruszsDifficulty.Items.CERBERUS_FANG,
-			MajruszsDifficulty.Items.ENDER_POUCH,
-			MajruszsDifficulty.Items.ENDERIUM_SHARD_LOCATOR,
-			MajruszsDifficulty.Items.ENDERIUM_SHARD,
-			MajruszsDifficulty.Items.ENDERIUM_INGOT,
-			MajruszsDifficulty.Items.ENDERIUM_SMITHING_TEMPLATE
+			MajruszsDifficulty.INFERNAL_SPONGE_ITEM,
+			MajruszsDifficulty.SOAKED_INFERNAL_SPONGE_ITEM,
+			MajruszsDifficulty.ENDERIUM_BLOCK_ITEM,
+			MajruszsDifficulty.ENDERIUM_SHARD_ORE_ITEM,
+			MajruszsDifficulty.FRAGILE_END_STONE_ITEM,
+			MajruszsDifficulty.INFESTED_END_STONE_ITEM,
+			MajruszsDifficulty.BANDAGE_ITEM,
+			MajruszsDifficulty.GOLDEN_BANDAGE_ITEM,
+			MajruszsDifficulty.CLOTH_ITEM,
+			MajruszsDifficulty.UNDEAD_BATTLE_STANDARD_ITEM,
+			MajruszsDifficulty.SOUL_JAR_ITEM,
+			MajruszsDifficulty.RECALL_POTION_ITEM,
+			MajruszsDifficulty.EVOKER_FANG_SCROLL_ITEM,
+			MajruszsDifficulty.SONIC_BOOM_SCROLL_ITEM,
+			MajruszsDifficulty.CERBERUS_FANG_ITEM,
+			MajruszsDifficulty.ENDER_POUCH_ITEM,
+			MajruszsDifficulty.ENDERIUM_SHARD_LOCATOR_ITEM,
+			MajruszsDifficulty.ENDERIUM_SHARD_ITEM,
+			MajruszsDifficulty.ENDERIUM_INGOT_ITEM,
+			MajruszsDifficulty.ENDERIUM_SMITHING_TEMPLATE_ITEM
 		).map( item->new ItemStack( item.get() ) ).forEach( output::accept );
 
 		Stream.of( Items.TIPPED_ARROW, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION ).forEach( item->
 			Stream.of(
-				MajruszsDifficulty.Potions.WITHER,
-				MajruszsDifficulty.Potions.WITHER_LONG,
-				MajruszsDifficulty.Potions.WITHER_STRONG
+				MajruszsDifficulty.WITHER_POTION,
+				MajruszsDifficulty.WITHER_LONG_POTION,
+				MajruszsDifficulty.WITHER_STRONG_POTION
 			).forEach( potion->output.accept( PotionUtils.setPotion( new ItemStack( item ), potion.get() ) ) )
 		);
 
 		Stream.of(
-			MajruszsDifficulty.Items.WITHER_SWORD,
-			MajruszsDifficulty.Items.ENDERIUM_SWORD,
-			MajruszsDifficulty.Items.ENDERIUM_SHOVEL,
-			MajruszsDifficulty.Items.ENDERIUM_PICKAXE,
-			MajruszsDifficulty.Items.ENDERIUM_AXE,
-			MajruszsDifficulty.Items.ENDERIUM_HOE,
-			MajruszsDifficulty.Items.TATTERED_HELMET,
-			MajruszsDifficulty.Items.TATTERED_CHESTPLATE,
-			MajruszsDifficulty.Items.TATTERED_LEGGINGS,
-			MajruszsDifficulty.Items.TATTERED_BOOTS,
-			MajruszsDifficulty.Items.ENDERIUM_HELMET,
-			MajruszsDifficulty.Items.ENDERIUM_CHESTPLATE,
-			MajruszsDifficulty.Items.ENDERIUM_LEGGINGS,
-			MajruszsDifficulty.Items.ENDERIUM_BOOTS,
-			MajruszsDifficulty.Items.ANGLER_TREASURE_BAG,
-			MajruszsDifficulty.Items.ELDER_GUARDIAN_TREASURE_BAG,
-			MajruszsDifficulty.Items.ENDER_DRAGON_TREASURE_BAG,
-			MajruszsDifficulty.Items.PILLAGER_TREASURE_BAG,
-			MajruszsDifficulty.Items.UNDEAD_ARMY_TREASURE_BAG,
-			MajruszsDifficulty.Items.WARDEN_TREASURE_BAG,
-			MajruszsDifficulty.Items.WITHER_TREASURE_BAG,
-			MajruszsDifficulty.Items.CERBERUS_SPAWN_EGG,
-			MajruszsDifficulty.Items.CREEPERLING_SPAWN_EGG,
-			MajruszsDifficulty.Items.CURSED_ARMOR_SPAWN_EGG,
-			MajruszsDifficulty.Items.GIANT_SPAWN_EGG,
-			MajruszsDifficulty.Items.ILLUSIONER_SPAWN_EGG,
-			MajruszsDifficulty.Items.TANK_SPAWN_EGG
+			MajruszsDifficulty.WITHER_SWORD_ITEM,
+			MajruszsDifficulty.ENDERIUM_SWORD_ITEM,
+			MajruszsDifficulty.ENDERIUM_SHOVEL_ITEM,
+			MajruszsDifficulty.ENDERIUM_PICKAXE_ITEM,
+			MajruszsDifficulty.ENDERIUM_AXE_ITEM,
+			MajruszsDifficulty.ENDERIUM_HOE_ITEM,
+			MajruszsDifficulty.TATTERED_HELMET_ITEM,
+			MajruszsDifficulty.TATTERED_CHESTPLATE_ITEM,
+			MajruszsDifficulty.TATTERED_LEGGINGS_ITEM,
+			MajruszsDifficulty.TATTERED_BOOTS_ITEM,
+			MajruszsDifficulty.ENDERIUM_HELMET_ITEM,
+			MajruszsDifficulty.ENDERIUM_CHESTPLATE_ITEM,
+			MajruszsDifficulty.ENDERIUM_LEGGINGS_ITEM,
+			MajruszsDifficulty.ENDERIUM_BOOTS_ITEM,
+			MajruszsDifficulty.ANGLER_TREASURE_BAG_ITEM,
+			MajruszsDifficulty.ELDER_GUARDIAN_TREASURE_BAG_ITEM,
+			MajruszsDifficulty.ENDER_DRAGON_TREASURE_BAG_ITEM,
+			MajruszsDifficulty.PILLAGER_TREASURE_BAG_ITEM,
+			MajruszsDifficulty.UNDEAD_ARMY_TREASURE_BAG_ITEM,
+			MajruszsDifficulty.WARDEN_TREASURE_BAG_ITEM,
+			MajruszsDifficulty.WITHER_TREASURE_BAG_ITEM,
+			MajruszsDifficulty.CERBERUS_SPAWN_EGG_ITEM,
+			MajruszsDifficulty.CREEPERLING_SPAWN_EGG_ITEM,
+			MajruszsDifficulty.CURSED_ARMOR_SPAWN_EGG_ITEM,
+			MajruszsDifficulty.GIANT_SPAWN_EGG_ITEM,
+			MajruszsDifficulty.ILLUSIONER_SPAWN_EGG_ITEM,
+			MajruszsDifficulty.TANK_SPAWN_EGG_ITEM
 		).map( item->new ItemStack( item.get() ) ).forEach( output::accept );
 	}
 }

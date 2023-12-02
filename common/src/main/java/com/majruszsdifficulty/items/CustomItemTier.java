@@ -7,8 +7,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum CustomItemTier implements Tier {
-	WITHER( 360, 3, 15, 5.0f, 3.0f, ()->Ingredient.of( MajruszsDifficulty.Items.CERBERUS_FANG.get() ) ),
-	ENDERIUM( 2137, 4, 15, 10.0f, 5.0f, ()->Ingredient.of( MajruszsDifficulty.Items.ENDERIUM_INGOT.get() ) );
+	WITHER( 360, 3, 15, 5.0f, 3.0f, ()->Ingredient.of( MajruszsDifficulty.CERBERUS_FANG_ITEM.get() ) ),
+	ENDERIUM( 2137, 4, 15, 10.0f, 5.0f, ()->Ingredient.of( MajruszsDifficulty.ENDERIUM_INGOT_ITEM.get() ) );
 
 	final int maxUses, harvestLevel, enchantability;
 	final float efficiency, attackDamage;

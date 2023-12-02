@@ -6,9 +6,11 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.IllagerModel;
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.IllagerRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -22,16 +24,7 @@ public class IllusionerRenderer extends IllagerRenderer< Illusioner > {
 	public IllusionerRenderer( EntityRendererProvider.Context $$0 ) {
 		super( $$0, new IllagerModel<>( $$0.bakeLayer( ModelLayers.ILLUSIONER ) ), 0.5f );
 
-		this.addLayer( new ItemInHandLayer<>( this, $$0.getItemInHandRenderer() ) {
-			public void render( PoseStack $$0, MultiBufferSource $$1, int $$2, Illusioner $$3, float $$4, float $$5, float $$6, float $$7, float $$8,
-				float $$9
-			) {
-				if( $$3.isCastingSpell() || $$3.isAggressive() ) {
-					super.render( $$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8, $$9 );
-				}
-
-			}
-		} );
+		this.addLayer( new Layer( this, $$0.getItemInHandRenderer() ) );
 		( ( IllagerModel )this.model ).getHat().visible = true;
 	}
 
@@ -58,5 +51,19 @@ public class IllusionerRenderer extends IllagerRenderer< Illusioner > {
 
 	protected boolean isBodyVisible( Illusioner $$0 ) {
 		return true;
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	private static class Layer extends ItemInHandLayer< Illusioner, IllagerModel< Illusioner > > {
+		public Layer( RenderLayerParent< Illusioner, IllagerModel< Illusioner > > $$0, ItemInHandRenderer $$1 ) {
+			super( $$0, $$1 );
+		}
+
+		@Override
+		public void render( PoseStack $$0, MultiBufferSource $$1, int $$2, Illusioner $$3, float $$4, float $$5, float $$6, float $$7, float $$8, float $$9 ) {
+			if( $$3.isCastingSpell() || $$3.isAggressive() ) {
+				super.render( $$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8, $$9 );
+			}
+		}
 	}
 }

@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 public class BleedingImmunity extends MobEffect {
 	static {
 		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.BLEEDING_IMMUNITY, data.entity ) )
-			.addCondition( data->data.effect.equals( MajruszsDifficulty.Effects.BLEEDING.get() ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING_IMMUNITY_EFFECT, data.entity ) )
+			.addCondition( data->data.effect.equals( MajruszsDifficulty.BLEEDING_EFFECT.get() ) );
 	}
 
 	public BleedingImmunity() {
@@ -25,7 +25,7 @@ public class BleedingImmunity extends MobEffect {
 
 	@Override
 	public void applyInstantenousEffect( @Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entity, int amplifier, double health ) {
-		entity.removeEffect( MajruszsDifficulty.Effects.BLEEDING.get() );
+		entity.removeEffect( MajruszsDifficulty.BLEEDING_EFFECT.get() );
 	}
 
 	@Override

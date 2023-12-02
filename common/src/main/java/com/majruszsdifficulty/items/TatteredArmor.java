@@ -33,7 +33,7 @@ public class TatteredArmor extends ArmorItem {
 
 	private static boolean hasBootsEquipped( OnEntityPowderSnowCheck data ) {
 		return data.entity instanceof LivingEntity entity
-			&& entity.getItemBySlot( EquipmentSlot.FEET ).is( MajruszsDifficulty.Items.TATTERED_BOOTS.get() );
+			&& entity.getItemBySlot( EquipmentSlot.FEET ).is( MajruszsDifficulty.TATTERED_BOOTS_ITEM.get() );
 	}
 
 	private TatteredArmor( Type type ) {

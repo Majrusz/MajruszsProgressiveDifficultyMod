@@ -22,7 +22,7 @@ public class GlassRegeneration extends MobEffect {
 	static {
 		OnEntityDamaged.listen( GlassRegeneration::removeOnHit )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.GLASS_REGENERATION, data.target ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.GLASS_REGENERATION_EFFECT, data.target ) );
 	}
 
 	public GlassRegeneration() {
@@ -49,7 +49,7 @@ public class GlassRegeneration extends MobEffect {
 	}
 
 	private static void removeOnHit( OnEntityDamaged data ) {
-		data.target.removeEffect( MajruszsDifficulty.Effects.GLASS_REGENERATION.get() );
+		data.target.removeEffect( MajruszsDifficulty.GLASS_REGENERATION_EFFECT.get() );
 		GLASS_BREAK.position( data.target.position() ).emit( data.getServerLevel() );
 	}
 }

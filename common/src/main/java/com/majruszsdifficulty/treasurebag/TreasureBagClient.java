@@ -30,7 +30,7 @@ public class TreasureBagClient {
 		OnItemTooltip.listen( TreasureBagClient::addTooltip )
 			.addCondition( data->data.itemStack.getItem() instanceof TreasureBag );
 
-		MajruszsDifficulty.Network.TREASURE_BAG_PROGRESS.addClientCallback( TreasureBagClient::onProgressReceived );
+		MajruszsDifficulty.TREASURE_BAG_PROGRESS_NETWORK.addClientCallback( TreasureBagClient::onProgressReceived );
 	}
 
 	private static void addTooltip( OnItemTooltip data ) {

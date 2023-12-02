@@ -15,7 +15,6 @@ import com.majruszsdifficulty.data.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -26,11 +25,11 @@ import java.util.function.Supplier;
 
 public class Bandage extends Item {
 	private static List< EffectDef > NORMAL_EFFECTS = List.of(
-		new EffectDef( MajruszsDifficulty.Effects.GLASS_REGENERATION, 0, 20.0f )
+		new EffectDef( MajruszsDifficulty.GLASS_REGENERATION_EFFECT, 0, 20.0f )
 	);
 	private static List< EffectDef > GOLDEN_EFFECTS = List.of(
-		new EffectDef( MajruszsDifficulty.Effects.GLASS_REGENERATION, 1, 20.0f ),
-		new EffectDef( MajruszsDifficulty.Effects.BLEEDING_IMMUNITY, 0, 90.0f )
+		new EffectDef( MajruszsDifficulty.GLASS_REGENERATION_EFFECT, 1, 20.0f ),
+		new EffectDef( MajruszsDifficulty.BLEEDING_IMMUNITY_EFFECT, 0, 90.0f )
 	);
 	private final Supplier< List< EffectDef > > effects;
 
@@ -45,7 +44,7 @@ public class Bandage extends Item {
 	static {
 		OnPlayerInteracted.listen( Bandage::use )
 			.addCondition( data->data.itemStack.getItem() instanceof Bandage )
-			.addCondition( data->!ItemHelper.isOnCooldown( data.player, MajruszsDifficulty.Items.BANDAGE.get(), MajruszsDifficulty.Items.GOLDEN_BANDAGE.get() ) );
+			.addCondition( data->!ItemHelper.isOnCooldown( data.player, MajruszsDifficulty.BANDAGE_ITEM.get(), MajruszsDifficulty.GOLDEN_BANDAGE_ITEM.get() ) );
 
 		OnItemTooltip.listen( Bandage::addEffectInfo )
 			.addCondition( data->data.itemStack.getItem() instanceof Bandage );
@@ -68,20 +67,20 @@ public class Bandage extends Item {
 			.position( target.position() )
 			.emit( target.level() );
 		Bandage.removeBleeding( bandage, data.player, target );
-		ItemHelper.addCooldown( data.player, TimeHelper.toTicks( 0.7 ), MajruszsDifficulty.Items.BANDAGE.get(), MajruszsDifficulty.Items.GOLDEN_BANDAGE.get() );
+		ItemHelper.addCooldown( data.player, TimeHelper.toTicks( 0.7 ), MajruszsDifficulty.BANDAGE_ITEM.get(), MajruszsDifficulty.GOLDEN_BANDAGE_ITEM.get() );
 		ItemHelper.consumeItemOnUse( data.itemStack, data.player );
 		data.finish();
 	}
 
 	private static void removeBleeding( Bandage item, Player player, LivingEntity target ) {
-		if( target.hasEffect( MajruszsDifficulty.Effects.BLEEDING.get() ) && player instanceof ServerPlayer serverPlayer ) {
+		if( target.hasEffect( MajruszsDifficulty.BLEEDING_EFFECT.get() ) && player instanceof ServerPlayer serverPlayer ) {
 			if( target.equals( serverPlayer ) ) {
 				MajruszsDifficulty.HELPER.triggerAchievement( serverPlayer, "bandage_used" );
-			} else if( item.equals( MajruszsDifficulty.Items.GOLDEN_BANDAGE.get() ) ) {
+			} else if( item.equals( MajruszsDifficulty.GOLDEN_BANDAGE_ITEM.get() ) ) {
 				MajruszsDifficulty.HELPER.triggerAchievement( serverPlayer, "golden_bandage_used_on_others" );
 			}
 		}
-		target.removeEffect( MajruszsDifficulty.Effects.BLEEDING.get() );
+		target.removeEffect( MajruszsDifficulty.BLEEDING_EFFECT.get() );
 	}
 
 	private static void addEffectInfo( OnItemTooltip data ) {

@@ -16,7 +16,7 @@ public class BloodMoonHelper {
 			.define( "blood_moon", Reader.custom( BloodMoon::new ), ()->BLOOD_MOON, v->BLOOD_MOON = v );
 
 		Serializables.getStatic( WorldData.Client.class )
-			.define( "blood_moon", Reader.bool(), ()->BLOOD_MOON.isActive(), v->BLOOD_MOON.setActive( v ) );
+			.define( "blood_moon", Reader.bool(), ()->BLOOD_MOON.isActive(), v->BLOOD_MOON.isActive = v );
 	}
 
 	public static boolean start() {

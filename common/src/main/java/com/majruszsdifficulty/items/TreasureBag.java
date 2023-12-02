@@ -34,7 +34,7 @@ public class TreasureBag extends Item {
 		Serializables.get( RightClickAction.class )
 			.define( "container_idx", Reader.integer(), s->s.containerIdx, ( s, v )->s.containerIdx = v );
 
-		MajruszsDifficulty.Network.TREASURE_BAG_RIGHT_CLICK.addServerCallback( TreasureBag::openInInventory );
+		MajruszsDifficulty.TREASURE_BAG_RIGHT_CLICK_NETWORK.addServerCallback( TreasureBag::openInInventory );
 	}
 
 	public static Supplier< TreasureBag > angler() {
@@ -126,7 +126,7 @@ public class TreasureBag extends Item {
 		}
 
 		private static void openInInventory( OnItemInventoryClicked data ) {
-			MajruszsDifficulty.Network.TREASURE_BAG_RIGHT_CLICK.sendToServer( new RightClickAction( data.containerIdx ) );
+			MajruszsDifficulty.TREASURE_BAG_RIGHT_CLICK_NETWORK.sendToServer( new RightClickAction( data.containerIdx ) );
 			data.cancel();
 		}
 	}

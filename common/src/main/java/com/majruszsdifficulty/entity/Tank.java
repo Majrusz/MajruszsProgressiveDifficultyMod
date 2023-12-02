@@ -9,14 +9,13 @@ import com.majruszlibrary.entity.EntityHelper;
 import com.majruszlibrary.level.LevelHelper;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
-import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.modhelper.Resource;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -38,7 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class Tank extends Monster implements IAnimableEntity {
-	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "tank_animations", AnimationsDef.class, PackType.SERVER_DATA );
+	private static final Resource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "tank_animations", AnimationsDef.class );
 	private final Animations animations = Animations.create();
 
 	public static EntityType< Tank > createEntityType() {

@@ -38,7 +38,7 @@ public class SpawnPlayerZombie {
 			.addCondition( data->IS_ENABLED )
 			.addCondition( CustomCondition.check( REQUIRED_GAME_STAGE ) )
 			.addCondition( data->data.target instanceof Player )
-			.addCondition( data->data.target.hasEffect( MajruszsDifficulty.Effects.BLEEDING.get() ) || data.attacker instanceof Zombie );
+			.addCondition( data->data.target.hasEffect( MajruszsDifficulty.BLEEDING_EFFECT.get() ) || data.attacker instanceof Zombie );
 
 		OnEntityDied.listen( SpawnPlayerZombie::giveAdvancement )
 			.addCondition( data->data.target instanceof Zombie )

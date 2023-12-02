@@ -63,7 +63,7 @@ public class CreeperSplitIntoCreeperlings {
 		GameStage gameStage = GameStageHelper.determineGameStage( data );
 		int count = Random.nextInt( 1, COUNT.get( gameStage ) + 1 );
 		for( int i = 0; i < count; ++i ) {
-			Creeperling creeperling = EntityHelper.createSpawner( MajruszsDifficulty.Entities.CREEPERLING, data.getLevel() )
+			Creeperling creeperling = EntityHelper.createSpawner( MajruszsDifficulty.CREEPERLING_ENTITY, data.getLevel() )
 				.position( AnyPos.from( creeper.blockPosition() ).add( Random.nextVector( -2, 2, -1, 1, -2, 2 ) ).center().vec3() )
 				.mobSpawnType( MobSpawnType.EVENT )
 				.spawn();

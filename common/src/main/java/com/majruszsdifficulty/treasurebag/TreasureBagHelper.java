@@ -144,7 +144,7 @@ public class TreasureBagHelper {
 	}
 
 	private static void sendToPlayer( Player player, ResourceLocation id, BagProgress bagProgress, List< Integer > unlockedIndices ) {
-		MajruszsDifficulty.Network.TREASURE_BAG_PROGRESS.sendToClient( ( ServerPlayer )player, new Progress( id, bagProgress, unlockedIndices ) );
+		MajruszsDifficulty.TREASURE_BAG_PROGRESS_NETWORK.sendToClient( ( ServerPlayer )player, new Progress( id, bagProgress, unlockedIndices ) );
 	}
 
 	private static void createDefaultProgress( BagProgress bagProgress, LootParams params, ResourceLocation lootId ) {

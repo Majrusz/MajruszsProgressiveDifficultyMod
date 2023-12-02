@@ -18,22 +18,22 @@ public class BleedingParticles {
 		OnEntityTicked.listen( BleedingParticles::emit )
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.cooldown( 0.15f ) )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.BLEEDING, data.entity ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING_EFFECT, data.entity ) );
 
 		OnEntityDied.listen( BleedingParticles::emit )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.BLEEDING, data.target ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING_EFFECT, data.target ) );
 
 		OnEntityPreDamaged.listen( BleedingParticles::addGuiOverlay )
 			.priority( Priority.LOWEST )
-			.addCondition( data->data.source.is( MajruszsDifficulty.DamageSources.BLEEDING ) );
+			.addCondition( data->data.source.is( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE ) );
 	}
 
 	private static void emit( OnEntityTicked data ) {
-		int amplifier = EffectHelper.getAmplifier( MajruszsDifficulty.Effects.BLEEDING, data.entity ).orElse( 0 );
+		int amplifier = EffectHelper.getAmplifier( MajruszsDifficulty.BLEEDING_EFFECT, data.entity ).orElse( 0 );
 		float walkDistanceDelta = EntityHelper.getWalkDistanceDelta( data.entity );
 
-		ParticleEmitter.of( MajruszsDifficulty.Particles.BLOOD )
+		ParticleEmitter.of( MajruszsDifficulty.BLOOD_PARTICLE )
 			.count( Random.round( 0.5 + 0.5 * ( 15.0 + amplifier ) * walkDistanceDelta ) )
 			.sizeBased( data.entity )
 			.offset( AnyPos.from( data.entity.getBbWidth(), data.entity.getBbHeight(), data.entity.getBbWidth() ).mul( 0.25, 0.25, 0.25 ).vec3() )
@@ -41,7 +41,7 @@ public class BleedingParticles {
 	}
 
 	private static void emit( OnEntityDied data ) {
-		ParticleEmitter.of( MajruszsDifficulty.Particles.BLOOD )
+		ParticleEmitter.of( MajruszsDifficulty.BLOOD_PARTICLE )
 			.count( 50 )
 			.sizeBased( data.target )
 			.offset( AnyPos.from( data.target.getBbWidth(), data.target.getBbHeight(), data.target.getBbWidth() ).mul( 0.25, 0.25, 0.25 ).vec3() )

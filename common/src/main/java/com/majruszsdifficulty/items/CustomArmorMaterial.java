@@ -21,7 +21,7 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 		SoundEvents.ARMOR_EQUIP_LEATHER,
 		0.0f,
 		0.0f,
-		()->Ingredient.of( MajruszsDifficulty.Items.CLOTH.get() )
+		()->Ingredient.of( MajruszsDifficulty.CLOTH_ITEM.get() )
 	),
 	ENDERIUM(
 		"enderium",
@@ -31,7 +31,7 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 		SoundEvents.ARMOR_EQUIP_NETHERITE,
 		4.0f,
 		0.1f,
-		()->Ingredient.of( MajruszsDifficulty.Items.ENDERIUM_INGOT.get() )
+		()->Ingredient.of( MajruszsDifficulty.ENDERIUM_INGOT_ITEM.get() )
 	);
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{ 13, 15, 16, 11 };

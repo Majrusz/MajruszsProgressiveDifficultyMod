@@ -4,16 +4,15 @@ import com.majruszlibrary.animations.ModelDef;
 import com.majruszlibrary.animations.ModelParts;
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
-import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.modhelper.Resource;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.util.Mth;
 
 @OnlyIn( Dist.CLIENT )
 public class TankModel< Type extends Tank > extends HierarchicalModel< Type > {
-	public static LazyResource< ModelDef > MODEL = MajruszsDifficulty.HELPER.load( "tank_model", ModelDef.class, PackType.CLIENT_RESOURCES );
+	public static Resource< ModelDef > MODEL = MajruszsDifficulty.HELPER.loadClient( "tank_model", ModelDef.class );
 	public final ModelParts modelParts;
 	public final ModelPart head, leftLeg, rightLeg, body;
 

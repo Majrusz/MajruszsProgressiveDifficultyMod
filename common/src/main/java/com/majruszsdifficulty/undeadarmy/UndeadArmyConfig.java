@@ -54,7 +54,7 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.HUSK, "majruszsdifficulty:undead_army/wave_3_mob", 3 ),
 				new MobDef( EntityType.STRAY, "majruszsdifficulty:undead_army/wave_3_skeleton", 3 )
 			),
-			new MobDef( MajruszsDifficulty.Entities.TANK ),
+			new MobDef( MajruszsDifficulty.TANK_ENTITY ),
 			GameStage.NORMAL_ID,
 			24
 		),
@@ -64,7 +64,7 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_4_mob", 1 ),
 				new MobDef( EntityType.SKELETON, "majruszsdifficulty:undead_army/wave_4_skeleton", 2 ),
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_4_mob", 1 ),
-				new MobDef( MajruszsDifficulty.Entities.TANK ),
+				new MobDef( MajruszsDifficulty.TANK_ENTITY ),
 				new MobDef( EntityType.HUSK, "majruszsdifficulty:undead_army/wave_4_mob", 3 ),
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_4_mob", 1 ),
 				new MobDef( EntityType.STRAY, "majruszsdifficulty:undead_army/wave_4_skeleton", 3 ),
@@ -80,11 +80,11 @@ public class UndeadArmyConfig {
 				new MobDef( EntityType.SKELETON, "majruszsdifficulty:undead_army/wave_5_skeleton", 1 ),
 				new MobDef( EntityType.STRAY, "majruszsdifficulty:undead_army/wave_5_skeleton", 3 ),
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_5_mob", 2 ),
-				new MobDef( MajruszsDifficulty.Entities.TANK ),
+				new MobDef( MajruszsDifficulty.TANK_ENTITY ),
 				new MobDef( EntityType.HUSK, "majruszsdifficulty:undead_army/wave_5_mob", 3 ),
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_5_mob", 2 )
 			),
-			new MobDef( MajruszsDifficulty.Entities.CERBERUS ),
+			new MobDef( MajruszsDifficulty.CERBERUS_ENTITY ),
 			GameStage.EXPERT_ID,
 			40
 		),
@@ -92,13 +92,13 @@ public class UndeadArmyConfig {
 			List.of(
 				new MobDef( EntityType.ZOMBIE, "majruszsdifficulty:undead_army/wave_6_mob", 1 ),
 				new MobDef( EntityType.SKELETON, "majruszsdifficulty:undead_army/wave_6_skeleton", 1 ),
-				new MobDef( MajruszsDifficulty.Entities.TANK ),
+				new MobDef( MajruszsDifficulty.TANK_ENTITY ),
 				new MobDef( EntityType.STRAY, "majruszsdifficulty:undead_army/wave_6_skeleton", 1 ),
 				new MobDef( EntityType.HUSK, "majruszsdifficulty:undead_army/wave_6_mob", 1 ),
 				new MobDef( EntityType.WITHER_SKELETON, "majruszsdifficulty:undead_army/wave_6_wither_skeleton", 1 ),
-				new MobDef( MajruszsDifficulty.Entities.CERBERUS )
+				new MobDef( MajruszsDifficulty.CERBERUS_ENTITY )
 			),
-			new MobDef( MajruszsDifficulty.Entities.GIANT, "majruszsdifficulty:undead_army/wave_6_mob", 1 ),
+			new MobDef( MajruszsDifficulty.GIANT_ENTITY, "majruszsdifficulty:undead_army/wave_6_mob", 1 ),
 			GameStage.MASTER_ID,
 			48
 		)

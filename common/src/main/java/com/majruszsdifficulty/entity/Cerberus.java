@@ -12,14 +12,13 @@ import com.majruszlibrary.events.OnEntityTicked;
 import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
-import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.modhelper.Resource;
 import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -43,7 +42,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class Cerberus extends Monster implements IAnimableEntity {
-	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cerberus_animation", AnimationsDef.class, PackType.SERVER_DATA );
+	private static final Resource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cerberus_animation", AnimationsDef.class );
 	private final Animations animations = Animations.create();
 
 	static {

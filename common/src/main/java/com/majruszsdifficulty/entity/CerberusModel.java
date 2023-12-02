@@ -5,18 +5,17 @@ import com.majruszlibrary.animations.ModelParts;
 import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.math.AnyPos;
-import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.modhelper.Resource;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.util.Mth;
 
 @OnlyIn( Dist.CLIENT )
 public class CerberusModel< Type extends Cerberus > extends HierarchicalModel< Type > {
-	public static LazyResource< ModelDef > MODEL = MajruszsDifficulty.HELPER.load( "cerberus_model", ModelDef.class, PackType.CLIENT_RESOURCES );
+	public static Resource< ModelDef > MODEL = MajruszsDifficulty.HELPER.loadClient( "cerberus_model", ModelDef.class );
 	public final ModelParts modelParts;
 	public final ModelPart body, necks, neck1, neck3, jawUpper1, jawUpper2, jawUpper3, jawLower1, jawLower2, jawLower3, frontLeg1, frontLeg2, hindLeg1, hindLeg2;
 

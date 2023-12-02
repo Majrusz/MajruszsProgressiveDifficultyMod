@@ -17,10 +17,10 @@ public class RaidRewarder {
 	}
 
 	private static void giveTreasureBags( OnRaidDefeated data ) {
-		data.players.forEach( player->ItemHelper.giveToPlayer( new ItemStack( MajruszsDifficulty.Items.PILLAGER_TREASURE_BAG.get() ), player ) );
+		data.players.forEach( player->ItemHelper.giveToPlayer( new ItemStack( MajruszsDifficulty.PILLAGER_TREASURE_BAG_ITEM.get() ), player ) );
 	}
 
 	private static void giveTreasureBags( OnUndeadArmyDefeated data ) {
-		data.undeadArmy.participants.forEach( player->ItemHelper.giveToPlayer( new ItemStack( MajruszsDifficulty.Items.UNDEAD_ARMY_TREASURE_BAG.get() ), player ) );
+		data.undeadArmy.participants.forEach( player->ItemHelper.giveToPlayer( new ItemStack( MajruszsDifficulty.UNDEAD_ARMY_TREASURE_BAG_ITEM.get() ), player ) );
 	}
 }

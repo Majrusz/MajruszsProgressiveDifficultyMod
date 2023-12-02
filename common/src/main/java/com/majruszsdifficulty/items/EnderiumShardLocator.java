@@ -33,7 +33,7 @@ public class EnderiumShardLocator extends Item {
 
 
 	private static boolean isOre( Level level, BlockPos position ) {
-		return BlockHelper.getState( level, position ).getBlock() == MajruszsDifficulty.Blocks.ENDERIUM_SHARD_ORE.get();
+		return BlockHelper.getState( level, position ).getBlock() == MajruszsDifficulty.ENDERIUM_SHARD_ORE_BLOCK.get();
 	}
 
 	@OnlyIn( Dist.CLIENT )

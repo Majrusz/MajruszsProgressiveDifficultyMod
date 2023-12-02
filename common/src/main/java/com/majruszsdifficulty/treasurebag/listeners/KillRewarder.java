@@ -18,10 +18,10 @@ import java.util.function.Supplier;
 
 public class KillRewarder {
 	private static final Map< String, Supplier< TreasureBag > > REWARDS = Map.of(
-		"minecraft:elder_guardian", MajruszsDifficulty.Items.ELDER_GUARDIAN_TREASURE_BAG,
-		"minecraft:ender_dragon", MajruszsDifficulty.Items.ENDER_DRAGON_TREASURE_BAG,
-		"minecraft:warden", MajruszsDifficulty.Items.WARDEN_TREASURE_BAG,
-		"minecraft:wither", MajruszsDifficulty.Items.WITHER_TREASURE_BAG
+		"minecraft:elder_guardian", MajruszsDifficulty.ELDER_GUARDIAN_TREASURE_BAG_ITEM,
+		"minecraft:ender_dragon", MajruszsDifficulty.ENDER_DRAGON_TREASURE_BAG_ITEM,
+		"minecraft:warden", MajruszsDifficulty.WARDEN_TREASURE_BAG_ITEM,
+		"minecraft:wither", MajruszsDifficulty.WITHER_TREASURE_BAG_ITEM
 	);
 
 	static {

@@ -21,7 +21,7 @@ public class BleedingArmorProtection {
 	static {
 		OnEntityEffectCheck.listen( OnEntityEffectCheck::cancelEffect )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->data.effect.equals( MajruszsDifficulty.Effects.BLEEDING.get() ) )
+			.addCondition( data->data.effect.equals( MajruszsDifficulty.BLEEDING_EFFECT.get() ) )
 			.addCondition( data->Random.check( BleedingArmorProtection.calculateCancelChance( data ) ) );
 
 		OnBleedingTooltip.listen( BleedingArmorProtection::addTooltip )

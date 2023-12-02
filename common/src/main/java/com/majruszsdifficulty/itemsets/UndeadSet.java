@@ -9,10 +9,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 
 public class UndeadSet {
-	static final ItemSetRequirement HELMET = ItemSetRequirement.of( MajruszsDifficulty.Items.TATTERED_HELMET, EquipmentSlot.HEAD );
-	static final ItemSetRequirement CHESTPLATE = ItemSetRequirement.of( MajruszsDifficulty.Items.TATTERED_CHESTPLATE, EquipmentSlot.CHEST );
-	static final ItemSetRequirement LEGGINGS = ItemSetRequirement.of( MajruszsDifficulty.Items.TATTERED_LEGGINGS, EquipmentSlot.LEGS );
-	static final ItemSetRequirement BOOTS = ItemSetRequirement.of( MajruszsDifficulty.Items.TATTERED_BOOTS, EquipmentSlot.FEET );
+	static final ItemSetRequirement HELMET = ItemSetRequirement.of( MajruszsDifficulty.TATTERED_HELMET_ITEM, EquipmentSlot.HEAD );
+	static final ItemSetRequirement CHESTPLATE = ItemSetRequirement.of( MajruszsDifficulty.TATTERED_CHESTPLATE_ITEM, EquipmentSlot.CHEST );
+	static final ItemSetRequirement LEGGINGS = ItemSetRequirement.of( MajruszsDifficulty.TATTERED_LEGGINGS_ITEM, EquipmentSlot.LEGS );
+	static final ItemSetRequirement BOOTS = ItemSetRequirement.of( MajruszsDifficulty.TATTERED_BOOTS_ITEM, EquipmentSlot.FEET );
 	static final ItemSetBonus DURABILITY = ItemSetBonus.any( 3 )
 		.component( "majruszsdifficulty.sets.undead.bonus_1", 1 );
 	static final ItemSetBonus SOUL_JAR = ItemSetBonus.any( 4 )

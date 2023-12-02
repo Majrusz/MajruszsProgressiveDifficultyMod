@@ -48,7 +48,7 @@ public class SoulJarShieldRecipe extends CustomRecipe {
 
 	@Override
 	public RecipeSerializer< ? > getSerializer() {
-		return MajruszsDifficulty.Recipes.SOUL_JAR_SHIELD.get();
+		return MajruszsDifficulty.SOUL_JAR_SHIELD_RECIPE.get();
 	}
 
 	private static RecipeData convert( CraftingContainer container ) {

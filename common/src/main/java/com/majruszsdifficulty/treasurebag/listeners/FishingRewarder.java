@@ -36,7 +36,7 @@ public class FishingRewarder {
 
 			--fishingInfo.fishesLeft;
 			if( fishingInfo.fishesLeft == 0 ) {
-				ItemHelper.giveToPlayer( new ItemStack( MajruszsDifficulty.Items.ANGLER_TREASURE_BAG.get() ), data.player );
+				ItemHelper.giveToPlayer( new ItemStack( MajruszsDifficulty.ANGLER_TREASURE_BAG_ITEM.get() ), data.player );
 			}
 		} );
 	}

@@ -31,7 +31,7 @@ public class SoakedInfernalSponge extends Block {
 	static {
 		OnBlockPlaced.listen( SoakedInfernalSponge::tryToConvert )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->data.blockState.is( MajruszsDifficulty.Blocks.SOAKED_INFERNAL_SPONGE.get() ) );
+			.addCondition( data->data.blockState.is( MajruszsDifficulty.SOAKED_INFERNAL_SPONGE_BLOCK.get() ) );
 	}
 
 	public SoakedInfernalSponge() {
@@ -98,7 +98,7 @@ public class SoakedInfernalSponge extends Block {
 		for( Direction direction : Direction.values() ) {
 			FluidState fluidState = level.getFluidState( blockPos.relative( direction ) );
 			if( fluidState.is( Fluids.WATER ) || fluidState.is( Fluids.FLOWING_WATER ) ) {
-				level.setBlock( blockPos, MajruszsDifficulty.Blocks.INFERNAL_SPONGE.get().defaultBlockState(), 2 );
+				level.setBlock( blockPos, MajruszsDifficulty.INFERNAL_SPONGE_BLOCK.get().defaultBlockState(), 2 );
 				SoundEmitter.of( SoundEvents.LAVA_EXTINGUISH )
 					.position( blockPos.getCenter() )
 					.emit( level );
@@ -109,7 +109,7 @@ public class SoakedInfernalSponge extends Block {
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.Blocks.SOAKED_INFERNAL_SPONGE.get(), new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
+			super( MajruszsDifficulty.SOAKED_INFERNAL_SPONGE_BLOCK.get(), new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
 		}
 	}
 }

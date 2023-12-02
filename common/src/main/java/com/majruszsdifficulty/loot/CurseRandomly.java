@@ -35,7 +35,7 @@ public class CurseRandomly extends LootItemConditionalFunction {
 
 	@Override
 	public LootItemFunctionType getType() {
-		return MajruszsDifficulty.LootFunctions.CURSE_RANDOMLY.get();
+		return MajruszsDifficulty.CURSE_RANDOMLY_LOOT_FUNCTION.get();
 	}
 
 	@Override

@@ -65,38 +65,38 @@ public class ItemSet {
 
 	private ItemSet() {
 		Side.runOnClient( ()->()->{
-			OnItemTooltip.listen( this::addTooltip )
+			OnItemTooltip.listen( data->Client.addTooltip( data, this ) )
 				.addCondition( data->this.requirements.stream().anyMatch( requirement->requirement.is( data.itemStack ) ) );
 		} );
 	}
 
-	@OnlyIn( Dist.CLIENT )
-	private void addTooltip( OnItemTooltip data ) {
-		if( !ClientHelper.isShiftDown() ) {
-			data.components.add( TextHelper.empty() );
-			data.components.add( TextHelper.translatable( "majruszsdifficulty.item_sets.hint" ).withStyle( ChatFormatting.GRAY ) );
-			return;
-		}
-
-		List< ItemSetRequirement > requirementsMet = this.findRequirementsMet( Side.getLocalPlayer() );
-
-		data.components.add( TextHelper.empty() );
-		data.components.add( this.getItemTitleComponent( requirementsMet ) );
-		data.components.addAll( this.requirements.stream().map( requirement->requirement.toComponent( this, requirementsMet ) ).toList() );
-		data.components.add( TextHelper.empty() );
-		data.components.add( this.getBonusTitleComponent() );
-		data.components.addAll( this.bonuses.stream().map( bonus->bonus.toComponent( this, requirementsMet ) ).toList() );
-	}
-
-	@OnlyIn( Dist.CLIENT )
 	private Component getItemTitleComponent( List< ItemSetRequirement > requirementsMet ) {
 		return TextHelper.translatable( "majruszsdifficulty.item_sets.item_title", this.component, requirementsMet.size(), this.requirements.size() )
 			.withStyle( ChatFormatting.GRAY );
 	}
 
-	@OnlyIn( Dist.CLIENT )
 	private Component getBonusTitleComponent() {
 		return TextHelper.translatable( "majruszsdifficulty.item_sets.bonus_title", this.component )
 			.withStyle( ChatFormatting.GRAY );
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	private static class Client {
+		private static void addTooltip( OnItemTooltip data, ItemSet itemSet ) {
+			if( !ClientHelper.isShiftDown() ) {
+				data.components.add( TextHelper.empty() );
+				data.components.add( TextHelper.translatable( "majruszsdifficulty.item_sets.hint" ).withStyle( ChatFormatting.GRAY ) );
+				return;
+			}
+
+			List< ItemSetRequirement > requirementsMet = itemSet.findRequirementsMet( Side.getLocalPlayer() );
+
+			data.components.add( TextHelper.empty() );
+			data.components.add( itemSet.getItemTitleComponent( requirementsMet ) );
+			data.components.addAll( itemSet.requirements.stream().map( requirement->requirement.toComponent( itemSet, requirementsMet ) ).toList() );
+			data.components.add( TextHelper.empty() );
+			data.components.add( itemSet.getBonusTitleComponent() );
+			data.components.addAll( itemSet.bonuses.stream().map( bonus->bonus.toComponent( itemSet, requirementsMet ) ).toList() );
+		}
 	}
 }

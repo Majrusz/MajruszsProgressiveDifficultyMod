@@ -31,7 +31,7 @@ public class EnderiumShardOre extends Block {
 
 	public static class Item extends BlockItem {
 		public Item() {
-			super( MajruszsDifficulty.Blocks.ENDERIUM_SHARD_ORE.get(), new Properties().stacksTo( 64 ) );
+			super( MajruszsDifficulty.ENDERIUM_SHARD_ORE_BLOCK.get(), new Properties().stacksTo( 64 ) );
 		}
 	}
 }

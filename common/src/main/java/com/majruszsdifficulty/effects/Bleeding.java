@@ -56,7 +56,7 @@ public class Bleeding extends MobEffect {
 		public final @Nullable Entity damageSourceEntity;
 
 		public MobEffectInstance( int duration, int amplifier, @Nullable LivingEntity attacker ) {
-			super( MajruszsDifficulty.Effects.BLEEDING.get(), duration, amplifier, false, false, true );
+			super( MajruszsDifficulty.BLEEDING_EFFECT.get(), duration, amplifier, false, false, true );
 
 			this.damageSourceEntity = attacker;
 		}

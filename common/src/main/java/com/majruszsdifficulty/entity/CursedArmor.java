@@ -20,7 +20,7 @@ import com.majruszlibrary.level.BlockHelper;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.math.Range;
-import com.majruszlibrary.modhelper.LazyResource;
+import com.majruszlibrary.modhelper.Resource;
 import com.majruszlibrary.text.TextHelper;
 import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
@@ -31,7 +31,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -59,7 +58,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class CursedArmor extends Monster implements IAnimableEntity {
-	private static final LazyResource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cursed_armor_animation", AnimationsDef.class, PackType.SERVER_DATA );
+	private static final Resource< AnimationsDef > ANIMATIONS = MajruszsDifficulty.HELPER.load( "cursed_armor_animation", AnimationsDef.class );
 	private static float ITEM_DROP_CHANCE = 0.2f;
 	private static float NAME_CHANCE = 0.025f;
 	private static List< String > NAMES = List.of( "Freshah" );
@@ -252,7 +251,7 @@ public class CursedArmor extends Monster implements IAnimableEntity {
 
 	private static void spawnCursedArmor( OnLootGenerated data ) {
 		TimeHelper.nextTick( delay->{
-			CursedArmor cursedArmor = EntityHelper.createSpawner( MajruszsDifficulty.Entities.CURSED_ARMOR, data.getLevel() )
+			CursedArmor cursedArmor = EntityHelper.createSpawner( MajruszsDifficulty.CURSED_ARMOR_ENTITY, data.getLevel() )
 				.position( CursedArmor.getSpawnPosition( data ) )
 				.beforeEvent( entity->{
 					float yRot = BlockHelper.getState( data.getLevel(), data.origin ).getValue( ChestBlock.FACING ).toYRot();

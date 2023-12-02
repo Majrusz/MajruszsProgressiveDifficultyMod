@@ -32,7 +32,7 @@ public class BleedingDamage {
 
 		OnEntityTicked.listen( BleedingDamage::tick )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->EffectHelper.has( MajruszsDifficulty.Effects.BLEEDING, data.entity ) );
+			.addCondition( data->EffectHelper.has( MajruszsDifficulty.BLEEDING_EFFECT, data.entity ) );
 	}
 
 	private static void tryToApply( OnEntityDamaged data ) {
@@ -42,7 +42,7 @@ public class BleedingDamage {
 	}
 
 	private static void tick( OnEntityTicked data ) {
-		int amplifier = EffectHelper.getAmplifier( MajruszsDifficulty.Effects.BLEEDING, data.entity ).orElse( 0 );
+		int amplifier = EffectHelper.getAmplifier( MajruszsDifficulty.BLEEDING_EFFECT, data.entity ).orElse( 0 );
 		int extraDuration = Random.round( 0.3 * ( amplifier + 2 ) * ( 7.26 * EntityHelper.getWalkDistanceDelta( data.entity ) + 1 ) );
 		int duration = ENTITY_TICKS.getOrDefault( data.entity.getId(), 0 ) + extraDuration;
 		if( duration > DAMAGE_COOLDOWN ) {
@@ -57,9 +57,9 @@ public class BleedingDamage {
 		Holder< DamageType > damageType = entity.level()
 			.registryAccess()
 			.registryOrThrow( net.minecraft.core.registries.Registries.DAMAGE_TYPE )
-			.getHolderOrThrow( MajruszsDifficulty.DamageSources.BLEEDING );
+			.getHolderOrThrow( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE );
 
-		if( entity.getEffect( MajruszsDifficulty.Effects.BLEEDING.get() ) instanceof Bleeding.MobEffectInstance effectInstance ) {
+		if( entity.getEffect( MajruszsDifficulty.BLEEDING_EFFECT.get() ) instanceof Bleeding.MobEffectInstance effectInstance ) {
 			Vec3 motion = entity.getDeltaMovement();
 			entity.hurt( new DamageSource( damageType, null, effectInstance.damageSourceEntity ), 1.0f );
 			entity.setDeltaMovement( motion ); // sets previous motion to avoid any knockback from bleeding
