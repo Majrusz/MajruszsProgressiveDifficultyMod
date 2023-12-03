@@ -3,6 +3,7 @@ package com.majruszsdifficulty.items;
 import com.majruszlibrary.events.OnItemTooltip;
 import com.majruszlibrary.events.OnPlayerInteracted;
 import com.majruszlibrary.item.ItemHelper;
+import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.text.TextHelper;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyHelper;
 import net.minecraft.ChatFormatting;
@@ -23,10 +24,11 @@ public class UndeadBattleStandard extends Item {
 	}
 
 	private static void tryToSpawn( OnPlayerInteracted data ) {
-		if( UndeadArmyHelper.tryToSpawn( data.player ) ) {
+		if( Side.isLogicalServer() && UndeadArmyHelper.tryToSpawn( data.player ) ) {
 			ItemHelper.consumeItemOnUse( data.itemStack, data.player );
-			data.finish();
 		}
+
+		data.finish();
 	}
 
 	private static void addTooltip( OnItemTooltip data ) {
