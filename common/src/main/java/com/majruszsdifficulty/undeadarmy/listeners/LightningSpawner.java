@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.undeadarmy.listeners;
 
+import com.majruszlibrary.events.base.Priority;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszsdifficulty.undeadarmy.UndeadArmy;
 import com.majruszsdifficulty.undeadarmy.events.OnUndeadArmyStateChanged;
@@ -13,6 +14,7 @@ import java.util.List;
 public class LightningSpawner {
 	static {
 		OnUndeadArmyStateChanged.listen( LightningSpawner::spawn )
+			.priority( Priority.LOW )
 			.addCondition( data->data.undeadArmy.phase.state == UndeadArmy.Phase.State.WAVE_PREPARING );
 	}
 
