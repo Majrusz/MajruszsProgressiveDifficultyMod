@@ -78,7 +78,7 @@ public class SoulJar extends Item {
 	}
 
 	private static void increaseDamage( OnEntityPreDamaged data ) {
-		data.damage += data.original * DAMAGE_BONUS * SoulJar.getMultiplier( data.attacker, data.attacker.getOffhandItem() );
+		data.damage += DAMAGE_BONUS * SoulJar.getMultiplier( data.attacker, data.attacker.getOffhandItem() );
 		data.spawnMagicParticles = true;
 	}
 
