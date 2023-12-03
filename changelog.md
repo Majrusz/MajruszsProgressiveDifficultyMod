@@ -1,0 +1,1 @@
+- fixed bug with Soul Jar damage bonus being calculated incorrectly
