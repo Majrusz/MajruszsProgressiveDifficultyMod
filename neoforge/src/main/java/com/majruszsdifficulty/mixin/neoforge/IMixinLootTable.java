@@ -1,4 +1,4 @@
-package com.majruszsdifficulty.mixin.forge;
+package com.majruszsdifficulty.mixin.neoforge;
 
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
