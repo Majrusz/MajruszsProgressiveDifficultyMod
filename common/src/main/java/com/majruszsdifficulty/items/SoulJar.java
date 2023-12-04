@@ -247,9 +247,8 @@ public class SoulJar extends Item {
 	@OnlyIn( Dist.CLIENT )
 	public static class Client {
 		static {
-			OnItemRenderColorGet.listen( Client::changeSoulColor )
-				.addCondition( data->data.itemStack.getItem() instanceof SoulJar )
-				.addCondition( data->data.layerIdx > 0 );
+			OnItemRenderColorsGet.listen( Client::changeSoulColor )
+				.addCondition( data->data.itemStack.getItem() instanceof SoulJar );
 
 			OnItemAttributeTooltip.listen( Client::addTooltip )
 				.addCondition( data->SoulJar.canHaveSouls( data.itemStack ) );
@@ -258,11 +257,11 @@ public class SoulJar extends Item {
 				.addCondition( data->SoulJar.canHaveSouls( data.itemStack ) );
 		}
 
-		private static void changeSoulColor( OnItemRenderColorGet data ) {
-			data.color = BonusInfo.read( data.itemStack )
-				.getBonus( data.layerIdx - 1 )
-				.map( BonusType::getColor )
-				.orElseGet( ()->0xeeeeee - data.layerIdx * 0x111111 );
+		private static void changeSoulColor( OnItemRenderColorsGet data ) {
+			BonusInfo bonusInfo = BonusInfo.read( data.itemStack );
+			for( int idx = 0; idx < 3; ++idx ) {
+				data.add( idx + 1, bonusInfo.getBonus( idx ).map( BonusType::getColor ).orElse( 0xeeeeee - idx * 0x111111 ) );
+			}
 		}
 
 		private static void addTooltip( OnItemAttributeTooltip data ) {
