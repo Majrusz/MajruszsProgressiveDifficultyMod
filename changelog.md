@@ -2,3 +2,4 @@
 - fixed game crash `java.lang.ClassNotFoundException` (reported by @NanoAi)
 - fixed Soul Jar color issue caused by incompatibility with Sodium (reported by @LonelyFear)
 - fixed bug with being unable to disable natural Undead Army spawns (reported by @NeuTraLZero)
+- fixed bug with Undead Army not changing weather properly
