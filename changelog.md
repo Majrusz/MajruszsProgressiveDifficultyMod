@@ -1,3 +1,5 @@
-- fixed crash when using Undead Battle Standard on server
-- fixed bug with thunder not working properly during Undead Army
-- fixed bug with Soul Jar damage bonus being calculated incorrectly
+- changed required Majrusz Library from 7.0.0+ to 7.0.1+
+- fixed game crash `java.lang.ClassNotFoundException` (reported by @NanoAi)
+- fixed Soul Jar color issue caused by incompatibility with Sodium (reported by @LonelyFear)
+- fixed bug with being unable to disable natural Undead Army spawns (reported by @NeuTraLZero)
+- fixed bug with Undead Army not changing weather properly

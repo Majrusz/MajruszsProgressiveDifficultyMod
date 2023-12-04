@@ -1,6 +1,6 @@
 package com.majruszsdifficulty.loot;
 
-import com.majruszsdifficulty.mixin.forge.IMixinLootTable;
+import com.majruszsdifficulty.mixin.neoforge.IMixinLootTable;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 

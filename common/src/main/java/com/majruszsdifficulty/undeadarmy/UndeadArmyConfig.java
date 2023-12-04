@@ -113,7 +113,7 @@ public class UndeadArmyConfig {
 			.define( "highlight_delay", Reader.number(), ()->HIGHLIGHT_DELAY, v->HIGHLIGHT_DELAY = Range.of( 30.0f, 3600.0f ).clamp( v ) )
 			.define( "extra_size_ratio_per_player", Reader.number(), ()->EXTRA_PLAYER_RATIO, v->EXTRA_PLAYER_RATIO = Range.of( 0.0f, 1.0f ).clamp( v ) )
 			.define( "area_radius", Reader.integer(), ()->AREA_RADIUS, v->AREA_RADIUS = Range.of( 35, 140 ).clamp( v ) )
-			.define( "kill_requirement", Reader.integer(), ()->KILL_REQUIREMENT, v->KILL_REQUIREMENT = Range.of( 1, 1000 ).clamp( v ) )
+			.define( "kill_requirement", Reader.integer(), ()->KILL_REQUIREMENT, v->KILL_REQUIREMENT = Range.of( 0, 1000 ).clamp( v ) )
 			.define( "kill_requirement_first", Reader.integer(), ()->KILL_REQUIREMENT_FIRST, v->KILL_REQUIREMENT_FIRST = Range.of( 1, 1000 ).clamp( v ) )
 			.define( "kill_requirement_warning", Reader.integer(), ()->KILL_REQUIREMENT_WARNING, v->KILL_REQUIREMENT_WARNING = Range.of( 1, 1000 ).clamp( v ) )
 			.define( "waves", Reader.list( Reader.custom( WaveDef::new ) ), ()->WAVE_DEFS, v->WAVE_DEFS = v );

@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.ServerLevelData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -90,6 +91,9 @@ public class UndeadArmyHelper {
 		boolean hasAnyArmyFinished = UNDEAD_ARMIES.removeIf( UndeadArmy::hasFinished );
 		if( hasAnyArmyFinished && UNDEAD_ARMIES.isEmpty() ) {
 			LevelHelper.setClearWeather( UndeadArmyHelper.getLevel(), TimeHelper.toTicks( 0.5 ) );
+			if( UndeadArmyHelper.getLevel().getLevelData() instanceof ServerLevelData levelData ) {
+				levelData.setClearWeatherTime( TimeHelper.toTicks( 60.0 * 30.0 ) );
+			}
 		}
 	}
 
