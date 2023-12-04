@@ -1,3 +1,0 @@
-- fixed crash when using Undead Battle Standard on server
-- fixed bug with thunder not working properly during Undead Army
-- fixed bug with Soul Jar damage bonus being calculated incorrectly
