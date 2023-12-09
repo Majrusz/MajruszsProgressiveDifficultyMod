@@ -1,5 +1,6 @@
-- changed required Majrusz Library from 7.0.0+ to 7.0.1+
-- fixed game crash `java.lang.ClassNotFoundException` (reported by @NanoAi)
-- fixed Soul Jar color issue caused by incompatibility with Sodium (reported by @LonelyFear)
-- fixed bug with being unable to disable natural Undead Army spawns (reported by @NeuTraLZero)
-- fixed bug with Undead Army not changing weather properly
+- changed required Majrusz Library version from 7.0.1+ to 7.0.2+
+- readded missing Bleeding advancements
+- updated Chinese translation (thanks to @UDTakerBean)
+- fixed bug with blood particles not being visible on server
+- fixed bug with some expert mode and master mode mechanics working on earlier game stages
+- fixed bug with Cursed Armor spawns not working properly

@@ -17,6 +17,7 @@ import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.effects.Bleeding;
 import com.majruszsdifficulty.effects.BleedingImmunity;
 import com.majruszsdifficulty.effects.GlassRegeneration;
+import com.majruszsdifficulty.effects.bleeding.BleedingParticles;
 import com.majruszsdifficulty.entity.*;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
 import com.majruszsdifficulty.items.*;
@@ -73,6 +74,7 @@ public class MajruszsDifficulty {
 	public static final RegistryGroup< SoundEvent > SOUND_EVENTS = HELPER.create( BuiltInRegistries.SOUND_EVENT );
 
 	// Network
+	public static final NetworkObject< BleedingParticles.Message > BLEEDING_GUI = HELPER.create( "bleeding_gui", BleedingParticles.Message.class );
 	public static final NetworkObject< TreasureBag.RightClickAction > TREASURE_BAG_RIGHT_CLICK_NETWORK = HELPER.create( "treasure_bag_right_click", TreasureBag.RightClickAction.class );
 	public static final NetworkObject< TreasureBagHelper.Progress > TREASURE_BAG_PROGRESS_NETWORK = HELPER.create( "treasure_bag_progress", TreasureBagHelper.Progress.class );
 

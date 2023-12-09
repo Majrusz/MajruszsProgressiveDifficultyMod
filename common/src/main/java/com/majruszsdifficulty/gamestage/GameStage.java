@@ -18,7 +18,7 @@ public class GameStage {
 	private List< ChatFormatting > format = new ArrayList<>();
 	private Trigger trigger = new Trigger();
 	private List< Message > messages = new ArrayList<>();
-	private int ordinal = 0;
+	int ordinal = 0;
 
 	static {
 		Serializables.get( GameStage.class )
@@ -44,10 +44,6 @@ public class GameStage {
 	public boolean equals( Object object ) {
 		return object instanceof GameStage gameStage
 			&& this.id.equals( gameStage.id );
-	}
-
-	public void setOrdinal( int ordinal ) {
-		this.ordinal = ordinal;
 	}
 
 	public boolean checkDimension( String dimensionId ) {
