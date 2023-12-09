@@ -12,8 +12,10 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.effects.Bleeding;
 import com.majruszsdifficulty.events.OnBleedingCheck;
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -38,6 +40,7 @@ public class BleedingDamage {
 	private static void tryToApply( OnEntityDamaged data ) {
 		if( Events.dispatch( new OnBleedingCheck( data ) ).isBleedingTriggered() && Bleeding.apply( data.target, data.attacker ) ) {
 			BleedingDamage.dealDamage( data.target );
+			BleedingDamage.giveAdvancements( data );
 		}
 	}
 
@@ -65,6 +68,19 @@ public class BleedingDamage {
 			entity.setDeltaMovement( motion ); // sets previous motion to avoid any knockback from bleeding
 		} else {
 			entity.hurt( new DamageSource( damageType ), 1.0f );
+		}
+	}
+
+	private static void giveAdvancements( OnEntityDamaged data ) {
+		if( data.target instanceof ServerPlayer player ) {
+			MajruszsDifficulty.HELPER.triggerAchievement( player, "bleeding_received" );
+			if( data.source.is( DamageTypes.CACTUS ) ) {
+				MajruszsDifficulty.HELPER.triggerAchievement( player, "cactus_bleeding" );
+			}
+		}
+
+		if( data.attacker instanceof ServerPlayer player ) {
+			MajruszsDifficulty.HELPER.triggerAchievement( player, "bleeding_inflicted" );
 		}
 	}
 }
