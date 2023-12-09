@@ -1,5 +1,6 @@
 - changed required Majrusz Library version from 7.0.1+ to 7.0.2+
 - readded missing Bleeding advancements
+- updated Chinese translation (thanks to @UDTakerBean)
 - fixed bug with blood particles not being visible on server
 - fixed bug with some expert mode and master mode mechanics working on earlier game stages
 - fixed bug with Cursed Armor spawns not working properly
