@@ -1,2 +1,3 @@
 - readded missing Bleeding advancements
+- fixed bug with blood particles not being visible on server
 - fixed bug with some expert mode and master mode mechanics working on earlier game stages

@@ -1,5 +1,9 @@
 package com.majruszsdifficulty.effects.bleeding;
 
+import com.majruszlibrary.annotation.Dist;
+import com.majruszlibrary.annotation.OnlyIn;
+import com.majruszlibrary.data.Reader;
+import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.emitter.ParticleEmitter;
 import com.majruszlibrary.entity.EffectHelper;
 import com.majruszlibrary.entity.EntityHelper;
@@ -10,8 +14,8 @@ import com.majruszlibrary.events.base.Condition;
 import com.majruszlibrary.events.base.Priority;
 import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
-import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
+import net.minecraft.server.level.ServerPlayer;
 
 public class BleedingParticles {
 	static {
@@ -26,7 +30,8 @@ public class BleedingParticles {
 
 		OnEntityPreDamaged.listen( BleedingParticles::addGuiOverlay )
 			.priority( Priority.LOWEST )
-			.addCondition( data->data.source.is( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE ) );
+			.addCondition( data->data.source.is( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE ) )
+			.addCondition( data->data.target instanceof ServerPlayer );
 	}
 
 	private static void emit( OnEntityTicked data ) {
@@ -49,10 +54,32 @@ public class BleedingParticles {
 	}
 
 	private static void addGuiOverlay( OnEntityPreDamaged data ) {
-		Side.runOnClient( ()->()->{
-			if( data.target.equals( Side.getLocalPlayer() ) ) {
-				BleedingGui.addBloodOnScreen( 3 );
-			}
-		} );
+		MajruszsDifficulty.BLEEDING_GUI.sendToClient( ( ServerPlayer )data.target, new Message( 3 ) );
+	}
+
+	public static class Message {
+		int count;
+
+		static {
+			Serializables.get( Message.class )
+				.define( "count", Reader.integer(), s->s.count, ( s, v )->s.count = v );
+		}
+
+		public Message( int count ) {
+			this.count = count;
+		}
+
+		public Message() {}
+	}
+
+	@OnlyIn( Dist.CLIENT )
+	public static class Client {
+		static {
+			MajruszsDifficulty.BLEEDING_GUI.addClientCallback( Client::onMessageReceived );
+		}
+
+		private static void onMessageReceived( Message message ) {
+			BleedingGui.addBloodOnScreen( message.count );
+		}
 	}
 }
