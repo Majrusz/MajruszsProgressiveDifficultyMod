@@ -1,1 +1,2 @@
 - readded missing Bleeding advancements
+- fixed bug with some expert mode and master mode mechanics working on earlier game stages
