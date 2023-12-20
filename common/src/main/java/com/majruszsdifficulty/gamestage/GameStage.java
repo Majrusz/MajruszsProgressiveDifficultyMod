@@ -77,6 +77,14 @@ public class GameStage {
 			.toList();
 	}
 
+	GameStage copy( GameStage gameStage ) {
+		this.format = gameStage.format;
+		this.trigger = gameStage.trigger;
+		this.messages = gameStage.messages;
+
+		return this;
+	}
+
 	public static class Builder {
 		private final GameStage gameStage;
 

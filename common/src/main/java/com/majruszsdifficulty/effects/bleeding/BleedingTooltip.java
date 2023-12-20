@@ -14,7 +14,8 @@ import com.majruszsdifficulty.gamestage.GameStageHelper;
 public class BleedingTooltip {
 	static {
 		OnItemAttributeTooltip.listen( BleedingTooltip::addCustom )
-			.addCondition( Bleeding::isEnabled );
+			.addCondition( Bleeding::isEnabled )
+			.addCondition( data->Side.getLocalPlayer() != null /* compatibility check */ );
 	}
 
 	private static void addCustom( OnItemAttributeTooltip data ) {

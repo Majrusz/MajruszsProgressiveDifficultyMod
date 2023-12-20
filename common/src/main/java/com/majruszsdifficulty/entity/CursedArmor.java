@@ -26,6 +26,7 @@ import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.bloodmoon.BloodMoonHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -254,7 +255,10 @@ public class CursedArmor extends Monster implements IAnimableEntity {
 			CursedArmor cursedArmor = EntityHelper.createSpawner( MajruszsDifficulty.CURSED_ARMOR_ENTITY, data.getLevel() )
 				.position( CursedArmor.getSpawnPosition( data ) )
 				.beforeEvent( entity->{
-					float yRot = BlockHelper.getState( data.getLevel(), data.origin ).getValue( ChestBlock.FACING ).toYRot();
+					float yRot = BlockHelper.getState( data.getLevel(), data.origin )
+						.getOptionalValue( ChestBlock.FACING )
+						.map( Direction::toYRot )
+						.orElse( Random.nextInt( 0, 4 ) * 90.0f );
 					entity.setYRot( yRot );
 					entity.setYHeadRot( yRot );
 					entity.setYBodyRot( yRot );

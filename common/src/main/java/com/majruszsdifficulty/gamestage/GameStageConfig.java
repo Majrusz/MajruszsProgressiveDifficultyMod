@@ -58,7 +58,7 @@ public class GameStageConfig {
 			GameStage newGameStage = newGameStages.get( idx );
 			for( GameStage oldGameStage : oldGameStages ) {
 				if( oldGameStage.is( newGameStage.getId() ) ) {
-					newGameStage = oldGameStage; // to keep references valid
+					newGameStage = oldGameStage.copy( newGameStage );
 					break;
 				}
 			}

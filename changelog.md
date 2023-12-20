@@ -1,6 +1,3 @@
-- changed required Majrusz Library version from 7.0.1+ to 7.0.2+
-- readded missing Bleeding advancements
-- updated Chinese translation (thanks to @UDTakerBean)
-- fixed bug with blood particles not being visible on server
-- fixed bug with some expert mode and master mode mechanics working on earlier game stages
-- fixed bug with Cursed Armor spawns not working properly
+- fixed bug with game stages not reloading properly in the configuration file (reported by @Sully)
+- fixed game crash caused by compatibility issues with Loot Beams mod (reported by @davey)
+- fixed game crash when breaking chest with Cursed Armor inside (reported by @Jabkkm)
