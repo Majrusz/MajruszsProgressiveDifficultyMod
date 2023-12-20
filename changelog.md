@@ -1,1 +1,2 @@
+- fixed bug with game stages not reloading properly in the configuration file (reported by @Sully)
 - fixed game crash when breaking chest with Cursed Armor inside (reported by @Jabkkm)
