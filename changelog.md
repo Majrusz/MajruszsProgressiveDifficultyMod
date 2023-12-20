@@ -1,0 +1,1 @@
+- fixed game crash when breaking chest with Cursed Armor inside (reported by @Jabkkm)
