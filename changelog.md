@@ -1,3 +1,0 @@
-- fixed bug with game stages not reloading properly in the configuration file (reported by @Sully)
-- fixed game crash caused by compatibility issues with Loot Beams mod (reported by @davey)
-- fixed game crash when breaking chest with Cursed Armor inside (reported by @Jabkkm)
