@@ -7,6 +7,8 @@ import com.majruszsdifficulty.bloodmoon.BloodMoonConfig;
 import com.majruszsdifficulty.bloodmoon.BloodMoonHelper;
 import net.minecraft.world.level.Level;
 
+import java.util.Optional;
+
 public class Trigger {
 	static {
 		OnServerTicked.listen( Trigger::start )
@@ -29,6 +31,6 @@ public class Trigger {
 	}
 
 	private static long getTime() {
-		return Side.getServer().overworld().getDayTime() % Level.TICKS_PER_DAY;
+		return Optional.ofNullable( Side.getServer() ).map( server->server.overworld().getDayTime() % Level.TICKS_PER_DAY ).orElse( 0L );
 	}
 }
