@@ -143,8 +143,9 @@ public class UndeadArmy {
 
 	private void forEachSpawnedUndead( Consumer< LivingEntity > consumer ) {
 		this.mobsLeft.stream()
-			.filter( mobInfo->mobInfo.uuid != null )
-			.forEach( mobInfo->consumer.accept( ( LivingEntity )mobInfo.toEntity( this.getLevel() ) ) );
+			.map( mobInfo->mobInfo.toEntity( this.getLevel() ) )
+			.filter( entity->entity != null )
+			.forEach( entity->consumer.accept( ( LivingEntity )entity ) );
 	}
 
 	public ServerLevel getLevel() {
