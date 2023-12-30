@@ -1,2 +1,0 @@
-- fixed game crash during Undead Army (reported by @NotTohm)
-- fixed game crash caused by Blood Moon (reported by @ZacGames)
