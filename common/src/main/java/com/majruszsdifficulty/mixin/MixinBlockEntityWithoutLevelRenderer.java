@@ -31,7 +31,8 @@ public abstract class MixinBlockEntityWithoutLevelRenderer {
 			value = "INVOKE",
 			target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose ()V"
 		),
-		method = "renderByItem (Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V"
+		method = "renderByItem (Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V",
+		require = 0 // compatibility with Optifine
 	)
 	private void renderByItem( ItemStack itemStack, ItemDisplayContext context, PoseStack poseStack, MultiBufferSource multiBufferSource, int x, int y,
 		CallbackInfo callback
