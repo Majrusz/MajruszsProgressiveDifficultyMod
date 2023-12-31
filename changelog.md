@@ -1,2 +1,2 @@
-- fixed game crash during Undead Army (reported by @NotTohm)
-- fixed game crash caused by Blood Moon (reported by @ZacGames)
+- fixed compatibility crash with Optifine (reported by @Fiocher)
+- fixed bug with Bleeding chances exceeding 100% on items with custom chances (reported by @ZacGames)

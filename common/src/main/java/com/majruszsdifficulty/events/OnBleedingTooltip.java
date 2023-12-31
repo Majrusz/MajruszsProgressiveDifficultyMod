@@ -3,6 +3,7 @@ package com.majruszsdifficulty.events;
 import com.majruszlibrary.events.OnItemAttributeTooltip;
 import com.majruszlibrary.events.base.Event;
 import com.majruszlibrary.events.base.Events;
+import com.majruszlibrary.math.Range;
 import com.majruszlibrary.text.TextHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,7 +28,7 @@ public class OnBleedingTooltip {
 	}
 
 	public void addItem( double chance ) {
-		MutableComponent component = TextHelper.translatable( "effect.majruszsdifficulty.bleeding.item_tooltip", TextHelper.percent( ( float )chance ), TextHelper.toRoman( this.amplifier + 1 ) )
+		MutableComponent component = TextHelper.translatable( "effect.majruszsdifficulty.bleeding.item_tooltip", TextHelper.percent( Range.CHANCE.clamp( ( float )chance ) ), TextHelper.toRoman( this.amplifier + 1 ) )
 			.withStyle( ChatFormatting.DARK_GREEN );
 
 		this.data.add( EquipmentSlot.MAINHAND, component );
