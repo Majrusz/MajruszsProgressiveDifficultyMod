@@ -24,8 +24,11 @@ public class ExperienceBonus {
 			.addCondition( data->IS_ENABLED );
 
 		Serializables.getStatic( Config.Features.class )
+			.define( "experience_bonus", ExperienceBonus.class );
+
+		Serializables.getStatic( ExperienceBonus.class )
 			.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
-			.define( "experience_bonus", Reader.map( Reader.number() ), ()->BONUS.get(), v->BONUS = GameStageValue.of( Range.of( 0.0f, 10.0f ).clamp( v ) ) );
+			.define( "extra_multiplier", Reader.map( Reader.number() ), ()->BONUS.get(), v->BONUS = GameStageValue.of( Range.of( 0.0f, 10.0f ).clamp( v ) ) );
 	}
 
 	private static void increase( OnExpOrbPickedUp data ) {

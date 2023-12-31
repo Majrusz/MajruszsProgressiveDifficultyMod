@@ -1,0 +1,1 @@
+- fixed invalid experience bonus structure in the configuration file
