@@ -1,1 +1,2 @@
+- fixed compatibility crash with Tinkerer's Smithing (reported by @FLSoz)
 - fixed invalid experience bonus structure in the configuration file
