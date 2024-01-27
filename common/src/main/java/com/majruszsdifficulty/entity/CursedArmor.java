@@ -292,7 +292,10 @@ public class CursedArmor extends Monster implements IAnimableEntity {
 		if( isAir.apply( 1.0f ) && isAir.apply( 2.0f ) ) {
 			return data.origin.add( 0.0, 0.5, 0.0 );
 		} else {
-			Vec3i offset = BlockHelper.getState( level, data.origin ).getValue( ChestBlock.FACING ).getNormal();
+			Vec3i offset = BlockHelper.getState( level, data.origin )
+				.getOptionalValue( ChestBlock.FACING )
+				.map( Direction::getNormal )
+				.orElse( new Vec3i( 1, 0, 0 ) );
 			return data.origin.add( offset.getX(), offset.getY(), offset.getZ() );
 		}
 	}
