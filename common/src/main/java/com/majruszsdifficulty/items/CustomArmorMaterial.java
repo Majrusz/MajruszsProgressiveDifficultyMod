@@ -1,7 +1,5 @@
 package com.majruszsdifficulty.items;
 
-import com.majruszlibrary.annotation.Dist;
-import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -93,7 +91,6 @@ public enum CustomArmorMaterial implements ArmorMaterial {
 	}
 
 	@Override
-	@OnlyIn( Dist.CLIENT )
 	public String getName() {
 		return this.name;
 	}
