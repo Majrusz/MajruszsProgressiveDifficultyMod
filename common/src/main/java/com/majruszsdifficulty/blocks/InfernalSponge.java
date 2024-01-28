@@ -1,10 +1,13 @@
 package com.majruszsdifficulty.blocks;
 
+import com.google.common.collect.Lists;
 import com.majruszlibrary.events.OnBlockPlaced;
 import com.majruszlibrary.events.base.Condition;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
@@ -13,7 +16,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+
+import java.util.Queue;
 
 public class InfernalSponge extends Block {
 	static {
@@ -23,7 +29,7 @@ public class InfernalSponge extends Block {
 	}
 
 	public InfernalSponge() {
-		super( Properties.of().mapColor( MapColor.NETHER ).strength( 0.6f ).sound( SoundType.GRASS ) );
+		super( Properties.of( Material.SPONGE, MaterialColor.NETHER ).strength( 0.6f ).sound( SoundType.GRASS ) );
 	}
 
 	@Override
@@ -38,34 +44,42 @@ public class InfernalSponge extends Block {
 	}
 
 	private static void absorb( Level level, BlockPos spongePos ) {
-		int absorbedBlocks = BlockPos.breadthFirstTraversal( spongePos, 6, 65, ( blockPos, consumer )->{
-			for( Direction direction : Direction.values() ) {
-				consumer.accept( blockPos.relative( direction ) );
-			}
-		}, blockPos->{
-			if( blockPos.equals( spongePos ) ) {
-				return true;
+		Queue< Tuple<BlockPos, Integer> > $$2 = Lists.newLinkedList();
+		$$2.add(new Tuple(spongePos, 0));
+		int absorbedBlocks = 0;
+
+		while(!$$2.isEmpty()) {
+			Tuple<BlockPos, Integer> $$4 = (Tuple)$$2.poll();
+			BlockPos $$5 = (BlockPos)$$4.getA();
+			int $$6 = (Integer)$$4.getB();
+			Direction[] var8 = Direction.values();
+			int var9 = var8.length;
+
+			for(int var10 = 0; var10 < var9; ++var10) {
+				Direction $$7 = var8[var10];
+				BlockPos $$8 = $$5.relative($$7);
+				BlockState $$9 = level.getBlockState($$8);
+				FluidState spongePos0 = level.getFluidState($$8);
+				if (spongePos0.is( FluidTags.LAVA)) {
+					if ($$9.getBlock() instanceof BucketPickup && !((BucketPickup)$$9.getBlock()).pickupBlock(level, $$8, $$9).isEmpty()) {
+						++absorbedBlocks;
+						if ($$6 < 6) {
+							$$2.add(new Tuple($$8, $$6 + 1));
+						}
+					} else if ($$9.getBlock() instanceof LiquidBlock) {
+						level.setBlock($$8, Blocks.AIR.defaultBlockState(), 3);
+						++absorbedBlocks;
+						if ($$6 < 6) {
+							$$2.add(new Tuple($$8, $$6 + 1));
+						}
+					}
+				}
 			}
 
-			BlockState blockState = level.getBlockState( blockPos );
-			FluidState fluidState = level.getFluidState( blockPos );
-			if( !fluidState.is( Fluids.LAVA ) && !fluidState.is( Fluids.FLOWING_LAVA ) ) {
-				return false;
+			if (absorbedBlocks > 64) {
+				break;
 			}
-			if( blockState.getBlock() instanceof BucketPickup bucketPickup && !bucketPickup.pickupBlock( level, blockPos, blockState ).isEmpty() ) {
-				return true;
-			}
-
-			if( blockState.getBlock() instanceof LiquidBlock ) {
-				level.setBlock( blockPos, Blocks.AIR.defaultBlockState(), 3 );
-			} else {
-				BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity( blockPos ) : null;
-				dropResources( blockState, level, blockPos, blockentity );
-				level.setBlock( blockPos, Blocks.AIR.defaultBlockState(), 3 );
-			}
-
-			return true;
-		} ) - 1;
+		}
 
 		if( absorbedBlocks > 0 ) {
 			level.setBlock( spongePos, MajruszsDifficulty.SOAKED_INFERNAL_SPONGE_BLOCK.get().defaultBlockState(), 2 );

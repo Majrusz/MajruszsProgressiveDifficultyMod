@@ -103,7 +103,7 @@ public class Cerberus extends Monster implements IAnimableEntity {
 				.pitch( SoundEmitter.randomized( pitch * 0.75f ) )
 				.source( this.getSoundSource() )
 				.position( this.position() )
-				.emit( this.level() );
+				.emit( this.getLevel() );
 		}
 	}
 
@@ -196,7 +196,7 @@ public class Cerberus extends Monster implements IAnimableEntity {
 
 		@Override
 		protected void checkAndPerformAttack( LivingEntity target, double distanceSqr ) {
-			if( !this.cerberus.animations.isEmpty() || !( target.level() instanceof ServerLevel ) ) {
+			if( !this.cerberus.animations.isEmpty() || !( target.getLevel() instanceof ServerLevel ) ) {
 				return;
 			}
 
@@ -222,7 +222,7 @@ public class Cerberus extends Monster implements IAnimableEntity {
 				.addCallback( 2, ()->this.cerberus.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.8f ) )
 				.addCallback( 3, ()->this.cerberus.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.7f ) )
 				.addCallback( 4, ()->this.cerberus.playSound( SoundEvents.WOLF_AMBIENT, 0.5f, 0.9f ) )
-				.addCallback( 7, ()->this.hitAllNearbyEntities( ( ServerLevel )target.level() ) );
+				.addCallback( 7, ()->this.hitAllNearbyEntities( ( ServerLevel )target.getLevel() ) );
 		}
 
 		private void hitAllNearbyEntities( ServerLevel level ) {
@@ -249,16 +249,16 @@ public class Cerberus extends Monster implements IAnimableEntity {
 				Vec3 normalized = AnyPos.from( offset ).norm().vec3();
 				normalized = new Vec3( cos * normalized.x - sin * normalized.z, normalized.y, sin * normalized.x + cos * normalized.z );
 				Vec3 spawnPosition = AnyPos.from( this.mob.position() ).add( normalized ).add( 0.0, Random.nextDouble( 1.2, 1.5 ), 0.0 ).vec3();
-				SmallFireball fireball = new SmallFireball( this.mob.level(), this.mob, power.x, power.y, power.z );
+				SmallFireball fireball = new SmallFireball( this.mob.getLevel(), this.mob, power.x, power.y, power.z );
 				fireball.setPos( spawnPosition.x, spawnPosition.y, spawnPosition.z );
 				fireball.setDeltaMovement( AnyPos.from( power ).norm().mul( 0.25 ).vec3() );
 
-				this.mob.level().addFreshEntity( fireball );
+				this.mob.getLevel().addFreshEntity( fireball );
 			}
 
 			SoundEmitter.of( SoundEvents.FURNACE_FIRE_CRACKLE )
 				.position( this.mob.position() )
-				.emit( this.mob.level() );
+				.emit( this.mob.getLevel() );
 		}
 	}
 }

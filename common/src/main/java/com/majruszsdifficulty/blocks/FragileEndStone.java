@@ -15,11 +15,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 
 public class FragileEndStone extends Block {
 	public FragileEndStone() {
-		super( Properties.of().mapColor( MapColor.SAND ).strength( 0.0f, 0.75f ).sound( SoundType.STONE ) );
+		super( Properties.of( Material.STONE, MaterialColor.SAND ).strength( 0.0f, 0.75f ).sound( SoundType.STONE ) );
 	}
 
 	@Override

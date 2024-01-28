@@ -71,7 +71,7 @@ public class Giant extends Monster {
 				.pitch( SoundEmitter.randomized( pitch * 0.6f ) )
 				.source( this.getSoundSource() )
 				.position( this.position() )
-				.emit( this.level() );
+				.emit( this.getLevel() );
 		}
 	}
 
@@ -112,7 +112,7 @@ public class Giant extends Monster {
 				return blockState.getBlock() instanceof LeavesBlock;
 			} );
 			EntityHelper.destroyBlocks( this, this.getBoundingBox(), ( blockPos, blockState )->{
-				return blockState.getCollisionShape( this.level(), blockPos ).isEmpty();
+				return blockState.getCollisionShape( this.getLevel(), blockPos ).isEmpty();
 			} );
 		}
 	}

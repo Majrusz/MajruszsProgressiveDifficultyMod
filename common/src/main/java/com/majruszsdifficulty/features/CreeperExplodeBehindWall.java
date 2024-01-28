@@ -99,7 +99,7 @@ public class CreeperExplodeBehindWall {
 		}
 
 		private @Nullable Player getNearestPlayer( Creeper creeper ) {
-			if( !( creeper.level() instanceof ServerLevel level ) ) {
+			if( !( creeper.getLevel() instanceof ServerLevel level ) ) {
 				return null;
 			}
 

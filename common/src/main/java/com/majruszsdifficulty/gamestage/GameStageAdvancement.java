@@ -17,7 +17,7 @@ public class GameStageAdvancement extends SimpleCriterionTrigger< GameStageAdvan
 	}
 
 	@Override
-	public Instance createInstance( JsonObject json, ContextAwarePredicate predicate, DeserializationContext context ) {
+	public Instance createInstance( JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context ) {
 		return Serializables.read( new Instance( this.id, predicate ), json );
 	}
 
@@ -33,7 +33,7 @@ public class GameStageAdvancement extends SimpleCriterionTrigger< GameStageAdvan
 				.define( "stage_id", Reader.string(), s->s.stageId, ( s, v )->s.stageId = v );
 		}
 
-		public Instance( ResourceLocation id, ContextAwarePredicate predicate ) {
+		public Instance( ResourceLocation id, EntityPredicate.Composite predicate ) {
 			super( id, predicate );
 		}
 

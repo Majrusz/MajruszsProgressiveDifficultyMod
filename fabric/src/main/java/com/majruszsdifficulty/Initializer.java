@@ -1,9 +1,13 @@
 package com.majruszsdifficulty;
 
+import com.majruszsdifficulty.items.CreativeModeTabs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
@@ -13,6 +17,11 @@ public class Initializer implements ModInitializer {
 	private static final Predicate< BiomeSelectionContext > IS_OVERWORLD = context->context.canGenerateIn( LevelStem.OVERWORLD );
 	private static final Predicate< BiomeSelectionContext > IS_NETHER = context->context.canGenerateIn( LevelStem.NETHER );
 	private static final Predicate< BiomeSelectionContext > IS_END = context->context.canGenerateIn( LevelStem.END );
+	public static final CreativeModeTab CREATIVE_MODE_TAB = FabricItemGroup.builder( MajruszsDifficulty.HELPER.getLocation( "primary" ) )
+		.title( CreativeModeTabs.PRIMARY )
+		.icon( ()->new ItemStack( MajruszsDifficulty.UNDEAD_BATTLE_STANDARD_ITEM.get() ) )
+		.displayItems( ( features, entries )->CreativeModeTabs.definePrimaryItems( entries::accept ) )
+		.build();
 
 	@Override
 	public void onInitialize() {

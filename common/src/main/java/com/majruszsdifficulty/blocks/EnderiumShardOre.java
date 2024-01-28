@@ -11,12 +11,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 
 public class EnderiumShardOre extends Block {
 	public EnderiumShardOre() {
-		super( Properties.of()
-			.mapColor( MapColor.SAND )
+		super( Properties.of( Material.STONE, MaterialColor.SAND )
 			.requiresCorrectToolForDrops()
 			.strength( 10.0f, 1200.0f )
 			.sound( SoundType.ANCIENT_DEBRIS ) );

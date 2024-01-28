@@ -80,7 +80,7 @@ public class EvokerFangScroll extends ScrollItem {
 			for( int z = -1; z <= 1; ++z ) {
 				int cooldown = Math.abs( x ) + 4;
 				Vec3 position = AnyPos.from( entity.position() ).floor().add( AnyPos.from( x, 0, z ).rot( lookRotation ).round() ).vec3();
-				LevelHelper.findBlockPosOnGround( entity.level(), position.x, Range.of( position.y - 3, position.y + 3 ), position.z )
+				LevelHelper.findBlockPosOnGround( entity.getLevel(), position.x, Range.of( position.y - 3, position.y + 3 ), position.z )
 					.ifPresent( blockPos->spawnPoints.add( new SpawnPoint( AnyPos.from( blockPos ).add( 0.5, 0.0, 0.5 ).vec3(), cooldown ) ) );
 			}
 		}

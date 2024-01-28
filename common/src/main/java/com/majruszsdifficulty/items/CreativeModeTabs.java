@@ -3,26 +3,17 @@ package com.majruszsdifficulty.items;
 import com.majruszlibrary.text.TextHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 
-import java.util.function.Supplier;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class CreativeModeTabs {
-	private static final Component PRIMARY = TextHelper.translatable( "itemGroup.majruszsdifficulty.primary" );
+	public static final Component PRIMARY = TextHelper.translatable( "itemGroup.majruszsdifficulty.primary" );
 
-	public static Supplier< CreativeModeTab > primary() {
-		return ()->CreativeModeTab.builder( CreativeModeTab.Row.TOP, 0 )
-			.title( PRIMARY )
-			.displayItems( CreativeModeTabs::definePrimaryItems )
-			.icon( ()->new ItemStack( MajruszsDifficulty.UNDEAD_BATTLE_STANDARD_ITEM.get() ) )
-			.build();
-	}
-
-	private static void definePrimaryItems( CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output ) {
+	public static void definePrimaryItems( Consumer< ItemStack > output ) {
 		Stream.of(
 			MajruszsDifficulty.INFERNAL_SPONGE_ITEM,
 			MajruszsDifficulty.SOAKED_INFERNAL_SPONGE_ITEM,

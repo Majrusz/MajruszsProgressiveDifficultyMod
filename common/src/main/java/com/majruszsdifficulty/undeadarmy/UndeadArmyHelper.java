@@ -109,6 +109,6 @@ public class UndeadArmyHelper {
 		int x = ( int )player.getX();
 		int z = ( int )player.getZ();
 
-		return new BlockPos( x, player.level().getHeight( Heightmap.Types.WORLD_SURFACE, x, z ), z );
+		return new BlockPos( x, player.getLevel().getHeight( Heightmap.Types.WORLD_SURFACE, x, z ), z );
 	}
 }

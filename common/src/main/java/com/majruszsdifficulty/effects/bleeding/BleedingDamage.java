@@ -57,7 +57,7 @@ public class BleedingDamage {
 	}
 
 	private static void dealDamage( LivingEntity entity ) {
-		Holder< DamageType > damageType = entity.level()
+		Holder< DamageType > damageType = entity.getLevel()
 			.registryAccess()
 			.registryOrThrow( net.minecraft.core.registries.Registries.DAMAGE_TYPE )
 			.getHolderOrThrow( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE );

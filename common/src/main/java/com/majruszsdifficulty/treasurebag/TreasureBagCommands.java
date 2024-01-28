@@ -38,7 +38,7 @@ public class TreasureBagCommands {
 		for( Entity entity : entities ) {
 			if( entity instanceof Player player ) {
 				TreasureBagHelper.clearProgress( player );
-				data.source.sendSuccess( ()->TextHelper.translatable( "commands.treasurebag.reset", player.getName() ), true );
+				data.source.sendSuccess( TextHelper.translatable( "commands.treasurebag.reset", player.getName() ), true );
 			}
 		}
 
@@ -50,7 +50,7 @@ public class TreasureBagCommands {
 		for( Entity entity : entities ) {
 			if( entity instanceof Player player ) {
 				TreasureBagHelper.unlockAll( player );
-				data.source.sendSuccess( ()->TextHelper.translatable( "commands.treasurebag.unlockall", player.getName() ), true );
+				data.source.sendSuccess( TextHelper.translatable( "commands.treasurebag.unlockall", player.getName() ), true );
 			}
 		}
 

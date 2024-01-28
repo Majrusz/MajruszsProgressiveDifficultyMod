@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Bleeding extends MobEffect {
 	public static boolean apply( LivingEntity target, @Nullable LivingEntity attacker ) {
-		EffectDef effectDef = Bleeding.getCurrentEffect( GameStageHelper.determineGameStage( target.level(), target.position() ) );
+		EffectDef effectDef = Bleeding.getCurrentEffect( GameStageHelper.determineGameStage( target.getLevel(), target.position() ) );
 
 		return target.addEffect( new MobEffectInstance( TimeHelper.toTicks( effectDef.duration ), effectDef.amplifier, attacker ) );
 	}

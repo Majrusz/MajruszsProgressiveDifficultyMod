@@ -99,7 +99,7 @@ public class TreasureBag extends Item {
 		List< ItemStack > loot = LootHelper.getLootTable( treasureBag.lootId ).getRandomItems( LootHelper.toGiftParams( player ) );
 		SoundEmitter.of( SoundEvents.ITEM_PICKUP )
 			.position( player.position() )
-			.emit( player.level() );
+			.emit( player.getLevel() );
 		Events.dispatch( new OnTreasureBagOpened( player, treasureBag, loot ) );
 		loot.forEach( reward->ItemHelper.giveToPlayer( reward, player ) );
 		ItemHelper.consumeItemOnUse( itemStack, player );

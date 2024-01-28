@@ -22,9 +22,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
 import java.util.*;
 
@@ -82,7 +82,7 @@ public class TreasureBagHelper {
 	public static void createDefaultProgress( Player player ) {
 		String uuid = player.getStringUUID();
 		PlayerProgress playerProgress = PLAYERS.computeIfAbsent( uuid, key->new PlayerProgress() );
-		LootParams params = LootHelper.toGiftParams( player );
+		LootContext params = LootHelper.toGiftParams( player );
 		for( TreasureBag treasureBag : TREASURE_BAGS ) {
 			ResourceLocation bagId = Registries.ITEMS.getId( treasureBag );
 			BagProgress bagProgress = playerProgress.get( treasureBag );
@@ -147,14 +147,14 @@ public class TreasureBagHelper {
 		MajruszsDifficulty.TREASURE_BAG_PROGRESS_NETWORK.sendToClient( ( ServerPlayer )player, new Progress( id, bagProgress, unlockedIndices ) );
 	}
 
-	private static void createDefaultProgress( BagProgress bagProgress, LootParams params, ResourceLocation lootId ) {
+	private static void createDefaultProgress( BagProgress bagProgress, LootContext params, ResourceLocation lootId ) {
 		for( LootItem lootItem : TreasureBagHelper.getLootItems( LootHelper.getLootTable( lootId ) ) ) {
 			lootItem.createItemStack( itemStack->{
 				ResourceLocation itemId = TreasureBagHelper.getId( itemStack );
 				if( bagProgress.items.stream().noneMatch( itemProgress->itemProgress.id.equals( itemId ) ) ) {
 					bagProgress.items.add( new ItemProgress( itemId, false, ( ( IMixinLootPoolSingletonContainer )lootItem ).getQuality() ) );
 				}
-			}, new LootContext.Builder( params ).create( lootId ) );
+			}, new LootContext.Builder( params.getLevel() ).create( new LootContextParamSet.Builder().build() ) );
 		}
 		bagProgress.items.sort( Comparator.comparingInt( a->-a.quality ) );
 	}

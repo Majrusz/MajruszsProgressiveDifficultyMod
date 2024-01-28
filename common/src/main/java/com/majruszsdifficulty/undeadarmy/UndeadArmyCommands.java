@@ -67,7 +67,7 @@ public class UndeadArmyCommands {
 		for( Vec3 position : positions ) {
 			BlockPos blockPos = AnyPos.from( position ).block();
 			if( UndeadArmyHelper.tryToSpawn( blockPos, direction ) ) {
-				data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.started", "(%s)".formatted( blockPos.toShortString() ) ), true );
+				data.source.sendSuccess( TextHelper.translatable( "commands.undeadarmy.started", "(%s)".formatted( blockPos.toShortString() ) ), true );
 			} else {
 				data.source.sendFailure( TextHelper.translatable( "commands.undeadarmy.cannot_start", "(%s)".formatted( blockPos.toShortString() ) ) );
 			}
@@ -87,7 +87,7 @@ public class UndeadArmyCommands {
 				component.append( TextHelper.translatable( "majruszsdifficulty.undead_army.wave", TextHelper.toRoman( Math.max( undeadArmy.currentWave, 1 ) ) ) );
 				component.append( " (%s)".formatted( undeadArmy.position.toShortString() ) );
 			} );
-			data.source.sendSuccess( ()->component, true );
+			data.source.sendSuccess( component, true );
 			return 0;
 		}
 
@@ -100,7 +100,7 @@ public class UndeadArmyCommands {
 			CompoundTag tag = EntityHelper.getExtraTag( entity );
 			int undeadLeft = tag != null ? Serializables.read( new UndeadArmyTrigger.Progress(), tag ).undeadLeft : UndeadArmyConfig.KILL_REQUIREMENT_FIRST;
 
-			data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), Math.max( undeadLeft, 1 ) ), true );
+			data.source.sendSuccess( TextHelper.translatable( "commands.undeadarmy.progress", entity.getDisplayName(), Math.max( undeadLeft, 1 ) ), true );
 		}
 
 		return 0;
@@ -128,7 +128,7 @@ public class UndeadArmyCommands {
 			UndeadArmy undeadArmy = UndeadArmyHelper.findNearestUndeadArmy( blockPos );
 			if( undeadArmy != null ) {
 				consumer.accept( undeadArmy );
-				data.source.sendSuccess( ()->TextHelper.translatable( "commands.undeadarmy." + successId, "(%s)".formatted( blockPos.toShortString() ) ), true );
+				data.source.sendSuccess( TextHelper.translatable( "commands.undeadarmy." + successId, "(%s)".formatted( blockPos.toShortString() ) ), true );
 			} else {
 				data.source.sendFailure( TextHelper.translatable( "commands.undeadarmy.missing", "(%s)".formatted( blockPos.toShortString() ) ) );
 			}

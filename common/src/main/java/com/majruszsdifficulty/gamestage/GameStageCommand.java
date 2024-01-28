@@ -79,7 +79,7 @@ public class GameStageCommand {
 			component = TextHelper.translatable( messageId, GameStageHelper.getGlobalGameStage().getComponent() );
 		}
 
-		data.source.sendSuccess( ()->component, true );
+		data.source.sendSuccess( component, true );
 	}
 
 	private static boolean isInvalid( CommandData data, boolean arePlayersDefined ) {

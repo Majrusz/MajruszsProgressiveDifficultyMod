@@ -159,7 +159,7 @@ public class MobGroups {
 	}
 
 	private static void spawn( PathfinderMob leader, GroupDef groupDef ) {
-		Level level = leader.level();
+		Level level = leader.getLevel();
 		int count = Random.nextInt( groupDef.count );
 		for( int idx = 0; idx < count; ++idx ) {
 			SidekickDef sidekickDef = Random.next( groupDef.sidekicks );
@@ -214,7 +214,7 @@ public class MobGroups {
 		}
 
 		LeaderDef leaderDef = Random.next( groupDef.leaders );
-		Entity entity = EntityHelper.createSpawner( ()->leaderDef.type, player.level() )
+		Entity entity = EntityHelper.createSpawner( ()->leaderDef.type, player.getLevel() )
 			.position( player.position() )
 			.mobSpawnType( MobSpawnType.COMMAND )
 			.spawn();

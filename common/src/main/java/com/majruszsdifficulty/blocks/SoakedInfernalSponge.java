@@ -23,7 +23,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class SoakedInfernalSponge extends Block {
 	}
 
 	public SoakedInfernalSponge() {
-		super( Properties.of().mapColor( MapColor.NETHER ).strength( 0.6f ).sound( SoundType.GRASS ).lightLevel( x->13 ) );
+		super( Properties.of( Material.SPONGE, MaterialColor.NETHER ).strength( 0.6f ).sound( SoundType.GRASS ).lightLevel( x->13 ) );
 	}
 
 	@Override

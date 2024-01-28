@@ -9,8 +9,10 @@ import com.majruszlibrary.platform.Side;
 import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -48,7 +50,7 @@ public class BleedingGui {
 		return Random.next( IntStream.iterate( 0, i->i + 1 ).limit( max ).boxed().collect( Collectors.toList() ), max );
 	}
 
-	private static void render( GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight ) {
+	private static void render( ItemRenderer itemRenderer, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight ) {
 		RenderSystem.setShader( GameRenderer::getPositionTexShader );
 		RenderSystem.enableBlend();
 		for( Particle particle : PARTICLES ) {
@@ -60,7 +62,7 @@ public class BleedingGui {
 			Particle.RenderData renderData = particle.buildRenderData( screenWidth, screenHeight );
 			RenderSystem.setShaderColor( color, color, color, particle.getAlpha() );
 			RenderSystem.setShaderTexture( 0, renderData.resource );
-			graphics.blit( renderData.resource, renderData.x, renderData.y, 0, 0, renderData.size, renderData.size, renderData.size, renderData.size );
+			GuiComponent.blit( poseStack, renderData.x, renderData.y, 0, 0, renderData.size, renderData.size, renderData.size, renderData.size );
 		}
 		RenderSystem.disableBlend();
 	}

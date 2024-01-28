@@ -84,7 +84,7 @@ public class Tank extends Monster implements IAnimableEntity {
 				.pitch( SoundEmitter.randomized( pitch * 0.75f ) )
 				.source( this.getSoundSource() )
 				.position( this.position() )
-				.emit( this.level() );
+				.emit( this.getLevel() );
 		}
 	}
 
@@ -176,7 +176,7 @@ public class Tank extends Monster implements IAnimableEntity {
 		private void useHeavyAttack( LivingEntity target ) {
 			this.tank.playAnimation( "heavy_attack" )
 				.addCallback( 11, ()->{
-					if( !( target.level() instanceof ServerLevel level ) ) {
+					if( !( target.getLevel() instanceof ServerLevel level ) ) {
 						return;
 					}
 					Vec3 position = this.getHeavyAttackPosition();

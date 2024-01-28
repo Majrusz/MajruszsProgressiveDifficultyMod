@@ -70,8 +70,8 @@ public class EnderiumSet {
 
 		OnEntityDied.listen( EnderiumSet::cancelDeath )
 			.addCondition( data->ITEM_SET.canTrigger( VOID_PROTECTION, data.target ) )
-			.addCondition( data->data.target.getY() < data.target.level().getMinBuildHeight() - 64 )
-			.addCondition( data->data.source.is( DamageTypes.FELL_OUT_OF_WORLD ) );
+			.addCondition( data->data.target.getY() < data.target.getLevel().getMinBuildHeight() - 64 )
+			.addCondition( data->data.source.is( DamageTypes.OUT_OF_WORLD ) );
 	}
 
 	private static void increaseLooting( OnLootingLevelGet data ) {

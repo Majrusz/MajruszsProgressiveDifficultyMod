@@ -65,7 +65,7 @@ public class Bandage extends Item {
 		SoundEmitter.of( SoundEvents.ITEM_PICKUP )
 			.volume( Random.nextFloat( 0.4f, 0.6f ) )
 			.position( target.position() )
-			.emit( target.level() );
+			.emit( target.getLevel() );
 		Bandage.removeBleeding( bandage, data.player, target );
 		ItemHelper.addCooldown( data.player, TimeHelper.toTicks( 0.7 ), MajruszsDifficulty.BANDAGE_ITEM.get(), MajruszsDifficulty.GOLDEN_BANDAGE_ITEM.get() );
 		ItemHelper.consumeItemOnUse( data.itemStack, data.player );

@@ -63,7 +63,6 @@ public class MajruszsDifficulty {
 
 	// Registry Groups
 	public static final RegistryGroup< Block > BLOCKS = HELPER.create( BuiltInRegistries.BLOCK );
-	public static final RegistryGroup< CreativeModeTab > CREATIVE_MODE_TABS = HELPER.create( BuiltInRegistries.CREATIVE_MODE_TAB );
 	public static final RegistryGroup< EntityType< ? > > ENTITY_TYPES = HELPER.create( BuiltInRegistries.ENTITY_TYPE );
 	public static final RegistryGroup< Item > ITEMS = HELPER.create( BuiltInRegistries.ITEM );
 	public static final RegistryGroup< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( BuiltInRegistries.LOOT_FUNCTION_TYPE );
@@ -172,9 +171,6 @@ public class MajruszsDifficulty {
 
 	// Loot Functions
 	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY_LOOT_FUNCTION = LOOT_FUNCTIONS.create( "curse_randomly", CurseRandomly::create );
-
-	// Creative Mode Tabs
-	public static final RegistryObject< CreativeModeTab > PRIMARY_MODE_TAB = CREATIVE_MODE_TABS.create( "primary", com.majruszsdifficulty.items.CreativeModeTabs.primary() );
 
 	// Placed Features
 	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_PLACED_FEATURE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore" ) );

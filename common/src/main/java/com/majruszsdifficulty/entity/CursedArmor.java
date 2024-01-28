@@ -204,7 +204,7 @@ public class CursedArmor extends Monster implements IAnimableEntity {
 						SoundEmitter.of( armorItem.getEquipSound() )
 							.source( SoundSource.HOSTILE )
 							.position( this.position() )
-							.emit( this.level() );
+							.emit( this.getLevel() );
 					}
 				} );
 		}
