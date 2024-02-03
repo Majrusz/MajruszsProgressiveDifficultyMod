@@ -37,6 +37,6 @@ public class SpawnKillerBunny {
 	}
 
 	private static void transformToKiller( OnEntitySpawned data ) {
-		( ( Rabbit )data.entity ).setVariant( Rabbit.Variant.EVIL );
+		( ( Rabbit )data.entity ).setRabbitType( Rabbit.TYPE_EVIL );
 	}
 }

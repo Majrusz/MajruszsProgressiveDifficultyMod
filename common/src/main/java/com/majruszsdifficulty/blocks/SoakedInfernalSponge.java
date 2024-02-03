@@ -3,6 +3,7 @@ package com.majruszsdifficulty.blocks;
 import com.majruszlibrary.emitter.SoundEmitter;
 import com.majruszlibrary.events.OnBlockPlaced;
 import com.majruszlibrary.events.base.Condition;
+import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
@@ -85,7 +87,7 @@ public class SoakedInfernalSponge extends Block {
 	@Override
 	public void stepOn( Level level, BlockPos blockPos, BlockState blockState, Entity entity ) {
 		if( !entity.isSteppingCarefully() && entity instanceof LivingEntity livingEntity && !EnchantmentHelper.hasFrostWalker( livingEntity ) ) {
-			entity.hurt( level.damageSources().hotFloor(), 1.0f );
+			entity.hurt( DamageSource.HOT_FLOOR, 1.0f );
 		}
 
 		super.stepOn( level, blockPos, blockState, entity );
@@ -101,7 +103,7 @@ public class SoakedInfernalSponge extends Block {
 			if( fluidState.is( Fluids.WATER ) || fluidState.is( Fluids.FLOWING_WATER ) ) {
 				level.setBlock( blockPos, MajruszsDifficulty.INFERNAL_SPONGE_BLOCK.get().defaultBlockState(), 2 );
 				SoundEmitter.of( SoundEvents.LAVA_EXTINGUISH )
-					.position( blockPos.getCenter() )
+					.position( AnyPos.from( blockPos ).center().vec3() )
 					.emit( level );
 				break;
 			}

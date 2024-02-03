@@ -15,7 +15,7 @@ import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -71,7 +71,7 @@ public class EnderiumSet {
 		OnEntityDied.listen( EnderiumSet::cancelDeath )
 			.addCondition( data->ITEM_SET.canTrigger( VOID_PROTECTION, data.target ) )
 			.addCondition( data->data.target.getY() < data.target.getLevel().getMinBuildHeight() - 64 )
-			.addCondition( data->data.source.is( DamageTypes.OUT_OF_WORLD ) );
+			.addCondition( data->data.source == DamageSource.OUT_OF_WORLD );
 	}
 
 	private static void increaseLooting( OnLootingLevelGet data ) {

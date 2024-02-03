@@ -14,6 +14,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -59,7 +60,7 @@ public class SonicBoomScroll extends ScrollItem {
 				.forEach( target->{
 					Vec3 knockbackDirection = direction.mul( -1.0, 0.0, -1.0 ).vec3();
 
-					target.hurt( level.damageSources().indirectMagic( entity, entity ), ATTACK_DAMAGE );
+					target.hurt( DamageSource.sonicBoom( entity ), ATTACK_DAMAGE );
 					target.knockback( 1.0, knockbackDirection.x, knockbackDirection.z );
 				} );
 		}

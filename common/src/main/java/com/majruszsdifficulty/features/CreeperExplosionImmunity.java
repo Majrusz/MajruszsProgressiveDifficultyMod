@@ -8,7 +8,6 @@ import com.majruszsdifficulty.data.Config;
 import com.majruszsdifficulty.events.base.CustomCondition;
 import com.majruszsdifficulty.gamestage.GameStage;
 import com.majruszsdifficulty.gamestage.GameStageHelper;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.monster.Creeper;
 
 public class CreeperExplosionImmunity {
@@ -21,7 +20,7 @@ public class CreeperExplosionImmunity {
 			.addCondition( data->IS_ENABLED )
 			.addCondition( CustomCondition.check( REQUIRED_GAME_STAGE ) )
 			.addCondition( data->data.target instanceof Creeper )
-			.addCondition( data->data.source.is( DamageTypeTags.IS_EXPLOSION ) );
+			.addCondition( data->data.source.isExplosion() );
 
 		Serializables.getStatic( Config.Features.class )
 			.define( "creeper_explosion_immunity", CreeperExplosionImmunity.class );

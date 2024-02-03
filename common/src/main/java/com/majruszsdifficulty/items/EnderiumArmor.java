@@ -1,5 +1,6 @@
 package com.majruszsdifficulty.items;
 
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Rarity;
 
@@ -7,22 +8,22 @@ import java.util.function.Supplier;
 
 public class EnderiumArmor extends ArmorItem {
 	public static Supplier< EnderiumArmor > boots() {
-		return ()->new EnderiumArmor( Type.BOOTS );
+		return ()->new EnderiumArmor( EquipmentSlot.FEET );
 	}
 
 	public static Supplier< EnderiumArmor > chestplate() {
-		return ()->new EnderiumArmor( Type.CHESTPLATE );
+		return ()->new EnderiumArmor( EquipmentSlot.CHEST );
 	}
 
 	public static Supplier< EnderiumArmor > helmet() {
-		return ()->new EnderiumArmor( Type.HELMET );
+		return ()->new EnderiumArmor( EquipmentSlot.HEAD );
 	}
 
 	public static Supplier< EnderiumArmor > leggings() {
-		return ()->new EnderiumArmor( Type.LEGGINGS );
+		return ()->new EnderiumArmor( EquipmentSlot.LEGS );
 	}
 
-	private EnderiumArmor( ArmorItem.Type type ) {
-		super( CustomArmorMaterial.ENDERIUM, type, new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
+	private EnderiumArmor( EquipmentSlot slot ) {
+		super( CustomArmorMaterial.ENDERIUM, slot, new Properties().rarity( Rarity.UNCOMMON ).fireResistant() );
 	}
 }

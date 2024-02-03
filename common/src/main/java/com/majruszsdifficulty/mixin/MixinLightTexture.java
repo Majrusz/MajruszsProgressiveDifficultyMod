@@ -2,9 +2,9 @@ package com.majruszsdifficulty.mixin;
 
 import com.majruszlibrary.math.AnyPos;
 import com.majruszsdifficulty.bloodmoon.BloodMoonHelper;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;

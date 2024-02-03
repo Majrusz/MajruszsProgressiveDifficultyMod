@@ -30,7 +30,7 @@ public class BleedingParticles {
 
 		OnEntityPreDamaged.listen( BleedingParticles::addGuiOverlay )
 			.priority( Priority.LOWEST )
-			.addCondition( data->data.source.is( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE ) )
+			.addCondition( data->data.source == MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE )
 			.addCondition( data->data.target instanceof ServerPlayer );
 	}
 

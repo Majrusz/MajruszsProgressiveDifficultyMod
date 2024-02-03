@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:smithing_transform",
+  "type": "minecraft:smithing",
   "base": {
     "item": "minecraft:netherite_chestplate"
   },
@@ -8,8 +8,5 @@
   },
   "result": {
     "item": "majruszsdifficulty:enderium_chestplate"
-  },
-  "template": {
-    "item": "majruszsdifficulty:enderium_upgrade_smithing_template"
   }
 }

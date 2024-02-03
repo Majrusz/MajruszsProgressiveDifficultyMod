@@ -8,21 +8,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
 public class SoulJarShieldRecipe extends CustomRecipe {
 	public static Supplier< RecipeSerializer< ? > > create() {
-		return ()->new SimpleCraftingRecipeSerializer<>( SoulJarShieldRecipe::new );
+		return ()->new SimpleRecipeSerializer<>( SoulJarShieldRecipe::new );
 	}
 
-	public SoulJarShieldRecipe( ResourceLocation id, CraftingBookCategory category ) {
-		super( id, category );
+	public SoulJarShieldRecipe( ResourceLocation id ) {
+		super( id );
 	}
 
 	@Override
@@ -33,7 +32,7 @@ public class SoulJarShieldRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble( CraftingContainer container, RegistryAccess registryAccess ) {
+	public ItemStack assemble( CraftingContainer container ) {
 		RecipeData recipeData = SoulJarShieldRecipe.convert( container );
 		ItemStack shield = recipeData.shield.copy();
 		Serializables.write( SoulJar.BonusInfo.read( recipeData.soulJar ), shield.getOrCreateTag() );

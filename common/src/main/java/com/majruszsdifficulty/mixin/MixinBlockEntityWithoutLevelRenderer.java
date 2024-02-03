@@ -9,9 +9,9 @@ import net.minecraft.client.model.ShieldModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,10 +31,10 @@ public abstract class MixinBlockEntityWithoutLevelRenderer {
 			value = "INVOKE",
 			target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose ()V"
 		),
-		method = "renderByItem (Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V",
+		method = "renderByItem (Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V",
 		require = 0 // compatibility with Optifine
 	)
-	private void renderByItem( ItemStack itemStack, ItemDisplayContext context, PoseStack poseStack, MultiBufferSource multiBufferSource, int x, int y,
+	private void renderByItem( ItemStack itemStack, ItemTransforms.TransformType context, PoseStack poseStack, MultiBufferSource multiBufferSource, int x, int y,
 		CallbackInfo callback
 	) {
 		SoulJar.BonusInfo bonusInfo = SoulJar.BonusInfo.read( itemStack );

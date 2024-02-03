@@ -37,12 +37,12 @@ public class CreeperSplitIntoCreeperlings {
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( Condition.chanceCRD( ()->CHANCE, ()->IS_SCALED_BY_CRD ) )
 			.addCondition( data->IS_ENABLED )
-			.addCondition( data->data.explosion.getDirectSourceEntity() != null )
-			.addCondition( data->data.explosion.getDirectSourceEntity().getType().equals( EntityType.CREEPER ) );
+			.addCondition( data->data.explosion.getDamageSource().getDirectEntity() != null )
+			.addCondition( data->data.explosion.getDamageSource().getDirectEntity().getType().equals( EntityType.CREEPER ) );
 
 		OnExploded.listen( CreeperSplitIntoCreeperlings::giveAdvancement )
 			.addCondition( Condition.isLogicalServer() )
-			.addCondition( data->data.explosion.getDirectSourceEntity() instanceof Creeperling );
+			.addCondition( data->data.explosion.getDamageSource().getDirectEntity() instanceof Creeperling );
 
 		OnEntityDied.listen( CreeperSplitIntoCreeperlings::giveAdvancement )
 			.addCondition( data->data.attacker instanceof ServerPlayer )
@@ -59,7 +59,7 @@ public class CreeperSplitIntoCreeperlings {
 	}
 
 	private static void spawnCreeperlings( OnExploded data ) {
-		Creeper creeper = ( Creeper )data.explosion.getDirectSourceEntity();
+		Creeper creeper = ( Creeper )data.explosion.getDamageSource().getDirectEntity();
 		GameStage gameStage = GameStageHelper.determineGameStage( data );
 		int count = Random.nextInt( 1, COUNT.get( gameStage ) + 1 );
 		for( int i = 0; i < count; ++i ) {

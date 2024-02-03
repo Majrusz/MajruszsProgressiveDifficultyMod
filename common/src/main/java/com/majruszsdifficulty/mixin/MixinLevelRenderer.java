@@ -5,11 +5,11 @@ import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.bloodmoon.BloodMoonHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,7 +23,7 @@ public abstract class MixinLevelRenderer {
 			target = "Lnet/minecraft/client/multiplayer/ClientLevel;getMoonPhase ()I",
 			value = "INVOKE"
 		),
-		method = "renderSky (Lcom/mojang/blaze3d/vertex/PoseStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/Camera;ZLjava/lang/Runnable;)V"
+		method = "renderSky (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/math/Matrix4f;FLnet/minecraft/client/Camera;ZLjava/lang/Runnable;)V"
 	)
 	private void changeMoonColor( PoseStack $$0, Matrix4f $$1, float $$2, Camera $$3, boolean $$4, Runnable $$5, CallbackInfo callback ) {
 		if( BloodMoonHelper.getColorRatio() > 0.0f ) {
@@ -36,7 +36,7 @@ public abstract class MixinLevelRenderer {
 			target = "Lnet/minecraft/client/renderer/FogRenderer;setupNoFog ()V",
 			value = "INVOKE"
 		),
-		method = "renderSky (Lcom/mojang/blaze3d/vertex/PoseStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/Camera;ZLjava/lang/Runnable;)V"
+		method = "renderSky (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/math/Matrix4f;FLnet/minecraft/client/Camera;ZLjava/lang/Runnable;)V"
 	)
 	private void changeStarsColor( PoseStack $$0, Matrix4f $$1, float $$2, Camera $$3, boolean $$4, Runnable $$5, CallbackInfo callback ) {
 		float[] starsColor = RenderSystem.getShaderColor();
@@ -46,7 +46,7 @@ public abstract class MixinLevelRenderer {
 
 	@ModifyVariable(
 		at = @At( "STORE" ),
-		method = "renderSky (Lcom/mojang/blaze3d/vertex/PoseStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/Camera;ZLjava/lang/Runnable;)V",
+		method = "renderSky (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/math/Matrix4f;FLnet/minecraft/client/Camera;ZLjava/lang/Runnable;)V",
 		ordinal = 0
 	)
 	private Vec3 modifySkyColor( Vec3 color ) {

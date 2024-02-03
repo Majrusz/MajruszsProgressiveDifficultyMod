@@ -68,7 +68,7 @@ public class UndeadArmy {
 	}
 
 	public void start( BlockPos position, Direction direction ) {
-		this.gameStage = GameStageHelper.determineGameStage( this.getLevel(), position.getCenter() );
+		this.gameStage = GameStageHelper.determineGameStage( this.getLevel(), AnyPos.from( position ).center().vec3() );
 		this.position = position;
 		this.direction = direction;
 		this.areEntitiesLoaded = true;
@@ -122,7 +122,7 @@ public class UndeadArmy {
 	}
 
 	public double distanceTo( BlockPos position ) {
-		return AnyPos.from( position.getCenter() ).dist2d( this.position.getCenter() ).doubleValue();
+		return AnyPos.from( position ).center().dist2d( AnyPos.from( this.position ).center() ).doubleValue();
 	}
 
 	public boolean hasFinished() {

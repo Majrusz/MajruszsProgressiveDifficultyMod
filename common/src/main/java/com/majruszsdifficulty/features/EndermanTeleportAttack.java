@@ -27,7 +27,7 @@ public class EndermanTeleportAttack {
 			.addCondition( data->IS_ENABLED )
 			.addCondition( CustomCondition.check( REQUIRED_GAME_STAGE ) )
 			.addCondition( data->data.attacker instanceof EnderMan )
-			.addCondition( data->!data.source.isIndirect() );
+			.addCondition( data->data.source.getEntity() == data.source.getDirectEntity() );
 
 		Serializables.getStatic( Config.Features.class )
 			.define( "enderman_teleport_attack", EndermanTeleportAttack.class );

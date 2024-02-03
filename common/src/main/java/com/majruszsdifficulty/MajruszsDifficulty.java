@@ -17,6 +17,7 @@ import com.majruszsdifficulty.data.WorldData;
 import com.majruszsdifficulty.effects.Bleeding;
 import com.majruszsdifficulty.effects.BleedingImmunity;
 import com.majruszsdifficulty.effects.GlassRegeneration;
+import com.majruszsdifficulty.effects.bleeding.BleedingDamage;
 import com.majruszsdifficulty.effects.bleeding.BleedingParticles;
 import com.majruszsdifficulty.entity.*;
 import com.majruszsdifficulty.gamestage.GameStageAdvancement;
@@ -27,20 +28,19 @@ import com.majruszsdifficulty.recipes.SoulJarShieldRecipe;
 import com.majruszsdifficulty.treasurebag.TreasureBagHelper;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.alchemy.Potion;
@@ -62,15 +62,15 @@ public class MajruszsDifficulty {
 	public static final com.majruszlibrary.data.WorldData WORLD_DATA = HELPER.worldData( WorldData.class ).client( WorldData.Client.class ).create();
 
 	// Registry Groups
-	public static final RegistryGroup< Block > BLOCKS = HELPER.create( BuiltInRegistries.BLOCK );
-	public static final RegistryGroup< EntityType< ? > > ENTITY_TYPES = HELPER.create( BuiltInRegistries.ENTITY_TYPE );
-	public static final RegistryGroup< Item > ITEMS = HELPER.create( BuiltInRegistries.ITEM );
-	public static final RegistryGroup< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( BuiltInRegistries.LOOT_FUNCTION_TYPE );
-	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( BuiltInRegistries.MOB_EFFECT );
-	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( BuiltInRegistries.PARTICLE_TYPE );
-	public static final RegistryGroup< Potion > POTIONS = HELPER.create( BuiltInRegistries.POTION );
-	public static final RegistryGroup< RecipeSerializer< ? > > RECIPES = HELPER.create( BuiltInRegistries.RECIPE_SERIALIZER );
-	public static final RegistryGroup< SoundEvent > SOUND_EVENTS = HELPER.create( BuiltInRegistries.SOUND_EVENT );
+	public static final RegistryGroup< Block > BLOCKS = HELPER.create( Registry.BLOCK );
+	public static final RegistryGroup< EntityType< ? > > ENTITY_TYPES = HELPER.create( Registry.ENTITY_TYPE );
+	public static final RegistryGroup< Item > ITEMS = HELPER.create( Registry.ITEM );
+	public static final RegistryGroup< LootItemFunctionType > LOOT_FUNCTIONS = HELPER.create( Registry.LOOT_FUNCTION_TYPE );
+	public static final RegistryGroup< MobEffect > MOB_EFFECTS = HELPER.create( Registry.MOB_EFFECT );
+	public static final RegistryGroup< ParticleType< ? > > PARTICLES = HELPER.create( Registry.PARTICLE_TYPE );
+	public static final RegistryGroup< Potion > POTIONS = HELPER.create( Registry.POTION );
+	public static final RegistryGroup< RecipeSerializer< ? > > RECIPES = HELPER.create( Registry.RECIPE_SERIALIZER );
+	public static final RegistryGroup< SoundEvent > SOUND_EVENTS = HELPER.create( Registry.SOUND_EVENT );
 
 	// Network
 	public static final NetworkObject< BleedingParticles.Message > BLEEDING_GUI = HELPER.create( "bleeding_gui", BleedingParticles.Message.class );
@@ -114,7 +114,6 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< EnderiumShardLocator > ENDERIUM_SHARD_LOCATOR_ITEM = ITEMS.create( "enderium_shard_locator", EnderiumShardLocator::new );
 	public static final RegistryObject< EnderiumTool.Shovel > ENDERIUM_SHOVEL_ITEM = ITEMS.create( "enderium_shovel", EnderiumTool.Shovel::new );
 	public static final RegistryObject< EnderiumTool.Sword > ENDERIUM_SWORD_ITEM = ITEMS.create( "enderium_sword", EnderiumTool.Sword::new );
-	public static final RegistryObject< EnderiumSmithingTemplate > ENDERIUM_SMITHING_TEMPLATE_ITEM = ITEMS.create( "enderium_upgrade_smithing_template", EnderiumSmithingTemplate::new );
 	public static final RegistryObject< EnderPouch > ENDER_POUCH_ITEM = ITEMS.create( "ender_pouch", EnderPouch::new );
 	public static final RegistryObject< EvokerFangScroll > EVOKER_FANG_SCROLL_ITEM = ITEMS.create( "evoker_fang_scroll", EvokerFangScroll::new );
 	public static final RegistryObject< Bandage > GOLDEN_BANDAGE_ITEM = ITEMS.create( "golden_bandage", Bandage.golden() );
@@ -173,14 +172,14 @@ public class MajruszsDifficulty {
 	public static final RegistryObject< LootItemFunctionType > CURSE_RANDOMLY_LOOT_FUNCTION = LOOT_FUNCTIONS.create( "curse_randomly", CurseRandomly::create );
 
 	// Placed Features
-	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_PLACED_FEATURE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore" ) );
-	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED_FEATURE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "enderium_ore_large" ) );
-	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED_FEATURE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone" ) );
-	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_LARGE_PLACED_FEATURE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "fragile_end_stone_large" ) );
-	public static final ResourceKey< PlacedFeature > INFESTED_END_STONE_PLACED_FEATURE = ResourceKey.create( Registries.PLACED_FEATURE, HELPER.getLocation( "infested_end_stone" ) );
+	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_PLACED_FEATURE = ResourceKey.create( Registry.PLACED_FEATURE_REGISTRY, HELPER.getLocation( "enderium_ore" ) );
+	public static final ResourceKey< PlacedFeature > ENDERIUM_ORE_LARGE_PLACED_FEATURE = ResourceKey.create( Registry.PLACED_FEATURE_REGISTRY, HELPER.getLocation( "enderium_ore_large" ) );
+	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_PLACED_FEATURE = ResourceKey.create( Registry.PLACED_FEATURE_REGISTRY, HELPER.getLocation( "fragile_end_stone" ) );
+	public static final ResourceKey< PlacedFeature > FRAGILE_END_STONE_LARGE_PLACED_FEATURE = ResourceKey.create( Registry.PLACED_FEATURE_REGISTRY, HELPER.getLocation( "fragile_end_stone_large" ) );
+	public static final ResourceKey< PlacedFeature > INFESTED_END_STONE_PLACED_FEATURE = ResourceKey.create( Registry.PLACED_FEATURE_REGISTRY, HELPER.getLocation( "infested_end_stone" ) );
 
 	// Damage Sources
-	public static final ResourceKey< DamageType > BLEEDING_DAMAGE_SOURCE = ResourceKey.create( Registries.DAMAGE_TYPE, HELPER.getLocation( "bleeding" ) );
+	public static final DamageSource BLEEDING_DAMAGE_SOURCE = new BleedingDamage.CustomSource();
 
 	// Advancements
 	public static final GameStageAdvancement GAME_STAGE_ADVANCEMENT = new GameStageAdvancement();
@@ -219,7 +218,7 @@ public class MajruszsDifficulty {
 	}
 
 	private static RegistryObject< SoundEvent > register( String name ) {
-		return SOUND_EVENTS.create( name, ()->SoundEvent.createVariableRangeEvent( HELPER.getLocation( name ) ) );
+		return SOUND_EVENTS.create( name, ()->new SoundEvent( HELPER.getLocation( name ) ) );
 	}
 
 	private static void addDefaultEmitters( OnGameInitialized data ) {

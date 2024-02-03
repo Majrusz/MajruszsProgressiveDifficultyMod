@@ -22,7 +22,7 @@ public class GiantRenderer extends MobRenderer< Giant, GiantModel< Giant > > {
 		super( context, new GiantModel<>( context.bakeLayer( LAYER ) ), 0.4f * SCALE );
 
 		this.addLayer( new ItemInHandLayer<>( this, context.getItemInHandRenderer() ) );
-		this.addLayer( new HumanoidArmorLayer<>( this, new GiantModel<>( context.bakeLayer( ModelLayers.GIANT_INNER_ARMOR ) ), new GiantModel<>( context.bakeLayer( ModelLayers.GIANT_OUTER_ARMOR ) ), context.getModelManager() ) );
+		this.addLayer( new HumanoidArmorLayer<>( this, new GiantModel<>( context.bakeLayer( ModelLayers.GIANT_INNER_ARMOR ) ), new GiantModel<>( context.bakeLayer( ModelLayers.GIANT_OUTER_ARMOR ) ) ) );
 	}
 
 	@Override

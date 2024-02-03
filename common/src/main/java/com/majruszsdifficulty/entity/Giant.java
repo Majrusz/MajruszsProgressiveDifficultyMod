@@ -2,6 +2,7 @@ package com.majruszsdifficulty.entity;
 
 import com.majruszlibrary.emitter.SoundEmitter;
 import com.majruszlibrary.entity.EntityHelper;
+import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.time.TimeHelper;
 import net.minecraft.core.BlockPos;
@@ -45,6 +46,8 @@ public class Giant extends Monster {
 	public Giant( EntityType< ? extends Monster > entityType, Level level ) {
 		super( entityType, level );
 
+		this.maxUpStep = 4.0f;
+
 		this.setPathfindingMalus( BlockPathTypes.LEAVES, 0.0f );
 	}
 
@@ -56,11 +59,6 @@ public class Giant extends Monster {
 	@Override
 	public MobType getMobType() {
 		return MobType.UNDEAD;
-	}
-
-	@Override
-	public float maxUpStep() {
-		return 4.0f;
 	}
 
 	@Override
@@ -172,7 +170,7 @@ public class Giant extends Monster {
 				this.resetAttackCooldown();
 				this.mob.swing( InteractionHand.MAIN_HAND );
 				this.mob.doHurtTarget( target );
-				target.addDeltaMovement( EntityHelper.getDirection2d( this.giant ).mul( -1.0 ).add( 0.0, 1.0, 0.0 ).mul( knockbackMultiplier ).vec3() );
+				target.setDeltaMovement( AnyPos.from( target.getDeltaMovement() ).add( EntityHelper.getDirection2d( this.giant ).mul( -1.0 ).add( 0.0, 1.0, 0.0 ).mul( knockbackMultiplier ) ).vec3() );
 			}
 		}
 	}

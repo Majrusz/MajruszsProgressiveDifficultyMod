@@ -5,17 +5,17 @@ import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.client.CustomParticle;
 import com.majruszlibrary.math.Random;
 import com.majruszlibrary.time.TimeHelper;
-import com.mojang.math.Axis;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
-import org.joml.Quaternionf;
 
 @OnlyIn( Dist.CLIENT )
 public class BloodParticle extends CustomParticle {
 	private final SpriteSet spriteSet;
 	private final float yOffset;
-	private final Quaternionf onGroundQuaternion;
+	private final Quaternion onGroundQuaternion;
 	private float color;
 
 	public BloodParticle( ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet spriteSet ) {
@@ -31,7 +31,8 @@ public class BloodParticle extends CustomParticle {
 		this.age = ( int )( this.lifetime * Mth.lerp( randomRatio, 0.0f, 0.5f ) );
 		this.scaleFormula = lifetime->1.5f;
 		this.yOffset = Mth.lerp( randomRatio, 0.001f, 0.005f ); // random required to minimize z-fighting
-		this.onGroundQuaternion = Axis.XP.rotation( Mth.HALF_PI ).rotateZ( ( int )( randomRatio * 4.0f ) * Mth.HALF_PI );
+		this.onGroundQuaternion = Vector3f.XP.rotation( Mth.HALF_PI );
+		this.onGroundQuaternion.mul( Vector3f.ZP.rotation( ( int )( randomRatio * 4.0f ) * Mth.HALF_PI ) );
 		this.color = Mth.lerp( randomRatio, 0.8f, 1.0f );
 
 		this.setSpriteFromAge( this.spriteSet );
@@ -52,7 +53,7 @@ public class BloodParticle extends CustomParticle {
 	}
 
 	@Override
-	public Quaternionf getQuaternion( Quaternionf quaternion ) {
+	public Quaternion getQuaternion( Quaternion quaternion ) {
 		return this.onGround ? this.onGroundQuaternion : quaternion;
 	}
 

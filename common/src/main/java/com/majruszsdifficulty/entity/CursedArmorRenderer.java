@@ -19,7 +19,7 @@ public class CursedArmorRenderer extends HumanoidMobRenderer< CursedArmor, Curse
 	public CursedArmorRenderer( EntityRendererProvider.Context context ) {
 		super( context, new CursedArmorModel<>( context.bakeLayer( LAYER ) ), 0.0f );
 
-		this.addLayer( new HumanoidArmorLayer<>( this, new CursedArmorModel<>( context.bakeLayer( INNER_ARMOR_LAYER ) ), new CursedArmorModel<>( context.bakeLayer( OUTER_ARMOR_LAYER ) ), context.getModelManager() ) );
+		this.addLayer( new HumanoidArmorLayer<>( this, new CursedArmorModel<>( context.bakeLayer( INNER_ARMOR_LAYER ) ), new CursedArmorModel<>( context.bakeLayer( OUTER_ARMOR_LAYER ) ) ) );
 	}
 
 	@Override

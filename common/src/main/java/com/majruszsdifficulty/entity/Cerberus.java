@@ -78,6 +78,8 @@ public class Cerberus extends Monster implements IAnimableEntity {
 
 	public Cerberus( EntityType< ? extends Monster > entityType, Level level ) {
 		super( entityType, level );
+
+		this.maxUpStep = 1.6f;
 	}
 
 	@Override
@@ -88,11 +90,6 @@ public class Cerberus extends Monster implements IAnimableEntity {
 	@Override
 	public MobType getMobType() {
 		return MobType.UNDEAD;
-	}
-
-	@Override
-	public float maxUpStep() {
-		return 1.6f;
 	}
 
 	@Override

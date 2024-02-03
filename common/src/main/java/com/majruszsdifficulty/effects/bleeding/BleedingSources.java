@@ -10,7 +10,7 @@ import com.majruszlibrary.registry.Registries;
 import com.majruszlibrary.text.RegexString;
 import com.majruszsdifficulty.events.OnBleedingCheck;
 import com.majruszsdifficulty.events.OnBleedingTooltip;
-import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Spider;
@@ -59,7 +59,7 @@ public class BleedingSources {
 			OnBleedingCheck.listen( OnBleedingCheck::trigger )
 				.addCondition( Condition.chance( ()->CHANCE ) )
 				.addCondition( data->IS_ENABLED )
-				.addCondition( data->!data.source.isIndirect() )
+				.addCondition( data->data.source.getEntity() == data.source.getDirectEntity() )
 				.addCondition( data->data.attacker instanceof Animal || data.attacker instanceof Zombie || data.attacker instanceof Spider )
 				.addCondition( data->!BLACKLISTED_ANIMALS.contains( data.attacker.getType() ) );
 
@@ -81,7 +81,7 @@ public class BleedingSources {
 			OnBleedingCheck.listen( OnBleedingCheck::trigger )
 				.addCondition( Condition.chance( ()->CHANCE ) )
 				.addCondition( data->IS_ENABLED )
-				.addCondition( data->data.source.is( DamageTypes.CACTUS ) );
+				.addCondition( data->data.source == DamageSource.CACTUS );
 
 			Serializables.getStatic( BleedingConfig.Sources.class )
 				.define( "cactus", Cactus.class );

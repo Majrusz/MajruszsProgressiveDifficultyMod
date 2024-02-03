@@ -16,19 +16,19 @@ public class TatteredArmor extends ArmorItem {
 	}
 
 	public static Supplier< TatteredArmor > boots() {
-		return ()->new TatteredArmor( Type.BOOTS );
+		return ()->new TatteredArmor( EquipmentSlot.FEET );
 	}
 
 	public static Supplier< TatteredArmor > chestplate() {
-		return ()->new TatteredArmor( Type.CHESTPLATE );
+		return ()->new TatteredArmor( EquipmentSlot.CHEST );
 	}
 
 	public static Supplier< TatteredArmor > helmet() {
-		return ()->new TatteredArmor( Type.HELMET );
+		return ()->new TatteredArmor( EquipmentSlot.HEAD );
 	}
 
 	public static Supplier< TatteredArmor > leggings() {
-		return ()->new TatteredArmor( Type.LEGGINGS );
+		return ()->new TatteredArmor( EquipmentSlot.LEGS );
 	}
 
 	private static boolean hasBootsEquipped( OnEntityPowderSnowCheck data ) {
@@ -36,7 +36,7 @@ public class TatteredArmor extends ArmorItem {
 			&& entity.getItemBySlot( EquipmentSlot.FEET ).is( MajruszsDifficulty.TATTERED_BOOTS_ITEM.get() );
 	}
 
-	private TatteredArmor( Type type ) {
+	private TatteredArmor( EquipmentSlot type ) {
 		super( CustomArmorMaterial.TATTERED, type, new Properties().rarity( Rarity.UNCOMMON ) );
 	}
 }

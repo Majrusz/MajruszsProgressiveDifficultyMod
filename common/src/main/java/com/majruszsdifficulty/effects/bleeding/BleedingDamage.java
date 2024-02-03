@@ -11,13 +11,12 @@ import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.effects.Bleeding;
 import com.majruszsdifficulty.events.OnBleedingCheck;
-import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,30 +56,52 @@ public class BleedingDamage {
 	}
 
 	private static void dealDamage( LivingEntity entity ) {
-		Holder< DamageType > damageType = entity.getLevel()
-			.registryAccess()
-			.registryOrThrow( net.minecraft.core.registries.Registries.DAMAGE_TYPE )
-			.getHolderOrThrow( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE );
-
 		if( entity.getEffect( MajruszsDifficulty.BLEEDING_EFFECT.get() ) instanceof Bleeding.MobEffectInstance effectInstance ) {
 			Vec3 motion = entity.getDeltaMovement();
-			entity.hurt( new DamageSource( damageType, null, effectInstance.damageSourceEntity ), 1.0f );
+			entity.hurt( new CustomSource( effectInstance.damageSourceEntity ), 1.0f );
 			entity.setDeltaMovement( motion ); // sets previous motion to avoid any knockback from bleeding
 		} else {
-			entity.hurt( new DamageSource( damageType ), 1.0f );
+			entity.hurt( MajruszsDifficulty.BLEEDING_DAMAGE_SOURCE, 1.0f );
 		}
 	}
 
 	private static void giveAdvancements( OnEntityDamaged data ) {
 		if( data.target instanceof ServerPlayer player ) {
 			MajruszsDifficulty.HELPER.triggerAchievement( player, "bleeding_received" );
-			if( data.source.is( DamageTypes.CACTUS ) ) {
+			if( data.source == DamageSource.CACTUS ) {
 				MajruszsDifficulty.HELPER.triggerAchievement( player, "cactus_bleeding" );
 			}
 		}
 
 		if( data.attacker instanceof ServerPlayer player ) {
 			MajruszsDifficulty.HELPER.triggerAchievement( player, "bleeding_inflicted" );
+		}
+	}
+
+	public static class CustomSource extends DamageSource {
+		protected final @Nullable Entity damageSourceEntity;
+
+		public CustomSource( @Nullable Entity damageSourceEntity ) {
+			super( "bleeding" );
+
+			this.damageSourceEntity = damageSourceEntity;
+			this.bypassArmor();
+		}
+
+		public CustomSource() {
+			this( null );
+		}
+
+		@Nullable
+		@Override
+		public Entity getDirectEntity() {
+			return this.damageSourceEntity != null ? null : super.getDirectEntity();
+		}
+
+		@Nullable
+		@Override
+		public Entity getEntity() {
+			return this.damageSourceEntity != null ? this.damageSourceEntity : super.getEntity();
 		}
 	}
 }

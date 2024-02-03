@@ -18,7 +18,7 @@ public class WitherSword extends SwordItem {
 
 	static {
 		OnEntityDamaged.listen( WitherSword::apply )
-			.addCondition( data->!data.source.isIndirect() )
+			.addCondition( data->data.source.getEntity() == data.source.getDirectEntity() )
 			.addCondition( data->data.attacker != null )
 			.addCondition( data->data.attacker.getMainHandItem().getItem() instanceof WitherSword );
 

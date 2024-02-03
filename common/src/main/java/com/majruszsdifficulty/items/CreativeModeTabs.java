@@ -33,8 +33,7 @@ public class CreativeModeTabs {
 			MajruszsDifficulty.ENDER_POUCH_ITEM,
 			MajruszsDifficulty.ENDERIUM_SHARD_LOCATOR_ITEM,
 			MajruszsDifficulty.ENDERIUM_SHARD_ITEM,
-			MajruszsDifficulty.ENDERIUM_INGOT_ITEM,
-			MajruszsDifficulty.ENDERIUM_SMITHING_TEMPLATE_ITEM
+			MajruszsDifficulty.ENDERIUM_INGOT_ITEM
 		).map( item->new ItemStack( item.get() ) ).forEach( output::accept );
 
 		Stream.of( Items.TIPPED_ARROW, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION ).forEach( item->
