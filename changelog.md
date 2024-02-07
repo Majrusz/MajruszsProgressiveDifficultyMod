@@ -1,0 +1,1 @@
+- added chance for Sweet Berry Bush to apply Bleeding (suggested by @SrMk_)
