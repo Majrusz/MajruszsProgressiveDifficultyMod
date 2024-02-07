@@ -1,2 +1,3 @@
 - added chance for Sweet Berry Bush to apply Bleeding (suggested by @SrMk_)
 - increased Zombie Reinforcement Spawn chance for Expert and Master Modes
+- renamed some config names
