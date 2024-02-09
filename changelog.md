@@ -1,0 +1,2 @@
+- added config for mobs that should be immune to Bleeding
+- fixed bug with Skeleton Horse and Zombie Horse not being immune to Bleeding

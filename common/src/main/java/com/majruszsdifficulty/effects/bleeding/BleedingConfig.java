@@ -16,6 +16,7 @@ public class BleedingConfig {
 	public static boolean IS_APPLICABLE_TO_ANIMALS = true;
 	public static boolean IS_APPLICABLE_TO_ILLAGERS = true;
 	public static List< EntityType< ? > > OTHER_APPLICABLE_MOBS = List.of( EntityType.PLAYER, EntityType.VILLAGER );
+	public static List< EntityType< ? > > IMMUNE_MOBS = List.of( EntityType.ZOMBIE_HORSE, EntityType.SKELETON_HORSE );
 	public static GameStageValue< EffectDef > EFFECTS = GameStageValue.of(
 		DefaultMap.defaultEntry( new EffectDef( ()->null, 0, 24.0f ) ),
 		DefaultMap.entry( GameStage.EXPERT_ID, new EffectDef( ()->null, 1, 24.0f ) ),
@@ -32,6 +33,7 @@ public class BleedingConfig {
 			.define( "is_applicable_to_animals", Reader.bool(), ()->IS_APPLICABLE_TO_ANIMALS, v->IS_APPLICABLE_TO_ANIMALS = v )
 			.define( "is_applicable_to_pillagers", Reader.bool(), ()->IS_APPLICABLE_TO_ILLAGERS, v->IS_APPLICABLE_TO_ILLAGERS = v )
 			.define( "other_applicable_mobs", Reader.list( Reader.entityType() ), ()->OTHER_APPLICABLE_MOBS, v->OTHER_APPLICABLE_MOBS = v )
+			.define( "immune_mobs", Reader.list( Reader.entityType() ), ()->IMMUNE_MOBS, v->IMMUNE_MOBS = v )
 			.define( "effect", Reader.map( Reader.custom( EffectDef::new ) ), ()->EFFECTS.get(), v->EFFECTS.set( v ) )
 			.define( "sources", Sources.class );
 	}
