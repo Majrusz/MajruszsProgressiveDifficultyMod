@@ -1,3 +1,4 @@
 - added config for mobs that should be immune to Bleeding
+- fixed bug with Blood Moons not working after 2nd night (reported by @FireKyleA1205)
 - fixed bug that sometimes kicks from the game when opening Treasure Bags (reported by @GenericCherrySwitch)
 - fixed bug with Skeleton Horse and Zombie Horse not being immune to Bleeding

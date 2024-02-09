@@ -21,8 +21,9 @@ public class BloodMoonClient {
 			return;
 		}
 
-		if( BloodMoonHelper.isActive() && BloodMoonConfig.TIME.within( level.getDayTime() % Level.TICKS_PER_DAY ) ) {
-			COLOR_RATIO = ( float )( 2.0 * ( level.getDayTime() - BloodMoonConfig.TIME.from ) / ( BloodMoonConfig.TIME.to - BloodMoonConfig.TIME.from ) - 1.0 );
+		long relativeTime = level.getDayTime() % Level.TICKS_PER_DAY;
+		if( BloodMoonHelper.isActive() && BloodMoonConfig.TIME.within( relativeTime ) ) {
+			COLOR_RATIO = ( float )( 2.0 * ( relativeTime - BloodMoonConfig.TIME.from ) / ( BloodMoonConfig.TIME.to - BloodMoonConfig.TIME.from ) - 1.0 );
 			COLOR_RATIO = 1.0f - Math.abs( COLOR_RATIO * COLOR_RATIO * COLOR_RATIO );
 		} else {
 			COLOR_RATIO = 0.0f;
