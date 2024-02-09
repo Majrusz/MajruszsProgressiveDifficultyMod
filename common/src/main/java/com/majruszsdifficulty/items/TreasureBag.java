@@ -11,6 +11,7 @@ import com.majruszlibrary.events.base.Events;
 import com.majruszlibrary.item.ItemHelper;
 import com.majruszlibrary.item.LootHelper;
 import com.majruszlibrary.platform.Side;
+import com.majruszlibrary.time.TimeHelper;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.treasurebag.events.OnTreasureBagOpened;
 import net.minecraft.resources.ResourceLocation;
@@ -84,14 +85,17 @@ public class TreasureBag extends Item {
 	}
 
 	private static void openInInventory( RightClickAction action, ServerPlayer player ) {
-		if( !player.containerMenu.isValidSlotIndex( action.containerIdx ) ) {
-			return;
-		}
+		// delayed on purpose to avoid accessing randoms from 'network' thread
+		TimeHelper.nextTick( d->{
+			if( !player.containerMenu.isValidSlotIndex( action.containerIdx ) ) {
+				return;
+			}
 
-		ItemStack itemStack = player.containerMenu.getSlot( action.containerIdx ).getItem();
-		if( itemStack.getItem() instanceof TreasureBag ) {
-			TreasureBag.open( itemStack, player );
-		}
+			ItemStack itemStack = player.containerMenu.getSlot( action.containerIdx ).getItem();
+			if( itemStack.getItem() instanceof TreasureBag ) {
+				TreasureBag.open( itemStack, player );
+			}
+		} );
 	}
 
 	private static void open( ItemStack itemStack, Player player ) {

@@ -1,2 +1,3 @@
 - added config for mobs that should be immune to Bleeding
+- fixed bug that sometimes kicks from the game when opening Treasure Bags (reported by @GenericCherrySwitch)
 - fixed bug with Skeleton Horse and Zombie Horse not being immune to Bleeding
