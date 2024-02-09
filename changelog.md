@@ -1,3 +1,0 @@
-- fixed compatibility crash with Tinkerer's Smithing (reported by @FLSoz)
-- fixed game crash caused by Cursed Armor (reported by @GenericCherrySwitch, @JackZhangCNCC)
-- fixed invalid experience bonus structure in the configuration file
