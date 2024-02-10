@@ -7,6 +7,9 @@ import com.majruszlibrary.data.Serializables;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
 import com.majruszsdifficulty.data.WorldData;
+import net.minecraft.world.level.Level;
+
+import java.util.Optional;
 
 public class BloodMoonHelper {
 	private static BloodMoon BLOOD_MOON = new BloodMoon();
@@ -42,11 +45,15 @@ public class BloodMoonHelper {
 		return BloodMoonClient.COLOR_RATIO;
 	}
 
+	public static long getRelativeDayTime() {
+		return Optional.ofNullable( Side.getServer() ).map( server->server.overworld().getDayTime() % Level.TICKS_PER_DAY ).orElse( 0L );
+	}
+
 	public static boolean isActive() {
 		return BLOOD_MOON.isActive();
 	}
 
 	public static boolean isValidDayTime() {
-		return BloodMoonConfig.TIME.within( Side.getServer().overworld().getDayTime() );
+		return BloodMoonConfig.TIME.within( BloodMoonHelper.getRelativeDayTime() );
 	}
 }

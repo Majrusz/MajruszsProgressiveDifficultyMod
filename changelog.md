@@ -1,3 +1,5 @@
-- fixed compatibility crash with Tinkerer's Smithing (reported by @FLSoz)
-- fixed game crash caused by Cursed Armor (reported by @GenericCherrySwitch, @JackZhangCNCC)
-- fixed invalid experience bonus structure in the configuration file
+- added config for mobs that should be immune to Bleeding
+- updated Russian translation (thanks to @LolsShow and Faster Than Light team)
+- fixed bug with Blood Moons not working after 2nd night (reported by @FireKyleA1205)
+- fixed bug that sometimes kicks from the game when opening Treasure Bags (reported by @GenericCherrySwitch)
+- fixed bug with Skeleton Horse and Zombie Horse not being immune to Bleeding
