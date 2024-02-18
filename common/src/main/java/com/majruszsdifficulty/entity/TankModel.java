@@ -6,6 +6,7 @@ import com.majruszlibrary.annotation.Dist;
 import com.majruszlibrary.annotation.OnlyIn;
 import com.majruszlibrary.modhelper.Resource;
 import com.majruszsdifficulty.MajruszsDifficulty;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -14,14 +15,14 @@ import net.minecraft.util.Mth;
 public class TankModel< Type extends Tank > extends HierarchicalModel< Type > {
 	public static Resource< ModelDef > MODEL = MajruszsDifficulty.HELPER.loadClient( "tank_model", ModelDef.class );
 	public final ModelParts modelParts;
-	public final ModelPart head, leftLeg, rightLeg, body;
+	public final ModelPart head, body, rightLeg, leftLeg;
 
 	public TankModel( ModelPart modelPart ) {
 		this.modelParts = new ModelParts( modelPart, MODEL.get() );
 		this.head = this.modelParts.get( "head" );
-		this.leftLeg = this.modelParts.get( "leftLeg" );
-		this.rightLeg = this.modelParts.get( "rightLeg" );
 		this.body = this.modelParts.get( "body" );
+		this.rightLeg = this.modelParts.get( "rightLeg" );
+		this.leftLeg = this.modelParts.get( "leftLeg" );
 	}
 
 	@Override
@@ -45,6 +46,15 @@ public class TankModel< Type extends Tank > extends HierarchicalModel< Type > {
 	@Override
 	public ModelPart root() {
 		return this.modelParts.getRoot();
+	}
+
+	@Override
+	public void copyPropertiesTo( EntityModel< Type > model ) {
+		super.copyPropertiesTo( model );
+
+		if( model instanceof TankModel< Type > tankModel ) {
+			this.modelParts.copyPropertiesTo( tankModel.modelParts );
+		}
 	}
 }
 

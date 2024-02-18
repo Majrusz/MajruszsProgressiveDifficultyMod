@@ -1,4 +1,5 @@
 - changed required Majrusz Library version from 7.0.2+ to 7.1.0+
 - added chance for Sweet Berry Bush to apply Bleeding (suggested by @SrMk_)
+- added armored Tank and Cerberus variants to the Undead Army
 - increased Zombie Reinforcement Spawn chance for Expert and Master Modes
 - renamed some config names

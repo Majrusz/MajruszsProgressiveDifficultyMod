@@ -241,12 +241,14 @@ public class MajruszsDifficulty {
 
 			HELPER.create( Custom.ModelLayers.class, modelLayers->{
 				modelLayers.register( CerberusRenderer.LAYER, ()->CerberusModel.MODEL.get().toLayerDefinition() );
+				modelLayers.register( CerberusRenderer.ARMOR_LAYER, ()->CerberusModel.MODEL.get().toLayerDefinition( new CubeDeformation( 0.5f ) ) );
 				modelLayers.register( CursedArmorRenderer.LAYER, ()->CursedArmorModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( CursedArmorRenderer.INNER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( new CubeDeformation( 0.5f ), 0.0f ), 64, 32 ) );
 				modelLayers.register( CursedArmorRenderer.OUTER_ARMOR_LAYER, ()->LayerDefinition.create( CursedArmorModel.createMesh( new CubeDeformation( 1.0f ), 0.0f ), 64, 32 ) );
 				modelLayers.register( CreeperlingRenderer.LAYER, ()->CreeperlingModel.MODEL.get().toLayerDefinition() );
 				modelLayers.register( GiantRenderer.LAYER, ()->LayerDefinition.create( GiantModel.createMesh( CubeDeformation.NONE, 0.0f ), 64, 64 ) );
 				modelLayers.register( TankRenderer.LAYER, ()->TankModel.MODEL.get().toLayerDefinition() );
+				modelLayers.register( TankRenderer.ARMOR_LAYER, ()->TankModel.MODEL.get().toLayerDefinition( new CubeDeformation( 0.5f ) ) );
 			} );
 
 			HELPER.create( Custom.Particles.class, particles->{
