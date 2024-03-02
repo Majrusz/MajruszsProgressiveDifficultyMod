@@ -1,5 +1,6 @@
-- added config for mobs that should be immune to Bleeding
-- updated Russian translation (thanks to @LolsShow and Faster Than Light team)
-- fixed bug with Blood Moons not working after 2nd night (reported by @FireKyleA1205)
-- fixed bug that sometimes kicks from the game when opening Treasure Bags (reported by @GenericCherrySwitch)
-- fixed bug with Skeleton Horse and Zombie Horse not being immune to Bleeding
+- added Undead Army compatibility with RpgZ mod (suggested by @Sazuzaki)
+- added Japanese translation (thanks to @もふざとう)
+- changed fishing requirements for Angler Treasure Bag from 20/15/10 to 16 on all game stages
+- fixed bug with mobs being able to spawn in Mushroom Fields and Deep Dark (reported by @Dagamer2021)
+- fixed bug with Undead Army progress bars displaying invalid values after reentering the world
+- fixed bug with mob groups being able to spawn recursively
