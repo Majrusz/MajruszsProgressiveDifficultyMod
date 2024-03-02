@@ -1,0 +1,1 @@
+- fixed bug with mobs being able to spawn in Mushroom Fields and Deep Dark (reported by @Dagamer2021)

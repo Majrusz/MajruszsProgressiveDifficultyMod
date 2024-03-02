@@ -3,14 +3,18 @@ package com.majruszsdifficulty;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
 import java.util.function.Predicate;
 
 public class Initializer implements ModInitializer {
-	private static final Predicate< BiomeSelectionContext > IS_OVERWORLD = context->context.canGenerateIn( LevelStem.OVERWORLD );
+	private static final Predicate< BiomeSelectionContext > IS_OVERWORLD = context->context.canGenerateIn( LevelStem.OVERWORLD )
+		&& context.getBiomeKey() != Biomes.DEEP_DARK
+		&& context.getBiomeKey() != Biomes.MUSHROOM_FIELDS;
 	private static final Predicate< BiomeSelectionContext > IS_NETHER = context->context.canGenerateIn( LevelStem.NETHER );
 	private static final Predicate< BiomeSelectionContext > IS_END = context->context.canGenerateIn( LevelStem.END );
 
