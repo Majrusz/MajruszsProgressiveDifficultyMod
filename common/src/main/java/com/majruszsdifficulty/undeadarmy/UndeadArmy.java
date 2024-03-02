@@ -24,6 +24,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -65,6 +66,11 @@ public class UndeadArmy {
 			.define( "position", Reader.blockPos(), s->s.position, ( s, v )->s.position = v )
 			.define( "is_boss", Reader.bool(), s->s.isBoss, ( s, v )->s.isBoss = v )
 			.define( "uuid", Reader.optional( Reader.uuid() ), s->s.uuid, ( s, v )->s.uuid = v );
+	}
+
+	public UndeadArmy() {
+		this.waveInfo.setVisible( false );
+		this.bossInfo.setVisible( false );
 	}
 
 	public void start( BlockPos position, Direction direction ) {
@@ -202,7 +208,16 @@ public class UndeadArmy {
 		public MobInfo() {}
 
 		public @Nullable Entity toEntity( ServerLevel level ) {
-			return this.uuid != null ? level.getEntity( this.uuid ) : null;
+			if( this.uuid == null ) {
+				return null;
+			}
+
+			Entity entity = level.getEntity( this.uuid );
+			if( entity instanceof LivingEntity livingEntity && livingEntity.deathTime >= 20 ) {
+				return null; // compatibility with RpgZ
+			}
+
+			return entity;
 		}
 
 		public float getHealth( ServerLevel level ) {

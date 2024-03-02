@@ -22,6 +22,7 @@ import com.majruszsdifficulty.gamestage.GameStageHelper;
 import com.majruszsdifficulty.undeadarmy.UndeadArmyHelper;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -98,6 +99,7 @@ public class MobGroups {
 			.addCondition( Condition.isLogicalServer() )
 			.addCondition( data->!data.isLoadedFromDisk )
 			.addCondition( data->data.entity instanceof PathfinderMob )
+			.addCondition( data->!MobGroups.belongsToMobGroup( data.entity ) )
 			.addCondition( data->!data.getLevel().equals( Side.getServer().overworld() ) || !UndeadArmyHelper.isPartOfUndeadArmy( data.entity ) );
 
 		Command.create()
@@ -151,6 +153,7 @@ public class MobGroups {
 				continue;
 			}
 
+			MobGroups.markAsGroupPart( data.entity );
 			MobGroups.spawn( ( PathfinderMob )data.entity, groupDef );
 			MobGroups.giveItems( leader, leaderDef.equipment );
 
@@ -166,6 +169,7 @@ public class MobGroups {
 			Entity entity = EntityHelper.createSpawner( ()->sidekickDef.type, level )
 				.position( MobGroups.getRandomizedPosition( level, leader.position() ) )
 				.mobSpawnType( MobSpawnType.EVENT )
+				.beforeEvent( MobGroups::markAsGroupPart )
 				.spawn();
 			if( !( entity instanceof PathfinderMob sidekick ) ) {
 				continue;
@@ -200,6 +204,16 @@ public class MobGroups {
 		}
 
 		return position;
+	}
+
+	private static void markAsGroupPart( Entity entity ) {
+		Serializables.modify( new Tag(), EntityHelper.getOrCreateExtraTag( entity ), tag->tag.belongsToMobGroup = true );
+	}
+
+	private static boolean belongsToMobGroup( Entity entity ) {
+		CompoundTag tag = EntityHelper.getExtraTag( entity );
+
+		return tag != null && Serializables.read( new Tag(), tag ).belongsToMobGroup;
 	}
 
 	private static int spawn( CommandData data ) throws CommandSyntaxException {
@@ -354,5 +368,14 @@ public class MobGroups {
 		}
 
 		public SidekickDef() {}
+	}
+
+	private static class Tag {
+		public boolean belongsToMobGroup = false;
+
+		static {
+			Serializables.get( Tag.class )
+				.define( "belongs_to_mob_group", Reader.bool(), s->s.belongsToMobGroup, ( s, v )->s.belongsToMobGroup = v );
+		}
 	}
 }
