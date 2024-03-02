@@ -67,6 +67,11 @@ public class UndeadArmy {
 			.define( "uuid", Reader.optional( Reader.uuid() ), s->s.uuid, ( s, v )->s.uuid = v );
 	}
 
+	public UndeadArmy() {
+		this.waveInfo.setVisible( false );
+		this.bossInfo.setVisible( false );
+	}
+
 	public void start( BlockPos position, Direction direction ) {
 		this.gameStage = GameStageHelper.determineGameStage( this.getLevel(), position.getCenter() );
 		this.position = position;
