@@ -24,6 +24,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -207,7 +208,16 @@ public class UndeadArmy {
 		public MobInfo() {}
 
 		public @Nullable Entity toEntity( ServerLevel level ) {
-			return this.uuid != null ? level.getEntity( this.uuid ) : null;
+			if( this.uuid == null ) {
+				return null;
+			}
+
+			Entity entity = level.getEntity( this.uuid );
+			if( entity instanceof LivingEntity livingEntity && livingEntity.deathTime >= 20 ) {
+				return null; // compatibility with RpgZ
+			}
+
+			return entity;
 		}
 
 		public float getHealth( ServerLevel level ) {

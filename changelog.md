@@ -1,2 +1,3 @@
+- added Undead Army compatibility with RpgZ mod (suggested by @Sazuzaki)
 - fixed bug with mobs being able to spawn in Mushroom Fields and Deep Dark (reported by @Dagamer2021)
 - fixed bug with Undead Army progress bars displaying invalid values after reentering the world
