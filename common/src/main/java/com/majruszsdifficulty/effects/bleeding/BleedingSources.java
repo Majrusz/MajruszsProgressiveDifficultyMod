@@ -50,6 +50,25 @@ public class BleedingSources {
 		}
 	}
 
+	public static class BerryBush {
+		private static boolean IS_ENABLED = true;
+		private static float CHANCE = 0.5f;
+
+		static {
+			OnBleedingCheck.listen( OnBleedingCheck::trigger )
+				.addCondition( Condition.chance( ()->CHANCE ) )
+				.addCondition( data->IS_ENABLED )
+				.addCondition( data->data.source.is( DamageTypes.SWEET_BERRY_BUSH ) );
+
+			Serializables.getStatic( BleedingConfig.Sources.class )
+				.define( "berry_bush", BerryBush.class );
+
+			Serializables.getStatic( BerryBush.class )
+				.define( "is_enabled", Reader.bool(), ()->IS_ENABLED, v->IS_ENABLED = v )
+				.define( "chance", Reader.number(), ()->CHANCE, v->CHANCE = Range.CHANCE.clamp( v ) );
+		}
+	}
+
 	public static class Bite {
 		private static boolean IS_ENABLED = true;
 		private static float CHANCE = 0.5f;

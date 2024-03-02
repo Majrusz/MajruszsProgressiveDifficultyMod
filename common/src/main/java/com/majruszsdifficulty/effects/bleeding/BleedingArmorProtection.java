@@ -28,9 +28,9 @@ public class BleedingArmorProtection {
 			.addCondition( data->data.itemStack.getItem() instanceof ArmorItem );
 
 		Serializables.getStatic( BleedingConfig.class )
-			.define( "chance_multiplier_base", Reader.number(), ()->BASE_BONUS, v->BASE_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) )
-			.define( "chance_multiplier_per_armor", Reader.number(), ()->ARMOR_BONUS, v->ARMOR_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) )
-			.define( "chance_multiplier_per_armor_toughness", Reader.number(), ()->TOUGHNESS_BONUS, v->TOUGHNESS_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) );
+			.define( "chance_reduction_per_armor_base", Reader.number(), ()->BASE_BONUS, v->BASE_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) )
+			.define( "chance_reduction_per_armor_value", Reader.number(), ()->ARMOR_BONUS, v->ARMOR_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) )
+			.define( "chance_reduction_per_armor_toughness", Reader.number(), ()->TOUGHNESS_BONUS, v->TOUGHNESS_BONUS = Range.of( 0.0f, 1.0f ).clamp( v ) );
 	}
 
 	private static float calculateCancelChance( OnEntityEffectCheck data ) {

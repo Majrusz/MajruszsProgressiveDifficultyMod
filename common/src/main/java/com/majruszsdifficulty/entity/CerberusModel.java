@@ -8,6 +8,7 @@ import com.majruszlibrary.math.AnyPos;
 import com.majruszlibrary.modhelper.Resource;
 import com.majruszlibrary.platform.Side;
 import com.majruszsdifficulty.MajruszsDifficulty;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
@@ -66,6 +67,15 @@ public class CerberusModel< Type extends Cerberus > extends HierarchicalModel< T
 	@Override
 	public ModelPart root() {
 		return this.modelParts.getRoot();
+	}
+
+	@Override
+	public void copyPropertiesTo( EntityModel< Type > model ) {
+		super.copyPropertiesTo( model );
+
+		if( model instanceof CerberusModel< Type > cerberusModel ) {
+			this.modelParts.copyPropertiesTo( cerberusModel.modelParts );
+		}
 	}
 
 	private float getPlayerDistance( Type cerberus ) {
